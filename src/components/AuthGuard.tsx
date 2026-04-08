@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef, useCallback } from "react";
+import { ReactElement, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,32 +9,18 @@ interface AuthGuardProps {
   children: ReactElement;
 }
 
-type OAuthState = 'idle' | 'processing' | 'timedOut';
-
 /**
- * Detect OAuth callback params in URL hash or query string.
+ * AuthGuard — thin loading gate.
+ *
+ * OAuth callback recovery is handled exclusively by AuthProvider,
+ * which keeps `loading = true` until recovery completes (or times out).
+ * AuthGuard simply renders a spinner while loading, a recovery UI on
+ * failure, and the protected children when authenticated.
  */
-function hasOAuthCallback(): boolean {
-  const hash = window.location.hash;
-  const search = window.location.search;
-  return hash.includes('access_token') || 
-         hash.includes('code=') ||
-         search.includes('code=');
-}
-
-function clearCallbackParams() {
-  window.history.replaceState(null, '', window.location.pathname);
-}
-
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const [oauthState, setOauthState] = useState<OAuthState>('idle');
-  const recoveryAttempted = useRef(false);
-  const pollRef = useRef<ReturnType<typeof setInterval>>();
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-
-  const isCallback = hasOAuthCallback();
+  const [showRecovery, setShowRecovery] = useState(false);
 
   // Determine the login route for this tenant
   const getLoginRoute = useCallback(() => {
@@ -45,105 +31,26 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return '/auth';
   }, []);
 
-  // Start processing when OAuth callback is detected
+  // Safety timeout: if loading stays true for 20s, show recovery UI
   useEffect(() => {
-    if (!isCallback || user || loading) return;
-    if (oauthState !== 'idle') return;
-
-    setOauthState('processing');
-    console.debug('[AuthGuard] OAuth callback detected, entering processing state');
-  }, [isCallback, user, loading, oauthState]);
-
-  // Active recovery + polling + timeout while processing
-  useEffect(() => {
-    if (oauthState !== 'processing') return;
-    if (recoveryAttempted.current) return;
-    recoveryAttempted.current = true;
-
-    // One-shot active recovery attempt
-    (async () => {
-      try {
-        const hash = window.location.hash.substring(1);
-        const hashParams = new URLSearchParams(hash);
-        const queryParams = new URLSearchParams(window.location.search);
-
-        const accessToken = hashParams.get('access_token');
-        const refreshToken = hashParams.get('refresh_token');
-        const code = queryParams.get('code') || hashParams.get('code');
-
-        // Try PKCE code exchange
-        if (code) {
-          console.debug('[AuthGuard] Attempting PKCE code exchange');
-          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-          if (!error && data.session) {
-            clearCallbackParams();
-            console.debug('[AuthGuard] PKCE exchange succeeded');
-            return; // onAuthStateChange will update user
-          }
-        }
-
-        // Try implicit hash tokens
-        if (accessToken && refreshToken) {
-          console.debug('[AuthGuard] Attempting setSession with hash tokens');
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-          if (!error && data.session) {
-            clearCallbackParams();
-            console.debug('[AuthGuard] setSession succeeded');
-            return;
-          }
-        }
-
-        // Fallback: refreshSession
-        await supabase.auth.refreshSession();
-      } catch (err) {
-        console.warn('[AuthGuard] Active recovery error:', err);
-      }
-    })();
-
-    // Poll getSession every 1s
-    pollRef.current = setInterval(async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          clearCallbackParams();
-          console.debug('[AuthGuard] Session found via polling');
-          // AuthProvider's onAuthStateChange should update user,
-          // but ensure state exits processing
-          setOauthState('idle');
-        }
-      } catch (err) {
-        console.warn('[AuthGuard] Poll error:', err);
-      }
-    }, 1000);
-
-    // 8s timeout
-    timeoutRef.current = setTimeout(() => {
-      console.warn('[AuthGuard] OAuth processing timed out after 8s');
-      setOauthState('timedOut');
-    }, 8000);
-
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, [oauthState]);
-
-  // When user arrives (from any recovery path), clean up
-  useEffect(() => {
-    if (user && oauthState === 'processing') {
-      setOauthState('idle');
-      if (pollRef.current) clearInterval(pollRef.current);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      clearCallbackParams();
+    if (!loading) {
+      setShowRecovery(false);
+      return;
     }
-  }, [user, oauthState]);
 
-  // One-shot hydration check: when auth settles with no user AND no callback, redirect
+    const timer = setTimeout(() => {
+      if (!user) {
+        console.warn('[AuthGuard] Loading timed out after 20s — showing recovery UI');
+        setShowRecovery(true);
+      }
+    }, 20000);
+
+    return () => clearTimeout(timer);
+  }, [loading, user]);
+
+  // When loading finishes with no user and no callback, redirect to login
   useEffect(() => {
-    if (loading || user || isCallback || oauthState !== 'idle') return;
+    if (loading || user) return;
 
     let cancelled = false;
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -155,21 +62,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     });
 
     return () => { cancelled = true; };
-  }, [user, loading, navigate, isCallback, oauthState, getLoginRoute]);
+  }, [user, loading, navigate, getLoginRoute]);
 
   // --- Render ---
 
-  // Auth loading
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  // OAuth processing (with spinner + message)
-  if (oauthState === 'processing') {
+  // Loading spinner (AuthProvider is handling recovery)
+  if (loading && !showRecovery) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -178,8 +76,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     );
   }
 
-  // OAuth timed out — recovery UI
-  if (oauthState === 'timedOut') {
+  // Recovery UI — loading timed out or auth failed
+  if (showRecovery || (!loading && !user)) {
+    const savedProvider = localStorage.getItem('oauth_provider') as 'apple' | 'google' | null;
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-6">
         <div className="text-center space-y-2">
@@ -189,23 +89,18 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <Button
             onClick={async () => {
-              // Reset state and try again
-              recoveryAttempted.current = false;
-              setOauthState('idle');
-              clearCallbackParams();
+              setShowRecovery(false);
 
-              // Check if session exists now
+              // Check if session exists now (may have recovered in background)
               const { data: { session } } = await supabase.auth.getSession();
-              if (session) {
-                // Session found, AuthProvider will pick it up
-                return;
-              }
+              if (session) return;
 
-              // Re-initiate Apple sign-in
+              // Re-initiate OAuth with the original provider
+              const provider = savedProvider || 'apple';
               try {
-                localStorage.setItem('tenant_slug', localStorage.getItem('tenant_slug') || 'maxina');
+                localStorage.setItem('oauth_provider', provider);
                 await supabase.auth.signInWithOAuth({
-                  provider: 'apple',
+                  provider,
                   options: {
                     redirectTo: window.location.origin + '/' + (localStorage.getItem('tenant_slug') || 'maxina'),
                   }
@@ -219,13 +114,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             variant="default"
           >
             <RefreshCw className="mr-2 h-4 w-4" />
-            Try Apple Sign-In again
+            Try Sign-In again
           </Button>
           <Button
             onClick={() => {
-              clearCallbackParams();
-              recoveryAttempted.current = false;
-              setOauthState('idle');
+              setShowRecovery(false);
               navigate(getLoginRoute());
             }}
             variant="outline"
@@ -237,11 +130,6 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         </div>
       </div>
     );
-  }
-
-  // No user and no callback — AuthGuard will redirect via the hydration check
-  if (!user) {
-    return null;
   }
 
   return children;

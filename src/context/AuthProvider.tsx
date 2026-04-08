@@ -63,9 +63,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
   const oauthRecoveryRan = useRef(false);
+  const oauthRecoveryPending = useRef(false);
   const prevUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Detect OAuth callback params early — if present, we must keep
+    // loading=true until recovery completes so downstream components
+    // (AuthGuard, portals) don't start their own duplicate recovery.
+    const callbackParams = detectOAuthCallback();
+    const hasOAuthCallback = (callbackParams.accessToken && callbackParams.refreshToken) || callbackParams.pkceCode;
+
+    // Safety timeout: force loading=false after 15s to prevent infinite spinner
+    let safetyTimer: ReturnType<typeof setTimeout> | undefined;
+    if (hasOAuthCallback) {
+      safetyTimer = setTimeout(() => {
+        if (oauthRecoveryPending.current) {
+          console.warn('[AuthProvider] OAuth recovery safety timeout (15s) — forcing loading=false');
+          oauthRecoveryPending.current = false;
+          setLoading(false);
+        }
+      }, 15000);
+    }
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -84,7 +103,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+
+        // If we have a session (SDK auto-detection succeeded), always clear loading.
+        // If no session but OAuth recovery is pending, keep loading=true.
+        if (session?.user || !oauthRecoveryPending.current) {
+          setLoading(false);
+          oauthRecoveryPending.current = false;
+        }
 
         // Prefetch inbox on sign-in (ORB auth is handled by useOrbVoiceWidget)
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
@@ -106,7 +131,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
-      setLoading(false);
 
       // No active session — purge any stale ORB auth to prevent
       // the external widget from using a previous user's identity
@@ -119,19 +143,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // If session already found, no need for OAuth recovery
-      if (existingSession || oauthRecoveryRan.current) return;
-      oauthRecoveryRan.current = true;
+      if (existingSession) {
+        setLoading(false);
+        return;
+      }
+
+      // No session and no OAuth callback — just finish loading
+      if (!hasOAuthCallback || oauthRecoveryRan.current) {
+        setLoading(false);
+        return;
+      }
 
       // --- OAuth callback recovery for iPad/WebView ---
-      const { accessToken, refreshToken, pkceCode } = detectOAuthCallback();
-      const hasCallback = (accessToken && refreshToken) || pkceCode;
-      if (!hasCallback) return;
+      // Keep loading=true while recovery runs so AuthGuard/portals wait.
+      oauthRecoveryRan.current = true;
+      oauthRecoveryPending.current = true;
 
       console.debug('[AuthProvider] OAuth callback detected, attempting manual recovery');
 
       (async () => {
         try {
           let recovered = false;
+          const { accessToken, refreshToken, pkceCode } = callbackParams;
 
           // 1. Try PKCE code exchange first (if code present)
           if (pkceCode) {
@@ -182,11 +215,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         } catch (err) {
           console.error('[AuthProvider] OAuth recovery error:', err);
+        } finally {
+          oauthRecoveryPending.current = false;
+          setLoading(false);
         }
       })();
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      if (safetyTimer) clearTimeout(safetyTimer);
+    };
   }, []);
 
   const signOut = async () => {
