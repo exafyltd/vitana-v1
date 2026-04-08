@@ -77,11 +77,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let safetyTimer: ReturnType<typeof setTimeout> | undefined;
     if (hasOAuthCallback) {
       safetyTimer = setTimeout(() => {
-        if (oauthRecoveryPending.current) {
-          console.warn('[AuthProvider] OAuth recovery safety timeout (15s) — forcing loading=false');
-          oauthRecoveryPending.current = false;
-          setLoading(false);
-        }
+        console.warn('[AuthProvider] OAuth recovery safety timeout (15s) — forcing loading=false');
+        oauthRecoveryPending.current = false;
+        setLoading(false);
       }, 15000);
     }
 
@@ -105,10 +103,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
 
         // If we have a session (SDK auto-detection succeeded), always clear loading.
-        // If no session but OAuth recovery is pending, keep loading=true.
-        if (session?.user || !oauthRecoveryPending.current) {
+        // If no session but an OAuth callback is in the URL, keep loading=true
+        // so the manual recovery gets a chance to run.
+        if (session?.user) {
           setLoading(false);
           oauthRecoveryPending.current = false;
+        } else if (!hasOAuthCallback) {
+          setLoading(false);
         }
 
         // Prefetch inbox on sign-in (ORB auth is handled by useOrbVoiceWidget)
@@ -178,6 +179,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               recovered = true;
             } else {
               console.warn('[AuthProvider] PKCE exchange failed:', error?.message);
+              // SDK's detectSessionInUrl may have consumed the code successfully
+              // in the background — wait briefly and check for a session
+              await new Promise(r => setTimeout(r, 2000));
+              const { data: { session: sdkSession } } = await supabase.auth.getSession();
+              if (sdkSession) {
+                setSession(sdkSession);
+                setUser(sdkSession.user);
+                clearCallbackParams();
+                console.debug('[AuthProvider] Session found after PKCE failure (SDK handled it)');
+                recovered = true;
+              }
             }
           }
 
