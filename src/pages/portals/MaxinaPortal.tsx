@@ -70,6 +70,42 @@ const MaxinaPortal = () => {
     }
   }, [isProcessingOAuth, authLoading, user, oauthTimedOut]);
 
+  // Android WebView recovery: when the app regains focus after an external
+  // OAuth flow (Google opens in Chrome Custom Tab), re-check for a session.
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState !== 'visible') return;
+      // Only attempt recovery if we're stuck in a loading/processing state
+      if (!authLoading && !isProcessingOAuth && !loading) return;
+
+      console.debug('[MaxinaPortal] App resumed — checking for session');
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      while (attempts < maxAttempts) {
+        const { data: { session: recoveredSession } } = await supabase.auth.getSession();
+        if (recoveredSession) {
+          console.debug('[MaxinaPortal] Session recovered on visibility change');
+          // AuthProvider's onAuthStateChange will handle state updates.
+          // Force a reload to let the full auth flow re-initialize cleanly.
+          window.location.reload();
+          return;
+        }
+        attempts++;
+        if (attempts < maxAttempts) {
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      // No session found after retries — reset local loading so user can retry
+      console.warn('[MaxinaPortal] No session found after visibility recovery — resetting');
+      setLoading(false);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [authLoading, isProcessingOAuth, loading, user]);
+
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
