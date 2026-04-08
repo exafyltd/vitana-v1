@@ -22,6 +22,7 @@ import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationCont
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
+import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
@@ -353,6 +354,7 @@ const App = () => {
                       <GreetingProviderWrapper>
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
+                        <MiniAudioPlayer />
                         <TenantDetector />
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
