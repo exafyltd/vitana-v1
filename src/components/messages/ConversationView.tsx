@@ -1035,7 +1035,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
                 
                 // Smart avatar display logic
-                const showAvatar = !isOwnMessage && (!previousMessage || previousMessage.sender_id !== message.sender_id);
+                const showAvatar = !previousMessage || previousMessage.sender_id !== message.sender_id;
                 
                 // Smart spacing logic - group consecutive messages from same sender
                 const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
