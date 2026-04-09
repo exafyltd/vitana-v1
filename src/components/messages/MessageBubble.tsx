@@ -889,8 +889,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 className={cn(
                   "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
-                  isOwnMessage 
-                    ? "bg-primary text-primary-foreground" 
+                  isOwnMessage
+                    ? "bg-domain-messages-bubble text-domain-messages-bubble-foreground"
                     : "bg-muted",
                   isOptimistic && "opacity-70"
                 )}

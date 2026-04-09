@@ -148,7 +148,9 @@ export default {
 					},
 					messages: {
 						accent: 'hsl(var(--domain-messages-accent))',
-						tint: 'hsl(var(--domain-messages-tint))'
+						tint: 'hsl(var(--domain-messages-tint))',
+						bubble: 'hsl(var(--domain-messages-bubble))',
+						'bubble-foreground': 'hsl(var(--domain-messages-bubble-foreground))'
 					},
 					community: {
 						accent: 'hsl(var(--domain-community-accent))',
