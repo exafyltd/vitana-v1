@@ -345,7 +345,7 @@ const MaxinaPortal = () => {
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
   // OR if OAuth hash is being processed (but not timed out yet)
-  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
+  if (authLoading || user) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
