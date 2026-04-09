@@ -876,11 +876,11 @@ export function useGlobalMessages(
               : { user_id: user.id, display_name: "Me" },
           };
         } else {
-          // Direct threads: handle attachments vs plain text differently
-          const hasAttachments = effectiveType === "attachment" && _contentData?.attachments?.length;
+          // Direct threads: handle attachments/voice vs plain text differently
+          const hasRichContent = (effectiveType === "attachment" || effectiveType === "voice") && _contentData?.attachments?.length;
 
-          if (hasAttachments) {
-            // Attachment DMs: insert directly into chat_messages with full metadata
+          if (hasRichContent) {
+            // Rich content DMs (attachments, voice): insert directly into chat_messages with full metadata
             const tenantId = (user as any).app_metadata?.active_tenant_id || 'default';
             const { data: inserted, error: insertErr } = await supabase
               .from("chat_messages")
@@ -889,18 +889,18 @@ export function useGlobalMessages(
                 sender_id: user.id,
                 receiver_id: threadId,
                 content: body,
-                message_type: "attachment",
+                message_type: effectiveType,
                 metadata: { attachments: _contentData.attachments } as any,
               })
               .select()
               .single();
-            if (insertErr || !inserted) throw insertErr || new Error("Attachment DM insert failed");
+            if (insertErr || !inserted) throw insertErr || new Error("Rich content DM insert failed");
 
             const profileMap = await enrichProfiles([user.id]);
             realMsg = toGlobalMessage(inserted as unknown as ChatMessage, threadId, profileMap);
             // Ensure content_data is set from metadata
             realMsg.content_data = (inserted as any).metadata || _contentData;
-            realMsg.message_type = "attachment";
+            realMsg.message_type = effectiveType;
           } else {
             // Plain text DMs: gateway first, fallback to chat_messages
             let created: ChatMessage;

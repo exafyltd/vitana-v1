@@ -355,15 +355,19 @@ const MessageInput: React.FC<MessageInputProps> = ({
         // Voice message upload progress could be shown here
       });
 
-      // Send voice message
+      // Send voice message (wrap in attachments array for consistent storage)
+      const safeDuration = isFinite(duration) ? Math.round(duration) : 0;
       await onSendMessage(
-        `🎤 Voice message (${Math.round(duration)}s)`,
+        `🎤 Voice message (${safeDuration}s)`,
         'voice',
         {
-          url: result.url,
-          duration: result.duration,
-          size: result.size,
-          name: result.name
+          attachments: [{
+            type: 'voice',
+            url: result.url,
+            duration: result.duration,
+            size: result.size,
+            name: result.name
+          }]
         }
       );
 

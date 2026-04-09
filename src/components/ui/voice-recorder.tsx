@@ -83,7 +83,10 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         audioRef.current = audio;
         
         audio.onloadedmetadata = () => {
-          setDuration(audio.duration || duration);
+          if (isFinite(audio.duration)) {
+            setDuration(audio.duration);
+          }
+          // Otherwise keep the timer-based duration already in state
         };
 
         setHasRecording(true);
