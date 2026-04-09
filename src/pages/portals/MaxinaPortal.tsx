@@ -40,8 +40,26 @@ const MaxinaPortal = () => {
       window.location.hash.includes('code=') ||
       window.location.search.includes('code=')
   );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
+  const [videoSrc, setVideoSrc] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
-  // Switch to maxina tenant if already authenticated
+  // Helper to ensure soundscape starts playing (for user interaction)
+  const ensureSoundscapePlaying = useCallback(() => {
+    startFresh();
+  }, [startFresh]);
+
+  // OAuth callback: when AuthProvider finishes loading without a user, the
+  // isProcessingOAuth flag becomes stale — no custom timeout/recovery needed.
+
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
   // HARD DEADLINE: always navigate within 6s of detecting user, no dead paths
