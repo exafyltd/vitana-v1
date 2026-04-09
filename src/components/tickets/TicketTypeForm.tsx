@@ -126,7 +126,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">Ticket Name *</Label>
                 <Input
@@ -176,7 +176,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <Label className="text-xs">Quantity</Label>
                 <Input
