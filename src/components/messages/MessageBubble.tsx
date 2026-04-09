@@ -17,10 +17,10 @@ import {
   Check, 
   CheckCheck, 
   Loader2, 
-  FileText, 
-  Image as ImageIcon, 
-  Download, 
-  ExternalLink, 
+  FileText,
+  Image as ImageIcon,
+  Download,
+  ExternalLink,
   Reply,
   Calendar,
   MapPin,
@@ -30,7 +30,10 @@ import {
   Copy,
   Forward,
   Pencil,
-  Trash2
+  Trash2,
+  Play,
+  Pause,
+  Mic
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
@@ -54,6 +57,88 @@ interface MessageBubbleProps {
   onDeleteMessage?: (messageId: string) => void;
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
 }
+
+// WhatsApp-style voice message player
+const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessage: boolean }> = ({ url, duration: initialDuration, isOwnMessage }) => {
+  const [playing, setPlaying] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const audioElRef = React.useRef<HTMLAudioElement | null>(null);
+
+  const safeDuration = initialDuration && isFinite(initialDuration) ? initialDuration : 0;
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+  };
+
+  const toggle = () => {
+    if (!audioElRef.current) {
+      if (!url) return;
+      const a = new Audio(url);
+      audioElRef.current = a;
+      a.ontimeupdate = () => {
+        setCurrentTime(a.currentTime);
+        if (a.duration && isFinite(a.duration)) {
+          setProgress((a.currentTime / a.duration) * 100);
+        }
+      };
+      a.onended = () => { setPlaying(false); setProgress(0); setCurrentTime(0); };
+      a.play();
+      setPlaying(true);
+      return;
+    }
+
+    if (playing) {
+      audioElRef.current.pause();
+    } else {
+      audioElRef.current.play();
+    }
+    setPlaying(!playing);
+  };
+
+  React.useEffect(() => {
+    return () => { audioElRef.current?.pause(); };
+  }, []);
+
+  const displayTime = currentTime > 0 ? currentTime : safeDuration;
+
+  return (
+    <div className="flex items-center gap-2 min-w-[180px] max-w-[260px]">
+      <button
+        onClick={toggle}
+        className={cn(
+          "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
+          isOwnMessage ? "bg-white/20 hover:bg-white/30" : "bg-primary/10 hover:bg-primary/20"
+        )}
+      >
+        {playing
+          ? <Pause className="h-3.5 w-3.5" />
+          : <Play className="h-3.5 w-3.5 ml-0.5" />
+        }
+      </button>
+
+      <div className="flex-1 flex flex-col gap-1 min-w-0">
+        <div className="h-1 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
+          <div
+            className={cn(
+              "h-full rounded-full transition-all duration-100",
+              isOwnMessage ? "bg-white/60" : "bg-primary/60"
+            )}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="flex items-center gap-1">
+          <Mic className="h-3 w-3 opacity-50" />
+          <span className="text-[11px] opacity-70 tabular-nums">
+            {formatTime(displayTime)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
@@ -679,14 +764,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         const voiceAttachment = message.content_data?.attachments?.[0] || message.content_data;
         const voiceUrl = (voiceAttachment?.path && resolvedUrls.get(voiceAttachment.path)) || voiceAttachment?.url;
         const voiceDuration = voiceAttachment?.duration;
-        return (
-          <div className="flex items-center gap-3 min-w-[200px]">
-            <audio controls src={voiceUrl} className="h-8 max-w-[240px]" preload="metadata" />
-            {voiceDuration && (
-              <span className="text-xs text-muted-foreground">{Math.round(voiceDuration)}s</span>
-            )}
-          </div>
-        );
+        return <VoiceMessagePlayer url={voiceUrl} duration={voiceDuration} isOwnMessage={isOwnMessage} />;
       }
 
       case 'attachment':

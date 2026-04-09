@@ -803,8 +803,10 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
-        // Determine effective message type
-        const effectiveType = _contentData?.attachments?.length ? "attachment" : (_messageType || "text");
+        // Determine effective message type — preserve explicit types like 'voice', only auto-detect 'attachment'
+        const effectiveType = (_messageType && _messageType !== "text")
+          ? _messageType
+          : (_contentData?.attachments?.length ? "attachment" : "text");
 
         // Optimistic message
         const optimistic: GlobalMessage = {

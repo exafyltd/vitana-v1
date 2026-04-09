@@ -524,10 +524,21 @@ const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       <div className="flex items-end gap-1.5">
+        {showVoiceRecorder ? (
+          /* Voice recorder replaces the input bar */
+          <div className="flex items-center flex-1 bg-muted/50 rounded-full px-2 py-1 border border-border/50">
+            <VoiceRecorder
+              onRecordingComplete={handleVoiceRecording}
+              onCancel={() => setShowVoiceRecorder(false)}
+              disabled={isUploading}
+            />
+          </div>
+        ) : (
+        <>
         {/* Pill-shaped input container (WhatsApp style) */}
         <div className="flex items-end gap-1 flex-1 bg-muted/50 rounded-full px-2 py-1 border border-border/50">
           {/* Emoji button */}
-          <EmojiPicker 
+          <EmojiPicker
             onEmojiSelect={(emoji) => {
               setMessage(prev => prev + emoji);
               textareaRef.current?.focus();
@@ -536,7 +547,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           />
 
           {/* Attachment menu */}
-          <AttachmentMenu 
+          <AttachmentMenu
             onFileAttach={() => fileInputRef.current?.click()}
             onSendMessage={async (content, messageType, contentData) => {
               await onSendMessage(content, messageType, contentData);
@@ -599,15 +610,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
             <Mic className="h-4 w-4" />
           </Button>
         )}
+        </>
+        )}
       </div>
-
-      {showVoiceRecorder && (
-        <VoiceRecorder
-          onRecordingComplete={handleVoiceRecording}
-          onCancel={() => setShowVoiceRecorder(false)}
-          disabled={isUploading}
-        />
-      )}
     </form>
   );
 };

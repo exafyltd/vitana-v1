@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './button';
-import { Mic, Square, Trash2, Send, Play, Pause } from 'lucide-react';
+import { Square, Trash2, Send, Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { formatFileSize } from '@/lib/fileUpload';
 
 interface VoiceRecorderProps {
   onRecordingComplete?: (audioBlob: Blob, duration: number) => void;
@@ -18,11 +17,11 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   disabled = false
 }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [hasRecording, setHasRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [permissionDenied, setPermissionDenied] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<BlobPart[]>([]);
@@ -30,18 +29,6 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   const streamRef = useRef<MediaStream | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-      }
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -77,26 +64,22 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
-        
-        // Create audio element for playback
         const audio = new Audio(audioUrl);
         audioRef.current = audio;
-        
+
         audio.onloadedmetadata = () => {
           if (isFinite(audio.duration)) {
             setDuration(audio.duration);
           }
-          // Otherwise keep the timer-based duration already in state
         };
 
         setHasRecording(true);
       };
 
-      mediaRecorder.start(100); // Collect data every 100ms
+      mediaRecorder.start(100);
       setIsRecording(true);
       startTimeRef.current = Date.now();
 
-      // Start timer
       timerRef.current = setInterval(() => {
         const elapsed = (Date.now() - startTimeRef.current) / 1000;
         setDuration(elapsed);
@@ -104,14 +87,32 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
     } catch (error) {
       console.error('Error starting recording:', error);
+      setPermissionDenied(true);
+      setTimeout(() => onCancel?.(), 1500);
     }
   };
+
+  // Auto-start recording on mount (WhatsApp-style)
+  useEffect(() => {
+    if (!disabled) {
+      startRecording();
+    }
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      
+
       if (timerRef.current) {
         clearInterval(timerRef.current);
         timerRef.current = null;
@@ -128,13 +129,11 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     if (isRecording) {
       stopRecording();
     }
-    
-    // Clean up
     setHasRecording(false);
     setDuration(0);
     setCurrentTime(0);
     audioChunksRef.current = [];
-    
+
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
@@ -150,12 +149,11 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
       } else {
         audioRef.current.currentTime = 0;
         audioRef.current.play();
-        
-        // Update current time during playback
+
         audioRef.current.ontimeupdate = () => {
           setCurrentTime(audioRef.current?.currentTime || 0);
         };
-        
+
         audioRef.current.onended = () => {
           setIsPlaying(false);
           setCurrentTime(0);
@@ -169,13 +167,12 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     if (audioChunksRef.current.length > 0 && onRecordingComplete) {
       const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
       onRecordingComplete(audioBlob, duration);
-      
-      // Reset state
+
       setHasRecording(false);
       setDuration(0);
       setCurrentTime(0);
       audioChunksRef.current = [];
-      
+
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -183,43 +180,57 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     }
   };
 
-  if (hasRecording) {
+  if (permissionDenied) {
     return (
-      <div className={cn("flex items-center gap-2 p-3 bg-muted/50 rounded-lg", className)}>
+      <div className={cn("flex items-center gap-2 px-3 py-2 text-sm text-destructive", className)}>
+        Microphone access denied
+      </div>
+    );
+  }
+
+  // Review recording state — play/send/cancel
+  if (hasRecording) {
+    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+    return (
+      <div className={cn("flex items-center gap-2 w-full", className)}>
         <Button
-          variant="ghost"
-          size="sm"
-          onClick={playRecording}
-          className="h-8 w-8 p-0"
-        >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        </Button>
-        
-        <div className="flex-1">
-          <div className="text-sm font-medium">Voice Message</div>
-          <div className="text-xs text-muted-foreground">
-            {formatTime(currentTime)} / {formatTime(duration)}
-          </div>
-        </div>
-        
-        <div className="text-xs text-muted-foreground">
-          {formatFileSize(audioChunksRef.current.reduce((acc, chunk) => acc + (chunk as Blob).size, 0))}
-        </div>
-        
-        <Button
+          type="button"
           variant="ghost"
           size="sm"
           onClick={cancelRecording}
-          className="h-8 w-8 p-0 text-destructive"
+          className="h-9 w-9 p-0 rounded-full shrink-0 text-destructive hover:text-destructive"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
-        
+
         <Button
-          variant="default"
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={playRecording}
+          className="h-9 w-9 p-0 rounded-full shrink-0"
+        >
+          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+        </Button>
+
+        <div className="flex-1 flex items-center gap-2 min-w-0">
+          <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary rounded-full transition-all duration-100"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="text-xs text-muted-foreground tabular-nums shrink-0">
+            {formatTime(currentTime > 0 ? currentTime : duration)}
+          </span>
+        </div>
+
+        <Button
+          type="button"
           size="sm"
           onClick={sendRecording}
-          className="h-8 w-8 p-0"
+          disabled={disabled}
+          className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90"
         >
           <Send className="h-4 w-4" />
         </Button>
@@ -227,50 +238,44 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     );
   }
 
+  // Active recording state — timer, stop, cancel
   if (isRecording) {
     return (
-      <div className={cn("flex items-center gap-2 p-3 bg-destructive/10 rounded-lg", className)}>
-        <div className="flex items-center gap-2">
-          <div className="h-3 w-3 bg-destructive rounded-full animate-pulse" />
-          <span className="text-sm font-medium">Recording...</span>
-        </div>
-        
-        <div className="flex-1 text-right">
-          <span className="text-sm text-muted-foreground tabular-nums">
-            {formatTime(duration)}
-          </span>
-        </div>
-        
+      <div className={cn("flex items-center gap-2 w-full", className)}>
         <Button
-          variant="destructive"
-          size="sm"
-          onClick={stopRecording}
-          className="h-8 w-8 p-0"
-        >
-          <Square className="h-4 w-4" />
-        </Button>
-        
-        <Button
+          type="button"
           variant="ghost"
           size="sm"
           onClick={cancelRecording}
-          className="h-8 w-8 p-0"
+          className="h-9 w-9 p-0 rounded-full shrink-0 text-destructive hover:text-destructive"
         >
           <Trash2 className="h-4 w-4" />
+        </Button>
+
+        <div className="flex-1 flex items-center gap-2 min-w-0">
+          <div className="h-3 w-3 bg-destructive rounded-full animate-pulse shrink-0" />
+          <div className="flex-1 h-1 bg-destructive/20 rounded-full" />
+          <span className="text-sm text-muted-foreground tabular-nums shrink-0">
+            {formatTime(duration)}
+          </span>
+        </div>
+
+        <Button
+          type="button"
+          size="sm"
+          onClick={stopRecording}
+          className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90"
+        >
+          <Square className="h-3 w-3 fill-current" />
         </Button>
       </div>
     );
   }
 
+  // Loading state (waiting for permission)
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={startRecording}
-      disabled={disabled}
-      className={cn("h-8 w-8 p-0", className)}
-    >
-      <Mic className="h-4 w-4" />
-    </Button>
+    <div className={cn("flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground", className)}>
+      Starting recorder...
+    </div>
   );
 };
