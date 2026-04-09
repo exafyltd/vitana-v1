@@ -924,6 +924,7 @@ export type Database = {
           tenant_id: string
           updated_at: string
           user_id: string
+          welcome_chat_sent: boolean
         }
         Insert: {
           created_at?: string
@@ -939,6 +940,7 @@ export type Database = {
           tenant_id: string
           updated_at?: string
           user_id: string
+          welcome_chat_sent?: boolean
         }
         Update: {
           created_at?: string
@@ -954,6 +956,7 @@ export type Database = {
           tenant_id?: string
           updated_at?: string
           user_id?: string
+          welcome_chat_sent?: boolean
         }
         Relationships: [
           {
@@ -8519,6 +8522,8 @@ export type Database = {
           activity_level: string | null
           admin_user_number: number
           age_range: string | null
+          avatar_offset_x: number
+          avatar_offset_y: number
           avatar_url: string | null
           bio: string | null
           cover_url: string | null
@@ -8580,6 +8585,8 @@ export type Database = {
           activity_level?: string | null
           admin_user_number?: number
           age_range?: string | null
+          avatar_offset_x?: number
+          avatar_offset_y?: number
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null
@@ -8641,6 +8648,8 @@ export type Database = {
           activity_level?: string | null
           admin_user_number?: number
           age_range?: string | null
+          avatar_offset_x?: number
+          avatar_offset_y?: number
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null
