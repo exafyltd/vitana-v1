@@ -834,15 +834,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           "w-8 flex justify-center",
           isOwnMessage && "order-2"
         )}>
-          {showAvatar && !isOwnMessage && (
+          {showAvatar && (
             <Avatar className="w-8 h-8 flex-shrink-0 mt-0.5">
-              <AvatarImage 
+              <AvatarImage
                 src={(() => {
                   const senderId = message.sender_id || (message.sender as any)?.user_id;
                   if (senderId === '00000000-0000-0000-0000-000000000001') return '/vitana-orb-avatar.png';
                   return message.sender?.avatar_url;
-                })()} 
-                alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
+                })()}
+                alt={message.sender?.display_name || message.sender?.full_name || 'User'}
               />
               <AvatarFallback>
                 {(() => {
