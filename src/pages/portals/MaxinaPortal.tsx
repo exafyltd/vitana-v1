@@ -33,14 +33,13 @@ const MaxinaPortal = () => {
   const [searchParams] = useSearchParams();
   // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
-  // OAuth callback detection — recovery is handled by AuthProvider.
+  // OAuth callback detection — recovery is handled exclusively by AuthProvider.
   // We only check URL params to decide whether to show a loading screen.
   const [isProcessingOAuth] = useState(
     () => window.location.hash.includes('access_token') ||
       window.location.hash.includes('code=') ||
       window.location.search.includes('code=')
   );
-  const [oauthTimedOut, setOauthTimedOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -58,55 +57,9 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
-  // OAuth callback: recovery is handled by AuthProvider.
-  // When authLoading transitions to false without a user, show timeout UI.
-  useEffect(() => {
-    if (!isProcessingOAuth || user || oauthTimedOut) return;
+  // OAuth callback: when AuthProvider finishes loading without a user, the
+  // isProcessingOAuth flag becomes stale — no custom timeout/recovery needed.
 
-    // While AuthProvider is loading, wait. When it finishes with no user, time out.
-    if (!authLoading) {
-      console.warn('[MaxinaPortal] AuthProvider finished loading but no user — showing timeout UI');
-      setOauthTimedOut(true);
-    }
-  }, [isProcessingOAuth, authLoading, user, oauthTimedOut]);
-
-  // Android WebView recovery: when the app regains focus after an external
-  // OAuth flow (Google opens in Chrome Custom Tab), re-check for a session.
-  useEffect(() => {
-    const handleVisibilityChange = async () => {
-      if (document.visibilityState !== 'visible') return;
-      // Only attempt recovery if we're stuck in a loading/processing state
-      if (!authLoading && !isProcessingOAuth && !loading) return;
-
-      console.debug('[MaxinaPortal] App resumed — checking for session');
-      let attempts = 0;
-      const maxAttempts = 3;
-
-      while (attempts < maxAttempts) {
-        const { data: { session: recoveredSession } } = await supabase.auth.getSession();
-        if (recoveredSession) {
-          console.debug('[MaxinaPortal] Session recovered on visibility change');
-          // AuthProvider's onAuthStateChange will handle state updates.
-          // Force a reload to let the full auth flow re-initialize cleanly.
-          window.location.reload();
-          return;
-        }
-        attempts++;
-        if (attempts < maxAttempts) {
-          await new Promise(r => setTimeout(r, 1000));
-        }
-      }
-
-      // No session found after retries — reset local loading so user can retry
-      console.warn('[MaxinaPortal] No session found after visibility recovery — resetting');
-      setLoading(false);
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [authLoading, isProcessingOAuth, loading, user]);
-
-  // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
   // HARD DEADLINE: always navigate within 6s of detecting user, no dead paths
@@ -291,25 +244,20 @@ const MaxinaPortal = () => {
       localStorage.setItem('oauth_provider', provider);
       const redirectPath = '/maxina';
 
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      console.debug('[MaxinaPortal] Starting OAuth with provider:', provider);
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: getEmailRedirectUrl(redirectPath),
           queryParams: {
             tenant_slug: 'maxina'
           },
-          skipBrowserRedirect: true
         }
       });
       if (error) throw error;
 
-      // Navigate explicitly — Supabase's default redirect may be
-      // intercepted by the Appilix WebView and opened externally.
-      // Using window.location.href directly keeps it in the WebView.
-      if (data?.url) {
-        window.location.href = data.url;
-        return;
-      }
+      // Standard Supabase redirect handles navigation — don't reset loading
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(err.message || 'Social login failed. Please try again.');
@@ -318,8 +266,8 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  // OR if OAuth hash is being processed (but not timed out yet)
-  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
+  // OR if OAuth hash is being processed by AuthProvider
+  if (authLoading || user || isProcessingOAuth) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -343,57 +291,6 @@ const MaxinaPortal = () => {
           {isProcessingOAuth && (
             <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
           )}
-        </div>
-      </div>
-    );
-  }
-
-  // OAuth timed out — show retry + back to login
-  if (oauthTimedOut) {
-    return (
-      <div className="min-h-screen relative overflow-hidden">
-        {videoSrc && (
-          <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
-        )}
-        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
-        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
-          <p className="text-white text-lg font-medium">Something went wrong</p>
-          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
-          <div className="flex flex-col gap-3 w-full max-w-xs">
-            <Button
-              onClick={async () => {
-                setOauthTimedOut(false);
-                // Clear stale callback params
-                window.history.replaceState(null, '', window.location.pathname);
-                // Try one more session check before restarting OAuth
-                const { data: { session: s } } = await supabase.auth.getSession();
-                if (s) {
-                  const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
-                  setTenantBySlug('maxina').catch(console.warn);
-                  navigate(target);
-                } else {
-                  // Restart OAuth with the original provider
-                  const provider = (localStorage.getItem('oauth_provider') as 'apple' | 'google') || 'apple';
-                  handleSocialLogin(provider);
-                }
-              }}
-              className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
-            >
-              Try Sign-In again
-            </Button>
-            <Button
-              onClick={() => {
-                setOauthTimedOut(false);
-                window.history.replaceState(null, '', '/maxina');
-                hasRedirectedRef.current = false;
-                navigate('/maxina');
-              }}
-              variant="ghost"
-              className="w-full rounded-full text-white/80 hover:text-white hover:bg-white/10"
-            >
-              Back to login
-            </Button>
-          </div>
         </div>
       </div>
     );

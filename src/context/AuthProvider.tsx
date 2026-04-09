@@ -160,7 +160,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       oauthRecoveryRan.current = true;
       oauthRecoveryPending.current = true;
 
-      console.debug('[AuthProvider] OAuth callback detected, attempting manual recovery');
+      console.debug('[AuthProvider] OAuth callback detected, attempting manual recovery', {
+        hasAccessToken: !!callbackParams.accessToken,
+        hasPkceCode: !!callbackParams.pkceCode,
+        url: window.location.href,
+      });
 
       (async () => {
         try {
