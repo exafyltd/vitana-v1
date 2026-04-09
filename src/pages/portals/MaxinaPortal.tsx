@@ -33,13 +33,6 @@ const MaxinaPortal = () => {
   const [searchParams] = useSearchParams();
   // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
-  // OAuth callback detection — recovery is handled exclusively by AuthProvider.
-  // We only check URL params to decide whether to show a loading screen.
-  const [isProcessingOAuth] = useState(
-    () => window.location.hash.includes('access_token') ||
-      window.location.hash.includes('code=') ||
-      window.location.search.includes('code=')
-  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -56,9 +49,6 @@ const MaxinaPortal = () => {
   const ensureSoundscapePlaying = useCallback(() => {
     startFresh();
   }, [startFresh]);
-
-  // OAuth callback: when AuthProvider finishes loading without a user, the
-  // isProcessingOAuth flag becomes stale — no custom timeout/recovery needed.
 
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
@@ -120,7 +110,7 @@ const MaxinaPortal = () => {
     };
 
     run();
-  }, [user, authLoading, navigate, setTenantBySlug, searchParams, session, isProcessingOAuth]);
+  }, [user, authLoading, navigate, setTenantBySlug, searchParams, session]);
 
   // Set tenant theme
   useEffect(() => {
@@ -266,8 +256,7 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  // OR if OAuth hash is being processed by AuthProvider
-  if (authLoading || user || isProcessingOAuth) {
+  if (authLoading || user) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -288,9 +277,6 @@ const MaxinaPortal = () => {
         {/* Content */}
         <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
-          {isProcessingOAuth && (
-            <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
-          )}
         </div>
       </div>
     );
