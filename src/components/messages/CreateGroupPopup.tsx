@@ -26,13 +26,15 @@ interface CreateGroupPopupProps {
   onOpenChange: (open: boolean) => void;
   context: 'global' | 'tenant';
   onGroupCreated?: (threadId: string) => void;
+  initialMembers?: User[];
 }
 
 export default function CreateGroupPopup({
   open,
   onOpenChange,
   context,
-  onGroupCreated
+  onGroupCreated,
+  initialMembers = []
 }: CreateGroupPopupProps) {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -41,7 +43,7 @@ export default function CreateGroupPopup({
   const [groupAvatar, setGroupAvatar] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
-  const [selectedMembers, setSelectedMembers] = useState<User[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<User[]>(initialMembers);
   const [isSearching, setIsSearching] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -254,7 +256,7 @@ export default function CreateGroupPopup({
       // Reset form
       setGroupName("");
       setGroupAvatar("");
-      setSelectedMembers([]);
+      setSelectedMembers(initialMembers);
       setSearchTerm("");
       setSearchResults([]);
 

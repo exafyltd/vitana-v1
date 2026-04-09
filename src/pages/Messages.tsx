@@ -785,7 +785,7 @@ export default function Messages() {
             // Show chat view on mobile
             <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
               <ConversationErrorBoundary>
-                <ConversationView 
+                <ConversationView
                   threadId={selectedThreadId}
                   recipientId={selectedRecipientId}
                   context={messageContext}
@@ -794,6 +794,7 @@ export default function Messages() {
                   onThreadRead={handleThreadRead}
                   onConversationOpened={handleConversationOpened}
                   onMessageSent={handleMessageSent}
+                  onGroupCreated={handleGroupCreated}
                 />
               </ConversationErrorBoundary>
             </div>
@@ -833,7 +834,7 @@ export default function Messages() {
             <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
               {selectedThreadId || selectedRecipientId ? (
                 <ConversationErrorBoundary>
-                  <ConversationView 
+                  <ConversationView
                     threadId={selectedThreadId}
                     recipientId={selectedRecipientId}
                     context={messageContext}
@@ -841,6 +842,7 @@ export default function Messages() {
                     onThreadRead={handleThreadRead}
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
+                    onGroupCreated={handleGroupCreated}
                   />
                 </ConversationErrorBoundary>
               ) : (
@@ -962,7 +964,7 @@ export default function Messages() {
             {selectedThreadId ? (
               <div className="fixed inset-0 z-[55] flex min-h-0 flex-col overflow-hidden bg-background">
                 <ConversationErrorBoundary>
-                  <ConversationView 
+                  <ConversationView
                     threadId={selectedThreadId}
                     recipientId={selectedRecipientId}
                     context={messageContext}
@@ -971,6 +973,7 @@ export default function Messages() {
                     onThreadRead={handleThreadRead}
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
+                    onGroupCreated={handleGroupCreated}
                   />
                 </ConversationErrorBoundary>
               </div>

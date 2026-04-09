@@ -17,18 +17,12 @@ import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
-import { useIsContactInList } from '@/hooks/useIsContactInList';
+
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
-import { 
-  ArrowLeft, 
-  MoreVertical, 
-  Phone, 
-  Video, 
-  Info,
-  Users,
-  Settings,
+import {
+  ArrowLeft,
   Loader2,
   UserPlus
 } from 'lucide-react';
@@ -39,8 +33,7 @@ import ErrorMessage from './ErrorMessage';
 import SystemMessage from './SystemMessage';
 import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
-import AddContactDialog from '@/components/contacts/AddContactDialog';
-import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons';
+import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
@@ -55,6 +48,7 @@ interface ConversationViewProps {
   onThreadRead?: (threadId: string, context: 'global' | 'tenant') => void;
   onConversationOpened?: (threadId: string) => void;
   onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
+  onGroupCreated?: (threadId: string) => void;
 }
 
 const ComposerDock: React.FC<{ children: React.ReactNode; isMobile: boolean }> = ({ children, isMobile }) => {
@@ -80,7 +74,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   context,
   onThreadRead,
   onConversationOpened,
-  onMessageSent
+  onMessageSent,
+  onGroupCreated
 }) => {
   // Import calendar hook at the top
   const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
@@ -123,7 +118,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const [sendError, setSendError] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [showMembersModal, setShowMembersModal] = useState(false);
-  const [showAddContactDialog, setShowAddContactDialog] = useState(false);
+  const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [threadParticipants, setThreadParticipants] = useState<any[]>([]);
   const [currentUserRole, setCurrentUserRole] = useState<string>('member');
 
@@ -231,9 +226,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Use hybrid messages directly from the hook - no local state needed
   const messages = hybridMessagesFromHook || [];
-  
-  // Check if recipient is already in contacts
-  const isContactInList = useIsContactInList(effectiveRecipientId);
   
   // Clear messages immediately when switching threads to prevent stale data
   const [isThreadSwitching, setIsThreadSwitching] = useState(false);
@@ -897,20 +889,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   };
 
   // Determine if we should show "Add to Contacts" button
-  const shouldShowAddToContacts = useMemo(() => {
-    if (isGroupChat()) return false;
-    if (!effectiveRecipientId) return false;
-    if (effectiveRecipientId === user?.id) return false;
-    
-    const hasReceivedMessage = messages.some(
-      msg => msg.sender_id === effectiveRecipientId
-    );
-    if (!hasReceivedMessage) return false;
-    if (isContactInList) return false;
-    
-    return true;
-  }, [effectiveRecipientId, user?.id, messages, isContactInList, threadId, threads]);
-
   // Compute conversation type for payment popups
   const conversationType: 'direct' | 'group' | null = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
@@ -1001,22 +979,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           
             <div className="flex items-center gap-1 shrink-0">
-              {!isGroupChat() && effectiveRecipientId && user?.id && (
-                <MessageThreadCallButtons
-                  userId={user.id}
-                  recipientId={effectiveRecipientId}
-                  recipientName={getConversationTitle()}
-                />
-              )}
-              <Button size="sm" variant="ghost" className="hidden md:inline-flex">
-                <Info className="w-4 h-4" />
-              </Button>
-              {shouldShowAddToContacts && (
-                <Button 
-                  size="sm" 
+              {!isGroupChat() && effectiveRecipientId && (
+                <Button
+                  size="sm"
                   variant="ghost"
-                  onClick={() => setShowAddContactDialog(true)}
-                  title="Add to Contacts"
+                  onClick={() => setShowCreateGroup(true)}
+                  title="Create Group"
                 >
                   <UserPlus className="w-4 h-4" />
                 </Button>
@@ -1253,18 +1221,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         currentUserRole={currentUserRole}
       />
 
-      <AddContactDialog
-        open={showAddContactDialog}
-        onOpenChange={setShowAddContactDialog}
-        prefilledUserId={effectiveRecipientId || undefined}
-        prefilledName={effectiveRecipient?.name}
-        onAdd={async (contact) => {
-          setShowAddContactDialog(false);
-          toast({
-            title: "Contact Added",
-            description: `${contact.contact_name} has been added to your contacts`,
-          });
-        }}
+      <CreateGroupPopup
+        open={showCreateGroup}
+        onOpenChange={setShowCreateGroup}
+        context={messageContext}
+        onGroupCreated={onGroupCreated}
+        initialMembers={effectiveRecipientId && effectiveRecipient ? [{
+          user_id: effectiveRecipientId,
+          display_name: effectiveRecipient.name || 'User',
+          avatar_url: effectiveRecipient.avatar,
+          email: ''
+        }] : []}
       />
     </>
   );
