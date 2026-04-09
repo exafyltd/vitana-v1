@@ -596,6 +596,14 @@ const MessageInput: React.FC<MessageInputProps> = ({
           </Button>
         )}
       </div>
+
+      {showVoiceRecorder && (
+        <VoiceRecorder
+          onRecordingComplete={handleVoiceRecording}
+          onCancel={() => setShowVoiceRecorder(false)}
+          disabled={isUploading}
+        />
+      )}
     </form>
   );
 };

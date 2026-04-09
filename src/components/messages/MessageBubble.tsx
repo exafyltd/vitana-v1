@@ -675,6 +675,20 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           </div>
         );
 
+      case 'voice': {
+        const voiceAttachment = message.content_data?.attachments?.[0] || message.content_data;
+        const voiceUrl = (voiceAttachment?.path && resolvedUrls.get(voiceAttachment.path)) || voiceAttachment?.url;
+        const voiceDuration = voiceAttachment?.duration;
+        return (
+          <div className="flex items-center gap-3 min-w-[200px]">
+            <audio controls src={voiceUrl} className="h-8 max-w-[240px]" preload="metadata" />
+            {voiceDuration && (
+              <span className="text-xs text-muted-foreground">{Math.round(voiceDuration)}s</span>
+            )}
+          </div>
+        );
+      }
+
       case 'attachment':
         return (
           <div className="space-y-3">
