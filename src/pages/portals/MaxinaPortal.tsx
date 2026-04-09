@@ -266,8 +266,8 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  // OR if OAuth hash is being processed (but not timed out yet)
-  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
+  // OR if OAuth hash is being processed by AuthProvider
+  if (authLoading || user || isProcessingOAuth) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -291,57 +291,6 @@ const MaxinaPortal = () => {
           {isProcessingOAuth && (
             <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
           )}
-        </div>
-      </div>
-    );
-  }
-
-  // OAuth timed out — show retry + back to login
-  if (oauthTimedOut) {
-    return (
-      <div className="min-h-screen relative overflow-hidden">
-        {videoSrc && (
-          <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
-        )}
-        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
-        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
-          <p className="text-white text-lg font-medium">Something went wrong</p>
-          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
-          <div className="flex flex-col gap-3 w-full max-w-xs">
-            <Button
-              onClick={async () => {
-                setOauthTimedOut(false);
-                // Clear stale callback params
-                window.history.replaceState(null, '', window.location.pathname);
-                // Try one more session check before restarting OAuth
-                const { data: { session: s } } = await supabase.auth.getSession();
-                if (s) {
-                  const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
-                  setTenantBySlug('maxina').catch(console.warn);
-                  navigate(target);
-                } else {
-                  // Restart OAuth with the original provider
-                  const provider = (localStorage.getItem('oauth_provider') as 'apple' | 'google') || 'apple';
-                  handleSocialLogin(provider);
-                }
-              }}
-              className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
-            >
-              Try Sign-In again
-            </Button>
-            <Button
-              onClick={() => {
-                setOauthTimedOut(false);
-                window.history.replaceState(null, '', '/maxina');
-                hasRedirectedRef.current = false;
-                navigate('/maxina');
-              }}
-              variant="ghost"
-              className="w-full rounded-full text-white/80 hover:text-white hover:bg-white/10"
-            >
-              Back to login
-            </Button>
-          </div>
         </div>
       </div>
     );
