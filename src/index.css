@@ -84,8 +84,8 @@ All colors MUST be HSL.
     /* Messaging & Community (Mental Health family) */
     --domain-messages-accent: 330 75% 45%;
     --domain-messages-tint: 330 85% 95%;
-    --domain-messages-bubble: 210 55% 55%;
-    --domain-messages-bubble-foreground: 0 0% 100%;
+    --domain-messages-bubble: 203 89% 76%;
+    --domain-messages-bubble-foreground: 222 47% 11%;
     --domain-community-accent: 330 90% 60%;
     --domain-community-tint: 330 100% 98%;
 

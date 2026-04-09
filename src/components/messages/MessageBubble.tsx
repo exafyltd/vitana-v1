@@ -110,7 +110,7 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
         onClick={toggle}
         className={cn(
           "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
-          isOwnMessage ? "bg-white/20 hover:bg-white/30" : "bg-primary/10 hover:bg-primary/20"
+          isOwnMessage ? "bg-black/10 hover:bg-black/20" : "bg-primary/10 hover:bg-primary/20"
         )}
       >
         {playing
@@ -124,7 +124,7 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
           <div
             className={cn(
               "h-full rounded-full transition-all duration-100",
-              isOwnMessage ? "bg-white/60" : "bg-primary/60"
+              isOwnMessage ? "bg-black/30" : "bg-primary/60"
             )}
             style={{ width: `${progress}%` }}
           />
