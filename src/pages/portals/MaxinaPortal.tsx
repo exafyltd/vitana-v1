@@ -287,39 +287,29 @@ const MaxinaPortal = () => {
     setLoading(true);
     setError('');
     try {
-      // Always land back on /maxina so TenantDetector + setTenantBySlug run correctly
       localStorage.setItem('tenant_slug', 'maxina');
       localStorage.setItem('oauth_provider', provider);
       const redirectPath = '/maxina';
 
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: getEmailRedirectUrl(redirectPath),
           queryParams: {
             tenant_slug: 'maxina'
-          }
+          },
+          skipBrowserRedirect: true
         }
       });
       if (error) throw error;
-      // On Android, OAuth may complete in a Chrome Custom Tab while
-      // the WebView stays on this page. Poll for the session that the
-      // external context writes to shared localStorage.
-      let pollCount = 0;
-      const pollTimer = setInterval(async () => {
-        pollCount++;
-        try {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session) {
-            clearInterval(pollTimer);
-            setLoading(false);
-          }
-        } catch {}
-        if (pollCount >= 15) {
-          clearInterval(pollTimer);
-          setLoading(false);
-        }
-      }, 1000);
+
+      // Navigate explicitly — Supabase's default redirect may be
+      // intercepted by the Appilix WebView and opened externally.
+      // Using window.location.href directly keeps it in the WebView.
+      if (data?.url) {
+        window.location.href = data.url;
+        return;
+      }
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(err.message || 'Social login failed. Please try again.');
