@@ -33,6 +33,10 @@ const MaxinaPortal = () => {
   const [searchParams] = useSearchParams();
   // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
+  const isProcessingOAuth = window.location.hash.includes('access_token') || 
+    window.location.hash.includes('code=') || 
+    window.location.search.includes('code=');
+  const [oauthTimedOut, setOauthTimedOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -50,6 +54,97 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
+  // OAuth callback recovery — handles hash tokens + PKCE code
+  useEffect(() => {
+    if (!isProcessingOAuth || user) return;
+    setOauthTimedOut(false);
+    let cancelled = false;
+
+    const recoverSession = async () => {
+      try {
+        // Parse tokens from hash
+        const hash = window.location.hash.substring(1);
+        const hashParams = new URLSearchParams(hash);
+        const queryParams = new URLSearchParams(window.location.search);
+        const access_token = hashParams.get('access_token');
+        const refresh_token = hashParams.get('refresh_token');
+        const pkceCode = queryParams.get('code') || hashParams.get('code');
+
+        console.debug('[MaxinaPortal] OAuth callback detected, tokens:', !!access_token, !!refresh_token, 'code:', !!pkceCode);
+
+        let recovered = false;
+
+        // 1. Try PKCE code exchange first
+        if (pkceCode && !recovered) {
+          console.debug('[MaxinaPortal] Attempting PKCE code exchange');
+          const { data, error } = await supabase.auth.exchangeCodeForSession(pkceCode);
+          if (!error && data.session && !cancelled) {
+            window.history.replaceState(null, '', window.location.pathname);
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+            console.debug('[MaxinaPortal] PKCE exchange succeeded, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          } else {
+            console.warn('[MaxinaPortal] PKCE exchange failed:', error?.message);
+          }
+        }
+
+        // 2. Try implicit hash tokens
+        if (access_token && refresh_token && !recovered) {
+          const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+          console.debug('[MaxinaPortal] setSession result:', !!data.session, error?.message);
+
+          if (!error && data.session && !cancelled) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+            console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          }
+        }
+
+        // 3. Fallback: refreshSession then poll
+        console.debug('[MaxinaPortal] Attempting refreshSession fallback');
+        await supabase.auth.refreshSession().catch(() => {});
+
+        // Poll getSession
+        for (let i = 0; i < 15 && !cancelled; i++) {
+          await new Promise(r => setTimeout(r, 1000));
+          const { data: { session: s } } = await supabase.auth.getSession();
+          if (s && !cancelled) {
+            window.history.replaceState(null, '', window.location.pathname);
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+            console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          }
+        }
+
+        // All attempts exhausted
+        if (!cancelled) {
+          console.warn('[MaxinaPortal] OAuth processing timed out after 15s');
+          setOauthTimedOut(true);
+        }
+      } catch (err) {
+        console.error('[MaxinaPortal] OAuth recovery error:', err);
+        if (!cancelled) setOauthTimedOut(true);
+      }
+    };
+
+    recoverSession();
+    return () => { cancelled = true; };
+  }, [isProcessingOAuth, user, navigate, setTenantBySlug, searchParams]);
+
+  // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
   // HARD DEADLINE: always navigate within 6s of detecting user, no dead paths
@@ -110,7 +205,7 @@ const MaxinaPortal = () => {
     };
 
     run();
-  }, [user, authLoading, navigate, setTenantBySlug, searchParams, session]);
+  }, [user, authLoading, navigate, setTenantBySlug, searchParams, session, isProcessingOAuth]);
 
   // Set tenant theme
   useEffect(() => {
@@ -227,36 +322,30 @@ const MaxinaPortal = () => {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
-    setLoading(true);
-    setError('');
     try {
+      // Always land back on /maxina so TenantDetector + setTenantBySlug run correctly
       localStorage.setItem('tenant_slug', 'maxina');
-      localStorage.setItem('oauth_provider', provider);
       const redirectPath = '/maxina';
-
-      console.debug('[MaxinaPortal] Starting OAuth with provider:', provider);
-
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: getEmailRedirectUrl(redirectPath),
           queryParams: {
             tenant_slug: 'maxina'
-          },
+          }
         }
       });
       if (error) throw error;
-
-      // Standard Supabase redirect handles navigation — don't reset loading
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(err.message || 'Social login failed. Please try again.');
-      setLoading(false);
     }
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  if (authLoading || user) {
+  // OR if OAuth hash is being processed (but not timed out yet)
+  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -277,6 +366,59 @@ const MaxinaPortal = () => {
         {/* Content */}
         <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
+          {isProcessingOAuth && (
+            <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // OAuth timed out — show retry + back to login
+  if (oauthTimedOut) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {videoSrc && (
+          <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
+        )}
+        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
+        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
+          <p className="text-white text-lg font-medium">Something went wrong</p>
+          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <Button
+              onClick={async () => {
+                setOauthTimedOut(false);
+                // Clear stale callback params
+                window.history.replaceState(null, '', window.location.pathname);
+                // Try one more session check before restarting OAuth
+                const { data: { session: s } } = await supabase.auth.getSession();
+                if (s) {
+                  const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+                  setTenantBySlug('maxina').catch(console.warn);
+                  navigate(target);
+                } else {
+                  // Restart Apple OAuth
+                  handleSocialLogin('apple');
+                }
+              }}
+              className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
+            >
+              Try Apple Sign-In again
+            </Button>
+            <Button
+              onClick={() => {
+                setOauthTimedOut(false);
+                window.history.replaceState(null, '', '/maxina');
+                hasRedirectedRef.current = false;
+                navigate('/maxina');
+              }}
+              variant="ghost"
+              className="w-full rounded-full text-white/80 hover:text-white hover:bg-white/10"
+            >
+              Back to login
+            </Button>
+          </div>
         </div>
       </div>
     );

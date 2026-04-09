@@ -8519,8 +8519,6 @@ export type Database = {
           activity_level: string | null
           admin_user_number: number
           age_range: string | null
-          avatar_offset_x: number
-          avatar_offset_y: number
           avatar_url: string | null
           bio: string | null
           cover_url: string | null
@@ -8582,8 +8580,6 @@ export type Database = {
           activity_level?: string | null
           admin_user_number?: number
           age_range?: string | null
-          avatar_offset_x?: number
-          avatar_offset_y?: number
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null
@@ -8645,8 +8641,6 @@ export type Database = {
           activity_level?: string | null
           admin_user_number?: number
           age_range?: string | null
-          avatar_offset_x?: number
-          avatar_offset_y?: number
           avatar_url?: string | null
           bio?: string | null
           cover_url?: string | null

@@ -63,26 +63,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
   const oauthRecoveryRan = useRef(false);
-  const oauthRecoveryPending = useRef(false);
   const prevUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Detect OAuth callback params early — if present, we must keep
-    // loading=true until recovery completes so downstream components
-    // (AuthGuard, portals) don't start their own duplicate recovery.
-    const callbackParams = detectOAuthCallback();
-    const hasOAuthCallback = (callbackParams.accessToken && callbackParams.refreshToken) || callbackParams.pkceCode;
-
-    // Safety timeout: force loading=false after 15s to prevent infinite spinner
-    let safetyTimer: ReturnType<typeof setTimeout> | undefined;
-    if (hasOAuthCallback) {
-      safetyTimer = setTimeout(() => {
-        console.warn('[AuthProvider] OAuth recovery safety timeout (15s) — forcing loading=false');
-        oauthRecoveryPending.current = false;
-        setLoading(false);
-      }, 15000);
-    }
-
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -101,16 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setSession(session);
         setUser(session?.user ?? null);
-
-        // If we have a session (SDK auto-detection succeeded), always clear loading.
-        // If no session but an OAuth callback is in the URL, keep loading=true
-        // so the manual recovery gets a chance to run.
-        if (session?.user) {
-          setLoading(false);
-          oauthRecoveryPending.current = false;
-        } else if (!hasOAuthCallback) {
-          setLoading(false);
-        }
+        setLoading(false);
 
         // Prefetch inbox on sign-in (ORB auth is handled by useOrbVoiceWidget)
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
@@ -132,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
+      setLoading(false);
 
       // No active session — purge any stale ORB auth to prevent
       // the external widget from using a previous user's identity
@@ -144,32 +119,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // If session already found, no need for OAuth recovery
-      if (existingSession) {
-        setLoading(false);
-        return;
-      }
-
-      // No session and no OAuth callback — just finish loading
-      if (!hasOAuthCallback || oauthRecoveryRan.current) {
-        setLoading(false);
-        return;
-      }
+      if (existingSession || oauthRecoveryRan.current) return;
+      oauthRecoveryRan.current = true;
 
       // --- OAuth callback recovery for iPad/WebView ---
-      // Keep loading=true while recovery runs so AuthGuard/portals wait.
-      oauthRecoveryRan.current = true;
-      oauthRecoveryPending.current = true;
+      const { accessToken, refreshToken, pkceCode } = detectOAuthCallback();
+      const hasCallback = (accessToken && refreshToken) || pkceCode;
+      if (!hasCallback) return;
 
-      console.debug('[AuthProvider] OAuth callback detected, attempting manual recovery', {
-        hasAccessToken: !!callbackParams.accessToken,
-        hasPkceCode: !!callbackParams.pkceCode,
-        url: window.location.href,
-      });
+      console.debug('[AuthProvider] OAuth callback detected, attempting manual recovery');
 
       (async () => {
         try {
           let recovered = false;
-          const { accessToken, refreshToken, pkceCode } = callbackParams;
 
           // 1. Try PKCE code exchange first (if code present)
           if (pkceCode) {
@@ -183,17 +145,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               recovered = true;
             } else {
               console.warn('[AuthProvider] PKCE exchange failed:', error?.message);
-              // SDK's detectSessionInUrl may have consumed the code successfully
-              // in the background — wait briefly and check for a session
-              await new Promise(r => setTimeout(r, 2000));
-              const { data: { session: sdkSession } } = await supabase.auth.getSession();
-              if (sdkSession) {
-                setSession(sdkSession);
-                setUser(sdkSession.user);
-                clearCallbackParams();
-                console.debug('[AuthProvider] Session found after PKCE failure (SDK handled it)');
-                recovered = true;
-              }
             }
           }
 
@@ -231,17 +182,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         } catch (err) {
           console.error('[AuthProvider] OAuth recovery error:', err);
-        } finally {
-          oauthRecoveryPending.current = false;
-          setLoading(false);
         }
       })();
     });
 
-    return () => {
-      subscription.unsubscribe();
-      if (safetyTimer) clearTimeout(safetyTimer);
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {

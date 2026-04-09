@@ -202,10 +202,7 @@ export default function Auth() {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
-    setIsLoading(true);
-    setError(null);
     try {
-      localStorage.setItem('oauth_provider', provider);
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -213,11 +210,9 @@ export default function Auth() {
         }
       });
       if (error) throw error;
-      // Don't reset loading — page will redirect
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(getAuthErrorMessage(err));
-      setIsLoading(false);
     }
   };
 

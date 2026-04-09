@@ -91,10 +91,7 @@ const CommunityPortal = () => {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
-    setLoading(true);
-    setError('');
     try {
-      localStorage.setItem('oauth_provider', provider);
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -102,11 +99,9 @@ const CommunityPortal = () => {
         }
       });
       if (error) throw error;
-      // Don't reset loading — page will redirect
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(err.message || 'Social login failed. Please try again.');
-      setLoading(false);
     }
   };
 
