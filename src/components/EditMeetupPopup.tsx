@@ -357,10 +357,12 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         image_url: uploadedImageUrl,
         metadata: {
           ...(event.metadata || {}),
-          is_paid: enableTicketSales,
-          ...(enableTicketSales && ticketTypes.length > 0 ? { price: ticketTypes[0].price } : {}),
+          ...(enableTicketSales && ticketTypes.length > 0
+            ? { is_paid: true, has_tickets: true, price: ticketTypes[0].price, display_currency: ticketTypes[0].currency || 'USD' }
+            : formData.isPaid
+            ? { is_paid: true, price: parseFloat(formData.price) || 0, display_currency: formData.displayCurrency || 'USD' }
+            : { is_paid: false, display_currency: formData.displayCurrency || 'USD' }),
           detailed_description: formData.detailedDescription || null,
-          display_currency: ticketTypes.length > 0 ? ticketTypes[0].currency : (formData.displayCurrency || 'USD'),
         },
         resellable: resellable,
         resale_scope: resellable ? resaleScope : 'none',
@@ -771,6 +773,51 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                     onChange={setTicketTypes}
                     eventDate={formData.date}
                   />
+                )}
+
+                {!enableTicketSales && (
+                  <div className="space-y-3 pt-2 border-t border-border/50">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="isPaid"
+                        checked={formData.isPaid}
+                        onChange={(e) => setFormData({...formData, isPaid: e.target.checked})}
+                        className="rounded"
+                      />
+                      <Label htmlFor="isPaid">Paid Event</Label>
+                    </div>
+
+                    {formData.isPaid && (
+                      <div>
+                        <Label htmlFor="price">Display Price</Label>
+                        <div className="flex gap-2 mt-1">
+                          <Select
+                            value={formData.displayCurrency}
+                            onValueChange={(v) => setFormData({...formData, displayCurrency: v as "USD" | "EUR"})}
+                          >
+                            <SelectTrigger className="w-24 shrink-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="USD">$ USD</SelectItem>
+                              <SelectItem value="EUR">€ EUR</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            id="price"
+                            type="number"
+                            value={formData.price}
+                            onChange={(e) => setFormData({...formData, price: e.target.value})}
+                            placeholder="0.00"
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          This price is for display purposes. Enable ticket sales above for actual payment processing.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )}
               </CardContent>
             </Card>
