@@ -347,8 +347,12 @@ const App = () => {
                     <Toaster />
                     <SonnerToaster position="top-center" richColors />
                     <PresenceDebugPanel />
-                    <AppHooksInitializer />
                     <BrowserRouter>
+                    {/* AppHooksInitializer must live INSIDE <BrowserRouter> so
+                        useOrbVoiceWidget (and any other hook that uses
+                        useNavigate / useLocation) has a valid Router context.
+                        Moving it outside crashes the whole app at boot. */}
+                    <AppHooksInitializer />
                     <MilestoneCelebration />
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
