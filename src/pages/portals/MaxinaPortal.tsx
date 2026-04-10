@@ -456,7 +456,7 @@ const MaxinaPortal = () => {
             className="bg-white/75 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.25)]"
             onClick={ensureSoundscapePlaying}
           >
-            <Tabs defaultValue="signin" className="w-full">
+            <Tabs defaultValue={searchParams.get('tab') === 'signup' ? 'signup' : 'signin'} className="w-full">
               {/* Compact tab bar */}
               <TabsList className="grid w-full grid-cols-2 h-10 md:h-11">
                 <TabsTrigger value="signin" className="text-sm md:text-base py-1.5">{translate('authPage.signIn', 'Sign In')}</TabsTrigger>
