@@ -154,6 +154,14 @@ export const adminAuditNavigation = [
   { id: "security", name: "Security", path: "/admin/audit/security" },
 ];
 
+// VTID-NAV-02: Vitana Navigator admin (catalog + coverage + telemetry + history)
+export const adminNavigatorNavigation = [
+  { id: "catalog", name: "Catalog", path: "/admin/navigator" },
+  { id: "coverage", name: "Coverage", path: "/admin/navigator/coverage" },
+  { id: "telemetry", name: "Telemetry", path: "/admin/navigator/telemetry" },
+  { id: "history", name: "History", path: "/admin/navigator/history" },
+];
+
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
