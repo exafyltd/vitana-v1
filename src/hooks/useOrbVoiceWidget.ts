@@ -20,6 +20,15 @@ type NavigationContext = {
   title?: string;
 };
 
+// VTID-NAV-TIMEJOURNEY: Each entry tracks when the user landed on that route
+// so the backend greeting can say "you've been on the Events page for 3 min"
+// or understand the user's rhythm through the app. `enteredAt` is a plain
+// millisecond timestamp (Date.now()); the backend converts it to a bucket.
+type JourneyEntry = {
+  path: string;
+  enteredAt: number;
+};
+
 export function useOrbVoiceWidget() {
   const initialized = useRef(false);
   const { user, session, loading } = useAuth();
@@ -31,7 +40,16 @@ export function useOrbVoiceWidget() {
   // effects below capture them only when they re-run.
   const navigateRef = useRef(navigate);
   navigateRef.current = navigate;
+  // Plain route-path ring buffer (back-compat with navigator-consult).
   const routeHistoryRef = useRef<string[]>([location.pathname]);
+  // VTID-NAV-TIMEJOURNEY: Parallel ring buffer with entry timestamps for
+  // the time-aware greeting context. Newest first to match routeHistoryRef.
+  const journeyTrailRef = useRef<JourneyEntry[]>([
+    { path: location.pathname, enteredAt: Date.now() },
+  ]);
+  // Timestamp of when the user landed on the current screen. Used to compute
+  // "time spent on current screen" when the ORB session starts.
+  const currentRouteEnteredAtRef = useRef<number>(Date.now());
 
   // VTID-NAV-01: Called by orb-widget when the Vitana Navigator dispatches an
   // orb_directive of type 'navigate'. Uses React Router so the transition is
@@ -63,12 +81,16 @@ export function useOrbVoiceWidget() {
         // VTID-NAV-01: Navigator wiring — onNavigationRequest callback for
         // SPA transitions, initialContext so the first orb session has
         // accurate current_route + recent_routes for the Navigator service.
+        // VTID-NAV-TIMEJOURNEY: Also pass enriched journey_trail with entry
+        // timestamps so the backend can build a time-aware greeting.
         const navOpts = {
           showFab: true,
           onNavigationRequest: handleNavigationRequest,
           initialContext: {
             current_route: location.pathname,
+            current_route_entered_at: currentRouteEnteredAtRef.current,
             recent_routes: routeHistoryRef.current,
+            journey_trail: journeyTrailRef.current,
           },
         };
         if (user && session) {
@@ -108,12 +130,16 @@ export function useOrbVoiceWidget() {
     initialized.current = false;
 
     // VTID-NAV-01: Reinit must also wire the Navigator callback + context.
+    // VTID-NAV-TIMEJOURNEY: Include enriched journey_trail + entry time so
+    // the post-login/logout reinit gets the same time-aware context.
     const navOpts = {
       showFab: true,
       onNavigationRequest: handleNavigationRequest,
       initialContext: {
         current_route: location.pathname,
+        current_route_entered_at: currentRouteEnteredAtRef.current,
         recent_routes: routeHistoryRef.current,
+        journey_trail: journeyTrailRef.current,
       },
     };
     if (user && session) {
@@ -129,16 +155,33 @@ export function useOrbVoiceWidget() {
   // change. The widget stashes these values and includes them in the next
   // orb session-start payload so the Navigator service always has accurate
   // current_route + recent_routes context for catalog ranking.
+  //
+  // VTID-NAV-TIMEJOURNEY: Also track when each route was entered so the
+  // time+journey greeting can reason about dwell time and session rhythm.
   useEffect(() => {
     const path = location.pathname;
+    const now = Date.now();
+
+    // Plain path ring buffer (existing contract).
     const filtered = routeHistoryRef.current.filter((p) => p !== path);
     routeHistoryRef.current = [path, ...filtered].slice(0, RECENT_ROUTES_MAX);
+
+    // Enriched trail with entry timestamps, newest first.
+    const filteredTrail = journeyTrailRef.current.filter((e) => e.path !== path);
+    journeyTrailRef.current = [
+      { path, enteredAt: now },
+      ...filteredTrail,
+    ].slice(0, RECENT_ROUTES_MAX);
+
+    currentRouteEnteredAtRef.current = now;
 
     const orb = (window as any).VitanaOrb;
     if (orb && typeof orb.updateContext === "function") {
       orb.updateContext({
         current_route: path,
+        current_route_entered_at: now,
         recent_routes: routeHistoryRef.current,
+        journey_trail: journeyTrailRef.current,
       });
     }
   }, [location.pathname]);
