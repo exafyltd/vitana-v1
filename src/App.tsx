@@ -254,6 +254,11 @@ const AdminAuditEvents = lazy(() => import("./pages/admin/audit/Events"));
 const AdminAuditUserActivity = lazy(() => import("./pages/admin/audit/UserActivity"));
 const AdminAuditApiMonitor = lazy(() => import("./pages/admin/audit/ApiMonitor"));
 const AdminAuditSecurity = lazy(() => import("./pages/admin/audit/Security"));
+// VTID-NAV-02: Vitana Navigator admin
+const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog"));
+const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
+const AdminNavigatorTelemetry = lazy(() => import("./pages/admin/navigator/Telemetry"));
+const AdminNavigatorHistory = lazy(() => import("./pages/admin/navigator/History"));
 const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
 const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
 const GroupsModeration = lazy(() => import("./pages/admin/community/Groups"));
@@ -1207,6 +1212,20 @@ const App = () => {
           } />
           <Route path="/admin/audit/security" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditSecurity /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* VTID-NAV-02: Vitana Navigator admin screens */}
+          <Route path="/admin/navigator" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCatalog /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/navigator/coverage" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorCoverage /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/navigator/telemetry" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorTelemetry /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/navigator/history" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Legacy admin routes — redirects for backward compatibility */}

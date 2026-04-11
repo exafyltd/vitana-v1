@@ -1,0 +1,1432 @@
+{
+  "generated_at": "2026-04-11T18:17:22.199Z",
+  "source": "src/App.tsx",
+  "count": 272,
+  "routes": [
+    {
+      "path": "*",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/_intro/:tenantSlug",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/ai-assistant",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/audit",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/audit/apis",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/audit/security",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/audit/users",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/automation",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/bootstrap",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/community",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/community/invitations",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/community/meetups",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/community/moderation",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/content",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/content/music",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/content/podcasts",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/content/videos",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/dashboard",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/dashboard/activity",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/dashboard/health",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/init-events",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/intelligence",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/intelligence/embeddings",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/intelligence/relationships",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/intelligence/signals",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/live",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/live-stream",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/live/attendance",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/live/rooms",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/live/sessions",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/media",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/monitoring/apis",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/monitoring/notifications",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/monitoring/reports",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/navigator",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/navigator/coverage",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/navigator/history",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/navigator/telemetry",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/notifications",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/notifications/preferences",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/notifications/sent",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/system",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/system-health",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/system/bootstrap",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/system/creators",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/system/tenants",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/tenant-management",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/user-management",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/user-management/audit",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/user-management/staff",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/users",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/users/funnel",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/users/invitations",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/users/roles",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/ai",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/ai/companion",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/ai/daily-summary",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/ai/insights",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/ai/recommendations",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/alkalma",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/alkalma/confirmed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/assistant",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/auth",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/auth/confirmed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/autopilot",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/business",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/cart",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/checkout/success",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/events",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/events-meetups",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/feed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/groups",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/groups/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/live-rooms",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/live-rooms/:roomId/view",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/media-hub",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/meetups",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/my-business",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/my-business/*",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/my-groups",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/comm/my-groups/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/confirmed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/events",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/feed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/groups",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/groups/:id",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/live-rooms",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/media-hub",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/meetups",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/my-business",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/community/my-groups",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/creator/onboarded",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/daily-diary",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dashboard",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dashboard/actions",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dashboard/aifeed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dashboard/context",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dashboard/matches",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/delete-account",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dev",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/dev/login",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/ai-picks",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/deals-offers",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/doctors-coaches",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/orders",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/product/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/provider/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/supplements",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/discover/wellness-services",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/e/:slug",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/earthlinks",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/earthlinks/confirmed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/exafy-admin",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/biomarker-results",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/devices",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/exercise",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/hydration",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/mental-health",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/nutrition",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/progress",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/sleep",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/tracking",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/trends",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health-tracker/vitana-index",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/biomarker-results",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/conditions",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/education",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/my-biology",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/my-health-tracker",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/pillars",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/plans",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/health/services-hub",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/actions",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/aifeed",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/context",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/home/matches",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/inbox",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/inbox/archived",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/inbox/inspiration",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/inbox/reminder",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/invite",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/login",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/logout",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/maxina",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/maxina_support",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/maxina/confirmed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/me/profile",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/memory",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/memory/diary",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/memory/permissions",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/memory/recall",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/memory/timeline",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/messages/*",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/my-tickets",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/packages/success",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/appointments",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/care-team",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/dashboard",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/goals",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/health",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/insurance",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/notifications",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/patient/results",
+      "requires_auth": true,
+      "requires_role": "patient",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/privacy",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/billing",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/dashboard",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/education",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/patients",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/profile",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/referrals",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/schedule",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/professional/tools",
+      "requires_auth": true,
+      "requires_role": "professional",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/profile",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/profile/:id",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/pub/campaigns/:id",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/pub/events/:id",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/redeem",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/register",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/reset-password",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/search",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/autopilot",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/billing",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/connected-apps",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/notifications",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/preferences",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/privacy",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/social",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/support",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/tenant-role",
+      "requires_auth": true,
+      "requires_role": "community",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/settings/voice-ai",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/sharing",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/sharing/campaigns",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/sharing/campaigns/:id",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/sharing/data-consent",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/sharing/distribution",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/communications",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/dashboard",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/queue",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/reports",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/schedule",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/tasks",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/time",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/staff/tools",
+      "requires_auth": true,
+      "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/terms",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/tickets/demo",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/tickets/success",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/u/:identifier",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/wallet",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/wallet/balance",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/wallet/rewards",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/wallet/subscriptions",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "agents",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "agents/crew-template",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "agents/qa-test",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "agents/validator",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "agents/worker",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "analytics",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "cicd",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "cicd/artifacts",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "cicd/matrix",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "cicd/runs",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "clients",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command/approvals",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command/autopilot-runs",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command/compose",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command/history",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "command/tasks",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "dashboard",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "dashboard/ai-feed",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "dashboard/alerts",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "dashboard/health",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "docs",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "docs/catalogs",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "docs/frontpages",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "docs/role-views",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "docs/screen-lists",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "gateway",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "gateway/mobile",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "gateway/requests",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "gateway/webhooks",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "oasis",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "oasis/ledger",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "oasis/policies",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "oasis/state",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "observability",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "observability/costs",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "observability/metrics",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "observability/traces",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "pipelines",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "pipelines/canary",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "pipelines/rollbacks",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "pipelines/tests",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "sell-earn",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "services",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "settings",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "settings/auth",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "settings/flags",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "settings/tenants",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "vtid",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "vtid/analytics",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "vtid/issue",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "vtid/search",
+      "requires_auth": false,
+      "file": "src/App.tsx"
+    }
+  ]
+}
