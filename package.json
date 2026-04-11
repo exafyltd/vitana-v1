@@ -9,8 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "extract-routes": "node scripts/extract-routes.mjs",
-    "prebuild": "node scripts/extract-routes.mjs"
+    "extract-routes": "node scripts/extract-routes.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",
