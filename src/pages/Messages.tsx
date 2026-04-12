@@ -70,6 +70,24 @@ export default function Messages() {
   const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
 
+  // Diagnostic: log mount state to trace the empty-inbox-on-navigation bug
+  useEffect(() => {
+    console.log('[Messages] MOUNT', {
+      messageContext,
+      context,
+      threadCount: threads.length,
+      isLoading,
+      isFetching,
+      isGlobalContext,
+      userId: user?.id?.slice(0, 8),
+    });
+    return () => console.log('[Messages] UNMOUNT');
+  }, []);
+  // Also log when threads change
+  useEffect(() => {
+    console.log('[Messages] threads changed', { count: threads.length, isLoading, isFetching });
+  }, [threads.length, isLoading, isFetching]);
+
   const userSelectedContextRef = React.useRef(false);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
