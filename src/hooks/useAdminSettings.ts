@@ -23,7 +23,7 @@ export function useTenantSettings() {
     queryFn: async () => {
       if (!activeTenantId) return null;
       const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/settings`);
-      return json as TenantSettings;
+      return json.settings as TenantSettings;
     },
     enabled: !!activeTenantId,
   });
@@ -36,7 +36,7 @@ export function useUpdateTenantSettings() {
     mutationFn: async (patch: Partial<TenantSettings>) => {
       if (!activeTenantId) throw new Error("No active tenant");
       return adminFetch(`/api/v1/admin/tenants/${activeTenantId}/settings`, {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
       });

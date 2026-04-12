@@ -49,7 +49,7 @@ export function useAccessLog(limit: number = 100) {
     queryFn: async () => {
       if (!activeTenantId) return [];
       const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/audit/access?limit=${limit}`);
-      return json.entries as AccessLogEntry[];
+      return json.access_log as AccessLogEntry[];
     },
     enabled: !!activeTenantId,
   });
