@@ -22,6 +22,7 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { WalletPopup } from "@/components/WalletPopup";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
+import { useRoleRouteEnforcement } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
@@ -75,14 +76,16 @@ function AppSidebar({
   const { translate } = useTranslation();
   const isMobile = useIsMobile();
 
-  // Get dynamic navigation: URL path takes priority over stored role
+  // Navigation is derived from the URL path, NOT from the stored role.
+  // This ensures the sidebar always matches the content area.
   const getEffectiveNavigation = () => {
     const path = location.pathname;
     if (path === '/admin' || path.startsWith('/admin/')) return getRoleNavigation('admin');
     if (path === '/staff' || path.startsWith('/staff/')) return getRoleNavigation('staff');
     if (path === '/professional' || path.startsWith('/professional/')) return getRoleNavigation('professional');
     if (path === '/patient' || path.startsWith('/patient/')) return getRoleNavigation('patient');
-    return getRoleNavigation(currentRole);
+    // All other paths (e.g. /home, /comm, /discover) are community routes
+    return getRoleNavigation('community');
   };
   const sidebarCategories = getEffectiveNavigation()
     .filter(cat => !(isIAPRestricted() && cat.path === '/wallet'));
@@ -408,7 +411,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
-  
+
+  // Enforce role-route alignment (admin on community routes → redirect, etc.)
+  useRoleRouteEnforcement();
+
   // Background loading system
   useBackgroundPrefetch();
   useBackgroundRefresh();

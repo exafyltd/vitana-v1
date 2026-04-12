@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 import { useEmailConfirmation } from "@/hooks/useEmailConfirmation";
 import { useTenant } from "@/hooks/useTenant";
+import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 
 export default function AlkalmaConfirmed() {
   const navigate = useNavigate();
   const { isLoading, user, error } = useEmailConfirmation();
   const { setTenantBySlug } = useTenant();
+  const { getRedirectUrl } = useRoleBasedRedirect();
 
   useEffect(() => {
     // Set tenant context
@@ -19,7 +21,7 @@ export default function AlkalmaConfirmed() {
     if (user && !isLoading) {
       // Auto-redirect after 3 seconds
       const timer = setTimeout(() => {
-        navigate('/home');
+        navigate(getRedirectUrl());
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -27,7 +29,7 @@ export default function AlkalmaConfirmed() {
   }, [user, isLoading, navigate, setTenantBySlug]);
 
   const handleContinue = () => {
-    navigate('/home');
+    navigate(getRedirectUrl());
   };
 
   if (isLoading) {

@@ -48,7 +48,7 @@ const RouteFallback = () => (
 // ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
-import Auth from "./pages/Auth";
+// Auth.tsx removed — login flows handled by tenant portals
 import NotFound from "./pages/NotFound";
 
 // ─── Lazy imports: everything else, grouped by domain ───
@@ -70,11 +70,11 @@ const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
 const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
 const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
 const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
-const CommunityPortal = lazy(() => import("./pages/portals/CommunityPortal"));
+// CommunityPortal removed — orphaned, login handled by tenant portals
 const MaxinaConfirmed = lazy(() => import("./pages/portals/MaxinaConfirmed"));
 const AlkalmaConfirmed = lazy(() => import("./pages/portals/AlkalmaConfirmed"));
 const EarthlinksConfirmed = lazy(() => import("./pages/portals/EarthlinksConfirmed"));
-const CommunityConfirmed = lazy(() => import("./pages/portals/CommunityConfirmed"));
+// CommunityConfirmed removed — orphaned parent deleted
 
 // Dev Hub
 const DevLogin = lazy(() => import("./pages/dev/DevLogin"));
@@ -414,16 +414,16 @@ const App = () => {
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/login" element={<Navigate to="/auth" replace />} />
-          <Route path="/register" element={<Navigate to="/auth" replace />} />
+          {/* /login and /register redirect to portal selector */}
+          <Route path="/login" element={<Navigate to="/" replace />} />
+          <Route path="/register" element={<Navigate to="/" replace />} />
           
           {/* Email Confirmation Routes */}
           <Route path="/auth/confirmed" element={<EmailConfirmed />} />
           <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
           <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
-          <Route path="/community/confirmed" element={<CommunityConfirmed />} />
+          {/* /community/confirmed removed — orphaned */}
           
           {/* Public Routes - No Auth Required */}
           <Route path="/reset-password" element={<ResetPassword />} />
@@ -442,7 +442,7 @@ const App = () => {
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />
-          <Route path="/community" element={<CommunityPortal />} />
+          {/* /community removed — orphaned, login handled by tenant portals */}
           
           {/* Dev Hub Routes */}
           <Route path="/dev/login" element={<DevLogin />} />

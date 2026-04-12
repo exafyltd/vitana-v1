@@ -4,6 +4,55 @@ import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
 
+// ── Role-route enforcement ──────────────────────────────────────────
+// Call from AppLayout so it runs on every authenticated page.
+// Ensures the user's role always matches the route they are on.
+const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
+const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/'];
+
+export function useRoleRouteEnforcement() {
+  const { user, loading: authLoading } = useAuth();
+  const { currentRole, isLoading: roleLoading } = useRole();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (authLoading || roleLoading || !user) return;
+
+    const path = location.pathname;
+
+    // Don't enforce on portal, auth, settings, or dev pages (shared across roles)
+    if (SHARED_PATHS.some(p => path === p || (p !== '/' && path.startsWith(p)))) return;
+
+    const isOnCommunity = COMMUNITY_PREFIXES.some(p => path === p || path.startsWith(p + '/'));
+    const isOnAdmin = path === '/admin' || path.startsWith('/admin/');
+    const isOnStaff = path === '/staff' || path.startsWith('/staff/');
+    const isOnProfessional = path === '/professional' || path.startsWith('/professional/');
+    const isOnPatient = path === '/patient' || path.startsWith('/patient/');
+
+    // Admin/staff role but on community routes → redirect to admin
+    if (isOnCommunity && (currentRole === 'admin' || currentRole === 'staff')) {
+      navigate('/admin', { replace: true });
+      return;
+    }
+    // Professional role on community routes → redirect to professional dashboard
+    if (isOnCommunity && currentRole === 'professional') {
+      navigate('/professional/dashboard', { replace: true });
+      return;
+    }
+    // Patient role on community routes → redirect to patient dashboard
+    if (isOnCommunity && currentRole === 'patient') {
+      navigate('/patient/dashboard', { replace: true });
+      return;
+    }
+    // Community role on admin/staff/professional/patient routes → redirect to home
+    if (currentRole === 'community' && (isOnAdmin || isOnStaff || isOnProfessional || isOnPatient)) {
+      navigate('/home', { replace: true });
+      return;
+    }
+  }, [user, authLoading, roleLoading, currentRole, location.pathname, navigate]);
+}
+
 export function useSmartRouting() {
   const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin, activeTenantId, tenant } = useTenant();
