@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
+import { useTenant } from "@/hooks/useTenant";
 import { toast } from "sonner";
 
 export default function SettingsProfile() {
@@ -42,6 +43,9 @@ export default function SettingsProfile() {
     );
   };
 
+  // Debug: log the tenant context
+  const { activeTenantId } = useTenant();
+
   return (
     <AppLayout>
       <AdminTabs sectionKey="settings" />
@@ -51,6 +55,14 @@ export default function SettingsProfile() {
           title="Profile"
           description="Basic information about your tenant organization"
         />
+
+        {/* Debug banner — always visible */}
+        <div className="rounded-md border border-blue-300 bg-blue-50 p-3 text-xs font-mono text-blue-900">
+          <div>Tenant ID: {activeTenantId || "NULL"}</div>
+          <div>Query status: {settingsQuery.status} | isFetching: {String(settingsQuery.isFetching)}</div>
+          <div>Data: {settingsQuery.data ? JSON.stringify(settingsQuery.data).substring(0, 200) : "null"}</div>
+          <div>Error: {settingsQuery.error ? (settingsQuery.error as Error).message : "none"}</div>
+        </div>
 
         {settingsQuery.isLoading && (
           <p className="text-sm text-muted-foreground py-8 text-center">Loading settings...</p>
