@@ -68,3 +68,12 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 - **Multi-tenant:** TenantProvider for portal-specific branding
 - **Offline support:** OfflineProvider + LocalStorage query persistence
 - **Auth flow:** Supabase Auth → role check → route guard
+
+## Second Brain
+
+A Karpathy-style knowledge base lives in `vitana-platform/second-brain/`:
+- **`raw/`** — 233 immutable source documents from both repos
+- **`wiki/`** — 95 AI-maintained pages with 628 cross-links
+- **`CLAUDE.md`** — Instructions for ingesting, querying, and maintaining the wiki
+- Start at `wiki/overview.md` for the big-picture system map
+- Browse `wiki/index.md` for the full page directory
