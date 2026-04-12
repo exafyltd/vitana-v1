@@ -235,10 +235,17 @@ const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 // Admin sub-pages
 const AdminDashboardHealth = lazy(() => import("./pages/admin/dashboard/SystemHealth"));
 const AdminDashboardActivity = lazy(() => import("./pages/admin/dashboard/ActivityFeed"));
+// Legacy user stubs (kept for backward-compat redirects)
 const AdminAllUsers = lazy(() => import("./pages/admin/users/AllUsers"));
 const AdminSignupFunnel = lazy(() => import("./pages/admin/users/SignupFunnel"));
 const AdminInvitations = lazy(() => import("./pages/admin/users/Invitations"));
 const AdminRolesAccess = lazy(() => import("./pages/admin/users/RolesAccess"));
+// Batch 1.B1: New Members section pages
+const MembersDirectory = lazy(() => import("./pages/admin/members/Directory"));
+const MembersInvitations = lazy(() => import("./pages/admin/members/Invitations"));
+const MembersRolesAccess = lazy(() => import("./pages/admin/members/RolesAccess"));
+const MembersSegments = lazy(() => import("./pages/admin/members/Segments"));
+const MembersAudit = lazy(() => import("./pages/admin/members/Audit"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -1106,18 +1113,27 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboardActivity /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* 2. Users & Growth Section */}
-          <Route path="/admin/users" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAllUsers /></ProtectedRoute></AuthGuard>
+          {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
+          <Route path="/admin/users" element={<Navigate to="/admin/members/directory" replace />} />
+          <Route path="/admin/users/funnel" element={<Navigate to="/admin/members/directory" replace />} />
+          <Route path="/admin/users/invitations" element={<Navigate to="/admin/members/invitations" replace />} />
+          <Route path="/admin/users/roles" element={<Navigate to="/admin/members/roles" replace />} />
+
+          {/* Batch 1.B1: Members section (replaces Users & Growth) */}
+          <Route path="/admin/members/directory" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MembersDirectory /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/users/funnel" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminSignupFunnel /></ProtectedRoute></AuthGuard>
+          <Route path="/admin/members/invitations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MembersInvitations /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/users/invitations" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminInvitations /></ProtectedRoute></AuthGuard>
+          <Route path="/admin/members/roles" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MembersRolesAccess /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/users/roles" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminRolesAccess /></ProtectedRoute></AuthGuard>
+          <Route path="/admin/members/segments" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MembersSegments /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/members/audit" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MembersAudit /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 3. Notifications Section */}
