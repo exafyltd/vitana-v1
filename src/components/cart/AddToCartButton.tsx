@@ -48,7 +48,7 @@ export function AddToCartButton({
         description: "Please sign in to add items to your cart",
         variant: "destructive",
       });
-      navigate('/auth');
+      navigate('/');
       return;
     }
     

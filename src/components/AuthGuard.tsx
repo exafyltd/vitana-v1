@@ -42,7 +42,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     if (slug === 'maxina') return '/maxina';
     if (slug === 'alkalma') return '/alkalma';
     if (slug === 'earthlinks') return '/earthlinks';
-    return '/auth';
+    return '/';
   }, []);
 
   // Start processing when OAuth callback is detected

@@ -11,10 +11,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Shield, Users, Settings, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
+import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 
 const ExafyAdminPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin, tenant } = useTenant();
+  const { getRedirectUrl } = useRoleBasedRedirect();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ const ExafyAdminPortal = () => {
   // Redirect authenticated Exafy admins to tenant management
   useEffect(() => {
     if (!authLoading && user && isExafyAdmin) {
-      navigate("/admin/tenant-management");
+      navigate(getRedirectUrl());
     }
   }, [user, isExafyAdmin, authLoading, navigate]);
 
@@ -35,7 +37,7 @@ const ExafyAdminPortal = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/admin/tenant-management`,
+          redirectTo: `${window.location.origin}/exafy-admin`,
         }
       });
       if (error) throw error;

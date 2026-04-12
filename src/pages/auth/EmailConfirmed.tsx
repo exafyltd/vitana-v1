@@ -44,7 +44,7 @@ export default function EmailConfirmed() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
-            <Button onClick={() => navigate('/auth')} variant="outline" className="w-full">
+            <Button onClick={() => navigate('/')} variant="outline" className="w-full">
               Back to Sign In
             </Button>
           </CardContent>

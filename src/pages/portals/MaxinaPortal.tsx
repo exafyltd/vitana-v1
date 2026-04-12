@@ -22,6 +22,7 @@ import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationButton";
 
 const MaxinaPortal = () => {
@@ -29,6 +30,7 @@ const MaxinaPortal = () => {
   const { user, session, loading: authLoading } = useAuth();
   const hasRedirectedRef = useRef(false);
   const { tenant, setTenantBySlug } = useTenant();
+  const { getRedirectUrl } = useRoleBasedRedirect();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   // VitanaOrb widget handles voice overlay externally
@@ -157,7 +159,8 @@ const MaxinaPortal = () => {
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
     const redirectTo = searchParams.get('redirectTo');
-    const target = redirectTo || '/comm/events-meetups?tab=hot';
+    // Use role-based redirect: admin → /admin, community → events, etc.
+    const target = redirectTo || getRedirectUrl();
 
     // Hard deadline: navigate no matter what after 6s
     const deadlineTimer = setTimeout(() => {

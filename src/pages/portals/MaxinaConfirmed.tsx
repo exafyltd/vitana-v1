@@ -7,12 +7,14 @@ import { useEmailConfirmation } from "@/hooks/useEmailConfirmation";
 import { useDiscountCode } from "@/hooks/useDiscountCode";
 import { useTenant } from "@/hooks/useTenant";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 
 export default function MaxinaConfirmed() {
   const navigate = useNavigate();
   const { isLoading, user, error } = useEmailConfirmation();
   const { setTenantBySlug } = useTenant();
+  const { getRedirectUrl } = useRoleBasedRedirect();
   const { discountCode, loading: discountLoading } = useDiscountCode('maxina');
   const { translate } = useTranslation();
 
@@ -21,7 +23,7 @@ export default function MaxinaConfirmed() {
     
     if (user && !isLoading) {
       const timer = setTimeout(() => {
-        navigate('/home');
+        navigate(getRedirectUrl());
       }, 5000); // extended to 5s so user can see discount code
 
       return () => clearTimeout(timer);
@@ -29,7 +31,7 @@ export default function MaxinaConfirmed() {
   }, [user, isLoading, navigate, setTenantBySlug]);
 
   const handleContinue = () => {
-    navigate('/home');
+    navigate(getRedirectUrl());
   };
 
   if (isLoading) {
