@@ -231,8 +231,13 @@ const ProfessionalPatients = lazy(() => import("./pages/professional/Patients"))
 const StaffDashboard = lazy(() => import("./pages/staff/Dashboard"));
 const StaffQueue = lazy(() => import("./pages/staff/Queue"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+// Overview Dashboard (replaces legacy dashboard)
+const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
+const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
+const OverviewAlerts = lazy(() => import("./pages/admin/overview/Alerts"));
+const OverviewHealth = lazy(() => import("./pages/admin/overview/Health"));
 
-// Admin sub-pages
+// Admin sub-pages (legacy — kept for backward-compat)
 const AdminDashboardHealth = lazy(() => import("./pages/admin/dashboard/SystemHealth"));
 const AdminDashboardActivity = lazy(() => import("./pages/admin/dashboard/ActivityFeed"));
 // Legacy user stubs (kept for backward-compat redirects)
@@ -1118,19 +1123,26 @@ const App = () => {
           {/* ADMIN ROUTES — Restructured (9 Sections)                  */}
           {/* ══════════════════════════════════════════════════════════ */}
 
-          {/* Root redirect */}
+          {/* Root redirect → new Overview Dashboard */}
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
 
-          {/* 1. Dashboard Section */}
+          {/* Overview section (replaces legacy Dashboard) */}
           <Route path="/admin/dashboard" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute></AuthGuard>
+            <AuthGuard><ProtectedRoute requiredRole="admin"><OverviewDashboard /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/dashboard/health" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboardHealth /></ProtectedRoute></AuthGuard>
+          <Route path="/admin/activity" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><OverviewActivity /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/dashboard/activity" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboardActivity /></ProtectedRoute></AuthGuard>
+          <Route path="/admin/alerts" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><OverviewAlerts /></ProtectedRoute></AuthGuard>
           } />
+          <Route path="/admin/health" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><OverviewHealth /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Legacy dashboard routes → redirect to new Overview tabs */}
+          <Route path="/admin/dashboard/health" element={<Navigate to="/admin/health" replace />} />
+          <Route path="/admin/dashboard/activity" element={<Navigate to="/admin/activity" replace />} />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
           <Route path="/admin/users" element={<Navigate to="/admin/members/directory" replace />} />
