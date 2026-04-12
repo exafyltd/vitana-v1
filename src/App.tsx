@@ -261,6 +261,12 @@ const AdminAuditEvents = lazy(() => import("./pages/admin/audit/Events"));
 const AdminAuditUserActivity = lazy(() => import("./pages/admin/audit/UserActivity"));
 const AdminAuditApiMonitor = lazy(() => import("./pages/admin/audit/ApiMonitor"));
 const AdminAuditSecurity = lazy(() => import("./pages/admin/audit/Security"));
+// VTID-AP-ADMIN: Autopilot admin
+const AdminAutopilotRecommendations = lazy(() => import("./pages/admin/autopilot/Recommendations"));
+const AdminAutopilotAutomations = lazy(() => import("./pages/admin/autopilot/Automations"));
+const AdminAutopilotRuns = lazy(() => import("./pages/admin/autopilot/Runs"));
+const AdminAutopilotGuardrails = lazy(() => import("./pages/admin/autopilot/Guardrails"));
+const AdminAutopilotGrowth = lazy(() => import("./pages/admin/autopilot/Growth"));
 // VTID-NAV-02: Vitana Navigator admin
 const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog"));
 const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
@@ -1243,6 +1249,23 @@ const App = () => {
           } />
           <Route path="/admin/navigator/history" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* VTID-AP-ADMIN: Autopilot admin */}
+          <Route path="/admin/autopilot/recommendations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotRecommendations /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/autopilot/automations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotAutomations /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/autopilot/runs" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotRuns /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/autopilot/guardrails" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotGuardrails /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/autopilot/growth" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotGrowth /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Legacy admin routes — redirects for backward compatibility */}
