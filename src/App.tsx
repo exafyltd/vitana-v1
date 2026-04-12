@@ -246,6 +246,19 @@ const MembersInvitations = lazy(() => import("./pages/admin/members/Invitations"
 const MembersRolesAccess = lazy(() => import("./pages/admin/members/RolesAccess"));
 const MembersSegments = lazy(() => import("./pages/admin/members/Segments"));
 const MembersAudit = lazy(() => import("./pages/admin/members/Audit"));
+// Batch 1.B2: Assistant section pages
+const AssistantPersonality = lazy(() => import("./pages/admin/assistant/Personality"));
+const AssistantVoice = lazy(() => import("./pages/admin/assistant/Voice"));
+const AssistantTools = lazy(() => import("./pages/admin/assistant/Tools"));
+const AssistantRouting = lazy(() => import("./pages/admin/assistant/Routing"));
+const AssistantPlayground = lazy(() => import("./pages/admin/assistant/Playground"));
+const AssistantSessions = lazy(() => import("./pages/admin/assistant/Sessions"));
+// Batch 1.B2: Knowledge section pages
+const KnowledgeDocuments = lazy(() => import("./pages/admin/knowledge/Documents"));
+const KnowledgeTopics = lazy(() => import("./pages/admin/knowledge/Topics"));
+const KnowledgeIndexing = lazy(() => import("./pages/admin/knowledge/Indexing"));
+const KnowledgeSearchTest = lazy(() => import("./pages/admin/knowledge/SearchTest"));
+const KnowledgeGovernance = lazy(() => import("./pages/admin/knowledge/Governance"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -1134,6 +1147,43 @@ const App = () => {
           } />
           <Route path="/admin/members/audit" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><MembersAudit /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Batch 1.B2: Assistant section */}
+          <Route path="/admin/assistant/personality" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantPersonality /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/voice" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantVoice /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/tools" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantTools /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/routing" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantRouting /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/playground" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantPlayground /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/sessions" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantSessions /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Batch 1.B2: Knowledge section */}
+          <Route path="/admin/knowledge/documents" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeDocuments /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/knowledge/topics" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeTopics /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/knowledge/indexing" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeIndexing /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/knowledge/search-test" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeSearchTest /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/knowledge/governance" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeGovernance /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 3. Notifications Section */}
