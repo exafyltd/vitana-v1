@@ -2,7 +2,7 @@
 
 > **Both Claude sessions MUST read this file before touching any `/admin/*` code, and MUST update it before and after each batch.** This is the single source of truth that prevents collision between the parallel sessions working on the Maxina admin rebuild.
 
-**Last updated:** 2026-04-12 by Session B (Autopilot admin shipped)
+**Last updated:** 2026-04-12 by Session A (Wave 1 complete — all 8 sections shipped, migrations applied, data seeded)
 
 ---
 
@@ -25,18 +25,18 @@ Legend: ✅ done · 🚧 in progress · ⏳ queued · — not started
 | Section | Status | Owner | Notes |
 |---|---|---|---|
 | **Foundation (Batch 1.A)** | ✅ | Session A | 12-section sidebar via `ADMIN_SECTIONS`; `AdminTabs`; `AdminPlaceholder` + `/admin/*` wildcard; role-grant chain fixes (7 roles, `get_my_permitted_roles()` RPC with fallback, super-admin safety net). Verified: ORB + ProfileDrawer + Sidebar persist across community↔admin route changes. |
-| **Overview** | ⏳ | — | Placeholder. Dashboard KPIs + at-risk cohort are Batch 1.D. Legacy `/admin/dashboard` still renders the old dashboard until rebuilt. |
-| **Members** | ⏳ | Session A (queued) | Batch 1.B1 — next up. Directory, Invitations, Roles & Access, Segments, Audit. New backend: `tenant_invitations` table, `require-tenant-admin` middleware. Unblocks the role switcher for all 7 roles. |
-| **Assistant** | ⏳ | — | Batch 1.B2 — after 1.B1. Per-tenant personality/voice/tools/routing/playground/sessions. New backend: `tenant_assistant_config` table, `getEffectiveConfig()` merge. |
-| **Knowledge** | ⏳ | — | Batch 1.B2 — after 1.B1. Per-tenant KB corpus with baseline opt-out. New backend: `kb_documents` + `tenant_kb_baseline_optouts` tables. |
+| **Overview** | ✅ | Session A | Dashboard with KPI cards (total members, new signups 7d + delta, pending invitations, KB docs), action inbox strip, role distribution, at-risk cohort, alerts. 4 tabs: Dashboard / Activity / Alerts / Health. Backend: `/api/v1/admin/tenants/:tenantId/overview/*` (summary, at-risk, activity, alerts). |
+| **Members** | ✅ | Session A | Directory, Invitations, Roles & Access, Segments, Audit. Backend: `tenant_invitations` table, `require-tenant-admin` middleware, dual-mode `admin-users.ts`. Hooks: `useAdminMembers.ts`. |
+| **Assistant** | ✅ | Session A | Per-tenant personality/voice/tools/routing/playground/sessions. Backend: `tenant_assistant_config` table, `getEffectiveConfig()` merge in `ai-personality-service.ts`. Routes: `/api/v1/admin/tenants/:tenantId/assistant/*`. |
+| **Knowledge** | ✅ | Session A | Per-tenant KB corpus with baseline opt-out. Backend: `kb_documents` + `tenant_kb_baseline_optouts` tables. Routes: `/api/v1/admin/tenants/:tenantId/kb/*` (documents, search, topics, reindex, opt-out). |
 | **Navigator** | ✅ | Session B | VTID-NAV-02 shipped 2026-04-12 (vitana-v1 PR #77, vitana-platform PR #615). Catalog + Coverage + Telemetry + History tabs (Simulator is embedded in Catalog). Files: `src/pages/admin/navigator/*`, `src/hooks/useAdminNavigator.ts`, backend `/api/v1/admin/navigator/*`. Session A reconciled `ADMIN_SECTIONS.navigator.tabs` to match Session B's 4 tabs on 2026-04-12. |
 | **Autopilot** | ✅ | Session B | VTID-AP-ADMIN shipped 2026-04-12 (vitana-platform PR #621, vitana-v1 PR #83). 5 tabs: Recommendations / Automations / Runs / Guardrails / Growth. Backend: `tenant_autopilot_settings`, `tenant_autopilot_bindings`, `tenant_autopilot_runs` tables + 11 endpoints at `/api/v1/admin/autopilot/*`. Files: `src/pages/admin/autopilot/*`, `src/hooks/useAdminAutopilot.ts`. |
 | **Community** | ⏳ | — | Wave 2. Placeholder renders "Coming in Wave 2". |
 | **Content** | ⏳ | — | Wave 2. |
 | **Notifications** | ⏳ | — | Wave 2. |
 | **Insights** | ⏳ | — | Wave 2. |
-| **Settings** | ⏳ | — | Batch 1.D. Profile / Branding / Feature Flags / Integrations / Domains / Billing. |
-| **Audit & Compliance** | ⏳ | — | Batch 1.D. Admin Actions / Access Log / OASIS Events (tenant-filtered) / Policies / Data Rights. |
+| **Settings** | ✅ | Session A | Profile / Branding / Feature Flags / Integrations / Domains / Billing. Backend: `tenant_settings` table. Routes: `/api/v1/admin/tenants/:tenantId/settings`. Seed data for Maxina applied. |
+| **Audit & Compliance** | ✅ | Session A | Admin Actions / Access Log / OASIS Events / Policies / Data Rights. Backend: `tenant_admin_audit_log` table. Routes: `/api/v1/admin/tenants/:tenantId/audit/*`. |
 
 ---
 
@@ -65,12 +65,14 @@ New features should land as gateway routes first, then be consumed by thin React
 |---|---|---|---|
 | Navigator catalog + coverage + telemetry + history | `/api/v1/admin/navigator/*` | ✅ Session B | Live. Schema includes tenant-scoped entries (`tenant_id` nullable). |
 | Autopilot settings + bindings + catalog + runs + recs | `/api/v1/admin/autopilot/*` | ✅ Session B | Live. 11 endpoints: GET/PATCH settings, CRUD bindings, GET catalog, GET runs + stats, GET recommendations + summary. All gated by `requireTenantAdmin`. |
-| Tenant invitations | `/api/v1/admin/tenants/:tenantId/invitations` | ⏳ Session A (Batch 1.B1) | New `tenant_invitations` table + `require-tenant-admin` middleware. |
+| Tenant invitations | `/api/v1/admin/tenants/:tenantId/invitations` | ✅ Session A | `tenant_invitations` table + `require-tenant-admin` middleware. Create, list, revoke, accept. |
 | Role grant / revoke | `/api/v1/roles/grant`, `/api/v1/roles/revoke` | ✅ existing | Already correct; Members UI consumes these directly. |
-| Tenant-scoped admin users list | `/api/v1/admin/users?tenant_id=…` | ⚠️ needs extension | Currently gates on `exafy_admin` only; Batch 1.B1 adds tenant-admin token support. |
-| Per-tenant assistant config | `/api/v1/admin/tenants/:tenantId/assistant/:surfaceKey` | ⏳ Batch 1.B2 | New `tenant_assistant_config` table + `getEffectiveConfig()` merge in `ai-personality-service.ts`. |
-| Per-tenant KB | `/api/v1/admin/tenants/:tenantId/kb/*` | ⏳ Batch 1.B2 | New `kb_documents` (tenant_id nullable) + `tenant_kb_baseline_optouts` tables. |
-| Overview summary aggregation | `/api/v1/admin/tenants/:tenantId/overview/summary` | ⏳ Batch 1.D | Single JSON blob for dashboard top-strip KPIs. |
+| Tenant-scoped admin users list | `/api/v1/admin/users` | ✅ Session A | Dual-mode: exafy_admin gets full access, tenant admins see only their own tenant's users. |
+| Per-tenant assistant config | `/api/v1/admin/tenants/:tenantId/assistant/*` | ✅ Session A | `tenant_assistant_config` table + `getEffectiveConfig()` merge. GET all surfaces, GET/PUT/DELETE per surface. |
+| Per-tenant KB | `/api/v1/admin/tenants/:tenantId/kb/*` | ✅ Session A | `kb_documents` + `tenant_kb_baseline_optouts` tables. Documents CRUD, search, topics, reindex, baseline opt-out. |
+| Overview summary | `/api/v1/admin/tenants/:tenantId/overview/*` | ✅ Session A | Summary (60s cache), at-risk members, activity, alerts. |
+| Tenant settings | `/api/v1/admin/tenants/:tenantId/settings` | ✅ Session A | `tenant_settings` table (profile, branding, feature_flags, integrations, domains, billing). GET + PUT. |
+| Audit log | `/api/v1/admin/tenants/:tenantId/audit/*` | ✅ Session A | `tenant_admin_audit_log` table. Actions trail + access log (OASIS events). |
 
 ---
 
