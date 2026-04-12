@@ -42,11 +42,14 @@ export interface AutopilotBinding {
 export interface AutomationCatalogEntry {
   id: string;
   name: string;
-  description: string;
-  category: string;
-  risk_level: "low" | "medium" | "high";
-  default_schedule: string;
-  requires_approval_default: boolean;
+  domain: string;
+  status: "PLANNED" | "IN_PROGRESS" | "IMPLEMENTED" | "LIVE" | "DEPRECATED";
+  priority: string;
+  trigger_type: "cron" | "event" | "heartbeat" | "manual" | "webhook";
+  trigger_config: { cronExpression?: string; eventTopic?: string; intervalMinutes?: number } | null;
+  target_roles: "all" | string[];
+  has_handler: boolean;
+  requires: string[];
   binding: AutopilotBinding | null;
   enabled: boolean;
 }
