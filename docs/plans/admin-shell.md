@@ -2,7 +2,7 @@
 
 > **Both Claude sessions MUST read this file before touching any `/admin/*` code, and MUST update it before and after each batch.** This is the single source of truth that prevents collision between the parallel sessions working on the Maxina admin rebuild.
 
-**Last updated:** 2026-04-12 by Session A (Batch 1.C Navigator integration)
+**Last updated:** 2026-04-12 by Session B (Autopilot admin shipped)
 
 ---
 
@@ -30,7 +30,7 @@ Legend: ✅ done · 🚧 in progress · ⏳ queued · — not started
 | **Assistant** | ⏳ | — | Batch 1.B2 — after 1.B1. Per-tenant personality/voice/tools/routing/playground/sessions. New backend: `tenant_assistant_config` table, `getEffectiveConfig()` merge. |
 | **Knowledge** | ⏳ | — | Batch 1.B2 — after 1.B1. Per-tenant KB corpus with baseline opt-out. New backend: `kb_documents` + `tenant_kb_baseline_optouts` tables. |
 | **Navigator** | ✅ | Session B | VTID-NAV-02 shipped 2026-04-12 (vitana-v1 PR #77, vitana-platform PR #615). Catalog + Coverage + Telemetry + History tabs (Simulator is embedded in Catalog). Files: `src/pages/admin/navigator/*`, `src/hooks/useAdminNavigator.ts`, backend `/api/v1/admin/navigator/*`. Session A reconciled `ADMIN_SECTIONS.navigator.tabs` to match Session B's 4 tabs on 2026-04-12. |
-| **Autopilot** | ⏳ | — | Batch 1.C (original plan). Per-tenant binding over Exafy-published AP-XXXX catalog. Tab names: Recommendations / Active Automations / Runs / Guardrails / Growth. |
+| **Autopilot** | ✅ | Session B | VTID-AP-ADMIN shipped 2026-04-12 (vitana-platform PR #621, vitana-v1 PR #83). 5 tabs: Recommendations / Automations / Runs / Guardrails / Growth. Backend: `tenant_autopilot_settings`, `tenant_autopilot_bindings`, `tenant_autopilot_runs` tables + 11 endpoints at `/api/v1/admin/autopilot/*`. Files: `src/pages/admin/autopilot/*`, `src/hooks/useAdminAutopilot.ts`. |
 | **Community** | ⏳ | — | Wave 2. Placeholder renders "Coming in Wave 2". |
 | **Content** | ⏳ | — | Wave 2. |
 | **Notifications** | ⏳ | — | Wave 2. |
@@ -46,7 +46,7 @@ These files are edited by both sessions. Before changing any of them, search `gi
 
 | File | Shared concern | Who edits what |
 |---|---|---|
-| `src/App.tsx` | Admin route registrations + `/admin/*` wildcard | Session A owns the wildcard and Batch-1.A route block; Session B added specific Navigator routes. New section routes get registered BEFORE the wildcard at line ~1253. |
+| `src/App.tsx` | Admin route registrations + `/admin/*` wildcard | Session A owns the wildcard and Batch-1.A route block; Session B added specific Navigator + Autopilot routes. New section routes get registered BEFORE the wildcard. |
 | `src/config/admin-navigation.ts` | Sidebar section list + tab catalogs | Each session updates its own section's `tabs[]` array. Sidebar order / section list is Session A's call. |
 | `src/config/role-navigation.ts` | `adminNavigation` export derived from `ADMIN_SECTIONS` | Session A owns. Don't hand-edit `adminNavigation` — it's computed from the above. |
 | `src/components/AppLayout.tsx` | Global frame hosting ORB + ProfileDrawer + Sidebar | **Do not modify.** Global frame invariants are load-bearing. |
@@ -64,6 +64,7 @@ New features should land as gateway routes first, then be consumed by thin React
 | Backend area | Gateway path | Status | Notes |
 |---|---|---|---|
 | Navigator catalog + coverage + telemetry + history | `/api/v1/admin/navigator/*` | ✅ Session B | Live. Schema includes tenant-scoped entries (`tenant_id` nullable). |
+| Autopilot settings + bindings + catalog + runs + recs | `/api/v1/admin/autopilot/*` | ✅ Session B | Live. 11 endpoints: GET/PATCH settings, CRUD bindings, GET catalog, GET runs + stats, GET recommendations + summary. All gated by `requireTenantAdmin`. |
 | Tenant invitations | `/api/v1/admin/tenants/:tenantId/invitations` | ⏳ Session A (Batch 1.B1) | New `tenant_invitations` table + `require-tenant-admin` middleware. |
 | Role grant / revoke | `/api/v1/roles/grant`, `/api/v1/roles/revoke` | ✅ existing | Already correct; Members UI consumes these directly. |
 | Tenant-scoped admin users list | `/api/v1/admin/users?tenant_id=…` | ⚠️ needs extension | Currently gates on `exafy_admin` only; Batch 1.B1 adds tenant-admin token support. |
