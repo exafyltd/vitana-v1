@@ -500,16 +500,6 @@ export function useGlobalMessages(
 
   // ── Threads (conversations list) ──────────────────────────────────
 
-  // Diagnostic: log query cache state on every render to trace empty-inbox bug
-  const _cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user?.id]);
-  console.log("[chat:hook] render", {
-    forceActive,
-    isGlobalContext,
-    enabled: !!user && isGlobalContext,
-    cachedThreadCount: _cachedThreads?.length ?? "NONE",
-    userId: user?.id?.slice(0, 8),
-  });
-
   const {
     data: threads = [],
     isLoading: isThreadsLoading,
