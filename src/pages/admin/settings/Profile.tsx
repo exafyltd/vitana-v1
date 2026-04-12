@@ -56,6 +56,17 @@ export default function SettingsProfile() {
           <p className="text-sm text-muted-foreground py-8 text-center">Loading settings...</p>
         )}
 
+        {settingsQuery.isError && (
+          <div className="text-sm text-destructive py-8 text-center space-y-2">
+            <p>Failed to load settings: {(settingsQuery.error as Error)?.message || "Unknown error"}</p>
+            <p className="text-xs text-muted-foreground">Check browser console for details</p>
+          </div>
+        )}
+
+        {!settingsQuery.isLoading && !settingsQuery.isError && !settingsQuery.data && (
+          <p className="text-sm text-muted-foreground py-8 text-center">No settings data available. Tenant ID may not be resolved yet.</p>
+        )}
+
         {settingsQuery.data && (
           <Card>
             <CardHeader>
