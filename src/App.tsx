@@ -272,6 +272,7 @@ const CommunityRoomsAdmin = lazy(() => import("./pages/admin/CommunityRoomsAdmin
 const Bootstrap = lazy(() => import("./pages/admin/Bootstrap"));
 const TenantManagementLegacy = lazy(() => import("./pages/admin/TenantManagement"));
 const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
+const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -1243,7 +1244,16 @@ const App = () => {
           <Route path="/admin/live-stream" element={<Navigate to="/admin/live" replace />} />
           <Route path="/admin/media" element={<Navigate to="/admin/content" replace />} />
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
-          
+
+          {/* Maxina Tenant Admin — wildcard catches all new ADMIN_SECTIONS paths
+              (Members, Assistant, Knowledge, Navigator, Autopilot, Settings,
+              new Audit tabs, wave-2 sections) and renders AdminPlaceholder
+              inside AppLayout so the global frame stays intact. Must sit AFTER
+              every specific /admin/* route above and BEFORE the catch-all. */}
+          <Route path="/admin/*" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminPlaceholder /></ProtectedRoute></AuthGuard>
+          } />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

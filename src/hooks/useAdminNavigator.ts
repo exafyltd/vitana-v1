@@ -12,10 +12,17 @@ import { supabase } from "@/integrations/supabase/client";
 // The gateway base lives in VITE_GATEWAY_URL for this repo. Fall back to
 // VITE_GATEWAY_BASE (used by useSignupFunnel hooks) for consistency with the
 // existing admin pages.
-const GATEWAY_BASE =
+//
+// vitana-v1's .env sets VITE_GATEWAY_URL to include the "/api/v1" suffix
+// already (e.g. "https://gateway-…run.app/api/v1"), so we must NOT append
+// "/api/v1" again. Strip any trailing "/api/v1" (or trailing slash) from the
+// base before building the final URL to make the hook resilient to either
+// convention.
+const RAW_GATEWAY_BASE =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
   (import.meta.env.VITE_GATEWAY_BASE as string | undefined) ||
   "";
+const GATEWAY_BASE = RAW_GATEWAY_BASE.replace(/\/api\/v1\/?$/, "").replace(/\/$/, "");
 const API_BASE = `${GATEWAY_BASE}/api/v1/admin/navigator`;
 
 async function authFetch(path: string, init: RequestInit = {}): Promise<any> {

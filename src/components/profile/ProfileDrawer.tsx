@@ -32,10 +32,12 @@ interface ProfileDrawerProps {
 
 const ROLE_LABELS: Record<UserRole, string> = {
   community: "Community",
-  patient: "Patient", 
+  patient: "Patient",
   professional: "Professional",
   staff: "Staff",
   admin: "Admin",
+  developer: "Developer",
+  infra: "Infra",
 };
 
 const TENANT_LABELS: Record<TenantType, string> = {
@@ -50,7 +52,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { signOut, user } = useAuth();
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
   const { currentRole, setRole } = useRole();
-  const { roles: membershipRoles, memberships } = useMemberships(activeTenantId || undefined);
+  const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   
   const isMobile = useIsMobile();
@@ -64,14 +66,22 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     window.location.href = '/me/profile';
   };
   
-  // Admin users get access to all roles for supervision purposes
-  const availableRoles = isExafyAdmin 
-    ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
-    : membershipRoles 
-      ? membershipRoles as UserRole[]
-      : memberships && activeTenantId
-        ? [...new Set(memberships.filter(m => m.tenant_id === activeTenantId).map(m => m.role))] as UserRole[]
-        : [];
+  // VTID-01230: get_my_permitted_roles() is the canonical source.
+  // Exafy super-admin safety net: ensure all 7 roles are ALWAYS visible for
+  // super-admins, even if the RPC hasn't rolled out yet or returns an error —
+  // the role switcher must never disappear for an Exafy admin on any screen.
+  const ALL_ROLES_SUPER_ADMIN: UserRole[] = [
+    "community",
+    "patient",
+    "professional",
+    "staff",
+    "admin",
+    "developer",
+    "infra",
+  ];
+  const availableRoles: UserRole[] = isExafyAdmin
+    ? ALL_ROLES_SUPER_ADMIN
+    : ((membershipRoles ?? []) as UserRole[]);
 
   const handleRoleChange = (newRole: UserRole) => {
     setRole(newRole);
@@ -85,10 +95,15 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           navigate("/admin");
           break;
         case "professional":
-          navigate("/professional/dashboard"); 
+          navigate("/professional/dashboard");
           break;
         case "patient":
           navigate("/patient/dashboard");
+          break;
+        case "developer":
+        case "infra":
+          // Developer + infra land on home until dedicated dev surface ships
+          navigate("/home");
           break;
         case "community":
         default:

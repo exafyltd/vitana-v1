@@ -3,7 +3,6 @@ import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
-import { prefetchInboxThreads } from "@/lib/prefetchInboxThreads";
 import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
@@ -86,17 +85,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Prefetch inbox on sign-in (ORB auth is handled by useOrbVoiceWidget)
+        // Invalidate any stale global-threads cache on sign-in / token refresh
+        // so the Messages page's useGlobalMessages hook refetches fresh data
+        // when it next mounts. We intentionally do NOT prefetch here: the
+        // prefetch helper used a thinner fetch path (no fetchDirectFromChatMessages
+        // fallback) which cached a [Vitana-bot-only] result when the gateway
+        // cold-started during OAuth, leaving the user with an empty inbox until
+        // a manual refresh.
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
-
           const userId = session.user.id;
           const qc = (window as any).queryClient as QueryClient | undefined;
           if (qc) {
-            qc.prefetchQuery({
-              queryKey: ['global-threads', userId],
-              queryFn: () => prefetchInboxThreads(userId),
-              staleTime: 0,
-            }).catch(() => {});
+            qc.invalidateQueries({ queryKey: ['global-threads', userId] }).catch(() => {});
           }
         }
       }

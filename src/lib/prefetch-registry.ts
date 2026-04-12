@@ -6,7 +6,6 @@ import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
-import { prefetchInboxThreads } from '@/lib/prefetchInboxThreads';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -126,12 +125,10 @@ export async function prefetchForPath(
     });
   }
 
-  // Inbox prefetch - re-enabled with proper queryFn that matches hook shape
-  if (path.startsWith('/inbox') && userId) {
-    await queryClient.prefetchQuery({
-      queryKey: ['global-threads', userId],
-      queryFn: () => prefetchInboxThreads(userId),
-      staleTime: 0,
-    });
-  }
+  // Inbox prefetch intentionally removed: prefetchInboxThreads used a thinner
+  // fetch path than useGlobalMessages (no fetchDirectFromChatMessages fallback),
+  // so on gateway cold-start it cached a [Vitana-bot-only] result that the hook
+  // then read as "fresh" and refused to refetch, leaving the inbox empty until
+  // a manual page refresh. The hook handles fetching on mount; chatPersistCache
+  // provides instant paint on subsequent visits.
 }
