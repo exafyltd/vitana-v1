@@ -23,8 +23,8 @@ export default function Uploads() {
   const moderate = useModerateContent();
 
   const filtered = items.filter((item) => {
-    if (statusFilter !== "all" && item.moderation_status !== statusFilter) return false;
-    if (typeFilter !== "all" && item.content_type !== typeFilter) return false;
+    if (statusFilter !== "all" && item.status !== statusFilter) return false;
+    if (typeFilter !== "all" && item.media_type !== typeFilter) return false;
     if (search && !item.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -43,7 +43,7 @@ export default function Uploads() {
     { label: "Rejected", value: stats?.by_status?.rejected ?? 0, variant: "error" as const },
   ];
 
-  const typeOptions = Array.from(new Set(items.map((i) => i.content_type))).map((t) => ({
+  const typeOptions = Array.from(new Set(items.map((i) => i.media_type))).map((t) => ({
     value: t, label: t.charAt(0).toUpperCase() + t.slice(1),
   }));
 
@@ -109,14 +109,14 @@ export default function Uploads() {
                 {filtered.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium max-w-[200px] truncate">{item.title}</TableCell>
-                    <TableCell className="capitalize text-sm">{item.content_type}</TableCell>
+                    <TableCell className="capitalize text-sm">{item.media_type}</TableCell>
                     <TableCell>
-                      <AdminStatusBadge variant={statusVariant(item.moderation_status)}>
-                        {item.moderation_status}
+                      <AdminStatusBadge variant={statusVariant(item.status)}>
+                        {item.status}
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(item.submitted_at).toLocaleDateString()}
+                      {new Date(item.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right space-x-1">
                       <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>Approve</Button>

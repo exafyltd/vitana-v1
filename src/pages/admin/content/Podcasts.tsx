@@ -66,12 +66,12 @@ export default function Podcasts() {
                   <TableRow key={p.id}>
                     <TableCell className="font-medium max-w-[200px] truncate">{p.title}</TableCell>
                     <TableCell>
-                      <AdminStatusBadge variant={statusVariant(p.moderation_status)}>
-                        {p.moderation_status}
+                      <AdminStatusBadge variant={statusVariant(p.status)}>
+                        {p.status}
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(p.submitted_at).toLocaleDateString()}
+                      {new Date(p.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       {p.external_url ? (

@@ -9,21 +9,17 @@ import { useTenant } from "@/hooks/useTenant";
 
 export interface ContentItem {
   id: string;
-  tenant_id: string;
-  content_type: string;
   title: string;
   description: string | null;
-  external_url: string | null;
+  media_type: string;          // video, podcast, music
+  media_url: string | null;
   thumbnail_url: string | null;
-  tags: string[];
-  category: string | null;
-  moderation_status: "pending" | "approved" | "rejected" | "flagged";
-  moderation_note: string | null;
-  moderated_by: string | null;
-  moderated_at: string | null;
-  submitted_by: string;
-  submitted_at: string;
-  published_at: string | null;
+  status: string;              // pending, approved, rejected, flagged
+  is_public: boolean;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  [key: string]: unknown;     // media_uploads may have additional fields
 }
 
 export interface ContentStats {

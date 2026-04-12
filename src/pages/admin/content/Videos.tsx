@@ -66,12 +66,12 @@ export default function Videos() {
                   <TableRow key={v.id}>
                     <TableCell className="font-medium max-w-[200px] truncate">{v.title}</TableCell>
                     <TableCell>
-                      <AdminStatusBadge variant={statusVariant(v.moderation_status)}>
-                        {v.moderation_status}
+                      <AdminStatusBadge variant={statusVariant(v.status)}>
+                        {v.status}
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(v.submitted_at).toLocaleDateString()}
+                      {new Date(v.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       {v.external_url ? (

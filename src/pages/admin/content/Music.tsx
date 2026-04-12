@@ -66,12 +66,12 @@ export default function Music() {
                   <TableRow key={m.id}>
                     <TableCell className="font-medium max-w-[200px] truncate">{m.title}</TableCell>
                     <TableCell>
-                      <AdminStatusBadge variant={statusVariant(m.moderation_status)}>
-                        {m.moderation_status}
+                      <AdminStatusBadge variant={statusVariant(m.status)}>
+                        {m.status}
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(m.submitted_at).toLocaleDateString()}
+                      {new Date(m.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       {m.external_url ? (
