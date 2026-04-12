@@ -1,10 +1,11 @@
 /**
- * Wave 2: Community admin hooks
- * Calls /api/v1/admin/moderation/* on the gateway
+ * Community admin hooks
+ * Calls /api/v1/admin/moderation/* and /api/v1/admin/tenants/:tenantId/community/*
  */
 
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/admin-api";
+import { useTenant } from "@/hooks/useTenant";
 
 export interface ModerationReport {
   id: string;
@@ -27,5 +28,65 @@ export function useModerationReports() {
         return [];
       }
     },
+  });
+}
+
+export function useCommunityMeetups() {
+  const { activeTenantId } = useTenant();
+  return useQuery({
+    queryKey: ["admin-community-meetups", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return [];
+      try {
+        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/meetups`);
+        return json.meetups || [];
+      } catch { return []; }
+    },
+    enabled: !!activeTenantId,
+  });
+}
+
+export function useCommunityGroups() {
+  const { activeTenantId } = useTenant();
+  return useQuery({
+    queryKey: ["admin-community-groups", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return [];
+      try {
+        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/groups`);
+        return json.groups || [];
+      } catch { return []; }
+    },
+    enabled: !!activeTenantId,
+  });
+}
+
+export function useCommunityLiveRooms() {
+  const { activeTenantId } = useTenant();
+  return useQuery({
+    queryKey: ["admin-community-live-rooms", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return [];
+      try {
+        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/live-rooms`);
+        return json.rooms || [];
+      } catch { return []; }
+    },
+    enabled: !!activeTenantId,
+  });
+}
+
+export function useCommunityCreators() {
+  const { activeTenantId } = useTenant();
+  return useQuery({
+    queryKey: ["admin-community-creators", activeTenantId],
+    queryFn: async () => {
+      if (!activeTenantId) return [];
+      try {
+        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/creators`);
+        return json.creators || [];
+      } catch { return []; }
+    },
+    enabled: !!activeTenantId,
   });
 }
