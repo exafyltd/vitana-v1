@@ -264,6 +264,19 @@ const KnowledgeTopics = lazy(() => import("./pages/admin/knowledge/Topics"));
 const KnowledgeIndexing = lazy(() => import("./pages/admin/knowledge/Indexing"));
 const KnowledgeSearchTest = lazy(() => import("./pages/admin/knowledge/SearchTest"));
 const KnowledgeGovernance = lazy(() => import("./pages/admin/knowledge/Governance"));
+// Settings section pages
+const SettingsProfile = lazy(() => import("./pages/admin/settings/Profile"));
+const SettingsBranding = lazy(() => import("./pages/admin/settings/Branding"));
+const SettingsFeatureFlags = lazy(() => import("./pages/admin/settings/FeatureFlags"));
+const SettingsIntegrations = lazy(() => import("./pages/admin/settings/Integrations"));
+const SettingsDomains = lazy(() => import("./pages/admin/settings/Domains"));
+const SettingsBilling = lazy(() => import("./pages/admin/settings/Billing"));
+// Audit & Compliance section pages
+const AuditActions = lazy(() => import("./pages/admin/audit/Actions"));
+const AuditAccess = lazy(() => import("./pages/admin/audit/Access"));
+const AuditOasisEvents = lazy(() => import("./pages/admin/audit/OasisEvents"));
+const AuditPolicies = lazy(() => import("./pages/admin/audit/Policies"));
+const AuditDataRights = lazy(() => import("./pages/admin/audit/DataRights"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -1202,6 +1215,43 @@ const App = () => {
           } />
           <Route path="/admin/knowledge/governance" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeGovernance /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Settings section */}
+          <Route path="/admin/settings/profile" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsProfile /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/settings/branding" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsBranding /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/settings/feature-flags" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsFeatureFlags /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/settings/integrations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsIntegrations /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/settings/domains" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsDomains /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/settings/billing" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><SettingsBilling /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Audit & Compliance section */}
+          <Route path="/admin/audit/actions" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AuditActions /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/access" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AuditAccess /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/events" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AuditOasisEvents /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/policies" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AuditPolicies /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/data-rights" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AuditDataRights /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 3. Notifications Section */}
