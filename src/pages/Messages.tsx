@@ -23,7 +23,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
-import { useRole } from "@/hooks/useRole";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
@@ -56,28 +55,22 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Messages() {
   const { user } = useAuth();
-  const { currentRole } = useRole();
   const { translate } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const defaultCtx = currentRole === 'community' || !currentRole ? 'global' : 'tenant';
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(defaultCtx);
+  // Always start in 'global' (Community) context — this is where conversations
+  // live for all users regardless of role.  The user can switch to 'tenant'
+  // (Network) via the mode pill.  Previously we auto-switched based on
+  // currentRole, but that caused a deterministic empty-inbox bug: on
+  // navigation-back the role is already cached as e.g. 'admin', so
+  // messageContext initialized to 'tenant' whose query has no data, while
+  // on full refresh the role loads async and the switch was accidentally
+  // skipped via roleLoadedRef — making it look like refresh "fixed" it.
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
 
-  const roleLoadedRef = React.useRef(false);
   const userSelectedContextRef = React.useRef(false);
-  useEffect(() => {
-    if (currentRole && !roleLoadedRef.current) {
-      roleLoadedRef.current = true;
-      // Don't override if the user already manually selected a tab
-      if (userSelectedContextRef.current) return;
-      const correctCtx = currentRole === 'community' ? 'global' : 'tenant';
-      if (correctCtx !== messageContext) {
-        setMessageContext(correctCtx);
-      }
-    }
-  }, [currentRole]);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
