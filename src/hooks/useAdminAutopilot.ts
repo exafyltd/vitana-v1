@@ -104,6 +104,65 @@ export interface RecommendationSummary {
   total: number;
 }
 
+// ── Wave definitions ─────────────────────────────────────────
+
+export interface WaveTimeline {
+  start_day: number;
+  end_day: number;
+}
+
+export interface WaveAutomation {
+  id: string;
+  name: string;
+  status: string;
+  enabled: boolean;
+}
+
+export interface WaveDefinition {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  enabled: boolean;
+  order: number;
+  is_initiative: boolean;
+  timeline: WaveTimeline;
+  automation_ids: string[];
+  recommendation_templates: string[];
+  automations: WaveAutomation[];
+  total_automations: number;
+  enabled_automations: number;
+  implemented_automations: number;
+  total_templates: number;
+}
+
+export function useAutopilotWaves() {
+  return useQuery({
+    queryKey: ["admin-autopilot-waves"],
+    queryFn: async () => {
+      const json = await adminFetch("/api/v1/admin/autopilot/waves");
+      return json.data as WaveDefinition[];
+    },
+  });
+}
+
+export function useToggleWave() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ waveId, enabled }: { waveId: string; enabled: boolean }) => {
+      return adminFetch(`/api/v1/admin/autopilot/waves/${waveId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ enabled }),
+      });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-autopilot-waves"] });
+      qc.invalidateQueries({ queryKey: ["admin-autopilot-catalog"] });
+      qc.invalidateQueries({ queryKey: ["admin-autopilot-bindings"] });
+    },
+  });
+}
+
 // ── Settings ──────────────────────────────────────────────────
 
 export function useAutopilotSettings() {
