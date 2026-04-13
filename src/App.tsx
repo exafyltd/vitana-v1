@@ -317,6 +317,7 @@ const AdminAuditUserActivity = lazy(() => import("./pages/admin/audit/UserActivi
 const AdminAuditApiMonitor = lazy(() => import("./pages/admin/audit/ApiMonitor"));
 const AdminAuditSecurity = lazy(() => import("./pages/admin/audit/Security"));
 // VTID-AP-ADMIN: Autopilot admin
+const AdminAutopilotPlanning = lazy(() => import("./pages/admin/autopilot/Planning"));
 const AdminAutopilotRecommendations = lazy(() => import("./pages/admin/autopilot/Recommendations"));
 const AdminAutopilotAutomations = lazy(() => import("./pages/admin/autopilot/Automations"));
 const AdminAutopilotRuns = lazy(() => import("./pages/admin/autopilot/Runs"));
@@ -1456,6 +1457,9 @@ const App = () => {
           } />
 
           {/* VTID-AP-ADMIN: Autopilot admin */}
+          <Route path="/admin/autopilot/planning" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotPlanning /></ProtectedRoute></AuthGuard>
+          } />
           <Route path="/admin/autopilot/recommendations" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotRecommendations /></ProtectedRoute></AuthGuard>
           } />

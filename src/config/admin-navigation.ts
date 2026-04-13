@@ -135,9 +135,10 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     label: "Autopilot",
     icon: Zap,
     basePath: "/admin/autopilot",
-    defaultTab: "recommendations",
+    defaultTab: "planning",
     wave: 1,
     tabs: [
+      { key: "planning", label: "Planning", path: "/admin/autopilot/planning" },
       { key: "recommendations", label: "Recommendations", path: "/admin/autopilot/recommendations" },
       { key: "automations", label: "Active Automations", path: "/admin/autopilot/automations" },
       { key: "runs", label: "Runs", path: "/admin/autopilot/runs" },
