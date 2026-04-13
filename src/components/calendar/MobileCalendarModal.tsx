@@ -53,13 +53,9 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-  // Filter for booked VITANA events
+  // All user calendar events (manual, invite, imported, booked)
   const bookedEvents = useMemo(() => {
-    return events.filter(event => 
-      (event.metadata as Record<string, unknown>)?.meetup_id || 
-      (event.metadata as Record<string, unknown>)?.ticket_id ||
-      (event.source_type === 'invite' && event.status === 'confirmed')
-    ).sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+    return [...events].sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   }, [events]);
 
   // Group events by timeframe
@@ -241,7 +237,7 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
               </div>
               <div>
                 <h2 className="text-lg font-semibold">{translate('calendar.myCalendar', 'My Calendar')}</h2>
-                <p className="text-xs text-muted-foreground">{translate('calendar.bookedActivities', 'Your booked activities in VITANA')}</p>
+                <p className="text-xs text-muted-foreground">{translate('calendar.yourEvents', 'Your events & activities')}</p>
               </div>
             </div>
             <Button
