@@ -39,6 +39,9 @@ const getCategoryBadgeStyle = (type: CalendarEvent['event_type']) => {
     case 'health': return 'bg-pill-mental-tint text-pill-mental-accent';
     case 'nutrition': return 'bg-pill-nutrition-tint text-pill-nutrition-accent';
     case 'professional': return 'bg-pill-exercise-tint text-pill-exercise-accent';
+    case 'autopilot': return 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
+    case 'journey_milestone': return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
+    case 'wellness_nudge': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400';
     default: return 'bg-sys-vitana-tint text-sys-vitana-accent';
   }
 };
@@ -181,6 +184,9 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
       nutrition: translate('calendar.categories.nutrition', 'Nutrition'),
       professional: translate('calendar.categories.professional', 'Work'),
       personal: translate('calendar.categories.personal', 'Personal'),
+      autopilot: translate('calendar.categories.autopilot', 'Autopilot'),
+      journey_milestone: translate('calendar.categories.milestone', 'Milestone'),
+      wellness_nudge: translate('calendar.categories.wellness', 'Wellness'),
     };
     return labels[type] || type;
   };

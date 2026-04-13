@@ -15,7 +15,7 @@ export interface CalendarEvent {
   start_time: string;
   end_time?: string | null;
   location?: string | null;
-  event_type: 'personal' | 'community' | 'professional' | 'health' | 'workout' | 'nutrition';
+  event_type: 'personal' | 'community' | 'professional' | 'health' | 'workout' | 'nutrition' | 'autopilot' | 'journey_milestone' | 'dev_task' | 'deployment' | 'sprint_milestone' | 'admin_task' | 'wellness_nudge';
   status: 'confirmed' | 'pending' | 'conflict' | 'cancelled';
   priority: 'low' | 'medium' | 'high';
   is_recurring: boolean;
@@ -24,7 +24,7 @@ export interface CalendarEvent {
   has_rewards?: boolean | null;
   metadata?: any;
   source_message_id?: string | null;
-  source_type?: 'manual' | 'invite' | 'imported';
+  source_type?: 'manual' | 'invite' | 'imported' | 'autopilot' | 'community_rsvp' | 'assistant' | 'journey' | 'vtid' | 'ci_cd' | 'nudge_engine';
   created_at: string;
   updated_at: string;
   user_id: string;
