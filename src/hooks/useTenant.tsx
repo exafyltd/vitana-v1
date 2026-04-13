@@ -168,54 +168,59 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
     if (!user) {
       return;
     }
-    
+
     try {
-      // Use the database function to properly switch tenant context
-      const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
-        p_tenant_slug: slug
-      });
-
-      if (error) {
-        console.error('Error switching tenant:', error);
-        return;
+      // Try the RPC to update JWT app_metadata (best path)
+      let rpcOk = false;
+      try {
+        const { error } = await supabase.rpc('switch_to_tenant_by_slug', {
+          p_tenant_slug: slug
+        });
+        if (error) {
+          console.warn('[useTenant] RPC switch_to_tenant_by_slug failed, using local fallback:', error.message);
+        } else {
+          rpcOk = true;
+        }
+      } catch (rpcErr: any) {
+        console.warn('[useTenant] RPC switch_to_tenant_by_slug threw, using local fallback:', rpcErr.message);
       }
 
-      // Wait a moment for database to update, then refresh session
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      const { data: sessionData, error: refreshError } = await supabase.auth.refreshSession();
-      if (refreshError) {
-        console.error('Session refresh error:', refreshError);
-        return;
+      // If RPC succeeded, refresh session to pick up updated JWT
+      if (rpcOk) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const { error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) {
+          console.warn('[useTenant] Session refresh error:', refreshError.message);
+        }
       }
-      
-      // Get the updated tenant ID and invalidate cache
+
+      // Always resolve tenant locally (works even if RPC failed)
       const { data } = await supabase
         .from('tenants')
         .select('tenant_id, name')
         .eq('slug', slug)
         .single();
-      
+
       if (data) {
         setActiveTenantIdState(data.tenant_id);
-        
+
         // Force invalidate all tenant-related queries
         const queryClient = (window as any).queryClient;
         if (queryClient) {
           await queryClient.invalidateQueries({ queryKey: ["tenant"] });
           await queryClient.refetchQueries({ queryKey: ["tenant", data.tenant_id] });
         }
-        
+
         // Store tenant slug in localStorage for persistence
         localStorage.setItem('tenant_slug', slug);
-        
+
         // Emit tenant change event
         window.dispatchEvent(new CustomEvent("tenant.changed", {
           detail: { from: activeTenantId, to: data.tenant_id, slug: slug }
         }));
       }
     } catch (error) {
-      console.error('Error setting tenant by slug:', error);
+      console.error('[useTenant] Error setting tenant by slug:', error);
     }
   };
 

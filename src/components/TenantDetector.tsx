@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useTenantSafe } from "@/hooks/useTenant";
 import { useAuth } from "@/context/AuthProvider";
@@ -16,24 +16,38 @@ export function TenantDetector() {
 
   const setTenantBySlug = tenantCtx?.setTenantBySlug;
   const tenantSlug = tenantCtx?.tenant?.slug;
+  const activeTenantId = tenantCtx?.activeTenantId;
+
+  // Guard: track in-flight call and last attempted slug to prevent duplicate calls
+  const inFlightRef = useRef(false);
+  const lastAttemptedSlugRef = useRef<string | null>(null);
+
+  const getTenantSlugFromPath = useCallback((): string | null => {
+    if (location.pathname.startsWith('/maxina')) return 'maxina';
+    if (location.pathname.startsWith('/alkalma')) return 'alkalma';
+    if (location.pathname.startsWith('/earthlinks')) return 'earthlinks';
+    return null;
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!setTenantBySlug) return;
 
-    const getTenantSlugFromPath = (): string | null => {
-      if (location.pathname.startsWith('/maxina')) return 'maxina';
-      if (location.pathname.startsWith('/alkalma')) return 'alkalma';
-      if (location.pathname.startsWith('/earthlinks')) return 'earthlinks';
-      return null;
-    };
-
     const urlTenantSlug = getTenantSlugFromPath();
-    
-    if (urlTenantSlug && tenantSlug !== urlTenantSlug) {
-      console.debug('[TenantDetector] Switching to', urlTenantSlug, 'user:', !!user);
-      setTenantBySlug(urlTenantSlug);
-    }
-  }, [location.pathname, setTenantBySlug, tenantSlug, user]);
+
+    // Already resolved or already in-flight for this slug — skip
+    if (!urlTenantSlug) return;
+    if (tenantSlug === urlTenantSlug) return;
+    if (activeTenantId && lastAttemptedSlugRef.current === urlTenantSlug) return;
+    if (inFlightRef.current) return;
+
+    console.debug('[TenantDetector] Switching to', urlTenantSlug, 'user:', !!user);
+    inFlightRef.current = true;
+    lastAttemptedSlugRef.current = urlTenantSlug;
+
+    setTenantBySlug(urlTenantSlug).finally(() => {
+      inFlightRef.current = false;
+    });
+  }, [location.pathname, setTenantBySlug, tenantSlug, activeTenantId, user, getTenantSlugFromPath]);
 
   return null;
 }

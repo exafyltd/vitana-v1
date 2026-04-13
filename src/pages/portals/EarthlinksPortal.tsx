@@ -15,12 +15,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
-import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 
 const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
-  const { getRedirectUrl } = useRoleBasedRedirect();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -38,7 +36,7 @@ const EarthlinksPortal = () => {
     if (!authLoading && user && !loading) {
       // If user is already authenticated, switch to earthlinks tenant and redirect
       setTenantBySlug('earthlinks').then(() => {
-        navigate(getRedirectUrl());
+        navigate('/comm/events-meetups?tab=hot');
       });
     }
   }, [user, authLoading, navigate, loading, setTenantBySlug]);
@@ -80,8 +78,8 @@ const EarthlinksPortal = () => {
         await supabase.auth.refreshSession();
         console.log('Session refreshed with updated tenant context');
         
-        // Now navigate to home
-        navigate(getRedirectUrl());
+        // Now navigate to events
+        navigate('/comm/events-meetups?tab=hot');
       } catch (switchError) {
         console.error('Error switching tenant after login:', switchError);
         setError("Login successful but failed to switch to Earthlinks tenant. Please try refreshing the page.");
