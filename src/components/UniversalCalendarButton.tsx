@@ -25,7 +25,8 @@ export function UniversalCalendarButton({
   showText = true
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const { events, getUpcomingEvents } = useCalendarEvents();
+  const calendarHook = useCalendarEvents();
+  const { events, getUpcomingEvents } = calendarHook;
   const { open } = useSidebarSafe();
   const { translate } = useTranslation();
   
@@ -68,9 +69,10 @@ export function UniversalCalendarButton({
         )}
       </div>
 
-      <EnhancedCalendarPopup 
-        open={calendarOpen} 
-        onOpenChange={setCalendarOpen} 
+      <EnhancedCalendarPopup
+        open={calendarOpen}
+        onOpenChange={setCalendarOpen}
+        calendarHook={calendarHook}
       />
     </>
   );

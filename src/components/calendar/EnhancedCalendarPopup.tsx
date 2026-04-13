@@ -64,6 +64,8 @@ interface EnhancedCalendarPopupProps {
   onOpenChange: (open: boolean) => void;
   initialDate?: Date | null;
   initialView?: 'today' | 'week' | 'month';
+  /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
+  calendarHook?: ReturnType<typeof import('@/hooks/useCalendarEvents').useCalendarEvents>;
 }
 
 // Category color mapping using design tokens
@@ -103,16 +105,18 @@ const getCategoryBadge = (type: CalendarEvent['event_type']) => {
   }
 };
 
-export function EnhancedCalendarPopup({ 
-  open, 
+export function EnhancedCalendarPopup({
+  open,
   onOpenChange,
   initialDate,
-  initialView = 'today'
+  initialView = 'today',
+  calendarHook,
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
   const { translate, isGerman } = useTranslation();
   const isMobile = useIsMobile();
-  const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
+  const ownHook = useCalendarEvents();
+  const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = calendarHook ?? ownHook;
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
   const [activeTab, setActiveTab] = useState<'today' | 'week' | 'month'>(initialView);
