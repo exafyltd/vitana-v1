@@ -3,7 +3,7 @@
  * Calls /api/v1/admin/moderation/* and /api/v1/admin/tenants/:tenantId/community/*
  */
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/admin-api";
 import { useTenant } from "@/hooks/useTenant";
 
@@ -88,5 +88,21 @@ export function useCommunityCreators() {
       } catch { return []; }
     },
     enabled: !!activeTenantId,
+  });
+}
+
+export function useDeleteEvent() {
+  const { activeTenantId } = useTenant();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (eventId: string) => {
+      if (!activeTenantId) throw new Error("NO_TENANT");
+      return adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/meetups/${eventId}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-community-meetups"] });
+    },
   });
 }
