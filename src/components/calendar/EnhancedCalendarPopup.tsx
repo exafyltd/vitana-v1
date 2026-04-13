@@ -165,7 +165,7 @@ export function EnhancedCalendarPopup({
         has_rewards: false,
         source_type: 'manual',
         user_id: ''
-      });
+      }, { showToast: false });
 
       setShowQuickAdd(false);
       toast({
@@ -340,9 +340,16 @@ export function EnhancedCalendarPopup({
     return () => window.removeEventListener('keydown', handleKeyboard);
   }, [open, activeTab]);
 
-  // Render mobile-optimized modal on mobile devices
+  // Render mobile-optimized modal on mobile devices — pass hook data
+  // to avoid duplicate useCalendarEvents instances and Supabase subscriptions
   if (isMobile) {
-    return <MobileCalendarModal open={open} onOpenChange={onOpenChange} />;
+    return (
+      <MobileCalendarModal
+        open={open}
+        onOpenChange={onOpenChange}
+        calendarHook={{ events, loading, addEvent, fetchEvents }}
+      />
+    );
   }
 
   return (

@@ -13,13 +13,22 @@ import {
 import { useCalendarEvents, CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
-import { NaturalLanguageInput } from "./NaturalLanguageInput";
+import { MobileEventForm } from "./MobileEventForm";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+
+interface CalendarHookData {
+  events: CalendarEvent[];
+  loading: boolean;
+  addEvent: (eventData: Omit<CalendarEvent, 'id' | 'created_at' | 'updated_at'>, options?: { showToast?: boolean }) => Promise<any>;
+  fetchEvents: () => Promise<void>;
+}
 
 interface MobileCalendarModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
+  calendarHook?: CalendarHookData;
 }
 
 // Category styling utilities
@@ -42,11 +51,13 @@ const getStatusPillStyle = (status: string) => {
   }
 };
 
-export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalProps) {
+export function MobileCalendarModal({ open, onOpenChange, calendarHook }: MobileCalendarModalProps) {
   const { translate, isGerman } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { events, loading, addEvent, fetchEvents } = useCalendarEvents();
+  // Reuse parent's hook to avoid duplicate Supabase subscriptions and state divergence
+  const ownHook = useCalendarEvents();
+  const { events, loading, addEvent, fetchEvents } = calendarHook ?? ownHook;
   
   const [activeTab, setActiveTab] = useState<'agenda' | 'month'>('agenda');
   const [showQuickAdd, setShowQuickAdd] = useState(false);
@@ -61,9 +72,10 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
   // Group events by timeframe
   const groupedEvents = useMemo(() => {
     const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const tomorrow = addDays(now, 1);
     const weekEnd = endOfWeek(now);
-    
+
     return {
       today: bookedEvents.filter(e => isSameDay(new Date(e.start_time), now)),
       tomorrow: bookedEvents.filter(e => isSameDay(new Date(e.start_time), tomorrow)),
@@ -71,7 +83,11 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
         const date = new Date(e.start_time);
         return isAfter(date, tomorrow) && isBefore(date, weekEnd) && !isSameDay(date, tomorrow);
       }),
-      later: bookedEvents.filter(e => isAfter(new Date(e.start_time), weekEnd))
+      later: bookedEvents.filter(e => isAfter(new Date(e.start_time), weekEnd)),
+      past: bookedEvents.filter(e => {
+        const date = new Date(e.start_time);
+        return isBefore(date, today) && !isSameDay(date, now);
+      }),
     };
   }, [bookedEvents]);
 
@@ -119,7 +135,7 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
         has_rewards: false,
         source_type: 'manual',
         user_id: ''
-      });
+      }, { showToast: false });
       setShowQuickAdd(false);
       toast({
         title: translate('calendar.toasts.eventCreated', 'Event created'),
@@ -250,12 +266,13 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
             </Button>
           </div>
           
-          {/* Quick Add */}
+          {/* Event creation form */}
           {showQuickAdd && (
             <div className="pt-3 mt-3 border-t">
-              <NaturalLanguageInput
-                onEventCreate={handleEventCreate}
+              <MobileEventForm
+                onSubmit={handleEventCreate}
                 onCancel={() => setShowQuickAdd(false)}
+                initialDate={selectedDay ?? undefined}
               />
             </div>
           )}
@@ -329,6 +346,7 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
                   <AgendaGroup title={translate('calendar.timeGroups.tomorrow', 'Tomorrow')} events={groupedEvents.tomorrow} />
                   <AgendaGroup title={translate('calendar.timeGroups.thisWeek', 'This Week')} events={groupedEvents.thisWeek} />
                   <AgendaGroup title={translate('calendar.timeGroups.later', 'Later')} events={groupedEvents.later} />
+                  <AgendaGroup title={translate('calendar.timeGroups.past', 'Past')} events={groupedEvents.past} />
                 </>
               ) : (
                 <div className="text-center py-10">
@@ -397,9 +415,20 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
               {/* Selected Day Events */}
               {selectedDay && (
                 <div className="border-t pt-4">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
-                    {format(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
-                  </p>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">
+                      {format(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
+                    </p>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-7 gap-1 text-xs"
+                      onClick={() => setShowQuickAdd(true)}
+                    >
+                      <Plus className="w-3 h-3" />
+                      {translate('calendar.addEvent', 'Add Event')}
+                    </Button>
+                  </div>
                   {selectedDayEvents.length > 0 ? (
                     <div className="bg-card rounded-xl border p-2">
                       {selectedDayEvents.map(event => (

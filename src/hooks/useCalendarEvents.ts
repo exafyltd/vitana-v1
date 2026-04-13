@@ -92,7 +92,9 @@ export function useCalendarEvents() {
 
       const authUser = (await supabase.auth.getUser()).data.user;
       if (!authUser) {
-        setEvents([]);
+        // Don't wipe existing events during transient auth hiccups (token refresh).
+        // Only clear on first load when there's genuinely no user.
+        setEvents(prev => prev.length > 0 ? prev : []);
         return;
       }
 
@@ -105,11 +107,12 @@ export function useCalendarEvents() {
       if (error) throw error;
 
       // Cast the data to match our interface
-      setEvents((data || []) as CalendarEvent[]);
+      setEvents((data ?? []) as CalendarEvent[]);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch calendar events';
       setError(errorMessage);
       console.error('Error fetching calendar events:', err);
+      // Don't wipe events on fetch error — keep whatever we had
     } finally {
       setLoading(false);
     }
