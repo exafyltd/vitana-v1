@@ -224,21 +224,22 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
             </div>
           </div>
 
-          {/* Event creation form */}
-          {showQuickAdd && (
-            <div className="pt-3 mt-3 border-t">
-              <MobileEventForm
-                onSubmit={handleEventCreate}
-                onCancel={() => setShowQuickAdd(false)}
-                initialDate={selectedDay ?? undefined}
-              />
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Scrollable Body + FAB container */}
         <div className="flex-1 relative overflow-hidden">
           <div className="h-full overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch] px-4 py-4 pb-20">
+
+            {/* Event creation form — takes over the content area */}
+            {showQuickAdd ? (
+              <MobileEventForm
+                onSubmit={handleEventCreate}
+                onCancel={() => setShowQuickAdd(false)}
+                initialDate={selectedDay ?? undefined}
+              />
+            ) : (
+            <>
             {/* Date + Today's Focus */}
             <div className="mb-2">
               <p className="text-sm font-semibold">{format(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
@@ -397,6 +398,8 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   </div>
                 )}
               </>
+            )}
+            </>
             )}
           </div>
 
