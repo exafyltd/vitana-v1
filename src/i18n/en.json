@@ -295,6 +295,31 @@
     },
     "error": {
       "failedToCreate": "Failed to create event"
+    },
+    "allDay": "All day",
+    "milestoneToday": "Milestone",
+    "focus": {
+      "todaysFocus": "Today's focus",
+      "lightDay": "Light day — explore activities or catch up on your diary",
+      "moreSteps": "more steps"
+    },
+    "badge": {
+      "guidedStep": "Guided step",
+      "milestone": "Milestone",
+      "wellness": "Wellness"
+    },
+    "action": {
+      "start": "Start",
+      "continue": "Continue",
+      "join": "Join",
+      "details": "Details",
+      "viewPlan": "View plan",
+      "open": "Open",
+      "done": "Done"
+    },
+    "group": {
+      "stepsRemaining": "steps remaining",
+      "min": "min"
     }
   },
   "liveRooms": {
