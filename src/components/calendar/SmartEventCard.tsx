@@ -19,7 +19,7 @@ export function SmartEventCard({ event, onEventClick, onAction, showDate = false
   const { translate } = useTranslation();
   const badge = getSmartBadge(event, translate);
   const action = getEventAction(event, translate);
-  const isCompleted = (event as any).completion_status === 'completed';
+  const isCompleted = event.completion_status === 'completed';
   const allDay = isAllDayEvent(event);
 
   const formatTime = () => {
