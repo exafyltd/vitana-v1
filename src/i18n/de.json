@@ -295,6 +295,31 @@
     },
     "error": {
       "failedToCreate": "Event konnte nicht erstellt werden"
+    },
+    "allDay": "Ganztägig",
+    "milestoneToday": "Meilenstein",
+    "focus": {
+      "todaysFocus": "Heutiger Fokus",
+      "lightDay": "Ruhiger Tag — entdecke Aktivitäten oder schreibe Tagebuch",
+      "moreSteps": "weitere Schritte"
+    },
+    "badge": {
+      "guidedStep": "Geführter Schritt",
+      "milestone": "Meilenstein",
+      "wellness": "Wohlbefinden"
+    },
+    "action": {
+      "start": "Starten",
+      "continue": "Fortfahren",
+      "join": "Beitreten",
+      "details": "Details",
+      "viewPlan": "Plan ansehen",
+      "open": "Öffnen",
+      "done": "Erledigt"
+    },
+    "group": {
+      "stepsRemaining": "Schritte übrig",
+      "min": "Min"
     }
   },
   "liveRooms": {
