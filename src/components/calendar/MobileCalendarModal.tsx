@@ -223,8 +223,6 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
               <p className="text-xs text-muted-foreground">{translate('calendar.yourEvents', 'Your events & activities')}</p>
             </div>
           </div>
-
-          </div>
         </div>
 
         {/* Scrollable Body + FAB container */}
