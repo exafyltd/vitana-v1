@@ -62,11 +62,12 @@ export function OnboardingPlanCard({
             </div>
           </AccordionTrigger>
 
-          {/* Start plan button — always visible */}
-          <div className="px-3 pb-2.5 -mt-1">
+          {/* Start plan button — subtle, right-aligned */}
+          <div className="px-3 pb-2.5 -mt-1 flex justify-end">
             <Button
               size="sm"
-              className="w-full h-8 text-xs"
+              variant="secondary"
+              className="h-7 text-xs px-4"
               onClick={(e) => {
                 e.stopPropagation();
                 onStartPlan();
