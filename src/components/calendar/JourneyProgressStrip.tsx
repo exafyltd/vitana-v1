@@ -19,9 +19,12 @@ export function JourneyProgressStrip({ progress, milestoneEvents }: JourneyProgr
     .filter(e => new Date(e.start_time) > new Date() && e.status !== 'cancelled')
     .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())[0];
 
-  const dayLabel = translate('calendar.journey.dayOf', 'Day {day} of {total}')
-    .replace('{day}', String(progress.dayNumber))
-    .replace('{total}', '90');
+  // dayNumber=0 means fallback mode (account older than 90 days, using completion-based progress)
+  const dayLabel = progress.dayNumber > 0
+    ? translate('calendar.journey.dayOf', 'Day {day} of {total}')
+        .replace('{day}', String(progress.dayNumber))
+        .replace('{total}', '90')
+    : translate('calendar.journey.yourJourney', 'Your journey');
 
   const waveName = translate(progress.wave.nameKey, progress.wave.name);
 

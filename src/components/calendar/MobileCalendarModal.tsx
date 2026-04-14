@@ -48,7 +48,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [showFullAgenda, setShowFullAgenda] = useState(false);
 
-  const journeyProgress = useJourneyProgress();
+  const journeyProgress = useJourneyProgress(events);
 
   // Separate milestone events for the progress strip
   const milestoneEvents = useMemo(() => {
