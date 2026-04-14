@@ -36,9 +36,9 @@ export function useMemberships(tenantId?: string) {
         // one isn't yet deployed to this Supabase instance, so the role
         // switcher never disappears during the rollout.
         try {
-          const { data, error } = await supabase.rpc("get_my_permitted_roles");
+          const { data, error } = await supabase.rpc("get_my_permitted_roles" as any);
           if (error) throw error;
-          const payload = data as PermittedRolesResponse | null;
+          const payload = data as unknown as PermittedRolesResponse | null;
           if (!payload?.ok) throw new Error(payload?.error || "FAILED_TO_LOAD_ROLES");
           return payload.roles ?? [];
         } catch (primaryErr) {

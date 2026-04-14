@@ -75,7 +75,7 @@ export default function Videos() {
                     </TableCell>
                     <TableCell>
                       {v.external_url ? (
-                        <a href={v.external_url} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
+                        <a href={v.external_url as string} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
                           Link
                         </a>
                       ) : (

@@ -75,7 +75,7 @@ export default function Music() {
                     </TableCell>
                     <TableCell>
                       {m.external_url ? (
-                        <a href={m.external_url} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
+                        <a href={m.external_url as string} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
                           Link
                         </a>
                       ) : (
