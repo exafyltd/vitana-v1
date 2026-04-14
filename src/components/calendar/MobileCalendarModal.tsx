@@ -44,9 +44,11 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
-  // All user calendar events sorted chronologically
+  // All user calendar events sorted chronologically (hide journey milestones — Wave 2 will surface them via progress bar)
   const bookedEvents = useMemo(() => {
-    return [...events].sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+    return [...events]
+      .filter(e => e.event_type !== 'journey_milestone')
+      .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
   }, [events]);
 
   // Group events by timeframe
