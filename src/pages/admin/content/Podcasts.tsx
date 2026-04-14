@@ -75,7 +75,7 @@ export default function Podcasts() {
                     </TableCell>
                     <TableCell>
                       {p.external_url ? (
-                        <a href={p.external_url} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
+                        <a href={p.external_url as string} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
                           Link
                         </a>
                       ) : (

@@ -205,11 +205,7 @@ export default function AutopilotPlanning() {
       <div className="p-6">
         <AdminHeader
           title="Autopilot Planning"
-          description="Configure autopilot waves for your community's journey"
-          badges={[
-            { label: `${activeCount}/${waves.length} waves active`, variant: "default" },
-            { label: `${enabledAP}/${totalAP} automations enabled`, variant: "secondary" },
-          ]}
+          description={`Configure autopilot waves — ${activeCount}/${waves.length} active, ${enabledAP}/${totalAP} automations enabled`}
         />
 
         {wavesQuery.isLoading ? (
