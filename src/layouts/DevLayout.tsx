@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { DevSidebar } from "@/components/dev/DevSidebar";
@@ -10,7 +10,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ActiveVTIDProvider } from "@/context/ActiveVTIDContext";
-import { useRole } from "@/hooks/useRole";
+import { useRole, UserRole } from "@/hooks/useRole";
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -22,12 +22,32 @@ export default function DevLayout({ children }: DevLayoutProps) {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { currentRole, setRole, isLoading: roleLoading } = useRole();
 
+  // Keep a ref to the latest setRole so the unmount cleanup always uses the current version
+  const setRoleRef = useRef(setRole);
+  setRoleRef.current = setRole;
+
+  // Remember the role the user had before entering Command Hub
+  const previousRoleRef = useRef<UserRole | null>(null);
+
   // Auto-set role to admin when entering Command Hub
   useEffect(() => {
     if (!roleLoading && currentRole !== 'admin') {
+      if (previousRoleRef.current === null) {
+        previousRoleRef.current = currentRole as UserRole;
+      }
       setRole('admin');
     }
   }, [roleLoading, currentRole]);
+
+  // Restore previous role when leaving Command Hub
+  useEffect(() => {
+    return () => {
+      const prev = previousRoleRef.current;
+      if (prev && prev !== 'admin') {
+        setRoleRef.current(prev);
+      }
+    };
+  }, []);
 
   // Sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
