@@ -17,6 +17,9 @@ import { groupAutopilotEvents, EventActionType } from "./calendarSmartUtils";
 import { TodayFocusStrip } from "./TodayFocusStrip";
 import { SmartEventCard } from "./SmartEventCard";
 import { AutopilotTaskGroup } from "./AutopilotTaskGroup";
+import { JourneyProgressStrip } from "./JourneyProgressStrip";
+import { OnboardingPlanCard } from "./OnboardingPlanCard";
+import { useJourneyProgress, bundleOnboardingPlan } from "@/hooks/useJourneyProgress";
 
 interface CalendarHookData {
   events: CalendarEvent[];
@@ -43,8 +46,16 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [showFullAgenda, setShowFullAgenda] = useState(false);
 
-  // All user calendar events sorted chronologically (hide journey milestones — Wave 2 will surface them via progress bar)
+  const journeyProgress = useJourneyProgress();
+
+  // Separate milestone events for the progress strip
+  const milestoneEvents = useMemo(() => {
+    return events.filter(e => e.event_type === 'journey_milestone');
+  }, [events]);
+
+  // All user calendar events sorted chronologically (milestones shown via progress strip, not event list)
   const bookedEvents = useMemo(() => {
     return [...events]
       .filter(e => e.event_type !== 'journey_milestone')
@@ -148,8 +159,13 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
     handleEventClick(event);
   };
 
+  // Today's onboarding plan bundle
+  const onboardingPlan = useMemo(() => {
+    return bundleOnboardingPlan(groupedEvents.today);
+  }, [groupedEvents.today]);
+
   // Render a group of events with autopilot collapsing
-  const renderEventGroup = (title: string, groupEvents: CalendarEvent[]) => {
+  const renderEventGroup = (title: string, groupEvents: CalendarEvent[], isToday = false) => {
     if (groupEvents.length === 0) return null;
 
     const { groups, regularEvents } = groupAutopilotEvents(groupEvents);
@@ -158,14 +174,26 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
       <div className="mb-4">
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 px-1">{title}</h3>
         <div className="bg-card rounded-xl border p-2">
-          {groups.map(group => (
-            <AutopilotTaskGroup
-              key={group.id}
-              group={group}
+          {isToday && onboardingPlan && onboardingPlan.tasks.length > 0 ? (
+            <OnboardingPlanCard
+              tasks={onboardingPlan.tasks}
+              totalMinutes={onboardingPlan.totalMinutes}
+              completedCount={onboardingPlan.completedCount}
+              totalCount={onboardingPlan.totalCount}
+              onStartPlan={() => onboardingPlan.tasks[0] && handleEventAction(onboardingPlan.tasks[0], 'start')}
               onEventClick={handleEventClick}
               onAction={handleEventAction}
             />
-          ))}
+          ) : (
+            groups.map(group => (
+              <AutopilotTaskGroup
+                key={group.id}
+                group={group}
+                onEventClick={handleEventClick}
+                onAction={handleEventAction}
+              />
+            ))
+          )}
           {regularEvents.map(event => (
             <SmartEventCard
               key={event.id}
@@ -222,6 +250,14 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
               onEventClick={handleEventClick}
             />
 
+            {/* Journey Progress */}
+            {journeyProgress && (
+              <JourneyProgressStrip
+                progress={journeyProgress}
+                milestoneEvents={milestoneEvents}
+              />
+            )}
+
             {/* Agenda / Month toggle */}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -245,10 +281,19 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
               <>
                 {bookedEvents.length > 0 ? (
                   <>
-                    {renderEventGroup(translate('calendar.timeGroups.today', 'Today'), groupedEvents.today)}
+                    {renderEventGroup(translate('calendar.timeGroups.today', 'Today'), groupedEvents.today, true)}
                     {renderEventGroup(translate('calendar.timeGroups.tomorrow', 'Tomorrow'), groupedEvents.tomorrow)}
                     {renderEventGroup(translate('calendar.timeGroups.thisWeek', 'This Week'), groupedEvents.thisWeek)}
-                    {renderEventGroup(translate('calendar.timeGroups.later', 'Later'), groupedEvents.later)}
+                    {showFullAgenda || !journeyProgress ? (
+                      renderEventGroup(translate('calendar.timeGroups.later', 'Later'), groupedEvents.later)
+                    ) : groupedEvents.later.length > 0 ? (
+                      <button
+                        onClick={() => setShowFullAgenda(true)}
+                        className="text-xs text-primary font-medium px-1 mb-4 hover:underline"
+                      >
+                        {translate('calendar.journey.showFullAgenda', 'Show full agenda')} ({groupedEvents.later.length} {translate('calendar.journey.moreEvents', 'more events')})
+                      </button>
+                    ) : null}
                     {renderEventGroup(translate('calendar.timeGroups.past', 'Past'), groupedEvents.past)}
                   </>
                 ) : (

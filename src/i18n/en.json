@@ -320,6 +320,25 @@
     "group": {
       "stepsRemaining": "steps remaining",
       "min": "min"
+    },
+    "journey": {
+      "dayOf": "Day {day} of {total}",
+      "yourJourney": "Your journey",
+      "nextMilestone": "Next milestone",
+      "showFullAgenda": "Show full agenda",
+      "moreEvents": "more events",
+      "onboardingPlan": "Today's onboarding plan",
+      "estimatedTime": "~{minutes} min",
+      "startPlan": "Start plan",
+      "tasksCompleted": "{completed}/{total} done",
+      "waveNames": {
+        "wave-1": "Getting Started",
+        "wave-2": "Daily Anchors",
+        "wave-3": "Deepening Connections",
+        "wave-4": "Health Intelligence",
+        "wave-5": "Insight Moments",
+        "wave-6": "Recommendations & Discovery"
+      }
     }
   },
   "liveRooms": {

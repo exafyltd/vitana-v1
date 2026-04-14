@@ -78,8 +78,8 @@ export function getEventAction(event: CalendarEvent, translate: TranslateFn): {
   action: EventActionType;
 } {
   const meta = event.metadata as Record<string, unknown> | null;
-  const completionStatus = (event as any).completion_status as string | undefined;
-  const activatedAt = (event as any).activated_at as string | undefined;
+  const completionStatus = event.completion_status as string | undefined;
+  const activatedAt = event.activated_at as string | undefined;
 
   if (completionStatus === 'completed') {
     return { label: translate('calendar.action.done', 'Done'), variant: 'ghost', action: 'done' };

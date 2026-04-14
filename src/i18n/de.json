@@ -320,6 +320,25 @@
     "group": {
       "stepsRemaining": "Schritte übrig",
       "min": "Min"
+    },
+    "journey": {
+      "dayOf": "Tag {day} von {total}",
+      "yourJourney": "Deine Reise",
+      "nextMilestone": "Nächster Meilenstein",
+      "showFullAgenda": "Gesamte Agenda anzeigen",
+      "moreEvents": "weitere Events",
+      "onboardingPlan": "Heutiger Onboarding-Plan",
+      "estimatedTime": "~{minutes} Min",
+      "startPlan": "Plan starten",
+      "tasksCompleted": "{completed}/{total} erledigt",
+      "waveNames": {
+        "wave-1": "Erste Schritte",
+        "wave-2": "Tägliche Anker",
+        "wave-3": "Verbindungen vertiefen",
+        "wave-4": "Gesundheitsintelligenz",
+        "wave-5": "Erkenntnismomente",
+        "wave-6": "Empfehlungen & Entdeckung"
+      }
     }
   },
   "liveRooms": {

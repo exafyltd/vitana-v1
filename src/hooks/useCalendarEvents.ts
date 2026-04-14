@@ -28,6 +28,18 @@ export interface CalendarEvent {
   created_at: string;
   updated_at: string;
   user_id: string;
+  // Intelligent Calendar columns
+  activated_at?: string | null;
+  completed_at?: string | null;
+  completion_status?: 'completed' | 'skipped' | 'partial' | null;
+  completion_notes?: string | null;
+  original_start_time?: string | null;
+  reschedule_count?: number;
+  priority_score?: number;
+  wellness_tags?: string[];
+  role_context?: string;
+  source_ref_id?: string | null;
+  source_ref_type?: string | null;
 }
 
 export interface CalendarInviteResponse {
@@ -41,7 +53,7 @@ export interface CalendarInviteResponse {
 
 
 // Allowed enums and helpers for validation
-const ALLOWED_EVENT_TYPES = new Set(['personal','community','professional','health','workout','nutrition']);
+const ALLOWED_EVENT_TYPES = new Set(['personal','community','professional','health','workout','nutrition','autopilot','journey_milestone','dev_task','deployment','sprint_milestone','admin_task','wellness_nudge']);
 const ALLOWED_STATUSES = new Set(['confirmed','pending','conflict','cancelled']);
 const ALLOWED_PRIORITIES = new Set(['low','medium','high']);
 
@@ -62,7 +74,7 @@ const eventSchema = z.object({
   has_rewards: z.boolean().optional().nullable(),
   metadata: z.any().optional(),
   source_message_id: z.string().uuid().optional().nullable(),
-  source_type: z.enum(['manual','invite','imported']).optional(),
+  source_type: z.enum(['manual','invite','imported','autopilot','community_rsvp','assistant','journey','vtid','ci_cd','nudge_engine']).optional(),
   user_id: z.string().uuid().optional(),
 });
 
