@@ -8,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
-  ResponsiveDialogClose,
 } from "@/components/ui/responsive-dialog";
 import { useCalendarEvents, CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -246,30 +245,19 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent 
+      <ResponsiveDialogContent
         className="h-[92vh] max-h-[92vh] flex flex-col p-0 gap-0"
-        hideCloseButton
       >
         {/* Sticky Header */}
-        <div className="sticky top-0 z-10 bg-background px-4 pt-4 pb-3 border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-util-calendar-tint flex items-center justify-center border border-util-calendar-accent/20">
-                <Calendar className="w-4 h-4 text-util-calendar-accent" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold">{translate('calendar.myCalendar', 'My Calendar')}</h2>
-                <p className="text-xs text-muted-foreground">{translate('calendar.yourEvents', 'Your events & activities')}</p>
-              </div>
+        <div className="sticky top-0 z-10 bg-background px-4 pr-14 pt-4 pb-3 border-b">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-util-calendar-tint flex items-center justify-center border border-util-calendar-accent/20">
+              <Calendar className="w-4 h-4 text-util-calendar-accent" />
             </div>
-            <Button
-              size="sm"
-              onClick={() => setShowQuickAdd(!showQuickAdd)}
-              className="gap-1.5 h-9"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden xs:inline">{translate('calendar.addEvent', 'Add Event')}</span>
-            </Button>
+            <div>
+              <h2 className="text-lg font-semibold">{translate('calendar.myCalendar', 'My Calendar')}</h2>
+              <p className="text-xs text-muted-foreground">{translate('calendar.yourEvents', 'Your events & activities')}</p>
+            </div>
           </div>
           
           {/* Event creation form */}
@@ -284,8 +272,9 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
           )}
         </div>
 
-        {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch] px-4 py-4">
+        {/* Scrollable Body + FAB container */}
+        <div className="flex-1 relative overflow-hidden">
+          <div className="h-full overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch] px-4 py-4 pb-20">
           {/* Today Section */}
           <div className="mb-5">
             <div className="flex items-center justify-between mb-3">
@@ -452,16 +441,16 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
           </Tabs>
         </div>
 
-        {/* Sticky Footer */}
-        <div className="sticky bottom-0 z-10 bg-background px-4 py-3 border-t flex gap-2 pb-[calc(env(safe-area-inset-bottom)+12px)]">
-          <ResponsiveDialogClose asChild>
-            <Button variant="outline" className="flex-1">
-              {translate('calendar.close', 'Close')}
-            </Button>
-          </ResponsiveDialogClose>
-          <Button variant="secondary" className="flex-1" onClick={handleBrowseActivities}>
-            {translate('calendar.browseActivities', 'Browse Activities')}
-          </Button>
+        {/* FAB - Add Event */}
+        {!showQuickAdd && (
+          <button
+            onClick={() => setShowQuickAdd(true)}
+            className="absolute bottom-4 right-4 z-10 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center active:scale-95 transition-all"
+            aria-label={translate('calendar.addEvent', 'Add Event')}
+          >
+            <Plus className="h-6 w-6" />
+          </button>
+        )}
         </div>
       </ResponsiveDialogContent>
     </ResponsiveDialog>
