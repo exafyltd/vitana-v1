@@ -185,6 +185,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     wave: 2,
     tabs: [
       { key: "compose", label: "Compose", path: "/admin/notifications/compose" },
+      { key: "categories", label: "Categories", path: "/admin/notifications/categories" },
       { key: "templates", label: "Templates", path: "/admin/notifications/templates" },
       { key: "sent", label: "Sent", path: "/admin/notifications/sent" },
       { key: "subscriptions", label: "Subscriptions", path: "/admin/notifications/subscriptions" },

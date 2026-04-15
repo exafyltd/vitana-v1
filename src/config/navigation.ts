@@ -97,6 +97,7 @@ export const adminUsersNavigation = [
 // Notifications (PRIORITY 2)
 export const adminNotificationsNavigation = [
   { id: "compose", name: "Compose", path: "/admin/notifications" },
+  { id: "categories", name: "Categories", path: "/admin/notifications/categories" },
   { id: "sent", name: "Sent Log", path: "/admin/notifications/sent" },
   { id: "preferences", name: "Preferences", path: "/admin/notifications/preferences" },
 ];

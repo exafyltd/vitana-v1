@@ -293,6 +293,7 @@ const NotificationsTemplates = lazy(() => import("./pages/admin/notifications/Te
 const NotificationsSent = lazy(() => import("./pages/admin/notifications/SentNew"));
 const NotificationsSubscriptions = lazy(() => import("./pages/admin/notifications/Subscriptions"));
 const NotificationsProviders = lazy(() => import("./pages/admin/notifications/Providers"));
+const NotificationsCategories = lazy(() => import("./pages/admin/notifications/Categories"));
 // Wave 2: Insights section
 const InsightsGrowth = lazy(() => import("./pages/admin/insights/Growth"));
 const InsightsEngagement = lazy(() => import("./pages/admin/insights/Engagement"));
@@ -1319,6 +1320,9 @@ const App = () => {
           } />
           <Route path="/admin/notifications/providers" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsProviders /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/notifications/categories" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><NotificationsCategories /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Wave 2: Insights section */}

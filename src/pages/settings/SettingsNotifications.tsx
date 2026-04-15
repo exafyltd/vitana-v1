@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -6,10 +5,10 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Smartphone, Moon, Users, Brain } from "lucide-react";
+import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2 } from "lucide-react";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
+import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { toast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 
 const settingsSubItems = [
   { id: "overview", name: "Overview", path: "/settings" },
@@ -21,13 +20,34 @@ const settingsSubItems = [
   { id: "support", name: "Support", path: "/settings/support" },
 ];
 
+const TYPE_CONFIG = {
+  chat: { label: "Chat", icon: MessageSquare },
+  calendar: { label: "Calendar", icon: CalendarDays },
+  community: { label: "Community", icon: Users },
+} as const;
+
 export default function SettingsNotifications() {
-  const { prefs, loading, updatePref } = useNotificationPreferences();
+  const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
+  const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
+
+  const loading = prefsLoading || catLoading;
 
   const handleToggle = async (field: keyof typeof prefs, value: boolean) => {
     try {
       await updatePref(field, value);
       toast({ title: "Settings updated", description: "Your notification preferences have been saved" });
+    } catch {
+      toast({ title: "Error", description: "Failed to update settings", variant: "destructive" });
+    }
+  };
+
+  const handleCategoryToggle = async (cat: CategoryPreference) => {
+    try {
+      await toggleCategory(cat.id, !cat.enabled);
+      toast({
+        title: "Settings updated",
+        description: `${cat.display_name} notifications ${cat.enabled ? "disabled" : "enabled"}`,
+      });
     } catch {
       toast({ title: "Error", description: "Failed to update settings", variant: "destructive" });
     }
@@ -87,107 +107,42 @@ export default function SettingsNotifications() {
           </CardContent>
         </Card>
 
-        {/* Live Rooms */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell className="w-5 h-5" />
-              Live Rooms
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Live Room Notifications</h4>
-                <p className="text-sm text-muted-foreground">Room starting, invites, and summaries</p>
-              </div>
-              <Switch
-                checked={prefs.live_room_notifications}
-                onCheckedChange={(checked) => handleToggle('live_room_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        {/* Dynamic Category Sections (Chat, Calendar, Community) */}
+        {(Object.keys(TYPE_CONFIG) as Array<keyof typeof TYPE_CONFIG>).map((type) => {
+          const config = TYPE_CONFIG[type];
+          const Icon = config.icon;
+          const items = categories?.[type] || [];
 
-        {/* Social & Community */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="w-5 h-5" />
-              Social & Community
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Match Notifications</h4>
-                <p className="text-sm text-muted-foreground">New matches, accepted matches, and suggestions</p>
-              </div>
-              <Switch
-                checked={prefs.match_notifications}
-                onCheckedChange={(checked) => handleToggle('match_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Community Notifications</h4>
-                <p className="text-sm text-muted-foreground">Groups, meetups, and community activity</p>
-              </div>
-              <Switch
-                checked={prefs.community_notifications}
-                onCheckedChange={(checked) => handleToggle('community_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-          </CardContent>
-        </Card>
+          if (items.length === 0) return null;
 
-        {/* Intelligence */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Brain className="w-5 h-5" />
-              Intelligence
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Recommendations</h4>
-                <p className="text-sm text-muted-foreground">AI recommendations and suggestions</p>
-              </div>
-              <Switch
-                checked={prefs.recommendation_notifications}
-                onCheckedChange={(checked) => handleToggle('recommendation_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Task Notifications</h4>
-                <p className="text-sm text-muted-foreground">Task updates and reminders</p>
-              </div>
-              <Switch
-                checked={prefs.task_notifications}
-                onCheckedChange={(checked) => handleToggle('task_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Memory & Diary</h4>
-                <p className="text-sm text-muted-foreground">Diary reminders and memory updates</p>
-              </div>
-              <Switch
-                checked={prefs.memory_notifications}
-                onCheckedChange={(checked) => handleToggle('memory_notifications', checked)}
-                disabled={!prefs.push_enabled}
-              />
-            </div>
-          </CardContent>
-        </Card>
+          return (
+            <Card key={type}>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon className="w-5 h-5" />
+                  {config.label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {items.map((cat) => (
+                  <div key={cat.id} className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">{cat.display_name}</h4>
+                      {cat.description && (
+                        <p className="text-sm text-muted-foreground">{cat.description}</p>
+                      )}
+                    </div>
+                    <Switch
+                      checked={cat.enabled}
+                      onCheckedChange={() => handleCategoryToggle(cat)}
+                      disabled={!prefs.push_enabled}
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          );
+        })}
 
         {/* Quiet Hours */}
         <Card>
