@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -336,6 +337,7 @@ export default function AutopilotDashboard() {
                 </>
               }
             >
+              <ExpandableSearchButton placeholder="Search tasks..." />
               <UniversalCalendarButton />
             </UtilityActionButton>
           </div>
