@@ -36,8 +36,16 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   const isCallback = hasOAuthCallback();
 
-  // Determine the login route for this tenant
+  // Determine the login route for this tenant/role.
+  // VTID-AUTH-RESUME: Also handles exafy-admin users who don't have a
+  // tenant_slug in localStorage — checks the current path and the stale
+  // user's app_metadata so they redirect to /exafy-admin, not /.
   const getLoginRoute = useCallback(() => {
+    // Admin users: if we're on an admin route or user was an exafy admin
+    const isAdminRoute = window.location.pathname.startsWith('/admin') ||
+                         window.location.pathname.startsWith('/exafy-admin');
+    if (isAdminRoute) return '/exafy-admin';
+
     const slug = localStorage.getItem('tenant_slug');
     if (slug === 'maxina') return '/maxina';
     if (slug === 'alkalma') return '/alkalma';
