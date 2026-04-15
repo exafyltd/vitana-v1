@@ -37,6 +37,7 @@ interface LongevityNewsResponse {
     title: string;
     link: string;
     summary: string | null;
+    image_url: string | null;
     published_at: string;
     tags: string[];
     source_type: string;

@@ -85,7 +85,7 @@ export default function Home() {
             title: item.title,
             link: item.link,
             summary: item.summary,
-            image_url: null,
+            image_url: item.image_url || null,
             published_at: item.published_at,
             tags: item.tags,
             category: item.tags[0] || "general",
@@ -226,7 +226,7 @@ export default function Home() {
               <NewsCard
                 title={article.title}
                 description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags)}
+                imageUrl={article.image_url || getNewsImage(article.tags, article.id)}
                 category={mapToCardCategory(article)}
                 pillar={mapTagToPillar(article.tags)}
                 author={{ name: article.source_name }}
@@ -254,7 +254,7 @@ export default function Home() {
               <NewsCard
                 title={article.title}
                 description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags)}
+                imageUrl={article.image_url || getNewsImage(article.tags, article.id)}
                 category={mapToCardCategory(article)}
                 pillar={mapTagToPillar(article.tags)}
                 author={{ name: article.source_name }}
