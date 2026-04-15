@@ -73,6 +73,21 @@
     "joinCommunity": "انضم للمجتمع",
     "joinCommunityDesc": "تواصل مع أشخاص متشابهين في التفكير في رحلات مماثلة",
     "getStarted": "ابدأ",
-    "skip": "تخطي الآن"
+    "skip": "تخطي الآن",
+    "skipIntro": "تخطي المقدمة",
+    "nameForm": {
+      "title": "دعنا نتعرف عليك",
+      "subtitle": "هكذا سيراك الآخرون في المجتمع",
+      "displayNameLabel": "ماذا أناديك؟",
+      "displayNamePlaceholder": "اسمك",
+      "handleLabel": "اختر اسم المستخدم في فيتانالاند",
+      "handlePlaceholder": "اسم_المستخدم",
+      "handleTaken": "اسم المستخدم هذا مأخوذ بالفعل",
+      "handleInvalid": "يُسمح فقط بالأحرف والأرقام والشرطات السفلية",
+      "handleAvailable": "اسم المستخدم متاح!",
+      "handleMinLength": "3 أحرف على الأقل",
+      "saving": "جاري الإعداد...",
+      "submit": "هيا نبدأ!"
+    }
   }
 }

@@ -65,6 +65,7 @@ const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
+const OnboardingWelcome = lazy(() => import("./pages/onboarding/OnboardingWelcome"));
 
 // Portal pages
 const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
@@ -447,7 +448,14 @@ const App = () => {
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
           <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
           {/* /community/confirmed removed — orphaned */}
-          
+
+          {/* Onboarding — post-registration Vitana speech + name/handle form */}
+          <Route path="/onboarding/welcome" element={
+            <AuthGuard>
+              <OnboardingWelcome />
+            </AuthGuard>
+          } />
+
           {/* Public Routes - No Auth Required */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
