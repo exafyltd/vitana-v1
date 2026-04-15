@@ -28,8 +28,10 @@ import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
 import { useCart } from "@/hooks/useCart";
 import { CartSidebar } from "@/components/cart/CartSidebar";
-import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
+import { useIntelligentGreetingContext } from "@/context/IntelligentGreetingProvider";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useOnboardingStatus } from "@/hooks/useOnboardingStatus";
+import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
@@ -410,10 +412,33 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const isMobile = useIsMobile();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
-  const { triggerGreeting } = useIntelligentGreeting();
+  const { suppressGreeting } = useIntelligentGreetingContext();
+  const { needsOnboarding, isLoading: onboardingLoading, markOnboardingComplete } = useOnboardingStatus();
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
 
   // Enforce role-route alignment (admin on community routes → redirect, etc.)
   useRoleRouteEnforcement();
+
+  // Suppress greeting while onboarding status is loading or onboarding is needed
+  useEffect(() => {
+    if (onboardingLoading || needsOnboarding) {
+      suppressGreeting();
+    }
+  }, [onboardingLoading, needsOnboarding, suppressGreeting]);
+
+  // Auto-open onboarding overlay for new users
+  useEffect(() => {
+    if (!onboardingLoading && needsOnboarding) {
+      setOnboardingOpen(true);
+    }
+  }, [onboardingLoading, needsOnboarding]);
+
+  const handleOnboardingChange = (open: boolean) => {
+    setOnboardingOpen(open);
+    if (!open) {
+      markOnboardingComplete();
+    }
+  };
 
   // Background loading system
   useBackgroundPrefetch();
@@ -486,9 +511,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
         open={walletPopupOpen} 
         onOpenChange={setWalletPopupOpen} 
       />
-      <CartSidebar 
-        open={cartOpen} 
-        onClose={() => setCartOpen(false)} 
+      <CartSidebar
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+      />
+      <OnboardingOverlay
+        open={onboardingOpen}
+        onOpenChange={handleOnboardingChange}
       />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
