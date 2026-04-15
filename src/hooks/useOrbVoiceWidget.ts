@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -70,11 +71,14 @@ export function useOrbVoiceWidget() {
     }
   };
 
-  // Main init effect — waits for auth to resolve, then inits widget
+  // Main init effect — waits for auth to resolve, then inits widget.
+  // VTID-AUTH-RESUME: tryInit is now async — it fetches a fresh session
+  // from Supabase before handing the token to the ORB, so an expired
+  // access_token in React state doesn't cause an anonymous ORB session.
   useEffect(() => {
     if (loading) return;
 
-    function tryInit() {
+    async function tryInit(): Promise<boolean> {
       const orb = (window as any).VitanaOrb;
       if (!orb) return false;
 
@@ -85,11 +89,6 @@ export function useOrbVoiceWidget() {
       }
 
       if (!initialized.current) {
-        // VTID-NAV-01: Navigator wiring — onNavigationRequest callback for
-        // SPA transitions, initialContext so the first orb session has
-        // accurate current_route + recent_routes for the Navigator service.
-        // VTID-NAV-TIMEJOURNEY: Also pass enriched journey_trail with entry
-        // timestamps so the backend can build a time-aware greeting.
         const navOpts = {
           showFab: true,
           onNavigationRequest: handleNavigationRequest,
@@ -100,9 +99,21 @@ export function useOrbVoiceWidget() {
             journey_trail: journeyTrailRef.current,
           },
         };
+
         if (user && session) {
-          orb.init({ ...navOpts, authToken: session.access_token });
-          console.log("[ORB] Widget initialized (authenticated)");
+          // Fetch a fresh session to ensure the access token is still valid.
+          // If the tab was backgrounded, the token may have expired without
+          // the Supabase auto-refresh timer firing.
+          const { data: { session: freshSession } } = await supabase.auth.getSession();
+          if (freshSession) {
+            orb.init({ ...navOpts, authToken: freshSession.access_token });
+            console.log("[ORB] Widget initialized (authenticated, fresh token)");
+          } else {
+            // Session expired — init anonymous; AuthProvider's visibility
+            // handler will trigger sign-out and redirect to login.
+            orb.init(navOpts);
+            console.log("[ORB] Widget initialized (session expired, anonymous fallback)");
+          }
         } else {
           orb.init(navOpts);
           console.log("[ORB] Widget initialized (anonymous)");
@@ -112,15 +123,18 @@ export function useOrbVoiceWidget() {
       return true;
     }
 
-    if (tryInit()) return;
+    tryInit();
 
+    // Polling fallback for when VitanaOrb script hasn't loaded yet
     let attempts = 0;
     const interval = setInterval(() => {
       attempts++;
-      if (tryInit() || attempts >= 20) {
-        clearInterval(interval);
-        if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
-      }
+      tryInit().then((done) => {
+        if (done || attempts >= 20) {
+          clearInterval(interval);
+          if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
+        }
+      });
     }, 500);
 
     return () => clearInterval(interval);
@@ -136,9 +150,6 @@ export function useOrbVoiceWidget() {
     orb.destroy();
     initialized.current = false;
 
-    // VTID-NAV-01: Reinit must also wire the Navigator callback + context.
-    // VTID-NAV-TIMEJOURNEY: Include enriched journey_trail + entry time so
-    // the post-login/logout reinit gets the same time-aware context.
     const navOpts = {
       showFab: true,
       onNavigationRequest: handleNavigationRequest,
@@ -149,13 +160,22 @@ export function useOrbVoiceWidget() {
         journey_trail: journeyTrailRef.current,
       },
     };
-    if (user && session) {
-      orb.init({ ...navOpts, authToken: session.access_token });
-    } else {
-      orb.init(navOpts);
-    }
-    initialized.current = true;
-    console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
+
+    // VTID-AUTH-RESUME: Fetch fresh token on reinit too
+    (async () => {
+      if (user && session) {
+        const { data: { session: freshSession } } = await supabase.auth.getSession();
+        if (freshSession) {
+          orb.init({ ...navOpts, authToken: freshSession.access_token });
+        } else {
+          orb.init(navOpts);
+        }
+      } else {
+        orb.init(navOpts);
+      }
+      initialized.current = true;
+      console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
+    })();
   }, [user?.id]);
 
   // VTID-NAV-01: Track navigation history and push to widget on every route

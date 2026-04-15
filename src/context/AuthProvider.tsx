@@ -186,7 +186,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })();
     });
 
-    return () => subscription.unsubscribe();
+    // VTID-AUTH-RESUME: When the tab/WebView comes back to the foreground,
+    // force a session refresh. The Supabase autoRefreshToken timer can be
+    // suspended by the browser while the tab is backgrounded, causing the
+    // access token to silently expire. On resume we proactively refresh so
+    // the user isn't left in a "zombie session" (stale React state, expired
+    // JWT, no SIGNED_OUT event).  If the refresh token itself has expired
+    // we call signOut() which fires the SIGNED_OUT event → AuthGuard
+    // redirects to login.
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') return;
+      supabase.auth.getSession().then(({ data: { session: freshSession } }) => {
+        if (freshSession) {
+          // Token still valid or was auto-refreshed — sync React state
+          setSession(freshSession);
+          setUser(freshSession.user);
+        } else {
+          // Session truly gone (refresh token expired) — force sign-out
+          console.warn('[AuthProvider] Session expired while tab was hidden — signing out');
+          supabase.auth.signOut();
+        }
+      });
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      subscription.unsubscribe();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const signOut = async () => {
