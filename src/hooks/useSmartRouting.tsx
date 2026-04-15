@@ -8,7 +8,7 @@ import { useRole } from "@/hooks/useRole";
 // Call from AppLayout so it runs on every authenticated page.
 // Ensures the user's role always matches the route they are on.
 const COMMUNITY_PREFIXES = ['/home', '/comm', '/discover', '/health', '/wallet', '/inbox', '/sharing', '/memory', '/autopilot', '/assistant', '/business'];
-const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/'];
+const SHARED_PATHS = ['/exafy-admin', '/maxina', '/alkalma', '/earthlinks', '/community', '/auth', '/_intro', '/dev', '/settings', '/onboarding', '/'];
 
 export function useRoleRouteEnforcement() {
   const { user, loading: authLoading } = useAuth();
@@ -100,8 +100,8 @@ export function useSmartRouting() {
               break;
             case "community":
             default:
-              // Default to community experience based on tenant
-              const isMobileDevice = window.innerWidth < 768;
+              // Default to community experience based on tenant.
+              // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
               if (tenant?.slug) {
                 switch (tenant.slug) {
                   case 'alkalma':
@@ -111,7 +111,7 @@ export function useSmartRouting() {
                     navigate("/earthlinks");
                     break;
                   case 'maxina':
-                    navigate(isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina");
+                    navigate("/onboarding/welcome");
                     break;
                   default:
                     navigate("/maxina");
@@ -141,9 +141,8 @@ export function useSmartRouting() {
             break;
           case "community":
           default:
-            // Redirect community users to tenant-specific pages based on their active tenant
-            // On mobile, Maxina users go to Events → Hot
-            const isMobileDevice = window.innerWidth < 768;
+            // Redirect community users to tenant-specific pages based on their active tenant.
+            // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
             if (tenant?.slug) {
               switch (tenant.slug) {
                 case 'alkalma':
@@ -153,8 +152,7 @@ export function useSmartRouting() {
                   navigate("/earthlinks");
                   break;
                 case 'maxina':
-                  // Mobile: default to Events Hot
-                  navigate(isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina");
+                  navigate("/onboarding/welcome");
                   break;
                 default:
                   navigate("/maxina");
@@ -188,9 +186,8 @@ export function useRoleBasedRedirect() {
         return "/patient/dashboard";
       case "community":
       default:
-        // Redirect community users to tenant-specific pages
-        // On mobile, Maxina users go to Events → Upcoming
-        const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+        // Redirect community users to tenant-specific pages.
+        // Maxina users go through onboarding; OnboardingWelcome self-redirects if completed.
         if (tenant?.slug) {
           switch (tenant.slug) {
             case 'alkalma':
@@ -198,7 +195,7 @@ export function useRoleBasedRedirect() {
             case 'earthlinks':
               return "/earthlinks";
             case 'maxina':
-              return isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina";
+              return "/onboarding/welcome";
             default:
               return "/maxina";
           }
