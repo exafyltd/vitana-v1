@@ -1,4 +1,5 @@
 import {
+  Zap,
   Calendar,
   Video,
   LayoutGrid,
@@ -24,6 +25,7 @@ export interface DrawerNavItem {
 }
 
 export const drawerNavItems: DrawerNavItem[] = [
+  { id: 'journey',    route: '/autopilot',               icon: Zap,         translationKey: 'drawerNav.journey' },
   { id: 'events',     route: '/comm/events-meetups',     icon: Calendar,    translationKey: 'drawerNav.events' },
   { id: 'live',       route: '/comm/live-rooms',         icon: Video,       translationKey: 'drawerNav.live' },
   { id: 'media',      route: '/comm/media-hub',          icon: LayoutGrid,  translationKey: 'drawerNav.media' },

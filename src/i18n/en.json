@@ -2452,6 +2452,7 @@
     "downloadIcs": "Download ICS"
   },
   "drawerNav": {
+    "journey": "My Journey",
     "events": "Events & MeetUps",
     "live": "Live Rooms",
     "media": "Media",
