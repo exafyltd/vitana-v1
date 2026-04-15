@@ -16,6 +16,8 @@ export const NEWS_CATEGORY_IMAGES: Record<string, string> = {
     'https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop',
   exercise:
     'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&h=600&fit=crop',
+  mental_health:
+    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop',
   functional:
     'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&h=600&fit=crop',
   natural:
@@ -57,6 +59,7 @@ export function mapTagToPillar(tags: string[]): string | undefined {
     hydration: 'Hydration',
     sleep: 'Sleep',
     exercise: 'Motion',
+    mental_health: 'Mental',
     functional: 'Mental',
     natural: 'Nutrition',
     general: 'Community',
