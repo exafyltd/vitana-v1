@@ -61,6 +61,11 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 - **This app calls:** `VITE_GATEWAY_URL` for all API requests
 - **Both repos** should be available in every Claude Code session
 
+## Testing
+
+**Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
+Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
