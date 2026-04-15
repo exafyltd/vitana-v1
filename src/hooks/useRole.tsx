@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "./useTenant";
+import { useIsMobile } from "./use-mobile";
 
 // Note: "reseller" is no longer a role - it's now a capability based on reseller_profiles table
 // VTID-01230: developer + infra are super-admin-grantable only; backend has 7 roles total
@@ -19,6 +20,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
 export function useRole() {
   const { activeTenantId, isExafyAdmin } = useTenant();
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const query = useQuery({
     queryKey: ["rolePref", activeTenantId],
@@ -78,7 +80,9 @@ export function useRole() {
   };
 
   // Default to 'community' while loading so inbox/global threads are visible immediately
-  const effectiveRole = (query.data as UserRole | null) || "community";
+  // MOBILE ENFORCEMENT: Mobile devices are ALWAYS community role — no role switching on mobile
+  const dbRole = (query.data as UserRole | null) || "community";
+  const effectiveRole: UserRole = isMobile ? "community" : dbRole;
 
   return { 
     currentRole: effectiveRole, 
