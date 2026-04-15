@@ -16,7 +16,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { MasterActionPopup } from "@/components/MasterActionPopup";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
-import OnboardingOverlay from "@/components/OnboardingOverlay";
+
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import SubNavigation from "@/components/SubNavigation";
@@ -425,7 +425,6 @@ export default function Home() {
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -565,21 +564,6 @@ export default function Home() {
 
   // Hybrid: blend real with mock for scrolling rail
   const activeScheduledEvents = realTodayEvents.length > 0 ? realTodayEvents.slice(0, 3) : todayScheduledEvents;
-
-  // Show onboarding for new users (check localStorage for demo)
-  useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('vitana-onboarding-completed');
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
-    }
-  }, []);
-
-  const handleOnboardingComplete = (open: boolean) => {
-    if (!open) {
-      localStorage.setItem('vitana-onboarding-completed', 'true');
-    }
-    setShowOnboarding(open);
-  };
 
   // Handle event click to open detail drawer
   const handleEventClick = (eventId: string) => {
@@ -1187,12 +1171,6 @@ export default function Home() {
       />
       
       
-      {/* Onboarding Overlay */}
-      <OnboardingOverlay 
-        open={showOnboarding}
-        onOpenChange={handleOnboardingComplete}
-      />
-
       {/* Event Details Drawer */}
       {selectedEventData && (
         <MeetupDetailsDrawer
