@@ -641,6 +641,7 @@
   },
   "sidebar": {
     "home": "Home",
+    "news": "News",
     "community": "Community",
     "discover": "Discover",
     "inbox": "Inbox",
@@ -2453,6 +2454,7 @@
   },
   "drawerNav": {
     "journey": "My Journey",
+    "news": "News",
     "events": "Events & MeetUps",
     "live": "Live Rooms",
     "media": "Media",

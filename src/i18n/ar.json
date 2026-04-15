@@ -1,6 +1,7 @@
 {
   "sidebar": {
     "home": "الرئيسية",
+    "news": "أخبار",
     "community": "المجتمع",
     "discover": "اكتشف",
     "inbox": "صندوق الوارد",
@@ -59,6 +60,7 @@
     "backHome": "العودة للرئيسية"
   },
   "drawerNav": {
+    "news": "أخبار",
     "settings": "الإعدادات"
   },
   "onboarding": {
