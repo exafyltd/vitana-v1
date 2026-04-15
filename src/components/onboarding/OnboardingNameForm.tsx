@@ -30,15 +30,17 @@ function slugify(text: string): string {
 export function OnboardingNameForm({ onComplete }: OnboardingNameFormProps) {
   const { translate } = useTranslation();
   const { user } = useAuth();
-  const [displayName, setDisplayName] = useState('');
-  const [handle, setHandle] = useState('');
+  // Pre-fill display name from auth metadata if available (email signup captures full_name)
+  const metaName = user?.user_metadata?.full_name || user?.user_metadata?.name || '';
+  const [displayName, setDisplayName] = useState(metaName);
+  const [handle, setHandle] = useState(metaName ? slugify(metaName) : '');
   const [handleStatus, setHandleStatus] = useState<HandleStatus>('idle');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-suggest handle from display name (only if user hasn't typed a handle)
-  const handleAutoSuggested = useRef(true);
+  const handleAutoSuggested = useRef(!metaName); // don't auto-suggest if pre-filled
   useEffect(() => {
     if (handleAutoSuggested.current && displayName) {
       setHandle(slugify(displayName));

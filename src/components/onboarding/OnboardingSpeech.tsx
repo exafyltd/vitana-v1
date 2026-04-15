@@ -18,10 +18,17 @@ const SPEECH_MESSAGES = [
   "Now, let me get to know you a little better\u2026",
 ];
 
-/** Time in ms between adding each new message bubble */
-const MESSAGE_INTERVAL = 3500;
+/** Base delay in ms between messages; longer messages get more time */
+const BASE_INTERVAL = 3000;
+const MS_PER_CHAR = 12; // extra ~12ms per character for reading time
 /** Time for the last message before calling onComplete */
 const FINAL_DELAY = 2000;
+
+function getMessageDelay(messageIndex: number): number {
+  const msg = SPEECH_MESSAGES[messageIndex];
+  if (!msg) return BASE_INTERVAL;
+  return BASE_INTERVAL + Math.min(msg.length * MS_PER_CHAR, 4000);
+}
 
 export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
   const { translate } = useTranslation();
@@ -38,8 +45,8 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
         timerRef.current = setTimeout(onComplete, FINAL_DELAY);
         return SPEECH_MESSAGES.length;
       }
-      // Schedule next message
-      timerRef.current = setTimeout(advance, MESSAGE_INTERVAL);
+      // Schedule next message with dynamic delay based on message length
+      timerRef.current = setTimeout(advance, getMessageDelay(next));
       return next;
     });
   }, [onComplete]);
@@ -130,7 +137,7 @@ export function OnboardingSpeech({ onComplete }: OnboardingSpeechProps) {
             onClick={handleSkip}
             className="text-sm text-white/70 hover:text-white transition-colors"
           >
-            {translate('onboarding.skip', 'Skip intro')}
+            {translate('onboarding.skipIntro', 'Skip intro')}
           </button>
         </div>
       )}
