@@ -56,6 +56,15 @@ export function useOrbVoiceWidget() {
   // a smooth SPA change (works inside Appilix WebView with no full reload).
   const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
     try {
+      // VTID-CAL-OPEN: If the backend sends ?open=calendar, navigate to /home
+      // and dispatch a global event so UniversalCalendarButton opens the popup.
+      const parsed = new URL(url, window.location.origin);
+      if (parsed.searchParams.get('open') === 'calendar') {
+        navigateRef.current(parsed.pathname);
+        // Small delay so the page renders before the popup opens
+        setTimeout(() => window.dispatchEvent(new CustomEvent('calendar:open')), 300);
+        return;
+      }
       navigateRef.current(url);
     } catch (err) {
       console.warn("[ORB] React Router navigate failed, falling back:", err);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationBadge } from "@/components/ui/notification-badge";
@@ -25,6 +25,14 @@ export function UniversalCalendarButton({
   showText = true
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
+
+  // Listen for global calendar:open events (dispatched by ORB voice navigation)
+  useEffect(() => {
+    const handleOpen = () => setCalendarOpen(true);
+    window.addEventListener('calendar:open', handleOpen);
+    return () => window.removeEventListener('calendar:open', handleOpen);
+  }, []);
+
   const calendarHook = useCalendarEvents();
   const { events, getUpcomingEvents } = calendarHook;
   const { open } = useSidebarSafe();
