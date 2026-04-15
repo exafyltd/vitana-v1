@@ -37,6 +37,7 @@ interface LongevityNewsResponse {
     title: string;
     link: string;
     summary: string | null;
+    image_url: string | null;
     published_at: string;
     tags: string[];
     source_type: string;
@@ -96,7 +97,7 @@ export function useLongevityNewsFeed(options?: {
       lastPage.has_more ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
     enabled: options?.enabled !== false,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 }
@@ -111,7 +112,6 @@ export function useCommunityNews(options?: { limit?: number; enabled?: boolean }
     queryFn: async (): Promise<NewsArticle[]> => {
       const articles: NewsArticle[] = [];
 
-      // 1. Recent community events
       const { data: events } = await supabase
         .from("global_community_events")
         .select("id, title, description, event_type, image_url, start_time, created_at")
@@ -136,7 +136,6 @@ export function useCommunityNews(options?: { limit?: number; enabled?: boolean }
         }
       }
 
-      // 2. Recent approved media uploads
       const { data: media } = await supabase
         .from("media_uploads")
         .select("id, title, description, media_type, thumbnail_url, status, is_public, created_at")
@@ -162,7 +161,6 @@ export function useCommunityNews(options?: { limit?: number; enabled?: boolean }
         }
       }
 
-      // 3. New member spotlights (recently joined)
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const { data: members } = await supabase
         .from("global_community_profiles")
@@ -188,7 +186,6 @@ export function useCommunityNews(options?: { limit?: number; enabled?: boolean }
         }
       }
 
-      // Sort all community articles by date
       articles.sort(
         (a, b) =>
           new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
