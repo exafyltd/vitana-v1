@@ -303,14 +303,12 @@ export default function Home() {
       <div className="md:p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="md:max-w-7xl md:mx-auto">
 
-          {/* Header — desktop only */}
-          <div className="hidden md:block md:mb-5">
-            <StandardHeader
-              title="News"
-              description="Longevity science & community updates"
-              emoji="📰"
-            />
-          </div>
+          {/* Header */}
+          <StandardHeader
+            title="News"
+            description="Longevity science & community updates"
+            emoji="📰"
+          />
 
           {/* ── UNIFIED UTILITY BAR (matches Health/Discover/MediaHub pattern) ── */}
           <UtilityActionButton
