@@ -56,13 +56,11 @@ export function useOrbVoiceWidget() {
   // a smooth SPA change (works inside Appilix WebView with no full reload).
   const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
     try {
-      // VTID-CAL-OPEN: If the backend sends ?open=calendar, navigate to /home
-      // and dispatch a global event so UniversalCalendarButton opens the popup.
+      // VTID-CAL-OPEN: If the backend sends ?open=calendar, do NOT navigate —
+      // just open the calendar popup as an overlay on the current screen.
       const parsed = new URL(url, window.location.origin);
       if (parsed.searchParams.get('open') === 'calendar') {
-        navigateRef.current(parsed.pathname);
-        // Small delay so the page renders before the popup opens
-        setTimeout(() => window.dispatchEvent(new CustomEvent('calendar:open')), 300);
+        window.dispatchEvent(new CustomEvent('calendar:open'));
         return;
       }
       navigateRef.current(url);
