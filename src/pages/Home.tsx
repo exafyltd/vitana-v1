@@ -197,136 +197,170 @@ export default function Home() {
         canonical={window.location.href}
       />
 
-      <div className="p-4 md:p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-5">
-          {/* Header */}
-          <StandardHeader
-            title="News"
-            description="Longevity science & community updates"
-            emoji="📰"
-          />
+      {/*
+        Mobile: edge-to-edge vertical feed (like Instagram/Twitter)
+        Desktop: padded grid with max-width container
+      */}
+      <div className="md:p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        {/* Desktop: constrained container / Mobile: full-width */}
+        <div className="md:max-w-7xl md:mx-auto">
 
-          {/* Utility bar */}
-          <UtilityActionButton
-            trailingElement={
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-                onClick={handleRefresh}
-                title="Refresh news"
-                disabled={isLoading}
-              >
-                <RefreshCw
-                  className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
-                />
-              </Button>
-            }
-          >
-            <ExpandableSearchButton
-              placeholder="Search news, topics, sources…"
-              onSearch={(query) => setSearchQuery(query)}
+          {/* Header — hidden on mobile (takes up vertical space), shown on desktop */}
+          <div className="hidden md:block md:mb-5">
+            <StandardHeader
+              title="News"
+              description="Longevity science & community updates"
+              emoji="📰"
             />
-          </UtilityActionButton>
+          </div>
 
-          {/* Category filter tabs */}
-          <SplitBar
-            value={activeTab}
-            onValueChange={(v) => setActiveTab(v as FilterTab)}
-            className="w-full"
-          >
-            <SplitBarList>
-              <SplitBarTrigger value="all">All</SplitBarTrigger>
-              <SplitBarTrigger value="longevity">Longevity</SplitBarTrigger>
-              <SplitBarTrigger value="community">Community</SplitBarTrigger>
-            </SplitBarList>
+          {/* Utility bar — sticky on mobile, like a social media app bar */}
+          <div className="sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 px-3 py-2 md:px-0 md:py-0 md:relative md:z-auto md:mb-5">
+            <UtilityActionButton
+              trailingElement={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={handleRefresh}
+                  title="Refresh news"
+                  disabled={isLoading}
+                >
+                  <RefreshCw
+                    className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+                  />
+                </Button>
+              }
+            >
+              <ExpandableSearchButton
+                placeholder="Search news, topics, sources…"
+                onSearch={(query) => setSearchQuery(query)}
+              />
+            </UtilityActionButton>
+          </div>
 
-            <SplitBarContent value={activeTab}>
-              {/* Loading state */}
-              {isLoading && articles.length === 0 && (
-                <div className="flex items-center justify-center py-20">
-                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                  <span className="ml-3 text-muted-foreground">
-                    Loading news…
-                  </span>
-                </div>
-              )}
+          {/* Category filter tabs — sticky below utility bar on mobile */}
+          <div className="sticky top-[52px] z-20 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 px-3 pb-2 md:px-0 md:pb-0 md:relative md:top-auto md:z-auto md:mb-5">
+            <SplitBar
+              value={activeTab}
+              onValueChange={(v) => setActiveTab(v as FilterTab)}
+              className="w-full"
+            >
+              <SplitBarList>
+                <SplitBarTrigger value="all">All</SplitBarTrigger>
+                <SplitBarTrigger value="longevity">Longevity</SplitBarTrigger>
+                <SplitBarTrigger value="community">Community</SplitBarTrigger>
+              </SplitBarList>
 
-              {/* Empty state */}
-              {!isLoading && articles.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-lg text-muted-foreground">
-                    No news articles yet.
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Articles will appear once the feed sources are fetched.
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="mt-4"
-                    onClick={handleRefresh}
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    Refresh
-                  </Button>
-                </div>
-              )}
-
-              {/* News grid */}
-              {articles.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-                  {articles.map((article, index) => (
-                    <div
-                      key={article.id}
-                      className={
-                        index === 0
-                          ? "lg:col-span-2 min-h-[320px]"
-                          : "min-h-[260px]"
-                      }
-                    >
-                      <NewsCard
-                        title={article.title}
-                        description={article.summary || undefined}
-                        imageUrl={
-                          article.image_url ||
-                          getNewsImage(article.tags)
-                        }
-                        category={mapToCardCategory(article)}
-                        pillar={mapTagToPillar(article.tags)}
-                        author={{ name: article.source_name }}
-                        timestamp={formatTimestamp(article.published_at)}
-                        onClick={() => handleArticleClick(article)}
-                        className="h-full"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Infinite scroll sentinel */}
-              <div ref={observerRef} className="h-1" />
-
-              {/* Loading more indicator */}
-              {isFetchingNextPage && (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    Loading more…
-                  </span>
-                </div>
-              )}
-
-              {/* End of feed */}
-              {!hasNextPage &&
-                !isFetchingNextPage &&
-                articles.length > 0 &&
-                activeTab !== "community" && (
-                  <p className="text-center text-sm text-muted-foreground py-8">
-                    You're all caught up.
-                  </p>
+              <SplitBarContent value={activeTab}>
+                {/* Loading state */}
+                {isLoading && articles.length === 0 && (
+                  <div className="flex items-center justify-center py-20">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                    <span className="ml-3 text-muted-foreground">
+                      Loading news…
+                    </span>
+                  </div>
                 )}
-            </SplitBarContent>
-          </SplitBar>
+
+                {/* Empty state */}
+                {!isLoading && articles.length === 0 && (
+                  <div className="text-center py-20 px-4">
+                    <p className="text-lg text-muted-foreground">
+                      No news articles yet.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Articles will appear once the feed sources are fetched.
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="mt-4"
+                      onClick={handleRefresh}
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Refresh
+                    </Button>
+                  </div>
+                )}
+
+                {/* ── MOBILE FEED: single-column vertical scroll ── */}
+                {articles.length > 0 && (
+                  <div className="md:hidden flex flex-col gap-2 mt-2">
+                    {articles.map((article) => (
+                      <div key={article.id} className="h-[280px]">
+                        <NewsCard
+                          title={article.title}
+                          description={article.summary || undefined}
+                          imageUrl={
+                            article.image_url || getNewsImage(article.tags)
+                          }
+                          category={mapToCardCategory(article)}
+                          pillar={mapTagToPillar(article.tags)}
+                          author={{ name: article.source_name }}
+                          timestamp={formatTimestamp(article.published_at)}
+                          onClick={() => handleArticleClick(article)}
+                          className="h-full rounded-none md:rounded-lg"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* ── DESKTOP GRID: 3-column with hero first card ── */}
+                {articles.length > 0 && (
+                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+                    {articles.map((article, index) => (
+                      <div
+                        key={article.id}
+                        className={
+                          index === 0
+                            ? "lg:col-span-2 min-h-[320px]"
+                            : "min-h-[260px]"
+                        }
+                      >
+                        <NewsCard
+                          title={article.title}
+                          description={article.summary || undefined}
+                          imageUrl={
+                            article.image_url || getNewsImage(article.tags)
+                          }
+                          category={mapToCardCategory(article)}
+                          pillar={mapTagToPillar(article.tags)}
+                          author={{ name: article.source_name }}
+                          timestamp={formatTimestamp(article.published_at)}
+                          onClick={() => handleArticleClick(article)}
+                          className="h-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Infinite scroll sentinel */}
+                <div ref={observerRef} className="h-1" />
+
+                {/* Loading more indicator */}
+                {isFetchingNextPage && (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                    <span className="ml-2 text-sm text-muted-foreground">
+                      Loading more…
+                    </span>
+                  </div>
+                )}
+
+                {/* End of feed */}
+                {!hasNextPage &&
+                  !isFetchingNextPage &&
+                  articles.length > 0 &&
+                  activeTab !== "community" && (
+                    <p className="text-center text-sm text-muted-foreground py-8">
+                      You're all caught up.
+                    </p>
+                  )}
+              </SplitBarContent>
+            </SplitBar>
+          </div>
         </div>
       </div>
     </AppLayout>
