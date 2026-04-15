@@ -3,17 +3,17 @@
  *
  * Fetches paginated longevity news from the gateway API
  * and community news from Supabase, merging them into a single feed.
+ * Automatically filters by user's preferred language.
  */
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const GATEWAY_URL =
   import.meta.env.VITE_GATEWAY_URL ||
   "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
-
-// ── Types ────────────────────────────────────────────────────────
 
 export interface NewsArticle {
   id: string;
@@ -48,12 +48,10 @@ interface LongevityNewsResponse {
   has_more: boolean;
 }
 
-// ── Longevity News (RSS via Gateway API) ─────────────────────────
-
 async function fetchLongevityNews(
   page: number,
   token: string | null,
-  options?: { tag?: string; limit?: number }
+  options?: { tag?: string; limit?: number; language?: string }
 ): Promise<LongevityNewsResponse> {
   const limit = options?.limit ?? 20;
   const params = new URLSearchParams({
@@ -61,6 +59,7 @@ async function fetchLongevityNews(
     limit: String(limit),
   });
   if (options?.tag) params.set("tag", options.tag);
+  if (options?.language) params.set("language", options.language);
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -88,11 +87,15 @@ export function useLongevityNewsFeed(options?: {
 }) {
   const { session } = useAuth();
   const token = session?.access_token ?? null;
+  const { selectedLanguage } = useLanguage();
+
+  // Extract 2-letter code from locale (e.g., 'de-DE' -> 'de', 'en-US' -> 'en')
+  const language = selectedLanguage?.split('-')[0] || 'en';
 
   return useInfiniteQuery({
-    queryKey: ["longevity-news", options?.tag, options?.limit],
+    queryKey: ["longevity-news", options?.tag, options?.limit, language],
     queryFn: ({ pageParam = 1 }) =>
-      fetchLongevityNews(pageParam, token, options),
+      fetchLongevityNews(pageParam, token, { ...options, language }),
     getNextPageParam: (lastPage) =>
       lastPage.has_more ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
@@ -101,8 +104,6 @@ export function useLongevityNewsFeed(options?: {
     refetchOnWindowFocus: false,
   });
 }
-
-// ── Community News (Events + Media + Members from Supabase) ──────
 
 export function useCommunityNews(options?: { limit?: number; enabled?: boolean }) {
   const limit = options?.limit ?? 10;
