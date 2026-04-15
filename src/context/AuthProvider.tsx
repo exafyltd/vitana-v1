@@ -198,27 +198,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // VTID-AUTH-GUARD: Active session health monitor.
-    // Supabase autoRefreshToken can silently fail (timer suspended while tab
-    // is backgrounded, WebView frozen, or refresh token expired server-side).
-    // When that happens NO onAuthStateChange event fires — the user sits on
-    // a stale screen that looks logged-in but every API call will 401.
+    // supabase.auth.getSession() returns the CACHED session from memory /
+    // localStorage — it does NOT verify the token against the server.
+    // The autoRefreshToken timer can be suspended in Appilix WebView or
+    // backgrounded browser tabs, so the cached session looks valid while
+    // the JWT is actually expired on the backend.
     //
-    // Fix: poll getSession() every 30 seconds. If the session is gone and
-    // we previously had a user, force signOut() which fires SIGNED_OUT →
-    // AuthGuard redirects to login. Also check on visibility change for
-    // immediate detection when switching back to the tab.
-    const checkSession = () => {
-      supabase.auth.getSession().then(({ data: { session: freshSession } }) => {
-        if (freshSession) {
-          // Token still valid or was auto-refreshed — sync React state
-          setSession(freshSession);
-          setUser(freshSession.user);
-        } else if (prevUserIdRef.current) {
-          // Had a user but session is gone → force sign-out + redirect
-          console.warn('[AuthProvider] Session expired — signing out');
+    // Fix: every 30s, read the cached session's expires_at and compare to
+    // Date.now(). If the token is expired (or about to expire within 60s),
+    // force an explicit refreshSession(). If the refresh fails (refresh
+    // token also expired), call signOut() → AuthGuard redirects to login.
+    const checkSession = async () => {
+      // Only check if we think we have a logged-in user
+      if (!prevUserIdRef.current) return;
+
+      const { data: { session: cached } } = await supabase.auth.getSession();
+
+      if (!cached) {
+        // Session already cleared — sign out
+        console.warn('[AuthProvider] No cached session — signing out');
+        supabase.auth.signOut();
+        return;
+      }
+
+      // Check if the access token has expired or will expire within 60s
+      const expiresAt = cached.expires_at; // Unix seconds
+      if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
+        console.log('[AuthProvider] Token expired or expiring soon — forcing refresh');
+        const { data: { session: refreshed }, error } = await supabase.auth.refreshSession();
+        if (refreshed) {
+          // Refresh succeeded — sync React state with fresh tokens
+          setSession(refreshed);
+          setUser(refreshed.user);
+        } else {
+          // Refresh failed — session truly dead, redirect to login
+          console.warn('[AuthProvider] Refresh failed — signing out:', error?.message);
           supabase.auth.signOut();
         }
-      });
+      }
     };
 
     // Poll every 30 seconds

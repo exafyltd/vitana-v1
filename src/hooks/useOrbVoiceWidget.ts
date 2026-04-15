@@ -101,16 +101,28 @@ export function useOrbVoiceWidget() {
         };
 
         if (user && session) {
-          // Fetch a fresh session to ensure the access token is still valid.
-          // If the tab was backgrounded, the token may have expired without
-          // the Supabase auto-refresh timer firing.
-          const { data: { session: freshSession } } = await supabase.auth.getSession();
-          if (freshSession) {
-            orb.init({ ...navOpts, authToken: freshSession.access_token });
-            console.log("[ORB] Widget initialized (authenticated, fresh token)");
+          // VTID-AUTH-GUARD: getSession() returns the CACHED session which may
+          // have an expired access_token. Check expires_at and force a refresh
+          // if needed, so the ORB always gets a valid token.
+          let validToken: string | null = null;
+          const { data: { session: cached } } = await supabase.auth.getSession();
+          if (cached) {
+            const expiresAt = cached.expires_at; // Unix seconds
+            if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
+              // Token expired or expiring soon — force refresh
+              const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+              validToken = refreshed?.access_token ?? null;
+            } else {
+              validToken = cached.access_token;
+            }
+          }
+
+          if (validToken) {
+            orb.init({ ...navOpts, authToken: validToken });
+            console.log("[ORB] Widget initialized (authenticated, verified token)");
           } else {
-            // Session expired — init anonymous; AuthProvider's visibility
-            // handler will trigger sign-out and redirect to login.
+            // Session truly expired — init anonymous; AuthProvider's health
+            // monitor will trigger sign-out and redirect to login.
             orb.init(navOpts);
             console.log("[ORB] Widget initialized (session expired, anonymous fallback)");
           }
@@ -161,12 +173,22 @@ export function useOrbVoiceWidget() {
       },
     };
 
-    // VTID-AUTH-RESUME: Fetch fresh token on reinit too
+    // VTID-AUTH-GUARD: Verify token before reinit — same logic as tryInit
     (async () => {
       if (user && session) {
-        const { data: { session: freshSession } } = await supabase.auth.getSession();
-        if (freshSession) {
-          orb.init({ ...navOpts, authToken: freshSession.access_token });
+        let validToken: string | null = null;
+        const { data: { session: cached } } = await supabase.auth.getSession();
+        if (cached) {
+          const expiresAt = cached.expires_at;
+          if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
+            const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+            validToken = refreshed?.access_token ?? null;
+          } else {
+            validToken = cached.access_token;
+          }
+        }
+        if (validToken) {
+          orb.init({ ...navOpts, authToken: validToken });
         } else {
           orb.init(navOpts);
         }
