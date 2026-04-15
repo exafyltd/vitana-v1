@@ -11,6 +11,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
+import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
 import { AdminGuard } from "@/routes/guards/AdminGuard";
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
@@ -435,6 +436,7 @@ const App = () => {
                         <SoundscapeResumeBanner />
                         <MiniAudioPlayer />
                         <TenantDetector />
+                  <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
@@ -1505,6 +1507,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
                   </Suspense>
+                  </GlobalErrorBoundary>
                   </GreetingProviderWrapper>
                 </VitanalandNavigationProvider>
               </BrowserRouter>
