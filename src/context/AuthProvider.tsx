@@ -71,13 +71,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (event === 'SIGNED_OUT') {
           dismiss();
           clearOrbSessionState();
+          // Clear cached role so next login doesn't inherit stale role
+          const qc = (window as any).queryClient as QueryClient | undefined;
+          if (qc) {
+            qc.invalidateQueries({ queryKey: ['rolePref'] }).catch(() => {});
+            qc.removeQueries({ queryKey: ['rolePref'] });
+          }
         }
 
-        // Detect user switch and clear stale ORB state
+        // Detect user switch and clear stale ORB state + role cache
         const newUserId = session?.user?.id ?? null;
         if (prevUserIdRef.current && newUserId && prevUserIdRef.current !== newUserId) {
-          console.log('[AuthProvider] User changed, clearing ORB state', prevUserIdRef.current, '→', newUserId);
+          console.log('[AuthProvider] User changed, clearing ORB state + role cache', prevUserIdRef.current, '→', newUserId);
           clearOrbSessionState();
+          // Invalidate cached role preference so the new user gets their own role, not the previous user's
+          const qc = (window as any).queryClient as QueryClient | undefined;
+          if (qc) {
+            qc.invalidateQueries({ queryKey: ['rolePref'] }).catch(() => {});
+          }
         }
         prevUserIdRef.current = newUserId;
 
