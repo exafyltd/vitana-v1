@@ -300,8 +300,12 @@ export default function Home() {
         canonical={window.location.href}
       />
 
-      <div className="md:p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="md:max-w-7xl md:mx-auto">
+      <div className={
+        isMobile
+          ? "px-2 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
+          : "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
+      }>
+        <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
 
           {/* Header */}
           <StandardHeader
@@ -312,6 +316,7 @@ export default function Home() {
 
           {/* ── UNIFIED UTILITY BAR (matches Health/Discover/MediaHub pattern) ── */}
           <UtilityActionButton
+            className="min-w-0"
             compact={isMobile}
             afterGiftVoucherChildren={isMobile ? (
               <>
