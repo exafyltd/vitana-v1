@@ -186,32 +186,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })();
     });
 
-    // VTID-AUTH-RESUME: When the tab/WebView comes back to the foreground,
-    // force a session refresh. The Supabase autoRefreshToken timer can be
-    // suspended by the browser while the tab is backgrounded, causing the
-    // access token to silently expire. On resume we proactively refresh so
-    // the user isn't left in a "zombie session" (stale React state, expired
-    // JWT, no SIGNED_OUT event).  If the refresh token itself has expired
-    // we call signOut() which fires the SIGNED_OUT event → AuthGuard
-    // redirects to login.
-    const handleVisibilityChange = () => {
-      if (document.visibilityState !== 'visible') return;
+    // VTID-AUTH-GUARD: Active session health monitor.
+    // Supabase autoRefreshToken can silently fail (timer suspended while tab
+    // is backgrounded, WebView frozen, or refresh token expired server-side).
+    // When that happens NO onAuthStateChange event fires — the user sits on
+    // a stale screen that looks logged-in but every API call will 401.
+    //
+    // Fix: poll getSession() every 30 seconds. If the session is gone and
+    // we previously had a user, force signOut() which fires SIGNED_OUT →
+    // AuthGuard redirects to login. Also check on visibility change for
+    // immediate detection when switching back to the tab.
+    const checkSession = () => {
       supabase.auth.getSession().then(({ data: { session: freshSession } }) => {
         if (freshSession) {
           // Token still valid or was auto-refreshed — sync React state
           setSession(freshSession);
           setUser(freshSession.user);
-        } else {
-          // Session truly gone (refresh token expired) — force sign-out
-          console.warn('[AuthProvider] Session expired while tab was hidden — signing out');
+        } else if (prevUserIdRef.current) {
+          // Had a user but session is gone → force sign-out + redirect
+          console.warn('[AuthProvider] Session expired — signing out');
           supabase.auth.signOut();
         }
       });
+    };
+
+    // Poll every 30 seconds
+    const sessionCheckInterval = setInterval(checkSession, 30_000);
+
+    // Also check immediately when tab becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') checkSession();
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       subscription.unsubscribe();
+      clearInterval(sessionCheckInterval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
