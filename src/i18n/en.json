@@ -945,7 +945,22 @@
     "joinCommunity": "Join Community",
     "joinCommunityDesc": "Connect with like-minded people on similar journeys",
     "getStarted": "Get Started",
-    "skip": "Skip for now"
+    "skip": "Skip for now",
+    "skipIntro": "Skip intro",
+    "nameForm": {
+      "title": "Let's get to know you",
+      "subtitle": "This is how others will see you in the community",
+      "displayNameLabel": "What should I call you?",
+      "displayNamePlaceholder": "Your name",
+      "handleLabel": "Choose your Vitanaland username",
+      "handlePlaceholder": "your_username",
+      "handleTaken": "This username is already taken",
+      "handleInvalid": "Only letters, numbers, and underscores allowed",
+      "handleAvailable": "Username is available!",
+      "handleMinLength": "At least 3 characters",
+      "saving": "Setting up...",
+      "submit": "Let's get started!"
+    }
   },
   "actionBar": {
     "search": "Search",
