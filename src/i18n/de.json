@@ -641,6 +641,7 @@
   },
   "sidebar": {
     "home": "Startseite",
+    "news": "Nachrichten",
     "community": "Gemeinschaft",
     "discover": "Entdecken", 
     "inbox": "Postfach",
@@ -2458,6 +2459,7 @@
   },
   "drawerNav": {
     "journey": "Meine Reise",
+    "news": "Nachrichten",
     "events": "Events & MeetUps",
     "live": "Live Rooms",
     "media": "Medien",

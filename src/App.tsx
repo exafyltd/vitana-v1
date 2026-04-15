@@ -155,11 +155,7 @@ const ProductDetail = lazy(() => import("./pages/discover/ProductDetail"));
 const BusinessHub = lazy(() => import("./pages/BusinessHub"));
 const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
 
-// Home sub-pages
-const Context = lazy(() => import("./pages/home/Context"));
-const Actions = lazy(() => import("./pages/home/Actions"));
-const Matches = lazy(() => import("./pages/home/Matches"));
-const AIFeed = lazy(() => import("./pages/home/AIFeed"));
+// VTID-01900: Home sub-pages removed — Home is now a standalone News Feed
 
 // Discover sub-pages
 const WellnessServices = lazy(() => import("./pages/discover/WellnessServices"));
@@ -539,33 +535,18 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
-          <Route path="/home/context" element={
-            <AuthGuard>
-              <Context />
-            </AuthGuard>
-          } />
-          <Route path="/home/actions" element={
-            <AuthGuard>
-              <Actions />
-            </AuthGuard>
-          } />
-          <Route path="/home/matches" element={
-            <AuthGuard>
-              <Matches />
-            </AuthGuard>
-          } />
-          <Route path="/home/aifeed" element={
-            <AuthGuard>
-              <AIFeed />
-            </AuthGuard>
-          } />
-          
+          {/* VTID-01900: Home sub-pages removed — all /home/* redirects to /home */}
+          <Route path="/home/context" element={<Navigate to="/home" replace />} />
+          <Route path="/home/actions" element={<Navigate to="/home" replace />} />
+          <Route path="/home/matches" element={<Navigate to="/home" replace />} />
+          <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+
           {/* Backwards compatibility redirects */}
           <Route path="/dashboard" element={<Navigate to="/home" replace />} />
-          <Route path="/dashboard/context" element={<Navigate to="/home/context" replace />} />
-          <Route path="/dashboard/actions" element={<Navigate to="/home/actions" replace />} />
-          <Route path="/dashboard/matches" element={<Navigate to="/home/matches" replace />} />
-          <Route path="/dashboard/aifeed" element={<Navigate to="/home/aifeed" replace />} />
+          <Route path="/dashboard/context" element={<Navigate to="/home" replace />} />
+          <Route path="/dashboard/actions" element={<Navigate to="/home" replace />} />
+          <Route path="/dashboard/matches" element={<Navigate to="/home" replace />} />
+          <Route path="/dashboard/aifeed" element={<Navigate to="/home" replace />} />
           
           {/* Discover routes */}
           <Route path="/discover" element={

@@ -6,7 +6,8 @@ import {
   Heart, Wallet, Share2, Database, Settings, Shield,
   Stethoscope, TestTube, Target, BookOpen, Bell,
   ClipboardList, UserCheck, BarChart3, Clock,
-  MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio, Briefcase
+  MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio, Briefcase,
+  Newspaper
 } from "lucide-react";
 
 interface NavigationItem {
@@ -18,7 +19,7 @@ interface NavigationItem {
 
 // Community Role Navigation - Social platform focused
 export const communityNavigation: NavigationItem[] = [
-  { title: "Home", path: "/home", icon: LayoutDashboard, i18nKey: "sidebar.home" },
+  { title: "News", path: "/home", icon: Newspaper, i18nKey: "sidebar.news" },
   { title: "My Journey", path: "/autopilot", icon: Zap, i18nKey: "sidebar.myJourney" },
   { title: "Community", path: "/comm", icon: MessageSquare, i18nKey: "sidebar.community" },
   { title: "Discover", path: "/discover", icon: Search, i18nKey: "sidebar.discover" },

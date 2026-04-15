@@ -1,12 +1,7 @@
 // Centralized navigation configuration to ensure consistency across all sections
 
-export const homeNavigation = [
-  { id: "overview", name: "Overview", path: "/home" },
-  { id: "context", name: "Context", path: "/home/context" },
-  { id: "actions", name: "Actions", path: "/home/actions" },
-  { id: "matches", name: "Matches", path: "/home/matches" },
-  { id: "aifeed", name: "AI Feed", path: "/home/aifeed" },
-];
+// VTID-01900: Home is now a standalone News Feed page — no sub-navigation
+export const homeNavigation: { id: string; name: string; path: string }[] = [];
 
 export const aiNavigation = [
   { id: "overview", name: "Overview", path: "/ai" },
