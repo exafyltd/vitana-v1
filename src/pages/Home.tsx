@@ -24,7 +24,7 @@ import {
   SplitBarList,
   SplitBarTrigger,
 } from "@/components/ui/split-bar";
-import { NewsCard } from "@/components/crossover/NewsCard";
+import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import {
   useLongevityNewsFeed,
   useCommunityNews,
@@ -106,13 +106,12 @@ export default function Home() {
   const handleRefresh = () => { refetchLongevity(); refetchCommunity(); };
   const isLoading = isLoadingLongevity || isLoadingCommunity;
 
-  const mapToCardCategory = (article: NewsArticle): "event" | "community" | "wellness" | "achievement" | "people" | "media" | "group" | undefined => {
-    switch (article.category) {
-      case "community_event": return "event";
-      case "media": return "media";
-      case "member_spotlight": return "people";
-      default: return "wellness";
-    }
+  // Pillar/source → the short uppercase category label shown above the title
+  // (e.g. "COMMUNITY", "LONGEVITY", "NUTRITION", …)
+  const getCategoryLabel = (article: NewsArticle): string => {
+    if (article.source === "community") return "COMMUNITY";
+    const pillar = mapTagToPillar(article.tags);
+    return (pillar || "LONGEVITY").toUpperCase();
   };
 
   const formatTimestamp = (dateStr: string): string => {
@@ -137,28 +136,34 @@ export default function Home() {
         </div>
       )}
       {articles.length > 0 && (
-        <div className="md:hidden flex flex-col gap-2 mt-2">
+        <div className="md:hidden flex flex-col gap-3 mt-2">
           {articles.map((article) => (
-            <div key={article.id} className="h-[280px]">
-              <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
-                category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
-                author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
-                onClick={() => handleArticleClick(article)} className="h-full rounded-none md:rounded-lg" />
-            </div>
+            <NewsArticleCard
+              key={article.id}
+              title={article.title}
+              description={article.summary || undefined}
+              imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
+              category={getCategoryLabel(article)}
+              timestamp={formatTimestamp(article.published_at)}
+              sourceName={article.source_name}
+              onClick={() => handleArticleClick(article)}
+            />
           ))}
         </div>
       )}
       {articles.length > 0 && (
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-          {articles.map((article, index) => (
-            <div key={article.id} className={index === 0 ? "lg:col-span-2 min-h-[320px]" : "min-h-[260px]"}>
-              <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
-                category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
-                author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
-                onClick={() => handleArticleClick(article)} className="h-full" />
-            </div>
+          {articles.map((article) => (
+            <NewsArticleCard
+              key={article.id}
+              title={article.title}
+              description={article.summary || undefined}
+              imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
+              category={getCategoryLabel(article)}
+              timestamp={formatTimestamp(article.published_at)}
+              sourceName={article.source_name}
+              onClick={() => handleArticleClick(article)}
+            />
           ))}
         </div>
       )}
