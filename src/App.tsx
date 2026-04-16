@@ -197,6 +197,7 @@ const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
 const Privacy = lazy(() => import("./pages/settings/Privacy"));
 const SettingsNotifications = lazy(() => import("./pages/settings/SettingsNotifications"));
 const Preferences = lazy(() => import("./pages/settings/Preferences"));
+const Limitations = lazy(() => import("./pages/settings/Limitations"));
 const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
@@ -835,6 +836,11 @@ const App = () => {
           <Route path="/settings/preferences" element={
             <AuthGuard>
               <Preferences />
+            </AuthGuard>
+          } />
+          <Route path="/settings/limitations" element={
+            <AuthGuard>
+              <Limitations />
             </AuthGuard>
           } />
           <Route path="/settings/connected-apps" element={
