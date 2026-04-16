@@ -9,6 +9,11 @@ export interface NewsArticleCardProps {
   title: string;
   description?: string;
   imageUrl: string;
+  /**
+   * Optional fallback image used when the primary `imageUrl` fails to load
+   * (e.g. og:image blocked/broken). When unset, only the primary is used.
+   */
+  fallbackImageUrl?: string;
   category?: string;
   timestamp?: string;
   sourceName?: string;
@@ -39,6 +44,7 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
       title,
       description,
       imageUrl,
+      fallbackImageUrl,
       category,
       timestamp,
       sourceName,
@@ -50,7 +56,24 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
     ref
   ) => {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [currentSrc, setCurrentSrc] = useState(imageUrl);
+    const [hasFallenBack, setHasFallenBack] = useState(false);
     const avatarLetter = (sourceName || "•").trim().charAt(0).toUpperCase();
+
+    // Reset image state when the primary URL changes (e.g. different article)
+    React.useEffect(() => {
+      setCurrentSrc(imageUrl);
+      setImageLoaded(false);
+      setHasFallenBack(false);
+    }, [imageUrl]);
+
+    const handleImageError = () => {
+      if (!hasFallenBack && fallbackImageUrl && fallbackImageUrl !== imageUrl) {
+        setHasFallenBack(true);
+        setImageLoaded(false);
+        setCurrentSrc(fallbackImageUrl);
+      }
+    };
 
     return (
       <Card
@@ -82,13 +105,14 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
                 "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.8) 50%, hsl(var(--muted) / 0.6) 100%)",
             }}
           />
-          {imageUrl && (
+          {currentSrc && (
             <img
-              src={imageUrl}
+              src={currentSrc}
               alt=""
               loading="lazy"
               decoding="async"
               onLoad={() => setImageLoaded(true)}
+              onError={handleImageError}
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition-all duration-500",
                 "group-hover:scale-[1.03]",

@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -349,6 +349,7 @@ const AppHooksInitializer = () => {
   useAppilix();
   useOrbVoiceWidget();
   const { user, session } = useAuth();
+  const navigate = useNavigate();
 
   // Set Appilix push notification user identity for mobile device mapping
   useEffect(() => {
@@ -372,6 +373,92 @@ const AppHooksInitializer = () => {
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [user?.id]);
+
+  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
+  // Appilix brings the app to the foreground without navigating to the
+  // notification URL, so the user lands on whatever page they left. This
+  // effect checks for a very recent unread chat notification when the app
+  // becomes visible and uses SPA navigation to open the conversation —
+  // critically, without a page reload so the Supabase session stays hydrated.
+  useEffect(() => {
+    if (!user?.id) return;
+    const processedIds = new Set<string>();
+
+    const checkPendingNotification = async () => {
+      if (document.hidden) return;
+
+      try {
+        // 5 minute window — handles slow notification taps and unlocks
+        const since = new Date(Date.now() - 5 * 60_000).toISOString();
+        const { data: rows, error } = await (supabase as any)
+          .from('user_notifications')
+          .select('id, type, data, created_at')
+          .eq('user_id', user.id)
+          .is('read_at', null)
+          .eq('type', 'new_chat_message')
+          .gt('created_at', since)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.warn('[DeepLink] Supabase query error:', error);
+          return;
+        }
+
+        const latest = rows?.[0];
+        if (!latest) return;
+        if (processedIds.has(latest.id)) return;
+
+        const targetUrl = (latest.data as any)?.url;
+        if (!targetUrl || typeof targetUrl !== 'string') {
+          console.log('[DeepLink] Notification has no URL in data, skipping');
+          return;
+        }
+
+        const currentPath = window.location.pathname + window.location.search;
+        if (currentPath === targetUrl) return;
+        // Only deep-link-redirect from landing/portal routes. If the user is
+        // already browsing elsewhere (e.g. /home, /comm), don't hijack them.
+        const onLandingLike =
+          currentPath === '/' ||
+          currentPath.startsWith('/maxina') ||
+          currentPath.startsWith('/alkalma') ||
+          currentPath.startsWith('/earthlinks') ||
+          currentPath.startsWith('/home');
+        if (!onLandingLike) {
+          console.log('[DeepLink] Not on landing-like route, skipping:', currentPath);
+          return;
+        }
+
+        processedIds.add(latest.id);
+        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl);
+        navigate(targetUrl);
+      } catch (err) {
+        console.warn('[DeepLink] Pending notification check failed:', err);
+      }
+    };
+
+    const handleTrigger = () => {
+      if (!document.hidden) checkPendingNotification();
+    };
+
+    // Cover multiple re-entry points for Android WebView / Appilix:
+    //   - visibilitychange fires on most foreground transitions
+    //   - focus fires when the WebView regains focus
+    //   - pageshow covers back/forward cache restores
+    document.addEventListener('visibilitychange', handleTrigger);
+    window.addEventListener('focus', handleTrigger);
+    window.addEventListener('pageshow', handleTrigger);
+
+    // Also run on mount (cold-start from notification tap when app was killed)
+    checkPendingNotification();
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleTrigger);
+      window.removeEventListener('focus', handleTrigger);
+      window.removeEventListener('pageshow', handleTrigger);
+    };
+  }, [user?.id, navigate]);
 
   // Re-register Appilix identity on auth state changes (token refresh, re-login)
   useEffect(() => {
