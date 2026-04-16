@@ -150,6 +150,24 @@ export const adminAuditNavigation = [
   { id: "security", name: "Security", path: "/admin/audit/security" },
 ];
 
+// VTID-02000: Marketplace admin — Catalog section (5 screens max per sidebar section)
+export const adminMarketplaceCatalogNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/marketplace" },
+  { id: "merchants", name: "Merchants", path: "/admin/marketplace/merchants" },
+  { id: "products", name: "Products", path: "/admin/marketplace/products" },
+  { id: "taxonomy", name: "Taxonomy & Health Knowledge", path: "/admin/marketplace/taxonomy" },
+  { id: "feed-curation", name: "Feed Curation", path: "/admin/marketplace/feed-curation" },
+];
+
+// VTID-02000: Marketplace admin — Operations section
+export const adminMarketplaceOperationsNavigation = [
+  { id: "ingestion", name: "Ingestion & Coverage", path: "/admin/marketplace/ingestion" },
+  { id: "networks", name: "Affiliate Networks", path: "/admin/marketplace/networks" },
+  { id: "geo", name: "Geo Policies", path: "/admin/marketplace/geo" },
+  { id: "attribution", name: "Attribution", path: "/admin/marketplace/attribution" },
+  { id: "moderation", name: "Moderation", path: "/admin/marketplace/moderation" },
+];
+
 // VTID-NAV-02: Vitana Navigator admin (catalog + coverage + telemetry + history)
 export const adminNavigatorNavigation = [
   { id: "catalog", name: "Catalog", path: "/admin/navigator" },
