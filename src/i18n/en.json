@@ -1795,7 +1795,9 @@
     "profile": "Profile",
     "settings": "Settings",
     "diary": "Diary",
-    "home": "Home"
+    "home": "Home",
+    "myJourney": "My Journey",
+    "news": "Longevity News"
   },
   "walletActions": {
     "title": "Quick Actions",
