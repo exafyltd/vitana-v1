@@ -4,6 +4,11 @@
  * Longevity science news from curated RSS sources + MAXINA community updates.
  * Mobile: MobileModePill dropdown in UtilityActionButton (standard pattern).
  * Desktop: SplitBar tabs + 3-column grid.
+ *
+ * Image strategy (per card):
+ *   - Primary (imageUrl): article's own RSS / og:image (unique per article)
+ *   - Fallback (fallbackImageUrl): keyword-matched category pool photo
+ *   - NewsCard swaps to fallback automatically if primary fails to load.
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
@@ -119,6 +124,16 @@ export default function Home() {
     try { return formatDistanceToNow(new Date(dateStr), { addSuffix: true }); } catch { return ""; }
   };
 
+  /** Build primary+fallback image URLs for an article. */
+  const getCardImages = (article: NewsArticle): { primary: string; fallback: string } => {
+    const categoryImage = getNewsImage(article.tags, article.id, article.title, article.summary);
+    // Primary: RSS/og:image if we have one, else use category image as primary (and no fallback needed)
+    return {
+      primary: article.image_url || categoryImage,
+      fallback: categoryImage,
+    };
+  };
+
   const renderFeedContent = () => (
     <>
       {isLoading && articles.length === 0 && (
@@ -138,28 +153,34 @@ export default function Home() {
       )}
       {articles.length > 0 && (
         <div className="md:hidden flex flex-col gap-2 mt-2">
-          {articles.map((article) => (
-            <div key={article.id} className="h-[280px]">
-              <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
-                category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
-                author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
-                onClick={() => handleArticleClick(article)} className="h-full rounded-none md:rounded-lg" />
-            </div>
-          ))}
+          {articles.map((article) => {
+            const { primary, fallback } = getCardImages(article);
+            return (
+              <div key={article.id} className="h-[280px]">
+                <NewsCard title={article.title} description={article.summary || undefined}
+                  imageUrl={primary} fallbackImageUrl={fallback}
+                  category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
+                  author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
+                  onClick={() => handleArticleClick(article)} className="h-full rounded-none md:rounded-lg" />
+              </div>
+            );
+          })}
         </div>
       )}
       {articles.length > 0 && (
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-          {articles.map((article, index) => (
-            <div key={article.id} className={index === 0 ? "lg:col-span-2 min-h-[320px]" : "min-h-[260px]"}>
-              <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
-                category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
-                author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
-                onClick={() => handleArticleClick(article)} className="h-full" />
-            </div>
-          ))}
+          {articles.map((article, index) => {
+            const { primary, fallback } = getCardImages(article);
+            return (
+              <div key={article.id} className={index === 0 ? "lg:col-span-2 min-h-[320px]" : "min-h-[260px]"}>
+                <NewsCard title={article.title} description={article.summary || undefined}
+                  imageUrl={primary} fallbackImageUrl={fallback}
+                  category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
+                  author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
+                  onClick={() => handleArticleClick(article)} className="h-full" />
+              </div>
+            );
+          })}
         </div>
       )}
       <div ref={observerRef} className="h-1" />
