@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getIntroVideoSrc } from '@/utils/introVideo';
 import { OnboardingSpeech } from '@/components/onboarding/OnboardingSpeech';
@@ -9,12 +9,21 @@ import { useAuth } from '@/context/AuthProvider';
 
 type Phase = 'speech' | 'form';
 
+function getDefaultTarget(): string {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  return isMobile ? '/comm/events-meetups?tab=hot' : '/home';
+}
+
 export default function OnboardingWelcome() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { needsOnboarding, loading: onboardingLoading } = useOnboardingStatus();
   const [phase, setPhase] = useState<Phase>('speech');
   const [videoSrc, setVideoSrc] = useState('');
+
+  // Post-onboarding destination (honor deep-link redirectTo if set, else default)
+  const postOnboardingTarget = searchParams.get('redirectTo') || getDefaultTarget();
 
   // Load background video
   useEffect(() => {
@@ -24,14 +33,14 @@ export default function OnboardingWelcome() {
   // If user already completed onboarding, redirect immediately
   useEffect(() => {
     if (!onboardingLoading && !needsOnboarding && user) {
-      const isMobile = window.innerWidth < 768;
-      navigate(isMobile ? '/comm/events-meetups?tab=hot' : '/home', { replace: true });
+      console.debug('[OnboardingWelcome] User does not need onboarding, redirecting to', postOnboardingTarget);
+      navigate(postOnboardingTarget, { replace: true });
     }
-  }, [onboardingLoading, needsOnboarding, user, navigate]);
+  }, [onboardingLoading, needsOnboarding, user, navigate, postOnboardingTarget]);
 
-  // Hide the external ORB FAB during onboarding so it doesn't conflict
+  // Hide the external ORB FAB during onboarding so it doesn't conflict with our speech bubbles
   useEffect(() => {
-    const fabEl = document.querySelector('.vtorb-fab') as HTMLElement;
+    const fabEl = document.querySelector('.vtorb-fab') as HTMLElement | null;
     if (fabEl) fabEl.style.display = 'none';
     return () => {
       if (fabEl) fabEl.style.display = '';
@@ -39,12 +48,13 @@ export default function OnboardingWelcome() {
   }, []);
 
   const handleSpeechComplete = () => {
+    console.debug('[OnboardingWelcome] Speech complete, transitioning to name form');
     setPhase('form');
   };
 
   const handleFormComplete = () => {
-    const isMobile = window.innerWidth < 768;
-    navigate(isMobile ? '/comm/events-meetups?tab=hot' : '/home', { replace: true });
+    console.debug('[OnboardingWelcome] Form complete, navigating to', postOnboardingTarget);
+    navigate(postOnboardingTarget, { replace: true });
   };
 
   // Show nothing while checking onboarding status or redirecting away

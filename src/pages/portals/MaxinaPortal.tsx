@@ -82,7 +82,9 @@ const MaxinaPortal = () => {
             window.history.replaceState(null, '', window.location.pathname);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const target = searchParams.get('redirectTo') || '/onboarding/welcome';
+            const target = searchParams.get('redirectTo')
+              ? `/onboarding/welcome?redirectTo=${encodeURIComponent(searchParams.get('redirectTo')!)}`
+              : '/onboarding/welcome';
             console.debug('[MaxinaPortal] PKCE exchange succeeded, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -101,7 +103,9 @@ const MaxinaPortal = () => {
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const target = searchParams.get('redirectTo') || '/onboarding/welcome';
+            const target = searchParams.get('redirectTo')
+              ? `/onboarding/welcome?redirectTo=${encodeURIComponent(searchParams.get('redirectTo')!)}`
+              : '/onboarding/welcome';
             console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -121,7 +125,9 @@ const MaxinaPortal = () => {
             window.history.replaceState(null, '', window.location.pathname);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const target = searchParams.get('redirectTo') || '/onboarding/welcome';
+            const target = searchParams.get('redirectTo')
+              ? `/onboarding/welcome?redirectTo=${encodeURIComponent(searchParams.get('redirectTo')!)}`
+              : '/onboarding/welcome';
             console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -157,10 +163,12 @@ const MaxinaPortal = () => {
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
     const redirectTo = searchParams.get('redirectTo');
-    // Use portal-specific default — tenant/role state isn't available yet at this point.
-    // useRoleRouteEnforcement (in AppLayout) will correct for non-community roles.
-    // New users go through onboarding; OnboardingWelcome will redirect if already completed.
-    const target = redirectTo || '/onboarding/welcome';
+    // Always route authenticated users through onboarding. OnboardingWelcome
+    // checks if the profile is complete and redirects to the final destination
+    // (redirectTo if set, else the default events/home page).
+    const target = redirectTo
+      ? `/onboarding/welcome?redirectTo=${encodeURIComponent(redirectTo)}`
+      : '/onboarding/welcome';
 
     // Hard deadline: navigate no matter what after 6s
     const deadlineTimer = setTimeout(() => {
@@ -397,7 +405,9 @@ const MaxinaPortal = () => {
                 // Try one more session check before restarting OAuth
                 const { data: { session: s } } = await supabase.auth.getSession();
                 if (s) {
-                  const target = searchParams.get('redirectTo') || '/onboarding/welcome';
+                  const target = searchParams.get('redirectTo')
+              ? `/onboarding/welcome?redirectTo=${encodeURIComponent(searchParams.get('redirectTo')!)}`
+              : '/onboarding/welcome';
                   setTenantBySlug('maxina').catch(console.warn);
                   navigate(target);
                 } else {
