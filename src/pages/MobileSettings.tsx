@@ -17,6 +17,7 @@ import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileAction
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
+import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -35,6 +36,7 @@ export default function MobileSettings() {
   const { translate } = useTranslation();
   const { pendingCount } = useAutopilot();
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
+  const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSection, setActiveSection] = useState('notifications');
@@ -89,14 +91,19 @@ export default function MobileSettings() {
     }
   };
 
-  const notificationToggles: { field: keyof typeof prefs; label: string }[] = [
-    { field: 'live_room_notifications', label: translate('settings.liveRooms', 'Live Rooms') },
-    { field: 'community_notifications', label: translate('settings.community', 'Community') },
-    { field: 'recommendation_notifications', label: translate('settings.recommendations', 'Recommendations') },
-    { field: 'task_notifications', label: translate('settings.tasks', 'Tasks') },
-    { field: 'match_notifications', label: translate('settings.matches', 'Matches') },
-    { field: 'memory_notifications', label: translate('settings.memory', 'Memory') },
-  ];
+  const handleCategoryToggle = async (cat: CategoryPreference) => {
+    try {
+      await toggleCategory(cat.id, !cat.enabled);
+    } catch {
+      toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+    }
+  };
+
+  const CATEGORY_TYPE_LABELS: Record<'chat' | 'calendar' | 'community', string> = {
+    chat: translate('settings.chat', 'Chat'),
+    calendar: translate('settings.calendar', 'Calendar'),
+    community: translate('settings.community', 'Community'),
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -115,13 +122,35 @@ export default function MobileSettings() {
                 </div>
                 <Switch checked={prefs.push_enabled} onCheckedChange={(v) => handleToggle('push_enabled', v)} disabled={prefsLoading} />
               </div>
-              <Separator className="bg-border/30" />
-              {notificationToggles.map((item) => (
-                <div key={item.field} className="flex items-center justify-between py-2.5">
-                  <span className="text-sm text-foreground/80">{item.label}</span>
-                  <Switch checked={!!prefs[item.field]} onCheckedChange={(v) => handleToggle(item.field, v)} disabled={prefsLoading || !prefs.push_enabled} />
-                </div>
-              ))}
+
+              {(['chat', 'calendar', 'community'] as const).map((type) => {
+                const items = categories?.[type] || [];
+                if (items.length === 0) return null;
+                return (
+                  <div key={type}>
+                    <Separator className="bg-border/30" />
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground pt-3 pb-1">
+                      {CATEGORY_TYPE_LABELS[type]}
+                    </p>
+                    {items.map((cat) => (
+                      <div key={cat.id} className="flex items-center justify-between py-2.5">
+                        <div className="flex-1 min-w-0 mr-3">
+                          <span className="text-sm text-foreground/80 block">{cat.display_name}</span>
+                          {cat.description && (
+                            <p className="text-xs text-muted-foreground mt-0.5 truncate">{cat.description}</p>
+                          )}
+                        </div>
+                        <Switch
+                          checked={cat.enabled}
+                          onCheckedChange={() => handleCategoryToggle(cat)}
+                          disabled={catLoading || !prefs.push_enabled}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+
               <Separator className="bg-border/30" />
               <div className="flex items-center justify-between py-2.5">
                 <div className="flex items-center gap-2">
