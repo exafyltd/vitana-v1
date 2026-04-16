@@ -230,6 +230,9 @@ const ProfessionalPatients = lazy(() => import("./pages/professional/Patients"))
 const StaffDashboard = lazy(() => import("./pages/staff/Dashboard"));
 const StaffQueue = lazy(() => import("./pages/staff/Queue"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+// VTID-02000: Marketplace admin (Maxina)
+const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Overview"));
+const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -1178,6 +1181,14 @@ const App = () => {
           {/* Legacy dashboard routes → redirect to new Overview tabs */}
           <Route path="/admin/dashboard/health" element={<Navigate to="/admin/health" replace />} />
           <Route path="/admin/dashboard/activity" element={<Navigate to="/admin/activity" replace />} />
+
+          {/* VTID-02000: Marketplace admin */}
+          <Route path="/admin/marketplace" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceOverview /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/marketplace/products" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceProducts /></ProtectedRoute></AuthGuard>
+          } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
           <Route path="/admin/users" element={<Navigate to="/admin/members/directory" replace />} />
