@@ -104,6 +104,19 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
       toast({ title: `${navTo} ${translate('navigation.wallet')}` });
       return true;
     }
+    // My Journey → Autopilot Dashboard (90-day journey prepared by Autopilot, aligned to the Calendar)
+    if (
+      t.includes('my journey') ||
+      t.includes('meine reise') ||
+      t.includes('autopilot journey') ||
+      t.includes('90-day journey') ||
+      t.includes('90 day journey') ||
+      t.includes('journey')
+    ) {
+      navigate('/autopilot');
+      toast({ title: `${navTo} ${translate('navigation.myJourney')}` });
+      return true;
+    }
     if (t.includes('profile') || t.includes('my profile')) {
       navigate('/profile');
       toast({ title: `${navTo} ${translate('navigation.profile')}` });
@@ -120,6 +133,18 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
       return true;
     }
     
+    // Longevity News → News Feed (VTID-01900: Home is the standalone News Feed)
+    if (
+      t.includes('longevity news') ||
+      t.includes('latest news') ||
+      t.includes('news feed') ||
+      t.includes('news')
+    ) {
+      navigate('/home');
+      toast({ title: `${navTo} ${translate('navigation.news')}` });
+      return true;
+    }
+
     // Home
     if (t.includes('home') || t.includes('dashboard')) {
       navigate('/home');
