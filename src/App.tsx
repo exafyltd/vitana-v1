@@ -377,12 +377,18 @@ const AppHooksInitializer = () => {
   // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
   // Appilix brings the app to the foreground without navigating to the
   // notification URL, so the user lands on whatever page they left. This
-  // effect checks for a very recent unread chat notification when the app
+  // effect polls for a very recent unread chat notification when the app
   // becomes visible and uses SPA navigation to open the conversation —
   // critically, without a page reload so the Supabase session stays hydrated.
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
+    let retryTimers: Array<ReturnType<typeof setTimeout>> = [];
+
+    const clearRetries = () => {
+      for (const t of retryTimers) clearTimeout(t);
+      retryTimers = [];
+    };
 
     const checkPendingNotification = async () => {
       if (document.hidden) return;
@@ -417,46 +423,45 @@ const AppHooksInitializer = () => {
 
         const currentPath = window.location.pathname + window.location.search;
         if (currentPath === targetUrl) return;
-        // Only deep-link-redirect from landing/portal routes. If the user is
-        // already browsing elsewhere (e.g. /home, /comm), don't hijack them.
-        const onLandingLike =
-          currentPath === '/' ||
-          currentPath.startsWith('/maxina') ||
-          currentPath.startsWith('/alkalma') ||
-          currentPath.startsWith('/earthlinks') ||
-          currentPath.startsWith('/home');
-        if (!onLandingLike) {
-          console.log('[DeepLink] Not on landing-like route, skipping:', currentPath);
-          return;
-        }
+        // Don't hijack the user if they're already in an inbox/conversation.
+        if (currentPath.startsWith('/inbox')) return;
 
         processedIds.add(latest.id);
-        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl);
+        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl, 'from', currentPath);
         navigate(targetUrl);
       } catch (err) {
         console.warn('[DeepLink] Pending notification check failed:', err);
       }
     };
 
-    const handleTrigger = () => {
-      if (!document.hidden) checkPendingNotification();
+    const triggerCheck = () => {
+      if (document.hidden) return;
+      // Kick off the check immediately AND retry a few times to cover races
+      // where the notification INSERT hasn't propagated yet or the realtime
+      // subscription hasn't received it when the handler first fires.
+      clearRetries();
+      checkPendingNotification();
+      retryTimers.push(setTimeout(checkPendingNotification, 1500));
+      retryTimers.push(setTimeout(checkPendingNotification, 4000));
+      retryTimers.push(setTimeout(checkPendingNotification, 8000));
     };
 
     // Cover multiple re-entry points for Android WebView / Appilix:
-    //   - visibilitychange fires on most foreground transitions
-    //   - focus fires when the WebView regains focus
-    //   - pageshow covers back/forward cache restores
-    document.addEventListener('visibilitychange', handleTrigger);
-    window.addEventListener('focus', handleTrigger);
-    window.addEventListener('pageshow', handleTrigger);
+    //   - visibilitychange: most foreground transitions
+    //   - focus: WebView regains focus
+    //   - pageshow: back/forward cache restores
+    document.addEventListener('visibilitychange', triggerCheck);
+    window.addEventListener('focus', triggerCheck);
+    window.addEventListener('pageshow', triggerCheck);
 
     // Also run on mount (cold-start from notification tap when app was killed)
-    checkPendingNotification();
+    triggerCheck();
 
     return () => {
-      document.removeEventListener('visibilitychange', handleTrigger);
-      window.removeEventListener('focus', handleTrigger);
-      window.removeEventListener('pageshow', handleTrigger);
+      clearRetries();
+      document.removeEventListener('visibilitychange', triggerCheck);
+      window.removeEventListener('focus', triggerCheck);
+      window.removeEventListener('pageshow', triggerCheck);
     };
   }, [user?.id, navigate]);
 
