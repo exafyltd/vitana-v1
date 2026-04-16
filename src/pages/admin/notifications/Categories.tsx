@@ -39,7 +39,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 // BOOTSTRAP-NOTIF-CATEGORIES: Admin notification category management page.
-// Deploy timestamp: 2026-04-16T08:00Z
+// Deploy timestamp: 2026-04-16T08:30Z (retry after billing/auth fix)
 const TYPE_CONFIG = {
   chat: { label: "Chat", icon: MessageSquare, color: "text-blue-500" },
   calendar: { label: "Calendar", icon: CalendarDays, color: "text-amber-500" },
