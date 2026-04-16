@@ -1,11 +1,12 @@
 import AppLayout from "@/components/AppLayout";
-import AdminTabs from "@/components/admin/AdminTabs";
+import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
+import { adminNotificationsNavigation } from "@/config/navigation";
 
 export default function SentNew() {
   const { data, isLoading } = useSentNotifications({ days: 30 });
@@ -13,7 +14,7 @@ export default function SentNew() {
 
   return (
     <AppLayout>
-      <AdminTabs sectionKey="notifications" />
+      <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="📨"
