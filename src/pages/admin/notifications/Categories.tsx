@@ -38,6 +38,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+// BOOTSTRAP-NOTIF-CATEGORIES: Admin notification category management page.
 const TYPE_CONFIG = {
   chat: { label: "Chat", icon: MessageSquare, color: "text-blue-500" },
   calendar: { label: "Calendar", icon: CalendarDays, color: "text-amber-500" },
