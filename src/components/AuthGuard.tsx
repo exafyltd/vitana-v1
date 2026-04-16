@@ -158,7 +158,16 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       if (cancelled) return;
       if (!session) {
         console.debug('[AuthGuard] No session found, redirecting to login');
-        navigate(getLoginRoute());
+        // BOOTSTRAP-NOTIF-CATEGORIES: Preserve the deep-link target so that
+        // after login the user lands on the originally requested URL (e.g.
+        // tapping a chat push notification on mobile should take them to the
+        // conversation, not the home page).
+        const intended = window.location.pathname + window.location.search;
+        const loginRoute = getLoginRoute();
+        const redirectUrl = (intended && intended !== '/' && !intended.startsWith(loginRoute))
+          ? `${loginRoute}?redirectTo=${encodeURIComponent(intended)}`
+          : loginRoute;
+        navigate(redirectUrl);
       }
     });
 
