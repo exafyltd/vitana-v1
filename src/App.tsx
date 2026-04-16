@@ -373,6 +373,66 @@ const AppHooksInitializer = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [user?.id]);
 
+  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
+  // Appilix brings the app to the foreground without navigating to the
+  // notification URL, so the user lands on whatever page they left. This
+  // effect checks for a very recent unread chat notification when the app
+  // becomes visible and navigates to the conversation.
+  useEffect(() => {
+    if (!user?.id) return;
+    const processedIds = new Set<string>();
+
+    const checkPendingNotification = async () => {
+      if (document.hidden) return;
+
+      try {
+        const since = new Date(Date.now() - 60_000).toISOString();
+        const { data: rows } = await (supabase as any)
+          .from('user_notifications')
+          .select('id, type, data, created_at')
+          .eq('user_id', user.id)
+          .is('read_at', null)
+          .eq('type', 'new_chat_message')
+          .gt('created_at', since)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        const latest = rows?.[0];
+        if (!latest) return;
+        if (processedIds.has(latest.id)) return;
+
+        const targetUrl = (latest.data as any)?.url;
+        if (!targetUrl || typeof targetUrl !== 'string') return;
+
+        const currentPath = window.location.pathname + window.location.search;
+        if (currentPath === targetUrl) return;
+        // Avoid hijacking: only redirect from landing/portal routes
+        const onLandingLike =
+          currentPath === '/' ||
+          currentPath.startsWith('/maxina') ||
+          currentPath.startsWith('/alkalma') ||
+          currentPath.startsWith('/earthlinks');
+        if (!onLandingLike) return;
+
+        processedIds.add(latest.id);
+        console.log('[DeepLink] Foreground → navigating to pending notification:', targetUrl);
+        window.location.href = targetUrl;
+      } catch (err) {
+        console.warn('[DeepLink] Pending notification check failed:', err);
+      }
+    };
+
+    const handleVis = () => {
+      if (!document.hidden) checkPendingNotification();
+    };
+
+    document.addEventListener('visibilitychange', handleVis);
+    // Also check on mount (handles cold-start from notification tap)
+    checkPendingNotification();
+
+    return () => document.removeEventListener('visibilitychange', handleVis);
+  }, [user?.id]);
+
   // Re-register Appilix identity on auth state changes (token refresh, re-login)
   useEffect(() => {
     if (!user?.id) return;
