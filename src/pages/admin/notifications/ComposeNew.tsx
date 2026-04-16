@@ -1,5 +1,5 @@
 import AppLayout from "@/components/AppLayout";
-import AdminTabs from "@/components/admin/AdminTabs";
+import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
+import { adminNotificationsNavigation } from "@/config/navigation";
 
 export default function ComposeNew() {
   const { data, isLoading } = useSentNotifications({ days: 7, pageSize: 10 });
@@ -14,7 +15,7 @@ export default function ComposeNew() {
 
   return (
     <AppLayout>
-      <AdminTabs sectionKey="notifications" />
+      <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="✏️"
