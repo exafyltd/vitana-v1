@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -349,6 +349,7 @@ const AppHooksInitializer = () => {
   useAppilix();
   useOrbVoiceWidget();
   const { user, session } = useAuth();
+  const navigate = useNavigate();
 
   // Set Appilix push notification user identity for mobile device mapping
   useEffect(() => {
@@ -377,7 +378,8 @@ const AppHooksInitializer = () => {
   // Appilix brings the app to the foreground without navigating to the
   // notification URL, so the user lands on whatever page they left. This
   // effect checks for a very recent unread chat notification when the app
-  // becomes visible and navigates to the conversation.
+  // becomes visible and uses SPA navigation to open the conversation —
+  // critically, without a page reload so the Supabase session stays hydrated.
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
@@ -416,7 +418,8 @@ const AppHooksInitializer = () => {
 
         processedIds.add(latest.id);
         console.log('[DeepLink] Foreground → navigating to pending notification:', targetUrl);
-        window.location.href = targetUrl;
+        // SPA navigation preserves the Supabase session (no page reload).
+        navigate(targetUrl);
       } catch (err) {
         console.warn('[DeepLink] Pending notification check failed:', err);
       }
@@ -431,7 +434,7 @@ const AppHooksInitializer = () => {
     checkPendingNotification();
 
     return () => document.removeEventListener('visibilitychange', handleVis);
-  }, [user?.id]);
+  }, [user?.id, navigate]);
 
   // Re-register Appilix identity on auth state changes (token refresh, re-login)
   useEffect(() => {
