@@ -161,6 +161,7 @@ export const adminNavigatorNavigation = [
 export const settingsNavigation = [
   { id: "overview", name: "Overview", path: "/settings" },
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
+  { id: "limitations", name: "Limitations", path: "/settings/limitations" },
   { id: "privacy", name: "Privacy", path: "/settings/privacy" },
   { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
   { id: "social", name: "Social Accounts", path: "/settings/social" },
