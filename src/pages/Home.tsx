@@ -171,7 +171,7 @@ export default function Home() {
         </div>
       )}
       {articles.length > 0 && (
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
+        <div className="hidden md:grid md:grid-cols-3 gap-5 mt-5">
           {articles.map((article) => {
             const { primary, fallback } = getCardImages(article);
             return (
