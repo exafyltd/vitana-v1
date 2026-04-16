@@ -141,7 +141,7 @@ export default function Home() {
           {articles.map((article) => (
             <div key={article.id} className="h-[280px]">
               <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id)}
+                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
                 category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
                 author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
                 onClick={() => handleArticleClick(article)} className="h-full rounded-none md:rounded-lg" />
@@ -154,7 +154,7 @@ export default function Home() {
           {articles.map((article, index) => (
             <div key={article.id} className={index === 0 ? "lg:col-span-2 min-h-[320px]" : "min-h-[260px]"}>
               <NewsCard title={article.title} description={article.summary || undefined}
-                imageUrl={article.image_url || getNewsImage(article.tags, article.id)}
+                imageUrl={article.image_url || getNewsImage(article.tags, article.id, article.title, article.summary)}
                 category={mapToCardCategory(article)} pillar={mapTagToPillar(article.tags)}
                 author={{ name: article.source_name }} timestamp={formatTimestamp(article.published_at)}
                 onClick={() => handleArticleClick(article)} className="h-full" />
