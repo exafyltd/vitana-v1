@@ -388,8 +388,9 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
 
       try {
-        const since = new Date(Date.now() - 60_000).toISOString();
-        const { data: rows } = await (supabase as any)
+        // 5 minute window — handles slow notification taps and unlocks
+        const since = new Date(Date.now() - 5 * 60_000).toISOString();
+        const { data: rows, error } = await (supabase as any)
           .from('user_notifications')
           .select('id, type, data, created_at')
           .eq('user_id', user.id)
@@ -399,41 +400,64 @@ const AppHooksInitializer = () => {
           .order('created_at', { ascending: false })
           .limit(1);
 
+        if (error) {
+          console.warn('[DeepLink] Supabase query error:', error);
+          return;
+        }
+
         const latest = rows?.[0];
         if (!latest) return;
         if (processedIds.has(latest.id)) return;
 
         const targetUrl = (latest.data as any)?.url;
-        if (!targetUrl || typeof targetUrl !== 'string') return;
+        if (!targetUrl || typeof targetUrl !== 'string') {
+          console.log('[DeepLink] Notification has no URL in data, skipping');
+          return;
+        }
 
         const currentPath = window.location.pathname + window.location.search;
         if (currentPath === targetUrl) return;
-        // Avoid hijacking: only redirect from landing/portal routes
+        // Only deep-link-redirect from landing/portal routes. If the user is
+        // already browsing elsewhere (e.g. /home, /comm), don't hijack them.
         const onLandingLike =
           currentPath === '/' ||
           currentPath.startsWith('/maxina') ||
           currentPath.startsWith('/alkalma') ||
-          currentPath.startsWith('/earthlinks');
-        if (!onLandingLike) return;
+          currentPath.startsWith('/earthlinks') ||
+          currentPath.startsWith('/home');
+        if (!onLandingLike) {
+          console.log('[DeepLink] Not on landing-like route, skipping:', currentPath);
+          return;
+        }
 
         processedIds.add(latest.id);
-        console.log('[DeepLink] Foreground → navigating to pending notification:', targetUrl);
-        // SPA navigation preserves the Supabase session (no page reload).
+        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl);
         navigate(targetUrl);
       } catch (err) {
         console.warn('[DeepLink] Pending notification check failed:', err);
       }
     };
 
-    const handleVis = () => {
+    const handleTrigger = () => {
       if (!document.hidden) checkPendingNotification();
     };
 
-    document.addEventListener('visibilitychange', handleVis);
-    // Also check on mount (handles cold-start from notification tap)
+    // Cover multiple re-entry points for Android WebView / Appilix:
+    //   - visibilitychange fires on most foreground transitions
+    //   - focus fires when the WebView regains focus
+    //   - pageshow covers back/forward cache restores
+    document.addEventListener('visibilitychange', handleTrigger);
+    window.addEventListener('focus', handleTrigger);
+    window.addEventListener('pageshow', handleTrigger);
+
+    // Also run on mount (cold-start from notification tap when app was killed)
     checkPendingNotification();
 
-    return () => document.removeEventListener('visibilitychange', handleVis);
+    return () => {
+      document.removeEventListener('visibilitychange', handleTrigger);
+      window.removeEventListener('focus', handleTrigger);
+      window.removeEventListener('pageshow', handleTrigger);
+    };
   }, [user?.id, navigate]);
 
   // Re-register Appilix identity on auth state changes (token refresh, re-login)
