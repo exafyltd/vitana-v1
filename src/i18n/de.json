@@ -2762,5 +2762,27 @@
     "sendFailedDesc": "Ihr Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
     "recognitionError": "Erkennungsfehler",
     "recognitionErrorDesc": "Die Spracherkennung hat einen Fehler festgestellt. Bitte versuchen Sie es erneut."
+  },
+  "newsCard": {
+    "menu": {
+      "share": "Teilen",
+      "save": "Speichern",
+      "saved": "Gespeichert",
+      "summarize": "Mit Vitana zusammenfassen",
+      "copyLink": "Link kopieren",
+      "openInBrowser": "Im Browser öffnen",
+      "hide": "Diesen Artikel ausblenden",
+      "showLess": "Weniger davon zeigen",
+      "muteSource": "Diese Quelle stummschalten",
+      "linkCopied": "Link kopiert",
+      "savedToast": "Zum Lesen gespeichert",
+      "unsavedToast": "Aus Gespeichert entfernt",
+      "summarizeToast": "An Vitana übergeben",
+      "hiddenToast": "Artikel ausgeblendet",
+      "showLessToast": "Wir zeigen weniger davon",
+      "mutedToast": "Quelle stummgeschaltet",
+      "undo": "Rückgängig",
+      "unmute": "Stummschaltung aufheben"
+    }
   }
 }

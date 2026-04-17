@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { NewsArticleCardMenu } from "@/components/crossover/NewsArticleCardMenu";
 
 export interface NewsArticleCardProps {
   title: string;
@@ -18,9 +18,14 @@ export interface NewsArticleCardProps {
   timestamp?: string;
   sourceName?: string;
   sourceAvatarUrl?: string;
+  /** Stable article id — enables save / hide / "show less" preferences. */
+  articleId?: string;
+  /** External article URL — used by Share, Copy link, Open in browser. */
+  link?: string | null;
+  /** Article tags — used by "Show less like this". */
+  tags?: string[];
   className?: string;
   onClick?: () => void;
-  onMoreClick?: () => void;
 }
 
 /**
@@ -49,9 +54,11 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
       timestamp,
       sourceName,
       sourceAvatarUrl,
+      articleId,
+      link,
+      tags,
       className,
       onClick,
-      onMoreClick,
     },
     ref
   ) => {
@@ -167,17 +174,16 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
               </span>
             </div>
 
-            <button
-              type="button"
-              aria-label="More options"
-              className="shrink-0 rounded-full p-1 text-muted-foreground/60 transition-colors hover:text-foreground/80"
-              onClick={(e) => {
-                e.stopPropagation();
-                onMoreClick?.();
-              }}
-            >
-              <MoreHorizontal className="h-5 w-5" />
-            </button>
+            {articleId ? (
+              <NewsArticleCardMenu
+                articleId={articleId}
+                title={title}
+                link={link}
+                tags={tags}
+                sourceName={sourceName}
+                className="shrink-0 -mr-1"
+              />
+            ) : null}
           </div>
         </CardContent>
       </Card>
