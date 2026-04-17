@@ -2792,6 +2792,14 @@
       "openInBrowser": "Im Browser öffnen",
       "couldNotLoad": "Dieser Artikel kann nicht inline angezeigt werden",
       "readOn": "Lesen auf"
+    },
+    "pillars": {
+      "all": "Alle",
+      "nutrition": "Ernährung",
+      "hydration": "Hydration",
+      "sleep": "Schlaf",
+      "exercise": "Bewegung",
+      "mental": "Mental"
     }
   }
 }

@@ -2783,6 +2783,14 @@
       "openInBrowser": "Open in browser",
       "couldNotLoad": "This article can't be displayed inline",
       "readOn": "Read on"
+    },
+    "pillars": {
+      "all": "All",
+      "nutrition": "Nutrition",
+      "hydration": "Hydration",
+      "sleep": "Sleep",
+      "exercise": "Exercise",
+      "mental": "Mental"
     }
   }
 }
