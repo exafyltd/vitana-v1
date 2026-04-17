@@ -254,7 +254,24 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   };
 
   // Inline per-message timestamp (WhatsApp-style, bottom-right corner of bubble)
-  const isTextMessageType = !message.message_type || message.message_type === 'text';
+  // "Text-like" = no structured content to render (cards / media / voice / attachments).
+  // message_type alone is unreliable — e.g. an 'attachment' message with empty
+  // content_data.attachments should render as plain text, not a media card.
+  const hasAttachments = Array.isArray(message.content_data?.attachments)
+    && message.content_data.attachments.length > 0;
+  const hasLegacyFiles = Array.isArray(message.content_data?.files)
+    && message.content_data.files.length > 0;
+  const hasStructuredContent =
+    message.message_type === 'voice' ||
+    message.message_type === 'calendar_invite' ||
+    message.message_type === 'service_booking' ||
+    message.message_type === 'payment_request' ||
+    message.message_type === 'exchange_and_send' ||
+    message.message_type === 'payment_confirmation' ||
+    message.message_type === 'template' ||
+    hasAttachments ||
+    hasLegacyFiles;
+  const isTextMessageType = !hasStructuredContent;
   const formattedTime = format(new Date(message.created_at), 'HH:mm');
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
@@ -816,10 +833,17 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       }
 
       case 'attachment':
+        // Defensive: messages sometimes arrive tagged 'attachment' with no
+        // actual attachments (e.g. emoji-in-text sent through a picker path
+        // that stripped payload). Fall back to plain text so width + corner
+        // timestamp match every other text bubble.
+        if (!hasAttachments && !hasLegacyFiles) {
+          return renderLinkedText(optimisticContent ?? message.body, undefined, textTimestampSpacer);
+        }
         return (
           <div className="space-y-3">
             {message.body && renderLinkedText(message.body)}
-            
+
             {/* New attachment format with proper rendering */}
             {message.content_data?.attachments && (
               <div className="space-y-2">
