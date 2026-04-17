@@ -1063,7 +1063,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                     key={message.id}
                     id={`msg-${message.id}`}
                     className={cn(
-                      shouldUseSmallSpacing ? "mb-1" : "mb-4",
+                      shouldUseSmallSpacing ? "mb-0.5" : "mb-2",
                       "transition-colors duration-500"
                     )}
                   >
