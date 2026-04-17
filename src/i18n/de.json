@@ -2785,6 +2785,13 @@
       "mutedToast": "Quelle stummgeschaltet",
       "undo": "Rückgängig",
       "unmute": "Stummschaltung aufheben"
+    },
+    "detail": {
+      "back": "Zurück",
+      "continueReading": "Weiterlesen auf",
+      "openInBrowser": "Im Browser öffnen",
+      "couldNotLoad": "Dieser Artikel kann nicht inline angezeigt werden",
+      "readOn": "Lesen auf"
     }
   }
 }
