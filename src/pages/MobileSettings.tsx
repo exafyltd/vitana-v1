@@ -19,6 +19,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
+import PushDiagnostics from "@/components/PushDiagnostics";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -161,6 +162,7 @@ export default function MobileSettings() {
               </div>
             </CardContent>
           </Card>
+          <PushDiagnostics />
         );
 
       case 'privacy.visibility':
