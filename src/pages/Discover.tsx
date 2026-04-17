@@ -37,6 +37,10 @@ import { useAutopilot } from '@/hooks/use-autopilot';
 import { cn } from '@/lib/utils';
 import { MobileDiscoverView } from '@/components/discover/MobileDiscoverView';
 import { MobileModePill } from '@/components/ui/MobileModePill';
+import { useMarketplaceFeed, formatPrice, getRedirectUrl, type MarketplaceProduct } from '@/hooks/useMarketplace';
+import { MarketplaceProductCard } from '@/components/discover/MarketplaceProductCard';
+import { ScopeSelector } from '@/components/discover/ScopeSelector';
+import { HiddenByLimitationsFooter } from '@/components/discover/HiddenByLimitationsFooter';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -104,53 +108,25 @@ export default withScreenId(function Discover() {
     });
   }, []);
 
-  // AI Recommendations Data
-  const aiRecommendations = [
-    {
-      id: 1,
-      title: "Sleep Optimization Program",
-      description: "AI-detected poor sleep patterns based on your recent diary entries",
-      price: "$199",
-      match: 95,
-      reason: "Low sleep scores detected",
-      provider: "Dr. Emily Chen",
-      image: "/lovable-uploads/sarah-miller-avatar.jpg",
-      badge: "Perfect Match"
-    },
-    {
-      id: 2,
-      title: "Stress Management Coaching",
-      description: "1-on-1 sessions to reduce cortisol levels",
-      price: "$89",
-      match: 92,
-      reason: "High stress indicators",
-      provider: "Marcus Rodriguez",
-      image: "/lovable-uploads/james-davis-avatar.jpg",
-      badge: "High Priority"
-    },
-    {
-      id: 3,
-      title: "Iron-Rich Nutrition Plan",
-      description: "Custom meal plan targeting iron deficiency",
-      price: "$149",
-      match: 90,
-      reason: "Low iron biomarkers",
-      provider: "Luna Wellness",
-      image: "/lovable-uploads/se-hun-oh-avatar.jpg",
-      badge: "Great Match"
-    },
-    {
-      id: 4,
-      title: "Adaptogen Supplement Bundle",
-      description: "Natural stress relief supplements",
-      price: "$79",
-      match: 85,
-      reason: "Stress management goal",
-      provider: "Vitana Shop",
-      image: "/lovable-uploads/tae-min-avatar.jpg",
-      badge: "Good Match"
-    }
-  ];
+  // VTID-02000: Real marketplace feed (replaces hardcoded mock data)
+  const [scope, setScope] = useState<string>("friendly");
+  const { data: feedData, isLoading: feedLoading } = useMarketplaceFeed({ limit: 12 });
+
+  // Map marketplace products to the legacy AIRecommendation shape so
+  // MobileDiscoverView doesn't need changes yet.
+  const aiRecommendations = (feedData?.items ?? []).map((p: MarketplaceProduct, idx: number) => ({
+    id: idx + 1,
+    title: p.title,
+    description: p.description ?? "",
+    price: formatPrice(p.price_cents, p.currency),
+    match: Math.round((p.match_score ?? p.rank_score ?? 0.7) * 100),
+    reason: p.match_reasons?.[0]?.text ?? p.rank_reasons?.[0] ?? "",
+    provider: p.brand ?? "Vitana Shop",
+    image: p.images?.[0] ?? "/lovable-uploads/tae-min-avatar.jpg",
+    badge: (p.match_score ?? p.rank_score ?? 0) > 0.8 ? "Perfect Match" : (p.match_score ?? p.rank_score ?? 0) > 0.5 ? "Great Match" : "Good Match",
+    // Keep the real product data for the new card component
+    _product: p,
+  }));
 
   const browseCategories = [
     {
@@ -365,13 +341,34 @@ export default withScreenId(function Discover() {
                     </p>
                   )}
                   
+                  {/* VTID-02000: Scope selector */}
+                  <div className="flex items-center justify-between mb-4">
+                    <ScopeSelector value={scope} onChange={setScope} />
+                    {feedData?.feed_context?.rationale && (
+                      <span className="text-xs text-muted-foreground hidden md:inline">
+                        {feedData.feed_context.rationale}
+                      </span>
+                    )}
+                  </div>
+
+                  {feedLoading ? (
+                    <div className="text-center py-12 text-muted-foreground">Loading your personalized feed…</div>
+                  ) : (
                   <div className={cn(
                     "grid gap-4",
-                    isMobile ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+                    isMobile ? "grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
                   )}>
                     {aiRecommendations.map((rec) => (
-                      <Card 
-                        key={rec.id} 
+                      rec._product ? (
+                        <MarketplaceProductCard
+                          key={rec._product.id}
+                          product={rec._product}
+                          surface="feed"
+                          showMatchReasons={!isMobile}
+                        />
+                      ) : (
+                      <Card
+                        key={rec.id}
                         data-match-id={rec.id}
                         className={cn(
                           "group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 dark:border-purple-800",
@@ -432,6 +429,9 @@ export default withScreenId(function Discover() {
                       </Card>
                     ))}
                   </div>
+                  )}
+                  {/* VTID-02000: Transparency footer — hidden products count */}
+                  <HiddenByLimitationsFooter breakdown={feedData?.hidden_breakdown} />
                 </CardContent>
               </Card>
             </SplitBarContent>
