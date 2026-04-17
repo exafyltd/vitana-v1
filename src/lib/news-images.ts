@@ -232,18 +232,33 @@ export function getNewsImage(
 
 export type LongevityPillar = 'Nutrition' | 'Hydration' | 'Sleep' | 'Exercise' | 'Mental';
 
+const CATEGORY_TO_PILLAR: Record<string, string> = {
+  supplements: 'Nutrition', nutrition: 'Nutrition', natural: 'Nutrition',
+  hydration: 'Hydration',
+  sleep: 'Sleep',
+  exercise: 'Exercise',
+  mental_health: 'Mental', functional: 'Mental',
+  longevity: 'Nutrition', research: 'Mental', general: 'Nutrition',
+  community_event: 'Community', media: 'Community', member_spotlight: 'Community',
+};
+
 export function mapTagToPillar(tags: string[]): string | undefined {
-  const tagToPillar: Record<string, string> = {
-    supplements: 'Nutrition', nutrition: 'Nutrition', natural: 'Nutrition',
-    hydration: 'Hydration',
-    sleep: 'Sleep',
-    exercise: 'Exercise',
-    mental_health: 'Mental', functional: 'Mental',
-    longevity: 'Nutrition', research: 'Mental', general: 'Nutrition',
-    community_event: 'Community', media: 'Community', member_spotlight: 'Community',
-  };
-  for (const tag of tags) { if (tagToPillar[tag]) return tagToPillar[tag]; }
+  for (const tag of tags) { if (CATEGORY_TO_PILLAR[tag]) return CATEGORY_TO_PILLAR[tag]; }
   return undefined;
+}
+
+/**
+ * Determine the correct longevity pillar by scanning the article's
+ * title + summary for domain keywords (same logic as image selection).
+ * Falls back to raw tag mapping if no keyword matches.
+ */
+export function getArticlePillar(
+  tags: string[],
+  title?: string,
+  summary?: string | null
+): string | undefined {
+  const category = pickCategory(tags, title || '', summary || null);
+  return CATEGORY_TO_PILLAR[category] || mapTagToPillar(tags);
 }
 
 export const LONGEVITY_PILLARS: LongevityPillar[] = [

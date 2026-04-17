@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { NewsArticleCardMenu } from "@/components/crossover/NewsArticleCardMenu";
 import { useTranslation } from "@/hooks/useTranslation";
-import { getNewsImage, mapTagToPillar } from "@/lib/news-images";
+import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { cn } from "@/lib/utils";
 import type { NewsArticle } from "@/hooks/useNewsFeed";
 
@@ -29,10 +29,10 @@ export default function NewsArticleDetail() {
   const imageUrl =
     article.image_url ||
     getNewsImage(article.tags, article.id, article.title, article.summary);
-  const pillar = mapTagToPillar(article.tags);
+  const pillar = getArticlePillar(article.tags, article.title, article.summary);
   const categoryLabel = article.source === "community"
     ? "COMMUNITY"
-    : (pillar || "LONGEVITY").toUpperCase();
+    : (pillar || "NUTRITION").toUpperCase();
   const timestamp = (() => {
     try {
       return formatDistanceToNow(new Date(article.published_at), { addSuffix: true });

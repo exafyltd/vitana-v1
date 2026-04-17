@@ -36,7 +36,7 @@ import {
   useCommunityNews,
   type NewsArticle,
 } from "@/hooks/useNewsFeed";
-import { getNewsImage, mapTagToPillar } from "@/lib/news-images";
+import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -126,8 +126,8 @@ export default function Home() {
   // (e.g. "COMMUNITY", "LONGEVITY", "NUTRITION", …)
   const getCategoryLabel = (article: NewsArticle): string => {
     if (article.source === "community") return "COMMUNITY";
-    const pillar = mapTagToPillar(article.tags);
-    return (pillar || "LONGEVITY").toUpperCase();
+    const pillar = getArticlePillar(article.tags, article.title, article.summary);
+    return (pillar || "NUTRITION").toUpperCase();
   };
 
   const formatTimestamp = (dateStr: string): string => {
