@@ -249,11 +249,6 @@ export default function Home() {
               <ExpandableSearchButton placeholder={isMobile ? "Search..." : "Search news, topics, sources…"} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
               <UniversalCalendarButton />
-              {isMobile && (
-                <Button variant="ghost" size="sm" className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0" onClick={handleRefresh} disabled={isLoading}>
-                  <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-                </Button>
-              )}
             </div>
           </UtilityActionButton>
           {!isMobile && (
