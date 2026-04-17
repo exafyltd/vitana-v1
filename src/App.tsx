@@ -197,6 +197,7 @@ const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
 const Privacy = lazy(() => import("./pages/settings/Privacy"));
 const SettingsNotifications = lazy(() => import("./pages/settings/SettingsNotifications"));
 const Preferences = lazy(() => import("./pages/settings/Preferences"));
+const Limitations = lazy(() => import("./pages/settings/Limitations"));
 const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
@@ -229,6 +230,9 @@ const ProfessionalPatients = lazy(() => import("./pages/professional/Patients"))
 const StaffDashboard = lazy(() => import("./pages/staff/Dashboard"));
 const StaffQueue = lazy(() => import("./pages/staff/Queue"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+// VTID-02000: Marketplace admin (Maxina)
+const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Overview"));
+const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -377,12 +381,18 @@ const AppHooksInitializer = () => {
   // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
   // Appilix brings the app to the foreground without navigating to the
   // notification URL, so the user lands on whatever page they left. This
-  // effect checks for a very recent unread chat notification when the app
+  // effect polls for a very recent unread chat notification when the app
   // becomes visible and uses SPA navigation to open the conversation —
   // critically, without a page reload so the Supabase session stays hydrated.
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
+    let retryTimers: Array<ReturnType<typeof setTimeout>> = [];
+
+    const clearRetries = () => {
+      for (const t of retryTimers) clearTimeout(t);
+      retryTimers = [];
+    };
 
     const checkPendingNotification = async () => {
       if (document.hidden) return;
@@ -417,46 +427,45 @@ const AppHooksInitializer = () => {
 
         const currentPath = window.location.pathname + window.location.search;
         if (currentPath === targetUrl) return;
-        // Only deep-link-redirect from landing/portal routes. If the user is
-        // already browsing elsewhere (e.g. /home, /comm), don't hijack them.
-        const onLandingLike =
-          currentPath === '/' ||
-          currentPath.startsWith('/maxina') ||
-          currentPath.startsWith('/alkalma') ||
-          currentPath.startsWith('/earthlinks') ||
-          currentPath.startsWith('/home');
-        if (!onLandingLike) {
-          console.log('[DeepLink] Not on landing-like route, skipping:', currentPath);
-          return;
-        }
+        // Don't hijack the user if they're already in an inbox/conversation.
+        if (currentPath.startsWith('/inbox')) return;
 
         processedIds.add(latest.id);
-        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl);
+        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl, 'from', currentPath);
         navigate(targetUrl);
       } catch (err) {
         console.warn('[DeepLink] Pending notification check failed:', err);
       }
     };
 
-    const handleTrigger = () => {
-      if (!document.hidden) checkPendingNotification();
+    const triggerCheck = () => {
+      if (document.hidden) return;
+      // Kick off the check immediately AND retry a few times to cover races
+      // where the notification INSERT hasn't propagated yet or the realtime
+      // subscription hasn't received it when the handler first fires.
+      clearRetries();
+      checkPendingNotification();
+      retryTimers.push(setTimeout(checkPendingNotification, 1500));
+      retryTimers.push(setTimeout(checkPendingNotification, 4000));
+      retryTimers.push(setTimeout(checkPendingNotification, 8000));
     };
 
     // Cover multiple re-entry points for Android WebView / Appilix:
-    //   - visibilitychange fires on most foreground transitions
-    //   - focus fires when the WebView regains focus
-    //   - pageshow covers back/forward cache restores
-    document.addEventListener('visibilitychange', handleTrigger);
-    window.addEventListener('focus', handleTrigger);
-    window.addEventListener('pageshow', handleTrigger);
+    //   - visibilitychange: most foreground transitions
+    //   - focus: WebView regains focus
+    //   - pageshow: back/forward cache restores
+    document.addEventListener('visibilitychange', triggerCheck);
+    window.addEventListener('focus', triggerCheck);
+    window.addEventListener('pageshow', triggerCheck);
 
     // Also run on mount (cold-start from notification tap when app was killed)
-    checkPendingNotification();
+    triggerCheck();
 
     return () => {
-      document.removeEventListener('visibilitychange', handleTrigger);
-      window.removeEventListener('focus', handleTrigger);
-      window.removeEventListener('pageshow', handleTrigger);
+      clearRetries();
+      document.removeEventListener('visibilitychange', triggerCheck);
+      window.removeEventListener('focus', triggerCheck);
+      window.removeEventListener('pageshow', triggerCheck);
     };
   }, [user?.id, navigate]);
 
@@ -925,6 +934,11 @@ const App = () => {
               <Preferences />
             </AuthGuard>
           } />
+          <Route path="/settings/limitations" element={
+            <AuthGuard>
+              <Limitations />
+            </AuthGuard>
+          } />
           <Route path="/settings/connected-apps" element={
             <AuthGuard>
               <ConnectedApps />
@@ -1260,6 +1274,14 @@ const App = () => {
           {/* Legacy dashboard routes → redirect to new Overview tabs */}
           <Route path="/admin/dashboard/health" element={<Navigate to="/admin/health" replace />} />
           <Route path="/admin/dashboard/activity" element={<Navigate to="/admin/activity" replace />} />
+
+          {/* VTID-02000: Marketplace admin */}
+          <Route path="/admin/marketplace" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceOverview /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/marketplace/products" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceProducts /></ProtectedRoute></AuthGuard>
+          } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
           <Route path="/admin/users" element={<Navigate to="/admin/members/directory" replace />} />

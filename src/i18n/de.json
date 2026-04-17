@@ -1800,7 +1800,9 @@
     "profile": "Profil",
     "settings": "Einstellungen",
     "diary": "Tagebuch",
-    "home": "Startseite"
+    "home": "Startseite",
+    "myJourney": "Meine Reise",
+    "news": "Longevity News"
   },
   "walletActions": {
     "title": "Schnellaktionen",
