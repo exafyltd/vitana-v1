@@ -253,23 +253,40 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   };
 
-  // Inline per-message timestamp (WhatsApp-style)
+  // Inline per-message timestamp (WhatsApp-style, bottom-right corner of bubble)
   const isTextMessageType = !message.message_type || message.message_type === 'text';
   const formattedTime = format(new Date(message.created_at), 'HH:mm');
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
-  const inlineFloatTimestamp = (
+  const timestampInner = (
+    <>
+      <span className="tabular-nums">{formattedTime}</span>
+      {renderStatusIcon()}
+    </>
+  );
+  // Ghost spacer appended inside the text <p> so the last line reserves
+  // room for the corner-pinned timestamp (matches timestamp width exactly).
+  const textTimestampSpacer = (
+    <span
+      aria-hidden="true"
+      className="inline-flex items-center gap-1 ml-2 text-[10px] leading-none invisible select-none pointer-events-none"
+    >
+      {timestampInner}
+    </span>
+  );
+  // Real timestamp, absolutely positioned in the bubble's bottom-right corner.
+  const textTimestampOverlay = (
     <span
       className={cn(
-        "float-right ml-2 mt-1 inline-flex items-center gap-1 text-[10px] leading-none select-none",
+        "absolute bottom-1.5 right-2.5 inline-flex items-center gap-1 text-[10px] leading-none select-none pointer-events-none",
         timestampColorClass
       )}
     >
-      {formattedTime}
-      {renderStatusIcon()}
+      {timestampInner}
     </span>
   );
+  // Fallback row for media / cards / voice / edit mode — below the content.
   const inlineBelowTimestamp = (
     <div
       className={cn(
@@ -277,7 +294,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         timestampColorClass
       )}
     >
-      <span>{formattedTime}</span>
+      <span className="tabular-nums">{formattedTime}</span>
       {renderStatusIcon()}
     </div>
   );
@@ -839,7 +856,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return renderLinkedText(optimisticContent ?? message.body, undefined, inlineFloatTimestamp);
+        return renderLinkedText(optimisticContent ?? message.body, undefined, textTimestampSpacer);
     }
   };
 
@@ -963,7 +980,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 ) : (
                   <>
                     {renderContent()}
-                    {!isTextMessageType && inlineBelowTimestamp}
+                    {isTextMessageType ? textTimestampOverlay : inlineBelowTimestamp}
                   </>
                 )}
               </div>
