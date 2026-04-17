@@ -196,7 +196,7 @@ function WaveSection({
                         <CheckCircle2 className="w-3 h-3 mr-1" />
                         Done
                       </Badge>
-                      <span className="text-xs font-semibold text-green-600">+10 VTN</span>
+                      <span className="text-xs font-semibold text-green-600">+10 CREDITS</span>
                     </div>
                   ) : rec.status === "activated" ? (
                     <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs">
@@ -400,7 +400,7 @@ export default function AutopilotDashboard() {
                                       <CheckCircle2 className="w-3 h-3 mr-1" />
                                       Done
                                     </Badge>
-                                    <span className="text-xs font-semibold text-green-600">+10 VTN</span>
+                                    <span className="text-xs font-semibold text-green-600">+10 CREDITS</span>
                                   </div>
                                 ) : rec.status === "activated" ? (
                                   <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs">
@@ -519,7 +519,7 @@ export default function AutopilotDashboard() {
                                     <CheckCircle2 className="w-3 h-3 mr-1" />
                                     Done
                                   </Badge>
-                                  <span className="text-sm font-semibold text-green-600">+10 VTN</span>
+                                  <span className="text-sm font-semibold text-green-600">+10 CREDITS</span>
                                 </div>
                               ) : rec.status === "activated" ? (
                                 <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
