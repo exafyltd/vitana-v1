@@ -861,7 +861,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           isOwnMessage ? "items-end order-1" : "items-start"
         )}>
           {!isOwnMessage && showAvatar && (
-            <span className="text-xs text-muted-foreground mb-1 ml-3">
+            <span className="text-xs text-muted-foreground mb-0.5 ml-3">
               {(() => {
                 const senderId = message.sender_id || (message.sender as any)?.user_id;
                 if (senderId === '00000000-0000-0000-0000-000000000001') return 'Vitana';
@@ -956,7 +956,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           
           {showTimestamp && (
             <div className={cn(
-              "flex items-center gap-1 mt-1 ml-3",
+              "flex items-center gap-1 mt-0.5 ml-3",
               isOwnMessage ? "justify-end" : "justify-start"
             )}>
               <span className="text-xs text-muted-foreground">
