@@ -30,6 +30,7 @@ import {
   SplitBarTrigger,
 } from "@/components/ui/split-bar";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
+import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
   useCommunityNews,
@@ -88,6 +89,15 @@ export default function Home() {
     }
     return allArticles;
   }, [longevityData, communityData, activeTab, searchQuery]);
+
+  // Apply user feed preferences — hide dismissed articles + muted sources.
+  const hiddenArticleIds = useNewsFeedPreferencesStore((s) => s.hiddenArticleIds);
+  const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);
+  const visibleArticles = useMemo(() => {
+    const hidden = new Set(hiddenArticleIds);
+    const muted = new Set(mutedSources);
+    return articles.filter((a) => !hidden.has(a.id) && !muted.has(a.source_name));
+  }, [articles, hiddenArticleIds, mutedSources]);
 
   const observerRef = useRef<HTMLDivElement>(null);
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -150,13 +160,14 @@ export default function Home() {
           </Button>
         </div>
       )}
-      {articles.length > 0 && (
+      {visibleArticles.length > 0 && (
         <div className="md:hidden flex flex-col gap-3 mt-2">
-          {articles.map((article) => {
+          {visibleArticles.map((article) => {
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard
                 key={article.id}
+                articleId={article.id}
                 title={article.title}
                 description={article.summary || undefined}
                 imageUrl={primary}
@@ -164,19 +175,22 @@ export default function Home() {
                 category={getCategoryLabel(article)}
                 timestamp={formatTimestamp(article.published_at)}
                 sourceName={article.source_name}
+                link={article.link}
+                tags={article.tags}
                 onClick={() => handleArticleClick(article)}
               />
             );
           })}
         </div>
       )}
-      {articles.length > 0 && (
+      {visibleArticles.length > 0 && (
         <div className="hidden md:grid md:grid-cols-3 gap-5 mt-5">
-          {articles.map((article) => {
+          {visibleArticles.map((article) => {
             const { primary, fallback } = getCardImages(article);
             return (
               <NewsArticleCard
                 key={article.id}
+                articleId={article.id}
                 title={article.title}
                 description={article.summary || undefined}
                 imageUrl={primary}
@@ -184,6 +198,8 @@ export default function Home() {
                 category={getCategoryLabel(article)}
                 timestamp={formatTimestamp(article.published_at)}
                 sourceName={article.source_name}
+                link={article.link}
+                tags={article.tags}
                 onClick={() => handleArticleClick(article)}
               />
             );
