@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
 import { Package, RefreshCw, Clock, CheckCircle, Ticket, Receipt } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
@@ -383,15 +383,6 @@ export default function Orders() {
     return { mobileActiveOrders: activeMobile, mobileHistoryOrders: historyMobile };
   }, [unifiedActiveOrders, allHistoryOrders, voucherOrders]);
 
-  // Refresh callback for mobile
-  const handleRefresh = useCallback(async () => {
-    await Promise.all([
-      fetchCjOrders(),
-      refetchTickets(),
-      refetchVouchers(),
-    ]);
-  }, [refetchTickets, refetchVouchers]);
-
   // Apply history filter
   const unifiedHistoryOrders = useMemo(() => {
     return allHistoryOrders.filter(order => {
@@ -534,7 +525,6 @@ export default function Orders() {
           historyOrders={mobileHistoryOrders}
           isLoading={isLoading}
           isShowingMockData={isShowingMockData}
-          onRefresh={handleRefresh}
         />
       </AppLayout>
     );

@@ -2,18 +2,16 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useTranslation';
 import { format, isPast } from 'date-fns';
-import { 
-  Package, 
-  Clock, 
-  CheckCircle, 
+import {
+  Package,
+  Clock,
+  CheckCircle,
   ChevronRight,
   Calendar,
-  MapPin,
-  RefreshCw
+  MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 import { TicketPurchase } from '@/hooks/useEventTickets';
 import { MobileOrderDetailSheet } from './MobileOrderDetailSheet';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
@@ -52,21 +50,18 @@ interface MobileOrdersViewProps {
   historyOrders: UnifiedMobileOrder[];
   isLoading: boolean;
   isShowingMockData?: boolean;
-  onRefresh: () => void;
 }
 
-export function MobileOrdersView({ 
-  activeOrders, 
-  historyOrders, 
+export function MobileOrdersView({
+  activeOrders,
+  historyOrders,
   isLoading,
   isShowingMockData,
-  onRefresh 
 }: MobileOrdersViewProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<UnifiedMobileOrder | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [activeMode, setActiveMode] = useState('active');
@@ -96,12 +91,6 @@ export function MobileOrdersView({
       order.ticketNumber?.toLowerCase().includes(query)
     );
   }, [historyOrders, searchQuery]);
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await onRefresh();
-    setTimeout(() => setIsRefreshing(false), 500);
-  };
 
   // Status badge styling
   const getStatusBadgeVariant = (status: string): 'default' | 'secondary' | 'outline' | 'destructive' => {
@@ -259,20 +248,9 @@ export function MobileOrdersView({
       {/* Sticky utility bar */}
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4">
-          <UtilityActionButton 
+          <UtilityActionButton
             compact
             className="min-w-0"
-            trailingElement={
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 rounded-full bg-muted/60 shrink-0"
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-              >
-                <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-              </Button>
-            }
             afterGiftVoucherChildren={
               <>
                 <VitanaIndexChip />
