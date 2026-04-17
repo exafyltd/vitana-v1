@@ -37,7 +37,7 @@ import {
   type NewsArticle,
 } from "@/hooks/useNewsFeed";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type FilterTab = "all" | "longevity" | "community";
@@ -50,7 +50,15 @@ const FILTER_MODES = [
 
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab") as FilterTab | null;
+  const [activeTab, setActiveTabState] = useState<FilterTab>(
+    tabFromUrl && ["all", "longevity", "community"].includes(tabFromUrl) ? tabFromUrl : "all"
+  );
+  const setActiveTab = (tab: FilterTab) => {
+    setActiveTabState(tab);
+    setSearchParams(tab === "all" ? {} : { tab }, { replace: true });
+  };
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const navigate = useNavigate();
