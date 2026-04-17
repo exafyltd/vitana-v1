@@ -19,6 +19,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
+import PushDiagnostics from "@/components/PushDiagnostics";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -109,6 +110,7 @@ export default function MobileSettings() {
     switch (activeSection) {
       case 'notifications':
         return (
+          <>
           <Card className="rounded-2xl border-border/50 shadow-sm">
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
@@ -161,6 +163,8 @@ export default function MobileSettings() {
               </div>
             </CardContent>
           </Card>
+          <PushDiagnostics />
+          </>
         );
 
       case 'privacy.visibility':
