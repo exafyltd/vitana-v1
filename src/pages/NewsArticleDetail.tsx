@@ -1,16 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
-import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { NewsArticleCardMenu } from "@/components/crossover/NewsArticleCardMenu";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { cn } from "@/lib/utils";
 import type { NewsArticle } from "@/hooks/useNewsFeed";
-
-const IFRAME_TIMEOUT_MS = 6000;
 
 export default function NewsArticleDetail() {
   const { id } = useParams();
@@ -26,9 +23,9 @@ export default function NewsArticleDetail() {
 
   if (!article) return null;
 
-  const imageUrl =
-    article.image_url ||
-    getNewsImage(article.tags, article.id, article.title, article.summary);
+  const fallbackUrl = getNewsImage(article.tags, article.id, article.title, article.summary);
+  const primaryUrl = article.image_url || fallbackUrl;
+
   const pillar = getArticlePillar(article.tags, article.title, article.summary);
   const categoryLabel = article.source === "community"
     ? "COMMUNITY"
@@ -76,14 +73,7 @@ export default function NewsArticleDetail() {
 
       {/* Scrollable body */}
       <main className="flex-1 overflow-y-auto">
-        {/* Hero image */}
-        <div className="relative w-full aspect-[16/9] bg-muted">
-          <img
-            src={imageUrl}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
+        <HeroImage primaryUrl={primaryUrl} fallbackUrl={fallbackUrl} />
 
         {/* Article header */}
         <div className="px-4 pt-4 pb-2">
@@ -123,18 +113,25 @@ export default function NewsArticleDetail() {
           </div>
         </div>
 
-        {/* Embedded article (iframe) */}
+        {/* Read full article CTA */}
         {article.link && (
-          <ArticleEmbed
-            url={article.link}
-            sourceName={article.source_name}
-            translate={translate}
-          />
+          <div className="px-4 pt-6 pb-4">
+            <Button
+              className="w-full gap-2"
+              onClick={() =>
+                window.open(article.link!, "_blank", "noopener,noreferrer")
+              }
+            >
+              <ExternalLink className="h-4 w-4" />
+              {translate("newsCard.detail.readOn", "Read full article on")}{" "}
+              {article.source_name}
+            </Button>
+          </div>
         )}
 
-        {/* Open in browser — always visible */}
+        {/* Secondary open in browser */}
         {article.link && (
-          <div className="px-4 pb-8 pt-4">
+          <div className="px-4 pb-8">
             <Button
               variant="outline"
               className="w-full gap-2"
@@ -152,87 +149,28 @@ export default function NewsArticleDetail() {
   );
 }
 
-function ArticleEmbed({
-  url,
-  sourceName,
-  translate,
-}: {
-  url: string;
-  sourceName: string;
-  translate: (key: string, fallback: string) => string;
-}) {
-  const [status, setStatus] = useState<"loading" | "loaded" | "blocked">("loading");
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+function HeroImage({ primaryUrl, fallbackUrl }: { primaryUrl: string; fallbackUrl: string }) {
+  const [src, setSrc] = useState(primaryUrl);
+  const [hasFallenBack, setHasFallenBack] = useState(false);
 
   useEffect(() => {
-    setStatus("loading");
-    timerRef.current = setTimeout(() => {
-      setStatus((s) => (s === "loading" ? "blocked" : s));
-    }, IFRAME_TIMEOUT_MS);
-    return () => clearTimeout(timerRef.current);
-  }, [url]);
-
-  const handleLoad = () => {
-    clearTimeout(timerRef.current);
-    setStatus("loaded");
-  };
-
-  const domain = (() => {
-    try {
-      return new URL(url).hostname.replace(/^www\./, "");
-    } catch {
-      return sourceName;
-    }
-  })();
+    setSrc(primaryUrl);
+    setHasFallenBack(false);
+  }, [primaryUrl]);
 
   return (
-    <div className="mt-2">
-      {/* Divider + label */}
-      <div className="flex items-center gap-3 px-4 py-3">
-        <div className="flex-1 h-px bg-border" />
-        <span className="text-xs text-muted-foreground whitespace-nowrap">
-          {translate("newsCard.detail.continueReading", "Continue reading on")}{" "}
-          {domain}
-        </span>
-        <div className="flex-1 h-px bg-border" />
-      </div>
-
-      {status === "blocked" ? (
-        <div className="mx-4 rounded-xl border border-border/60 bg-muted/30 p-6 text-center">
-          <p className="text-sm text-muted-foreground mb-4">
-            {translate(
-              "newsCard.detail.couldNotLoad",
-              "This article can't be displayed inline"
-            )}
-          </p>
-          <Button
-            onClick={() => window.open(url, "_blank", "noopener,noreferrer")}
-            className="gap-2"
-          >
-            <ExternalLink className="h-4 w-4" />
-            {translate("newsCard.detail.readOn", "Read on")} {sourceName}
-          </Button>
-        </div>
-      ) : (
-        <div className="relative mx-2">
-          {status === "loading" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10 rounded-xl">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-            </div>
-          )}
-          <iframe
-            src={url}
-            title="Article content"
-            className={cn(
-              "w-full rounded-xl border border-border/40",
-              status === "loaded" ? "min-h-[70vh]" : "h-[70vh]"
-            )}
-            style={{ minHeight: "70vh" }}
-            sandbox="allow-scripts allow-same-origin allow-popups"
-            onLoad={handleLoad}
-          />
-        </div>
-      )}
+    <div className="relative w-full aspect-[16/9] bg-muted">
+      <img
+        src={src}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        onError={() => {
+          if (!hasFallenBack && fallbackUrl !== src) {
+            setHasFallenBack(true);
+            setSrc(fallbackUrl);
+          }
+        }}
+      />
     </div>
   );
 }
