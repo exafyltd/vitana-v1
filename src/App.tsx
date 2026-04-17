@@ -380,11 +380,14 @@ const AppHooksInitializer = () => {
   }, [user?.id]);
 
   // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
-  // Appilix brings the app to the foreground without navigating to the
-  // notification URL, so the user lands on whatever page they left. This
-  // effect polls for a very recent unread chat notification when the app
-  // becomes visible and uses SPA navigation to open the conversation —
-  // critically, without a page reload so the Supabase session stays hydrated.
+  // Two complementary strategies so the user ALWAYS lands in the conversation
+  // when they tap a chat push notification:
+  //   A) Realtime subscription — fires the instant the backend inserts a new
+  //      notification row (catches notifications that arrive while the app is
+  //      open or foregrounded).
+  //   B) Visibility/focus/pageshow polling — fires when the app foregrounds
+  //      from background (catches notifications that arrived while the app
+  //      was hidden or the phone was locked).
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
@@ -395,11 +398,23 @@ const AppHooksInitializer = () => {
       retryTimers = [];
     };
 
+    const tryNavigateToNotification = (row: any): boolean => {
+      if (!row || processedIds.has(row.id)) return false;
+      const targetUrl = (row.data as any)?.url;
+      if (!targetUrl || typeof targetUrl !== 'string') return false;
+      const currentPath = window.location.pathname + window.location.search;
+      if (currentPath === targetUrl) return false;
+      if (currentPath.startsWith('/inbox')) return false;
+
+      processedIds.add(row.id);
+      console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
+      navigate(targetUrl);
+      return true;
+    };
+
     const checkPendingNotification = async () => {
       if (document.hidden) return;
-
       try {
-        // 5 minute window — handles slow notification taps and unlocks
         const since = new Date(Date.now() - 5 * 60_000).toISOString();
         const { data: rows, error } = await (supabase as any)
           .from('user_notifications')
@@ -410,30 +425,11 @@ const AppHooksInitializer = () => {
           .gt('created_at', since)
           .order('created_at', { ascending: false })
           .limit(1);
-
         if (error) {
           console.warn('[DeepLink] Supabase query error:', error);
           return;
         }
-
-        const latest = rows?.[0];
-        if (!latest) return;
-        if (processedIds.has(latest.id)) return;
-
-        const targetUrl = (latest.data as any)?.url;
-        if (!targetUrl || typeof targetUrl !== 'string') {
-          console.log('[DeepLink] Notification has no URL in data, skipping');
-          return;
-        }
-
-        const currentPath = window.location.pathname + window.location.search;
-        if (currentPath === targetUrl) return;
-        // Don't hijack the user if they're already in an inbox/conversation.
-        if (currentPath.startsWith('/inbox')) return;
-
-        processedIds.add(latest.id);
-        console.log('[DeepLink] Navigating to pending chat notification:', targetUrl, 'from', currentPath);
-        navigate(targetUrl);
+        tryNavigateToNotification(rows?.[0]);
       } catch (err) {
         console.warn('[DeepLink] Pending notification check failed:', err);
       }
@@ -441,24 +437,40 @@ const AppHooksInitializer = () => {
 
     const triggerCheck = () => {
       if (document.hidden) return;
-      // Kick off the check immediately AND retry a few times to cover races
-      // where the notification INSERT hasn't propagated yet or the realtime
-      // subscription hasn't received it when the handler first fires.
       clearRetries();
       checkPendingNotification();
+      // Retry to handle races where the INSERT hasn't propagated yet.
       retryTimers.push(setTimeout(checkPendingNotification, 1500));
       retryTimers.push(setTimeout(checkPendingNotification, 4000));
       retryTimers.push(setTimeout(checkPendingNotification, 8000));
+      retryTimers.push(setTimeout(checkPendingNotification, 15_000));
     };
 
-    // Cover multiple re-entry points for Android WebView / Appilix:
-    //   - visibilitychange: most foreground transitions
-    //   - focus: WebView regains focus
-    //   - pageshow: back/forward cache restores
+    // Strategy A: Realtime subscription — immediate trigger on INSERT
+    const channel = (supabase as any)
+      .channel(`deeplink_chat_${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'user_notifications',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload: any) => {
+          const row = payload?.new;
+          if (!row || row.type !== 'new_chat_message') return;
+          console.log('[DeepLink] Realtime INSERT received for chat notification');
+          // Small delay to let the app settle if it just foregrounded.
+          setTimeout(() => tryNavigateToNotification(row), 250);
+        }
+      )
+      .subscribe();
+
+    // Strategy B: foreground/focus/pageshow polling
     document.addEventListener('visibilitychange', triggerCheck);
     window.addEventListener('focus', triggerCheck);
     window.addEventListener('pageshow', triggerCheck);
-
     // Also run on mount (cold-start from notification tap when app was killed)
     triggerCheck();
 
@@ -467,6 +479,9 @@ const AppHooksInitializer = () => {
       document.removeEventListener('visibilitychange', triggerCheck);
       window.removeEventListener('focus', triggerCheck);
       window.removeEventListener('pageshow', triggerCheck);
+      try {
+        (supabase as any).removeChannel(channel);
+      } catch {}
     };
   }, [user?.id, navigate]);
 
