@@ -10,7 +10,7 @@ import {
   DrawerContent,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import { format, isToday, isYesterday, isThisYear } from 'date-fns';
+import { format } from 'date-fns';
 import { CalendarInviteStatus } from './CalendarInviteStatus';
 import { 
   Clock, 
@@ -49,7 +49,6 @@ interface MessageBubbleProps {
   isOwnMessage: boolean;
   onActionClick?: (action: any) => void;
   showAvatar?: boolean;
-  showTimestamp?: boolean;
   onReply?: (message: any) => void;
   onScrollToMessage?: (messageId: string) => void;
   parentMessage?: any;
@@ -145,7 +144,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   isOwnMessage,
   onActionClick,
   showAvatar = true,
-  showTimestamp = true,
   onReply,
   onScrollToMessage,
   parentMessage,
@@ -235,25 +233,54 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const renderStatusIcon = () => {
     if (!isOwnMessage) return null;
-    
+
     const status = getMessageStatus();
-    
+
     switch (status) {
       case 'sending':
-        return <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />;
+        return <Loader2 className="w-3 h-3 animate-spin" />;
       case 'sent':
         // Single checkmark - message sent but not delivered
-        return <Check className="w-3 h-3 text-muted-foreground" />;
+        return <Check className="w-3 h-3" />;
       case 'delivered':
         // Double checkmark - message delivered but not read
-        return <CheckCheck className="w-3 h-3 text-muted-foreground" />;
+        return <CheckCheck className="w-3 h-3" />;
       case 'read':
         // Colored double checkmark - message read (WhatsApp style)
         return <CheckCheck className="w-3 h-3 text-primary" />;
       default:
-        return <Clock className="w-3 h-3 text-muted-foreground" />;
+        return <Clock className="w-3 h-3" />;
     }
   };
+
+  // Inline per-message timestamp (WhatsApp-style)
+  const isTextMessageType = !message.message_type || message.message_type === 'text';
+  const formattedTime = format(new Date(message.created_at), 'HH:mm');
+  const timestampColorClass = isOwnMessage
+    ? 'text-domain-messages-bubble-foreground/60'
+    : 'text-muted-foreground';
+  const inlineFloatTimestamp = (
+    <span
+      className={cn(
+        "float-right ml-2 mt-1 inline-flex items-center gap-1 text-[10px] leading-none select-none",
+        timestampColorClass
+      )}
+    >
+      {formattedTime}
+      {renderStatusIcon()}
+    </span>
+  );
+  const inlineBelowTimestamp = (
+    <div
+      className={cn(
+        "flex items-center justify-end gap-1 mt-1 text-[10px] leading-none",
+        timestampColorClass
+      )}
+    >
+      <span>{formattedTime}</span>
+      {renderStatusIcon()}
+    </div>
+  );
 
   const handleImageClick = async (attachment: any) => {
     const url = await resolveAttachmentUrl(attachment);
@@ -465,7 +492,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
-  const renderLinkedText = useCallback((text?: string, className?: string) => {
+  const renderLinkedText = useCallback((text?: string, className?: string, trailingInline?: React.ReactNode) => {
     if (!text) return null;
 
     const urlRegex = /https?:\/\/[^\s<]+/gi;
@@ -520,6 +547,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
     if (lastIndex < text.length) {
       nodes.push(text.slice(lastIndex));
+    }
+
+    if (trailingInline) {
+      nodes.push(trailingInline);
     }
 
     return (
@@ -808,7 +839,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return renderLinkedText(optimisticContent ?? message.body);
+        return renderLinkedText(optimisticContent ?? message.body, undefined, inlineFloatTimestamp);
     }
   };
 
@@ -927,9 +958,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                         <Check className="w-3 h-3 mr-1" /> Save
                       </Button>
                     </div>
+                    {inlineBelowTimestamp}
                   </div>
                 ) : (
-                  renderContent()
+                  <>
+                    {renderContent()}
+                    {!isTextMessageType && inlineBelowTimestamp}
+                  </>
                 )}
               </div>
             </MessageContextMenu>
@@ -953,24 +988,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </div>
             </ReactionPopover>
           </div>
-          
-          {showTimestamp && (
-            <div className={cn(
-              "flex items-center gap-1 mt-0.5 ml-3",
-              isOwnMessage ? "justify-end" : "justify-start"
-            )}>
-              <span className="text-xs text-muted-foreground">
-                {(() => {
-                  const d = new Date(message.created_at);
-                  if (isToday(d)) return format(d, 'HH:mm');
-                  if (isYesterday(d)) return `Yesterday, ${format(d, 'HH:mm')}`;
-                  if (isThisYear(d)) return format(d, 'd MMM, HH:mm');
-                  return format(d, 'd MMM yyyy, HH:mm');
-                })()}
-              </span>
-              {renderStatusIcon()}
-            </div>
-          )}
         </div>
       </div>
 

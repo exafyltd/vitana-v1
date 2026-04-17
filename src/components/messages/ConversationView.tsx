@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import MessageBubble from './MessageBubble';
+import MessageDivider from './MessageDivider';
 import MessageInput from './MessageInput';
 import { SwipeableMessage } from './SwipeableMessage';
 import TypingIndicator from './TypingIndicator';
@@ -35,6 +36,7 @@ import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
 import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
+import { format, isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
@@ -1032,35 +1034,44 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 return messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
-                const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
-                
+
                 // Smart avatar display logic
                 const showAvatar = !previousMessage || previousMessage.sender_id !== message.sender_id;
-                
+
                 // Smart spacing logic - group consecutive messages from same sender
                 const isConsecutiveFromSameSender = previousMessage && previousMessage.sender_id === message.sender_id;
-                const isLastInGroup = !nextMessage || nextMessage.sender_id !== message.sender_id;
-                
+
                 // Time-based grouping (within 5 minutes)
-                const timeDiff = previousMessage 
+                const timeDiff = previousMessage
                   ? new Date(message.created_at).getTime() - new Date(previousMessage.created_at).getTime()
                   : Infinity;
                 const isWithinTimeWindow = timeDiff < 5 * 60 * 1000; // 5 minutes
-                
+
                 // Determine spacing
                 const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
-                
-                const showTimestamp = isLastInGroup || !isWithinTimeWindow;
-                
+
+                // Day separator between dates (WhatsApp-style centered chip)
+                const messageDate = new Date(message.created_at);
+                const isNewDay = !previousMessage
+                  || !isSameDay(messageDate, new Date(previousMessage.created_at));
+                const dayLabel = isToday(messageDate)
+                  ? 'Today'
+                  : isYesterday(messageDate)
+                    ? 'Yesterday'
+                    : isThisYear(messageDate)
+                      ? format(messageDate, 'd MMMM')
+                      : format(messageDate, 'd MMMM yyyy');
+
                 // Resolve parent message for reply quotes (check both field names)
                 const parentId = message.parent_message_id || message.reply_to_message_id;
-                const resolvedParentMessage = parentId 
-                  ? messageMap.get(parentId) || null 
+                const resolvedParentMessage = parentId
+                  ? messageMap.get(parentId) || null
                   : null;
 
                 return (
-                  <div 
-                    key={message.id}
+                  <React.Fragment key={message.id}>
+                  {isNewDay && <MessageDivider type="date" text={dayLabel} />}
+                  <div
                     id={`msg-${message.id}`}
                     className={cn(
                       shouldUseSmallSpacing ? "mb-0.5" : "mb-2",
@@ -1080,7 +1091,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         onScrollToMessage={handleScrollToMessage}
                         parentMessage={resolvedParentMessage}
                         showAvatar={showAvatar}
-                        showTimestamp={showTimestamp}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
                             // Route to correct table based on thread type
@@ -1158,6 +1168,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                       />
                     </SwipeableMessage>
                   </div>
+                  </React.Fragment>
                 );
               });
               })()}

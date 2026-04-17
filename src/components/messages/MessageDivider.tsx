@@ -15,20 +15,18 @@ const MessageDivider: React.FC<MessageDividerProps> = ({
 }) => {
   return (
     <div className={cn(
-      "flex items-center justify-center my-4",
+      "flex items-center justify-center my-3",
       className
     )}>
-      <div className="flex-1 border-t border-border"></div>
-      <Badge 
+      <Badge
         variant={type === 'unread' ? 'secondary' : 'outline'}
         className={cn(
-          "mx-3 text-xs",
-          type === 'unread' && "bg-domain-messages-accent text-white"
+          "text-xs font-medium px-3 py-0.5 rounded-full border-border/60 bg-muted/70 text-muted-foreground",
+          type === 'unread' && "bg-domain-messages-accent text-white border-transparent"
         )}
       >
         {text}
       </Badge>
-      <div className="flex-1 border-t border-border"></div>
     </div>
   );
 };
