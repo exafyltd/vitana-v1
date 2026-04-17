@@ -110,6 +110,7 @@ export default function MobileSettings() {
     switch (activeSection) {
       case 'notifications':
         return (
+          <>
           <Card className="rounded-2xl border-border/50 shadow-sm">
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
@@ -163,6 +164,7 @@ export default function MobileSettings() {
             </CardContent>
           </Card>
           <PushDiagnostics />
+          </>
         );
 
       case 'privacy.visibility':
