@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { drawerNavItems } from '@/config/drawer-nav.config';
+import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
@@ -208,6 +208,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 const active = isActive(item.route);
                 const Icon = item.icon;
                 const isDestructive = item.id === 'logout';
+                const tone = !isDestructive ? drawerNavIconTones[item.id] : undefined;
+                const iconStyle = tone ? { color: active ? tone.active : tone.base } : undefined;
 
                 return (
                   <button
@@ -229,7 +231,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                     {active && (
                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
                     )}
-                    <Icon className="h-5 w-5 shrink-0" />
+                    <Icon className="h-5 w-5 shrink-0" style={iconStyle} />
                     <span className="flex-1 text-left">{translate(item.translationKey)}</span>
                     {item.id === 'inbox' && unreadCount > 0 && (
                       <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-semibold text-destructive-foreground">
