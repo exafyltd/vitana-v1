@@ -36,6 +36,7 @@ export function MobileBottomNav() {
     '/meditation-player',
     '/onboarding',
     '/comm/live-rooms/',
+    '/news/',
     '/payment-checkout',
     '/kyc-verification',
   ];

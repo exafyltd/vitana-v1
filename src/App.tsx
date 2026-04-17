@@ -157,6 +157,7 @@ const BusinessHub = lazy(() => import("./pages/BusinessHub"));
 const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
 
 // VTID-01900: Home sub-pages removed — Home is now a standalone News Feed
+const NewsArticleDetail = lazy(() => import("./pages/NewsArticleDetail"));
 
 // Discover sub-pages
 const WellnessServices = lazy(() => import("./pages/discover/WellnessServices"));
@@ -645,6 +646,15 @@ const App = () => {
           <Route path="/home/actions" element={<Navigate to="/home" replace />} />
           <Route path="/home/matches" element={<Navigate to="/home" replace />} />
           <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+
+          {/* News article detail — full-screen reader */}
+          <Route path="/news/:id" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <NewsArticleDetail />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* Backwards compatibility redirects */}
           <Route path="/dashboard" element={<Navigate to="/home" replace />} />

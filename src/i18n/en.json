@@ -2776,6 +2776,13 @@
       "mutedToast": "Source muted",
       "undo": "Undo",
       "unmute": "Unmute"
+    },
+    "detail": {
+      "back": "Back",
+      "continueReading": "Continue reading on",
+      "openInBrowser": "Open in browser",
+      "couldNotLoad": "This article can't be displayed inline",
+      "readOn": "Read on"
     }
   }
 }

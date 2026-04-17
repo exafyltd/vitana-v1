@@ -114,8 +114,7 @@ export default function Home() {
   }, [handleObserver]);
 
   const handleArticleClick = (article: NewsArticle) => {
-    if (article.source === "longevity" && article.link) window.open(article.link, "_blank", "noopener,noreferrer");
-    else if (article.link) navigate(article.link);
+    navigate(`/news/${article.id}`, { state: { article } });
   };
 
   const handleRefresh = () => { refetchLongevity(); refetchCommunity(); };
