@@ -36,7 +36,8 @@ import {
   useCommunityNews,
   type NewsArticle,
 } from "@/hooks/useNewsFeed";
-import { getNewsImage, mapTagToPillar } from "@/lib/news-images";
+import { getNewsImage, mapTagToPillar, LONGEVITY_PILLARS } from "@/lib/news-images";
+import { PillarFilter } from "@/components/ui/pillar-filter";
 import { useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -48,8 +49,14 @@ const FILTER_MODES = [
   { value: "community", label: "Community", icon: "👥" },
 ];
 
+const PILLAR_OPTIONS = [
+  { value: "all", label: "All" },
+  ...LONGEVITY_PILLARS.map((p) => ({ value: p, label: p })),
+];
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
+  const [activePillar, setActivePillar] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const navigate = useNavigate();
@@ -91,13 +98,21 @@ export default function Home() {
   }, [longevityData, communityData, activeTab, searchQuery]);
 
   // Apply user feed preferences — hide dismissed articles + muted sources.
+  // When on the Longevity tab with a pillar selected, also filter by pillar.
   const hiddenArticleIds = useNewsFeedPreferencesStore((s) => s.hiddenArticleIds);
   const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);
   const visibleArticles = useMemo(() => {
     const hidden = new Set(hiddenArticleIds);
     const muted = new Set(mutedSources);
-    return articles.filter((a) => !hidden.has(a.id) && !muted.has(a.source_name));
-  }, [articles, hiddenArticleIds, mutedSources]);
+    return articles.filter((a) => {
+      if (hidden.has(a.id) || muted.has(a.source_name)) return false;
+      if (activeTab === "longevity" && activePillar !== "all") {
+        const pillar = mapTagToPillar(a.tags);
+        if (pillar !== activePillar) return false;
+      }
+      return true;
+    });
+  }, [articles, hiddenArticleIds, mutedSources, activeTab, activePillar]);
 
   const observerRef = useRef<HTMLDivElement>(null);
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
@@ -144,6 +159,15 @@ export default function Home() {
 
   const renderFeedContent = () => (
     <>
+      {/* Pillar sub-filter — shown only inside Longevity tab */}
+      {activeTab === "longevity" && (
+        <PillarFilter
+          options={PILLAR_OPTIONS}
+          active={activePillar}
+          onChange={setActivePillar}
+          className="mt-2 mb-1"
+        />
+      )}
       {isLoading && articles.length === 0 && (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -237,7 +261,7 @@ export default function Home() {
           >
             <div className="flex items-center gap-2 min-w-max">
               <ExpandableSearchButton placeholder={isMobile ? "Search..." : "Search news, topics, sources…"} onSearch={(query) => setSearchQuery(query)} />
-              {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
+              {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => { setActiveTab(v as FilterTab); setActivePillar("all"); }} />}
               <UniversalCalendarButton />
               {isMobile && (
                 <Button variant="ghost" size="sm" className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0" onClick={handleRefresh} disabled={isLoading}>
@@ -248,7 +272,7 @@ export default function Home() {
           </UtilityActionButton>
           {!isMobile && (
             <div className="mt-5">
-              <SplitBar value={activeTab} onValueChange={(v) => setActiveTab(v as FilterTab)} className="w-full">
+              <SplitBar value={activeTab} onValueChange={(v) => { setActiveTab(v as FilterTab); setActivePillar("all"); }} className="w-full">
                 <SplitBarList>
                   <SplitBarTrigger value="all">All</SplitBarTrigger>
                   <SplitBarTrigger value="longevity">Longevity</SplitBarTrigger>

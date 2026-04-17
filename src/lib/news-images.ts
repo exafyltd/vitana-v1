@@ -230,13 +230,23 @@ export function getNewsImage(
   return pool[fnvHash(seed) % pool.length];
 }
 
+export type LongevityPillar = 'Nutrition' | 'Hydration' | 'Sleep' | 'Exercise' | 'Mental';
+
 export function mapTagToPillar(tags: string[]): string | undefined {
   const tagToPillar: Record<string, string> = {
-    supplements: 'Nutrition', nutrition: 'Nutrition', hydration: 'Hydration',
-    sleep: 'Sleep', exercise: 'Motion', mental_health: 'Mental',
-    functional: 'Mental', natural: 'Nutrition', general: 'Community',
+    supplements: 'Nutrition', nutrition: 'Nutrition', natural: 'Nutrition',
+    hydration: 'Hydration',
+    sleep: 'Sleep',
+    exercise: 'Exercise',
+    mental_health: 'Mental', functional: 'Mental',
+    longevity: 'Nutrition', research: 'Mental', general: 'Nutrition',
     community_event: 'Community', media: 'Community', member_spotlight: 'Community',
   };
   for (const tag of tags) { if (tagToPillar[tag]) return tagToPillar[tag]; }
   return undefined;
 }
+
+export const LONGEVITY_PILLARS: LongevityPillar[] = [
+  'Nutrition', 'Hydration', 'Sleep', 'Exercise', 'Mental',
+];
+
