@@ -11,17 +11,25 @@
  * Works on both mobile (compact) and desktop (full).
  */
 
-import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, ExternalLink } from "lucide-react";
-import { RewardBadge } from "@/components/rewards/RewardBadge";
+import { Star, MapPin, ExternalLink, Gift } from "lucide-react";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import {
   type MarketplaceProduct,
   formatPrice,
   getRedirectUrl,
 } from "@/hooks/useMarketplace";
+
+function RewardBadge({ reward_preview }: { reward_preview: MarketplaceProduct["reward_preview"] }) {
+  if (!reward_preview?.points_estimate) return null;
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-full px-1.5 py-0.5">
+      <Gift className="w-3 h-3" />
+      +{reward_preview.points_estimate} pts
+    </span>
+  );
+}
 
 interface MarketplaceProductCardProps {
   product: MarketplaceProduct;
@@ -197,12 +205,12 @@ export function MarketplaceProductCard({
         <div className="flex items-center gap-2">
           <AddToCartButton
             item={{
-              type: "product",
-              id: p.id,
-              name: p.title,
-              price: p.price_cents ? p.price_cents / 100 : 0,
-              image_url: image ?? undefined,
-              metadata: { category: p.category, brand: p.brand },
+              item_type: "product",
+              item_id: p.id,
+              item_name: p.title,
+              item_price: p.price_cents ? p.price_cents / 100 : 0,
+              item_image_url: image ?? undefined,
+              item_metadata: { category: p.category, brand: p.brand },
             }}
           />
           <a

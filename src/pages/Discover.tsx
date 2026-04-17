@@ -427,6 +427,7 @@ export default withScreenId(function Discover() {
                           </div>
                         </CardContent>
                       </Card>
+                      )
                     ))}
                   </div>
                   )}
