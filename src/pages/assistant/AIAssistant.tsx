@@ -10,6 +10,7 @@ import VoiceSettingsPanel from "@/components/assistant/VoiceSettingsPanel";
 import AIModelSettingsPanel from "@/components/assistant/AIModelSettingsPanel";
 import ProactiveTalkingPanel from "@/components/assistant/ProactiveTalkingPanel";
 import AutopilotSettingsPanel from "@/components/assistant/AutopilotSettingsPanel";
+import { VaeaConfigPanel } from "@/components/business/vaea/VaeaConfigPanel";
 
 export default function AIAssistant() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,11 +51,12 @@ export default function AIAssistant() {
           />
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="voice">Voice</TabsTrigger>
               <TabsTrigger value="ai">AI</TabsTrigger>
               <TabsTrigger value="autopilot">Autopilot & Automation</TabsTrigger>
               <TabsTrigger value="proactive">Proactive Talking</TabsTrigger>
+              <TabsTrigger value="referrals">Referrals (VAEA)</TabsTrigger>
             </TabsList>
 
             <TabsContent value="voice" className="space-y-4 mt-6">
@@ -87,6 +89,10 @@ export default function AIAssistant() {
                 isUpdating={isUpdating}
                 updatePreferences={updatePreferences}
               />
+            </TabsContent>
+
+            <TabsContent value="referrals" className="space-y-4 mt-6">
+              <VaeaConfigPanel />
             </TabsContent>
           </Tabs>
         </div>

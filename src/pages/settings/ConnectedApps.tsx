@@ -30,6 +30,7 @@ import {
   Link,
   Sparkles,
   RefreshCw,
+  Radio,
   Calendar,
   History,
   ListChecks,
@@ -48,6 +49,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileConnectedAppsView } from "@/components/settings/MobileConnectedAppsView";
+import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
@@ -1412,6 +1414,10 @@ function ConnectedApps() {
             <RefreshCw className="w-4 h-4" />
             Data Sync
           </SplitBarTrigger>
+          <SplitBarTrigger value="agent-ingest" className="flex-1 flex items-center justify-center gap-1.5">
+            <Radio className="w-4 h-4" />
+            Agent Ingest
+          </SplitBarTrigger>
         </SplitBarList>
 
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
@@ -1876,6 +1882,10 @@ function ConnectedApps() {
               </div>
             );
           })()}
+        </SplitBarContent>
+
+        <SplitBarContent value="agent-ingest">
+          <VaeaChannelsPanel />
         </SplitBarContent>
       </SplitBar>
         </div>
