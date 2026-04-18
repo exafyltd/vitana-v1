@@ -158,12 +158,12 @@ function DrawerBody() {
           </section>
         )}
 
-        {/* Description */}
-        {p.description && (
+        {/* Description (prefer the long-form if the sync populated it) */}
+        {(p.description_long || p.description) && (
           <section>
             <h3 className="text-sm font-semibold mb-2">About this product</h3>
             <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
-              {p.description}
+              {p.description_long || p.description}
             </p>
           </section>
         )}

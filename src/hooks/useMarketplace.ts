@@ -32,6 +32,7 @@ export interface MarketplaceProduct {
   id: string;
   title: string;
   description: string | null;
+  description_long?: string | null;
   brand: string | null;
   category: string | null;
   subcategory: string | null;
