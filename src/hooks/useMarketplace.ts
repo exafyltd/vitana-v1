@@ -150,6 +150,32 @@ export interface MarketplaceSearchParams {
   offset?: number;
 }
 
+// ==================== Single-product hook ====================
+
+export interface MarketplaceProductResponse {
+  ok: boolean;
+  product?: MarketplaceProduct;
+  error?: string;
+}
+
+export function useMarketplaceProduct(id: string | null | undefined, opts: { enabled?: boolean } = {}) {
+  return useQuery<MarketplaceProductResponse>({
+    queryKey: ["marketplace-product", id],
+    queryFn: async () => {
+      if (!id) throw new Error("missing product id");
+      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+      const headers = await authHeaders();
+      const resp = await fetch(`${GATEWAY_URL}/api/v1/discover/product/${id}`, { headers });
+      if (resp.status === 404) return { ok: false, error: "not_found" };
+      if (!resp.ok) throw new Error(`Product fetch failed: ${resp.status}`);
+      return resp.json();
+    },
+    enabled: !!id && opts.enabled !== false,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+  });
+}
+
 export function useMarketplaceSearch(params: MarketplaceSearchParams, opts: { enabled?: boolean } = {}) {
   return useQuery<MarketplaceSearchResponse>({
     queryKey: ["marketplace-search", params],

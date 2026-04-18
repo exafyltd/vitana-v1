@@ -5,6 +5,7 @@
  * Opens when useProductSelection().selectedProduct is set.
  */
 
+import { Link } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Badge } from "@/components/ui/badge";
@@ -62,7 +63,7 @@ export function ProductDetailsDrawer() {
 }
 
 function DrawerBody() {
-  const { selectedProduct: p } = useProductSelection();
+  const { selectedProduct: p, clearSelection } = useProductSelection();
   if (!p) return null;
 
   const hasDiscount =
@@ -116,6 +117,13 @@ function DrawerBody() {
               </span>
             )}
             {p.subcategory && <Badge variant="secondary">{p.subcategory}</Badge>}
+            <Link
+              to={`/discover/product/${p.id}`}
+              className="ml-auto text-xs text-primary hover:underline inline-flex items-center gap-0.5"
+              onClick={() => clearSelection()}
+            >
+              Open full page <ExternalLink className="w-3 h-3" />
+            </Link>
           </div>
         </div>
 
