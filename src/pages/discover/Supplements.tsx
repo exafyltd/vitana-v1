@@ -325,7 +325,7 @@ export default function Supplements() {
                   </div>
                   <p className="text-muted-foreground mb-6">Personalized supplement recommendations based on your health data</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {mockSupplements.slice(0, 6).map((supplement, index) => (
+                    {supplements.slice(0, 6).map((supplement, index) => (
                       <Card key={supplement.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
                         <div className="relative">
                           <img 
