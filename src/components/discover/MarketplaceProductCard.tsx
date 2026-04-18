@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, ExternalLink, Gift } from "lucide-react";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { ProductImage } from "@/components/discover/ProductImage";
 import {
   type MarketplaceProduct,
   formatPrice,
@@ -36,6 +37,7 @@ interface MarketplaceProductCardProps {
   variant?: "grid" | "featured";
   showMatchReasons?: boolean;
   surface?: string;
+  onClick?: (product: MarketplaceProductCardProps["product"]) => void;
 }
 
 export function MarketplaceProductCard({
@@ -43,6 +45,7 @@ export function MarketplaceProductCard({
   variant = "grid",
   showMatchReasons = true,
   surface = "discover",
+  onClick,
 }: MarketplaceProductCardProps) {
   const image = p.images?.[0] ?? null;
   const hasDiscount =
@@ -55,18 +58,20 @@ export function MarketplaceProductCard({
 
   if (variant === "featured") {
     return (
-      <Card className="overflow-hidden">
+      <Card
+        onClick={onClick ? () => onClick(p) : undefined}
+        className={`overflow-hidden ${onClick ? "cursor-pointer" : ""}`}
+      >
         <div className="flex flex-col sm:flex-row">
-          {image && (
-            <div className="sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-muted">
-              <img
-                src={image}
-                alt={p.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          )}
+          <div className="sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-muted">
+            <ProductImage
+              src={image}
+              alt={p.title}
+              category={p.category}
+              subcategory={p.subcategory}
+              sizeClass="w-full h-full"
+            />
+          </div>
           <CardContent className="flex-1 p-4 flex flex-col justify-between gap-3">
             <div>
               {p.brand && (
@@ -109,6 +114,7 @@ export function MarketplaceProductCard({
                   href={redirectUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                 >
                   Buy <ExternalLink className="w-3.5 h-3.5" />
@@ -123,17 +129,20 @@ export function MarketplaceProductCard({
 
   // ---- Grid variant (default) ----
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow group">
-      {image && (
-        <div className="aspect-square bg-muted overflow-hidden">
-          <img
-            src={image}
-            alt={p.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-        </div>
-      )}
+    <Card
+      onClick={onClick ? () => onClick(p) : undefined}
+      className={`overflow-hidden hover:shadow-md transition-shadow group ${onClick ? "cursor-pointer" : ""}`}
+    >
+      <div className="aspect-square bg-muted overflow-hidden">
+        <ProductImage
+          src={image}
+          alt={p.title}
+          category={p.category}
+          subcategory={p.subcategory}
+          sizeClass="w-full h-full"
+          className="group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
       <CardContent className="p-3 space-y-2">
         {/* Brand + origin */}
         <div className="flex items-center justify-between gap-1">
@@ -217,6 +226,7 @@ export function MarketplaceProductCard({
             href={redirectUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline flex-shrink-0"
           >
             Buy <ExternalLink className="w-3 h-3" />
