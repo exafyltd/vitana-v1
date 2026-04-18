@@ -74,22 +74,25 @@ export default function Supplements() {
 
   const supplements: Supplement[] = useMemo(
     () =>
-      (searchData?.items ?? []).map((p) => ({
-        id: p.id,
-        name: p.title,
-        brand: p.brand,
-        description: p.description,
-        category: p.subcategory ?? p.category ?? "supplements",
-        price: p.price_cents != null ? p.price_cents / 100 : 0,
-        dosage: null,
-        serving_size: null,
-        servings_per_container: null,
-        benefits: p.health_goals.length > 0 ? p.health_goals : null,
-        image_url: p.images?.[0] ?? null,
-        rating: p.rating,
-        review_count: p.review_count,
-        in_stock: p.availability === "in_stock",
-      })),
+      (searchData?.items ?? []).map((p) => {
+        const goals = Array.isArray(p.health_goals) ? p.health_goals : [];
+        return {
+          id: p.id,
+          name: p.title,
+          brand: p.brand,
+          description: p.description,
+          category: p.subcategory ?? p.category ?? "supplements",
+          price: p.price_cents != null ? p.price_cents / 100 : 0,
+          dosage: null,
+          serving_size: null,
+          servings_per_container: null,
+          benefits: goals.length > 0 ? goals : null,
+          image_url: Array.isArray(p.images) ? p.images[0] ?? null : null,
+          rating: p.rating,
+          review_count: p.review_count,
+          in_stock: p.availability === "in_stock",
+        };
+      }),
     [searchData]
   );
 

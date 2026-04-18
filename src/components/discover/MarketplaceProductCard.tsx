@@ -169,7 +169,7 @@ export function MarketplaceProductCard({
         )}
 
         {/* Dietary badges */}
-        {p.dietary_tags.length > 0 && (
+        {Array.isArray(p.dietary_tags) && p.dietary_tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {p.dietary_tags.slice(0, 3).map((tag) => (
               <Badge key={tag} variant="outline" className="text-[10px] px-1.5 py-0">
