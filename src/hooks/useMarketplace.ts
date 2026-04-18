@@ -54,6 +54,12 @@ export interface MarketplaceProduct {
   match_reasons?: Array<{ kind: string; text: string }>;
   rank_score?: number;
   rank_reasons?: string[];
+  // Product-detail drawer fields (backend: 20260418040000)
+  dosage?: string | null;
+  serving_size?: string | null;
+  servings_per_container?: number | null;
+  evidence_links?: Array<{ title?: string; url?: string; source_type?: string }>;
+  safety_notes?: string | null;
 }
 
 export interface HiddenBreakdown {
