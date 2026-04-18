@@ -7,7 +7,7 @@
  * @returns Direct app URL with UTM parameters
  */
 export function getShareUrl(
-  type: 'event' | 'meetup' | 'group' | 'profile' | 'post' | 'campaign',
+  type: 'event' | 'meetup' | 'group' | 'profile' | 'post' | 'campaign' | 'product',
   id: string,
   options?: {
     utm_source?: string;
@@ -16,6 +16,12 @@ export function getShareUrl(
     slug?: string; // Event slug for clean URLs
   }
 ): string {
+  // Marketplace products use e.vitanaland.com for OG previews. Crawlers get
+  // server-rendered OG meta tags (title/description/image/price) from the
+  // vitanaland-og-proxy worker; human clicks 302 to the SPA detail page.
+  if (type === 'product') {
+    return `https://e.vitanaland.com/products/${encodeURIComponent(id)}`;
+  }
   // Campaigns use clean app URLs for sharing
   // OG previews work via client-side meta tag injection
   if (type === 'campaign') {

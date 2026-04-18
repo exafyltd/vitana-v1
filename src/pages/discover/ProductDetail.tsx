@@ -40,6 +40,7 @@ import {
   formatPrice,
   getRedirectUrl,
 } from "@/hooks/useMarketplace";
+import { getShareUrl } from "@/lib/shareUrl";
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -211,7 +212,7 @@ export default function ProductDetail() {
                         title: p.title,
                         description: p.description ?? "",
                         image_url: p.images?.[0],
-                        url: typeof window !== "undefined" ? window.location.href : "",
+                        url: getShareUrl("product", p.id),
                       }}
                       variant="outline"
                       size="lg"
