@@ -19,6 +19,9 @@ import {
   Target,
   ShieldCheck,
   Sparkles,
+  AlertTriangle,
+  BookOpen,
+  ClipboardList,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useProductSelection } from "@/context/ProductSelectionContext";
@@ -211,6 +214,80 @@ function DrawerBody() {
                 </Badge>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Directions: dosage + serving size + servings per container */}
+        {(p.dosage || p.serving_size || p.servings_per_container) && (
+          <section>
+            <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+              <ClipboardList className="w-4 h-4 text-muted-foreground" /> Directions
+            </h3>
+            <div className="grid grid-cols-3 gap-2 text-sm">
+              {p.dosage && (
+                <div className="rounded-md bg-muted/50 p-2">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Dose</div>
+                  <div className="font-medium leading-tight">{p.dosage}</div>
+                </div>
+              )}
+              {p.serving_size && (
+                <div className="rounded-md bg-muted/50 p-2">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Serving</div>
+                  <div className="font-medium leading-tight">{p.serving_size}</div>
+                </div>
+              )}
+              {p.servings_per_container != null && (
+                <div className="rounded-md bg-muted/50 p-2">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Servings</div>
+                  <div className="font-medium leading-tight">{p.servings_per_container}</div>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Safety notes */}
+        {p.safety_notes && (
+          <section className="bg-amber-50 dark:bg-amber-950/20 rounded-lg p-4 border border-amber-200/60 dark:border-amber-900/40">
+            <h3 className="flex items-center gap-2 text-sm font-semibold mb-2 text-amber-900 dark:text-amber-200">
+              <AlertTriangle className="w-4 h-4" /> Safety &amp; interactions
+            </h3>
+            <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
+              {p.safety_notes}
+            </p>
+          </section>
+        )}
+
+        {/* Evidence links */}
+        {Array.isArray(p.evidence_links) && p.evidence_links.length > 0 && (
+          <section>
+            <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
+              <BookOpen className="w-4 h-4 text-muted-foreground" /> Evidence
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {p.evidence_links.map((e, i) => (
+                e.url ? (
+                  <li key={i} className="flex items-start gap-2">
+                    <span aria-hidden className="text-muted-foreground mt-0.5">•</span>
+                    <div className="flex-1">
+                      <a
+                        href={e.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline leading-snug"
+                      >
+                        {e.title ?? e.url}
+                      </a>
+                      {e.source_type && (
+                        <Badge variant="outline" className="ml-2 text-[10px] capitalize">
+                          {e.source_type.replace(/_/g, " ")}
+                        </Badge>
+                      )}
+                    </div>
+                  </li>
+                ) : null
+              ))}
+            </ul>
           </section>
         )}
 
