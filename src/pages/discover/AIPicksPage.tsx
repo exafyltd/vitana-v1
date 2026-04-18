@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Brain, 
-  Sparkles, 
+import {
+  Brain,
+  Sparkles,
   ArrowLeft,
   Pill,
   Heart,
@@ -22,28 +22,45 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useMarketplaceFeed, formatPrice, type MarketplaceProduct } from '@/hooks/useMarketplace';
+import { ProductImage } from '@/components/discover/ProductImage';
+import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
+import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
 
 interface AIRecommendation {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: string;
   match: number;
   reason: string;
   provider: string;
-  image: string;
+  image: string | null;
   badge: string;
   type?: 'service' | 'supplement' | 'expert' | 'deal';
+  category?: string | null;
+  subcategory?: string | null;
+  _product?: MarketplaceProduct;
 }
 
 export default function AIPicksPage() {
+  return (
+    <ProductSelectionProvider>
+      <AIPicksInner />
+    </ProductSelectionProvider>
+  );
+}
+
+function AIPicksInner() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const { selectProduct } = useProductSelection();
   const [activeFilter, setActiveFilter] = useState('all');
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const { data: feedData, isLoading } = useMarketplaceFeed({ limit: 24 });
   
   // Embla carousel for mobile horizontal scroll
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -53,113 +70,33 @@ export default function AIPicksPage() {
   });
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // AI Recommendations Data with types
-  const aiRecommendations: AIRecommendation[] = [
-    {
-      id: 1,
-      title: "Sleep Optimization Program",
-      description: "AI-detected poor sleep patterns based on your recent diary entries",
-      price: "$199",
-      match: 95,
-      reason: "Low sleep scores detected",
-      provider: "Dr. Emily Chen",
-      image: "/lovable-uploads/sarah-miller-avatar.jpg",
-      badge: "Perfect Match",
-      type: 'service'
-    },
-    {
-      id: 2,
-      title: "Stress Management Coaching",
-      description: "1-on-1 sessions to reduce cortisol levels",
-      price: "$89",
-      match: 92,
-      reason: "High stress indicators",
-      provider: "Marcus Rodriguez",
-      image: "/lovable-uploads/james-davis-avatar.jpg",
-      badge: "High Priority",
-      type: 'expert'
-    },
-    {
-      id: 3,
-      title: "Iron-Rich Nutrition Plan",
-      description: "Custom meal plan targeting iron deficiency",
-      price: "$149",
-      match: 90,
-      reason: "Low iron biomarkers",
-      provider: "Luna Wellness",
-      image: "/lovable-uploads/se-hun-oh-avatar.jpg",
-      badge: "Great Match",
-      type: 'service'
-    },
-    {
-      id: 4,
-      title: "Adaptogen Supplement Bundle",
-      description: "Natural stress relief supplements",
-      price: "$79",
-      match: 85,
-      reason: "Stress management goal",
-      provider: "Vitana Shop",
-      image: "/lovable-uploads/tae-min-avatar.jpg",
-      badge: "Good Match",
-      type: 'supplement'
-    },
-    {
-      id: 5,
-      title: "Vitamin D3 + K2 Complex",
-      description: "Optimal absorption formula for bone health",
-      price: "$45",
-      match: 88,
-      reason: "Vitamin D deficiency detected",
-      provider: "Vitana Shop",
-      image: "/lovable-uploads/emma-wilson-avatar.jpg",
-      badge: "Recommended",
-      type: 'supplement'
-    },
-    {
-      id: 6,
-      title: "Dr. Sarah Kim - Longevity Specialist",
-      description: "Board certified in preventive medicine",
-      price: "$250/session",
-      match: 91,
-      reason: "Matches your health goals",
-      provider: "Vitana Network",
-      image: "/lovable-uploads/dr-roberts-avatar.jpg",
-      badge: "Top Rated",
-      type: 'expert'
-    },
-    {
-      id: 7,
-      title: "20% Off Wellness Bundle",
-      description: "Limited time offer on bestselling supplements",
-      price: "$159",
-      match: 82,
-      reason: "Based on your wishlist",
-      provider: "Vitana Shop",
-      image: "/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png",
-      badge: "Deal",
-      type: 'deal'
-    },
-    {
-      id: 8,
-      title: "Magnesium Glycinate",
-      description: "Premium bioavailable magnesium for sleep & recovery",
-      price: "$32",
-      match: 87,
-      reason: "Sleep optimization support",
-      provider: "Vitana Shop",
-      image: "/lovable-uploads/tae-min-avatar.jpg",
-      badge: "Popular",
-      type: 'supplement'
-    }
-  ];
-
-  // Simulate loading and potential error
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  // AI Recommendations from the marketplace feed — lifecycle-aware, personalized,
+  // limitations-filtered server-side. 'deal' type is inferred from compare_at_price.
+  const aiRecommendations: AIRecommendation[] = useMemo(
+    () => (feedData?.items ?? []).map((p) => {
+      const match = Math.round(((p.match_score ?? p.rank_score ?? 0.7) * 100));
+      const hasDiscount =
+        p.compare_at_price_cents != null &&
+        p.price_cents != null &&
+        p.compare_at_price_cents > p.price_cents;
+      return {
+        id: p.id,
+        title: p.title,
+        description: p.description ?? '',
+        price: formatPrice(p.price_cents, p.currency),
+        match,
+        reason: p.match_reasons?.[0]?.text ?? p.rank_reasons?.[0] ?? '',
+        provider: p.brand ?? 'Vitana Shop',
+        image: p.images?.[0] ?? null,
+        badge: match >= 80 ? 'Perfect Match' : match >= 60 ? 'Great Match' : 'Good Match',
+        type: hasDiscount ? 'deal' : 'supplement',
+        category: p.category,
+        subcategory: p.subcategory,
+        _product: p,
+      };
+    }),
+    [feedData]
+  );
 
   // Error fallback handling
   useEffect(() => {
@@ -217,74 +154,81 @@ export default function AIPicksPage() {
   };
 
   // Card component for reuse
-  const RecommendationCard = ({ rec }: { rec: AIRecommendation }) => (
-    <Card 
-      className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200/50 dark:border-purple-800/50 overflow-hidden h-full"
-    >
-      <div className="relative">
-        <img 
-          src={rec.image} 
-          alt={rec.title}
-          className="w-full h-40 object-cover"
-        />
-        <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
-          {rec.badge}
-        </Badge>
-        <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
-          <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
-        </div>
-        {/* Type indicator */}
-        <div className={cn(
-          "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
-          getTypeColor(rec.type)
-        )}>
-          {getTypeIcon(rec.type)}
-          <span>{getTypeLabel(rec.type)}</span>
-        </div>
-      </div>
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors">
-          {rec.title}
-        </h3>
-        <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
-        
-        {/* AI Reason Highlight */}
-        <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="h-3 w-3 text-purple-500" />
-            <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
+  const RecommendationCard = ({ rec }: { rec: AIRecommendation }) => {
+    const productCents = rec._product?.price_cents ?? 0;
+    return (
+      <Card
+        onClick={() => rec._product && selectProduct(rec._product)}
+        className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200/50 dark:border-purple-800/50 overflow-hidden h-full"
+      >
+        <div className="relative">
+          <ProductImage
+            src={rec.image}
+            alt={rec.title}
+            category={rec.category}
+            subcategory={rec.subcategory}
+            sizeClass="w-full h-40"
+          />
+          <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
+            {rec.badge}
+          </Badge>
+          <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
+          </div>
+          <div className={cn(
+            "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
+            getTypeColor(rec.type)
+          )}>
+            {getTypeIcon(rec.type)}
+            <span>{getTypeLabel(rec.type)}</span>
           </div>
         </div>
-        
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-lg font-bold">{rec.price}</span>
-          <span className="text-xs text-muted-foreground">{rec.provider}</span>
-        </div>
-        
-        <div className="flex gap-2">
-          <AddToCartButton
-            item={{
-              item_type: rec.type === 'supplement' ? 'product' : 'wellness_service',
-              item_id: rec.id.toString(),
-              item_name: rec.title,
-              item_price: parseFloat(rec.price.replace(/[$,/session]/g, '')),
-              item_image_url: rec.image,
-              item_metadata: { provider: rec.provider, match: rec.match, type: rec.type }
-            }}
-            size="sm"
-            className="flex-1"
-          />
-          <Button 
-            size="sm"
-            className="flex-1"
-            onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
-          >
-            {translate('discover.view')}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
+        <CardContent className="p-4">
+          <h3 className="font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors">
+            {rec.title}
+          </h3>
+          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
+
+          {rec.reason && (
+            <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="h-3 w-3 text-purple-500" />
+                <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-lg font-bold">{rec.price}</span>
+            <span className="text-xs text-muted-foreground truncate max-w-[45%]">{rec.provider}</span>
+          </div>
+
+          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+            <AddToCartButton
+              item={{
+                item_type: 'product',
+                item_id: rec.id,
+                item_name: rec.title,
+                item_price: productCents / 100,
+                item_image_url: rec.image ?? undefined,
+                item_metadata: { provider: rec.provider, match: rec.match, type: rec.type },
+              }}
+              size="sm"
+              className="flex-1"
+            />
+            <Button
+              size="sm"
+              variant="outline"
+              className="flex-1"
+              onClick={() => rec._product && selectProduct(rec._product)}
+            >
+              {translate('discover.view')}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   if (isLoading) {
     return (
@@ -430,6 +374,7 @@ export default function AIPicksPage() {
           )}
         </div>
       </div>
+      <ProductDetailsDrawer />
     </AppLayout>
   );
 }
