@@ -4,6 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useVaeaConfig, type AutonomyMode, type VaeaConfig } from "@/hooks/useVaea";
 
@@ -155,18 +156,20 @@ function DisclosureField({ value, onSave, saving }: { value: string; onSave: (v:
   return (
     <div className="space-y-2">
       <Label>Disclosure text</Label>
-      <Input value={draft} onChange={(e) => setDraft(e.target.value)} />
-      <div className="flex justify-between items-center">
+      <Input className="h-11" value={draft} onChange={(e) => setDraft(e.target.value)} />
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-muted-foreground">Appended to every draft with an affiliate link.</p>
         {dirty && (
-          <button
+          <Button
             type="button"
-            className="text-xs text-primary hover:underline disabled:opacity-50"
+            size="sm"
+            className="h-10 w-full sm:w-auto"
             disabled={saving}
             onClick={() => onSave(draft)}
           >
-            {saving ? "Saving…" : "Save"}
-          </button>
+            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
+            Save
+          </Button>
         )}
       </div>
     </div>
@@ -182,21 +185,24 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
     <div className="space-y-2">
       <Label>Expertise zones</Label>
       <Input
+        className="h-11"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         placeholder="e.g. longevity, sleep, supplements"
       />
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-muted-foreground">Comma-separated. Messages outside these topics get lower match scores.</p>
         {dirty && (
-          <button
+          <Button
             type="button"
-            className="text-xs text-primary hover:underline disabled:opacity-50"
+            size="sm"
+            className="h-10 w-full sm:w-auto"
             disabled={saving}
             onClick={() => onSave(draft.split(",").map((s) => s.trim()).filter(Boolean))}
           >
-            {saving ? "Saving…" : "Save"}
-          </button>
+            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
+            Save
+          </Button>
         )}
       </div>
     </div>
