@@ -123,11 +123,11 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
   return (
     <Card className="bg-white/70 backdrop-blur-sm border-white/20">
       <CardContent className="pt-4 space-y-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-xs space-y-1">
             <span className="text-muted-foreground">Tier</span>
             <select
-              className="w-full h-9 rounded-md border px-2 text-sm bg-background"
+              className="w-full h-11 rounded-md border px-3 text-sm bg-background"
               value={tier}
               onChange={(e) => setTier(e.target.value as VaeaCatalogItem["tier"])}
             >
@@ -138,25 +138,25 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
           </label>
           <label className="text-xs space-y-1">
             <span className="text-muted-foreground">Category</span>
-            <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. supplement, coaching" />
+            <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. supplement, coaching" />
           </label>
         </div>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">Title</span>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
+          <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
         </label>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">Affiliate / product URL</span>
-          <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+          <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
         </label>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">Personal note (optional)</span>
-          <Input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why you trust it" />
+          <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why you trust it" />
         </label>
         {err && <p className="text-xs text-destructive">{err}</p>}
         <div className="flex justify-end">
           <Button
-            size="sm"
+            className="h-11 px-5 w-full md:w-auto"
             disabled={busy || !title.trim() || !category.trim() || !url.trim()}
             onClick={async () => {
               setBusy(true);

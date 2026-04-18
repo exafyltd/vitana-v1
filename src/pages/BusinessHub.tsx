@@ -292,6 +292,9 @@ export default function BusinessHub() {
                 </div>
               )}
 
+              {/* Sales → drafts strip visible across all sales sub-modes */}
+              {mobileTab?.startsWith("sales.") && <VaeaDraftsStrip />}
+
               {/* Sales → Inventory */}
               {mobileTab === "sales.inventory" && (
                 <ResellerAvailableEventsTab />
@@ -305,7 +308,6 @@ export default function BusinessHub() {
               {/* Sales → Referrals (VAEA) */}
               {mobileTab === "sales.referrals" && (
                 <div className="space-y-4">
-                  <VaeaDraftsStrip />
                   <VaeaCatalogPanel />
                   <VaeaDetectedList collapsible limit={25} />
                 </div>

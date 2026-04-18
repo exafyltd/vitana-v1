@@ -51,12 +51,23 @@ export default function AIAssistant() {
           />
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="voice">Voice</TabsTrigger>
-              <TabsTrigger value="ai">AI</TabsTrigger>
-              <TabsTrigger value="autopilot">Autopilot & Automation</TabsTrigger>
-              <TabsTrigger value="proactive">Proactive Talking</TabsTrigger>
-              <TabsTrigger value="referrals">Referrals (VAEA)</TabsTrigger>
+            {/* Mobile: horizontal-scroll strip so long labels never overflow.
+                Desktop: even 5-col grid once there's room. */}
+            <TabsList className="flex w-full gap-1 overflow-x-auto justify-start md:grid md:grid-cols-5">
+              <TabsTrigger value="voice" className="shrink-0">Voice</TabsTrigger>
+              <TabsTrigger value="ai" className="shrink-0">AI</TabsTrigger>
+              <TabsTrigger value="autopilot" className="shrink-0">
+                <span className="md:hidden">Autopilot</span>
+                <span className="hidden md:inline">Autopilot &amp; Automation</span>
+              </TabsTrigger>
+              <TabsTrigger value="proactive" className="shrink-0">
+                <span className="md:hidden">Proactive</span>
+                <span className="hidden md:inline">Proactive Talking</span>
+              </TabsTrigger>
+              <TabsTrigger value="referrals" className="shrink-0">
+                <span className="md:hidden">Referrals</span>
+                <span className="hidden md:inline">Referrals (VAEA)</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="voice" className="space-y-4 mt-6">

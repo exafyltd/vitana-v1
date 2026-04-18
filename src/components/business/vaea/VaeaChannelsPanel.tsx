@@ -107,11 +107,11 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
 
   return (
     <div className="rounded border bg-muted/30 p-3 space-y-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <label className="text-xs space-y-1">
           <span className="text-muted-foreground">Platform</span>
           <select
-            className="w-full h-9 rounded-md border px-2 text-sm bg-background"
+            className="w-full h-11 rounded-md border px-3 text-sm bg-background"
             value={platform}
             onChange={(e) => setPlatform(e.target.value as VaeaChannel["platform"])}
           >
@@ -120,17 +120,17 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
         </label>
         <label className="text-xs space-y-1">
           <span className="text-muted-foreground">Channel key / ID</span>
-          <Input value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder="Platform-specific identifier" />
+          <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder="Platform-specific identifier" />
         </label>
       </div>
       <label className="text-xs space-y-1 block">
         <span className="text-muted-foreground">Display name (optional)</span>
-        <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Friendly label" />
+        <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Friendly label" />
       </label>
       {err && <p className="text-xs text-destructive">{err}</p>}
       <div className="flex justify-end">
         <Button
-          size="sm"
+          className="h-11 px-5 w-full md:w-auto"
           disabled={busy || !channelKey.trim()}
           onClick={async () => {
             setBusy(true);

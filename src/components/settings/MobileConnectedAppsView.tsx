@@ -16,6 +16,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 
 import { MobileIntegrationSection } from "./MobileIntegrationSection";
+import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
 import { MobileIntegrationDetailSheet } from "./MobileIntegrationDetailSheet";
 import { MobileConnectionSummary } from "./MobileConnectionSummary";
 import {
@@ -66,6 +67,7 @@ export function MobileConnectedAppsView() {
     { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
     { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
     { value: 'other', label: translate('connectedApps.sections.other', 'Other'), icon: '🔧' },
+    { value: 'agent', label: translate('connectedApps.sections.agent', 'Agent'), icon: '📡' },
   ];
   
   // Social media import dialog state
@@ -218,6 +220,10 @@ export function MobileConnectedAppsView() {
               onSelect={setSelectedApp}
               defaultExpanded={false}
             />
+          )}
+
+          {(activeCategory === 'all' || activeCategory === 'agent') && (
+            <VaeaChannelsPanel />
           )}
         </div>
       </div>
