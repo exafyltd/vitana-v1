@@ -8,8 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useMarketplaceSearch, type MarketplaceSearchParams } from "@/hooks/useMarketplace";
+import { useMarketplaceSearch, type MarketplaceSearchParams, type MarketplaceProduct } from "@/hooks/useMarketplace";
 import { HiddenByLimitationsFooter } from "@/components/discover/HiddenByLimitationsFooter";
+import { ProductImage } from "@/components/discover/ProductImage";
+import { ProductDetailsDrawer } from "@/components/discover/ProductDetailsDrawer";
+import { useProductSelection, ProductSelectionProvider } from "@/context/ProductSelectionContext";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useBookmarks } from "@/hooks/useBookmarks";
@@ -42,9 +45,18 @@ interface Supplement {
 }
 
 export default function Supplements() {
+  return (
+    <ProductSelectionProvider>
+      <SupplementsInner />
+    </ProductSelectionProvider>
+  );
+}
+
+function SupplementsInner() {
   const navigate = useNavigate();
   const { pendingCount } = useAutopilot();
   const { getBookmarksByType } = useBookmarks();
+  const { selectProduct } = useProductSelection();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
@@ -71,6 +83,12 @@ export default function Supplements() {
   }, [searchQuery, selectedCategory, sortBy]);
 
   const { data: searchData, isLoading: loading } = useMarketplaceSearch(searchParams);
+
+  const productsById = useMemo(() => {
+    const m = new Map<string, MarketplaceProduct>();
+    (searchData?.items ?? []).forEach((p) => m.set(p.id, p));
+    return m;
+  }, [searchData]);
 
   const supplements: Supplement[] = useMemo(
     () =>
@@ -222,7 +240,13 @@ export default function Supplements() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {supplements.map((supplement) => (
-                <Card key={supplement.id} className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20">
+                <Card
+                  key={supplement.id}
+                  onClick={() => {
+                    const p = productsById.get(supplement.id);
+                    if (p) selectProduct(p);
+                  }}
+                  className="relative group hover:shadow-lg transition-all duration-300 flex flex-col bg-white/80 backdrop-blur-sm border-white/20 cursor-pointer">
                   <BookmarkButton
                     item={{
                       item_type: 'supplement',
@@ -239,10 +263,12 @@ export default function Supplements() {
                     }}
                   />
                   <div className="relative">
-                    <img 
-                      src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
+                    <ProductImage
+                      src={supplement.image_url}
                       alt={supplement.name}
-                      className="w-full h-48 object-cover rounded-t-lg"
+                      category={supplement.category}
+                      className="rounded-t-lg"
+                      sizeClass="w-full h-48"
                     />
                     {!supplement.in_stock && (
                       <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
@@ -326,12 +352,20 @@ export default function Supplements() {
                   <p className="text-muted-foreground mb-6">Personalized supplement recommendations based on your health data</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {supplements.slice(0, 6).map((supplement, index) => (
-                      <Card key={supplement.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
+                      <Card
+                        key={supplement.id}
+                        onClick={() => {
+                          const p = productsById.get(supplement.id);
+                          if (p) selectProduct(p);
+                        }}
+                        className="group hover:shadow-lg transition-all duration-300 border-purple-200 cursor-pointer">
                         <div className="relative">
-                          <img 
-                            src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
+                          <ProductImage
+                            src={supplement.image_url}
                             alt={supplement.name}
-                            className="w-full h-32 object-cover rounded-t-lg"
+                            category={supplement.category}
+                            className="rounded-t-lg"
+                            sizeClass="w-full h-32"
                           />
                           <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
                             <span className="text-xs font-bold text-purple-600">{95 - index * 3}%</span>
@@ -413,10 +447,12 @@ export default function Supplements() {
                           }}
                         />
                         <div className="relative">
-                          <img 
-                            src={supplement.image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png'} 
+                          <ProductImage
+                            src={supplement.image_url}
                             alt={supplement.name}
-                            className="w-full h-48 object-cover rounded-t-lg"
+                            category={supplement.category}
+                            className="rounded-t-lg"
+                            sizeClass="w-full h-48"
                           />
                           {!supplement.in_stock && (
                             <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
@@ -492,10 +528,11 @@ export default function Supplements() {
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
-      <DiscoverShopActionPopup 
+      <DiscoverShopActionPopup
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />
+      <ProductDetailsDrawer />
     </AppLayout>
   );
 }
