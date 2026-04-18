@@ -130,22 +130,6 @@ export function BusinessHubOverview({
             onCreateService={handleCreateService}
             onCreatePromotion={handleCreatePromotion}
           />
-
-          {/* VAEA — referral agent entry point (Phase 1.6) */}
-          <button
-            onClick={() => navigate("/business/vaea")}
-            className="w-full rounded-2xl border border-white/30 bg-white/60 backdrop-blur-sm p-5 text-left hover:bg-white/70 transition-colors"
-          >
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="font-semibold">VAEA — your referral agent</div>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Observe mode: see what VAEA detects and what it would recommend. Nothing posts without you.
-                </p>
-              </div>
-              <div className="shrink-0 text-xl" aria-hidden>→</div>
-            </div>
-          </button>
         </SplitBarContent>
 
         <SplitBarContent value="history" className="pt-4">

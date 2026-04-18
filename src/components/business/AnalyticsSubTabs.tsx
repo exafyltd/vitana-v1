@@ -5,6 +5,7 @@ import { BarChart3, DollarSign, TrendingUp, Wallet, Share2, Users } from "lucide
 import { useNavigate } from "react-router-dom";
 import { useResellerSales } from "@/hooks/useResellerSales";
 import { useIsReseller } from "@/hooks/useIsReseller";
+import { VaeaDetectionsCard } from "@/components/business/vaea/VaeaDetectionsCard";
 
 export function AnalyticsSubTabs() {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ export function AnalyticsSubTabs() {
               </p>
             </CardContent>
           </Card>
+
+          <VaeaDetectionsCard />
         </div>
       </SplitBarContent>
 

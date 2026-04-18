@@ -154,7 +154,6 @@ const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
 const ProductDetail = lazy(() => import("./pages/discover/ProductDetail"));
 const BusinessHub = lazy(() => import("./pages/BusinessHub"));
-const BusinessVaea = lazy(() => import("./pages/BusinessVaea"));
 const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
 
 // VTID-01900: Home sub-pages removed — Home is now a standalone News Feed
@@ -872,13 +871,6 @@ const App = () => {
             <Route path="analytics" element={null} />
           </Route>
           
-          {/* VAEA — Business Hub sub-route (standalone page, no nested routing) */}
-          <Route path="/business/vaea" element={
-            <AuthGuard>
-              <BusinessVaea />
-            </AuthGuard>
-          } />
-
           {/* Redirect old my-business routes to new Business Hub */}
           <Route path="/comm/my-business" element={<Navigate to="/business" replace />} />
           <Route path="/comm/my-business/*" element={<Navigate to="/business" replace />} />

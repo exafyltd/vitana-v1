@@ -256,6 +256,51 @@ export function useVaeaDetectedQuestions(limit = 25) {
   return { questions, loading, error, reload };
 }
 
+export function useVaeaChannels() {
+  const [channels, setChannels] = useState<VaeaChannel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const reload = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const payload = await vaeaFetch<{ ok: boolean; channels: VaeaChannel[] }>("/channels");
+      setChannels(payload.channels);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const create = useCallback(async (payload: Partial<VaeaChannel>) => {
+    const res = await vaeaFetch<{ ok: boolean; channel: VaeaChannel }>("/channels", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    await reload();
+    return res.channel;
+  }, [reload]);
+
+  const patch = useCallback(async (id: string, body: Partial<VaeaChannel>) => {
+    await vaeaFetch(`/channels/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+    await reload();
+  }, [reload]);
+
+  const remove = useCallback(async (id: string) => {
+    await vaeaFetch(`/channels/${id}`, { method: "DELETE" });
+    await reload();
+  }, [reload]);
+
+  useEffect(() => { void reload(); }, [reload]);
+
+  return { channels, loading, error, reload, create, patch, remove };
+}
+
 export function useVaeaDrafts(limit = 25) {
   const [drafts, setDrafts] = useState<VaeaDraft[]>([]);
   const [loading, setLoading] = useState(true);

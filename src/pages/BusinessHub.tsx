@@ -32,6 +32,9 @@ import { PackageCard } from "@/components/business/PackageCard";
 import { useBusinessPackages } from "@/hooks/useBusinessPackages";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
+import { VaeaDraftsStrip } from "@/components/business/vaea/VaeaDraftsStrip";
+import { VaeaCatalogPanel } from "@/components/business/vaea/VaeaCatalogPanel";
+import { VaeaDetectedList } from "@/components/business/vaea/VaeaDetectedList";
 import { Briefcase, Package, Loader2 as Loader2Icon } from "lucide-react";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -188,6 +191,7 @@ export default function BusinessHub() {
                     ...(isReseller ? [{ value: "sales", label: translate('businessHub.tabs.sales', 'Sales'), icon: "🎫", children: [
                       { value: "sales.inventory", label: "Inventory", icon: "📦" },
                       { value: "sales.promotions", label: "Promotions", icon: "📣" },
+                      { value: "sales.referrals", label: "Referrals", icon: "🤝" },
                     ]}] : []),
                     { value: "insights", label: translate('businessHub.tabs.insights', 'Insights'), icon: "📈", children: [
                       { value: "insights.clients", label: "Clients", icon: "👥" },
@@ -296,6 +300,15 @@ export default function BusinessHub() {
               {/* Sales → Promotions */}
               {mobileTab === "sales.promotions" && (
                 <ResellerCampaignsTab searchQuery="" />
+              )}
+
+              {/* Sales → Referrals (VAEA) */}
+              {mobileTab === "sales.referrals" && (
+                <div className="space-y-4">
+                  <VaeaDraftsStrip />
+                  <VaeaCatalogPanel />
+                  <VaeaDetectedList collapsible limit={25} />
+                </div>
               )}
 
               {/* Insights → Clients */}

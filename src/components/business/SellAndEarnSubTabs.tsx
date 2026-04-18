@@ -1,7 +1,7 @@
 /**
  * SELL AND EARN SUB TABS (Simplified for v1)
- * 
- * Only 2 tabs: Inventory | Promotions
+ *
+ * Inventory | Promotions | Referrals (VAEA)
  * Sales and Overview moved to Business Hub Overview.
  */
 
@@ -14,6 +14,9 @@ import { Ticket, Loader2 } from "lucide-react";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
 import { isMockResellerSalesEnabled } from "@/lib/mocks/mockResellerSales";
+import { VaeaDraftsStrip } from "@/components/business/vaea/VaeaDraftsStrip";
+import { VaeaCatalogPanel } from "@/components/business/vaea/VaeaCatalogPanel";
+import { VaeaDetectedList } from "@/components/business/vaea/VaeaDetectedList";
 
 interface SellAndEarnSubTabsProps {
   searchQuery?: string;
@@ -48,7 +51,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button 
+            <Button
               onClick={() => activateResellerForCurrentUser({ showToast: true, redirectAfter: false })}
               disabled={isActivating}
               className="rounded-full"
@@ -69,19 +72,30 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
   }
 
   return (
-    <SplitBar defaultValue="available" className="w-full">
-      <SplitBarList>
-        <SplitBarTrigger value="available">📦 Inventory</SplitBarTrigger>
-        <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
-      </SplitBarList>
+    <>
+      {/* VAEA shadow drafts — hidden entirely when empty; visible from any sub-tab when VAEA has something */}
+      <VaeaDraftsStrip />
 
-      <SplitBarContent value="available" className="pt-4">
-        <ResellerAvailableEventsTab />
-      </SplitBarContent>
+      <SplitBar defaultValue="available" className="w-full">
+        <SplitBarList>
+          <SplitBarTrigger value="available">📦 Inventory</SplitBarTrigger>
+          <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
+          <SplitBarTrigger value="referrals">🤝 Referrals</SplitBarTrigger>
+        </SplitBarList>
 
-      <SplitBarContent value="promotions" className="pt-4">
-        <ResellerCampaignsTab searchQuery={searchQuery} />
-      </SplitBarContent>
-    </SplitBar>
+        <SplitBarContent value="available" className="pt-4">
+          <ResellerAvailableEventsTab />
+        </SplitBarContent>
+
+        <SplitBarContent value="promotions" className="pt-4">
+          <ResellerCampaignsTab searchQuery={searchQuery} />
+        </SplitBarContent>
+
+        <SplitBarContent value="referrals" className="pt-4 space-y-4">
+          <VaeaCatalogPanel />
+          <VaeaDetectedList collapsible limit={25} />
+        </SplitBarContent>
+      </SplitBar>
+    </>
   );
 }
