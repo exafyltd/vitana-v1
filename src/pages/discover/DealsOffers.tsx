@@ -9,7 +9,11 @@ import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { Timer, Flame, Percent, Package, Star, MapPin, Clock, TrendingDown, TrendingUp, Heart, Brain, Target, Activity, Sparkles, Users, Plane, Plus, RefreshCw } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useMarketplaceSearch, type MarketplaceProduct } from "@/hooks/useMarketplace";
+import { ProductImage } from "@/components/discover/ProductImage";
+import { ProductDetailsDrawer } from "@/components/discover/ProductDetailsDrawer";
+import { ProductSelectionProvider, useProductSelection } from "@/context/ProductSelectionContext";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
@@ -21,9 +25,35 @@ import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActio
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 
 export default function DealsOffers() {
+  return (
+    <ProductSelectionProvider>
+      <DealsOffersInner />
+    </ProductSelectionProvider>
+  );
+}
+
+interface DealCard {
+  id: string;
+  title: string;
+  provider: string;
+  originalPrice: number;
+  price: number;
+  discount: number;
+  image: string | null;
+  timeLeft: string | null;
+  claimed: number | null;
+  total: number | null;
+  rating: number;
+  reviews: number;
+  category: string;
+  _product?: MarketplaceProduct;
+}
+
+function DealsOffersInner() {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { getBookmarksByType } = useBookmarks();
+  const { selectProduct } = useProductSelection();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -31,99 +61,42 @@ export default function DealsOffers() {
 
   const latestActions = getLatestActions(2);
 
-  // Flash Deals Data
-  const flashDeals = [
-    {
-      id: 1,
-      title: "Premium Meditation Retreat",
-      provider: "Zen Wellness Studio",
-      originalPrice: 499,
-      price: 299,
-      discount: 40,
-      image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400",
-      timeLeft: "2h 15m",
-      claimed: 67,
-      total: 100,
-      rating: 4.9,
-      reviews: 342,
-      category: "Mindfulness",
-    },
-    {
-      id: 2,
-      title: "Wellness Supplement Bundle",
-      provider: "VitaHealth Co.",
-      originalPrice: 159,
-      price: 89,
-      discount: 44,
-      image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400",
-      timeLeft: "5h 42m",
-      claimed: 23,
-      total: 50,
-      rating: 4.7,
-      reviews: 891,
-      category: "Supplements",
-    },
-    {
-      id: 3,
-      title: "90-Day Fitness Program",
-      provider: "FitLife Academy",
-      originalPrice: 699,
-      price: 399,
-      discount: 43,
-      image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400",
-      timeLeft: "1h 30m",
-      claimed: 45,
-      total: 75,
-      rating: 4.8,
-      reviews: 567,
-      category: "Fitness",
-    },
-    {
-      id: 4,
-      title: "Nutrition Consultation Package",
-      provider: "Healthy Living Experts",
-      originalPrice: 299,
-      price: 179,
-      discount: 40,
-      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400",
-      timeLeft: "3h 45m",
-      claimed: 89,
-      total: 100,
-      rating: 4.9,
-      reviews: 423,
-      category: "Nutrition",
-    },
-    {
-      id: 5,
-      title: "Yoga & Wellness Retreat",
-      provider: "Serenity Springs",
-      originalPrice: 899,
-      price: 549,
-      discount: 39,
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400",
-      timeLeft: "6h 12m",
-      claimed: 34,
-      total: 60,
-      rating: 5.0,
-      reviews: 278,
-      category: "Wellness",
-    },
-    {
-      id: 6,
-      title: "Mental Health Support Program",
-      provider: "MindCare Professionals",
-      originalPrice: 449,
-      price: 269,
-      discount: 40,
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400",
-      timeLeft: "4h 20m",
-      claimed: 56,
-      total: 80,
-      rating: 4.8,
-      reviews: 634,
-      category: "Mental Health",
-    },
-  ];
+  // Flash Deals — real discounted products from the marketplace.
+  // Client-side filter for compare_at_price_cents > price_cents; the backend
+  // doesn't yet expose a has_discount param so we over-fetch and filter.
+  const { data: dealsSearch } = useMarketplaceSearch({ limit: 48, sort: 'relevance' });
+  const flashDeals: DealCard[] = useMemo(() => {
+    const items = dealsSearch?.items ?? [];
+    return items
+      .filter(
+        (p) =>
+          p.compare_at_price_cents != null &&
+          p.price_cents != null &&
+          p.compare_at_price_cents > p.price_cents,
+      )
+      .map((p) => {
+        const price = (p.price_cents ?? 0) / 100;
+        const originalPrice = (p.compare_at_price_cents ?? 0) / 100;
+        const discount = Math.round((1 - price / originalPrice) * 100);
+        return {
+          id: p.id,
+          title: p.title,
+          provider: p.brand ?? 'Vitana Shop',
+          originalPrice,
+          price,
+          discount,
+          image: p.images?.[0] ?? null,
+          timeLeft: null, // backend has no timer; UI hides the badge when null
+          claimed: null,
+          total: null,
+          rating: p.rating ?? 0,
+          reviews: p.review_count ?? 0,
+          category: p.subcategory ?? p.category ?? 'supplements',
+          _product: p,
+        };
+      });
+  }, [dealsSearch]);
+
 
   // Trending Services Data  
   const trendingServices = [
@@ -432,15 +405,27 @@ export default function DealsOffers() {
             </SplitBarList>
 
             <SplitBarContent value="flash" className="space-y-6">
+              {flashDeals.length === 0 && (
+                <Card className="p-8 text-center bg-white/70 backdrop-blur-sm">
+                  <Flame className="h-10 w-10 text-red-500 mx-auto mb-3" />
+                  <h3 className="font-semibold mb-1">No flash deals right now</h3>
+                  <p className="text-sm text-muted-foreground">
+                    When merchants run promotions, they&rsquo;ll show up here. Check back soon.
+                  </p>
+                </Card>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {flashDeals.map((deal) => (
-                  <Card key={deal.id} className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col">
+                  <Card
+                    key={deal.id}
+                    onClick={() => deal._product && selectProduct(deal._product)}
+                    className="relative group hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm flex flex-col cursor-pointer">
                     <BookmarkButton
                       item={{
-                        item_type: 'deal',
-                        item_id: deal.id.toString(),
+                        item_type: 'product',
+                        item_id: deal.id,
                         item_name: deal.title,
-                        item_image_url: deal.image,
+                        item_image_url: deal.image ?? undefined,
                         item_metadata: {
                           provider: deal.provider,
                           price: deal.price,
@@ -451,18 +436,22 @@ export default function DealsOffers() {
                       }}
                     />
                     <div className="relative">
-                      <img
+                      <ProductImage
                         src={deal.image}
                         alt={deal.title}
-                        className="w-full h-48 object-cover rounded-t-lg"
+                        category={deal.category}
+                        sizeClass="w-full h-48"
+                        className="rounded-t-lg"
                       />
                       <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
                         {deal.discount}% OFF
                       </div>
-                      <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {deal.timeLeft}
-                      </div>
+                      {deal.timeLeft && (
+                        <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {deal.timeLeft}
+                        </div>
+                      )}
                     </div>
                     
                     <CardContent className="flex-1 flex flex-col p-4 space-y-3">
@@ -491,18 +480,20 @@ export default function DealsOffers() {
                         </span>
                       </div>
 
-                      <div className="bg-gray-100 rounded-lg p-2">
-                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                          <span>{deal.claimed}/{deal.total} claimed</span>
-                          <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
+                      {deal.claimed != null && deal.total != null && deal.total > 0 && (
+                        <div className="bg-gray-100 rounded-lg p-2">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                            <span>{deal.claimed}/{deal.total} claimed</span>
+                            <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
+                          </div>
+                          <div className="w-full bg-gray-300 rounded-full h-2">
+                            <div
+                              className="bg-red-600 h-2 rounded-full transition-all"
+                              style={{ width: `${(deal.claimed / deal.total) * 100}%` }}
+                            />
+                          </div>
                         </div>
-                        <div className="w-full bg-gray-300 rounded-full h-2">
-                          <div
-                            className="bg-red-600 h-2 rounded-full transition-all"
-                            style={{ width: `${(deal.claimed / deal.total) * 100}%` }}
-                          />
-                        </div>
-                      </div>
+                      )}
 
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold text-red-600">${deal.price}</span>
@@ -514,17 +505,20 @@ export default function DealsOffers() {
                         </span>
                       </div>
                       
-                      <div className="flex gap-2 mt-auto pt-2">
-                        <Button className="flex-1">
-                          Claim Deal
+                      <div className="flex gap-2 mt-auto pt-2" onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          className="flex-1"
+                          onClick={() => deal._product && selectProduct(deal._product)}
+                        >
+                          View Deal
                         </Button>
                         <AddToCartButton
                           item={{
-                            item_type: 'deal',
-                            item_id: deal.id.toString(),
+                            item_type: 'product',
+                            item_id: deal.id,
                             item_name: deal.title,
                             item_price: deal.price,
-                            item_image_url: deal.image,
+                            item_image_url: deal.image ?? undefined,
                             item_metadata: {
                               originalPrice: deal.originalPrice,
                               discount: deal.discount,
@@ -848,10 +842,11 @@ export default function DealsOffers() {
         open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
-      <DiscoverShopActionPopup 
+      <DiscoverShopActionPopup
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
       />
+      <ProductDetailsDrawer />
     </AppLayout>
   );
 }
