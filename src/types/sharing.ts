@@ -1,5 +1,5 @@
 export interface ShareableContent {
-  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music";
+  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music" | "product";
   id: string;
   title: string;
   description?: string;
