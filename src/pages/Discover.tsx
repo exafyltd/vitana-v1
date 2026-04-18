@@ -41,6 +41,8 @@ import { useMarketplaceFeed, formatPrice, getRedirectUrl, type MarketplaceProduc
 import { MarketplaceProductCard } from '@/components/discover/MarketplaceProductCard';
 import { ScopeSelector } from '@/components/discover/ScopeSelector';
 import { HiddenByLimitationsFooter } from '@/components/discover/HiddenByLimitationsFooter';
+import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
+import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -50,7 +52,8 @@ import { UniversalShareButton } from '@/components/sharing/UniversalShareButton'
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
 
-export default withScreenId(function Discover() {
+function DiscoverInner() {
+  const { selectProduct } = useProductSelection();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
@@ -365,6 +368,7 @@ export default withScreenId(function Discover() {
                           product={rec._product}
                           surface="feed"
                           showMatchReasons={!isMobile}
+                          onClick={selectProduct}
                         />
                       ) : (
                       <Card
@@ -630,10 +634,19 @@ export default withScreenId(function Discover() {
         onOpenChange={setMasterActionOpen}
       />
       
-      <AutopilotPopup 
-        open={autopilotOpen} 
+      <AutopilotPopup
+        open={autopilotOpen}
         onOpenChange={setAutopilotOpen}
       />
+      <ProductDetailsDrawer />
     </AppLayout>
+  );
+}
+
+export default withScreenId(function Discover() {
+  return (
+    <ProductSelectionProvider>
+      <DiscoverInner />
+    </ProductSelectionProvider>
   );
 }, SCREEN_IDS.DISCOVER_OVERVIEW);
