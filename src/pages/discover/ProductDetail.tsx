@@ -1,182 +1,397 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+/**
+ * VTID-02000: Public product detail page at /discover/product/:id.
+ *
+ * Unlike the drawer (which lives in a context, is opened by card click, and
+ * disappears when you navigate away), this page is a real URL that:
+ *   - Deep-links from search engines, Slack unfurls, and friends-sharing-links
+ *   - Carries SEO-friendly <title> and OG metadata
+ *   - Loads the product by id from the API (no reliance on router state)
+ *
+ * Sections mirror the drawer. Staying in sync is intentional — same content,
+ * different container.
+ */
+
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Star, Heart, Share2, ShoppingCart, Brain } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import {
+  ArrowLeft,
+  Star,
+  MapPin,
+  ExternalLink,
+  Gift,
+  Leaf,
+  Target,
+  ShieldCheck,
+  AlertTriangle,
+  BookOpen,
+  ClipboardList,
+} from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import StandardHeader from "@/components/StandardHeader";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { ProductImage } from "@/components/discover/ProductImage";
+import {
+  useMarketplaceProduct,
+  formatPrice,
+  getRedirectUrl,
+} from "@/hooks/useMarketplace";
 
 export default function ProductDetail() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { id } = useParams();
-  
-  // Get product data from route state or use defaults
-  const product = location.state || {
-    id: id || '1',
-    title: "Product Not Found",
-    description: "This product could not be loaded",
-    price: "$0",
-    match: 0,
-    reason: "N/A",
-    provider: "Unknown",
-    image: "/placeholder.svg",
-    badge: "Unknown"
-  };
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = useMarketplaceProduct(id);
 
-  const priceValue = parseFloat(product.price.replace('$', ''));
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="p-6 min-h-screen">
+          <div className="max-w-5xl mx-auto">
+            <div className="animate-pulse space-y-4">
+              <div className="h-6 w-32 bg-muted rounded" />
+              <div className="h-96 bg-muted rounded-xl" />
+              <div className="h-8 w-2/3 bg-muted rounded" />
+              <div className="h-4 w-full bg-muted rounded" />
+              <div className="h-4 w-5/6 bg-muted rounded" />
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (error || !data?.ok || !data.product) {
+    return (
+      <AppLayout>
+        <SEO title="Product not found | VITANA" description="This product is unavailable or has been removed." />
+        <div className="p-6 min-h-screen flex items-center justify-center">
+          <Card className="max-w-md text-center">
+            <CardContent className="p-8 space-y-4">
+              <h1 className="text-xl font-semibold">Product not found</h1>
+              <p className="text-sm text-muted-foreground">
+                The product you&rsquo;re looking for is unavailable or has been removed.
+              </p>
+              <div className="flex gap-2 justify-center">
+                <Button variant="outline" onClick={() => navigate(-1)}>Go back</Button>
+                <Button asChild><Link to="/discover">Discover more</Link></Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  const p = data.product;
+  const hasDiscount =
+    p.compare_at_price_cents != null &&
+    p.price_cents != null &&
+    p.compare_at_price_cents > p.price_cents;
+  const matchReasons = p.match_reasons?.filter((r) => r.text) ?? [];
+  const ingredients = Array.isArray(p.ingredients_primary) ? p.ingredients_primary : [];
+  const goals = Array.isArray(p.health_goals) ? p.health_goals : [];
+  const dietary = Array.isArray(p.dietary_tags) ? p.dietary_tags : [];
+  const evidence = Array.isArray(p.evidence_links) ? p.evidence_links : [];
+  const redirectUrl = getRedirectUrl(p.id, "product-page");
+  const priceText = formatPrice(p.price_cents, p.currency);
+  const compareAtText = formatPrice(p.compare_at_price_cents, p.currency);
 
   return (
     <AppLayout>
-      <SEO 
-        title={`${product.title} | VITANA Marketplace`}
-        description={product.description}
-        canonical={window.location.href}
+      <SEO
+        title={`${p.title}${p.brand ? ` — ${p.brand}` : ""} | VITANA`}
+        description={p.description?.slice(0, 200) ?? `${p.title} on Vitana marketplace.`}
+        canonical={typeof window !== "undefined" ? window.location.href : undefined}
+        image={p.images?.[0] ?? undefined}
       />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+
+      <div className="p-4 md:p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate(-1)}
-            className="mb-4"
-          >
+          <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Discover
+            Back
           </Button>
 
-          <Card className="bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Product Image */}
+          {/* Hero row: image + top-of-page summary */}
+          <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+            <CardContent className="p-0">
+              <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-96 object-cover rounded-lg"
+                  <ProductImage
+                    src={p.images?.[0] ?? null}
+                    alt={p.title}
+                    category={p.category}
+                    subcategory={p.subcategory}
+                    sizeClass="w-full h-80 md:h-full"
+                    className="md:rounded-l-xl"
                   />
-                  <Badge className="absolute top-4 left-4 bg-purple-500 text-white">
-                    {product.badge}
-                  </Badge>
-                  {product.match && (
-                    <div className="absolute top-4 right-4 bg-white/90 rounded-full px-3 py-2">
-                      <span className="text-sm font-bold text-purple-600">{product.match}% Match</span>
-                    </div>
+                  {p.availability && p.availability !== "in_stock" && (
+                    <Badge className="absolute top-3 right-3 bg-red-500 text-white">
+                      {p.availability === "out_of_stock" ? "Out of Stock" : p.availability}
+                    </Badge>
                   )}
                 </div>
 
-                {/* Product Details */}
-                <div className="space-y-6">
-                  <div>
-                    <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-                    <p className="text-muted-foreground">by {product.provider}</p>
+                <div className="p-6 flex flex-col justify-between gap-4">
+                  <div className="space-y-3">
+                    {p.brand && (
+                      <div className="text-xs text-muted-foreground uppercase tracking-wider">{p.brand}</div>
+                    )}
+                    <h1 className="text-2xl md:text-3xl font-semibold leading-tight">{p.title}</h1>
+                    <div className="flex items-center flex-wrap gap-3 text-sm text-muted-foreground">
+                      {p.rating != null && p.rating > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                          <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
+                          {p.review_count ? <span>({p.review_count.toLocaleString()} reviews)</span> : null}
+                        </span>
+                      )}
+                      {p.origin_country && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5" /> {p.origin_country}
+                        </span>
+                      )}
+                      {p.subcategory && <Badge variant="secondary">{p.subcategory}</Badge>}
+                    </div>
+
+                    <div className="flex items-baseline gap-2 pt-2">
+                      <span className="text-3xl font-bold">{priceText}</span>
+                      {hasDiscount && (
+                        <>
+                          <span className="text-base text-muted-foreground line-through">{compareAtText}</span>
+                          <Badge variant="destructive" className="ml-1">
+                            Save {Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100)}%
+                          </Badge>
+                        </>
+                      )}
+                    </div>
+                    {p.reward_preview?.points_estimate ? (
+                      <div className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-300">
+                        <Gift className="w-4 h-4" />
+                        Earn +{p.reward_preview.points_estimate} points on purchase
+                      </div>
+                    ) : null}
                   </div>
 
-                  {product.reason && (
-                    <Card className="bg-purple-50 border-purple-200">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-2">
-                          <Brain className="h-5 w-5 text-purple-500" />
-                          <div>
-                            <p className="text-sm font-semibold text-purple-900">Why we recommend this</p>
-                            <p className="text-sm text-purple-700">{product.reason}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  <div>
-                    <h3 className="font-semibold mb-2">Description</h3>
-                    <p className="text-muted-foreground">{product.description}</p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    <AddToCartButton
+                      item={{
+                        item_type: "product",
+                        item_id: p.id,
+                        item_name: p.title,
+                        item_price: p.price_cents ? p.price_cents / 100 : 0,
+                        item_image_url: p.images?.[0],
+                        item_metadata: { brand: p.brand, category: p.category },
+                      }}
+                      size="lg"
+                      className="flex-1 min-w-[160px]"
+                    />
+                    <Button asChild variant="outline" size="lg">
+                      <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
+                        Buy <ExternalLink className="w-4 h-4 ml-1.5" />
+                      </a>
+                    </Button>
+                    <BookmarkButton
+                      item={{
+                        item_type: "product",
+                        item_id: p.id,
+                        item_name: p.title,
+                        item_image_url: p.images?.[0],
+                        item_metadata: { brand: p.brand, category: p.category },
+                      }}
+                    />
+                    <UniversalShareButton
+                      content={{
+                        type: "product",
+                        id: p.id,
+                        title: p.title,
+                        description: p.description ?? "",
+                        image_url: p.images?.[0],
+                        url: typeof window !== "undefined" ? window.location.href : "",
+                      }}
+                      variant="outline"
+                      size="lg"
+                      showLabel={false}
+                    />
                   </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                  <div className="space-y-2">
-                    <h3 className="font-semibold">Key Benefits</h3>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>✓ Personalized for your health goals</li>
-                      <li>✓ Backed by scientific research</li>
-                      <li>✓ Expert-recommended formula</li>
-                      <li>✓ Premium quality ingredients</li>
+          {/* Detail sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              {(p.description_long || p.description) && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-2">
+                    <h2 className="text-lg font-semibold">About this product</h2>
+                    <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
+                      {p.description_long || p.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {ingredients.length > 0 && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <h2 className="flex items-center gap-2 text-lg font-semibold">
+                      <Leaf className="w-5 h-5 text-muted-foreground" /> Key ingredients
+                    </h2>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-sm text-muted-foreground">
+                      {ingredients.map((ing) => (
+                        <li key={ing} className="flex gap-2">
+                          <span aria-hidden>•</span>
+                          <span className="capitalize">{ing.replace(/_/g, " ")}</span>
+                        </li>
+                      ))}
                     </ul>
-                  </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                  <div className="flex items-center gap-1">
-                    <div className="flex">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+              {p.safety_notes && (
+                <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200/60 dark:border-amber-900/40">
+                  <CardContent className="p-6 space-y-2">
+                    <h2 className="flex items-center gap-2 text-lg font-semibold text-amber-900 dark:text-amber-200">
+                      <AlertTriangle className="w-5 h-5" /> Safety &amp; interactions
+                    </h2>
+                    <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
+                      {p.safety_notes}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {evidence.length > 0 && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <h2 className="flex items-center gap-2 text-lg font-semibold">
+                      <BookOpen className="w-5 h-5 text-muted-foreground" /> Evidence
+                    </h2>
+                    <ul className="space-y-2 text-sm">
+                      {evidence.map((e, i) => (
+                        e.url ? (
+                          <li key={i} className="flex items-start gap-2">
+                            <span aria-hidden className="text-muted-foreground mt-0.5">•</span>
+                            <div className="flex-1">
+                              <a
+                                href={e.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline leading-snug"
+                              >
+                                {e.title ?? e.url}
+                              </a>
+                              {e.source_type && (
+                                <Badge variant="outline" className="ml-2 text-[10px] capitalize">
+                                  {e.source_type.replace(/_/g, " ")}
+                                </Badge>
+                              )}
+                            </div>
+                          </li>
+                        ) : null
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            <div className="space-y-6">
+              {(p.dosage || p.serving_size || p.servings_per_container) && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <h2 className="flex items-center gap-2 text-base font-semibold">
+                      <ClipboardList className="w-4 h-4 text-muted-foreground" /> Directions
+                    </h2>
+                    <div className="grid grid-cols-3 gap-2 text-sm">
+                      {p.dosage && (
+                        <div className="rounded-md bg-muted/50 p-2">
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Dose</div>
+                          <div className="font-medium leading-tight">{p.dosage}</div>
+                        </div>
+                      )}
+                      {p.serving_size && (
+                        <div className="rounded-md bg-muted/50 p-2">
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Serving</div>
+                          <div className="font-medium leading-tight">{p.serving_size}</div>
+                        </div>
+                      )}
+                      {p.servings_per_container != null && (
+                        <div className="rounded-md bg-muted/50 p-2">
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Servings</div>
+                          <div className="font-medium leading-tight">{p.servings_per_container}</div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {goals.length > 0 && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <h2 className="flex items-center gap-2 text-base font-semibold">
+                      <Target className="w-4 h-4 text-muted-foreground" /> Supports
+                    </h2>
+                    <div className="flex flex-wrap gap-1.5">
+                      {goals.map((g) => (
+                        <Badge key={g} variant="secondary" className="capitalize">
+                          {g.replace(/_/g, " ")}
+                        </Badge>
                       ))}
                     </div>
-                    <span className="text-sm text-muted-foreground ml-2">(4.8/5.0 from 234 reviews)</span>
-                  </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                  <div className="pt-4 border-t">
-                    <p className="text-3xl font-bold mb-4">{product.price}</p>
-                    
-                    <div className="flex gap-3">
-                      <AddToCartButton
-                        item={{
-                          item_type: 'wellness_service',
-                          item_id: product.id.toString(),
-                          item_name: product.title,
-                          item_price: priceValue,
-                          item_image_url: product.image,
-                          item_metadata: { provider: product.provider, match: product.match }
-                        }}
-                        className="flex-1"
-                        size="lg"
-                      />
-                      <Button variant="outline" size="lg">
-                        <Heart className="h-5 w-5" />
-                      </Button>
-                      <UniversalShareButton
-                        content={{
-                          type: "service",
-                          id: product.id.toString(),
-                          title: product.title,
-                          description: product.description,
-                          image_url: product.image,
-                          url: window.location.href
-                        }}
-                        variant="outline"
-                        size="lg"
-                        showLabel={false}
-                      />
+              {dietary.length > 0 && (
+                <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
+                  <CardContent className="p-6 space-y-3">
+                    <h2 className="flex items-center gap-2 text-base font-semibold">
+                      <ShieldCheck className="w-4 h-4 text-muted-foreground" /> Dietary
+                    </h2>
+                    <div className="flex flex-wrap gap-1.5">
+                      {dietary.map((t) => (
+                        <Badge key={t} variant="outline" className="capitalize">
+                          {t.replace(/_/g, " ")}
+                        </Badge>
+                      ))}
                     </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                    <p className="text-xs text-center text-muted-foreground mt-4">
-                      🚚 Free shipping on all orders • 💯 30-day satisfaction guarantee
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              {matchReasons.length > 0 && (
+                <Card className="bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200/60 dark:border-emerald-900/40">
+                  <CardContent className="p-6 space-y-2">
+                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">Why this for you</h2>
+                    <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
+                      {matchReasons.map((r, i) => (
+                        <li key={i} className="flex gap-2">
+                          <span aria-hidden>•</span>
+                          <span>{r.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
 
-          {/* Additional Information */}
-          <Card className="bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-lg mb-4">What's Included</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <p className="font-semibold">Expert Consultation</p>
-                  <p className="text-sm text-muted-foreground">Initial assessment call</p>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <p className="font-semibold">Custom Plan</p>
-                  <p className="text-sm text-muted-foreground">Tailored to your needs</p>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <p className="font-semibold">Ongoing Support</p>
-                  <p className="text-sm text-muted-foreground">24/7 access to resources</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <Separator />
+          <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+            This product card is informational. Always consult a qualified practitioner before
+            starting a new supplement, especially if you are pregnant, nursing, or taking
+            medication.
+          </p>
         </div>
       </div>
     </AppLayout>
