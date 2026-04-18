@@ -8,9 +8,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+// VITE_GATEWAY_URL in this repo already includes "/api/v1"; VITE_GATEWAY_BASE
+// is the bare origin. Normalize to a bare origin so paths below can append
+// "/api/v1/..." without producing "/api/v1/api/v1/..." (which 404s).
 const GATEWAY_URL = (
-  import.meta.env.VITE_GATEWAY_URL ||
   import.meta.env.VITE_GATEWAY_BASE ||
+  (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/api\/v1\/?$/, "") ||
   ""
 ).replace(/\/+$/, "");
 
