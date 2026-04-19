@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap, Sparkles, X } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap, Sparkles, X, Infinity as InfinityIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -61,12 +61,46 @@ const SUGGESTED_GOALS = [
     description: "Deepen purpose, presence, and inner peace",
     gradient: "from-violet-500/20 to-fuchsia-500/20",
   },
+  {
+    // System-seeded default goal — keep it available so users can swap back
+    // to the longevity focus at any time after choosing a different primary.
+    category: "longevity",
+    icon: InfinityIcon,
+    title: "Improve quality of life and extend lifespan",
+    description: "Focus on healthspan, energy, and longevity — Vitanaland's mission",
+    gradient: "from-sky-500/20 to-teal-500/20",
+  },
 ];
+
+// Whether a suggested goal is the same one that's currently active on the
+// user's compass. We match on both title and category (case-insensitive,
+// trimmed) so a suggestion selected from the list always matches what's stored.
+function isActiveGoal(
+  goal: { title: string; category: string },
+  compass: { primary_goal: string; category: string } | null | undefined,
+): boolean {
+  if (!compass) return false;
+  const norm = (s: string) => s.trim().toLowerCase();
+  return (
+    norm(compass.primary_goal) === norm(goal.title) ||
+    norm(compass.category) === norm(goal.category)
+  );
+}
 
 export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) {
   const { compass, updateCompass, isUpdating } = useLifeCompass();
   const [customGoal, setCustomGoal] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Hide the currently active goal from the suggestion list — one goal
+  // replaces the other, so showing it again as a pickable card is wrong.
+  // The list still contains every alternative (including the previously
+  // active one the user just swapped away from), so switching back is
+  // always one tap away.
+  const visibleGoals = useMemo(
+    () => SUGGESTED_GOALS.filter((g) => !isActiveGoal(g, compass)),
+    [compass],
+  );
 
   const handleSuggestedGoal = (goal: typeof SUGGESTED_GOALS[0]) => {
     updateCompass({
@@ -132,7 +166,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
               Suggested Goals
             </h3>
             <div className="grid gap-2.5 sm:gap-3">
-              {SUGGESTED_GOALS.map((goal) => {
+              {visibleGoals.map((goal) => {
                 const Icon = goal.icon;
                 return (
                   <button
@@ -168,7 +202,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
               className="min-h-20 sm:min-h-24 mb-3 text-sm sm:text-base"
             />
             <div className="flex flex-wrap gap-2 mb-3">
-              {SUGGESTED_GOALS.map((goal) => (
+              {visibleGoals.map((goal) => (
                 <button
                   key={goal.category}
                   onClick={() => setSelectedCategory(goal.category)}
