@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap, Sparkles } from "lucide-react";
+import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap, Sparkles, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,7 +78,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
 
   const handleCustomGoal = () => {
     if (!customGoal.trim() || !selectedCategory) return;
-    
+
     updateCompass({
       primary_goal: customGoal.trim(),
       category: selectedCategory,
@@ -88,13 +89,25 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <Target className="h-6 w-6 text-primary" />
-            <DialogTitle className="text-2xl">Life Compass</DialogTitle>
+      <DialogContent
+        className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 rounded-lg"
+      >
+        {/* Explicit close button — always visible top-right, outside the scroll
+            area. The framework's default Close is hidden by [&>button]:sr-only
+            on DialogContent, so render our own with a clear target and z-index. */}
+        <DialogClose
+          aria-label="Close"
+          className="absolute right-3 top-3 z-10 rounded-full p-1.5 bg-muted/80 hover:bg-muted text-foreground opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/60"
+        >
+          <X className="h-4 w-4" />
+        </DialogClose>
+
+        <DialogHeader className="pr-8">
+          <div className="flex items-center gap-2 mb-1">
+            <Target className="h-5 w-5 sm:h-6 sm:w-6 text-primary shrink-0" />
+            <DialogTitle className="text-xl sm:text-2xl break-words">Life Compass</DialogTitle>
           </div>
-          <DialogDescription className="text-base leading-relaxed">
+          <DialogDescription className="text-sm sm:text-base leading-relaxed break-words">
             Your Life Compass guides all AI recommendations and decisions. Choose a primary goal
             that matters most to you right now. The AI will prioritize suggestions that align
             with this direction.
@@ -102,12 +115,12 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
         </DialogHeader>
 
         {compass && (
-          <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 mb-4">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Current Compass</p>
-            <p className="text-lg font-semibold">{compass.primary_goal}</p>
-            <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+          <div className="p-3 sm:p-4 rounded-lg bg-primary/10 border border-primary/20">
+            <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Current Compass</p>
+            <p className="text-base sm:text-lg font-semibold break-words">{compass.primary_goal}</p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm text-muted-foreground">
               <span>Alignment: {compass.alignment_score}%</span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span>Confidence: {compass.confidence_score}%</span>
             </div>
           </div>
@@ -115,10 +128,10 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
 
         <div className="space-y-4">
           <div>
-            <h3 className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
+            <h3 className="text-xs sm:text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
               Suggested Goals
             </h3>
-            <div className="grid gap-3">
+            <div className="grid gap-2.5 sm:gap-3">
               {SUGGESTED_GOALS.map((goal) => {
                 const Icon = goal.icon;
                 return (
@@ -127,16 +140,16 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
                     onClick={() => handleSuggestedGoal(goal)}
                     disabled={isUpdating}
                     className={cn(
-                      "flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all",
+                      "flex items-start gap-3 p-3 sm:p-4 rounded-lg border-2 text-left transition-all w-full min-w-0",
                       "hover:border-primary hover:shadow-md",
                       "disabled:opacity-50 disabled:cursor-not-allowed",
                       `bg-gradient-to-r ${goal.gradient}`
                     )}
                   >
-                    <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <Icon className="h-5 w-5 mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold">{goal.title}</p>
-                      <p className="text-sm text-muted-foreground">{goal.description}</p>
+                      <p className="font-semibold text-sm sm:text-base break-words">{goal.title}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground break-words">{goal.description}</p>
                     </div>
                   </button>
                 );
@@ -145,22 +158,22 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
           </div>
 
           <div className="pt-4 border-t">
-            <h3 className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
+            <h3 className="text-xs sm:text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
               Custom Goal
             </h3>
             <Textarea
               placeholder="Describe your primary goal in your own words..."
               value={customGoal}
               onChange={(e) => setCustomGoal(e.target.value)}
-              className="min-h-24 mb-3"
+              className="min-h-20 sm:min-h-24 mb-3 text-sm sm:text-base"
             />
-            <div className="flex gap-2 mb-3">
+            <div className="flex flex-wrap gap-2 mb-3">
               {SUGGESTED_GOALS.map((goal) => (
                 <button
                   key={goal.category}
                   onClick={() => setSelectedCategory(goal.category)}
                   className={cn(
-                    "px-3 py-1.5 rounded-md text-sm border-2 transition-colors",
+                    "px-3 py-1.5 rounded-md text-xs sm:text-sm border-2 transition-colors",
                     selectedCategory === goal.category
                       ? "border-primary bg-primary/10"
                       : "border-border hover:border-primary/50"
