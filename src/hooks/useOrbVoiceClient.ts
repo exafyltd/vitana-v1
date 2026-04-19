@@ -14,6 +14,7 @@ interface UseOrbVoiceClientReturn {
   isListening: boolean;
   isProcessing: boolean;
   isSpeaking: boolean;
+  isReconnecting: boolean;
   error: string | null;
   volumeLevel: number;
   transcript: string;
@@ -61,6 +62,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isReconnecting, setIsReconnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [volumeLevel, setVolumeLevel] = useState(0);
   const [transcript, setTranscript] = useState('');
@@ -194,6 +196,9 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         onProcessingChange: (processing) => {
           setIsProcessing(processing);
         },
+        onReconnectingChange: (reconnecting) => {
+          setIsReconnecting(reconnecting);
+        },
         onTranscript: (text) => {
           setTranscript(text);
           // Persist assistant transcript
@@ -239,6 +244,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     setIsListening(false);
     setIsProcessing(false);
     setIsSpeaking(false);
+    setIsReconnecting(false);
     setVolumeLevel(0);
   };
 
@@ -283,6 +289,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     isListening,
     isProcessing,
     isSpeaking,
+    isReconnecting,
     error,
     volumeLevel,
     transcript,
