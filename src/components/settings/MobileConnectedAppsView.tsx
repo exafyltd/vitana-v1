@@ -39,6 +39,7 @@ import {
   useSocialConnections,
   GOOGLE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
+import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { useEffect } from "react";
 
 // Social platform icons for the import dialog
@@ -95,6 +96,7 @@ export function MobileConnectedAppsView() {
   const startGoogle = useStartGoogleConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
   const googleConnected = Boolean(googleConnection);
+  const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
 
   // Surface a toast when returning from the Google OAuth callback.
   useEffect(() => {
@@ -184,8 +186,13 @@ export function MobileConnectedAppsView() {
       setAiModalProvider(integration.id as AIProviderId);
       return;
     }
-    // VTID-01928: Google connectors initiate OAuth via gateway
+    // VTID-01928: Google connectors initiate OAuth via gateway,
+    // or open the live-verification dialog if already connected.
     if (GOOGLE_CONNECTOR_IDS.has(integration.id)) {
+      if (integration.connected || googleConnected) {
+        setGoogleVerifyOpen(true);
+        return;
+      }
       startGoogle.mutate(undefined, {
         onError: (err: unknown) => {
           const message = err instanceof Error ? err.message : String(err);
@@ -400,6 +407,12 @@ export function MobileConnectedAppsView() {
         open={aiModalProvider !== null}
         provider={aiModalProvider}
         onClose={() => setAiModalProvider(null)}
+      />
+
+      {/* VTID-01928: Google connection live verification */}
+      <GoogleConnectionVerifyDialog
+        open={googleVerifyOpen}
+        onOpenChange={setGoogleVerifyOpen}
       />
     </div>
   );
