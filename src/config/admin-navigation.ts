@@ -87,6 +87,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     wave: 1,
     tabs: [
       { key: "personality", label: "Personality", path: "/admin/assistant/personality" },
+      { key: "speeches", label: "Speeches", path: "/admin/assistant/speeches" },
       { key: "voice", label: "Voice", path: "/admin/assistant/voice" },
       { key: "tools", label: "Tools", path: "/admin/assistant/tools" },
       { key: "routing", label: "Routing", path: "/admin/assistant/routing" },

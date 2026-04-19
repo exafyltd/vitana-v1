@@ -256,6 +256,7 @@ const MembersSegments = lazy(() => import("./pages/admin/members/Segments"));
 const MembersAudit = lazy(() => import("./pages/admin/members/Audit"));
 // Batch 1.B2: Assistant section pages
 const AssistantPersonality = lazy(() => import("./pages/admin/assistant/Personality"));
+const AssistantSpeeches = lazy(() => import("./pages/admin/assistant/Speeches"));
 const AssistantVoice = lazy(() => import("./pages/admin/assistant/Voice"));
 const AssistantTools = lazy(() => import("./pages/admin/assistant/Tools"));
 const AssistantRouting = lazy(() => import("./pages/admin/assistant/Routing"));
@@ -1334,6 +1335,9 @@ const App = () => {
           {/* Batch 1.B2: Assistant section */}
           <Route path="/admin/assistant/personality" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantPersonality /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/assistant/speeches" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantSpeeches /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/assistant/voice" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AssistantVoice /></ProtectedRoute></AuthGuard>
