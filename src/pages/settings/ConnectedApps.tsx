@@ -69,6 +69,7 @@ import {
   useSocialConnections,
   GOOGLE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
+import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { useToast } from "@/hooks/use-toast";
 
 function ConnectedApps() {
@@ -87,6 +88,8 @@ function ConnectedApps() {
   const startGoogle = useStartGoogleConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
   const googleConnected = Boolean(googleConnection);
+  const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
+  const manageGoogle = () => setGoogleVerifyOpen(true);
 
   const startGoogleFlow = (connectorId: string) => {
     startGoogle.mutate(undefined, {
@@ -718,7 +721,7 @@ function ConnectedApps() {
         ? undefined
         : isGoogle
           ? isConnected
-            ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+            ? { label: 'Manage', onClick: manageGoogle }
             : {
                 label: 'Connect',
                 onClick: () => startGoogleFlow(app.id),
@@ -901,7 +904,7 @@ function ConnectedApps() {
           ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
           : undefined;
       const primaryAction = isConnected
-        ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+        ? { label: 'Manage', onClick: isGoogle ? manageGoogle : () => console.log(`Manage ${app.name}`) }
         : app.comingSoon
           ? undefined
           : isGoogle
@@ -977,7 +980,7 @@ function ConnectedApps() {
           ? [{ label: 'Connected', variant: 'default' as const }]
           : undefined,
         primaryAction: isConnected
-          ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+          ? { label: 'Manage', onClick: isGoogle ? manageGoogle : () => console.log(`Manage ${app.name}`) }
           : isGoogle
             ? {
                 label: 'Connect',
@@ -2251,6 +2254,12 @@ function ConnectedApps() {
         open={aiModalProvider !== null}
         provider={aiModalProvider}
         onClose={() => setAiModalProvider(null)}
+      />
+
+      {/* VTID-01928: Google connection live verification */}
+      <GoogleConnectionVerifyDialog
+        open={googleVerifyOpen}
+        onOpenChange={setGoogleVerifyOpen}
       />
     </AppLayout>
   );

@@ -66,6 +66,47 @@ export function useSocialConnections() {
   });
 }
 
+export interface GoogleVerifyResult {
+  ok: boolean;
+  connection?: {
+    email: string;
+    connected_at: string;
+    token_expires_at: string;
+    scopes: string[];
+    has_refresh_token: boolean;
+  };
+  probes?: {
+    gmail: { ok: boolean; email?: string; messages_total?: number; threads_total?: number; status?: number; error?: string };
+    calendar: { ok: boolean; calendars?: number; primary?: string | null; status?: number; error?: string };
+    contacts: { ok: boolean; total_people?: number | null; status?: number; error?: string };
+    youtube: { ok: boolean; channel_title?: string | null; subscriber_count?: string | null; has_channel?: boolean; status?: number; error?: string };
+  };
+  error?: string;
+}
+
+/**
+ * Functional verification: hits the stored token against Gmail / Calendar /
+ * Contacts / YouTube and returns a per-service probe result. Used by the
+ * Manage button on the Connected Apps page.
+ */
+export function useVerifyGoogleConnection(enabled = false) {
+  return useQuery<GoogleVerifyResult>({
+    queryKey: ["social-accounts", "google", "verify"],
+    queryFn: async () => {
+      const headers = await authHeaders();
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/google/verify`, { headers });
+      if (!resp.ok) {
+        const text = await resp.text().catch(() => resp.statusText);
+        throw new Error(`Verify failed (${resp.status}): ${text}`);
+      }
+      return resp.json();
+    },
+    enabled,
+    staleTime: 10_000,
+    retry: false,
+  });
+}
+
 /**
  * Kick off the Google OAuth flow. On success, the page navigates away to
  * Google's consent screen, so the mutation never resolves in the normal sense.
