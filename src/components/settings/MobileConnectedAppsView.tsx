@@ -25,6 +25,8 @@ import {
   healthIntegrations,
   otherIntegrations,
   aiAssistantsIntegrations,
+  productivityIntegrations,
+  mediaIntegrations,
   getConnectionStats,
   type Integration,
 } from "./integrationData";
@@ -58,7 +60,7 @@ export function MobileConnectedAppsView() {
   const { toast } = useToast();
   const { user } = useAuth();
   const { refreshProfile } = useProfile();
-  
+
   const [selectedApp, setSelectedApp] = useState<Integration | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
@@ -68,6 +70,8 @@ export function MobileConnectedAppsView() {
   const connectorModes: ModeOption[] = [
     { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
     { value: 'ai', label: 'AI', icon: '✨' },
+    { value: 'productivity', label: translate('connectedApps.sections.productivity', 'Mail & Calendar'), icon: '📅' },
+    { value: 'media', label: translate('connectedApps.sections.media', 'Music & Video'), icon: '🎵' },
     { value: 'social', label: translate('connectedApps.sections.social', 'Social'), icon: '📱' },
     { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
     { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
@@ -78,7 +82,7 @@ export function MobileConnectedAppsView() {
   // VTID-02403: Live AI providers (tenant-aware status)
   const { data: aiProvidersData = [] } = useAIProviders();
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
-  
+
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
   const [socialImportPlatform, setSocialImportPlatform] = useState<SocialPlatform>('linkedin');
@@ -112,6 +116,8 @@ export function MobileConnectedAppsView() {
   const filteredSocial = filterIntegrations(socialIntegrations);
   const filteredFitness = filterIntegrations(fitnessIntegrations);
   const filteredHealth = filterIntegrations(healthIntegrations);
+  const filteredProductivity = filterIntegrations(productivityIntegrations);
+  const filteredMedia = filterIntegrations(mediaIntegrations);
   const filteredOther = filterIntegrations(otherIntegrations);
 
   // Handle connect action
@@ -176,9 +182,9 @@ export function MobileConnectedAppsView() {
           afterGiftVoucherChildren={
             <>
               <VitanaIndexChip />
-              <AutopilotChip 
-                pendingCount={0} 
-                onClick={() => setAutopilotOpen(true)} 
+              <AutopilotChip
+                pendingCount={0}
+                onClick={() => setAutopilotOpen(true)}
               />
             </>
           }
@@ -218,6 +224,26 @@ export function MobileConnectedAppsView() {
               title="AI Assistants"
               emoji="✨"
               integrations={filteredAi}
+              onSelect={setSelectedApp}
+            />
+          )}
+
+          {/* Mail, Calendar & Contacts — Gmail, Google Calendar, Apple Mail, iPhone/Android Contacts, Outlook */}
+          {(activeCategory === 'all' || activeCategory === 'productivity') && filteredProductivity.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.productivity', 'Mail, Calendar & Contacts')}
+              emoji="📅"
+              integrations={filteredProductivity}
+              onSelect={setSelectedApp}
+            />
+          )}
+
+          {/* Music & Video — Spotify, YouTube, YouTube Music, Apple Music */}
+          {(activeCategory === 'all' || activeCategory === 'media') && filteredMedia.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.media', 'Music & Video')}
+              emoji="🎵"
+              integrations={filteredMedia}
               onSelect={setSelectedApp}
             />
           )}
@@ -275,16 +301,16 @@ export function MobileConnectedAppsView() {
       />
 
       {/* Connect App Popup */}
-      <ConnectAppPopup 
-        isOpen={connectPopupOpen} 
+      <ConnectAppPopup
+        isOpen={connectPopupOpen}
         onClose={() => setConnectPopupOpen(false)}
         onConnect={handleConnect}
       />
 
       {/* Autopilot Popup */}
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen} 
+      <AutopilotPopup
+        open={autopilotOpen}
+        onOpenChange={setAutopilotOpen}
       />
 
       {/* Social Media Import Dialog */}

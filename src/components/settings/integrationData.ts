@@ -14,6 +14,13 @@ import {
   Utensils,
   Share2,
   Sparkles,
+  Mail,
+  Calendar,
+  Contact,
+  Phone,
+  Music,
+  Music2,
+  Youtube,
   LucideIcon
 } from "lucide-react";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -32,7 +39,8 @@ export interface Integration {
   lastSync?: string;
   comingSoon?: boolean;
   // VTID-02403: extended category list to include 'ai' for AI Assistants (ChatGPT, Claude)
-  category: 'social' | 'fitness' | 'health' | 'other' | 'ai';
+  // Added 'productivity' for email/calendar/contacts and 'media' for music/video playback
+  category: 'social' | 'fitness' | 'health' | 'other' | 'ai' | 'productivity' | 'media';
 }
 
 // Social & Sharing integrations
@@ -177,7 +185,120 @@ export const healthIntegrations: Integration[] = [
   },
 ];
 
-// Other integrations (mindfulness, smart home, communication, developer)
+// Productivity integrations — email, calendar, contacts (iOS + Android + Google + Microsoft)
+// Ask Vitana "do I have any meetings today?" and she'll check your connected calendars.
+export const productivityIntegrations: Integration[] = [
+  {
+    id: 'gmail',
+    name: 'Gmail',
+    icon: Mail,
+    connected: false,
+    syncData: 'Email inbox, drafts, labels',
+    category: 'productivity',
+  },
+  {
+    id: 'google-calendar',
+    name: 'Google Calendar',
+    icon: Calendar,
+    connected: false,
+    syncData: 'Events, meetings, availability',
+    category: 'productivity',
+  },
+  {
+    id: 'google-contacts',
+    name: 'Google Contacts',
+    icon: Contact,
+    connected: false,
+    syncData: 'Contact directory',
+    category: 'productivity',
+  },
+  {
+    id: 'apple-mail',
+    name: 'Apple Mail (iPhone)',
+    icon: Mail,
+    connected: false,
+    syncData: 'iOS Mail accounts and inbox',
+    category: 'productivity',
+  },
+  {
+    id: 'apple-calendar',
+    name: 'Apple Calendar (iPhone)',
+    icon: Calendar,
+    connected: false,
+    syncData: 'iOS Calendar events',
+    category: 'productivity',
+  },
+  {
+    id: 'iphone-contacts',
+    name: 'iPhone Contacts',
+    icon: Phone,
+    connected: false,
+    syncData: 'Address book from iOS',
+    category: 'productivity',
+  },
+  {
+    id: 'android-contacts',
+    name: 'Android Contacts',
+    icon: Phone,
+    connected: false,
+    syncData: 'Address book from Android',
+    category: 'productivity',
+  },
+  {
+    id: 'outlook-mail',
+    name: 'Outlook Mail',
+    icon: Mail,
+    connected: false,
+    syncData: 'Microsoft email inbox',
+    category: 'productivity',
+  },
+  {
+    id: 'outlook-calendar',
+    name: 'Outlook Calendar',
+    icon: Calendar,
+    connected: false,
+    syncData: 'Microsoft calendar events',
+    category: 'productivity',
+  },
+];
+
+// Media integrations — music & video playback so Vitana can say "play Thriller by Michael Jackson"
+export const mediaIntegrations: Integration[] = [
+  {
+    id: 'spotify',
+    name: 'Spotify',
+    icon: Music,
+    connected: false,
+    syncData: 'Music playback, playlists, listening history',
+    category: 'media',
+  },
+  {
+    id: 'apple-music',
+    name: 'Apple Music',
+    icon: Music2,
+    connected: false,
+    syncData: 'Music playback and library',
+    category: 'media',
+  },
+  {
+    id: 'youtube-music',
+    name: 'YouTube Music',
+    icon: Music2,
+    connected: false,
+    syncData: 'Music streaming, playlists',
+    category: 'media',
+  },
+  {
+    id: 'youtube-playback',
+    name: 'YouTube',
+    icon: Youtube,
+    connected: false,
+    syncData: 'Video playback, watch history',
+    category: 'media',
+  },
+];
+
+// Other integrations (mindfulness, smart home, messaging, developer)
 export const otherIntegrations: Integration[] = [
   {
     id: 'calm',
@@ -276,6 +397,8 @@ export const getAllIntegrations = (): Integration[] => [
   ...socialIntegrations,
   ...fitnessIntegrations,
   ...healthIntegrations,
+  ...productivityIntegrations,
+  ...mediaIntegrations,
   ...otherIntegrations,
 ];
 

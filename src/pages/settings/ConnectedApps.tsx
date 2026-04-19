@@ -36,6 +36,12 @@ import {
   ListChecks,
   RefreshCcw,
   Clock,
+  Mail,
+  Contact,
+  Phone,
+  Music,
+  Music2,
+  Youtube,
 } from "lucide-react";
 import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -579,14 +585,56 @@ function ConnectedApps() {
     }));
   };
 
-  // Communication Apps
+  // Mail, Calendar & Contacts — Gmail, Apple Mail, Outlook + iPhone/Android/Google Contacts
+  // Plus legacy messaging apps (WhatsApp, Telegram) kept as coming-soon.
   const getCommunicationCards = (): StandardHorizontalCardProps[] => {
     const apps = [
+      {
+        id: 'gmail',
+        name: 'Gmail',
+        icon: Mail,
+        syncData: 'Email inbox, drafts, labels',
+        comingSoon: false,
+      },
+      {
+        id: 'apple-mail',
+        name: 'Apple Mail (iPhone)',
+        icon: Mail,
+        syncData: 'iOS Mail accounts and inbox',
+        comingSoon: false,
+      },
+      {
+        id: 'outlook-mail',
+        name: 'Outlook Mail',
+        icon: Mail,
+        syncData: 'Microsoft email inbox',
+        comingSoon: false,
+      },
+      {
+        id: 'google-contacts',
+        name: 'Google Contacts',
+        icon: Contact,
+        syncData: 'Contact directory',
+        comingSoon: false,
+      },
+      {
+        id: 'iphone-contacts',
+        name: 'iPhone Contacts',
+        icon: Phone,
+        syncData: 'Address book from iOS',
+        comingSoon: false,
+      },
+      {
+        id: 'android-contacts',
+        name: 'Android Contacts',
+        icon: Phone,
+        syncData: 'Address book from Android',
+        comingSoon: false,
+      },
       {
         id: 'whatsapp',
         name: 'WhatsApp',
         icon: MessageCircle,
-        connected: false,
         syncData: 'Messaging integration',
         comingSoon: true,
       },
@@ -594,24 +642,7 @@ function ConnectedApps() {
         id: 'telegram',
         name: 'Telegram',
         icon: MessageCircle,
-        connected: false,
         syncData: 'Bot and messaging',
-        comingSoon: true,
-      },
-      {
-        id: 'gmail',
-        name: 'Gmail',
-        icon: MessageCircle,
-        connected: false,
-        syncData: 'Email notifications',
-        comingSoon: true,
-      },
-      {
-        id: 'outlook',
-        name: 'Microsoft Outlook',
-        icon: MessageCircle,
-        connected: false,
-        syncData: 'Email and calendar',
         comingSoon: true,
       },
     ];
@@ -622,11 +653,20 @@ function ConnectedApps() {
       icon: <app.icon className="w-5 h-5" />,
       title: app.name,
       description: app.syncData,
-      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      badges: app.comingSoon
+        ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
+        : undefined,
+      primaryAction: app.comingSoon
+        ? undefined
+        : {
+            label: 'Connect',
+            onClick: () => console.log(`Connect ${app.name}`),
+          },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon. This will enable {app.syncData.toLowerCase()}.
+          {app.comingSoon
+            ? `${app.name} integration is coming soon. This will enable ${app.syncData.toLowerCase()}.`
+            : `Connect ${app.name} to sync ${app.syncData.toLowerCase()} with Vitana.`}
         </div>
       ),
     }));
@@ -737,65 +777,122 @@ function ConnectedApps() {
     }));
   };
 
-  // Productivity & calendar apps
+  // Productivity & calendar apps — Google / Apple / Outlook Calendar connectable, Notion coming soon.
   const getProductivityCards = (): StandardHorizontalCardProps[] => {
     const apps = [
       {
         id: 'google-calendar',
         name: 'Google Calendar',
-        icon: SettingsIcon,
-        iconColor: 'bg-blue-500',
+        icon: Calendar,
         connected: false,
-        description: 'Sync events and availability',
+        comingSoon: false,
+        description: 'Events, meetings, availability',
       },
       {
-        id: 'outlook',
-        name: 'Microsoft Outlook',
-        icon: SettingsIcon,
-        iconColor: 'bg-blue-600',
+        id: 'apple-calendar',
+        name: 'Apple Calendar (iPhone)',
+        icon: Calendar,
         connected: false,
-        description: 'Calendar and email integration',
+        comingSoon: false,
+        description: 'iOS Calendar events',
+      },
+      {
+        id: 'outlook-calendar',
+        name: 'Outlook Calendar',
+        icon: Calendar,
+        connected: false,
+        comingSoon: false,
+        description: 'Microsoft calendar events',
       },
       {
         id: 'notion',
         name: 'Notion',
         icon: SettingsIcon,
-        iconColor: 'bg-gray-700',
         connected: false,
+        comingSoon: true,
         description: 'Note-taking and productivity',
       },
     ];
 
     return apps.map((app) => {
       const AppIcon = app.icon;
+      const badges = app.connected
+        ? [{ label: 'Connected', variant: 'default' as const }]
+        : app.comingSoon
+          ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
+          : undefined;
+      const primaryAction = app.connected
+        ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+        : app.comingSoon
+          ? undefined
+          : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) };
       return {
         id: `productivity-${app.id}`,
         screenId: "settings-connected-apps",
         icon: <AppIcon className="w-5 h-5" />,
         title: app.name,
         description: app.description,
-        badges: app.connected
-          ? [{ label: 'Connected', variant: 'default' as const }]
-          : [{ label: 'Coming Soon', variant: 'secondary' as const }],
-        primaryAction: app.connected ? {
-          label: 'Manage',
-          onClick: () => console.log(`Manage ${app.name}`),
-        } : {
-          label: 'Connect',
-          onClick: () => console.log(`Connect ${app.name}`),
-          disabled: true,
-          variant: 'ghost' as const,
-        },
+        badges,
+        primaryAction,
         expandedContent: (
           <div className="text-sm text-muted-foreground pt-2">
-            {app.connected 
+            {app.connected
               ? `Manage your ${app.name} integration settings and permissions.`
-              : `${app.name} integration is coming soon!`
-            }
+              : app.comingSoon
+                ? `${app.name} integration is coming soon!`
+                : `Connect ${app.name} to sync ${app.description.toLowerCase()} with Vitana.`}
           </div>
         ),
       };
     });
+  };
+
+  // Entertainment & Media — Spotify, Apple Music, YouTube Music, YouTube.
+  // Lets Vitana act on commands like "play Thriller by Michael Jackson".
+  const getEntertainmentMediaCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'spotify',
+        name: 'Spotify',
+        icon: Music,
+        description: 'Music playback, playlists, listening history',
+      },
+      {
+        id: 'apple-music',
+        name: 'Apple Music',
+        icon: Music2,
+        description: 'Music playback and library',
+      },
+      {
+        id: 'youtube-music',
+        name: 'YouTube Music',
+        icon: Music2,
+        description: 'Music streaming, playlists',
+      },
+      {
+        id: 'youtube-playback',
+        name: 'YouTube',
+        icon: Youtube,
+        description: 'Video playback, watch history',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `media-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+      },
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          Connect {app.name} to enable {app.description.toLowerCase()} through Vitana.
+        </div>
+      ),
+    }));
   };
 
   // Data sync & preferences
@@ -1665,11 +1762,11 @@ function ConnectedApps() {
               />
             </div>
 
-            {/* Communication Apps */}
+            {/* Mail, Calendar & Contacts */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5" />
-                Communication Apps
+                <Mail className="w-5 h-5" />
+                Mail, Calendar & Contacts
               </h2>
               <HorizontalCardList
                 items={getCommunicationCards()}
@@ -1677,6 +1774,24 @@ function ConnectedApps() {
                 layout="stack"
                 screenId="settings-connected-apps"
                 listId="communication"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Music & Video */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Music className="w-5 h-5" />
+                Music & Video
+              </h2>
+              <HorizontalCardList
+                items={getEntertainmentMediaCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="entertainment-media"
                 gap="md"
                 infiniteScroll={false}
                 className="pb-2"
@@ -1736,6 +1851,24 @@ function ConnectedApps() {
                 layout="stack"
                 screenId="settings-connected-apps"
                 listId="productivity"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Music & Video */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Music className="w-5 h-5" />
+                Music & Video
+              </h2>
+              <HorizontalCardList
+                items={getEntertainmentMediaCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="entertainment-media-available"
                 gap="md"
                 infiniteScroll={false}
                 className="pb-2"
