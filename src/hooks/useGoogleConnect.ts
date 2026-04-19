@@ -85,6 +85,36 @@ export interface GoogleVerifyResult {
 }
 
 /**
+ * VTID-01939: Invoke any capability through the connector framework.
+ * Returns the DispatchResult shape: { ok, url?, external_id?, raw?, ... }.
+ */
+export function useInvokeCapability() {
+  return useMutation({
+    mutationFn: async (opts: { capability: string; args?: Record<string, unknown> }) => {
+      const headers = await authHeaders();
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/capabilities/${opts.capability}`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(opts.args ?? {}),
+      });
+      const json = await resp.json().catch(() => ({}));
+      if (!resp.ok || json?.ok === false) {
+        throw new Error(json?.error ?? `Capability failed (${resp.status})`);
+      }
+      return json as {
+        ok: boolean;
+        url?: string;
+        external_id?: string;
+        connector?: string;
+        capability?: string;
+        token_refreshed?: boolean;
+        raw?: Record<string, unknown>;
+      };
+    },
+  });
+}
+
+/**
  * Functional verification: hits the stored token against Gmail / Calendar /
  * Contacts / YouTube and returns a per-service probe result. Used by the
  * Manage button on the Connected Apps page.

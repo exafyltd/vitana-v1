@@ -10,8 +10,9 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle2, XCircle } from "lucide-react";
-import { useVerifyGoogleConnection, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
+import { Input } from "@/components/ui/input";
+import { Loader2, CheckCircle2, XCircle, Music } from "lucide-react";
+import { useVerifyGoogleConnection, useInvokeCapability, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -74,12 +75,51 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
   const [hasRun, setHasRun] = useState(false);
   const { data, error, isFetching, refetch } = useVerifyGoogleConnection(false);
 
+  // VTID-01939: Play-a-song panel — exercises the capability framework end-to-end.
+  const invokeCapability = useInvokeCapability();
+  const [songQuery, setSongQuery] = useState("Beat It Michael Jackson");
+  const [playError, setPlayError] = useState<string | null>(null);
+  const [lastPlay, setLastPlay] = useState<{ title?: string; channel?: string; url?: string } | null>(null);
+
+  const playSong = () => {
+    const query = songQuery.trim();
+    if (!query) return;
+    setPlayError(null);
+    setLastPlay(null);
+    invokeCapability.mutate(
+      { capability: "music.play", args: { query } },
+      {
+        onSuccess: (result) => {
+          const raw = result.raw ?? {};
+          setLastPlay({
+            title: typeof raw.title === "string" ? raw.title : undefined,
+            channel: typeof raw.channel === "string" ? raw.channel : undefined,
+            url: result.url,
+          });
+          if (result.url) {
+            // music.youtube.com is an Android App Link, so the same URL opens
+            // YouTube Music on mobile and the web player on desktop.
+            window.open(result.url, "_blank", "noopener,noreferrer");
+          }
+        },
+        onError: (err) => {
+          const message = err instanceof Error ? err.message : String(err);
+          setPlayError(message);
+        },
+      },
+    );
+  };
+
   useEffect(() => {
     if (open && !hasRun) {
       setHasRun(true);
       refetch();
     }
-    if (!open) setHasRun(false);
+    if (!open) {
+      setHasRun(false);
+      setPlayError(null);
+      setLastPlay(null);
+    }
   }, [open, hasRun, refetch]);
 
   const rows = buildRows(data);
@@ -136,6 +176,50 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
               </div>
             </div>
           )}
+
+          {/* VTID-01939: Play-a-song panel — proves the capability framework end-to-end. */}
+          <div className="mt-6 rounded-md border p-3 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Music className="h-4 w-4" /> Play a song (music.play capability)
+            </div>
+            <div className="text-xs text-muted-foreground">
+              Calls <code>POST /api/v1/capabilities/music.play</code>. Gateway searches YouTube with your token and returns a <code>music.youtube.com</code> URL — opens in YouTube Music on Android or the web player on desktop.
+            </div>
+            <div className="flex gap-2">
+              <Input
+                value={songQuery}
+                onChange={(e) => setSongQuery(e.target.value)}
+                placeholder='e.g. "One Moment in Time Whitney Houston"'
+                disabled={invokeCapability.isPending}
+                onKeyDown={(e) => { if (e.key === "Enter") playSong(); }}
+              />
+              <Button
+                size="sm"
+                onClick={playSong}
+                disabled={invokeCapability.isPending || !songQuery.trim()}
+              >
+                {invokeCapability.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Play"}
+              </Button>
+            </div>
+            {playError && (
+              <div className="text-xs text-destructive break-words">{playError}</div>
+            )}
+            {lastPlay && !playError && (
+              <div className="text-xs text-muted-foreground break-words">
+                Opened <span className="font-medium text-foreground">{lastPlay.title}</span>
+                {lastPlay.channel ? ` — ${lastPlay.channel}` : ""}.
+                {lastPlay.url ? (
+                  <>
+                    {" "}
+                    <a href={lastPlay.url} target="_blank" rel="noreferrer" className="underline">
+                      Open again
+                    </a>
+                    .
+                  </>
+                ) : null}
+              </div>
+            )}
+          </div>
         </div>
 
         <DialogFooter>
