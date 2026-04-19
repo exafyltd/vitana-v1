@@ -87,7 +87,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Google connection — live check</DialogTitle>
           <DialogDescription>
@@ -95,44 +95,48 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        {isFetching && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground py-6">
-            <Loader2 className="h-4 w-4 animate-spin" /> Probing Google APIs…
-          </div>
-        )}
-
-        {error && !isFetching && (
-          <div className="text-sm text-destructive py-4">
-            Couldn't reach the verify endpoint: {error instanceof Error ? error.message : String(error)}
-          </div>
-        )}
-
-        {!isFetching && data?.ok && (
-          <div className="space-y-3 py-2">
-            <div className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{data.connection?.email}</span> —
-              connected {data.connection?.connected_at?.slice(0, 10)},
-              refresh_token {data.connection?.has_refresh_token ? "present" : "missing"},
-              token expires {data.connection?.token_expires_at?.slice(11, 19)} UTC.
+        <div className="flex-1 overflow-y-auto min-h-0">
+          {isFetching && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground py-6">
+              <Loader2 className="h-4 w-4 animate-spin" /> Probing Google APIs…
             </div>
-            <ul className="space-y-2">
-              {rows.map(r => (
-                <li key={r.key} className="flex items-start gap-3 rounded-md border p-3">
-                  {r.status === "ok"
-                    ? <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                    : <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />}
-                  <div className="flex-1">
-                    <div className="text-sm font-medium">{r.name}</div>
-                    <div className="text-xs text-muted-foreground">{r.summary}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="text-xs text-muted-foreground pt-1">
-              {passed} / {rows.length} services reachable.
+          )}
+
+          {error && !isFetching && (
+            <div className="text-sm text-destructive py-4 break-words">
+              Couldn't reach the verify endpoint: {error instanceof Error ? error.message : String(error)}
             </div>
-          </div>
-        )}
+          )}
+
+          {!isFetching && data?.ok && (
+            <div className="space-y-3 py-2">
+              <div className="text-sm text-muted-foreground break-words">
+                <span className="font-medium text-foreground">{data.connection?.email}</span> —
+                connected {data.connection?.connected_at?.slice(0, 10)},
+                refresh_token {data.connection?.has_refresh_token ? "present" : "missing"},
+                token expires {data.connection?.token_expires_at?.slice(11, 19)} UTC.
+              </div>
+              <ul className="space-y-2">
+                {rows.map(r => (
+                  <li key={r.key} className="flex items-start gap-3 rounded-md border p-3">
+                    {r.status === "ok"
+                      ? <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      : <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium">{r.name}</div>
+                      <div className="text-xs text-muted-foreground break-words whitespace-pre-wrap">
+                        {r.summary}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="text-xs text-muted-foreground pt-1">
+                {passed} / {rows.length} services reachable.
+              </div>
+            </div>
+          )}
+        </div>
 
         <DialogFooter>
           <Button
