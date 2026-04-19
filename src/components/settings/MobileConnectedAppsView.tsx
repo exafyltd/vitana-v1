@@ -24,9 +24,13 @@ import {
   fitnessIntegrations,
   healthIntegrations,
   otherIntegrations,
+  aiAssistantsIntegrations,
   getConnectionStats,
   type Integration,
 } from "./integrationData";
+// VTID-02403: AI Assistants hooks + modal for mobile
+import { useAIProviders, type AIProviderId } from "@/hooks/useAIAssistants";
+import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
 
 // Social platform icons for the import dialog
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -63,12 +67,17 @@ export function MobileConnectedAppsView() {
 
   const connectorModes: ModeOption[] = [
     { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
+    { value: 'ai', label: 'AI', icon: '✨' },
     { value: 'social', label: translate('connectedApps.sections.social', 'Social'), icon: '📱' },
     { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
     { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
     { value: 'other', label: translate('connectedApps.sections.other', 'Other'), icon: '🔧' },
     { value: 'agent', label: translate('connectedApps.sections.agent', 'Autopilot'), icon: '📡' },
   ];
+
+  // VTID-02403: Live AI providers (tenant-aware status)
+  const { data: aiProvidersData = [] } = useAIProviders();
+  const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
   
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
@@ -87,6 +96,19 @@ export function MobileConnectedAppsView() {
     );
   };
 
+  // VTID-02403: Merge live AI status into static AI integrations list
+  const aiIntegrationsLive: Integration[] = aiAssistantsIntegrations.map((base) => {
+    const live = aiProvidersData.find((p) => p.provider === base.id);
+    if (!live) return base;
+    return {
+      ...base,
+      connected: live.status === "connected",
+      comingSoon: live.status === "disabled",
+      lastSync: live.last_verified_at || undefined,
+    };
+  });
+
+  const filteredAi = filterIntegrations(aiIntegrationsLive);
   const filteredSocial = filterIntegrations(socialIntegrations);
   const filteredFitness = filterIntegrations(fitnessIntegrations);
   const filteredHealth = filterIntegrations(healthIntegrations);
@@ -94,6 +116,11 @@ export function MobileConnectedAppsView() {
 
   // Handle connect action
   const handleConnect = (integration: Integration) => {
+    // VTID-02403: AI Assistants open the paste-key modal
+    if (integration.category === 'ai' && (integration.id === 'chatgpt' || integration.id === 'claude')) {
+      setAiModalProvider(integration.id as AIProviderId);
+      return;
+    }
     // Check if it's a social platform
     if (socialPlatformIds.includes(integration.id)) {
       setSocialImportPlatform(integration.id as SocialPlatform);
@@ -185,6 +212,16 @@ export function MobileConnectedAppsView() {
 
         {/* Integration Sections */}
         <div className="space-y-3">
+          {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
+          {(activeCategory === 'all' || activeCategory === 'ai') && filteredAi.length > 0 && (
+            <MobileIntegrationSection
+              title="AI Assistants"
+              emoji="✨"
+              integrations={filteredAi}
+              onSelect={setSelectedApp}
+            />
+          )}
+
           {(activeCategory === 'all' || activeCategory === 'social') && filteredSocial.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.social')}
@@ -259,6 +296,13 @@ export function MobileConnectedAppsView() {
         icon={currentPlatformConfig.icon}
         profileId={user?.id || ''}
         onSuccess={handleSocialImportSuccess}
+      />
+
+      {/* VTID-02403: AI Assistant Connect Modal */}
+      <AIAssistantConnectModal
+        open={aiModalProvider !== null}
+        provider={aiModalProvider}
+        onClose={() => setAiModalProvider(null)}
       />
     </div>
   );
