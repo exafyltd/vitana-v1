@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap } from "lucide-react";
+import { Target, TrendingUp, Heart, DollarSign, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -52,6 +52,13 @@ const SUGGESTED_GOALS = [
     title: "Master New Skills",
     description: "Learn and grow through knowledge",
     gradient: "from-purple-500/20 to-indigo-500/20",
+  },
+  {
+    category: "spiritual",
+    icon: Sparkles,
+    title: "Spiritual Life",
+    description: "Deepen purpose, presence, and inner peace",
+    gradient: "from-violet-500/20 to-fuchsia-500/20",
   },
 ];
 

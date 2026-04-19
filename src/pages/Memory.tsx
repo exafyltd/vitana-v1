@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Target } from "lucide-react";
+import { Plus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -11,7 +11,6 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { AddMemoryDialog } from "@/components/memory/AddMemoryDialog";
-import { LifeCompassPopup } from "@/components/memory/LifeCompassPopup";
 import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
 import { MemoryTimelineTab } from "@/components/memory/MemoryTimelineTab";
 import { MemoryEducationTab } from "@/components/memory/MemoryEducationTab";
@@ -124,7 +123,6 @@ const diaryEntries = [
 export default withScreenId(function Memory() {
   const [activeTab, setActiveTab] = useState("categories");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  const [compassPopupOpen, setCompassPopupOpen] = useState(false);
   
   // Mock sync timestamp - will be replaced with real data
   const mockSyncTimestamp = formatDistanceToNow(new Date(Date.now() - 2 * 60 * 60 * 1000), { addSuffix: true });
@@ -150,14 +148,6 @@ export default withScreenId(function Memory() {
             <Plus className="w-4 h-4 mr-2" />
             Add Memory
           </Button>
-          <Button 
-            size="sm" 
-            variant="outline"
-            onClick={() => setCompassPopupOpen(true)}
-          >
-            <Target className="w-4 h-4 mr-2" />
-            Life Compass
-          </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -182,14 +172,9 @@ export default withScreenId(function Memory() {
           </SplitBarContent>
         </SplitBar>
 
-        <AddMemoryDialog 
+        <AddMemoryDialog
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
-        />
-        
-        <LifeCompassPopup 
-          open={compassPopupOpen}
-          onOpenChange={setCompassPopupOpen}
         />
         </div>
       </div>

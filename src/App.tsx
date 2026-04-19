@@ -20,6 +20,7 @@ import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvid
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
+import { LifeCompassPopupProvider } from "@/context/LifeCompassPopupContext";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
@@ -542,6 +543,7 @@ const App = () => {
                     <AppHooksInitializer />
                     <MilestoneCelebration />
                     <VitanalandNavigationProvider>
+                      <LifeCompassPopupProvider>
                       <GreetingProviderWrapper>
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
@@ -1640,6 +1642,7 @@ const App = () => {
                   </Suspense>
                   </GlobalErrorBoundary>
                   </GreetingProviderWrapper>
+                  </LifeCompassPopupProvider>
                 </VitanalandNavigationProvider>
               </BrowserRouter>
             </TooltipProvider>
