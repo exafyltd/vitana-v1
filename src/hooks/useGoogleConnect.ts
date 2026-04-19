@@ -1,7 +1,7 @@
 /**
  * VTID-01928: Google OAuth connector hook
  *
- * Initiates the backend-driven OAuth flow (GET /api/v1/social/connect/google),
+ * Initiates the backend-driven OAuth flow (GET /api/v1/social-accounts/connect/google),
  * then redirects the browser to Google's consent screen. After consent Google
  * sends the code back to the gateway callback, which stores tokens in
  * social_connections and redirects the browser to
@@ -57,7 +57,7 @@ export function useSocialConnections() {
     queryKey: ["social-connections"],
     queryFn: async () => {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social/connections`, { headers });
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connections`, { headers });
       if (!resp.ok) return [];
       const json = await resp.json();
       return json.connections ?? [];
@@ -74,7 +74,7 @@ export function useStartGoogleConnect() {
   return useMutation({
     mutationFn: async () => {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social/connect/google`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connect/google`, {
         method: "GET",
         headers,
       });
