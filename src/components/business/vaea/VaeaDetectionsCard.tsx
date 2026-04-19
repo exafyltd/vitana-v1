@@ -10,7 +10,7 @@ export function VaeaDetectionsCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Radio className="w-5 h-5" />
-          VAEA detections (7d)
+          Autopilot referrals (7d)
         </CardTitle>
       </CardHeader>
       <CardContent>

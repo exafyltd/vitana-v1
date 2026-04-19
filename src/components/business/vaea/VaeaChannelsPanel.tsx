@@ -28,9 +28,9 @@ export function VaeaChannelsPanel() {
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <CardTitle>Agent ingest</CardTitle>
+            <CardTitle>Autopilot channels</CardTitle>
             <CardDescription>
-              Channels VAEA listens to. Each channel can be paused, set to dry-run, or removed.
+              Channels Autopilot listens to for referral opportunities. Each channel can be paused, set to dry-run, or removed.
             </CardDescription>
           </div>
           <Button size="sm" onClick={() => setShowForm((v) => !v)}>
@@ -53,7 +53,7 @@ export function VaeaChannelsPanel() {
 
         {channels.length === 0 && !showForm ? (
           <p className="text-sm text-muted-foreground text-center py-6">
-            No channels yet. VAEA won't hear anything until you add at least one.
+            No channels yet. Autopilot won't hear anything until you add at least one.
           </p>
         ) : (
           channels.map((channel) => (

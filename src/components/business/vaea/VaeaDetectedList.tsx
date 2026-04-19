@@ -31,8 +31,8 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
   const header = (
     <div className="flex items-center justify-between gap-2">
       <div>
-        <h3 className="font-medium text-sm">What VAEA saw</h3>
-        <p className="text-xs text-muted-foreground">Every message VAEA scanned — including the ones it stayed quiet about.</p>
+        <h3 className="font-medium text-sm">What Autopilot saw</h3>
+        <p className="text-xs text-muted-foreground">Every message Autopilot scanned — including the ones it stayed quiet about.</p>
       </div>
       {collapsible && (
         <Button variant="ghost" size="sm" onClick={() => setOpen((v) => !v)}>

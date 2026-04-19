@@ -305,7 +305,7 @@ export default function BusinessHub() {
                 <ResellerCampaignsTab searchQuery="" />
               )}
 
-              {/* Sales → Referrals (VAEA) */}
+              {/* Sales → Referrals (Autopilot) */}
               {mobileTab === "sales.referrals" && (
                 <div className="space-y-4">
                   <VaeaCatalogPanel />

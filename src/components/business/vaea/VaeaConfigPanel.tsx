@@ -47,20 +47,20 @@ export function VaeaConfigPanel() {
         <CardHeader>
           <CardTitle>Your three switches</CardTitle>
           <CardDescription>
-            These decide what VAEA can do on your behalf. Flip any of them any time.
+            These decide what Autopilot can do on your behalf for community referrals. Flip any of them any time.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SwitchRow
             title="Receive recommendations"
-            description="VAEA can query peers when you ask questions."
+            description="Autopilot can query peers when you ask questions."
             checked={c?.receive_recommendations ?? true}
             onChange={(v) => setField("receive_recommendations", v)}
             saving={saving === "receive_recommendations"}
           />
           <SwitchRow
             title="Give recommendations (earn)"
-            description="Your VAEA may offer your catalog to other members. Off by default — opt in when you're ready."
+            description="Autopilot may offer your catalog to other members. Off by default — opt in when you're ready."
             checked={c?.give_recommendations ?? false}
             onChange={(v) => setField("give_recommendations", v)}
             saving={saving === "give_recommendations"}
@@ -80,7 +80,7 @@ export function VaeaConfigPanel() {
       <Card>
         <CardHeader>
           <CardTitle>Autonomy & voice</CardTitle>
-          <CardDescription>How VAEA phrases replies when it does draft one.</CardDescription>
+          <CardDescription>How Autopilot phrases referral replies when it does draft one.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

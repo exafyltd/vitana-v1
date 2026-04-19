@@ -33,7 +33,7 @@ export function VaeaDraftsStrip() {
           className="w-full flex items-center justify-between gap-2"
         >
           <div className="text-left">
-            <div className="font-medium text-sm">VAEA has {drafts.length} draft{drafts.length === 1 ? "" : "s"} for you</div>
+            <div className="font-medium text-sm">Autopilot has {drafts.length} referral draft{drafts.length === 1 ? "" : "s"} for you</div>
             <p className="text-xs text-muted-foreground">Shadow drafts — review and dismiss. Posting arrives in a later phase.</p>
           </div>
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -107,7 +107,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
       )}
 
       <div className="rounded border border-primary/20 bg-primary/5 p-2">
-        <div className="text-xs font-medium mb-0.5 text-muted-foreground">VAEA draft</div>
+        <div className="text-xs font-medium mb-0.5 text-muted-foreground">Autopilot draft</div>
         <p className="text-sm whitespace-pre-wrap">{draft.reply_body}</p>
       </div>
 

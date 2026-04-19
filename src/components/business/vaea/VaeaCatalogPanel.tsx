@@ -60,7 +60,7 @@ export function VaeaCatalogPanel() {
           <CardContent className="py-8 text-center space-y-1">
             <div className="font-medium">Your catalog is empty</div>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Add the products or services VAEA can recommend on your behalf.
+              Add the products or services Autopilot can recommend on your behalf.
             </p>
           </CardContent>
         </Card>
