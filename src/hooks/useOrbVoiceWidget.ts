@@ -57,11 +57,20 @@ export function useOrbVoiceWidget() {
   // a smooth SPA change (works inside Appilix WebView with no full reload).
   const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
     try {
+      const parsed = new URL(url, window.location.origin);
+      const openTarget = parsed.searchParams.get('open');
       // VTID-CAL-OPEN: If the backend sends ?open=calendar, do NOT navigate —
       // just open the calendar popup as an overlay on the current screen.
-      const parsed = new URL(url, window.location.origin);
-      if (parsed.searchParams.get('open') === 'calendar') {
+      if (openTarget === 'calendar') {
         window.dispatchEvent(new CustomEvent('calendar:open'));
+        return;
+      }
+      // Life Compass overlay: voice "open my goals" / "open my life compass"
+      // resolves to ?open=life_compass. Keep the user on their current screen
+      // and surface the popup so they can pick or customize their goal without
+      // losing context.
+      if (openTarget === 'life_compass' || openTarget === 'goals') {
+        window.dispatchEvent(new CustomEvent('vitana:open-life-compass'));
         return;
       }
       navigateRef.current(url);
