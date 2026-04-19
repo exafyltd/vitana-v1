@@ -52,7 +52,7 @@ import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileConnectedAppsView } from "@/components/settings/MobileConnectedAppsView";
 import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
@@ -63,6 +63,13 @@ import {
   type AIProviderId,
 } from "@/hooks/useAIAssistants";
 import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
+// VTID-01928: Google OAuth for Gmail/Calendar/Contacts/YouTube/YouTube Music
+import {
+  useStartGoogleConnect,
+  useSocialConnections,
+  GOOGLE_CONNECTOR_IDS,
+} from "@/hooks/useGoogleConnect";
+import { useToast } from "@/hooks/use-toast";
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
@@ -73,6 +80,58 @@ function ConnectedApps() {
   const { data: aiProviders = [] } = useAIProviders();
   const disconnectAi = useDisconnectAIProvider();
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
+
+  // VTID-01928: Google connector state (single consent → 5 connectors)
+  const { toast } = useToast();
+  const { data: socialConnections = [] } = useSocialConnections();
+  const startGoogle = useStartGoogleConnect();
+  const googleConnection = socialConnections.find((c) => c.provider === "google");
+  const googleConnected = Boolean(googleConnection);
+
+  const startGoogleFlow = (connectorId: string) => {
+    startGoogle.mutate(undefined, {
+      onError: (err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        toast({
+          title: "Couldn't start Google sign-in",
+          description: message,
+          variant: "destructive",
+        });
+      },
+    });
+    // Surface intent while the redirect is in flight.
+    console.log(`[google-oauth] initiating from connector ${connectorId}`);
+  };
+
+  // Show a success / error toast when returning from the OAuth callback.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const connected = params.get("connected");
+    const errorCode = params.get("error");
+    if (connected === "google") {
+      const username = params.get("username") || "";
+      toast({
+        title: "Google connected",
+        description: username
+          ? `Gmail, Calendar, Contacts and YouTube are now linked to ${username}.`
+          : "Gmail, Calendar, Contacts and YouTube are now linked.",
+      });
+      params.delete("connected");
+      params.delete("username");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    } else if (errorCode && params.get("provider") === "google") {
+      toast({
+        title: "Google sign-in didn't finish",
+        description: errorCode.replace(/_/g, " "),
+        variant: "destructive",
+      });
+      params.delete("error");
+      params.delete("provider");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    }
+  }, [toast]);
 
   // Mobile view - simplified, native-feeling experience
   if (isMobile) {
@@ -647,29 +706,47 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => ({
-      id: `communication-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.syncData,
-      badges: app.comingSoon
+    return apps.map((app) => {
+      const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
+      const isConnected = isGoogle && googleConnected;
+      const badges = app.comingSoon
         ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
-        : undefined,
-      primaryAction: app.comingSoon
+        : isConnected
+          ? [{ label: 'Connected', variant: 'default' as const }]
+          : undefined;
+      const primaryAction = app.comingSoon
         ? undefined
-        : {
-            label: 'Connect',
-            onClick: () => console.log(`Connect ${app.name}`),
-          },
-      expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.comingSoon
-            ? `${app.name} integration is coming soon. This will enable ${app.syncData.toLowerCase()}.`
-            : `Connect ${app.name} to sync ${app.syncData.toLowerCase()} with Vitana.`}
-        </div>
-      ),
-    }));
+        : isGoogle
+          ? isConnected
+            ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+            : {
+                label: 'Connect',
+                onClick: () => startGoogleFlow(app.id),
+                disabled: startGoogle.isPending,
+              }
+          : {
+              label: 'Connect',
+              onClick: () => console.log(`Connect ${app.name}`),
+            };
+      return {
+        id: `communication-${app.id}`,
+        screenId: "settings-connected-apps",
+        icon: <app.icon className="w-5 h-5" />,
+        title: app.name,
+        description: app.syncData,
+        badges,
+        primaryAction,
+        expandedContent: (
+          <div className="text-sm text-muted-foreground pt-2">
+            {app.comingSoon
+              ? `${app.name} integration is coming soon. This will enable ${app.syncData.toLowerCase()}.`
+              : isConnected
+                ? `${app.name} is linked to ${googleConnection?.username ?? 'your Google account'}.`
+                : `Connect ${app.name} to sync ${app.syncData.toLowerCase()} with Vitana.`}
+          </div>
+        ),
+      };
+    });
   };
 
   // Wallet & Payments
@@ -816,16 +893,24 @@ function ConnectedApps() {
 
     return apps.map((app) => {
       const AppIcon = app.icon;
-      const badges = app.connected
+      const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
+      const isConnected = app.connected || (isGoogle && googleConnected);
+      const badges = isConnected
         ? [{ label: 'Connected', variant: 'default' as const }]
         : app.comingSoon
           ? [{ label: 'Coming Soon', variant: 'secondary' as const }]
           : undefined;
-      const primaryAction = app.connected
+      const primaryAction = isConnected
         ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
         : app.comingSoon
           ? undefined
-          : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) };
+          : isGoogle
+            ? {
+                label: 'Connect',
+                onClick: () => startGoogleFlow(app.id),
+                disabled: startGoogle.isPending,
+              }
+            : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) };
       return {
         id: `productivity-${app.id}`,
         screenId: "settings-connected-apps",
@@ -836,8 +921,10 @@ function ConnectedApps() {
         primaryAction,
         expandedContent: (
           <div className="text-sm text-muted-foreground pt-2">
-            {app.connected
-              ? `Manage your ${app.name} integration settings and permissions.`
+            {isConnected
+              ? isGoogle
+                ? `${app.name} is linked to ${googleConnection?.username ?? 'your Google account'}.`
+                : `Manage your ${app.name} integration settings and permissions.`
               : app.comingSoon
                 ? `${app.name} integration is coming soon!`
                 : `Connect ${app.name} to sync ${app.description.toLowerCase()} with Vitana.`}
@@ -877,22 +964,36 @@ function ConnectedApps() {
       },
     ];
 
-    return apps.map((app) => ({
-      id: `media-${app.id}`,
-      screenId: "settings-connected-apps",
-      icon: <app.icon className="w-5 h-5" />,
-      title: app.name,
-      description: app.description,
-      primaryAction: {
-        label: 'Connect',
-        onClick: () => console.log(`Connect ${app.name}`),
-      },
-      expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          Connect {app.name} to enable {app.description.toLowerCase()} through Vitana.
-        </div>
-      ),
-    }));
+    return apps.map((app) => {
+      const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
+      const isConnected = isGoogle && googleConnected;
+      return {
+        id: `media-${app.id}`,
+        screenId: "settings-connected-apps",
+        icon: <app.icon className="w-5 h-5" />,
+        title: app.name,
+        description: app.description,
+        badges: isConnected
+          ? [{ label: 'Connected', variant: 'default' as const }]
+          : undefined,
+        primaryAction: isConnected
+          ? { label: 'Manage', onClick: () => console.log(`Manage ${app.name}`) }
+          : isGoogle
+            ? {
+                label: 'Connect',
+                onClick: () => startGoogleFlow(app.id),
+                disabled: startGoogle.isPending,
+              }
+            : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) },
+        expandedContent: (
+          <div className="text-sm text-muted-foreground pt-2">
+            {isConnected
+              ? `${app.name} is linked to ${googleConnection?.username ?? 'your Google account'}.`
+              : `Connect ${app.name} to enable ${app.description.toLowerCase()} through Vitana.`}
+          </div>
+        ),
+      };
+    });
   };
 
   // Data sync & preferences

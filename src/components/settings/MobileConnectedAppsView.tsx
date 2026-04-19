@@ -33,6 +33,13 @@ import {
 // VTID-02403: AI Assistants hooks + modal for mobile
 import { useAIProviders, type AIProviderId } from "@/hooks/useAIAssistants";
 import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
+// VTID-01928: Google OAuth for Gmail/Calendar/Contacts/YouTube/YouTube Music
+import {
+  useStartGoogleConnect,
+  useSocialConnections,
+  GOOGLE_CONNECTOR_IDS,
+} from "@/hooks/useGoogleConnect";
+import { useEffect } from "react";
 
 // Social platform icons for the import dialog
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -83,6 +90,42 @@ export function MobileConnectedAppsView() {
   const { data: aiProvidersData = [] } = useAIProviders();
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
 
+  // VTID-01928: Google connector state
+  const { data: socialConnections = [] } = useSocialConnections();
+  const startGoogle = useStartGoogleConnect();
+  const googleConnection = socialConnections.find((c) => c.provider === "google");
+  const googleConnected = Boolean(googleConnection);
+
+  // Surface a toast when returning from the Google OAuth callback.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const connected = params.get("connected");
+    const errorCode = params.get("error");
+    if (connected === "google") {
+      const username = params.get("username") || "";
+      toast({
+        title: "Google connected",
+        description: username
+          ? `Gmail, Calendar, Contacts and YouTube are now linked to ${username}.`
+          : "Gmail, Calendar, Contacts and YouTube are now linked.",
+      });
+      params.delete("connected");
+      params.delete("username");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    } else if (errorCode && params.get("provider") === "google") {
+      toast({
+        title: "Google sign-in didn't finish",
+        description: errorCode.replace(/_/g, " "),
+        variant: "destructive",
+      });
+      params.delete("error");
+      params.delete("provider");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    }
+  }, [toast]);
+
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
   const [socialImportPlatform, setSocialImportPlatform] = useState<SocialPlatform>('linkedin');
@@ -112,12 +155,26 @@ export function MobileConnectedAppsView() {
     };
   });
 
+  // VTID-01928: paint the Connected badge on every Google-backed integration
+  // (Gmail, Google Calendar, Google Contacts, YouTube, YouTube Music) whenever
+  // the single Google connection is active.
+  const applyGoogleStatus = (integrations: Integration[]): Integration[] =>
+    integrations.map((integration) => {
+      if (!GOOGLE_CONNECTOR_IDS.has(integration.id)) return integration;
+      if (!googleConnected) return integration;
+      return {
+        ...integration,
+        connected: true,
+        lastSync: googleConnection?.connected_at,
+      };
+    });
+
   const filteredAi = filterIntegrations(aiIntegrationsLive);
   const filteredSocial = filterIntegrations(socialIntegrations);
   const filteredFitness = filterIntegrations(fitnessIntegrations);
   const filteredHealth = filterIntegrations(healthIntegrations);
-  const filteredProductivity = filterIntegrations(productivityIntegrations);
-  const filteredMedia = filterIntegrations(mediaIntegrations);
+  const filteredProductivity = filterIntegrations(applyGoogleStatus(productivityIntegrations));
+  const filteredMedia = filterIntegrations(applyGoogleStatus(mediaIntegrations));
   const filteredOther = filterIntegrations(otherIntegrations);
 
   // Handle connect action
@@ -125,6 +182,20 @@ export function MobileConnectedAppsView() {
     // VTID-02403: AI Assistants open the paste-key modal
     if (integration.category === 'ai' && (integration.id === 'chatgpt' || integration.id === 'claude')) {
       setAiModalProvider(integration.id as AIProviderId);
+      return;
+    }
+    // VTID-01928: Google connectors initiate OAuth via gateway
+    if (GOOGLE_CONNECTOR_IDS.has(integration.id)) {
+      startGoogle.mutate(undefined, {
+        onError: (err: unknown) => {
+          const message = err instanceof Error ? err.message : String(err);
+          toast({
+            title: "Couldn't start Google sign-in",
+            description: message,
+            variant: "destructive",
+          });
+        },
+      });
       return;
     }
     // Check if it's a social platform
