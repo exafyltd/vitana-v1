@@ -41,6 +41,7 @@ import { useMarketplaceFeed, formatPrice, getRedirectUrl, type MarketplaceProduc
 import { MarketplaceProductCard } from '@/components/discover/MarketplaceProductCard';
 import { ScopeSelector } from '@/components/discover/ScopeSelector';
 import { HiddenByLimitationsFooter } from '@/components/discover/HiddenByLimitationsFooter';
+import { AffiliateDisclosure } from '@/components/discover/AffiliateDisclosure';
 import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
 import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
 
@@ -437,6 +438,7 @@ function DiscoverInner() {
                   )}
                   {/* VTID-02000: Transparency footer — hidden products count */}
                   <HiddenByLimitationsFooter breakdown={feedData?.hidden_breakdown} />
+                  <AffiliateDisclosure className="mt-3" />
                 </CardContent>
               </Card>
             </SplitBarContent>

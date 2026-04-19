@@ -35,6 +35,7 @@ import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { ProductImage } from "@/components/discover/ProductImage";
+import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import {
   useMarketplaceProduct,
   formatPrice,
@@ -388,11 +389,14 @@ export default function ProductDetail() {
           </div>
 
           <Separator />
-          <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-            This product card is informational. Always consult a qualified practitioner before
-            starting a new supplement, especially if you are pregnant, nursing, or taking
-            medication.
-          </p>
+          <div className="max-w-2xl space-y-2">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              This product card is informational. Always consult a qualified practitioner before
+              starting a new supplement, especially if you are pregnant, nursing, or taking
+              medication.
+            </p>
+            <AffiliateDisclosure />
+          </div>
         </div>
       </div>
     </AppLayout>
