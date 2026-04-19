@@ -1,18 +1,19 @@
-import { 
-  Heart, 
-  Activity, 
-  Watch, 
-  Moon, 
-  Brain, 
-  Home, 
-  Hospital, 
-  TestTube, 
-  MessageCircle, 
-  CreditCard, 
-  Code, 
+import {
+  Heart,
+  Activity,
+  Watch,
+  Moon,
+  Brain,
+  Home,
+  Hospital,
+  TestTube,
+  MessageCircle,
+  CreditCard,
+  Code,
   Apple,
   Utensils,
   Share2,
+  Sparkles,
   LucideIcon
 } from "lucide-react";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -30,7 +31,8 @@ export interface Integration {
   syncData: string;
   lastSync?: string;
   comingSoon?: boolean;
-  category: 'social' | 'fitness' | 'health' | 'other';
+  // VTID-02403: extended category list to include 'ai' for AI Assistants (ChatGPT, Claude)
+  category: 'social' | 'fitness' | 'health' | 'other' | 'ai';
 }
 
 // Social & Sharing integrations
@@ -248,8 +250,29 @@ export const otherIntegrations: Integration[] = [
   },
 ];
 
+// VTID-02403: AI Assistants (ChatGPT + Claude) — live status resolved at render time in MobileConnectedAppsView.
+export const aiAssistantsIntegrations: Integration[] = [
+  {
+    id: 'chatgpt',
+    name: 'ChatGPT',
+    icon: Sparkles,
+    connected: false,
+    syncData: 'OpenAI API — chat, reasoning',
+    category: 'ai',
+  },
+  {
+    id: 'claude',
+    name: 'Claude',
+    icon: Sparkles,
+    connected: false,
+    syncData: 'Anthropic API — chat, reasoning',
+    category: 'ai',
+  },
+];
+
 // Get all integrations
 export const getAllIntegrations = (): Integration[] => [
+  ...aiAssistantsIntegrations,
   ...socialIntegrations,
   ...fitnessIntegrations,
   ...healthIntegrations,

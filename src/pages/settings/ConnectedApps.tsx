@@ -50,12 +50,23 @@ import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileConnectedAppsView } from "@/components/settings/MobileConnectedAppsView";
 import { VaeaChannelsPanel } from "@/components/business/vaea/VaeaChannelsPanel";
+// VTID-02403: AI Subscription Connect Phase 1
+import {
+  useAIProviders,
+  useDisconnectAIProvider,
+  type AIProviderId,
+} from "@/hooks/useAIAssistants";
+import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("connected");
   const { allPlatforms, loading } = useSocialPlatforms();
+  // VTID-02403: AI Assistants state
+  const { data: aiProviders = [] } = useAIProviders();
+  const disconnectAi = useDisconnectAIProvider();
+  const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
 
   // Mobile view - simplified, native-feeling experience
   if (isMobile) {
@@ -102,6 +113,93 @@ function ConnectedApps() {
         ) : (
           <div className="text-sm text-muted-foreground pt-2">
             Connect your {platform.name} account to share content directly and track engagement.
+          </div>
+        ),
+      };
+    });
+  };
+
+  // VTID-02403: AI Assistants cards (ChatGPT + Claude)
+  const getAIAssistantsCards = (): StandardHorizontalCardProps[] => {
+    // If the backend hasn't responded yet, show the known two providers as "available" skeletons.
+    const fallback: Array<{ provider: AIProviderId; display_name: string; description: string }> = [
+      { provider: "chatgpt", display_name: "ChatGPT", description: "OpenAI API — chat, reasoning, drafting" },
+      { provider: "claude", display_name: "Claude", description: "Anthropic API — chat, reasoning, long context" },
+    ];
+    const source = aiProviders.length > 0
+      ? aiProviders.map((p) => ({
+        provider: p.provider as AIProviderId,
+        display_name: p.display_name,
+        description: p.description || `${p.display_name} via user-supplied API key`,
+        status: p.status,
+        last_verify_status: p.last_verify_status,
+        last_verified_at: p.last_verified_at,
+      }))
+      : fallback.map((p) => ({ ...p, status: "available" as const, last_verify_status: null, last_verified_at: null }));
+
+    return source.map((p) => {
+      const isConnected = p.status === "connected";
+      const isDisabled = p.status === "disabled";
+      const badges: StandardHorizontalCardProps["badges"] =
+        isConnected && p.last_verify_status === "ok"
+          ? [{ label: "Active", variant: "default" as const }]
+          : isConnected
+            ? [{ label: "Connected (not verified)", variant: "secondary" as const }]
+            : isDisabled
+              ? [{ label: "Disabled for tenant", variant: "secondary" as const }]
+              : undefined;
+      return {
+        id: `ai-${p.provider}`,
+        screenId: "settings-connected-apps",
+        icon: <Sparkles className="w-5 h-5" />,
+        title: p.display_name,
+        description: p.description,
+        badges,
+        primaryAction: isDisabled
+          ? undefined
+          : isConnected
+            ? {
+              label: "Manage",
+              onClick: () => setAiModalProvider(p.provider),
+              variant: "ghost" as const,
+            }
+            : {
+              label: "Connect",
+              onClick: () => setAiModalProvider(p.provider),
+            },
+        expandedContent: isConnected ? (
+          <div className="space-y-3 pt-2">
+            <div className="text-sm">
+              <strong>Status:</strong> {p.last_verify_status || "unverified"}
+            </div>
+            {p.last_verified_at && (
+              <div className="text-sm text-muted-foreground">
+                Last verified: {new Date(p.last_verified_at).toLocaleString()}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAiModalProvider(p.provider)}
+              >
+                Replace key
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => disconnectAi.mutate({ provider: p.provider })}
+                disabled={disconnectAi.isPending}
+              >
+                Disconnect
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground pt-2">
+            {isDisabled
+              ? `${p.display_name} is not enabled for this community.`
+              : `Paste your ${p.display_name} API key to enable your personal AI assistant. Keys are encrypted at rest and never exposed again.`}
           </div>
         ),
       };
@@ -1423,6 +1521,24 @@ function ConnectedApps() {
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
         <SplitBarContent value="connected">
           <div className="space-y-8">
+            {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5" />
+                AI Assistants
+              </h2>
+              <HorizontalCardList
+                items={getAIAssistantsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="ai-assistants"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
             {/* Social Media */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -1891,9 +2007,16 @@ function ConnectedApps() {
         </div>
       </div>
 
-      <ConnectAppPopup 
-        isOpen={actionPopupOpen} 
-        onClose={() => setActionPopupOpen(false)} 
+      <ConnectAppPopup
+        isOpen={actionPopupOpen}
+        onClose={() => setActionPopupOpen(false)}
+      />
+
+      {/* VTID-02403: AI Assistant paste-key modal */}
+      <AIAssistantConnectModal
+        open={aiModalProvider !== null}
+        provider={aiModalProvider}
+        onClose={() => setAiModalProvider(null)}
       />
     </AppLayout>
   );
