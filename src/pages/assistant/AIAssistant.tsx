@@ -66,7 +66,7 @@ export default function AIAssistant() {
               </TabsTrigger>
               <TabsTrigger value="referrals" className="shrink-0">
                 <span className="md:hidden">Referrals</span>
-                <span className="hidden md:inline">Referrals (VAEA)</span>
+                <span className="hidden md:inline">Referrals</span>
               </TabsTrigger>
             </TabsList>
 

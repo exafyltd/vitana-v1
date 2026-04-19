@@ -67,7 +67,7 @@ export function MobileConnectedAppsView() {
     { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
     { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
     { value: 'other', label: translate('connectedApps.sections.other', 'Other'), icon: '🔧' },
-    { value: 'agent', label: translate('connectedApps.sections.agent', 'Agent'), icon: '📡' },
+    { value: 'agent', label: translate('connectedApps.sections.agent', 'Autopilot'), icon: '📡' },
   ];
   
   // Social media import dialog state

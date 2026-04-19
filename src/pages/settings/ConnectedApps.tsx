@@ -1416,7 +1416,7 @@ function ConnectedApps() {
           </SplitBarTrigger>
           <SplitBarTrigger value="agent-ingest" className="flex-1 flex items-center justify-center gap-1.5">
             <Radio className="w-4 h-4" />
-            Agent Ingest
+            Autopilot
           </SplitBarTrigger>
         </SplitBarList>
 
