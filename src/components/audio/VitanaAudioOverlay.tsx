@@ -66,6 +66,7 @@ export function VitanaAudioOverlay() {
     isListening,
     isProcessing,
     isSpeaking,
+    isReconnecting,
     error,
     volumeLevel,
     connect,
@@ -114,36 +115,40 @@ export function VitanaAudioOverlay() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioOverlayVisible, consentSatisfied]);
 
-  // Auto-resume listening after AI finishes speaking (unless user muted)
+  // Auto-resume listening after AI finishes speaking (unless user muted).
+  // Also skipped during `isReconnecting` — we don't want to flip the mic/UI
+  // back to "listening" while the upstream WS is still being re-established.
   useEffect(() => {
-    if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
+    if (
+      !isSpeaking &&
+      !isProcessing &&
+      !isReconnecting &&
+      !micMuted &&
+      connectionState === 'ready' &&
+      !isListening
+    ) {
       startListening();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]);
+  }, [isSpeaking, isProcessing, isReconnecting, micMuted, connectionState, isListening]);
 
-  // Map states to visual feedback
-  const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
+  // Map states to visual feedback. `reconnecting` wins over listening/idle
+  // so the user never sees "I'm listening..." while the stream is down.
+  const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' | 'reconnecting' =
     error ? 'error' :
+    isReconnecting ? 'reconnecting' :
     isSpeaking ? 'speaking' :
     isProcessing ? 'processing' :
     isListening ? 'listening' :
     connectionState === 'ready' ? 'idle' :
     'idle';
-  
-  const errorMessage = error || undefined;
 
-  // Get connection status message
-  const getConnectionStatus = () => {
-    if (error) return error;
-    if (isSpeaking) return 'VITANA is speaking...';
-    if (isProcessing) return 'Thinking...';
-    if (isListening) return "I'm listening...";
-    if (connectionState === 'connecting') return 'Setting up AI connection...';
-    if (connectionState === 'ready' && !isSpeaking && !isListening) return 'Ready - say something or press the mic';
-    if (connectionState === 'disconnected') return 'Connection lost — tap the orb to reconnect';
-    return 'Connecting...';
-  };
+  // VitanalandPortalSeed only understands the original union — map
+  // `reconnecting` to `processing` for the visual so it pulses.
+  const portalAudioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' =
+    audioState === 'reconnecting' ? 'processing' : audioState;
+
+  const errorMessage = error || undefined;
 
   // Handle ESC key
   useEffect(() => {
@@ -284,8 +289,8 @@ export function VitanaAudioOverlay() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <VitanalandPortalSeed 
-              audioState={audioState} 
+            <VitanalandPortalSeed
+              audioState={portalAudioState}
               volumeLevel={volumeLevel}
               size="lg"
               layoutId="vitana-orb"

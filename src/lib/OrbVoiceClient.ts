@@ -20,6 +20,7 @@ export type OrbVoiceClientCallbacks = {
   onListeningChange?: (isListening: boolean) => void;
   onSpeakingChange?: (isSpeaking: boolean) => void;
   onProcessingChange?: (isProcessing: boolean) => void;
+  onReconnectingChange?: (isReconnecting: boolean) => void;
   onVolumeChange?: (volume: number) => void;
 };
 
@@ -64,6 +65,16 @@ export class OrbVoiceClient {
 
   // Explicit internal listening state - gates audio sending
   private _isListening: boolean = false;
+
+  // Reconnect tracking — keeps UI in sync with real WS state
+  private _isReconnecting: boolean = false;
+  private _wasListeningBeforeReconnect: boolean = false;
+
+  // SSE stream watchdog: if no SSE traffic for STREAM_STALE_MS while we
+  // believe we're listening, treat as a silent disconnect and surface it.
+  private lastSseMessageAt: number = 0;
+  private streamWatchdogInterval: ReturnType<typeof setInterval> | null = null;
+  private readonly STREAM_STALE_MS = 20000; // 20s without any SSE message = stale
 
   // Sequential audio upload queue
   private audioQueue: string[] = [];
@@ -229,9 +240,17 @@ export class OrbVoiceClient {
 
     this.eventSource.onopen = () => {
       console.log('[OrbVoiceClient] SSE connected');
+      this.lastSseMessageAt = Date.now();
+      // If we were in a reconnecting state because the browser EventSource
+      // dropped the connection, clear it on re-open.
+      if (this._isReconnecting) {
+        this.handleReconnected();
+      }
     };
 
     this.eventSource.onmessage = (event) => {
+      // Mark any SSE traffic as liveness — keeps stream watchdog happy.
+      this.lastSseMessageAt = Date.now();
       try {
         const msg = JSON.parse(event.data);
 
@@ -267,6 +286,25 @@ export class OrbVoiceClient {
             console.log('[OrbVoiceClient] Turn complete received');
             this.handleTurnComplete();
             break;
+          case 'reconnecting':
+            // Backend is transparently reconnecting the upstream model WS.
+            // Pause mic so the user stops talking into the void, and flip UI.
+            console.warn('[OrbVoiceClient] Upstream reconnecting — pausing mic', msg);
+            this.handleReconnecting();
+            break;
+          case 'reconnected':
+            console.log('[OrbVoiceClient] Upstream reconnected — resuming', msg);
+            this.handleReconnected();
+            break;
+          case 'connection_issue':
+          case 'live_api_disconnected':
+            // Hard disconnect — reconnection failed or genuine upstream loss.
+            console.error('[OrbVoiceClient] Connection issue from server', msg);
+            this.callbacks.onError?.(msg.message || 'Voice connection lost');
+            if (msg.should_close) {
+              this.stop();
+            }
+            break;
           case 'error':
             this.callbacks.onError?.(msg.message);
             break;
@@ -280,8 +318,90 @@ export class OrbVoiceClient {
     };
 
     this.eventSource.onerror = (error) => {
-      console.warn('[OrbVoiceClient] SSE connection issue', error);
+      // EventSource auto-reconnects with backoff; reflect that in the UI
+      // so the user sees "reconnecting" instead of a stale "I'm listening".
+      console.warn('[OrbVoiceClient] SSE connection issue — entering reconnecting state', error);
+      this.handleReconnecting();
     };
+
+    // Start stream watchdog — detect silent stalls the server can't signal.
+    this.startStreamWatchdog();
+  }
+
+  /**
+   * Enter reconnecting state: pause mic, flip UI, remember prior listening.
+   * Safe to call multiple times — idempotent.
+   */
+  private handleReconnecting(): void {
+    if (this._isReconnecting) return;
+    this._isReconnecting = true;
+
+    // Remember whether user was actively listening, so we can restore it.
+    this._wasListeningBeforeReconnect = this._isListening;
+
+    // Gate audio sending immediately — even if mic keeps capturing, nothing
+    // new enters the queue, so we don't pile up chunks during the gap.
+    this._isListening = false;
+    this.audioQueue.length = 0; // drop any queued chunks — they'd arrive after reconnect
+    if (this.recorder && !this.recorder.isMuted) {
+      this.recorder.mute();
+    }
+
+    this.callbacks.onSpeakingChange?.(false);
+    this.callbacks.onProcessingChange?.(false);
+    this.callbacks.onListeningChange?.(false);
+    this.callbacks.onVolumeChange?.(0);
+    this.callbacks.onReconnectingChange?.(true);
+  }
+
+  /**
+   * Leave reconnecting state: optionally resume listening if that's where
+   * the user was before the drop.
+   */
+  private handleReconnected(): void {
+    if (!this._isReconnecting) return;
+    this._isReconnecting = false;
+    this.callbacks.onReconnectingChange?.(false);
+
+    if (this._wasListeningBeforeReconnect) {
+      this._wasListeningBeforeReconnect = false;
+      // Resume listening via the normal path (unmutes recorder, restarts VAD).
+      this.startListening().catch((e) => {
+        console.warn('[OrbVoiceClient] Failed to resume listening after reconnect:', e);
+      });
+    }
+  }
+
+  /**
+   * Poll for SSE staleness — if no traffic for STREAM_STALE_MS while the
+   * session is active, surface a reconnecting state even if the browser
+   * EventSource hasn't fired onerror yet (which is common on mobile radio
+   * sleep or flaky networks).
+   */
+  private startStreamWatchdog(): void {
+    this.stopStreamWatchdog();
+    this.streamWatchdogInterval = setInterval(() => {
+      if (!this.sessionId || !this.eventSource) return;
+      if (this._isReconnecting) return;
+      // Only consider it a stall if we actually expect traffic — i.e. we're
+      // listening (mic hot) or the model is mid-turn. An idle session with
+      // no activity is normal and shouldn't flip UI.
+      if (!this._isListening) return;
+      const silentFor = Date.now() - this.lastSseMessageAt;
+      if (silentFor > this.STREAM_STALE_MS) {
+        console.warn(
+          `[OrbVoiceClient] SSE silent for ${silentFor}ms while listening — treating as reconnecting`
+        );
+        this.handleReconnecting();
+      }
+    }, 5000);
+  }
+
+  private stopStreamWatchdog(): void {
+    if (this.streamWatchdogInterval) {
+      clearInterval(this.streamWatchdogInterval);
+      this.streamWatchdogInterval = null;
+    }
   }
 
   private async initAudioOutput(): Promise<void> {
@@ -546,16 +666,25 @@ export class OrbVoiceClient {
       });
 
       if (resp.ok) {
+        const wasReconnecting = this._isReconnecting;
         this.consecutiveSendErrors = 0;
         if (this.diagnostics) {
           this.diagnostics.chunksSent++;
           this.diagnostics.lastSuccessfulSendAt = Date.now();
+        }
+        // A successful upload after a stretch of failures means we've
+        // recovered — leave the reconnecting state so the UI updates.
+        if (wasReconnecting) {
+          this.handleReconnected();
         }
       } else {
         this.consecutiveSendErrors++;
         if (this.diagnostics) this.diagnostics.chunksFailed++;
         if (this.consecutiveSendErrors === 1) {
           console.warn(`[OrbVoiceClient] Send failed: status=${resp.status}`);
+          // Surface the trouble to the UI immediately rather than silently
+          // dropping chunks until we cross MAX_SEND_ERRORS (~5–10s of void).
+          this.handleReconnecting();
         }
         if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
           console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (status=${resp.status}) — session broken, stopping`);
@@ -568,6 +697,9 @@ export class OrbVoiceClient {
     } catch (e) {
       this.consecutiveSendErrors++;
       if (this.diagnostics) this.diagnostics.chunksFailed++;
+      if (this.consecutiveSendErrors === 1) {
+        this.handleReconnecting();
+      }
       if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
         console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (network) — session broken, stopping`);
         this.logDiagnostics('session_broken_network');
@@ -606,9 +738,10 @@ export class OrbVoiceClient {
     this.clearTurnCompleteTimeout();
     this.callbacks.onProcessingChange?.(false);
     this.callbacks.onSpeakingChange?.(false);
-    
-    // Re-enable listening after AI finishes its turn
-    if (this.recorder && !this._isListening) {
+
+    // Re-enable listening after AI finishes its turn — unless we're
+    // mid-reconnect, where the UI should stay paused until `reconnected`.
+    if (this.recorder && !this._isListening && !this._isReconnecting) {
       this.startListening();
     }
   }
@@ -750,6 +883,14 @@ export class OrbVoiceClient {
     this.logDiagnostics('session_stop');
 
     this._isListening = false;
+
+    // Reset reconnect bookkeeping and stop the stream watchdog.
+    this.stopStreamWatchdog();
+    if (this._isReconnecting) {
+      this._isReconnecting = false;
+      this.callbacks.onReconnectingChange?.(false);
+    }
+    this._wasListeningBeforeReconnect = false;
 
     // Clear silence detection
     if (this.silenceTimer) {
