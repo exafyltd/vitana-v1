@@ -3,6 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from '@/components/CreateEventPopup';
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -478,19 +479,19 @@ const Events = () => {
               emoji="📅"
             />
 
-            <div className="flex items-center gap-3 flex-wrap">
+            <UtilityActionButton>
               <ExpandableSearchButton />
-              <UniversalCalendarButton 
-                variant="outline" 
-                size="sm" 
-                showEventCount={true} 
-                showConflictIndicator={true} 
+              <UniversalCalendarButton
+                variant="outline"
+                size="sm"
+                showEventCount={true}
+                showConflictIndicator={true}
               />
               <Button size="sm" onClick={() => setCreateEventOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Create Event
               </Button>
-            </div>
+            </UtilityActionButton>
 
             <SplitBar defaultValue="today" onValueChange={setActiveTab}>
               <SplitBarList>
