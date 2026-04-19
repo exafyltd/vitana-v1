@@ -719,11 +719,11 @@ const App = () => {
               <Orders />
             </AuthGuard>
           } />
-          <Route path="/discover/product/:id" element={
-            <AuthGuard>
-              <ProductDetail />
-            </AuthGuard>
-          } />
+          {/* Public product detail — anonymous landings from OG share links
+              must render the product page, not the portal selector.
+              The Add-to-Cart button inside has its own auth gate that
+              redirects to sign-in when an unauthenticated user tries to buy. */}
+          <Route path="/discover/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={
             <AuthGuard>
               <Cart />
