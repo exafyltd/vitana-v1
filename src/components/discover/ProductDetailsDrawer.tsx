@@ -28,6 +28,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useProductSelection } from "@/context/ProductSelectionContext";
 import { formatPrice, getRedirectUrl } from "@/hooks/useMarketplace";
 import { ProductImage } from "@/components/discover/ProductImage";
+import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 
 export function ProductDetailsDrawer() {
@@ -305,6 +306,7 @@ function DrawerBody() {
           This product card is informational. Always consult a qualified practitioner before
           starting a new supplement, especially if you are pregnant, nursing, or on medication.
         </p>
+        <AffiliateDisclosure compact />
       </div>
 
       {/* Sticky action bar */}

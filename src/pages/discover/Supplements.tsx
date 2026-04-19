@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { useMarketplaceSearch, type MarketplaceSearchParams, type MarketplaceProduct } from "@/hooks/useMarketplace";
 import { HiddenByLimitationsFooter } from "@/components/discover/HiddenByLimitationsFooter";
+import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { ProductDetailsDrawer } from "@/components/discover/ProductDetailsDrawer";
 import { useProductSelection, ProductSelectionProvider } from "@/context/ProductSelectionContext";
@@ -340,6 +341,7 @@ function SupplementsInner() {
             </div>
           )}
           <HiddenByLimitationsFooter breakdown={searchData?.hidden_breakdown} />
+          <AffiliateDisclosure className="mt-3" />
             </SplitBarContent>
 
             <SplitBarContent value="picks" className="space-y-6">
