@@ -7,11 +7,17 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
-import { Upload, X, Music, Mic, Video } from 'lucide-react';
+import { Upload, X, Music, Mic, Video, Sparkles, RotateCw, Loader2 } from 'lucide-react';
 import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { useVideoUpload } from '@/hooks/useVideoUpload';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
+import { SHORTS_TAG_IDS } from '@/lib/shortsTags';
+import {
+  useAutoShortMetadata,
+  autoMetadataErrorCopy,
+} from '@/hooks/useAutoShortMetadata';
+import { readVideoDuration } from '@/lib/videoKeyframes';
 
 interface UnifiedUploadModalProps {
   open: boolean;
@@ -20,11 +26,10 @@ interface UnifiedUploadModalProps {
   initialMediaType?: 'music' | 'podcast' | 'video';
 }
 
-// Stable IDs for predefined tags - translate display names dynamically
-const PREDEFINED_TAG_IDS = [
-  'nutrition', 'sleep', 'longevity', 'motivation', 'mindfulness',
-  'fitness', 'mentalHealth', 'wellness', 'education', 'lifestyle'
-] as const;
+// Stable IDs for predefined tags - translate display names dynamically.
+// Canonical list lives in `@/lib/shortsTags` and is mirrored server-side in
+// vitana-platform for the Smart Upload validator.
+const PREDEFINED_TAG_IDS = SHORTS_TAG_IDS;
 
 const SIZE_LIMITS = {
   music: { max: 50, text: 'MP3, WAV, FLAC (max 50MB)' },
@@ -54,6 +59,11 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
+  // Smart Upload (video only) — auto-generated metadata summary + Edit details.
+  const autoMetadata = useAutoShortMetadata();
+  const [autoApplied, setAutoApplied] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
+
   const { uploadMedia, isUploading: isMediaUploading, progress: mediaProgress } = useMediaUpload();
   const { uploadVideo, isUploading: isVideoUploading, progress: videoProgress } = useVideoUpload();
 
@@ -69,11 +79,53 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
     }
   }, [open, initialMediaType]);
 
+  const runAutoMetadata = async (selectedFile: File) => {
+    const duration = await readVideoDuration(selectedFile);
+    const metadata = await autoMetadata.generate(
+      selectedFile,
+      duration || undefined,
+    );
+    if (!metadata) {
+      // Failure — autoMetadata.error holds the code. Show the manual form so the
+      // user isn't blocked.
+      setAutoApplied(false);
+      setDetailsExpanded(true);
+      return;
+    }
+    setTitle(metadata.title.slice(0, 100));
+    setDescription(metadata.description.slice(0, 500));
+    setTopic(metadata.category);
+    setTags(metadata.tags);
+    setAutoApplied(true);
+    setDetailsExpanded(false);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
+    if (!selectedFile) return;
+    setFile(selectedFile);
+
+    // Reset any prior auto-fill state when the user picks a new file.
+    autoMetadata.reset();
+    setAutoApplied(false);
+    setDetailsExpanded(false);
+
+    if (mediaType === 'video') {
+      void runAutoMetadata(selectedFile);
+    } else {
+      // Non-video uploads keep the existing manual-only flow.
+      setDetailsExpanded(true);
     }
+  };
+
+  const handleRegenerate = () => {
+    if (!file || mediaType !== 'video') return;
+    void runAutoMetadata(file);
+  };
+
+  const handleCancelAuto = () => {
+    autoMetadata.cancel();
+    setDetailsExpanded(true);
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,6 +195,9 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
       setThumbnailFile(null);
       setThumbnailPreview(null);
       setVisibility('public');
+      autoMetadata.reset();
+      setAutoApplied(false);
+      setDetailsExpanded(false);
       onOpenChange(false);
     }
   };
@@ -266,9 +321,127 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
             </div>
           )}
 
-          {/* Common Fields */}
+          {/* Smart Upload — video only. Three states: loading, auto-applied, error. */}
+          {mediaType === 'video' && file && autoMetadata.loading && (
+            <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-2">
+              <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
+                <Sparkles className="w-4 h-4" />
+                Analyzing your video…
+              </div>
+              <div className="space-y-2">
+                <div className="h-3 w-3/4 rounded bg-violet-200/60 animate-pulse" />
+                <div className="h-3 w-1/2 rounded bg-violet-200/60 animate-pulse" />
+                <div className="h-3 w-2/3 rounded bg-violet-200/60 animate-pulse" />
+              </div>
+              <div className="flex items-center justify-between pt-1">
+                <p className="text-xs text-muted-foreground">Usually 2–5 seconds</p>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCancelAuto}
+                  disabled={isUploading}
+                >
+                  Skip & fill manually
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {mediaType === 'video' && file && autoMetadata.error && !autoMetadata.loading && (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 flex items-start gap-2">
+              <div className="flex-1 text-sm text-amber-900">
+                {autoMetadataErrorCopy(autoMetadata.error)}
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleRegenerate}
+                disabled={isUploading || autoMetadata.loading}
+                className="text-amber-900 hover:text-amber-950"
+              >
+                <RotateCw className="w-3.5 h-3.5 mr-1" />
+                Retry
+              </Button>
+            </div>
+          )}
+
+          {mediaType === 'video' &&
+            file &&
+            autoApplied &&
+            !detailsExpanded &&
+            !autoMetadata.loading && (
+              <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
+                    <Sparkles className="w-4 h-4" />
+                    Smart-filled from your video
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRegenerate}
+                    disabled={isUploading || autoMetadata.loading}
+                    className="text-violet-700 hover:text-violet-800 h-7 px-2"
+                  >
+                    {autoMetadata.loading ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <RotateCw className="w-3.5 h-3.5" />
+                    )}
+                    <span className="ml-1 text-xs">Regenerate</span>
+                  </Button>
+                </div>
+                <dl className="text-sm space-y-1.5">
+                  <div className="flex gap-2">
+                    <dt className="text-muted-foreground min-w-[80px] shrink-0">Title</dt>
+                    <dd className="font-medium text-foreground">{title || '—'}</dd>
+                  </div>
+                  {description && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Description</dt>
+                      <dd className="text-foreground line-clamp-2">{description}</dd>
+                    </div>
+                  )}
+                  {topic && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Category</dt>
+                      <dd className="text-foreground">
+                        {translate(`mediaHub.upload.predefinedTags.${topic}`) || topic}
+                      </dd>
+                    </div>
+                  )}
+                  {tags.length > 0 && (
+                    <div className="flex gap-2">
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Tags</dt>
+                      <dd className="text-foreground">
+                        {tags
+                          .map((t) => translate(`mediaHub.upload.predefinedTags.${t}`) || t)
+                          .join(', ')}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setDetailsExpanded(true)}
+                  disabled={isUploading}
+                  className="w-full"
+                >
+                  Edit details
+                </Button>
+              </div>
+            )}
+
+          {/* Common Fields — hidden for video when auto-fill is applied and user hasn't clicked Edit details */}
           {mediaType && (
             <>
+              {(mediaType !== 'video' || detailsExpanded || autoMetadata.error) && (
+                <>
               <div className="space-y-2">
                 <Label htmlFor="title">{translate('mediaHub.upload.titleLabel')} ({title.length}/100)</Label>
                 <Input
@@ -292,6 +465,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                   rows={3}
                 />
               </div>
+                </>
+              )}
 
               {/* Type-Specific Fields */}
               {mediaType === 'music' && (
@@ -346,17 +521,19 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
 
               {mediaType === 'video' && (
                 <>
-                  <div className="space-y-2">
-                    <Label htmlFor="topic">{translate('mediaHub.upload.topic')}</Label>
-                    <Input
-                      id="topic"
-                      value={topic}
-                      onChange={(e) => setTopic(e.target.value)}
-                      placeholder={translate('mediaHub.upload.topicPlaceholder')}
-                      disabled={isUploading}
-                    />
-                  </div>
-                  
+                  {(detailsExpanded || autoMetadata.error) && (
+                    <div className="space-y-2">
+                      <Label htmlFor="topic">{translate('mediaHub.upload.topic')}</Label>
+                      <Input
+                        id="topic"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                        placeholder={translate('mediaHub.upload.topicPlaceholder')}
+                        disabled={isUploading}
+                      />
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <Label htmlFor="thumbnail">{translate('mediaHub.upload.thumbnail')}</Label>
                     <div className={cn(
@@ -406,28 +583,30 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 </>
               )}
 
-              {/* Tags */}
-              <div className="space-y-3">
-                <Label>{translate('mediaHub.upload.tags')}</Label>
-                <div className="flex flex-wrap gap-2">
-                  {PREDEFINED_TAG_IDS.map((tagId) => (
-                    <button
-                      key={tagId}
-                      type="button"
-                      onClick={() => toggleTag(tagId)}
-                      disabled={isUploading}
-                      className={cn(
-                        "px-3 py-1 rounded-full text-sm transition-colors",
-                        tags.includes(tagId)
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                      )}
-                    >
-                      {translate(`mediaHub.upload.predefinedTags.${tagId}`)}
-                    </button>
-                  ))}
+              {/* Tags — hidden for video when auto-fill is applied */}
+              {(mediaType !== 'video' || detailsExpanded || autoMetadata.error) && (
+                <div className="space-y-3">
+                  <Label>{translate('mediaHub.upload.tags')}</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {PREDEFINED_TAG_IDS.map((tagId) => (
+                      <button
+                        key={tagId}
+                        type="button"
+                        onClick={() => toggleTag(tagId)}
+                        disabled={isUploading}
+                        className={cn(
+                          "px-3 py-1 rounded-full text-sm transition-colors",
+                          tags.includes(tagId)
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                        )}
+                      >
+                        {translate(`mediaHub.upload.predefinedTags.${tagId}`)}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Visibility */}
               {mediaType !== 'video' && (
