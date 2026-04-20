@@ -27,7 +27,9 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { tenant, isExafyAdmin } = useTenant();
   const { signOut } = useAuth();
   const { profile } = useProfile();
-  const { currentRole } = useRole();
+  // Use unforced DB role: useRole() pins currentRole to "community" on mobile
+  // for permissioning, but the drawer subtitle should reflect the real role.
+  const { dbRole } = useRole();
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
@@ -36,13 +38,13 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const isMaxina = tenant?.slug === 'maxina';
   const roleLabel = isExafyAdmin
     ? 'Exafy Admin'
-    : currentRole === 'admin'
+    : dbRole === 'admin'
     ? 'Administrator'
-    : currentRole === 'staff'
+    : dbRole === 'staff'
     ? 'Staff'
-    : currentRole === 'professional'
+    : dbRole === 'professional'
     ? 'Professional'
-    : currentRole === 'patient'
+    : dbRole === 'patient'
     ? 'Patient'
     : 'Community Member';
   const secondaryLine = profile.handle ? `@${profile.handle}` : roleLabel;
