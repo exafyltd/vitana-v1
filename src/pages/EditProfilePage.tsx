@@ -254,7 +254,18 @@ export default function EditProfilePage() {
         title: translate('editProfile.profileUpdated', 'Profile updated successfully!'),
         description: translate('editProfile.profileUpdatedDesc', 'Your changes are now live. Your VITANA profile looks amazing.')
       });
-      
+
+      // BOOTSTRAP-HISTORY-AWARE-TIMELINE: record profile update on timeline.
+      supabase.from('user_activity_log').insert({
+        user_id: user.id,
+        activity_type: 'profile.update',
+        activity_data: { handle: data?.handle },
+        context_data: { surface: 'vitanaland' },
+        session_id: sessionStorage.getItem('vitana_session_id') || null,
+      }).then(({ error: logErr }) => {
+        if (logErr) console.warn('[EditProfile] timeline log failed:', logErr.message);
+      });
+
       console.log('[EditProfilePage] Profile data refreshed:', data);
     } catch (error: any) {
       console.error('[EditProfilePage] Save error:', error);
