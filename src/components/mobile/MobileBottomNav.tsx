@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, Mail, Radio, User } from "lucide-react";
+import { Calendar, LayoutGrid, Mail, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
@@ -11,7 +11,7 @@ const navItems = [
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
   { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
   { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
-  { id: 'profile', icon: User, label: 'Profile', path: '/me/profile', i18nKey: 'mobileNav.profile' },
+  { id: 'media', icon: LayoutGrid, label: 'Media', path: '/comm/media-hub', i18nKey: 'mobileNav.media' },
 ];
 
 /**

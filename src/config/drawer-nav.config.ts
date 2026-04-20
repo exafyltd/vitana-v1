@@ -12,7 +12,6 @@ import {
   BookOpen,
   Plug,
   Mail,
-  UserCircle,
   Settings2,
   LogOut,
   type LucideIcon,
@@ -44,7 +43,6 @@ export const drawerNavIconTones: Record<string, DrawerIconTone> = {
   diary:      { base: 'hsl(240 26% 58%)', active: 'hsl(240 32% 48%)' },
   connectors: { base: 'hsl(195 38% 50%)', active: 'hsl(195 44% 40%)' },
   inbox:      { base: 'hsl(210 46% 56%)', active: 'hsl(210 52% 46%)' },
-  profile:    { base: 'hsl(25 22% 52%)',  active: 'hsl(25 28% 42%)'  },
   settings:   { base: 'hsl(220 10% 52%)', active: 'hsl(220 12% 42%)' },
 };
 
@@ -62,7 +60,6 @@ export const drawerNavItems: DrawerNavItem[] = [
   { id: 'diary',      route: '/daily-diary',             icon: BookOpen,    translationKey: 'drawerNav.diary' },
   { id: 'connectors', route: '/settings/connected-apps', icon: Plug,        translationKey: 'drawerNav.connectors' },
   { id: 'inbox',      route: '/inbox',                   icon: Mail,        translationKey: 'drawerNav.inbox' },
-  { id: 'profile',         route: '/me/profile',              icon: UserCircle,  translationKey: 'drawerNav.profile' },
   { id: 'settings',        route: '/settings',                icon: Settings2,   translationKey: 'drawerNav.settings' },
   { id: 'logout',          route: '__logout__',               icon: LogOut,      translationKey: 'drawerNav.logout' },
 ];

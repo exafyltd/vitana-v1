@@ -689,7 +689,7 @@
     "events": "Events",
     "business": "Business",
     "live": "Live",
-    "profile": "Profil"
+    "media": "Medien"
   },
   "subNav": {
     "overview": "Übersicht",
@@ -2488,7 +2488,6 @@
     "diary": "Tagebuch",
     "connectors": "Connectors",
     "inbox": "Postfach",
-    "profile": "Profil",
     "settings": "Einstellungen",
     "logout": "Abmelden"
   },
