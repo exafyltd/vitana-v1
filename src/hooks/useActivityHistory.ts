@@ -293,6 +293,31 @@ function formatActivityContent(log: any): string {
 }
 
 const ITEMS_PER_PAGE = 20;
+const AUTO_REFETCH_MS = 60_000;
+
+const PREFIX_FALLBACK: Record<string, { icon: string; tagColor: string; label: string }> = {
+  orb: { icon: '🧠', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'ORB Activity' },
+  task: { icon: '✅', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Task' },
+  diary: { icon: '📔', tagColor: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700', label: 'Diary' },
+  recommendation: { icon: '💡', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Recommendation' },
+  autopilot: { icon: '🤖', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Autopilot' },
+  health: { icon: '🩺', tagColor: 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700', label: 'Health' },
+  community: { icon: '👥', tagColor: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700', label: 'Community' },
+  discover: { icon: '🔍', tagColor: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-700', label: 'Discover' },
+  calendar: { icon: '📅', tagColor: 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-700', label: 'Calendar' },
+  wallet: { icon: '💰', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Wallet' },
+  memory: { icon: '🧠', tagColor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700', label: 'Memory' },
+  chat: { icon: '💬', tagColor: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700', label: 'Chat' },
+};
+
+const GENERIC_FALLBACK = { icon: '📌', tagColor: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300', label: 'Activity' };
+
+function resolveTypeConfig(activityType: string) {
+  const exact = ACTIVITY_TYPE_CONFIG[activityType];
+  if (exact) return exact;
+  const prefix = activityType.split('.')[0];
+  return PREFIX_FALLBACK[prefix] || GENERIC_FALLBACK;
+}
 
 export function useActivityHistory(filterType?: string) {
   const { toast } = useToast();
@@ -447,12 +472,8 @@ export function useActivityHistory(filterType?: string) {
 
       // Transform user_activity_log
       const logActivities: ActivityHistoryItem[] = (logsResult.data || []).map((log) => {
-        const config = ACTIVITY_TYPE_CONFIG[log.activity_type] || { 
-          icon: '📌', 
-          tagColor: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
-          label: 'Activity'
-        };
-        
+        const config = resolveTypeConfig(log.activity_type);
+
         return {
           id: log.id,
           content: formatActivityContent(log),
@@ -474,6 +495,8 @@ export function useActivityHistory(filterType?: string) {
     },
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
+    refetchInterval: AUTO_REFETCH_MS,
+    refetchOnWindowFocus: true,
   });
 
   // Flatten all pages into arrays
