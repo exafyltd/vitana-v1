@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useAssistantSurfaces, useUpdateAssistantSurface, useDeleteAssistantOverride } from "@/hooks/useAdminAssistant";
+import CompanionFieldsSection from "@/components/admin/CompanionFieldsSection";
 
 const SURFACE_LABELS: Record<string, string> = {
   voice_live: "Voice Live (ORB)",
@@ -142,6 +143,22 @@ export default function AssistantPersonality() {
                     Edit
                   </Button>
                 </div>
+              )}
+
+              {/* VTID-01931 Phase B companion fields — voice_live only */}
+              {surface.surface_key === "voice_live" && (
+                <CompanionFieldsSection
+                  effectiveConfig={surface.effective_config || {}}
+                  tenantOverride={surface.tenant_override}
+                  hasTenantOverride={surface.has_tenant_override}
+                  isSaving={updateMutation.isPending}
+                  onSave={async (extraConfig) => {
+                    await updateMutation.mutateAsync({
+                      surfaceKey: "voice_live",
+                      updates: { extra_config: extraConfig },
+                    });
+                  }}
+                />
               )}
             </CardContent>
           </Card>
