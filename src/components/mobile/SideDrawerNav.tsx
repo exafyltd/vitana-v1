@@ -179,13 +179,13 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Quick actions — compact utility strip */}
-            <div className="flex items-center justify-end gap-1 px-3 py-1.5">
+            <div className="flex items-center justify-between px-5 pt-3 pb-1.5">
               <button
                 onClick={() => handleQuickAction('/comm/events-meetups')}
                 aria-label="Open calendar"
                 className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <Calendar className="h-4 w-4" />
+                <Calendar className="h-[18px] w-[18px]" />
               </button>
 
               <button
@@ -193,7 +193,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
                 className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <Bell className="h-4 w-4" />
+                <Bell className="h-[18px] w-[18px]" />
                 <NotificationBadge
                   count={notificationUnreadCount}
                   collapsed
@@ -206,7 +206,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 aria-label="Open autopilot"
                 className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <Plane className="h-4 w-4" />
+                <Plane className="h-[18px] w-[18px]" />
               </button>
 
               <button
@@ -214,7 +214,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
                 className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-[18px] w-[18px]" />
                 <NotificationBadge
                   count={cartCount}
                   collapsed
@@ -224,7 +224,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Search bar */}
-            <div className="px-4 py-3 border-b border-border/50">
+            <div className="px-4 pt-1.5 pb-3 border-b border-border/50">
               <form
                 className="relative"
                 onSubmit={(e) => {
