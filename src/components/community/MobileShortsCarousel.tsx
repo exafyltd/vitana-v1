@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { cn } from '@/lib/utils';
-import { Play, Film } from 'lucide-react';
+import { Film } from 'lucide-react';
 
 interface VideoShort {
   id?: string;
@@ -136,11 +136,6 @@ export function MobileShortsCarousel({
                   avatar: short.creatorAvatar || undefined,
                 }}
                 onClick={() => onShortClick(index)}
-                utilityTopRight={
-                  <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <Play className="h-4 w-4 text-white ml-0.5" />
-                  </div>
-                }
                 className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
               />
             </div>
