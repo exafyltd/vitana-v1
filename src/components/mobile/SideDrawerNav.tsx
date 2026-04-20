@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2 } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { NotificationBadge } from '@/components/ui/notification-badge';
 import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
@@ -11,6 +12,8 @@ import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
+import { useNotifications } from '@/hooks/useNotifications';
+import { useCart } from '@/hooks/useCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
@@ -34,6 +37,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
   const { unreadCount } = useChatUnreadCount();
+  const { unreadCount: notificationUnreadCount } = useNotifications(1);
+  const { cartCount } = useCart();
 
   const isMaxina = tenant?.slug === 'maxina';
   const roleLabel = isExafyAdmin
@@ -52,6 +57,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const handleProfileClick = () => {
     onClose();
     navigate('/me/profile');
+  };
+
+  const handleQuickAction = (route: string) => {
+    onClose();
+    navigate(route);
   };
 
   // Debounced live search
@@ -165,6 +175,63 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 aria-label="Close drawer"
               >
                 <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Quick actions */}
+            <div className="flex items-stretch gap-1 px-3 py-2 border-b border-border/50">
+              <button
+                onClick={() => handleQuickAction('/comm/events-meetups')}
+                aria-label="Open calendar"
+                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+              >
+                <div className="relative">
+                  <Calendar className="h-5 w-5" />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
+              </button>
+
+              <button
+                onClick={() => handleQuickAction('/inbox')}
+                aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
+                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+              >
+                <div className="relative">
+                  <Bell className="h-5 w-5" />
+                  <NotificationBadge
+                    count={notificationUnreadCount}
+                    collapsed
+                    ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
+                  />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
+              </button>
+
+              <button
+                onClick={() => handleQuickAction('/autopilot')}
+                aria-label="Open autopilot"
+                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+              >
+                <div className="relative">
+                  <Plane className="h-5 w-5" />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
+              </button>
+
+              <button
+                onClick={() => handleQuickAction('/discover/orders')}
+                aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
+                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+              >
+                <div className="relative">
+                  <ShoppingCart className="h-5 w-5" />
+                  <NotificationBadge
+                    count={cartCount}
+                    collapsed
+                    ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
+                  />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
               </button>
             </div>
 
