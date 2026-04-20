@@ -257,6 +257,7 @@ export function MobileConnectedAppsView() {
         {/* Action Bar */}
         <UtilityActionButton
           compact
+          className="min-w-0"
           afterGiftVoucherChildren={
             <>
               <VitanaIndexChip />
@@ -267,25 +268,27 @@ export function MobileConnectedAppsView() {
             </>
           }
         >
-          <ExpandableSearchButton
-            placeholder={translate('connectedApps.searchPlaceholder')}
-            onSearch={setSearchQuery}
-          />
-          <MobileModePill
-            modes={connectorModes}
-            activeMode={activeCategory}
-            onModeChange={setActiveCategory}
-          />
-          <UniversalCalendarButton />
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-            onClick={() => setConnectPopupOpen(true)}
-          >
-            <Plus className="h-4 w-4" />
-            {translate('connectedApps.addApp')}
-          </Button>
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder={translate('connectedApps.searchPlaceholder')}
+              onSearch={setSearchQuery}
+            />
+            <MobileModePill
+              modes={connectorModes}
+              activeMode={activeCategory}
+              onModeChange={setActiveCategory}
+            />
+            <UniversalCalendarButton />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+              onClick={() => setConnectPopupOpen(true)}
+            >
+              <Plus className="h-4 w-4" />
+              {translate('connectedApps.addApp')}
+            </Button>
+          </div>
         </UtilityActionButton>
 
         {/* Connection Summary */}
