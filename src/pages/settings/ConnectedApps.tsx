@@ -1689,13 +1689,15 @@ function ConnectedApps() {
             description="Seamless integration, maximum benefit - manage your connected apps and integrations"
           />
 
-          <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search apps, integrations, fitness trackers..." />
-            <UniversalCalendarButton />
-            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Connect App
-            </Button>
+          <UtilityActionButton className="min-w-0">
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton placeholder="Search apps, integrations, fitness trackers..." />
+              <UniversalCalendarButton />
+              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Connect App
+              </Button>
+            </div>
           </UtilityActionButton>
 
           {/* Vertical-scrolling horizontal lists organized by category */}
