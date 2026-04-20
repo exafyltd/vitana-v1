@@ -84,10 +84,11 @@ export function useRole() {
   const dbRole = (query.data as UserRole | null) || "community";
   const effectiveRole: UserRole = isMobile ? "community" : dbRole;
 
-  return { 
-    currentRole: effectiveRole, 
-    setRole, 
+  return {
+    currentRole: effectiveRole,
+    dbRole,
+    setRole,
     hasPermission,
-    isLoading: query.isLoading 
+    isLoading: query.isLoading
   };
 }
