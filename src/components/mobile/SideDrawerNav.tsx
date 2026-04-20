@@ -131,7 +131,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
           >
             {/* Header — profile entry */}
             <div
-              className="flex items-center gap-3 px-5 py-5"
+              className="flex items-center gap-3 px-5 py-3.5"
               style={
                 isMaxina
                   ? {
@@ -147,7 +147,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
                 aria-label="Open my profile"
               >
-                <Avatar className="h-10 w-10 ring-1 ring-white/40 shrink-0">
+                <Avatar className="h-9 w-9 ring-1 ring-white/40 shrink-0">
                   <AvatarImage
                     src={profile.avatar}
                     alt={profile.displayName}
@@ -161,7 +161,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="font-bold text-base tracking-wide truncate">
                     {profile.displayName}
                   </div>
-                  <div className="text-xs opacity-80 mt-0.5 truncate">
+                  <div className="text-xs opacity-80 truncate">
                     {secondaryLine}
                   </div>
                 </div>
@@ -171,60 +171,72 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   e.stopPropagation();
                   onClose();
                 }}
-                className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-white/10 transition-colors shrink-0"
+                className="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-white/10 transition-colors shrink-0"
                 aria-label="Close drawer"
               >
-                <X className="h-5 w-5" />
+                <X className="h-[18px] w-[18px]" />
               </button>
             </div>
 
-            {/* Quick actions — compact utility strip */}
-            <div className="flex items-center justify-end gap-1 px-3 pt-3 pb-2">
+            {/* Quick actions — distributed, compact */}
+            <div className="flex items-stretch gap-1 px-3 pt-1.5 pb-1">
               <button
                 onClick={() => handleQuickAction('/comm/events-meetups')}
                 aria-label="Open calendar"
-                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
+                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
               >
-                <Calendar className="h-[18px] w-[18px]" />
+                <div className="relative">
+                  <Calendar className="h-[18px] w-[18px]" />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
               </button>
 
               <button
                 onClick={() => handleQuickAction('/inbox')}
                 aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
-                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
+                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
               >
-                <Bell className="h-[18px] w-[18px]" />
-                <NotificationBadge
-                  count={notificationUnreadCount}
-                  collapsed
-                  ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
-                />
+                <div className="relative">
+                  <Bell className="h-[18px] w-[18px]" />
+                  <NotificationBadge
+                    count={notificationUnreadCount}
+                    collapsed
+                    ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
+                  />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
               </button>
 
               <button
                 onClick={() => handleQuickAction('/autopilot')}
                 aria-label="Open autopilot"
-                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
+                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
               >
-                <Plane className="h-[18px] w-[18px]" />
+                <div className="relative">
+                  <Plane className="h-[18px] w-[18px]" />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
               </button>
 
               <button
                 onClick={() => handleQuickAction('/discover/orders')}
                 aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
-                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
+                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
               >
-                <ShoppingCart className="h-[18px] w-[18px]" />
-                <NotificationBadge
-                  count={cartCount}
-                  collapsed
-                  ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
-                />
+                <div className="relative">
+                  <ShoppingCart className="h-[18px] w-[18px]" />
+                  <NotificationBadge
+                    count={cartCount}
+                    collapsed
+                    ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
+                  />
+                </div>
+                <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
               </button>
             </div>
 
             {/* Search bar */}
-            <div className="px-4 pt-2 pb-3 border-b border-border/50">
+            <div className="px-4 pt-1 pb-2 border-b border-border/50">
               <form
                 className="relative"
                 onSubmit={(e) => {
@@ -297,7 +309,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Nav items */}
-            <div className="flex-1 overflow-y-auto py-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
               {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
