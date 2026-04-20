@@ -545,7 +545,7 @@ export default function MobileSettings() {
           emoji="⚙️"
         />
 
-        <UtilityActionButton 
+        <UtilityActionButton
           compact
           className="px-1 min-w-0"
           afterGiftVoucherChildren={(
@@ -555,15 +555,17 @@ export default function MobileSettings() {
             </>
           )}
         >
-          <ExpandableSearchButton
-            placeholder={translate('settings.search', 'Search settings...')}
-            onSearch={setSearchQuery}
-          />
-          <MobileModePill
-            modes={settingsModes}
-            activeMode={activeSection}
-            onModeChange={setActiveSection}
-          />
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder={translate('settings.search', 'Search settings...')}
+              onSearch={setSearchQuery}
+            />
+            <MobileModePill
+              modes={settingsModes}
+              activeMode={activeSection}
+              onModeChange={setActiveSection}
+            />
+          </div>
         </UtilityActionButton>
 
         {/* Scrollable content */}
