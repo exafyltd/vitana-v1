@@ -178,60 +178,48 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               </button>
             </div>
 
-            {/* Quick actions */}
-            <div className="flex items-stretch gap-1 px-3 py-2 border-b border-border/50">
+            {/* Quick actions — compact utility strip */}
+            <div className="flex items-center justify-end gap-1 px-3 py-1.5">
               <button
                 onClick={() => handleQuickAction('/comm/events-meetups')}
                 aria-label="Open calendar"
-                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <div className="relative">
-                  <Calendar className="h-5 w-5" />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
+                <Calendar className="h-4 w-4" />
               </button>
 
               <button
                 onClick={() => handleQuickAction('/inbox')}
                 aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
-                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <div className="relative">
-                  <Bell className="h-5 w-5" />
-                  <NotificationBadge
-                    count={notificationUnreadCount}
-                    collapsed
-                    ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
-                  />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
+                <Bell className="h-4 w-4" />
+                <NotificationBadge
+                  count={notificationUnreadCount}
+                  collapsed
+                  ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
+                />
               </button>
 
               <button
                 onClick={() => handleQuickAction('/autopilot')}
                 aria-label="Open autopilot"
-                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <div className="relative">
-                  <Plane className="h-5 w-5" />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
+                <Plane className="h-4 w-4" />
               </button>
 
               <button
                 onClick={() => handleQuickAction('/discover/orders')}
                 aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
-                className="flex-1 flex flex-col items-center gap-1 py-2 rounded-xl text-foreground/85 hover:bg-muted active:bg-muted/80 transition-colors"
+                className="relative h-8 w-8 flex items-center justify-center rounded-lg text-foreground/70 hover:bg-muted hover:text-foreground active:bg-muted/80 transition-colors"
               >
-                <div className="relative">
-                  <ShoppingCart className="h-5 w-5" />
-                  <NotificationBadge
-                    count={cartCount}
-                    collapsed
-                    ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
-                  />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
+                <ShoppingCart className="h-4 w-4" />
+                <NotificationBadge
+                  count={cartCount}
+                  collapsed
+                  ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
+                />
               </button>
             </div>
 
