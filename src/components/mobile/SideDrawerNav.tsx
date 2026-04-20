@@ -34,6 +34,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // for permissioning, but the drawer subtitle should reflect the real role.
   const { dbRole } = useRole();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchActive, setSearchActive] = useState(false);
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
   const { unreadCount } = useChatUnreadCount();
@@ -62,6 +63,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const handleQuickAction = (route: string) => {
     onClose();
     navigate(route);
+  };
+
+  const closeSearch = () => {
+    setSearchActive(false);
+    setSearchQuery('');
+    setResults([]);
   };
 
   // Debounced live search
@@ -178,135 +185,146 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               </button>
             </div>
 
-            {/* Quick actions — distributed, compact */}
-            <div className="flex items-stretch gap-1 px-3 pt-1.5 pb-1">
-              <button
-                onClick={() => handleQuickAction('/comm/events-meetups')}
-                aria-label="Open calendar"
-                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
-              >
-                <div className="relative">
-                  <Calendar className="h-[18px] w-[18px]" />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
-              </button>
-
-              <button
-                onClick={() => handleQuickAction('/inbox')}
-                aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
-                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
-              >
-                <div className="relative">
-                  <Bell className="h-[18px] w-[18px]" />
-                  <NotificationBadge
-                    count={notificationUnreadCount}
-                    collapsed
-                    ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
-                  />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
-              </button>
-
-              <button
-                onClick={() => handleQuickAction('/autopilot')}
-                aria-label="Open autopilot"
-                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
-              >
-                <div className="relative">
-                  <Plane className="h-[18px] w-[18px]" />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
-              </button>
-
-              <button
-                onClick={() => handleQuickAction('/discover/orders')}
-                aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
-                className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
-              >
-                <div className="relative">
-                  <ShoppingCart className="h-[18px] w-[18px]" />
-                  <NotificationBadge
-                    count={cartCount}
-                    collapsed
-                    ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
-                  />
-                </div>
-                <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
-              </button>
-            </div>
-
-            {/* Search bar */}
-            <div className="px-4 pt-1 pb-2 border-b border-border/50">
-              <form
-                className="relative"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (searchQuery.trim()) {
-                    const q = searchQuery.trim();
-                    setSearchQuery('');
-                    navigate(`/search?q=${encodeURIComponent(q)}`);
-                    onClose();
-                  }
-                }}
-              >
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search members, groups, or..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
-                />
-                {searchQuery.trim() && (
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-primary-foreground"
-                    aria-label="Search"
-                  >
-                    <Search className="h-3 w-3" />
-                  </button>
-                )}
-
-                {/* Live search dropdown */}
-                {searchQuery.trim().length >= 2 && (
-                  <div className="absolute left-0 right-0 top-full mt-1 bg-background border border-border rounded-xl shadow-lg z-[60] overflow-hidden max-h-72 overflow-y-auto">
-                    {searching && (
-                      <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Searching…</span>
-                      </div>
-                    )}
-                    {!searching && results.length === 0 && (
-                      <div className="px-3 py-3 text-sm text-muted-foreground">No members found</div>
-                    )}
-                    {results.map((r) => {
-                      const name = r.display_name || 'Unknown';
-                      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-                      return (
-                        <button
-                          key={r.user_id}
-                          type="button"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            setSearchQuery('');
-                            setResults([]);
-                            navigate(`/u/${r.user_id}`);
-                            onClose();
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted text-sm text-foreground transition-colors"
-                        >
-                          <Avatar className="h-8 w-8">
-                            {r.avatar_url && <AvatarImage src={r.avatar_url} alt={name} />}
-                            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
-                          </Avatar>
-                          <span className="truncate">{name}</span>
-                        </button>
-                      );
-                    })}
+            {/* Quick actions — collapsed strip OR expanded search */}
+            {!searchActive ? (
+              <div className="flex items-stretch gap-1 px-3 pt-1.5 pb-1 border-b border-border/50">
+                <button
+                  onClick={() => setSearchActive(true)}
+                  aria-label="Open search"
+                  className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
+                >
+                  <div className="relative">
+                    <Search className="h-[18px] w-[18px]" />
                   </div>
-                )}
-              </form>
-            </div>
+                  <span className="text-[10px] leading-none text-muted-foreground">Search</span>
+                </button>
+
+                <button
+                  onClick={() => handleQuickAction('/comm/events-meetups')}
+                  aria-label="Open calendar"
+                  className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
+                >
+                  <div className="relative">
+                    <Calendar className="h-[18px] w-[18px]" />
+                  </div>
+                  <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
+                </button>
+
+                <button
+                  onClick={() => handleQuickAction('/inbox')}
+                  aria-label={`Open notifications${notificationUnreadCount > 0 ? `, ${notificationUnreadCount} unread` : ''}`}
+                  className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
+                >
+                  <div className="relative">
+                    <Bell className="h-[18px] w-[18px]" />
+                    <NotificationBadge
+                      count={notificationUnreadCount}
+                      collapsed
+                      ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
+                    />
+                  </div>
+                  <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
+                </button>
+
+                <button
+                  onClick={() => handleQuickAction('/autopilot')}
+                  aria-label="Open autopilot"
+                  className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
+                >
+                  <div className="relative">
+                    <Plane className="h-[18px] w-[18px]" />
+                  </div>
+                  <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
+                </button>
+
+                <button
+                  onClick={() => handleQuickAction('/discover/orders')}
+                  aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
+                  className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
+                >
+                  <div className="relative">
+                    <ShoppingCart className="h-[18px] w-[18px]" />
+                    <NotificationBadge
+                      count={cartCount}
+                      collapsed
+                      ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
+                    />
+                  </div>
+                  <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
+                </button>
+              </div>
+            ) : (
+              <div className="px-3 pt-1.5 pb-2 border-b border-border/50">
+                <form
+                  className="relative"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (searchQuery.trim()) {
+                      const q = searchQuery.trim();
+                      closeSearch();
+                      navigate(`/search?q=${encodeURIComponent(q)}`);
+                      onClose();
+                    }
+                  }}
+                >
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    autoFocus
+                    type="text"
+                    placeholder="Search members, groups, or..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
+                  />
+                  <button
+                    type="button"
+                    onClick={closeSearch}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
+                    aria-label="Close search"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+
+                  {/* Live search dropdown */}
+                  {searchQuery.trim().length >= 2 && (
+                    <div className="absolute left-0 right-0 top-full mt-1 bg-background border border-border rounded-xl shadow-lg z-[60] overflow-hidden max-h-72 overflow-y-auto">
+                      {searching && (
+                        <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Searching…</span>
+                        </div>
+                      )}
+                      {!searching && results.length === 0 && (
+                        <div className="px-3 py-3 text-sm text-muted-foreground">No members found</div>
+                      )}
+                      {results.map((r) => {
+                        const name = r.display_name || 'Unknown';
+                        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                        return (
+                          <button
+                            key={r.user_id}
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              closeSearch();
+                              navigate(`/u/${r.user_id}`);
+                              onClose();
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted text-sm text-foreground transition-colors"
+                          >
+                            <Avatar className="h-8 w-8">
+                              {r.avatar_url && <AvatarImage src={r.avatar_url} alt={name} />}
+                              <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                            </Avatar>
+                            <span className="truncate">{name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </form>
+              </div>
+            )}
 
             {/* Nav items */}
             <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
