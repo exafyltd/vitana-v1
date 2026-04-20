@@ -179,7 +179,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Quick actions — compact utility strip */}
-            <div className="flex items-center justify-between px-5 pt-3 pb-1.5">
+            <div className="flex items-center justify-end gap-1 px-3 pt-3 pb-2">
               <button
                 onClick={() => handleQuickAction('/comm/events-meetups')}
                 aria-label="Open calendar"
@@ -224,7 +224,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Search bar */}
-            <div className="px-4 pt-1.5 pb-3 border-b border-border/50">
+            <div className="px-4 pt-2 pb-3 border-b border-border/50">
               <form
                 className="relative"
                 onSubmit={(e) => {
