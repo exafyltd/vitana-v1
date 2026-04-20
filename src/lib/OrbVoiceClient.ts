@@ -120,7 +120,16 @@ export class OrbVoiceClient {
   async start(): Promise<void> {
     try {
       this.callbacks.onConnectionStateChange?.('connecting');
-      
+
+      // iOS UNLOCK (BOOTSTRAP-ORB-IOS-UNLOCK): Create + unlock the output
+      // AudioContext SYNCHRONOUSLY here, while the user gesture that called
+      // start() is still active. iOS Safari consumes the gesture at the first
+      // await (the fetch below, and later getUserMedia inside startRecording)
+      // — after that, creating a new AudioContext or resuming one is
+      // unreliable. The silent-buffer play fully unlocks the context so later
+      // greeting audio plays on first attempt instead of sitting in the queue.
+      this.unlockIosAudio();
+
       // 1. Create session with auth
       const response = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/start`, {
         method: 'POST',
@@ -404,23 +413,63 @@ export class OrbVoiceClient {
     }
   }
 
-  private async initAudioOutput(): Promise<void> {
-    this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-
-    // iOS requires explicit resume — may need multiple attempts after audio route changes
-    if (this.audioContext.state === 'suspended') {
-      await this.audioContext.resume();
-    }
-
-    // iOS safety: listen for the context being suspended (e.g. by route changes)
-    // and auto-resume it
-    this.audioContext.onstatechange = () => {
-      if (this.audioContext && this.audioContext.state === 'suspended') {
-        console.log('[OrbVoiceClient] AudioContext suspended (iOS route change?) — resuming');
-        this.audioContext.resume().catch(() => {});
+  /**
+   * BOOTSTRAP-ORB-IOS-UNLOCK: Synchronous AudioContext creation + silent buffer
+   * play inside the user gesture that invoked start(). Must run before any
+   * await or iOS Safari will keep the output context suspended and the
+   * greeting will play into a dead queue. Safe to call multiple times — reuses
+   * an existing open context.
+   */
+  private unlockIosAudio(): void {
+    try {
+      if (!this.audioContext || (this.audioContext as any).state === 'closed') {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
-    };
+      // Play a 1-sample silent buffer. This is the canonical iOS unlock trick —
+      // merely creating the context is not enough; playing within the gesture is.
+      const silent = this.audioContext.createBuffer(1, 1, 22050);
+      const src = this.audioContext.createBufferSource();
+      src.buffer = silent;
+      src.connect(this.audioContext.destination);
+      src.start(0);
+      // Resume is synchronous from the gesture-handler perspective here.
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume().catch((e) => {
+          console.warn('[OrbVoiceClient] iOS unlock resume rejected:', e);
+        });
+      }
+      // iOS safety: listen for later suspends (e.g. phone call, route change)
+      // and auto-resume. Idempotent across multiple start() calls.
+      this.audioContext.onstatechange = () => {
+        if (this.audioContext && this.audioContext.state === 'suspended') {
+          console.log('[OrbVoiceClient] AudioContext suspended — auto-resuming');
+          this.audioContext.resume().catch((e) => {
+            console.warn('[OrbVoiceClient] AudioContext auto-resume failed:', e);
+          });
+        }
+      };
+      console.log('[OrbVoiceClient] iOS audio unlocked, state:', this.audioContext.state, 'sampleRate:', this.audioContext.sampleRate);
+    } catch (e) {
+      console.warn('[OrbVoiceClient] unlockIosAudio failed:', e);
+    }
+  }
 
+  private async initAudioOutput(): Promise<void> {
+    // BOOTSTRAP-ORB-IOS-UNLOCK: context was created synchronously in
+    // unlockIosAudio() at the top of start(). Here we just ensure it's
+    // running — mic setup may have triggered a route change that suspended it.
+    if (!this.audioContext || (this.audioContext as any).state === 'closed') {
+      // Fallback: unlock was somehow missed (e.g. start() called outside a
+      // gesture). Create fresh; resume may not succeed on iOS without a
+      // gesture but we log and continue.
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      console.warn('[OrbVoiceClient] initAudioOutput had no pre-unlocked context — creating fresh');
+    }
+    if (this.audioContext.state === 'suspended') {
+      await this.audioContext.resume().catch((e) => {
+        console.warn('[OrbVoiceClient] initAudioOutput resume failed:', e);
+      });
+    }
     this.nextStartTime = 0;
     console.log('[OrbVoiceClient] Audio output initialized, state:', this.audioContext.state);
   }
