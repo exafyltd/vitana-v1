@@ -32,6 +32,29 @@ function clearOrbSessionState() {
 // Legacy syncOrbAuth removed — ORB lifecycle is now managed solely by useOrbVoiceWidget hook
 
 /**
+ * BOOTSTRAP-HISTORY-AWARE-TIMELINE: record auth events on the user timeline.
+ * Fire-and-forget — never blocks auth flow.
+ */
+function logAuthActivity(activityType: 'auth.login' | 'auth.logout' | 'auth.signup', userId: string, data: Record<string, unknown> = {}) {
+  if (!userId) return;
+  supabase.from('user_activity_log').insert({
+    user_id: userId,
+    activity_type: activityType,
+    activity_data: { method: 'supabase', ...data },
+    context_data: { surface: 'vitanaland' },
+    session_id: sessionStorage.getItem('vitana_session_id') || null,
+  }).then(({ error }) => {
+    if (error) console.warn(`[AuthActivity] ${activityType} log failed:`, error.message);
+  });
+}
+
+function isFreshSignup(user: User | null): boolean {
+  if (!user?.created_at) return false;
+  const createdAt = new Date(user.created_at).getTime();
+  return Date.now() - createdAt < 60_000;
+}
+
+/**
  * Parse OAuth callback params from URL hash and query string.
  * Supports both implicit flow (hash tokens) and PKCE (code param).
  */
@@ -69,6 +92,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_OUT') {
+          // Log logout BEFORE clearing state so we still have the prior user_id.
+          if (prevUserIdRef.current) {
+            logAuthActivity('auth.logout', prevUserIdRef.current);
+          }
           dismiss();
           clearOrbSessionState();
           // Clear cached role so next login doesn't inherit stale role
@@ -81,6 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Detect user switch and clear stale ORB state + role cache
         const newUserId = session?.user?.id ?? null;
+        const priorUserId = prevUserIdRef.current; // captured before the update below
         if (prevUserIdRef.current && newUserId && prevUserIdRef.current !== newUserId) {
           console.log('[AuthProvider] User changed, clearing ORB state + role cache', prevUserIdRef.current, '→', newUserId);
           clearOrbSessionState();
@@ -108,6 +136,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const qc = (window as any).queryClient as QueryClient | undefined;
           if (qc) {
             qc.invalidateQueries({ queryKey: ['global-threads', userId] }).catch(() => {});
+          }
+
+          // BOOTSTRAP-HISTORY-AWARE-TIMELINE: log auth event only on genuine
+          // SIGNED_IN (a user change), not TOKEN_REFRESHED (every ~1h).
+          if (event === 'SIGNED_IN' && priorUserId !== userId) {
+            const type = isFreshSignup(session.user) ? 'auth.signup' : 'auth.login';
+            logAuthActivity(type, userId, {
+              provider: session.user.app_metadata?.provider || 'email',
+            });
           }
         }
       }

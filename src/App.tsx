@@ -33,6 +33,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
+import { useRouteTracker } from "@/hooks/useRouteTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
@@ -355,6 +356,7 @@ const AppHooksInitializer = () => {
   useAudioPriority();
   useAppilix();
   useOrbVoiceWidget();
+  useRouteTracker();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 

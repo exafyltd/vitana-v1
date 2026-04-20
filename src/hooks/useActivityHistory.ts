@@ -125,6 +125,22 @@ export const ACTIVITY_TYPE_CONFIG: Record<string, { icon: string; tagColor: stri
   'health.supplement.add': { icon: '💊', tagColor: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700', label: 'Supplement Added' },
   'health.supplement.update': { icon: '💊', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Supplement Updated' },
   'health.supplement.delete': { icon: '💊', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Supplement Removed' },
+
+  // BOOTSTRAP-HISTORY-AWARE-TIMELINE: auth, navigation, profile, ORB turns, tasks
+  'auth.login': { icon: '🔑', tagColor: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700', label: 'Signed In' },
+  'auth.logout': { icon: '🔒', tagColor: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700', label: 'Signed Out' },
+  'auth.signup': { icon: '🎉', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Account Created' },
+  'page.view': { icon: '📄', tagColor: 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700', label: 'Page Viewed' },
+  'profile.update': { icon: '✏️', tagColor: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700', label: 'Profile Updated' },
+  'orb.turn.received': { icon: '🎙️', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Asked ORB' },
+  'orb.turn.responded': { icon: '🤖', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'ORB Responded' },
+  'orb.session.start': { icon: '🧠', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Voice Session Started' },
+  'orb.session.stop': { icon: '🧠', tagColor: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700', label: 'Voice Session Ended' },
+  'task.create': { icon: '✅', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Task Created' },
+  'task.complete': { icon: '✅', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Task Completed' },
+  'task.approve': { icon: '👍', tagColor: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700', label: 'Task Approved' },
+  'task.reject': { icon: '👎', tagColor: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-300 dark:border-red-700', label: 'Task Rejected' },
+  'diary.create': { icon: '📔', tagColor: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700', label: 'Diary Entry' },
 };
 
 function formatActivityContent(log: any): string {
