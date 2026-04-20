@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,12 +6,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Upload, X, Play, Check, AlertCircle, Loader2, 
-  ChevronDown, ChevronUp, Image as ImageIcon, Film
+import {
+  Upload, X, Play, Check, AlertCircle, Loader2,
+  ChevronDown, ChevronUp, Image as ImageIcon, Film, Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBulkVideoUpload, VideoFileItem } from '@/hooks/useBulkVideoUpload';
+import { useAutoShortMetadata } from '@/hooks/useAutoShortMetadata';
 import {
   Collapsible,
   CollapsibleContent,
@@ -215,6 +216,39 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
   onRetry: () => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const autoMetadata = useAutoShortMetadata();
+  const [autoApplied, setAutoApplied] = useState(false);
+  const triggeredRef = useRef(false);
+
+  // Kick off auto-fill once per item as soon as it enters the queue. We only
+  // auto-populate title + description here — topic / tags remain manual in the
+  // bulk flow because the bulk modal uses a different display format for those
+  // fields (tracked as follow-up for tag-list consolidation).
+  useEffect(() => {
+    if (triggeredRef.current) return;
+    if (item.status !== 'queued') return;
+    if (!item.file) return;
+    triggeredRef.current = true;
+
+    autoMetadata.generate(item.file, item.duration).then((metadata) => {
+      if (!metadata) return;
+      const updates: Partial<VideoFileItem> = {};
+      if (metadata.title) {
+        updates.title = metadata.title.slice(0, 100);
+        updates.hasGenericTitle = false;
+      }
+      if (metadata.description) {
+        updates.description = metadata.description.slice(0, 500);
+      }
+      if (Object.keys(updates).length > 0) {
+        onUpdate(updates);
+        setAutoApplied(true);
+      }
+    });
+    // We intentionally depend only on item.id — regenerating on every prop
+    // change would cause runaway LLM calls.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item.id]);
 
   const getStatusIcon = () => {
     switch (item.status) {
@@ -257,7 +291,19 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <p className="font-medium text-sm truncate">{item.title}</p>
-              {item.hasGenericTitle && item.status === 'queued' && (
+              {autoMetadata.loading && item.status === 'queued' && (
+                <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
+                  <Sparkles className="w-3 h-3 mr-1 animate-pulse" />
+                  Analyzing…
+                </Badge>
+              )}
+              {autoApplied && !autoMetadata.loading && item.status === 'queued' && (
+                <Badge className="text-xs bg-violet-100 text-violet-700 border-0">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  Smart-filled
+                </Badge>
+              )}
+              {item.hasGenericTitle && item.status === 'queued' && !autoMetadata.loading && (
                 <Badge variant="destructive" className="text-xs animate-pulse">
                   ⚠️ Needs title
                 </Badge>
