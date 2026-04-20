@@ -240,6 +240,7 @@ function DiscoverInner() {
           {/* Utility Action Buttons - Mobile optimized pill rail */}
           <UtilityActionButton
             compact={isMobile}
+            className="min-w-0"
             afterGiftVoucherChildren={isMobile ? (
               <>
                 {/* Vitana Index - pill style on mobile */}
@@ -285,30 +286,32 @@ function DiscoverInner() {
               </Button>
             ) : undefined}
           >
-            <ExpandableSearchButton 
-              placeholder={isMobile ? "Search..." : "Search marketplace products, services, and experiences…"}
-            />
-            {isMobile && (
-              <MobileModePill
-                modes={[
-                  { value: "suggested", label: "AI Picks", icon: "💡" },
-                  { value: "categories", label: "Categories", icon: "📂" },
-                  { value: "share", label: "Share & Earn", icon: "💰" },
-                ]}
-                activeMode={activeTab}
-                onModeChange={setActiveTab}
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton
+                placeholder={isMobile ? "Search..." : "Search marketplace products, services, and experiences…"}
               />
-            )}
-            <UniversalCalendarButton />
-            {!isMobile && (
-              <Button 
-                size="sm"
-                onClick={() => setMasterActionOpen(true)}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="ml-2">Action</span>
-              </Button>
-            )}
+              {isMobile && (
+                <MobileModePill
+                  modes={[
+                    { value: "suggested", label: "AI Picks", icon: "💡" },
+                    { value: "categories", label: "Categories", icon: "📂" },
+                    { value: "share", label: "Share & Earn", icon: "💰" },
+                  ]}
+                  activeMode={activeTab}
+                  onModeChange={setActiveTab}
+                />
+              )}
+              <UniversalCalendarButton />
+              {!isMobile && (
+                <Button
+                  size="sm"
+                  onClick={() => setMasterActionOpen(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="ml-2">Action</span>
+                </Button>
+              )}
+            </div>
           </UtilityActionButton>
 
           {/* Mobile: Tab-driven content via MobileModePill */}

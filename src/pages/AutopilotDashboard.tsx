@@ -330,6 +330,7 @@ export default function AutopilotDashboard() {
           <div className="px-4">
             <UtilityActionButton
               compact
+              className="min-w-0"
               afterGiftVoucherChildren={
                 <>
                   <VitanaIndexChip />
@@ -337,8 +338,10 @@ export default function AutopilotDashboard() {
                 </>
               }
             >
-              <ExpandableSearchButton placeholder="Search tasks..." />
-              <UniversalCalendarButton />
+              <div className="flex items-center gap-2 min-w-max">
+                <ExpandableSearchButton placeholder="Search tasks..." />
+                <UniversalCalendarButton />
+              </div>
             </UtilityActionButton>
           </div>
 

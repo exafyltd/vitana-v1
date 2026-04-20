@@ -216,32 +216,35 @@ export default withScreenId(function Health() {
           <div className="px-4">
             <UtilityActionButton
               compact
+              className="min-w-0"
               afterGiftVoucherChildren={
                 <>
                   <VitanaIndexChip />
-                  <AutopilotChip 
-                    pendingCount={pendingCount} 
-                    onClick={() => setAutopilotOpen(true)} 
+                  <AutopilotChip
+                    pendingCount={pendingCount}
+                    onClick={() => setAutopilotOpen(true)}
                   />
                 </>
               }
             >
-              <ExpandableSearchButton placeholder={translate('health.searchPlaceholder', 'Search reports, supplements...')} />
-              <MobileModePill
-                modes={healthModes}
-                activeMode={mobileTab}
-                onModeChange={(v) => setMobileTab(v as any)}
-              />
-              <UniversalCalendarButton />
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-                onClick={() => setUploadSheetOpen(true)}
-              >
-                <Plus className="h-4 w-4" />
-                <span className="text-sm">{translate('health.upload', 'Upload')}</span>
-              </Button>
+              <div className="flex items-center gap-2 min-w-max">
+                <ExpandableSearchButton placeholder={translate('health.searchPlaceholder', 'Search reports, supplements...')} />
+                <MobileModePill
+                  modes={healthModes}
+                  activeMode={mobileTab}
+                  onModeChange={(v) => setMobileTab(v as any)}
+                />
+                <UniversalCalendarButton />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  onClick={() => setUploadSheetOpen(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="text-sm">{translate('health.upload', 'Upload')}</span>
+                </Button>
+              </div>
             </UtilityActionButton>
           </div>
 

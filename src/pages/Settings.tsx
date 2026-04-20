@@ -138,13 +138,15 @@ function Settings() {
             description="Manage your account settings, privacy, and preferences to personalize your wellness journey"
           />
 
-          <UtilityActionButton>
-            <ExpandableSearchButton placeholder={translate('settings.searchPlaceholder', 'Search settings, privacy controls, integrations...')} />
-            <UniversalCalendarButton />
-            <Button size="sm" onClick={() => setActionPopupOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Quick Setup
-            </Button>
+          <UtilityActionButton className="min-w-0">
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton placeholder={translate('settings.searchPlaceholder', 'Search settings, privacy controls, integrations...')} />
+              <UniversalCalendarButton />
+              <Button size="sm" onClick={() => setActionPopupOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Quick Setup
+              </Button>
+            </div>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
