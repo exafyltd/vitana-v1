@@ -13,6 +13,39 @@ function isOrbAlive(): boolean {
   );
 }
 
+// VITE_GATEWAY_URL already includes "/api/v1" — see useAIAssistants.ts for the pattern.
+const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/+$/, "");
+
+/**
+ * VTID-AUTH-BACKEND-PROBE: Ask the backend whether it accepts this token.
+ *
+ * Supabase client-side `getSession()` returns a session that LOOKS valid based
+ * on the cached JWT's `exp` claim — but the backend may have already rejected
+ * the token (user was signed out elsewhere, token revoked, clock drift, etc.).
+ *
+ * Without this probe the ORB widget sends a stale Bearer header, `optionalAuth`
+ * on `/live/session/start` silently treats the call as anonymous, and the user
+ * hears the first-time intro greeting while the app still shows them logged in.
+ *
+ * Returns:
+ *   - `true`  → backend accepts the token; safe to init the widget.
+ *   - `false` → backend explicitly rejects (401/403); caller must sign out.
+ *   - `true`  on network/timeout — transient errors must NOT trigger signouts.
+ */
+async function backendAcceptsToken(token: string): Promise<boolean> {
+  if (!GATEWAY_URL) return true; // no gateway configured → skip probe
+  try {
+    const res = await fetch(`${GATEWAY_URL}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (res.status === 401 || res.status === 403) return false;
+    return true;
+  } catch {
+    return true; // network/timeout → stay optimistic
+  }
+}
+
 const RECENT_ROUTES_MAX = 5;
 
 type NavigationContext = {
@@ -35,6 +68,31 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // VTID-AUTH-BACKEND-PROBE: Shared token resolver. Refreshes if expiring,
+  // probes the backend, and returns:
+  //   - a fresh token the backend accepts, or
+  //   - null with `rejected=true` when the backend explicitly rejects (caller must signOut), or
+  //   - null with `rejected=false` when there simply is no session (anonymous is fine).
+  const resolveVerifiedToken = async (): Promise<{ token: string | null; rejected: boolean }> => {
+    const { data: { session: cached } } = await supabase.auth.getSession();
+    if (!cached) return { token: null, rejected: false };
+
+    let token: string | null = cached.access_token;
+    const expiresAt = cached.expires_at;
+    if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
+      const { data: { session: refreshed } } = await supabase.auth.refreshSession();
+      token = refreshed?.access_token ?? null;
+    }
+    if (!token) {
+      // Refresh failed — refresh token itself is dead.
+      return { token: null, rejected: true };
+    }
+
+    const accepted = await backendAcceptsToken(token);
+    if (!accepted) return { token: null, rejected: true };
+    return { token, rejected: false };
+  };
 
   // VTID-NAV: Mutable refs so the navigation callback always uses the latest
   // router function and the freshest route history, even though the init
@@ -110,30 +168,25 @@ export function useOrbVoiceWidget() {
         };
 
         if (user && session) {
-          // VTID-AUTH-GUARD: getSession() returns the CACHED session which may
-          // have an expired access_token. Check expires_at and force a refresh
-          // if needed, so the ORB always gets a valid token.
-          let validToken: string | null = null;
-          const { data: { session: cached } } = await supabase.auth.getSession();
-          if (cached) {
-            const expiresAt = cached.expires_at; // Unix seconds
-            if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
-              // Token expired or expiring soon — force refresh
-              const { data: { session: refreshed } } = await supabase.auth.refreshSession();
-              validToken = refreshed?.access_token ?? null;
-            } else {
-              validToken = cached.access_token;
-            }
+          // VTID-AUTH-BACKEND-PROBE: Resolve a token the BACKEND accepts, not
+          // just one whose JWT exp claim is still in the future. If rejected,
+          // sign the user out so AuthGuard redirects to the login screen —
+          // don't silently fall back to anonymous, or the user will hear the
+          // "unknown user" first-time greeting while the app still shows them
+          // as logged in.
+          const { token: validToken, rejected } = await resolveVerifiedToken();
+          if (rejected) {
+            console.warn("[ORB] Backend rejected session — signing out to force re-auth");
+            await supabase.auth.signOut();
+            return true; // stop; SIGNED_OUT will re-trigger this effect
           }
 
           if (validToken) {
             orb.init({ ...navOpts, authToken: validToken });
-            console.log("[ORB] Widget initialized (authenticated, verified token)");
+            console.log("[ORB] Widget initialized (authenticated, backend-verified token)");
           } else {
-            // Session truly expired — init anonymous; AuthProvider's health
-            // monitor will trigger sign-out and redirect to login.
             orb.init(navOpts);
-            console.log("[ORB] Widget initialized (session expired, anonymous fallback)");
+            console.log("[ORB] Widget initialized (anonymous — no session)");
           }
         } else {
           orb.init(navOpts);
@@ -182,19 +235,14 @@ export function useOrbVoiceWidget() {
       },
     };
 
-    // VTID-AUTH-GUARD: Verify token before reinit — same logic as tryInit
+    // VTID-AUTH-BACKEND-PROBE: Verify token with backend before reinit.
     (async () => {
       if (user && session) {
-        let validToken: string | null = null;
-        const { data: { session: cached } } = await supabase.auth.getSession();
-        if (cached) {
-          const expiresAt = cached.expires_at;
-          if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
-            const { data: { session: refreshed } } = await supabase.auth.refreshSession();
-            validToken = refreshed?.access_token ?? null;
-          } else {
-            validToken = cached.access_token;
-          }
+        const { token: validToken, rejected } = await resolveVerifiedToken();
+        if (rejected) {
+          console.warn("[ORB] Backend rejected token during reinit — signing out");
+          await supabase.auth.signOut();
+          return;
         }
         if (validToken) {
           orb.init({ ...navOpts, authToken: validToken });
@@ -208,6 +256,46 @@ export function useOrbVoiceWidget() {
       console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
     })();
   }, [user?.id]);
+
+  // VTID-AUTH-BACKEND-PROBE: Re-validate with the backend every time the app
+  // comes back to the foreground. `visibilitychange` alone is unreliable in
+  // Appilix WebView — some devices keep the document `visible` while the app
+  // is backgrounded. Listen for `focus` and `pageshow` as well so we catch
+  // every return-from-background moment before the user presses the ORB.
+  useEffect(() => {
+    if (loading || !user) return;
+
+    let running = false;
+    const revalidate = async () => {
+      if (running) return;
+      running = true;
+      try {
+        const { rejected } = await resolveVerifiedToken();
+        if (rejected) {
+          console.warn("[ORB] Backend rejected cached session on resume — signing out");
+          await supabase.auth.signOut();
+        }
+      } finally {
+        running = false;
+      }
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') revalidate();
+    };
+    const onFocus = () => revalidate();
+    const onPageShow = () => revalidate();
+
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('pageshow', onPageShow);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('pageshow', onPageShow);
+    };
+  }, [loading, user?.id]);
 
   // VTID-NAV-01: Track navigation history and push to widget on every route
   // change. The widget stashes these values and includes them in the next
