@@ -187,7 +187,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Quick actions — collapsed strip OR expanded search */}
             {!searchActive ? (
-              <div className="flex items-stretch gap-1 px-3 pt-1.5 pb-1 border-b border-border/50">
+              <div className="flex items-stretch gap-1 px-3 pt-3 pb-1.5 border-b border-border/50">
                 <button
                   onClick={() => setSearchActive(true)}
                   aria-label="Open search"
@@ -254,7 +254,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 </button>
               </div>
             ) : (
-              <div className="px-3 pt-1.5 pb-2 border-b border-border/50">
+              <div className="px-3 pt-3 pb-2 border-b border-border/50">
                 <form
                   className="relative"
                   onSubmit={(e) => {
