@@ -8,8 +8,10 @@ import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
+import { useProfile } from '@/context/ProfileProvider';
+import { useRole } from '@/hooks/useRole';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
-import { getInstantTenantName } from '@/lib/tenant-display';
+import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
 
@@ -22,15 +24,33 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const { tenant } = useTenant();
+  const { tenant, isExafyAdmin } = useTenant();
   const { signOut } = useAuth();
+  const { profile } = useProfile();
+  const { currentRole } = useRole();
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
   const { unreadCount } = useChatUnreadCount();
 
   const isMaxina = tenant?.slug === 'maxina';
-  const tenantName = tenant?.name || getInstantTenantName(location.pathname);
+  const roleLabel = isExafyAdmin
+    ? 'Exafy Admin'
+    : currentRole === 'admin'
+    ? 'Administrator'
+    : currentRole === 'staff'
+    ? 'Staff'
+    : currentRole === 'professional'
+    ? 'Professional'
+    : currentRole === 'patient'
+    ? 'Patient'
+    : 'Community Member';
+  const secondaryLine = profile.handle ? `@${profile.handle}` : roleLabel;
+
+  const handleProfileClick = () => {
+    onClose();
+    navigate('/me/profile');
+  };
 
   // Debounced live search
   useEffect(() => {
@@ -97,9 +117,9 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
           >
-            {/* Header */}
+            {/* Header — profile entry */}
             <div
-              className="flex items-center justify-between px-5 py-5"
+              className="flex items-center gap-3 px-5 py-5"
               style={
                 isMaxina
                   ? {
@@ -110,19 +130,36 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   : undefined
               }
             >
-              <div>
-                <div className="font-bold text-lg tracking-wide">
-                  {isMaxina ? 'Vitanaland' : tenantName}
-                </div>
-                {isMaxina && (
-                  <div className="text-xs opacity-80 mt-0.5">
-                    Maxina Experience
-                  </div>
-                )}
-              </div>
               <button
-                onClick={onClose}
-                className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-white/10 transition-colors"
+                onClick={handleProfileClick}
+                className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
+                aria-label="Open my profile"
+              >
+                <Avatar className="h-10 w-10 ring-1 ring-white/40 shrink-0">
+                  <AvatarImage
+                    src={profile.avatar}
+                    alt={profile.displayName}
+                    style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)}
+                  />
+                  <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
+                    {profile.initials}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="leading-tight min-w-0 flex-1">
+                  <div className="font-bold text-base tracking-wide truncate">
+                    {profile.displayName}
+                  </div>
+                  <div className="text-xs opacity-80 mt-0.5 truncate">
+                    {secondaryLine}
+                  </div>
+                </div>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+                className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-white/10 transition-colors shrink-0"
                 aria-label="Close drawer"
               >
                 <X className="h-5 w-5" />
