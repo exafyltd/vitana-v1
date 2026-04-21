@@ -106,24 +106,56 @@ export function useAutopilot() {
     }));
   }, [recommendations]);
 
-  // Fetch badge count
-  const fetchCount = useCallback(async () => {
-    if (!user || countInFlight) return;
+  // VTID-01946 Phase H.4 — badge count + pulse delta tracking
+  const [liveCount, setLiveCount] = useState<number>(0);
+  const [hasNewRecommendations, setHasNewRecommendations] = useState<boolean>(false);
+  const LAST_SEEN_KEY = user ? `vitana.autopilot.last_seen_count:${user.id}` : "";
+
+  // Fetch badge count — returns the count + updates pulse state
+  const fetchCount = useCallback(async (): Promise<number> => {
+    if (!user || countInFlight) return liveCount;
     countInFlight = true;
     try {
       const headers = await getAuthHeaders();
       const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?role=community`, { headers });
-      if (!res.ok) return;
+      if (!res.ok) return liveCount;
       const json = await res.json();
       if (json.ok) {
-        console.log("[Autopilot] badge count:", json.count);
+        const newCount = Number(json.count) || 0;
+        setLiveCount(newCount);
+        console.log("[Autopilot] badge count:", newCount);
+        // Pulse delta: compare with last-seen stored per-user
+        try {
+          const lastSeenRaw = localStorage.getItem(LAST_SEEN_KEY);
+          const lastSeen = lastSeenRaw ? parseInt(lastSeenRaw, 10) : 0;
+          setHasNewRecommendations(newCount > lastSeen);
+        } catch {
+          // localStorage may be unavailable (private mode) — silently skip pulse
+        }
+        return newCount;
       }
     } catch (e) {
       console.warn("[Autopilot] count fetch error:", e);
     } finally {
       countInFlight = false;
     }
-  }, [user]);
+    return liveCount;
+  }, [user, liveCount, LAST_SEEN_KEY]);
+
+  // VTID-01946 Phase H.4 — mark the current badge count as "seen" so
+  // hasNewRecommendations becomes false until the next delta. Call this
+  // when the Autopilot popup opens.
+  const acknowledgePulse = useCallback(() => {
+    try {
+      if (LAST_SEEN_KEY) {
+        localStorage.setItem(LAST_SEEN_KEY, String(liveCount));
+      }
+      setHasNewRecommendations(false);
+    } catch {
+      // localStorage unavailable — just clear the flag locally
+      setHasNewRecommendations(false);
+    }
+  }, [liveCount, LAST_SEEN_KEY]);
 
   // Fetch full list — includes both new and activated items
   const fetchRecommendations = useCallback(async () => {
@@ -199,6 +231,17 @@ export function useAutopilot() {
   useEffect(() => {
     fetchCount();
   }, [fetchCount]);
+
+  // VTID-01946 Phase H.4 — poll every 5 minutes while app is open so the
+  // badge updates without user interaction. Clears on unmount.
+  useEffect(() => {
+    if (!user) return;
+    const POLL_MS = 5 * 60 * 1000;
+    const id = setInterval(() => {
+      fetchCount();
+    }, POLL_MS);
+    return () => clearInterval(id);
+  }, [user, fetchCount]);
 
   // ── Legacy compatibility ──
 
@@ -284,5 +327,9 @@ export function useAutopilot() {
     activateRecommendation,
     dismissRecommendation,
     fetchCount,
+    // VTID-01946 Phase H.4 — live badge + pulse
+    liveCount,
+    hasNewRecommendations,
+    acknowledgePulse,
   };
 }
