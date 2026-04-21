@@ -189,16 +189,6 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               {profile.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>
           </Avatar>
-        {editMode && onEdit && (
-          <Button
-            size="sm"
-            variant="outline"
-            className="absolute bottom-2 right-2 h-9 w-9 rounded-full p-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-transform"
-            onClick={onEdit}
-          >
-            <Edit3 className="h-4 w-4" />
-          </Button>
-        )}
       </div>
 
         {/* Name, Handle, VITANA Index */}
@@ -327,16 +317,6 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   <ExternalLink className="h-4 w-4 mr-2" />
                   <span className="font-medium">View Public Profile</span>
                 </Button>
-                {editMode && onEdit && (
-                  <Button 
-                    variant="outline" 
-                    onClick={onEdit}
-                    className={`rounded-full ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 shadow-[0_6px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] active:scale-100 ease-out`}
-                  >
-                    <Edit3 className="h-4 w-4 mr-2" />
-                    <span className="font-medium">Edit Identity</span>
-                  </Button>
-                )}
               </>
             ) : (
               <>

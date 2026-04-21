@@ -81,11 +81,23 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
       console.log('Profile data from DB:', profileData);
 
-      // Create display name and initials with better fallback handling
-      const displayName = profileData?.display_name || 
-                         profileData?.full_name || 
-                         user?.email?.split('@')[0] || 
-                         "User";
+      // Display name derives from Account first/last name (single source of
+      // truth, edited in the Account pill). Falls back to legacy display_name
+      // / full_name / email for users who haven't filled in Account yet.
+      const composedFullName = [
+        (profileData as any)?.first_name,
+        (profileData as any)?.last_name,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .trim();
+
+      const displayName =
+        composedFullName ||
+        profileData?.display_name ||
+        profileData?.full_name ||
+        user?.email?.split('@')[0] ||
+        "User";
       
       const initials = displayName
         .split(' ')
@@ -121,6 +133,12 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         verificationStatus:
           ((profileData as any)?.verification_status as AccountInfo["verificationStatus"]) ??
           "unverified",
+        // Public profile fields (moved from Identity drawer)
+        handle: profileData?.handle || undefined,
+        avatarUrl: profileData?.avatar_url || undefined,
+        avatarOffsetX: profileData?.avatar_offset_x ?? 50,
+        avatarOffsetY: profileData?.avatar_offset_y ?? 50,
+        longevityArchetype: profileData?.longevity_archetype || undefined,
         visibility,
       };
 
@@ -238,6 +256,11 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     city: 'city',
     accountType: 'account_type',
     verificationStatus: 'verification_status',
+    handle: 'handle',
+    avatarUrl: 'avatar_url',
+    avatarOffsetX: 'avatar_offset_x',
+    avatarOffsetY: 'avatar_offset_y',
+    longevityArchetype: 'longevity_archetype',
   };
 
   const updateAccount = async (data: Partial<AccountInfo>) => {
@@ -249,6 +272,18 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       if (column) row[column] = value ?? null;
     }
     if (data.visibility) row.account_visibility = data.visibility;
+
+    // If the patch touches first/last name, also write display_name so any
+    // legacy consumer still reading that column stays in sync with the new
+    // derived display-name shown on the Identity card.
+    if ('firstName' in data || 'lastName' in data) {
+      const existing = profile.account;
+      const first = 'firstName' in data ? data.firstName : existing?.firstName;
+      const last = 'lastName' in data ? data.lastName : existing?.lastName;
+      const composed = [first, last].filter(Boolean).join(' ').trim();
+      row.display_name = composed || null;
+    }
+
     row.updated_at = new Date().toISOString();
 
     const { error } = await supabase

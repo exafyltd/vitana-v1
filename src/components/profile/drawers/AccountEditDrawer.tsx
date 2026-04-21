@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/context/ProfileProvider";
 import { AccountInfo } from "@/types/profile";
 import { cn } from "@/lib/utils";
+import { AvatarUploadField } from "@/components/profile/editor/AvatarUploadField";
 
 interface AccountEditDrawerProps {
   open: boolean;
@@ -25,11 +26,19 @@ interface AccountEditDrawerProps {
 }
 
 type FormState = {
+  // Public profile
+  handle: string;
+  longevityArchetype: string;
+  avatarUrl: string;
+  avatarOffsetX: number;
+  avatarOffsetY: number;
+  // Basic personal info
   firstName: string;
   lastName: string;
   dateOfBirth: string;
   gender: string;
   maritalStatus: string;
+  // Contact
   email: string;
   phone: string;
   address: string;
@@ -38,6 +47,11 @@ type FormState = {
 };
 
 const EMPTY_FORM: FormState = {
+  handle: "",
+  longevityArchetype: "",
+  avatarUrl: "",
+  avatarOffsetX: 50,
+  avatarOffsetY: 50,
   firstName: "",
   lastName: "",
   dateOfBirth: "",
@@ -72,6 +86,11 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
     if (!open) return;
     const a = profile.account;
     setForm({
+      handle: a?.handle ?? profile.handle ?? "",
+      longevityArchetype: a?.longevityArchetype ?? profile.longevityArchetype ?? "",
+      avatarUrl: a?.avatarUrl ?? profile.avatar ?? "",
+      avatarOffsetX: a?.avatarOffsetX ?? profile.avatarOffsetX ?? 50,
+      avatarOffsetY: a?.avatarOffsetY ?? profile.avatarOffsetY ?? 50,
       firstName: a?.firstName ?? "",
       lastName: a?.lastName ?? "",
       dateOfBirth: a?.dateOfBirth ?? "",
@@ -92,11 +111,19 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
     try {
       setSaving(true);
       const patch: Partial<AccountInfo> = {
+        // Public profile — moved from Identity drawer
+        handle: form.handle.trim() || undefined,
+        longevityArchetype: form.longevityArchetype.trim() || undefined,
+        avatarUrl: form.avatarUrl.trim() || undefined,
+        avatarOffsetX: form.avatarOffsetX,
+        avatarOffsetY: form.avatarOffsetY,
+        // Basic personal info
         firstName: form.firstName.trim() || undefined,
         lastName: form.lastName.trim() || undefined,
         dateOfBirth: form.dateOfBirth || undefined,
         gender: form.gender || undefined,
         maritalStatus: form.maritalStatus || undefined,
+        // Contact
         email: form.email.trim() || undefined,
         phone: form.phone.trim() || undefined,
         address: form.address.trim() || undefined,
@@ -120,6 +147,13 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
     }
   };
 
+  const initials =
+    [form.firstName, form.lastName]
+      .filter(Boolean)
+      .map((n) => n[0]?.toUpperCase() ?? "")
+      .join("")
+      .slice(0, 2) || "U";
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
@@ -128,6 +162,55 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
         </DialogHeader>
 
         <div className="space-y-6">
+          <Section title="Public profile">
+            <Field label="Profile picture">
+              <AvatarUploadField
+                value={{
+                  url: form.avatarUrl,
+                  offsetX: form.avatarOffsetX,
+                  offsetY: form.avatarOffsetY,
+                }}
+                onChange={(next) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    avatarUrl: next.url,
+                    avatarOffsetX: next.offsetX,
+                    avatarOffsetY: next.offsetY,
+                  }))
+                }
+                fallbackInitials={initials}
+              />
+            </Field>
+            <Field label="Handle">
+              <div className="flex items-center">
+                <span className="text-muted-foreground mr-2">@</span>
+                <Input
+                  value={form.handle}
+                  onChange={(e) =>
+                    set(
+                      "handle",
+                      e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""),
+                    )
+                  }
+                  placeholder="your_handle"
+                  className="flex-1"
+                />
+              </div>
+              {form.handle && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Public URL: /u/{form.handle}
+                </p>
+              )}
+            </Field>
+            <Field label="Longevity archetype">
+              <Input
+                value={form.longevityArchetype}
+                onChange={(e) => set("longevityArchetype", e.target.value)}
+                placeholder="e.g. The Mindful Mover"
+              />
+            </Field>
+          </Section>
+
           <Section title="Basic Personal Information">
             <Field label="First name">
               <Input value={form.firstName} onChange={(e) => set("firstName", e.target.value)} />

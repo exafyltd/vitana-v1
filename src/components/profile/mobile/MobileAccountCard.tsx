@@ -72,6 +72,15 @@ export function MobileAccountCard({
   const allSections: SectionDef[] = useMemo(
     () => [
       {
+        title: "Public profile",
+        subtitle: "Shown on Identity",
+        fields: [
+          { key: "avatarUrl",          label: "Avatar",              value: account.avatarUrl ? "Uploaded" : undefined },
+          { key: "handle",             label: "Handle",              value: account.handle ? `@${account.handle}` : undefined },
+          { key: "longevityArchetype", label: "Longevity archetype", value: account.longevityArchetype },
+        ],
+      },
+      {
         title: "Basic Personal Information",
         subtitle: "Fixed identity data",
         fields: [

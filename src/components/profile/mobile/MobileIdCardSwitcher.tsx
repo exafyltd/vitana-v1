@@ -116,9 +116,7 @@ export function MobileIdCardSwitcher({
                 archetype={profile.longevityArchetype}
                 vitanaIndex={profile.vitanaIndex}
                 vitanaPercentile={profile.vitanaPercentile}
-                editMode={editMode}
                 isOwner={isOwner}
-                onEdit={onEditIdentity}
                 onShare={onShare}
                 onFollow={onFollow}
                 onMessage={onMessage}
