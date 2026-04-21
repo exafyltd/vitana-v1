@@ -11,17 +11,19 @@ interface UploadMetadata {
   language?: string;
 }
 
-interface ExtractedMetadata {
-  durationSec: number;
-  width: number;
-  height: number;
-  thumbnailUrl: string;
-}
-
 const MAX_SIZE = 500 * 1024 * 1024; // 500MB
 const MAX_DURATION = 5 * 60; // 5 minutes in seconds
 const ALLOWED_TYPES = ['video/mp4', 'video/webm', 'video/ogg'];
-const EXTRACT_META_TIMEOUT_MS = 20_000;
+const EXTRACT_META_TIMEOUT_MS = 30_000;
+
+// VITE_GATEWAY_URL in this repo already includes "/api/v1"; VITE_GATEWAY_BASE is bare origin.
+// Mirror useAutoShortMetadata so we hit the same host.
+const GATEWAY_BASE = (
+  (import.meta.env.VITE_GATEWAY_BASE as string | undefined) ||
+  ((import.meta.env.VITE_GATEWAY_URL as string | undefined) || '').replace(/\/api\/v1\/?$/, '') ||
+  ''
+).replace(/\/+$/, '');
+const EXTRACT_THUMBNAIL_ENDPOINT = `${GATEWAY_BASE}/api/v1/media-hub/shorts/extract-thumbnail`;
 
 export const useVideoUpload = () => {
   const [isUploading, setIsUploading] = useState(false);
@@ -63,26 +65,39 @@ export const useVideoUpload = () => {
     });
   };
 
-  const extractServerMetadata = async (videoPath: string): Promise<ExtractedMetadata | null> => {
+  const requestServerThumbnail = async (videoId: string, videoPath: string): Promise<boolean> => {
     try {
-      const result = await Promise.race([
-        supabase.functions.invoke('extract-video-meta', { body: { videoPath } }),
-        new Promise<{ data: null; error: Error }>((resolve) =>
-          setTimeout(
-            () => resolve({ data: null, error: new Error('extract-video-meta timed out') }),
-            EXTRACT_META_TIMEOUT_MS,
-          ),
-        ),
-      ]);
-
-      if (result.error || !result.data) {
-        console.error('extract-video-meta failed:', result.error);
-        return null;
+      const { data: sessionResult } = await supabase.auth.getSession();
+      const token = sessionResult.session?.access_token;
+      if (!token) {
+        console.warn('extract-thumbnail skipped: no auth session');
+        return false;
       }
-      return result.data as ExtractedMetadata;
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), EXTRACT_META_TIMEOUT_MS);
+      try {
+        const resp = await fetch(EXTRACT_THUMBNAIL_ENDPOINT, {
+          method: 'POST',
+          signal: controller.signal,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ video_id: videoId, video_path: videoPath }),
+        });
+        if (!resp.ok) {
+          const body = await resp.json().catch(() => ({}));
+          console.error(`extract-thumbnail failed: HTTP ${resp.status}`, body);
+          return false;
+        }
+        return true;
+      } finally {
+        clearTimeout(timer);
+      }
     } catch (err) {
-      console.error('extract-video-meta invoke threw:', err);
-      return null;
+      console.error('extract-thumbnail threw:', err);
+      return false;
     }
   };
 
@@ -177,25 +192,10 @@ export const useVideoUpload = () => {
       setProgress(90);
 
       if (!customThumbnailUrl) {
-        // Server-side ffmpeg extraction. Fire-and-forget — UI shouldn't wait
-        // for the round-trip, but we do invalidate once it lands.
-        void extractServerMetadata(filePath).then(async (extracted) => {
-          if (!extracted) return;
-          const { error: patchError } = await supabase
-            .from('media_videos')
-            .update({
-              thumbnail_url: extracted.thumbnailUrl,
-              duration_sec: extracted.durationSec,
-              width: extracted.width,
-              height: extracted.height,
-            })
-            .eq('id', video.id);
-
-          if (patchError) {
-            console.error('Failed to patch media_videos with extracted metadata:', patchError);
-            return;
-          }
-          queryClient.invalidateQueries({ queryKey: ['shorts'] });
+        // Server-side ffmpeg extraction on the gateway. The gateway patches
+        // media_videos itself; we just invalidate the shorts query once it lands.
+        void requestServerThumbnail(video.id, filePath).then((ok) => {
+          if (ok) queryClient.invalidateQueries({ queryKey: ['shorts'] });
         });
       }
 
