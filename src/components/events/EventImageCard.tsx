@@ -47,6 +47,7 @@ export const EventImageCard: React.FC<EventImageCardProps> = ({
       {...newsCardProps}
       utilityTopRight={utilityTopRight}
       className={cn(
+        "rounded-2xl overflow-hidden",
         "transition-all duration-300",
         "hover:scale-[1.05]",
         "hover:shadow-[0_0_30px_rgba(236,72,153,0.2)]",

@@ -178,7 +178,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "rounded-xl border border-border/40",
+          "rounded-2xl border border-border/40",
           "bg-card",
           "hover:border-[hsl(var(--accent))]/40",
           "transition-all duration-200 ease-out",
@@ -204,7 +204,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           // Accent rail
           "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
-          "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
+          "before:left-0 before:rounded-l-2xl hover:before:bg-current focus-within:before:bg-current",
           
           // Clickable styling
           (onClick || expandedContent) && "cursor-pointer",
@@ -227,7 +227,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         "gap-0 lg:gap-2 xl:gap-2"
       )}>
           <div className={cn(
-            "relative overflow-hidden rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none",
+            "relative overflow-hidden rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none",
             "h-[160px] xl:h-[152px]"
           )}>
             {!imageError ? (
