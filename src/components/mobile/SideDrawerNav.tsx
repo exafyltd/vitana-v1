@@ -238,7 +238,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 </button>
 
                 <button
-                  onClick={() => handleQuickAction('/discover/orders')}
+                  onClick={() => handleQuickAction('/cart')}
                   aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
