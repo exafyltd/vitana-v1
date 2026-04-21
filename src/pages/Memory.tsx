@@ -12,6 +12,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { AddMemoryDialog } from "@/components/memory/AddMemoryDialog";
 import { MemoryCategoryGrid } from "@/components/memory/MemoryCategoryGrid";
+import { WhatVitanaKnows } from "@/components/memory/WhatVitanaKnows";
 import { MemoryTimelineTab } from "@/components/memory/MemoryTimelineTab";
 import { MemoryEducationTab } from "@/components/memory/MemoryEducationTab";
 import { memoryNavigation } from "@/config/navigation";
@@ -158,7 +159,8 @@ export default withScreenId(function Memory() {
           </SplitBarList>
 
           <SplitBarContent value="categories">
-            <div className="mt-6">
+            <div className="mt-6 space-y-4">
+              <WhatVitanaKnows />
               <MemoryCategoryGrid />
             </div>
           </SplitBarContent>
