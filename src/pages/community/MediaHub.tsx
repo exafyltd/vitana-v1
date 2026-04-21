@@ -735,6 +735,10 @@ export default function MediaHub() {
                     setSelectedVideoIndex(index);
                     setMobileShortsFeedOpen(true);
                   }}
+                  onEdit={(short) => {
+                    const full = realShorts.find((r) => r.id === short.id);
+                    if (full) setEditingVideo(full);
+                  }}
                   onDelete={(short) => {
                     if (!short.id || !short.src_url) return;
                     setVideoToDelete({
@@ -1283,6 +1287,10 @@ export default function MediaHub() {
           currentUserId={user?.id}
           onClose={() => setMobileShortsFeedOpen(false)}
           initialIndex={selectedVideoIndex >= 0 ? selectedVideoIndex : 0}
+          onEdit={(short) => {
+            const full = realShorts.find((r) => r.id === short.id);
+            if (full) setEditingVideo(full);
+          }}
           onDelete={(short) => {
             if (!short.id || !short.src_url) return;
             setVideoToDelete({
