@@ -3,6 +3,13 @@ import { useAuth } from "./AuthProvider";
 import { UserRole } from "@/hooks/useRole";
 import { TenantType } from "@/hooks/useTenant";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  AccountInfo,
+  AccountVisibility,
+  AccountFieldKey,
+  FieldVisibility,
+  DEFAULT_ACCOUNT_VISIBILITY,
+} from "@/types/profile";
 
 interface ProfileData {
   avatar?: string;
@@ -28,12 +35,15 @@ interface ProfileData {
   x_url?: string;
   youtube_url?: string;
   tiktok_url?: string;
+  account?: AccountInfo;
 }
 
 interface ProfileContextValue {
   profile: ProfileData;
   updateProfile: (data: Partial<ProfileData>) => void;
   refreshProfile: () => void;
+  updateAccount: (data: Partial<AccountInfo>) => Promise<void>;
+  setFieldVisibility: (field: AccountFieldKey, visibility: FieldVisibility) => Promise<void>;
   loading: boolean;
 }
 
@@ -84,6 +94,36 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         .join('')
         .slice(0, 2) || "U";
 
+      const rawVisibility = (profileData as any)?.account_visibility as
+        | Partial<AccountVisibility>
+        | null
+        | undefined;
+      const visibility: AccountVisibility = {
+        ...DEFAULT_ACCOUNT_VISIBILITY,
+        ...(rawVisibility ?? {}),
+      };
+
+      const account: AccountInfo = {
+        firstName: (profileData as any)?.first_name || undefined,
+        lastName: (profileData as any)?.last_name || undefined,
+        dateOfBirth: profileData?.date_of_birth || undefined,
+        gender: (profileData as any)?.gender || undefined,
+        maritalStatus: (profileData as any)?.marital_status || undefined,
+        email: profileData?.email || user?.email || undefined,
+        phone: profileData?.phone || undefined,
+        address: (profileData as any)?.address || undefined,
+        country: (profileData as any)?.country || undefined,
+        city: (profileData as any)?.city || undefined,
+        memberSince: profileData?.created_at || undefined,
+        accountType: (profileData as any)?.account_type || "Community",
+        tenantId: "maxina",
+        role: "community",
+        verificationStatus:
+          ((profileData as any)?.verification_status as AccountInfo["verificationStatus"]) ??
+          "unverified",
+        visibility,
+      };
+
       const profileState = {
         displayName,
         role: "community" as const,
@@ -108,6 +148,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         youtube_url: profileData?.youtube_url || undefined,
         tiktok_url: profileData?.tiktok_url || undefined,
         longevityArchetype: profileData?.longevity_archetype || undefined,
+        account,
       };
 
       console.log('Setting profile state:', profileState);
@@ -183,10 +224,70 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     setProfile(prev => ({ ...prev, ...data }));
   };
 
+  // Map AccountInfo fields -> profiles table columns.
+  const accountFieldToColumn: Partial<Record<keyof AccountInfo, string>> = {
+    firstName: 'first_name',
+    lastName: 'last_name',
+    dateOfBirth: 'date_of_birth',
+    gender: 'gender',
+    maritalStatus: 'marital_status',
+    email: 'email',
+    phone: 'phone',
+    address: 'address',
+    country: 'country',
+    city: 'city',
+    accountType: 'account_type',
+    verificationStatus: 'verification_status',
+  };
+
+  const updateAccount = async (data: Partial<AccountInfo>) => {
+    if (!user) return;
+
+    const row: Record<string, unknown> = { user_id: user.id };
+    for (const [key, value] of Object.entries(data)) {
+      const column = accountFieldToColumn[key as keyof AccountInfo];
+      if (column) row[column] = value ?? null;
+    }
+    if (data.visibility) row.account_visibility = data.visibility;
+    row.updated_at = new Date().toISOString();
+
+    const { error } = await supabase
+      .from('profiles' as any)
+      .upsert(row as any, { onConflict: 'user_id' });
+
+    if (error) {
+      console.error('Failed to update account:', error);
+      throw error;
+    }
+
+    // Optimistic local update; realtime subscription will reconcile.
+    setProfile(prev => ({
+      ...prev,
+      account: {
+        ...(prev.account ?? { visibility: DEFAULT_ACCOUNT_VISIBILITY }),
+        ...data,
+        visibility: {
+          ...(prev.account?.visibility ?? DEFAULT_ACCOUNT_VISIBILITY),
+          ...(data.visibility ?? {}),
+        },
+      },
+    }));
+  };
+
+  const setFieldVisibility = async (
+    field: AccountFieldKey,
+    visibility: FieldVisibility,
+  ) => {
+    const current = profile.account?.visibility ?? DEFAULT_ACCOUNT_VISIBILITY;
+    await updateAccount({ visibility: { ...current, [field]: visibility } });
+  };
+
   const value: ProfileContextValue = {
     profile,
     updateProfile,
     refreshProfile,
+    updateAccount,
+    setFieldVisibility,
     loading,
   };
 

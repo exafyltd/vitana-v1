@@ -11,6 +11,7 @@ import { ServicesDrawer } from "@/components/profile/drawers/ServicesDrawer";
 import { ComplianceDrawer } from "@/components/profile/drawers/ComplianceDrawer";
 import { ShowcaseDrawer } from "@/components/profile/drawers/ShowcaseDrawer";
 import { VisibilityDrawer } from "@/components/profile/drawers/VisibilityDrawer";
+import { AccountEditDrawer } from "@/components/profile/drawers/AccountEditDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -59,6 +60,7 @@ export default function EditProfilePage() {
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
+  const [accountDrawerOpen, setAccountDrawerOpen] = useState(false);
 
   // Get localized default bio
   const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
@@ -142,6 +144,11 @@ export default function EditProfilePage() {
     contextProfile.youtube_url,
     contextProfile.tiktok_url
   ]);
+
+  // Sync Account tab data (values + per-field visibility) from context.
+  useEffect(() => {
+    setProfile(prev => ({ ...prev, account: contextProfile.account }));
+  }, [contextProfile.account]);
 
   // Refetch profile data - extracted for reuse after social import success
   const refetchProfile = useCallback(async () => {
@@ -309,6 +316,10 @@ export default function EditProfilePage() {
     setVisibilityDrawerOpen(true);
   };
 
+  const handleEditAccount = () => {
+    setAccountDrawerOpen(true);
+  };
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -372,6 +383,7 @@ export default function EditProfilePage() {
             editMode={true}
             onEditIdentity={handleEditIdentity}
             onEditSocial={handleEditAbout}
+            onEditAccount={handleEditAccount}
             onRefreshProfile={refetchProfile}
             onShare={shareHook.openShare}
           />
@@ -496,6 +508,14 @@ export default function EditProfilePage() {
           onOpenChange={setVisibilityDrawerOpen}
         />
 
+        <AccountEditDrawer
+          open={accountDrawerOpen}
+          onOpenChange={(open) => {
+            setAccountDrawerOpen(open);
+            if (!open) refetchProfile();
+          }}
+        />
+
         {/* Autopilot Popup */}
         <AutopilotProfilePopup
           open={showAutopilotPopup}
@@ -563,7 +583,7 @@ export default function EditProfilePage() {
         onCancel={handleCancel}
       />
       
-      <ProfileLayout 
+      <ProfileLayout
         profile={profile}
         scope={scope}
         editMode={true}
@@ -574,6 +594,7 @@ export default function EditProfilePage() {
         onEditCompliance={handleEditCompliance}
         onEditShowcase={handleEditShowcase}
         onEditVisibility={handleEditVisibility}
+        onEditAccount={handleEditAccount}
       />
 
       <IdentityDrawer
@@ -607,6 +628,14 @@ export default function EditProfilePage() {
       <VisibilityDrawer
         open={visibilityDrawerOpen}
         onOpenChange={setVisibilityDrawerOpen}
+      />
+
+      <AccountEditDrawer
+        open={accountDrawerOpen}
+        onOpenChange={(open) => {
+          setAccountDrawerOpen(open);
+          if (!open) refetchProfile();
+        }}
       />
     </AppLayout>
   );

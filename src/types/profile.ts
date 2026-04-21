@@ -11,6 +11,70 @@ export interface ProfileVisibility {
   healthShareConsent: boolean;    // controls Health Snapshot + Index on public
 }
 
+// Account tab — per-field visibility rule. "connections" ≈ followers/mutuals.
+export type FieldVisibility = 'private' | 'connections' | 'public';
+
+export type AccountFieldKey =
+  | 'firstName'
+  | 'lastName'
+  | 'dateOfBirth'
+  | 'gender'
+  | 'maritalStatus'
+  | 'email'
+  | 'phone'
+  | 'address'
+  | 'country'
+  | 'city'
+  | 'memberSince'
+  | 'accountType'
+  | 'verificationStatus';
+
+export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
+
+export type AccountVerificationStatus = 'unverified' | 'pending' | 'verified';
+
+export interface AccountInfo {
+  // Basic Personal Information
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;          // ISO yyyy-mm-dd
+  gender?: string;
+  maritalStatus?: string;
+
+  // Contact Information
+  email?: string;
+  phone?: string;
+  address?: string;
+  country?: string;
+  city?: string;
+
+  // Account Details
+  memberSince?: string;          // ISO; derived from profiles.created_at
+  accountType?: string;          // e.g. "Community", "Professional", "Staff"
+  tenantId?: string;
+  role?: string;
+  verificationStatus?: AccountVerificationStatus;
+
+  // Privacy
+  visibility: AccountVisibility;
+}
+
+export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
+  firstName: 'private',
+  lastName: 'private',
+  dateOfBirth: 'private',
+  gender: 'private',
+  maritalStatus: 'private',
+  email: 'private',
+  phone: 'private',
+  address: 'private',
+  country: 'connections',
+  city: 'connections',
+  memberSince: 'public',
+  accountType: 'public',
+  verificationStatus: 'public',
+};
+
 export interface ServiceOffering {
   id: string;
   title: string;
@@ -133,6 +197,9 @@ export interface UserProfile {
   professionalCredentials?: ProfessionalCredentials;
 
   visibility: ProfileVisibility;
+
+  // Account tab — fixed + editable personal data with per-field visibility
+  account?: AccountInfo;
 }
 
 export type ViewAsMode = 'me' | 'public' | 'follower';

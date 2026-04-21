@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MobileIdentityCard } from "./MobileIdentityCard";
 import { MobileIdCardBack } from "./MobileIdCardBack";
+import { MobileAccountCard } from "./MobileAccountCard";
 import { UserProfile } from "@/types/profile";
 
-type CardSide = "front" | "back";
+type CardSide = "front" | "back" | "account";
 
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
@@ -13,6 +14,7 @@ interface MobileIdCardSwitcherProps {
   isOwner?: boolean;
   onEditIdentity?: () => void;
   onEditSocial?: () => void;
+  onEditAccount?: () => void;
   onRefreshProfile?: () => void;
   onShare?: () => void;
   onFollow?: () => void;
@@ -22,12 +24,27 @@ interface MobileIdCardSwitcherProps {
   className?: string;
 }
 
+const SEGMENTS: { id: CardSide; label: string }[] = [
+  { id: "front", label: "Identity" },
+  { id: "back", label: "Social" },
+  { id: "account", label: "Account" },
+];
+
+// With p-1 (4px) padding on both sides, each of 3 equal segments spans
+// (100% - 8px) / 3. Approx. to keep CSS readable.
+const SEGMENT_POSITIONS: Record<CardSide, { left: string; width: string }> = {
+  front:   { left: "4px",                      width: "calc(33.333% - 3px)" },
+  back:    { left: "calc(33.333% + 1px)",      width: "calc(33.333% - 3px)" },
+  account: { left: "calc(66.666% - 2px)",      width: "calc(33.333% - 3px)" },
+};
+
 export function MobileIdCardSwitcher({
   profile,
   editMode = false,
   isOwner = true,
   onEditIdentity,
   onEditSocial,
+  onEditAccount,
   onRefreshProfile,
   onShare,
   onFollow,
@@ -38,12 +55,18 @@ export function MobileIdCardSwitcher({
 }: MobileIdCardSwitcherProps) {
   const [activeSide, setActiveSide] = useState<CardSide>("front");
 
+  const slotAnim = (direction: 1 | -1) => ({
+    initial: { opacity: 0, x: 20 * direction },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 * direction },
+  });
+
   return (
     <div className={cn("", className)}>
       {/* Segmented Control - Centered above the card */}
       <div className="flex justify-center px-4 pt-safe-top pb-3">
-        <div 
-          className="relative flex p-1 rounded-full border border-white/10"
+        <div
+          className="relative flex p-1 rounded-full border border-white/10 w-full max-w-xs"
           style={{
             background: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
             boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)"
@@ -57,52 +80,33 @@ export function MobileIdCardSwitcher({
               boxShadow: "0 2px 8px rgba(14, 165, 233, 0.3)"
             }}
             initial={false}
-            animate={{
-              left: activeSide === "front" ? "4px" : "50%",
-              width: "calc(50% - 4px)"
-            }}
+            animate={SEGMENT_POSITIONS[activeSide]}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
           />
-          
-          {/* Front button */}
-          <button
-            onClick={() => setActiveSide("front")}
-            className={cn(
-              "relative z-10 px-6 py-2 text-xs font-semibold tracking-wide transition-colors duration-200",
-              activeSide === "front" 
-                ? "text-white" 
-                : "text-white/50 hover:text-white/70"
-            )}
-          >
-            Identity
-          </button>
-          
-          {/* Back button */}
-          <button
-            onClick={() => setActiveSide("back")}
-            className={cn(
-              "relative z-10 px-6 py-2 text-xs font-semibold tracking-wide transition-colors duration-200",
-              activeSide === "back" 
-                ? "text-white" 
-                : "text-white/50 hover:text-white/70"
-            )}
-          >
-            Social
-          </button>
+
+          {SEGMENTS.map((segment) => (
+            <button
+              key={segment.id}
+              onClick={() => setActiveSide(segment.id)}
+              aria-pressed={activeSide === segment.id}
+              className={cn(
+                "relative z-10 flex-1 py-2 text-xs font-semibold tracking-wide transition-colors duration-200",
+                activeSide === segment.id
+                  ? "text-white"
+                  : "text-white/50 hover:text-white/70"
+              )}
+            >
+              {segment.label}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Card Container with Animation */}
       <div className="relative overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
-          {activeSide === "front" ? (
-            <motion.div
-              key="front"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-            >
+          {activeSide === "front" && (
+            <motion.div key="front" {...slotAnim(-1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
               <MobileIdentityCard
                 avatarUrl={profile.avatarUrl}
                 avatarOffsetX={profile.avatarOffsetX}
@@ -122,22 +126,27 @@ export function MobileIdCardSwitcher({
                 followLoading={followLoading}
               />
             </motion.div>
-          ) : (
-            <motion.div
-              key="back"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-            >
-            <MobileIdCardBack
-              profile={profile}
-              editMode={editMode}
-              onEdit={onEditSocial}
-              onRefreshProfile={onRefreshProfile}
-            />
-          </motion.div>
-        )}
+          )}
+          {activeSide === "back" && (
+            <motion.div key="back" {...slotAnim(1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
+              <MobileIdCardBack
+                profile={profile}
+                editMode={editMode}
+                onEdit={onEditSocial}
+                onRefreshProfile={onRefreshProfile}
+              />
+            </motion.div>
+          )}
+          {activeSide === "account" && (
+            <motion.div key="account" {...slotAnim(1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
+              <MobileAccountCard
+                profile={profile}
+                isOwner={isOwner}
+                editMode={editMode}
+                onEdit={onEditAccount}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
     </div>
