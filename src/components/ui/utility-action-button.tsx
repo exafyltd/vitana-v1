@@ -54,13 +54,13 @@ export function UtilityActionButton({
                 the page's action buttons and before Gift Voucher. */}
             {!hideLifeCompass && (
               <Button
+                variant="ghost"
                 size="sm"
-                variant="outline"
                 onClick={openLifeCompass}
-                className="shrink-0"
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
               >
-                <Target className="w-4 h-4 mr-2" />
-                Life Compass
+                <Target className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Life Compass</span>
               </Button>
             )}
 
