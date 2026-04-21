@@ -121,9 +121,14 @@ function RecommendationCard({
         </div>
         
         {/* Price + actions */}
-        <div className="flex items-center justify-between">
-          <span className={cn("font-bold", featured ? "text-xl" : "text-lg")}>{rec.price}</span>
-          <div className="flex gap-2">
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <span className={cn(
+            "font-bold truncate",
+            featured ? "text-xl" : "text-base"
+          )}>
+            {rec.price}
+          </span>
+          <div className="flex gap-2 shrink-0">
             <AddToCartButton
               item={{
                 item_type: 'wellness_service',
@@ -134,10 +139,13 @@ function RecommendationCard({
                 item_metadata: { provider: rec.provider, match: rec.match }
               }}
               size="sm"
+              showLabel={featured}
             />
-            <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
-              {translate('discover.view')}
-            </Button>
+            {featured && (
+              <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
+                {translate('discover.view')}
+              </Button>
+            )}
           </div>
         </div>
       </div>
