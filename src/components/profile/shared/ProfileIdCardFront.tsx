@@ -13,7 +13,8 @@ import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { MessageComposeModal } from "./MessageComposeModal";
-import { ShareProfileModal } from "./ShareProfileModal";
+import { ShareProfileSheet } from "./ShareProfileSheet";
+import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -40,6 +41,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [qrScreenOpen, setQrScreenOpen] = useState(false);
   const { translate } = useTranslation();
 
   const handleFollowClick = async () => {
@@ -361,29 +363,27 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         />
       )}
 
-      {/* Share Profile Modal */}
+      {/* Share sheet — native share + QR, visitor-only entry point */}
       {!isOwner && (
-        <ShareProfileModal
-          isOpen={shareModalOpen}
-          onOpenChange={setShareModalOpen}
-          profile={profile}
-          onCopyLink={shareHook.copyLink}
-          onShareToX={shareHook.shareToX}
-          onShareToLinkedIn={shareHook.shareToLinkedIn}
-          onShareToFacebook={handleShareToFacebook}
-          onShareToInstagram={shareHook.shareToInstagram}
-          onShareToTikTok={shareHook.shareToTikTok}
-          onShareToYouTube={shareHook.shareToYouTube}
-          onViewPublicProfile={handleViewPublicProfile}
-          connectedPlatforms={{
-            linkedin: !!profile.linkedin_url,
-            instagram: !!profile.instagram_url,
-            facebook: !!profile.facebook_url,
-            x: !!profile.x_url,
-            youtube: !!profile.youtube_url,
-            tiktok: !!profile.tiktok_url,
-          }}
-        />
+        <>
+          <ShareProfileSheet
+            isOpen={shareModalOpen}
+            onOpenChange={setShareModalOpen}
+            profile={profile}
+            shareUrl={shareHook.getShareUrl()}
+            onShowQR={() => setQrScreenOpen(true)}
+          />
+          <MobileQRShareScreen
+            isOpen={qrScreenOpen}
+            onClose={() => setQrScreenOpen(false)}
+            profileUrl={shareHook.getShareUrl()}
+            profileName={profile.name}
+            profileHandle={profile.handle}
+            avatarUrl={profile.avatarUrl}
+            avatarOffsetX={profile.avatarOffsetX}
+            avatarOffsetY={profile.avatarOffsetY}
+          />
+        </>
       )}
     </>
   );

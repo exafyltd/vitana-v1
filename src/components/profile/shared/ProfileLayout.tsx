@@ -36,7 +36,7 @@ import { PhotoGallery } from "../gallery/PhotoGallery";
 import { VideoGallery } from "../gallery/VideoGallery";
 import { MusicGallery } from "../gallery/MusicGallery";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
-import { ShareProfileModal } from "./ShareProfileModal";
+import { ShareProfileSheet } from "./ShareProfileSheet";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
 import { useFollow } from "@/hooks/useFollow";
@@ -304,29 +304,13 @@ export function ProfileLayout({
           )}
         </div>
 
-        {/* Share Modal */}
-        <ShareProfileModal
+        {/* Share sheet — native share + QR, mirroring event-share pattern */}
+        <ShareProfileSheet
           isOpen={shareHook.isShareOpen}
           onOpenChange={shareHook.setIsShareOpen}
           profile={profile}
-          onCopyLink={shareHook.copyLink}
-          onShareToX={shareHook.shareToX}
-          onShareToLinkedIn={shareHook.shareToLinkedIn}
-          onShareToFacebook={shareHook.shareToFacebook}
-          onShareToInstagram={shareHook.shareToInstagram}
-          onShareToTikTok={shareHook.shareToTikTok}
-          onShareToYouTube={shareHook.shareToYouTube}
-          onViewPublicProfile={() => {
-            window.open(`/u/${profile.handle}`, '_blank');
-          }}
-          connectedPlatforms={{
-            linkedin: !!profile.linkedin_url,
-            instagram: !!profile.instagram_url,
-            facebook: !!profile.facebook_url,
-            x: !!profile.x_url,
-            youtube: !!profile.youtube_url,
-            tiktok: !!profile.tiktok_url,
-          }}
+          shareUrl={shareHook.getShareUrl()}
+          onShowQR={() => setShowQRScreen(true)}
         />
 
         {/* QR Share Screen */}
