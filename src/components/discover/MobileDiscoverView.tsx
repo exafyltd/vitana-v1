@@ -58,14 +58,24 @@ function RecommendationCard({
   const { translate } = useTranslation();
   
   return (
-    <div 
+    <div
       className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300",
         "rounded-[20px] bg-card border border-border/50",
         "shadow-lg shadow-purple-500/5 hover:shadow-xl hover:shadow-purple-500/10",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2",
         featured ? "col-span-2" : ""
       )}
+      role="button"
+      tabIndex={0}
+      aria-label={`${rec.title} — ${rec.provider}`}
       onClick={() => onNavigate(rec)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onNavigate(rec);
+        }
+      }}
     >
       {/* Image with gradient overlay */}
       <div className={cn("relative overflow-hidden", featured ? "h-56" : "h-48")}>

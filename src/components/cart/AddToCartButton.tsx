@@ -63,6 +63,7 @@ export function AddToCartButton({
       onClick={handleClick}
       variant={isInCart ? "outline" : variant}
       size={size}
+      aria-label={isInCart ? "In Cart" : "Add to Cart"}
       className={cn(
         "transition-all duration-300",
         isInCart && "border-primary text-primary",
