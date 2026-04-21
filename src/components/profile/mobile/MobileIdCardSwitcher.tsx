@@ -63,21 +63,23 @@ export function MobileIdCardSwitcher({
 
   return (
     <div className={cn("", className)}>
-      {/* Segmented Control - Centered above the card */}
-      <div className="flex justify-center px-4 pt-safe-top pb-3">
+      {/* Segmented Control — soft, secondary treatment so the card below
+          stays the hero. Extra top padding gives it room to breathe
+          between the app bar and the card. */}
+      <div className="flex justify-center px-4 pt-5 pb-5">
         <div
-          className="relative flex p-1 rounded-full border border-white/10 w-full max-w-xs"
+          className="relative flex p-1 rounded-full border border-black/5 dark:border-white/10 w-full max-w-xs bg-white/70 dark:bg-white/5 backdrop-blur-sm"
           style={{
-            background: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
-            boxShadow: "inset 0 1px 4px rgba(0,0,0,0.3)"
+            boxShadow: "inset 0 1px 2px rgba(0,0,0,0.04)"
           }}
         >
           {/* Sliding indicator */}
           <motion.div
             className="absolute top-1 bottom-1 rounded-full"
             style={{
-              background: "linear-gradient(135deg, hsl(199, 36%, 45%) 0%, hsl(239, 36%, 55%) 100%)",
-              boxShadow: "0 2px 8px rgba(14, 165, 233, 0.3)"
+              background:
+                "linear-gradient(135deg, hsl(240, 70%, 90%) 0%, hsl(210, 70%, 88%) 100%)",
+              boxShadow: "0 1px 3px rgba(99, 102, 241, 0.18)"
             }}
             initial={false}
             animate={SEGMENT_POSITIONS[activeSide]}
@@ -92,8 +94,8 @@ export function MobileIdCardSwitcher({
               className={cn(
                 "relative z-10 flex-1 py-2 text-xs font-semibold tracking-wide transition-colors duration-200",
                 activeSide === segment.id
-                  ? "text-white"
-                  : "text-white/50 hover:text-white/70"
+                  ? "text-foreground"
+                  : "text-foreground/60 hover:text-foreground/80"
               )}
             >
               {segment.label}
