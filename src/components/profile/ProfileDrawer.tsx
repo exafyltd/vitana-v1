@@ -87,29 +87,30 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     setRole(newRole);
     setOpen(false);
 
-    // Navigate after drawer closes
+    // Full page redirect: the rolePref cache update + useRoleRouteEnforcement
+    // + lazy-chunk Suspense race and can mount the destination shell empty
+    // (forcing the user to hit refresh). A hard navigation guarantees clean state.
+    let destination: string;
+    switch (newRole) {
+      case "admin":
+      case "staff":
+        destination = "/admin";
+        break;
+      case "professional":
+        destination = "/professional/dashboard";
+        break;
+      case "patient":
+        destination = "/patient/dashboard";
+        break;
+      case "developer":
+      case "infra":
+      case "community":
+      default:
+        destination = "/home";
+        break;
+    }
     setTimeout(() => {
-      switch (newRole) {
-        case "admin":
-        case "staff":
-          navigate("/admin");
-          break;
-        case "professional":
-          navigate("/professional/dashboard");
-          break;
-        case "patient":
-          navigate("/patient/dashboard");
-          break;
-        case "developer":
-        case "infra":
-          // Developer + infra land on home until dedicated dev surface ships
-          navigate("/home");
-          break;
-        case "community":
-        default:
-          navigate("/home");
-          break;
-      }
+      window.location.assign(destination);
     }, 100);
   };
 
