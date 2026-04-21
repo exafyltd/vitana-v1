@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { extractStoragePath } from '@/lib/utils';
 
 export interface Short {
   id: string;
@@ -184,6 +185,51 @@ export const useIncrementViews = () => {
           .eq('id', videoId);
 
         if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['shorts'] });
+    },
+  });
+};
+
+export interface DeleteShortInput {
+  id: string;
+  src_url: string;
+  thumbnail_url?: string | null;
+}
+
+export const useDeleteShort = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (video: DeleteShortInput) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
+      const { error: dbError } = await supabase
+        .from('media_videos')
+        .delete()
+        .eq('id', video.id)
+        .eq('user_id', user.id);
+
+      if (dbError) throw dbError;
+
+      const filesToRemove: string[] = [];
+      const videoPath = extractStoragePath(video.src_url, 'media');
+      if (videoPath) filesToRemove.push(videoPath);
+
+      if (video.thumbnail_url) {
+        const thumbPath = extractStoragePath(video.thumbnail_url, 'media');
+        if (thumbPath) filesToRemove.push(thumbPath);
+      }
+
+      if (filesToRemove.length > 0) {
+        const { error: storageError } = await supabase.storage
+          .from('media')
+          .remove(filesToRemove);
+
+        if (storageError) console.error('Storage cleanup error:', storageError);
       }
     },
     onSuccess: () => {

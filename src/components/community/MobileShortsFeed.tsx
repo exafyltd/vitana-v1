@@ -24,6 +24,7 @@ interface MobileShortsFeedProps {
   currentUserId?: string;
   onClose: () => void;
   initialIndex?: number;
+  onDelete?: (short: VideoShort) => void;
 }
 
 export function MobileShortsFeed({
@@ -31,6 +32,7 @@ export function MobileShortsFeed({
   currentUserId,
   onClose,
   initialIndex = 0,
+  onDelete,
 }: MobileShortsFeedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -171,6 +173,8 @@ export function MobileShortsFeed({
             onShare={() => handleShare(video)}
             onBack={onClose}
             isLiked={video.id ? likedVideos.has(video.id) : false}
+            currentUserId={currentUserId}
+            onDelete={onDelete ? () => onDelete(video) : undefined}
           />
         );
       })}

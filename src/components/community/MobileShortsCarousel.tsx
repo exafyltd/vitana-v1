@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NewsCard } from '@/components/crossover/NewsCard';
+import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { cn } from '@/lib/utils';
-import { Film } from 'lucide-react';
+import { Film, Trash2 } from 'lucide-react';
 
 interface VideoShort {
   id?: string;
@@ -22,12 +23,16 @@ interface MobileShortsCarouselProps {
   shorts: VideoShort[];
   onShortClick: (index: number) => void;
   emptyState?: React.ReactNode;
+  currentUserId?: string;
+  onDelete?: (short: VideoShort) => void;
 }
 
 export function MobileShortsCarousel({
   shorts,
   onShortClick,
   emptyState,
+  currentUserId,
+  onDelete,
 }: MobileShortsCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -137,6 +142,22 @@ export function MobileShortsCarousel({
                 }}
                 onClick={() => onShortClick(index)}
                 className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
+                utilityTopRight={
+                  currentUserId && short.user_id === currentUserId && onDelete ? (
+                    <KebabMenu>
+                      <DropdownMenuItem
+                        className="text-destructive focus:text-destructive cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(short);
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </KebabMenu>
+                  ) : undefined
+                }
               />
             </div>
           );
