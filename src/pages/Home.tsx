@@ -30,6 +30,8 @@ import {
   SplitBarTrigger,
 } from "@/components/ui/split-bar";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
+import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
+import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -251,6 +253,10 @@ export default function Home() {
               <UniversalCalendarButton />
             </div>
           </UtilityActionButton>
+          <div className="mt-3 space-y-2">
+            <WelcomeBackBanner />
+            <PriorityOfDayBanner />
+          </div>
           {!isMobile && (
             <div className="mt-5">
               <SplitBar value={activeTab} onValueChange={(v) => setActiveTab(v as FilterTab)} className="w-full">
