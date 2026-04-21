@@ -1,8 +1,9 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { Heart, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw } from 'lucide-react';
+import { Heart, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -21,12 +22,15 @@ interface MobileShortSlideProps {
     likes: number;
     tags?: string[];
     isLive?: boolean;
+    user_id?: string;
   };
   isActive: boolean;
   onLike: () => void;
   onShare: () => void;
   onBack: () => void;
   isLiked?: boolean;
+  currentUserId?: string;
+  onDelete?: () => void;
 }
 
 export function MobileShortSlide({
@@ -36,6 +40,8 @@ export function MobileShortSlide({
   onShare,
   onBack,
   isLiked = false,
+  currentUserId,
+  onDelete,
 }: MobileShortSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { translate } = useTranslation();
@@ -352,15 +358,35 @@ export function MobileShortSlide({
           )}
         </div>
 
-        {/* Mute toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleMuteToggle}
-          className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50"
-        >
-          {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* Owner kebab — delete */}
+          {currentUserId && video.user_id === currentUserId && onDelete && (
+            <div onClick={(e) => e.stopPropagation()}>
+              <KebabMenu className="!h-10 !w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50">
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete();
+                  }}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </KebabMenu>
+            </div>
+          )}
+
+          {/* Mute toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleMuteToggle}
+            className="h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-black/50"
+          >
+            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+          </Button>
+        </div>
       </div>
 
       {/* Right side action stack */}

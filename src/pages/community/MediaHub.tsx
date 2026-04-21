@@ -14,7 +14,6 @@ import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown, Mic, Plus } from "lucide-react";
 import { useBookmarks } from "@/hooks/useBookmarks";
-import { extractStoragePath } from "@/lib/utils";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
 import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -39,7 +38,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { usePopularPodcastShows, PopularShow } from "@/hooks/usePopularPodcastShows";
 import { usePodcastShowSubscription } from "@/hooks/usePodcastShowSubscription";
-import { useShorts, useTrackMediaEvent } from "@/hooks/useShorts";
+import { useShorts, useTrackMediaEvent, useDeleteShort } from "@/hooks/useShorts";
 import { ShortPreviewCard } from "@/components/community/ShortPreviewCard";
 import { useUserInterestsStore } from "@/stores/userInterestsStore";
 import { UnifiedUploadModal } from '@/components/community/UnifiedUploadModal';
@@ -288,58 +287,31 @@ export default function MediaHub() {
     },
   });
 
-  // Delete video short mutation
-  const deleteVideoMutation = useMutation({
-    mutationFn: async (video: { id: string; src_url: string; thumbnail_url?: string }) => {
-      if (!user?.id) throw new Error('User not authenticated');
-      
-      // Delete from database
-      const { error: dbError } = await supabase
-        .from('media_videos')
-        .delete()
-        .eq('id', video.id)
-        .eq('user_id', user.id);
-      
-      if (dbError) throw dbError;
-      
-      // Delete files from storage
-      const filesToRemove: string[] = [];
-      
-      const videoPath = extractStoragePath(video.src_url, 'media');
-      if (videoPath) filesToRemove.push(videoPath);
-      
-      if (video.thumbnail_url) {
-        const thumbPath = extractStoragePath(video.thumbnail_url, 'media');
-        if (thumbPath) filesToRemove.push(thumbPath);
-      }
-      
-      if (filesToRemove.length > 0) {
-        const { error: storageError } = await supabase.storage
-          .from('media')
-          .remove(filesToRemove);
-        
-        if (storageError) console.error('Storage cleanup error:', storageError);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shorts'] });
-      toast({
-        title: translate('mediaHub.toast.videoDeleted'),
-        description: translate('mediaHub.toast.videoDeletedDesc'),
-      });
-      setDeleteVideoDialogOpen(false);
-      setVideoToDelete(null);
-      setIsVideoPlayerOpen(false);
-    },
-    onError: (error) => {
-      toast({
-        title: translate('mediaHub.toast.deleteError'),
-        description: translate('mediaHub.toast.deleteErrorDesc'),
-        variant: "destructive",
-      });
-      console.error('Delete video error:', error);
-    },
-  });
+  // Delete video short — owner-only, used by desktop grid + modal and mobile carousel + feed
+  const deleteVideoMutation = useDeleteShort();
+  const handleConfirmDeleteVideo = () => {
+    if (!videoToDelete) return;
+    deleteVideoMutation.mutate(videoToDelete, {
+      onSuccess: () => {
+        toast({
+          title: translate('mediaHub.toast.videoDeleted'),
+          description: translate('mediaHub.toast.videoDeletedDesc'),
+        });
+        setDeleteVideoDialogOpen(false);
+        setVideoToDelete(null);
+        setIsVideoPlayerOpen(false);
+        setMobileShortsFeedOpen(false);
+      },
+      onError: (error) => {
+        toast({
+          title: translate('mediaHub.toast.deleteError'),
+          description: translate('mediaHub.toast.deleteErrorDesc'),
+          variant: "destructive",
+        });
+        console.error('Delete video error:', error);
+      },
+    });
+  };
 
   // Fetch approved music from database
   const { data: approvedMusic = [], refetch: refetchMusic } = useQuery({
@@ -758,9 +730,19 @@ export default function MediaHub() {
               {isMobile ? (
                 <MobileShortsCarousel
                   shorts={videoShorts}
+                  currentUserId={user?.id}
                   onShortClick={(index) => {
                     setSelectedVideoIndex(index);
                     setMobileShortsFeedOpen(true);
+                  }}
+                  onDelete={(short) => {
+                    if (!short.id || !short.src_url) return;
+                    setVideoToDelete({
+                      id: short.id,
+                      src_url: short.src_url,
+                      thumbnail_url: short.thumbnail_url,
+                    });
+                    setDeleteVideoDialogOpen(true);
                   }}
                 />
               ) : (
@@ -1301,6 +1283,15 @@ export default function MediaHub() {
           currentUserId={user?.id}
           onClose={() => setMobileShortsFeedOpen(false)}
           initialIndex={selectedVideoIndex >= 0 ? selectedVideoIndex : 0}
+          onDelete={(short) => {
+            if (!short.id || !short.src_url) return;
+            setVideoToDelete({
+              id: short.id,
+              src_url: short.src_url,
+              thumbnail_url: short.thumbnail_url,
+            });
+            setDeleteVideoDialogOpen(true);
+          }}
         />
       )}
 
@@ -1370,11 +1361,7 @@ export default function MediaHub() {
           <ResponsiveConfirmDialogFooter>
             <ResponsiveConfirmDialogCancel>{translate('mediaHub.deleteVideo.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
-              onClick={() => {
-                if (videoToDelete) {
-                  deleteVideoMutation.mutate(videoToDelete);
-                }
-              }}
+              onClick={handleConfirmDeleteVideo}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {translate('mediaHub.deleteVideo.confirm')}

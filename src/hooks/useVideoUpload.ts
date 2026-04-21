@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -10,34 +11,35 @@ interface UploadMetadata {
   language?: string;
 }
 
-interface VideoMetadata {
-  durationSec: number;
-  width: number;
-  height: number;
-  thumbnailUrl: string;
-}
-
 const MAX_SIZE = 500 * 1024 * 1024; // 500MB
 const MAX_DURATION = 5 * 60; // 5 minutes in seconds
 const ALLOWED_TYPES = ['video/mp4', 'video/webm', 'video/ogg'];
+const EXTRACT_META_TIMEOUT_MS = 30_000;
+
+// VITE_GATEWAY_URL in this repo already includes "/api/v1"; VITE_GATEWAY_BASE is bare origin.
+// Mirror useAutoShortMetadata so we hit the same host.
+const GATEWAY_BASE = (
+  (import.meta.env.VITE_GATEWAY_BASE as string | undefined) ||
+  ((import.meta.env.VITE_GATEWAY_URL as string | undefined) || '').replace(/\/api\/v1\/?$/, '') ||
+  ''
+).replace(/\/+$/, '');
+const EXTRACT_THUMBNAIL_ENDPOINT = `${GATEWAY_BASE}/api/v1/media-hub/shorts/extract-thumbnail`;
 
 export const useVideoUpload = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const validateVideo = async (file: File): Promise<{ valid: boolean; error?: string; duration?: number }> => {
-    // Check file type
     if (!ALLOWED_TYPES.includes(file.type)) {
       return { valid: false, error: 'Only MP4, WebM, and OGG videos are supported' };
     }
 
-    // Check file size
     if (file.size > MAX_SIZE) {
       return { valid: false, error: 'Video must be under 500MB' };
     }
 
-    // Check duration
     try {
       const duration = await getVideoDuration(file);
       if (duration > MAX_DURATION) {
@@ -46,7 +48,7 @@ export const useVideoUpload = () => {
       return { valid: true, duration };
     } catch (error) {
       console.error('Duration check error:', error);
-      return { valid: true }; // Proceed even if duration check fails
+      return { valid: true };
     }
   };
 
@@ -63,52 +65,40 @@ export const useVideoUpload = () => {
     });
   };
 
-  const generateThumbnail = (file: File): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.crossOrigin = 'anonymous';
-      
-      video.onloadedmetadata = () => {
-        // Seek to 1 second or 10% of duration, whichever is earlier
-        const seekTime = Math.min(1, video.duration * 0.1);
-        video.currentTime = seekTime;
-      };
+  const requestServerThumbnail = async (videoId: string, videoPath: string): Promise<boolean> => {
+    try {
+      const { data: sessionResult } = await supabase.auth.getSession();
+      const token = sessionResult.session?.access_token;
+      if (!token) {
+        console.warn('extract-thumbnail skipped: no auth session');
+        return false;
+      }
 
-      video.onseeked = () => {
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          
-          const ctx = canvas.getContext('2d');
-          if (!ctx) {
-            throw new Error('Failed to get canvas context');
-          }
-          
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          
-          canvas.toBlob((blob) => {
-            window.URL.revokeObjectURL(video.src);
-            if (blob) {
-              resolve(blob);
-            } else {
-              reject(new Error('Failed to generate thumbnail'));
-            }
-          }, 'image/jpeg', 0.8);
-        } catch (error) {
-          window.URL.revokeObjectURL(video.src);
-          reject(error);
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), EXTRACT_META_TIMEOUT_MS);
+      try {
+        const resp = await fetch(EXTRACT_THUMBNAIL_ENDPOINT, {
+          method: 'POST',
+          signal: controller.signal,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ video_id: videoId, video_path: videoPath }),
+        });
+        if (!resp.ok) {
+          const body = await resp.json().catch(() => ({}));
+          console.error(`extract-thumbnail failed: HTTP ${resp.status}`, body);
+          return false;
         }
-      };
-
-      video.onerror = () => {
-        window.URL.revokeObjectURL(video.src);
-        reject(new Error('Failed to load video for thumbnail'));
-      };
-
-      video.src = URL.createObjectURL(file);
-    });
+        return true;
+      } finally {
+        clearTimeout(timer);
+      }
+    } catch (err) {
+      console.error('extract-thumbnail threw:', err);
+      return false;
+    }
   };
 
   const uploadVideo = async (file: File, metadata: UploadMetadata, options?: { thumbnailFile?: File }) => {
@@ -116,7 +106,6 @@ export const useVideoUpload = () => {
       setIsUploading(true);
       setProgress(0);
 
-      // Validate video
       const validation = await validateVideo(file);
       if (!validation.valid) {
         throw new Error(validation.error);
@@ -124,92 +113,61 @@ export const useVideoUpload = () => {
 
       setProgress(10);
 
-      // Get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Authentication required');
 
       setProgress(20);
 
-      // Generate file path
       const timestamp = Date.now();
-      const fileExt = file.name.split('.').pop();
       const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
       const filePath = `shorts/${user.id}/${fileName}`;
 
-      // Upload video to storage with proper contentType
       const { error: uploadError } = await supabase.storage
         .from('media')
         .upload(filePath, file, {
           cacheControl: '3600',
           contentType: file.type,
-          upsert: false
+          upsert: false,
         });
 
       if (uploadError) throw uploadError;
 
       setProgress(50);
 
-      // Get public URL
       const { data: { publicUrl: srcUrl } } = supabase.storage
         .from('media')
         .getPublicUrl(filePath);
 
       setProgress(60);
 
-      // Generate or upload thumbnail
-      console.log('Processing thumbnail...');
-      let thumbnailUrl: string | null = null;
-      try {
-        if (options?.thumbnailFile) {
-          // Use custom thumbnail provided by user
-          const thumbnailExt = options.thumbnailFile.name.split('.').pop() || 'jpg';
-          const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.${thumbnailExt}`;
-          
-          const { error: thumbError } = await supabase.storage
-            .from('media')
-            .upload(thumbnailPath, options.thumbnailFile, {
-              cacheControl: '3600',
-              contentType: options.thumbnailFile.type || 'image/jpeg',
-              upsert: false
-            });
+      // Custom thumbnail short-circuits the server extraction.
+      let customThumbnailUrl: string | null = null;
+      if (options?.thumbnailFile) {
+        const thumbnailExt = options.thumbnailFile.name.split('.').pop() || 'jpg';
+        const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.${thumbnailExt}`;
 
-          if (thumbError) {
-            console.error('Custom thumbnail upload error:', thumbError);
-          } else {
-            const { data: { publicUrl: thumbUrl } } = supabase.storage
-              .from('media')
-              .getPublicUrl(thumbnailPath);
-            thumbnailUrl = thumbUrl;
-          }
+        const { error: thumbError } = await supabase.storage
+          .from('media')
+          .upload(thumbnailPath, options.thumbnailFile, {
+            cacheControl: '3600',
+            contentType: options.thumbnailFile.type || 'image/jpeg',
+            upsert: false,
+          });
+
+        if (thumbError) {
+          console.error('Custom thumbnail upload error:', thumbError);
         } else {
-          // Generate thumbnail automatically from video
-          const thumbnailBlob = await generateThumbnail(file);
-          const thumbnailPath = `shorts/${user.id}/${timestamp}_thumb.jpg`;
-          
-          const { error: thumbError } = await supabase.storage
+          const { data: { publicUrl: thumbUrl } } = supabase.storage
             .from('media')
-            .upload(thumbnailPath, thumbnailBlob, {
-              cacheControl: '3600',
-              contentType: 'image/jpeg',
-              upsert: false
-            });
-
-          if (thumbError) {
-            console.error('Thumbnail upload error:', thumbError);
-          } else {
-            const { data: { publicUrl: thumbUrl } } = supabase.storage
-              .from('media')
-              .getPublicUrl(thumbnailPath);
-            thumbnailUrl = thumbUrl;
-          }
+            .getPublicUrl(thumbnailPath);
+          customThumbnailUrl = thumbUrl;
         }
-      } catch (thumbError) {
-        console.error('Thumbnail processing error:', thumbError);
       }
 
-      setProgress(80);
+      setProgress(75);
 
-      // Insert into database
+      // Insert the row immediately so the user lands on a published video.
+      // Thumbnail/dimensions get patched in below from the Edge Function.
       const { data: video, error: dbError } = await supabase
         .from('media_videos')
         .insert({
@@ -220,22 +178,34 @@ export const useVideoUpload = () => {
           category: metadata.category,
           language: metadata.language,
           src_url: srcUrl,
-          thumbnail_url: thumbnailUrl,
+          thumbnail_url: customThumbnailUrl,
           duration_sec: validation.duration || null,
           width: null,
           height: null,
-          status: 'published'
+          status: 'published',
         })
         .select()
         .single();
 
       if (dbError) throw dbError;
 
+      setProgress(90);
+
+      if (!customThumbnailUrl) {
+        // Server-side ffmpeg extraction on the gateway. The gateway patches
+        // media_videos itself; we just invalidate the shorts query once it lands.
+        void requestServerThumbnail(video.id, filePath).then((ok) => {
+          if (ok) queryClient.invalidateQueries({ queryKey: ['shorts'] });
+        });
+      }
+
       setProgress(100);
 
       toast({
         title: 'Upload successful!',
-        description: 'Your video has been published.',
+        description: customThumbnailUrl
+          ? 'Your video has been published.'
+          : 'Your video has been published — thumbnail will appear in a moment.',
       });
 
       return video;
