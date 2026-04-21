@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Pencil, ChevronRight, Share2, UserPlus, UserCheck, MessageSquare } from "lucide-react";
+import { ChevronRight, Share2, UserPlus, UserCheck, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -84,21 +84,6 @@ export function MobileIdentityCard({
           >
             <Share2 className="h-3.5 w-3.5" />
             {translate('common.share', 'Share')}
-          </Button>
-        )}
-
-        {/* Edit button - top right */}
-        {editMode && onEdit && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit();
-            }}
-          >
-            <Pencil className="h-4 w-4" />
           </Button>
         )}
 

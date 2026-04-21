@@ -27,7 +27,10 @@ export type AccountFieldKey =
   | 'city'
   | 'memberSince'
   | 'accountType'
-  | 'verificationStatus';
+  | 'verificationStatus'
+  | 'handle'
+  | 'avatarUrl'
+  | 'longevityArchetype';
 
 export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
 
@@ -55,6 +58,13 @@ export interface AccountInfo {
   role?: string;
   verificationStatus?: AccountVerificationStatus;
 
+  // Public profile (previously edited in Identity drawer)
+  handle?: string;
+  avatarUrl?: string;
+  avatarOffsetX?: number;        // 0-100, avatar image position
+  avatarOffsetY?: number;
+  longevityArchetype?: string;
+
   // Privacy
   visibility: AccountVisibility;
 }
@@ -73,6 +83,9 @@ export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
   memberSince: 'public',
   accountType: 'public',
   verificationStatus: 'public',
+  handle: 'public',
+  avatarUrl: 'public',
+  longevityArchetype: 'public',
 };
 
 export interface ServiceOffering {
