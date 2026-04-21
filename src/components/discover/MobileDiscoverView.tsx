@@ -58,14 +58,24 @@ function RecommendationCard({
   const { translate } = useTranslation();
   
   return (
-    <div 
+    <div
       className={cn(
         "relative overflow-hidden cursor-pointer group transition-all duration-300",
         "rounded-[20px] bg-card border border-border/50",
         "shadow-lg shadow-purple-500/5 hover:shadow-xl hover:shadow-purple-500/10",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2",
         featured ? "col-span-2" : ""
       )}
+      role="button"
+      tabIndex={0}
+      aria-label={`${rec.title} — ${rec.provider}`}
       onClick={() => onNavigate(rec)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onNavigate(rec);
+        }
+      }}
     >
       {/* Image with gradient overlay */}
       <div className={cn("relative overflow-hidden", featured ? "h-56" : "h-48")}>
@@ -121,9 +131,14 @@ function RecommendationCard({
         </div>
         
         {/* Price + actions */}
-        <div className="flex items-center justify-between">
-          <span className={cn("font-bold", featured ? "text-xl" : "text-lg")}>{rec.price}</span>
-          <div className="flex gap-2">
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <span className={cn(
+            "font-bold truncate",
+            featured ? "text-xl" : "text-base"
+          )}>
+            {rec.price}
+          </span>
+          <div className="flex gap-2 shrink-0">
             <AddToCartButton
               item={{
                 item_type: 'wellness_service',
@@ -134,10 +149,13 @@ function RecommendationCard({
                 item_metadata: { provider: rec.provider, match: rec.match }
               }}
               size="sm"
+              showLabel={featured}
             />
-            <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
-              {translate('discover.view')}
-            </Button>
+            {featured && (
+              <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
+                {translate('discover.view')}
+              </Button>
+            )}
           </div>
         </div>
       </div>
