@@ -149,7 +149,7 @@ export function ShortPreviewCard({
       <div className="cursor-pointer" onClick={onClick}>
         {/* Thumbnail Container - Fixed 9:16 aspect ratio with max height */}
         <div
-          className={`relative aspect-[9/16] w-full rounded-xl overflow-hidden bg-muted transition-all duration-300 ${
+          className={`relative aspect-[9/16] w-full rounded-2xl overflow-hidden bg-muted transition-all duration-300 ${
             isHovering && !disabled
               ? '-translate-y-1 shadow-lg ring-4 ring-violet-500/10'
               : 'shadow-sm hover:shadow-md hover:-translate-y-1 hover:ring-4 hover:ring-violet-500/10'
