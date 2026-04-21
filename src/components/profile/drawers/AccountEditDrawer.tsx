@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { format, parseISO } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -13,6 +17,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/context/ProfileProvider";
 import { AccountInfo } from "@/types/profile";
+import { cn } from "@/lib/utils";
 
 interface AccountEditDrawerProps {
   open: boolean;
@@ -131,10 +136,9 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
               <Input value={form.lastName} onChange={(e) => set("lastName", e.target.value)} />
             </Field>
             <Field label="Date of birth">
-              <Input
-                type="date"
+              <DateOfBirthPicker
                 value={form.dateOfBirth}
-                onChange={(e) => set("dateOfBirth", e.target.value)}
+                onChange={(v) => set("dateOfBirth", v)}
               />
             </Field>
             <Field label="Gender">
@@ -212,5 +216,76 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <Label className="text-xs">{label}</Label>
       <div className="mt-1">{children}</div>
     </div>
+  );
+}
+
+// DOB-specific picker: react-day-picker with year + month dropdowns so users
+// born decades ago don't have to tap the month-back arrow 400 times.
+function DateOfBirthPicker({
+  value,
+  onChange,
+}: {
+  value: string;          // ISO yyyy-mm-dd, may be ""
+  onChange: (next: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const parsed = useMemo(() => {
+    if (!value) return undefined;
+    try {
+      const d = parseISO(value);
+      return isNaN(d.getTime()) ? undefined : d;
+    } catch {
+      return undefined;
+    }
+  }, [value]);
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  // Default the calendar view to a sensible era for adults (~35 years ago)
+  // so the year dropdown lands somewhere useful on first open.
+  const defaultMonth = parsed ?? new Date(currentYear - 35, 0, 1);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            "w-full justify-start text-left font-normal",
+            !parsed && "text-muted-foreground",
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {parsed ? format(parsed, "PPP") : "Select birth date"}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={parsed}
+          onSelect={(d) => {
+            if (d) {
+              onChange(format(d, "yyyy-MM-dd"));
+              setOpen(false);
+            }
+          }}
+          defaultMonth={defaultMonth}
+          captionLayout="dropdown-buttons"
+          fromYear={1900}
+          toYear={currentYear}
+          disabled={{ after: today }}
+          initialFocus
+          classNames={{
+            caption: "flex justify-center pt-1 relative items-center gap-2",
+            caption_label: "hidden",
+            caption_dropdowns: "flex gap-1",
+            dropdown:
+              "text-sm bg-background border rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-ring",
+            vhidden: "sr-only",
+          }}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }
