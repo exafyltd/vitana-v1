@@ -59,6 +59,7 @@ interface ProfileLayoutProps {
   onEditCompliance?: () => void;
   onEditShowcase?: () => void;
   onEditVisibility?: () => void;
+  onEditAccount?: () => void;
   onRefreshProfile?: () => void;
 }
 
@@ -73,6 +74,7 @@ export function ProfileLayout({
   onEditCompliance,
   onEditShowcase,
   onEditVisibility,
+  onEditAccount,
   onRefreshProfile
 }: ProfileLayoutProps) {
   // Smart editing state
@@ -213,6 +215,7 @@ export function ProfileLayout({
           isOwner={isOwner}
           onEditIdentity={onEditIdentity}
           onEditSocial={onEditAbout}
+          onEditAccount={onEditAccount}
           onRefreshProfile={onRefreshProfile}
           onShare={shareHook.openShare}
           onFollow={!isOwner ? handleFollowClick : undefined}
