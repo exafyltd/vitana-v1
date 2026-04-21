@@ -53,11 +53,11 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab") as FilterTab | null;
   const [activeTab, setActiveTabState] = useState<FilterTab>(
-    tabFromUrl && ["all", "longevity", "community"].includes(tabFromUrl) ? tabFromUrl : "all"
+    tabFromUrl && ["all", "longevity", "community"].includes(tabFromUrl) ? tabFromUrl : "longevity"
   );
   const setActiveTab = (tab: FilterTab) => {
     setActiveTabState(tab);
-    setSearchParams(tab === "all" ? {} : { tab }, { replace: true });
+    setSearchParams(tab === "longevity" ? {} : { tab }, { replace: true });
   };
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
