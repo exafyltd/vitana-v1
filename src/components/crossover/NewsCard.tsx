@@ -304,7 +304,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       <Card
         ref={ref}
         className={cn(
-          "group relative cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+          "group relative cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.01] border-0 h-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-2xl",
           "shadow-[0_4px_12px_rgba(0,0,0,0.08)]",
           isSelected && "ring-2 ring-primary ring-offset-2",
           className
@@ -333,7 +333,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
         )}
 
-        <div className="relative h-full overflow-hidden">
+        <div className="relative h-full overflow-hidden rounded-[inherit]">
           {/* Background Image - placeholder gradient + lazy-loaded img */}
           <div
             className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
