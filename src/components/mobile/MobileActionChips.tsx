@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ export function VitanaIndexChip({ className }: VitanaIndexChipProps) {
       className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0 ${className || ''}`}
     >
       <span className="text-xs">🧬</span>
-      <span className="text-sm font-medium text-primary">742</span>
+      <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
     </Button>
   );
 }

@@ -4,6 +4,7 @@ import { ChevronRight, Share2, UserPlus, UserCheck, MessageSquare } from "lucide
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 
 interface MobileIdentityCardProps {
@@ -34,7 +35,7 @@ export function MobileIdentityCard({
   displayName,
   handle,
   archetype,
-  vitanaIndex = 742,
+  vitanaIndex: vitanaIndexProp,
   vitanaPercentile = 15,
   editMode = false,
   isOwner = true,
@@ -48,7 +49,9 @@ export function MobileIdentityCard({
   className
 }: MobileIdentityCardProps) {
   const { translate } = useTranslation();
-  
+  const { index: liveIndex } = useVitanaIndex();
+  const vitanaIndex = vitanaIndexProp ?? liveIndex?.total ?? 0;
+
   const initials = displayName
     ?.split(" ")
     .map((n) => n[0])

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -251,7 +252,7 @@ function DiscoverInner() {
                   className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                 >
                   <span className="text-xs opacity-60">🧬</span>
-                  <span className="text-sm font-medium text-primary">742</span>
+                  <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
                 </Button>
                 
                 {/* Autopilot - pill style with label on mobile */}
