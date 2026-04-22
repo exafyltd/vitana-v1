@@ -83,7 +83,7 @@ export default function EditProfilePage() {
       mediaUploads: 89,
       groupsJoined: 12
     },
-    // vitanaIndex: live from useVitanaIndex hook
+    vitanaIndex: 742,
     vitanaPercentile: 85,
     longevityArchetype: contextProfile.longevityArchetype || '',
     // Social URLs from context for immediate display

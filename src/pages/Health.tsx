@@ -28,7 +28,6 @@ import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
 import { useTranslation } from "@/hooks/useTranslation";
 import VitanaBaselineSurveyModal from "@/components/health/VitanaBaselineSurveyModal";
-import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 import { healthNavigation } from "@/config/navigation";
 import { useProfile } from "@/context/ProfileProvider";
@@ -96,8 +95,7 @@ export default withScreenId(function Health() {
   const [showPreview, setShowPreview] = useState(false);
   const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
-  const { index: liveVitanaIndex } = useVitanaIndex();
-  const vitanaScore = liveVitanaIndex?.total ?? 0;
+  const [vitanaScore] = useState(742);
   const [selectedPillar, setSelectedPillar] = useState("overview");
   const [mobileTab, setMobileTab] = useState<'overview' | 'medical' | 'supplements'>('overview');
 

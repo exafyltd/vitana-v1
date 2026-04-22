@@ -1,5 +1,4 @@
 import SEO from "@/components/SEO";
-import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 
@@ -109,7 +108,7 @@ export default function MyGroups() {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
+                  <span className="text-xl font-bold text-green-600">742</span>
                 </div>
               </div>
             </div>
