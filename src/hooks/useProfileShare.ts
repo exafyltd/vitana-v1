@@ -7,15 +7,35 @@ interface ShareOptions {
   name: string;
   profileId: string;
   isPublic: boolean;
+  avatarUrl?: string | null;
 }
 
-export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOptions) => {
+// Stable-per-input short hash. Used only as a cache-buster for third-party
+// link-preview caches (WhatsApp keeps previews for ~7d per URL), NOT for
+// anything security-sensitive. Same input → same hash, so re-shares of an
+// unchanged avatar still share a stable URL and reuse WhatsApp's cache.
+const hashString = (s: string): string => {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) {
+    h = (((h << 5) + h) + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h).toString(36);
+};
+
+export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }: ShareOptions) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
 
-  // Generate canonical profile URL with UTM parameters
+  // Canonical profile URL that hits the Cloudflare OG proxy for rich previews.
+  // When we have an avatar_url we append ?v=<hash(avatar_url)> so that
+  // WhatsApp/Facebook/Telegram invalidate their per-URL preview cache the
+  // moment the avatar changes — without busting cache on unrelated re-shares.
   const getShareUrl = useCallback(() => {
-    return `https://e.vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
-  }, [profileId]);
+    const base = `https://e.vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
+    if (avatarUrl) {
+      return `${base}?v=${hashString(avatarUrl)}`;
+    }
+    return base;
+  }, [profileId, avatarUrl]);
 
   // Check if Web Share API is available
   const canUseNativeShare = useCallback(() => {
