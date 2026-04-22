@@ -100,6 +100,8 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
+import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
+
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <OfflineProvider>
@@ -107,7 +109,9 @@ createRoot(document.getElementById("root")!).render(
         <ProfileProvider>
           <LanguageProvider>
             <TenantProvider>
-              <App />
+              <VitanaIndexProvider>
+                <App />
+              </VitanaIndexProvider>
             </TenantProvider>
           </LanguageProvider>
         </ProfileProvider>
