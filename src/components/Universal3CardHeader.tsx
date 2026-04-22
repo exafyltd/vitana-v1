@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 interface Universal3CardHeaderProps {
   title: string;
@@ -23,6 +24,8 @@ export function Universal3CardHeader({
 }: Universal3CardHeaderProps) {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { index: vitanaIndex, isLoading: vitanaIndexLoading } = useVitanaIndex();
+  const vitanaIndexDisplay = vitanaIndexLoading || !vitanaIndex ? "…" : vitanaIndex.total.toString();
   const [showPreview, setShowPreview] = useState(false);
   
   const latestActions = getLatestActions(2);
@@ -92,14 +95,16 @@ export function Universal3CardHeader({
             )}
           </div>
           
-          {/* Vitana Index Card - Circle with 742 */}
-          <div 
+          {/* Vitana Index Card */}
+          <div
             className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-            onClick={() => navigate('/health')}
+            onClick={() => navigate('/health/vitana-index')}
+            role="button"
+            aria-label={`Vitana Index: ${vitanaIndexDisplay}. Tap for details.`}
           >
             <div className="flex items-center justify-center h-full">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                <span className="text-xl font-bold text-green-600">742</span>
+                <span className="text-xl font-bold text-green-600">{vitanaIndexDisplay}</span>
               </div>
             </div>
           </div>

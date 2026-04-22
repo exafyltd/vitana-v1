@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { useVitanaIndexConfig } from "@/hooks/useVitanaIndexConfig";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 
 interface VitanaIndexMiniProps {
@@ -16,15 +17,23 @@ interface VitanaIndexMiniProps {
   onClick?: () => void;
 }
 
-function VitanaIndexMiniBase({ 
-  score = 75, 
-  trend = "up", 
+function VitanaIndexMiniBase({
+  score: scoreOverride,
+  trend: trendOverride,
   variant = "card",
   showDetails = true,
   onClick
 }: VitanaIndexMiniProps) {
   const navigate = useNavigate();
   const { config } = useVitanaIndexConfig();
+  const { index, isLoading } = useVitanaIndex();
+
+  const score = scoreOverride ?? index?.total ?? 0;
+  const trend = trendOverride ?? index?.trend ?? "stable";
+  const physicalScore = index?.pillars.physical ?? 0;
+  const mentalScore = index?.pillars.mental ?? 0;
+  const socialScore = index?.pillars.social ?? 0;
+  const isComputing = isLoading || (!index && scoreOverride === undefined);
   
   const handleClick = () => {
     if (onClick) {
@@ -70,7 +79,7 @@ function VitanaIndexMiniBase({
         }}
       >
         <Activity className="w-3 h-3 opacity-80" />
-        <span>Vitana Index: {score}</span>
+        <span>Vitana Index: {isComputing ? "…" : score}</span>
         {trend === "up" && <TrendingUp className="w-3 h-3 text-calendar-success" />}
         {trend === "down" && <TrendingDown className="w-3 h-3 text-destructive" />}
       </div>
@@ -97,11 +106,11 @@ function VitanaIndexMiniBase({
           </div>
           <div>
             <p className="font-semibold text-foreground">Vitana Index</p>
-            <p className="text-sm text-muted-foreground">{getScoreLabel(score)}</p>
+            <p className="text-sm text-muted-foreground">{isComputing ? "computing…" : getScoreLabel(score)}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-foreground">{score}</span>
+          <span className="text-2xl font-bold text-foreground">{isComputing ? "…" : score}</span>
           {trend === "up" && <TrendingUp className="w-5 h-5 text-calendar-success" />}
           {trend === "down" && <TrendingDown className="w-5 h-5 text-destructive" />}
         </div>
@@ -137,7 +146,7 @@ function VitanaIndexMiniBase({
             <CardTitle className="text-lg">Vitana Index</CardTitle>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-2xl font-bold text-foreground">{score}</span>
+            <span className="text-2xl font-bold text-foreground">{isComputing ? "…" : score}</span>
             {trend === "up" && <TrendingUp className="w-5 h-5 text-calendar-success" />}
             {trend === "down" && <TrendingDown className="w-5 h-5 text-destructive" />}
           </div>
@@ -148,26 +157,25 @@ function VitanaIndexMiniBase({
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Overall Health</span>
-              <span className="font-medium text-foreground">{getScoreLabel(score)}</span>
+              <span className="font-medium text-foreground">{isComputing ? "computing…" : getScoreLabel(score)}</span>
             </div>
-            <Progress 
-              value={score} 
+            <Progress
+              value={Math.round((score / 999) * 100)}
               className="h-2"
-              // Progress component will use the default styling
             />
           </div>
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="text-center">
-              <div className="font-medium text-foreground">82</div>
+              <div className="font-medium text-foreground">{physicalScore}</div>
               <div className="text-muted-foreground">Physical</div>
             </div>
             <div className="text-center">
-              <div className="font-medium text-foreground">{score}</div>
+              <div className="font-medium text-foreground">{mentalScore}</div>
               <div className="text-muted-foreground">Mental</div>
             </div>
             <div className="text-center">
-              <div className="font-medium text-foreground">71</div>
-              <div className="text-muted-foreground">Balance</div>
+              <div className="font-medium text-foreground">{socialScore}</div>
+              <div className="text-muted-foreground">Social</div>
             </div>
           </div>
         </CardContent>

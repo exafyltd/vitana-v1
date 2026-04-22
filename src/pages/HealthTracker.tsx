@@ -12,6 +12,7 @@ import AutopilotWidget from "@/components/health/AutopilotWidget";
 import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { Progress } from "@/components/ui/progress";
 import { healthNavigation } from "@/config/navigation";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 
 const overviewCards = [
@@ -55,6 +56,9 @@ const overviewCards = [
 export default function HealthTracker() {
   const navigate = useNavigate();
   const [activePanel, setActivePanel] = useState("nutrition");
+  const { index: vitanaIndex, isLoading: vitanaIndexLoading } = useVitanaIndex();
+  const vitanaIndexValue = vitanaIndex?.total ?? 0;
+  const vitanaIndexDisplay = vitanaIndexLoading || !vitanaIndex ? "…" : vitanaIndexValue.toString();
 
   useEffect(() => {
     console.log("HealthTracker page using healthNavigation:", healthNavigation);
@@ -122,7 +126,7 @@ export default function HealthTracker() {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+                  <span className="text-xl font-bold text-green-600">{vitanaIndexDisplay}</span>
                 </div>
               </div>
             </div>
@@ -414,7 +418,7 @@ export default function HealthTracker() {
                         <div className="flex items-center justify-center space-x-8 mb-6">
                           <div className="text-center">
                             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
-                              <span className="text-2xl font-bold text-green-600">742</span>
+                              <span className="text-2xl font-bold text-green-600">{vitanaIndexDisplay}</span>
                             </div>
                             <div className="mt-2 text-sm font-medium">Your Index</div>
                           </div>

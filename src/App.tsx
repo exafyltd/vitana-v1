@@ -176,6 +176,7 @@ const ConditionsRisks = lazy(() => import("./pages/health/ConditionsRisks"));
 const EducationResources = lazy(() => import("./pages/health/EducationResources"));
 const MyBiology = lazy(() => import("./pages/health/MyBiology"));
 const Plans = lazy(() => import("./pages/health/Plans"));
+const VitanaIndexDetail = lazy(() => import("./pages/health/VitanaIndexDetail"));
 
 // Community sub-pages
 const EventsAndMeetups = lazy(() => import("./pages/community/EventsAndMeetups"));
@@ -794,6 +795,11 @@ const App = () => {
           <Route path="/health/plans" element={
             <AuthGuard>
               <Plans />
+            </AuthGuard>
+          } />
+          <Route path="/health/vitana-index" element={
+            <AuthGuard>
+              <VitanaIndexDetail />
             </AuthGuard>
           } />
           {/* Redirect old routes to new structure */}

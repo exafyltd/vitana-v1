@@ -27,6 +27,7 @@ import CompactVitanaIndex from "@/components/health/CompactVitanaIndex";
 import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
 import { useTranslation } from "@/hooks/useTranslation";
+import VitanaBaselineSurveyModal from "@/components/health/VitanaBaselineSurveyModal";
 
 import { healthNavigation } from "@/config/navigation";
 import { useProfile } from "@/context/ProfileProvider";
@@ -201,7 +202,8 @@ export default withScreenId(function Health() {
     return (
       <AppLayout>
         <SEO title="Health" description="Your personal health dashboard" canonical={window.location.href} />
-        
+        <VitanaBaselineSurveyModal />
+
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
           {/* Standard Header */}
           <div className="px-4 pt-2">
@@ -315,6 +317,7 @@ export default withScreenId(function Health() {
   return (
     <AppLayout>
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
+      <VitanaBaselineSurveyModal />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
