@@ -234,7 +234,7 @@ export default function Home() {
     <AppLayout>
       <SEO title="News | MAXINA" description="Longevity science & community updates" canonical={window.location.href} />
       <div className={isMobile
-        ? "px-2 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
+        ? "px-4 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
         : "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
       }>
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
