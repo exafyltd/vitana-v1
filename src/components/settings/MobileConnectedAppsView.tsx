@@ -33,11 +33,14 @@ import {
 // VTID-02403: AI Assistants hooks + modal for mobile
 import { useAIProviders, type AIProviderId } from "@/hooks/useAIAssistants";
 import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
-// VTID-01928: Google OAuth for Gmail/Calendar/Contacts/YouTube/YouTube Music
+// VTID-01928: Google OAuth for Gmail/Calendar/Contacts, and dedicated YouTube
+// OAuth for YouTube / YouTube Music (narrower scope).
 import {
   useStartGoogleConnect,
+  useStartYouTubeConnect,
   useSocialConnections,
   GOOGLE_CONNECTOR_IDS,
+  YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { useEffect } from "react";
@@ -91,33 +94,50 @@ export function MobileConnectedAppsView() {
   const { data: aiProvidersData = [] } = useAIProviders();
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
 
-  // VTID-01928: Google connector state
+  // VTID-01928: Google connector state + dedicated YouTube connection.
   const { data: socialConnections = [] } = useSocialConnections();
   const startGoogle = useStartGoogleConnect();
+  const startYouTube = useStartYouTubeConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
   const googleConnected = Boolean(googleConnection);
+  const youtubeConnection = socialConnections.find((c) => c.provider === "youtube");
+  const youtubeConnected = Boolean(youtubeConnection);
   const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
 
-  // Surface a toast when returning from the Google OAuth callback.
+  // Surface a toast when returning from the OAuth callback.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const connected = params.get("connected");
     const errorCode = params.get("error");
+    const provider = params.get("provider");
     if (connected === "google") {
       const username = params.get("username") || "";
       toast({
         title: "Google connected",
         description: username
-          ? `Gmail, Calendar, Contacts and YouTube are now linked to ${username}.`
-          : "Gmail, Calendar, Contacts and YouTube are now linked.",
+          ? `Gmail, Calendar and Contacts are now linked to ${username}.`
+          : "Gmail, Calendar and Contacts are now linked.",
       });
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
-    } else if (errorCode && params.get("provider") === "google") {
+    } else if (connected === "youtube") {
+      const username = params.get("username") || "";
       toast({
-        title: "Google sign-in didn't finish",
+        title: "YouTube connected",
+        description: username
+          ? `YouTube and YouTube Music are now linked to ${username}.`
+          : "YouTube and YouTube Music are now linked.",
+      });
+      params.delete("connected");
+      params.delete("username");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    } else if (errorCode && (provider === "google" || provider === "youtube")) {
+      const label = provider === "youtube" ? "YouTube" : "Google";
+      toast({
+        title: `${label} sign-in didn't finish`,
         description: errorCode.replace(/_/g, " "),
         variant: "destructive",
       });
@@ -157,18 +177,26 @@ export function MobileConnectedAppsView() {
     };
   });
 
-  // VTID-01928: paint the Connected badge on every Google-backed integration
-  // (Gmail, Google Calendar, Google Contacts, YouTube, YouTube Music) whenever
-  // the single Google connection is active.
+  // VTID-01928: paint the Connected badge on every OAuth-backed integration
+  // — Google (Gmail, Calendar, Contacts) uses the bundled google connection,
+  // YouTube and YouTube Music use the dedicated youtube connection.
   const applyGoogleStatus = (integrations: Integration[]): Integration[] =>
     integrations.map((integration) => {
-      if (!GOOGLE_CONNECTOR_IDS.has(integration.id)) return integration;
-      if (!googleConnected) return integration;
-      return {
-        ...integration,
-        connected: true,
-        lastSync: googleConnection?.connected_at,
-      };
+      if (GOOGLE_CONNECTOR_IDS.has(integration.id) && googleConnected) {
+        return {
+          ...integration,
+          connected: true,
+          lastSync: googleConnection?.connected_at,
+        };
+      }
+      if (YOUTUBE_CONNECTOR_IDS.has(integration.id) && youtubeConnected) {
+        return {
+          ...integration,
+          connected: true,
+          lastSync: youtubeConnection?.connected_at,
+        };
+      }
+      return integration;
     });
 
   const filteredAi = filterIntegrations(aiIntegrationsLive);
@@ -198,6 +226,28 @@ export function MobileConnectedAppsView() {
           const message = err instanceof Error ? err.message : String(err);
           toast({
             title: "Couldn't start Google sign-in",
+            description: message,
+            variant: "destructive",
+          });
+        },
+      });
+      return;
+    }
+    // YouTube / YouTube Music go through the dedicated YouTube OAuth so users
+    // don't get the full Mail/Calendar/Contacts consent screen.
+    if (YOUTUBE_CONNECTOR_IDS.has(integration.id)) {
+      if (integration.connected || youtubeConnected) {
+        toast({
+          title: integration.name,
+          description: `Linked to ${youtubeConnection?.username ?? youtubeConnection?.display_name ?? "your YouTube account"}.`,
+        });
+        return;
+      }
+      startYouTube.mutate(undefined, {
+        onError: (err: unknown) => {
+          const message = err instanceof Error ? err.message : String(err);
+          toast({
+            title: "Couldn't start YouTube sign-in",
             description: message,
             variant: "destructive",
           });

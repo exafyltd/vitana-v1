@@ -1,8 +1,9 @@
 /**
  * VTID-01928: "Verify connection" dialog for the Google connectors on the
  * Connected Apps page. Calls the gateway's /api/v1/social-accounts/google/verify
- * endpoint, which in turn hits Gmail / Calendar / Contacts / YouTube with the
- * stored OAuth token and reports per-service results.
+ * endpoint, which in turn hits Gmail / Calendar / Contacts with the stored
+ * OAuth token and reports per-service results. YouTube lives on its own
+ * connection now and is verified through the dedicated YouTube flow.
  *
  * Purpose is to give the user visible, live proof that the OAuth connection
  * is actually usable — not merely that a DB row exists.
@@ -30,7 +31,7 @@ type ProbeRow = {
 
 function buildRows(result: GoogleVerifyResult | undefined): ProbeRow[] {
   if (!result?.probes) return [];
-  const { gmail, calendar, contacts, youtube } = result.probes;
+  const { gmail, calendar, contacts } = result.probes;
   return [
     {
       key: "gmail",
@@ -57,16 +58,6 @@ function buildRows(result: GoogleVerifyResult | undefined): ProbeRow[] {
           ? `${contacts.total_people} contacts visible`
           : "connection reachable (People API returned OK)"
         : contacts.error ?? `HTTP ${contacts.status}`,
-    },
-    {
-      key: "youtube",
-      name: "YouTube",
-      status: youtube.ok ? "ok" : "fail",
-      summary: youtube.ok
-        ? youtube.has_channel
-          ? `Channel: ${youtube.channel_title} (${youtube.subscriber_count ?? "0"} subscribers)`
-          : "API reachable — no YouTube channel on this account"
-        : youtube.error ?? `HTTP ${youtube.status}`,
     },
   ];
 }

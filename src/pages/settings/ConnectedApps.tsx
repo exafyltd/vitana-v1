@@ -63,11 +63,15 @@ import {
   type AIProviderId,
 } from "@/hooks/useAIAssistants";
 import { AIAssistantConnectModal } from "@/components/AIAssistantConnectModal";
-// VTID-01928: Google OAuth for Gmail/Calendar/Contacts/YouTube/YouTube Music
+// VTID-01928: Google OAuth for Gmail/Calendar/Contacts, and dedicated YouTube
+// OAuth for YouTube / YouTube Music (narrower scope so users don't grant mail
+// and calendar access just to connect YouTube).
 import {
   useStartGoogleConnect,
+  useStartYouTubeConnect,
   useSocialConnections,
   GOOGLE_CONNECTOR_IDS,
+  YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { useToast } from "@/hooks/use-toast";
@@ -82,16 +86,33 @@ function ConnectedApps() {
   const disconnectAi = useDisconnectAIProvider();
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
 
-  // VTID-01928: Google connector state (single consent → 5 connectors)
+  // VTID-01928: Google connector state (single consent → Gmail/Calendar/Contacts)
+  // + dedicated YouTube connection (YouTube / YouTube Music).
   const { toast } = useToast();
   const { data: socialConnections = [] } = useSocialConnections();
   const startGoogle = useStartGoogleConnect();
+  const startYouTube = useStartYouTubeConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
   const googleConnected = Boolean(googleConnection);
+  const youtubeConnection = socialConnections.find((c) => c.provider === "youtube");
+  const youtubeConnected = Boolean(youtubeConnection);
   const [googleVerifyOpen, setGoogleVerifyOpen] = useState(false);
   const manageGoogle = () => setGoogleVerifyOpen(true);
 
-  const startGoogleFlow = (connectorId: string) => {
+  const startConnectorFlow = (connectorId: string) => {
+    if (YOUTUBE_CONNECTOR_IDS.has(connectorId)) {
+      startYouTube.mutate(undefined, {
+        onError: (err: unknown) => {
+          const message = err instanceof Error ? err.message : String(err);
+          toast({
+            title: "Couldn't start YouTube sign-in",
+            description: message,
+            variant: "destructive",
+          });
+        },
+      });
+      return;
+    }
     startGoogle.mutate(undefined, {
       onError: (err: unknown) => {
         const message = err instanceof Error ? err.message : String(err);
@@ -102,8 +123,6 @@ function ConnectedApps() {
         });
       },
     });
-    // Surface intent while the redirect is in flight.
-    console.log(`[google-oauth] initiating from connector ${connectorId}`);
   };
 
   // Show a success / error toast when returning from the OAuth callback.
@@ -111,21 +130,35 @@ function ConnectedApps() {
     const params = new URLSearchParams(window.location.search);
     const connected = params.get("connected");
     const errorCode = params.get("error");
+    const provider = params.get("provider");
     if (connected === "google") {
       const username = params.get("username") || "";
       toast({
         title: "Google connected",
         description: username
-          ? `Gmail, Calendar, Contacts and YouTube are now linked to ${username}.`
-          : "Gmail, Calendar, Contacts and YouTube are now linked.",
+          ? `Gmail, Calendar and Contacts are now linked to ${username}.`
+          : "Gmail, Calendar and Contacts are now linked.",
       });
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
-    } else if (errorCode && params.get("provider") === "google") {
+    } else if (connected === "youtube") {
+      const username = params.get("username") || "";
       toast({
-        title: "Google sign-in didn't finish",
+        title: "YouTube connected",
+        description: username
+          ? `YouTube and YouTube Music are now linked to ${username}.`
+          : "YouTube and YouTube Music are now linked.",
+      });
+      params.delete("connected");
+      params.delete("username");
+      const cleaned = params.toString();
+      window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
+    } else if (errorCode && (provider === "google" || provider === "youtube")) {
+      const label = provider === "youtube" ? "YouTube" : "Google";
+      toast({
+        title: `${label} sign-in didn't finish`,
         description: errorCode.replace(/_/g, " "),
         variant: "destructive",
       });
@@ -724,7 +757,7 @@ function ConnectedApps() {
             ? { label: 'Manage', onClick: manageGoogle }
             : {
                 label: 'Connect',
-                onClick: () => startGoogleFlow(app.id),
+                onClick: () => startConnectorFlow(app.id),
                 disabled: startGoogle.isPending,
               }
           : {
@@ -910,7 +943,7 @@ function ConnectedApps() {
           : isGoogle
             ? {
                 label: 'Connect',
-                onClick: () => startGoogleFlow(app.id),
+                onClick: () => startConnectorFlow(app.id),
                 disabled: startGoogle.isPending,
               }
             : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) };
@@ -968,8 +1001,16 @@ function ConnectedApps() {
     ];
 
     return apps.map((app) => {
+      const isYouTube = YOUTUBE_CONNECTOR_IDS.has(app.id);
       const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
-      const isConnected = isGoogle && googleConnected;
+      const isOAuthBacked = isYouTube || isGoogle;
+      const isConnected =
+        (isYouTube && youtubeConnected) || (isGoogle && googleConnected);
+      const linkedAccount = isYouTube
+        ? youtubeConnection?.username ??
+          youtubeConnection?.display_name ??
+          'your YouTube account'
+        : googleConnection?.username ?? 'your Google account';
       return {
         id: `media-${app.id}`,
         screenId: "settings-connected-apps",
@@ -980,18 +1021,21 @@ function ConnectedApps() {
           ? [{ label: 'Connected', variant: 'default' as const }]
           : undefined,
         primaryAction: isConnected
-          ? { label: 'Manage', onClick: isGoogle ? manageGoogle : () => console.log(`Manage ${app.name}`) }
-          : isGoogle
+          ? {
+              label: 'Manage',
+              onClick: isGoogle ? manageGoogle : () => console.log(`Manage ${app.name}`),
+            }
+          : isOAuthBacked
             ? {
                 label: 'Connect',
-                onClick: () => startGoogleFlow(app.id),
-                disabled: startGoogle.isPending,
+                onClick: () => startConnectorFlow(app.id),
+                disabled: isYouTube ? startYouTube.isPending : startGoogle.isPending,
               }
             : { label: 'Connect', onClick: () => console.log(`Connect ${app.name}`) },
         expandedContent: (
           <div className="text-sm text-muted-foreground pt-2">
             {isConnected
-              ? `${app.name} is linked to ${googleConnection?.username ?? 'your Google account'}.`
+              ? `${app.name} is linked to ${linkedAccount}.`
               : `Connect ${app.name} to enable ${app.description.toLowerCase()} through Vitana.`}
           </div>
         ),

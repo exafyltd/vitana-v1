@@ -7,8 +7,10 @@
  * social_connections and redirects the browser to
  * /settings/connected-apps?connected=google.
  *
- * The same Google consent covers Gmail, Google Calendar, Google Contacts
- * (People API), YouTube and YouTube Music — one grant, five connectors light up.
+ * The Google consent covers Gmail, Google Calendar and Google Contacts
+ * (People API). YouTube and YouTube Music go through a dedicated youtube
+ * provider (useStartYouTubeConnect) so users aren't asked to grant mail and
+ * calendar scopes just to connect their YouTube account.
  */
 
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -29,11 +31,18 @@ async function authHeaders(): Promise<HeadersInit> {
   };
 }
 
-// Connector IDs on the Connected Apps page that route through Google OAuth.
+// Connector IDs on the Connected Apps page that route through Google OAuth
+// (Mail, Calendar, Contacts — scopes bundled into one consent).
 export const GOOGLE_CONNECTOR_IDS = new Set<string>([
   "gmail",
   "google-contacts",
   "google-calendar",
+]);
+
+// Connector IDs that route through the dedicated YouTube OAuth. Same Google
+// OAuth app underneath, but only youtube.readonly is requested — so the user
+// gets a YouTube-scoped consent screen instead of the full Google bundle.
+export const YOUTUBE_CONNECTOR_IDS = new Set<string>([
   "youtube-music",
   "youtube-playback",
 ]);
@@ -79,7 +88,6 @@ export interface GoogleVerifyResult {
     gmail: { ok: boolean; email?: string; messages_total?: number; threads_total?: number; status?: number; error?: string };
     calendar: { ok: boolean; calendars?: number; primary?: string | null; status?: number; error?: string };
     contacts: { ok: boolean; total_people?: number | null; status?: number; error?: string };
-    youtube: { ok: boolean; channel_title?: string | null; subscriber_count?: string | null; has_channel?: boolean; status?: number; error?: string };
   };
   error?: string;
 }
@@ -142,22 +150,35 @@ export function useVerifyGoogleConnection(enabled = false) {
  * Google's consent screen, so the mutation never resolves in the normal sense.
  */
 export function useStartGoogleConnect() {
+  return useStartSocialOAuth("google");
+}
+
+/**
+ * Kick off the dedicated YouTube OAuth flow. Shares Google's OAuth server but
+ * requests only youtube.readonly, so users connecting YouTube don't get a
+ * consent screen asking for Gmail, Calendar and Contacts.
+ */
+export function useStartYouTubeConnect() {
+  return useStartSocialOAuth("youtube");
+}
+
+function useStartSocialOAuth(provider: "google" | "youtube") {
   return useMutation({
     mutationFn: async () => {
       const headers = await authHeaders();
-      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connect/google`, {
+      const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connect/${provider}`, {
         method: "GET",
         headers,
       });
       if (!resp.ok) {
         const text = await resp.text();
-        throw new Error(`Failed to start Google OAuth (${resp.status}): ${text}`);
+        throw new Error(`Failed to start ${provider} OAuth (${resp.status}): ${text}`);
       }
       const json = await resp.json();
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      // Hand off to Google — full page redirect so we preserve browser history.
+      // Hand off to the provider — full page redirect so we preserve history.
       window.location.href = json.auth_url;
       return json.auth_url as string;
     },
