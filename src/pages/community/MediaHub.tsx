@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -554,7 +553,7 @@ export default function MediaHub() {
                       className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                     >
                       <span className="text-xs opacity-60">🧬</span>
-                      <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
+                      <span className="text-sm font-medium text-primary">742</span>
                     </Button>
                     
                     {/* Autopilot - pill with icon + text */}
@@ -652,7 +651,7 @@ export default function MediaHub() {
                 <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
                   <div className="flex items-center justify-center h-full">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                      <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
+                      <span className="text-xl font-bold text-green-600">742</span>
                     </div>
                   </div>
                 </div>
