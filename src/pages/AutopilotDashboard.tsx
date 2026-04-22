@@ -23,6 +23,8 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import SubNavigation from "@/components/SubNavigation";
+import { communityNavigation } from "@/config/navigation";
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -458,13 +460,21 @@ export default function AutopilotDashboard() {
         description="Your personalized autopilot journey"
         canonical={window.location.href}
       />
-      <div className="p-6 min-h-screen bg-gradient-subtle">
-        <div className="max-w-2xl mx-auto">
+      <SubNavigation items={communityNavigation} />
+      <div className="p-6 min-h-screen pb-24">
+        <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="My Journey"
             description="Your personalized 90-day autopilot journey"
             emoji="🚀"
           />
+          <UtilityActionButton>
+            <ExpandableSearchButton
+              placeholder="Search journey..."
+              onSearch={() => { /* journey search — follow-up */ }}
+            />
+            <UniversalCalendarButton />
+          </UtilityActionButton>
 
           {isLoading ? (
             <div className="flex justify-center py-12">
