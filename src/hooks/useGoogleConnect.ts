@@ -88,7 +88,6 @@ export interface GoogleVerifyResult {
     gmail: { ok: boolean; email?: string; messages_total?: number; threads_total?: number; status?: number; error?: string };
     calendar: { ok: boolean; calendars?: number; primary?: string | null; status?: number; error?: string };
     contacts: { ok: boolean; total_people?: number | null; status?: number; error?: string };
-    youtube: { ok: boolean; channel_title?: string | null; subscriber_count?: string | null; has_channel?: boolean; status?: number; error?: string };
   };
   error?: string;
 }

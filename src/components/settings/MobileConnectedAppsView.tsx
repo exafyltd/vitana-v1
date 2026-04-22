@@ -189,14 +189,11 @@ export function MobileConnectedAppsView() {
           lastSync: googleConnection?.connected_at,
         };
       }
-      // YouTube cards light up when the user has either a dedicated youtube
-      // connection or an existing google connection (whose scope bundle
-      // includes youtube.readonly for backwards compat).
-      if (YOUTUBE_CONNECTOR_IDS.has(integration.id) && (youtubeConnected || googleConnected)) {
+      if (YOUTUBE_CONNECTOR_IDS.has(integration.id) && youtubeConnected) {
         return {
           ...integration,
           connected: true,
-          lastSync: youtubeConnection?.connected_at ?? googleConnection?.connected_at,
+          lastSync: youtubeConnection?.connected_at,
         };
       }
       return integration;

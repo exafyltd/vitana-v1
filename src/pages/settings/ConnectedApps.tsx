@@ -1004,16 +1004,11 @@ function ConnectedApps() {
       const isYouTube = YOUTUBE_CONNECTOR_IDS.has(app.id);
       const isGoogle = GOOGLE_CONNECTOR_IDS.has(app.id);
       const isOAuthBacked = isYouTube || isGoogle;
-      // YouTube cards count as connected if the user has a dedicated youtube
-      // connection, or an existing google connection (whose bundle includes
-      // youtube.readonly for backwards compat).
       const isConnected =
-        (isYouTube && (youtubeConnected || googleConnected)) ||
-        (isGoogle && googleConnected);
+        (isYouTube && youtubeConnected) || (isGoogle && googleConnected);
       const linkedAccount = isYouTube
         ? youtubeConnection?.username ??
           youtubeConnection?.display_name ??
-          googleConnection?.username ??
           'your YouTube account'
         : googleConnection?.username ?? 'your Google account';
       return {
