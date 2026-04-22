@@ -286,31 +286,33 @@ export default function Messages() {
     
     // Desktop loading state
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
+      <>
         <SEO title={translate('inbox.desktopTitle', 'Messages')} description={translate('inbox.description')} canonical={window.location.href} />
         <AppLayout>
-          <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-            <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
-              <SubNavigation items={messagesNavigation} />
-              <StandardHeader 
-                title={translate('inbox.desktopTitle', 'Messages')}
-                description={translate('inbox.loading')}
-              />
-              <div className="flex-1 flex">
-                <div className="w-80 border-r">
-                  <ConversationListSkeleton />
-                </div>
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">{translate('inbox.loading')}</p>
+          <div className="flex h-full min-h-0 flex-col overflow-hidden">
+            <SubNavigation items={messagesNavigation} />
+            <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+              <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-6 lg:gap-8">
+                <StandardHeader
+                  title={translate('inbox.desktopTitle', 'Messages')}
+                  description={translate('inbox.loading')}
+                />
+                <div className="flex flex-1 min-h-0 overflow-hidden">
+                  <div className="w-80 border-r overflow-hidden">
+                    <ConversationListSkeleton />
+                  </div>
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                      <p className="text-muted-foreground">{translate('inbox.loading')}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </AppLayout>
-      </div>
+      </>
     );
   }
 
@@ -1076,17 +1078,18 @@ export default function Messages() {
     <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
       <AppLayout>
         <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
-        <SubNavigation items={messagesNavigation} />
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-          <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
-            <StandardHeader 
-              title="Messages"
-              description="Connect with your community and professional network"
-            />
+        <div className="flex h-full min-h-0 flex-col overflow-hidden">
+          <SubNavigation items={messagesNavigation} />
+          <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+            <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-6 lg:gap-8">
+              <StandardHeader
+                title="Messages"
+                description="Connect with your community and professional network"
+              />
 
           {/* Utility Action Button */}
           <UtilityActionButton>
-            <ExpandableSearchButton 
+            <ExpandableSearchButton
               placeholder="Search conversations, people, or groups…"
               onSearch={(query) => setInboxSearchQuery(query)}
               onClear={() => setInboxSearchQuery("")}
@@ -1115,7 +1118,7 @@ export default function Messages() {
           </UtilityActionButton>
 
           {/* Split Navigation */}
-          <SplitBar value={messageContext} onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }} className="flex-1">
+          <SplitBar value={messageContext} onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }} className="flex flex-1 min-h-0 flex-col overflow-hidden">
             <SplitBarList>
             <SplitBarTrigger value="global">
               🌍 Global Community
@@ -1125,16 +1128,17 @@ export default function Messages() {
             </SplitBarTrigger>
             </SplitBarList>
 
-            <SplitBarContent value="global">
+            <SplitBarContent value="global" className="mt-0 flex-1 min-h-0 overflow-hidden">
               {renderConversationContent()}
             </SplitBarContent>
 
-            <SplitBarContent value="tenant">
+            <SplitBarContent value="tenant" className="mt-0 flex-1 min-h-0 overflow-hidden">
               {renderConversationContent()}
             </SplitBarContent>
           </SplitBar>
+            </div>
+          </div>
         </div>
-      </div>
 
       <NewConversationPopup
         open={showNewConversation}
