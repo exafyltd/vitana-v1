@@ -292,11 +292,7 @@ export default function Messages() {
           <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
             <SubNavigation items={messagesNavigation} />
             <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-              <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-6 lg:gap-8">
-                <StandardHeader
-                  title={translate('inbox.desktopTitle', 'Messages')}
-                  description={translate('inbox.loading')}
-                />
+              <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-4">
                 <div className="flex flex-1 min-h-0 overflow-hidden">
                   <div className="w-80 border-r overflow-hidden">
                     <ConversationListSkeleton />
@@ -1081,12 +1077,7 @@ export default function Messages() {
         <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
           <SubNavigation items={messagesNavigation} />
           <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-            <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-6 lg:gap-8">
-              <StandardHeader
-                title="Messages"
-                description="Connect with your community and professional network"
-              />
-
+            <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-4">
           {/* Utility Action Button */}
           <UtilityActionButton>
             <ExpandableSearchButton
@@ -1128,11 +1119,11 @@ export default function Messages() {
             </SplitBarTrigger>
             </SplitBarList>
 
-            <SplitBarContent value="global" className="mt-0 flex flex-1 min-h-0 flex-col overflow-hidden">
+            <SplitBarContent value="global" className="mt-0 data-[state=active]:flex data-[state=active]:flex-1 data-[state=active]:flex-col data-[state=active]:min-h-0 data-[state=active]:overflow-hidden">
               {renderConversationContent()}
             </SplitBarContent>
 
-            <SplitBarContent value="tenant" className="mt-0 flex flex-1 min-h-0 flex-col overflow-hidden">
+            <SplitBarContent value="tenant" className="mt-0 data-[state=active]:flex data-[state=active]:flex-1 data-[state=active]:flex-col data-[state=active]:min-h-0 data-[state=active]:overflow-hidden">
               {renderConversationContent()}
             </SplitBarContent>
           </SplitBar>
