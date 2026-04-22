@@ -292,7 +292,11 @@ export default function Messages() {
           <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
             <SubNavigation items={messagesNavigation} />
             <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-              <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-4">
+              <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
+                <div className="pt-1">
+                  <h1 className="text-2xl font-bold tracking-tight text-foreground">{translate('inbox.desktopTitle', 'Messages')}</h1>
+                  <p className="text-sm text-muted-foreground">{translate('inbox.loading')}</p>
+                </div>
                 <div className="flex flex-1 min-h-0 overflow-hidden">
                   <div className="w-80 border-r overflow-hidden">
                     <ConversationListSkeleton />
@@ -1077,7 +1081,11 @@ export default function Messages() {
         <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
           <SubNavigation items={messagesNavigation} />
           <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-            <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-4">
+            <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
+          <div className="pt-1">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Messages</h1>
+            <p className="text-sm text-muted-foreground">Connect with your community and professional network</p>
+          </div>
           {/* Utility Action Button */}
           <UtilityActionButton>
             <ExpandableSearchButton
