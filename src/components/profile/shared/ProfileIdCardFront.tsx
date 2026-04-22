@@ -59,7 +59,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
     handle: profile.handle,
     name: profile.name,
     profileId: profile.id,
-    isPublic: isPublicProfile
+    isPublic: isPublicProfile,
+    avatarUrl: profile.avatarUrl
   });
 
   const handleShareClick = () => {
