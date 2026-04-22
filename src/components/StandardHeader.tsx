@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 interface StandardHeaderProps {
   title: string;
@@ -23,6 +24,8 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { index: vitanaIndex, isLoading: vitanaIndexLoading } = useVitanaIndex();
+  const vitanaIndexDisplay = vitanaIndexLoading || !vitanaIndex ? "…" : vitanaIndex.total.toString();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -100,14 +103,16 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
           )}
         </div>
         
-        {/* Vitana Index Card - Circle with 742 */}
-        <div 
+        {/* Vitana Index Card */}
+        <div
           className="w-32 bg-card rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-2xl relative z-10"
-          onClick={() => navigate('/health')}
+          onClick={() => navigate('/health/vitana-index')}
+          role="button"
+          aria-label={`Vitana Index: ${vitanaIndexDisplay}. Tap for details.`}
         >
           <div className="flex items-center justify-center h-full">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-              <span className="text-xl font-bold text-primary">742</span>
+              <span className="text-xl font-bold text-primary">{vitanaIndexDisplay}</span>
             </div>
           </div>
         </div>

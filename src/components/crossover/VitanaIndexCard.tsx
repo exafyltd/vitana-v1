@@ -2,15 +2,17 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getVitanaIndexTier, getVitanaIndexPercentage } from "@/lib/vitanaIndex";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { withCardId } from "@/lib/withCardId";
 import { cn } from "@/lib/utils";
 
 interface VitanaBreakdown {
-  sleep: number;
-  exercise: number;
-  nutrition: number;
-  hydration?: number;
-  mental?: number;
+  physical: number;
+  mental: number;
+  nutritional: number;
+  social: number;
+  environmental?: number;
+  prosperity?: number;
 }
 
 interface VitanaIndexCardProps {
@@ -20,19 +22,29 @@ interface VitanaIndexCardProps {
   className?: string;
 }
 
-function VitanaIndexCardBase({ 
-  score = 742, 
-  trend = "+11% vs last week",
-  breakdown = {
-    sleep: 85,
-    exercise: 67,
-    nutrition: 92,
-    hydration: 78,
-    mental: 74
-  },
-  className 
+function VitanaIndexCardBase({
+  score: scoreOverride,
+  trend: trendOverride,
+  breakdown: breakdownOverride,
+  className
 }: VitanaIndexCardProps) {
   const navigate = useNavigate();
+  const { index, isLoading } = useVitanaIndex();
+
+  const score = scoreOverride ?? index?.total ?? 0;
+  const isComputing = isLoading || (!index && scoreOverride === undefined);
+  const breakdown: VitanaBreakdown = breakdownOverride ?? {
+    physical: Math.round(((index?.pillars.physical ?? 0) / 200) * 100),
+    mental: Math.round(((index?.pillars.mental ?? 0) / 200) * 100),
+    nutritional: Math.round(((index?.pillars.nutritional ?? 0) / 200) * 100),
+    social: Math.round(((index?.pillars.social ?? 0) / 200) * 100),
+    environmental: Math.round(((index?.pillars.environmental ?? 0) / 200) * 100),
+    prosperity: Math.round(((index?.pillars.prosperity ?? 0) / 200) * 100),
+  };
+  const trend = trendOverride ??
+    (index?.trend === "up" ? "↑ improving"
+      : index?.trend === "down" ? "↓ declining"
+      : "steady");
 
   const tier = getVitanaIndexTier(score);
   const progressPercent = getVitanaIndexPercentage(score);
@@ -72,51 +84,57 @@ function VitanaIndexCardBase({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-xl font-bold" style={{ color: scoreStatus.color }}>{score}</div>
+            <div className="text-xl font-bold" style={{ color: scoreStatus.color }}>{isComputing ? "…" : score}</div>
             <div className="text-xs text-muted-foreground">Index</div>
           </div>
         </div>
       </div>
-      
+
       {/* Status & Breakdown */}
       <div className="space-y-3 text-center">
         <div>
-          <div className="text-lg font-bold" style={{ color: scoreStatus.color }}>{scoreStatus.status}</div>
+          <div className="text-lg font-bold" style={{ color: scoreStatus.color }}>{isComputing ? "computing…" : scoreStatus.status}</div>
           <div className="text-sm text-muted-foreground">{trend}</div>
         </div>
-        
+
         <div className="space-y-1">
           <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground">Sleep</span>
-            <span className={`font-medium ${breakdown.sleep >= 80 ? 'text-health-success' : breakdown.sleep >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
-              {breakdown.sleep}%
+            <span className="text-muted-foreground">Physical</span>
+            <span className={`font-medium ${breakdown.physical >= 80 ? 'text-health-success' : breakdown.physical >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+              {breakdown.physical}%
             </span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground">Exercise</span>
-            <span className={`font-medium ${breakdown.exercise >= 80 ? 'text-health-success' : breakdown.exercise >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
-              {breakdown.exercise}%
+            <span className="text-muted-foreground">Mental</span>
+            <span className={`font-medium ${breakdown.mental >= 80 ? 'text-health-success' : breakdown.mental >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+              {breakdown.mental}%
             </span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-muted-foreground">Nutrition</span>
-            <span className={`font-medium ${breakdown.nutrition >= 80 ? 'text-health-success' : breakdown.nutrition >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
-              {breakdown.nutrition}%
+            <span className="text-muted-foreground">Nutritional</span>
+            <span className={`font-medium ${breakdown.nutritional >= 80 ? 'text-health-success' : breakdown.nutritional >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+              {breakdown.nutritional}%
             </span>
           </div>
-          {breakdown.hydration && (
+          <div className="flex justify-between text-xs">
+            <span className="text-muted-foreground">Social</span>
+            <span className={`font-medium ${breakdown.social >= 80 ? 'text-health-success' : breakdown.social >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+              {breakdown.social}%
+            </span>
+          </div>
+          {breakdown.environmental !== undefined && (
             <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground">Hydration</span>
-              <span className={`font-medium ${breakdown.hydration >= 80 ? 'text-health-success' : breakdown.hydration >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
-                {breakdown.hydration}%
+              <span className="text-muted-foreground">Environmental</span>
+              <span className={`font-medium ${breakdown.environmental >= 80 ? 'text-health-success' : breakdown.environmental >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+                {breakdown.environmental}%
               </span>
             </div>
           )}
-          {breakdown.mental && (
+          {breakdown.prosperity !== undefined && (
             <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground">Mental</span>
-              <span className={`font-medium ${breakdown.mental >= 80 ? 'text-health-success' : breakdown.mental >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
-                {breakdown.mental}%
+              <span className="text-muted-foreground">Prosperity</span>
+              <span className={`font-medium ${breakdown.prosperity >= 80 ? 'text-health-success' : breakdown.prosperity >= 60 ? 'text-health-warning' : 'text-health-error'}`}>
+                {breakdown.prosperity}%
               </span>
             </div>
           )}
