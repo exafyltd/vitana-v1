@@ -228,7 +228,7 @@ function DiscoverInner() {
       
       <div className={cn(
         "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
-        isMobile && "px-3 pb-32"
+        isMobile && "px-4 pb-32"
       )}>
         <div className={cn("max-w-7xl mx-auto", isMobile ? "space-y-3" : "space-y-6")}>
             <StandardHeader
