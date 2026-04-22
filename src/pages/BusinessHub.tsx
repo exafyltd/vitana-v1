@@ -1,4 +1,5 @@
 import SEO from "@/components/SEO";
+import VitanaIndexValue from "@/components/health/VitanaIndexValue";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
@@ -149,7 +150,7 @@ export default function BusinessHub() {
                     className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                   >
                     <span className="text-xs opacity-60">🧬</span>
-                    <span className="text-sm font-medium text-primary">742</span>
+                    <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
                   </Button>
                   
                   {/* Autopilot - pill style with label */}
@@ -466,7 +467,7 @@ export default function BusinessHub() {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+                  <span className="text-xl font-bold text-green-600"><VitanaIndexValue /></span>
                 </div>
               </div>
             </div>
