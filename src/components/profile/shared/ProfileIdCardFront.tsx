@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { UserPlus, MessageSquare, ExternalLink, Star, Edit3, Share2 } from "lucide-react";
+import { UserPlus, MessageSquare, ExternalLink, Star, Edit3, Share2, QrCode } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { MessageComposeModal } from "./MessageComposeModal";
-import { ShareProfileSheet } from "./ShareProfileSheet";
 import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
@@ -40,7 +39,6 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(resolvedId);
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
   const [qrScreenOpen, setQrScreenOpen] = useState(false);
   const { translate } = useTranslation();
 
@@ -63,6 +61,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
     profileId: profile.id,
     isPublic: isPublicProfile
   });
+
+  const handleShareClick = () => {
+    if (shareHook.canUseNativeShare) {
+      shareHook.shareNative();
+    } else {
+      shareHook.copyLink();
+    }
+  };
 
   const handleMessageClick = () => {
     if (!user) {
@@ -342,10 +348,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 
                 <Button 
                   className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] font-medium active:scale-100 ease-out`}
-                  onClick={() => setShareModalOpen(true)}
+                  onClick={handleShareClick}
                 >
                   <Share2 className="h-4 w-4" />
                   <span>{translate('common.share', 'Share')}</span>
+                </Button>
+
+                <Button
+                  className={`inline-flex items-center gap-2 rounded-full h-10 px-5 ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1 hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] font-medium active:scale-100 ease-out`}
+                  onClick={() => setQrScreenOpen(true)}
+                >
+                  <QrCode className="h-4 w-4" />
+                  <span>{translate('common.showQrCode', 'Show QR code')}</span>
                 </Button>
               </>
             )}
@@ -363,27 +377,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         />
       )}
 
-      {/* Share sheet — native share + QR, visitor-only entry point */}
+      {/* QR share screen — visitor-only entry point, driven by the Show QR code button */}
       {!isOwner && (
-        <>
-          <ShareProfileSheet
-            isOpen={shareModalOpen}
-            onOpenChange={setShareModalOpen}
-            profile={profile}
-            shareUrl={shareHook.getShareUrl()}
-            onShowQR={() => setQrScreenOpen(true)}
-          />
-          <MobileQRShareScreen
-            isOpen={qrScreenOpen}
-            onClose={() => setQrScreenOpen(false)}
-            profileUrl={shareHook.getShareUrl()}
-            profileName={profile.name}
-            profileHandle={profile.handle}
-            avatarUrl={profile.avatarUrl}
-            avatarOffsetX={profile.avatarOffsetX}
-            avatarOffsetY={profile.avatarOffsetY}
-          />
-        </>
+        <MobileQRShareScreen
+          isOpen={qrScreenOpen}
+          onClose={() => setQrScreenOpen(false)}
+          profileUrl={shareHook.getShareUrl()}
+          profileName={profile.name}
+          profileHandle={profile.handle}
+          avatarUrl={profile.avatarUrl}
+          avatarOffsetX={profile.avatarOffsetX}
+          avatarOffsetY={profile.avatarOffsetY}
+        />
       )}
     </>
   );
