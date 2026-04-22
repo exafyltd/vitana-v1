@@ -6,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
+import { playInstantGreeting, preloadInstantGreeting } from '@/lib/instantGreeting';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
 
@@ -88,6 +89,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     };
   }, []);
 
+  // BOOTSTRAP-ORB-INSTANT: Pre-warm the instant-greeting audio buffer for the
+  // current language so tapping the orb plays instantly without a fetch round trip.
+  useEffect(() => {
+    preloadInstantGreeting(localeToOrbLang(selectedLanguage)).catch(() => {});
+  }, [selectedLanguage]);
+
   connectRef.current = async () => {
     try {
       // SESSION GUARD: Prevent duplicate sessions
@@ -95,6 +102,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         console.log('[useOrbVoiceClient] Session already active, ignoring connect');
         return;
       }
+
+      // BOOTSTRAP-ORB-INSTANT: Fire the instant greeting SYNCHRONOUSLY inside the
+      // user-gesture call stack, before any await. The real Gemini greeting still
+      // takes 4–5s to arrive (context build + WS handshake + TTS); this bridges
+      // that gap so the user hears something the moment they tap.
+      playInstantGreeting(localeToOrbLang(selectedLanguage));
 
       setError(null);
       setConnectionState('connecting');
