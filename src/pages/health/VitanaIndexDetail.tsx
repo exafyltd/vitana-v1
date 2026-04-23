@@ -12,6 +12,7 @@ import {
   type VitanaPillarKey,
   type VitanaPillarSubscores,
 } from "@/hooks/useVitanaIndex";
+import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
   nutrition: "What and how you eat — meals, macro balance, biomarkers",
@@ -235,6 +236,9 @@ export default function VitanaIndexDetail() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Active agents — the 5 pillar agents' health + today's output */}
+          <VitanaPillarAgentsPanel />
 
           {/* Pillar breakdown — stacked segments */}
           <Card>
