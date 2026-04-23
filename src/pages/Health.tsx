@@ -361,13 +361,7 @@ export default withScreenId(function Health() {
               dataCompleteness={45}
             />
             
-            <NextBestActionCard 
-              weakestPillar={{
-                name: "Exercise",
-                score: 68,
-                icon: "🏃"
-              }}
-            />
+            <NextBestActionCard />
           </div>
 
           {/* Actions Section */}

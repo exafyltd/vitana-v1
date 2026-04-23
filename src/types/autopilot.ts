@@ -9,6 +9,10 @@ export type AutopilotPriority = "high" | "medium" | "low";
 
 export type AutopilotActionStatus = "pending" | "executing" | "completed" | "skipped" | "failed";
 
+export type VitanaPillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
+
+export type ContributionVector = Partial<Record<VitanaPillarKey, number>>;
+
 export interface AutopilotAction {
   id: string;
   title: string;
@@ -23,6 +27,7 @@ export interface AutopilotAction {
   selected?: boolean;
   actionType?: string; // e.g., "join", "book", "review", "watch", "start"
   ctaLabel?: string; // explicit CTA override
+  contributionVector?: ContributionVector;
 }
 
 export interface AutopilotState {

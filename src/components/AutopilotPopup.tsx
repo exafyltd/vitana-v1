@@ -36,6 +36,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
+import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -234,6 +235,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             </div>
           </div>
           <p className="text-xs text-muted-foreground">{action.reason}</p>
+          {action.contributionVector && (
+            <PillarDeltaBadges
+              vector={action.contributionVector}
+              compact
+              className="mt-2"
+            />
+          )}
         </div>
       </div>
     );
