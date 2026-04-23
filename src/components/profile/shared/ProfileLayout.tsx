@@ -6,7 +6,11 @@ import { ProfessionalCredentialsStrip } from "./ProfessionalCredentialsStrip";
 import { ProfessionalCTAs } from "./ProfessionalCTAs";
 import { CredentialUploadPopup } from "./CredentialUploadPopup";
 import { GoLivePopup } from "@/components/GoLivePopup";
-import { ProfileSplitNavigation } from "./ProfileSplitNavigation";
+import { SplitBar } from "@/components/ui/split-bar";
+import {
+  ProfileSplitNavigationTriggers,
+  ProfileSplitNavigationContent,
+} from "./ProfileSplitNavigation";
 import PageHeader from "@/components/PageHeader";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { Button } from "@/components/ui/button";
@@ -333,29 +337,41 @@ export function ProfileLayout({
 
   // Desktop layout
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-      <div className="space-y-0">
-        <div className="max-w-7xl mx-auto">
-          <DesktopIdCardSwitcher
-            profile={profile}
-            scope={scope}
-            editMode={effectiveEditMode}
-            isOwner={isOwner}
-            onEditIdentity={onEditIdentity}
-            onEditSocial={onEditAbout}
-            onEditAccount={onEditAccount}
-          />
+    <div className="bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+      <SplitBar defaultValue="posts" className="w-full">
+        {/* Hero area: fills the viewport height so the tab triggers land at the bottom */}
+        <div className="min-h-screen flex flex-col">
+          <div className="max-w-7xl mx-auto w-full">
+            <DesktopIdCardSwitcher
+              profile={profile}
+              scope={scope}
+              editMode={effectiveEditMode}
+              isOwner={isOwner}
+              onEditIdentity={onEditIdentity}
+              onEditSocial={onEditAbout}
+              onEditAccount={onEditAccount}
+            />
+          </div>
+
+          <div>
+            <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
+          </div>
+
+          {/* Spacer — pushes the tab triggers to the bottom of the viewport */}
+          <div className="flex-1" />
+
+          {/* Tab triggers (bottom of the first viewport) */}
+          <div className="px-6 pb-3">
+            <div className="max-w-7xl mx-auto">
+              <ProfileSplitNavigationTriggers profile={profile} scope={scope} />
+            </div>
+          </div>
         </div>
 
-        <div>
-          <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
-        </div>
-
-        {/* Main Profile Content - Unified spacing container */}
-        <div className="px-6 mt-3">
+        {/* Tab content — below the fold */}
+        <div className="px-6 pt-3">
           <div className="max-w-7xl mx-auto flex flex-col gap-y-3">
-            {/* Split Screen Content */}
-            <ProfileSplitNavigation
+            <ProfileSplitNavigationContent
               profile={profile}
               scope={scope}
               editMode={effectiveEditMode}
@@ -368,7 +384,7 @@ export function ProfileLayout({
               onGoLive={() => setShowGoLive(true)}
               onUploadCredentials={() => setShowCredentialUpload(true)}
             />
-            
+
             {/* Showcase Section - Single unified location */}
             {effectiveEditMode && onEditShowcase && (
               <div className="bg-background rounded-lg border p-6 shadow-sm">
@@ -396,24 +412,24 @@ export function ProfileLayout({
             )}
           </div>
         </div>
+      </SplitBar>
 
-        {/* Credential Upload Popup */}
-        <CredentialUploadPopup
-          open={showCredentialUpload}
-          onOpenChange={setShowCredentialUpload}
-          existingCredentials={profile.professionalCredentials?.coachingSpecialties}
-          onSave={(credentials) => {
-            // Handle saving credentials
-            console.log('Saving credentials:', credentials);
-          }}
-        />
+      {/* Credential Upload Popup */}
+      <CredentialUploadPopup
+        open={showCredentialUpload}
+        onOpenChange={setShowCredentialUpload}
+        existingCredentials={profile.professionalCredentials?.coachingSpecialties}
+        onSave={(credentials) => {
+          // Handle saving credentials
+          console.log('Saving credentials:', credentials);
+        }}
+      />
 
-        {/* Go Live Popup */}
-        <GoLivePopup
-          open={showGoLive}
-          onOpenChange={setShowGoLive}
-        />
-      </div>
+      {/* Go Live Popup */}
+      <GoLivePopup
+        open={showGoLive}
+        onOpenChange={setShowGoLive}
+      />
     </div>
   );
 }
