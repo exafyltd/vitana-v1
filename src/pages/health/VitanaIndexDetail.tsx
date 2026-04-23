@@ -1,12 +1,17 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, TrendingUp, TrendingDown, Minus, Target, Info } from "lucide-react";
+import { Activity, TrendingUp, TrendingDown, Minus, Target, Info, Scale } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useVitanaIndex, pillarKeys, pillarLabel, type VitanaPillarKey } from "@/hooks/useVitanaIndex";
+import {
+  useVitanaIndex,
+  pillarKeys,
+  pillarLabel,
+  type VitanaPillarKey,
+  type VitanaPillarSubscores,
+} from "@/hooks/useVitanaIndex";
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
   nutrition: "What and how you eat — meals, macro balance, biomarkers",
@@ -14,6 +19,13 @@ const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
   exercise:  "Movement, workouts, heart-rate zones, recovery",
   sleep:     "Duration, regularity, stages, HRV — where the body rebuilds",
   mental:    "Stress, mood, mindfulness, cognitive load",
+};
+
+const SUBSCORE_MAX: VitanaPillarSubscores = {
+  baseline: 40,
+  completions: 80,
+  data: 40,
+  streak: 40,
 };
 
 function Sparkline({ history }: { history: Array<{ date: string; score: number }> }) {
@@ -46,34 +58,95 @@ function TrendIcon({ trend }: { trend: "up" | "down" | "stable" }) {
   return <Minus className="w-5 h-5 text-muted-foreground" />;
 }
 
+/**
+ * A stacked pillar bar: baseline (slate) / completions (blue) / data (green) /
+ * streak (amber). Each segment's width is proportional to the sub-score's
+ * contribution toward the 200-per-pillar max.
+ */
+function PillarBar({ subscores }: { subscores: VitanaPillarSubscores | null }) {
+  const s = subscores ?? { baseline: 0, completions: 0, data: 0, streak: 0 };
+  const total = s.baseline + s.completions + s.data + s.streak;
+  const pct = (n: number) => `${(n / 200) * 100}%`;
+  return (
+    <div className="relative w-full h-3 rounded-full bg-muted overflow-hidden" aria-label={`pillar ${total}/200`}>
+      <div className="absolute inset-y-0 left-0 flex">
+        <div style={{ width: pct(s.baseline) }}    className="bg-slate-600" title={`Baseline ${s.baseline}/${SUBSCORE_MAX.baseline}`} />
+        <div style={{ width: pct(s.completions) }} className="bg-blue-500"  title={`Completions ${s.completions}/${SUBSCORE_MAX.completions}`} />
+        <div style={{ width: pct(s.data) }}        className="bg-green-500" title={`Connected data ${s.data}/${SUBSCORE_MAX.data}`} />
+        <div style={{ width: pct(s.streak) }}      className="bg-amber-500" title={`Streak ${s.streak}/${SUBSCORE_MAX.streak}`} />
+      </div>
+    </div>
+  );
+}
+
+function StackLegend() {
+  return (
+    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+      <span className="inline-flex items-center gap-1.5">
+        <span className="w-3 h-3 rounded-sm bg-slate-600" /> Baseline
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="w-3 h-3 rounded-sm bg-blue-500" /> Completions
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="w-3 h-3 rounded-sm bg-green-500" /> Connected data
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span className="w-3 h-3 rounded-sm bg-amber-500" /> Streak
+      </span>
+    </div>
+  );
+}
+
 function tierBadgeVariant(label: string): "default" | "secondary" | "destructive" {
-  if (label === "Excellent" || label === "Good") return "default";
-  if (label === "Improving" || label === "Fair") return "secondary";
+  if (label === "Elite" || label === "Really good") return "default";
+  if (label === "Strong" || label === "Building") return "secondary";
   return "destructive";
+}
+
+function balanceChipLabel(factor: number | null): string {
+  if (factor === null) return "Balance: —";
+  if (factor >= 1.00) return "Balance 1.0× — well balanced";
+  if (factor >= 0.90) return "Balance 0.9× — slight lean";
+  if (factor >= 0.80) return "Balance 0.8× — uneven";
+  return "Balance 0.7× — very uneven";
+}
+
+function weakestPillarLabel(index: NonNullable<ReturnType<typeof useVitanaIndex>["index"]>): string {
+  const entries = pillarKeys().map((k) => [k, index.pillars[k]] as const);
+  const min = entries.reduce((m, e) => (e[1] < m[1] ? e : m), entries[0]);
+  return pillarLabel(min[0]);
 }
 
 export default function VitanaIndexDetail() {
   const navigate = useNavigate();
   const { index, isLoading, isError, refetch } = useVitanaIndex();
 
-  const goalTarget = 600;
-  const goalTargetTier = "Good";
-  const goalGap = index ? Math.max(0, goalTarget - index.total) : goalTarget;
+  // 90-day framing — milestone and stretch goal, not pass/fail.
+  const milestoneGoal = 600;
+  const stretchGoal = 800;
 
   return (
     <AppLayout>
-      <SEO title="Vitana Index" description="Your single number for longevity and well-being across the five pillars: Nutrition, Hydration, Exercise, Sleep, Mental." canonical={window.location.href} />
+      <SEO
+        title="Vitana Index"
+        description="Your single number for longevity across the five pillars: Nutrition, Hydration, Exercise, Sleep, Mental."
+        canonical={window.location.href}
+      />
 
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-1">Your Vitana Index</h1>
-              <p className="text-muted-foreground">One number. Five pillars. Ninety days to lift it.</p>
+              <p className="text-muted-foreground">
+                One number. Five pillars. Ninety days to lift it — balanced, honest, aspirational.
+              </p>
             </div>
             <Button variant="outline" size="sm" onClick={() => refetch()}>Refresh</Button>
           </div>
 
+          {/* Score card */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -83,7 +156,9 @@ export default function VitanaIndexDetail() {
                   </div>
                   <div>
                     <CardTitle className="text-lg">Current Score</CardTitle>
-                    <p className="text-sm text-muted-foreground">{index?.lastUpdated ? `Last updated ${index.lastUpdated}` : "Waiting for first compute"}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {index?.lastUpdated ? `Last updated ${index.lastUpdated}` : "Waiting for first compute"}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -97,8 +172,12 @@ export default function VitanaIndexDetail() {
             <CardContent className="space-y-4">
               {index && (
                 <>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Badge variant={tierBadgeVariant(index.tier.label)}>{index.tier.label}</Badge>
+                    <Badge variant="outline" className="gap-1">
+                      <Scale className="w-3 h-3" />
+                      {balanceChipLabel(index.balanceFactor)}
+                    </Badge>
                     <span className="text-sm text-muted-foreground">{index.tier.description}</span>
                   </div>
                   <div className="flex items-center gap-4">
@@ -118,6 +197,7 @@ export default function VitanaIndexDetail() {
             </CardContent>
           </Card>
 
+          {/* Goal card — two-tier framing */}
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
@@ -125,41 +205,54 @@ export default function VitanaIndexDetail() {
                 <CardTitle className="text-base">Your 90-day goal</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-3">
-                Maxina's default longevity goal: reach tier <strong>{goalTargetTier} ({goalTarget}+)</strong> by day 90 of your journey.
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                <strong>{milestoneGoal}+</strong> is the <em>really good</em> zone — the "thriving" tier most focused 90-day pushes reach.
+                <br />
+                <strong>{stretchGoal}+</strong> is elite territory — sustained excellence across all five pillars over months, not days.
               </p>
               {index ? (
-                goalGap === 0 ? (
+                index.total >= stretchGoal ? (
                   <div className="text-sm font-medium text-calendar-success">
-                    You've reached your goal — keep the streak going.
+                    You're in the elite band — keep the balance, keep the streaks.
+                  </div>
+                ) : index.total >= milestoneGoal ? (
+                  <div className="text-sm">
+                    You're in the thriving zone. Stretch to {stretchGoal} takes consistent multi-month practice, especially on your weakest pillar ({weakestPillarLabel(index)}).
                   </div>
                 ) : (
                   <div className="text-sm">
-                    You're <strong>{goalGap}</strong> points away. Each completed Autopilot action lifts your Index by a few points in the pillar it targets.
+                    You're <strong>{milestoneGoal - index.total}</strong> points away from the thriving zone. Every completion on the {weakestPillarLabel(index)} pillar moves you forward the fastest.
                   </div>
                 )
               ) : (
-                <div className="text-sm text-muted-foreground">Seed your Index with the baseline survey to start tracking progress.</div>
+                <div className="text-sm text-muted-foreground">
+                  Seed your Index with the baseline survey to start tracking the climb.
+                </div>
               )}
+              <p className="text-xs text-muted-foreground">
+                We never force you to the top. Different lives have different capacities — the number is a compass, not a verdict.
+              </p>
             </CardContent>
           </Card>
 
+          {/* Pillar breakdown — stacked segments */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Five pillars</CardTitle>
+              <CardTitle className="text-base">Five pillars — how each one climbs</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-5">
+              <StackLegend />
               {pillarKeys().map((key) => {
-                const value = index?.pillars[key] ?? 0;
-                const pct = Math.round((value / 200) * 100);
+                const total = index?.pillars[key] ?? 0;
+                const subscores = index?.subscores?.[key] ?? null;
                 return (
                   <div key={key} className="space-y-1.5">
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-medium">{pillarLabel(key)}</span>
-                      <span className="text-muted-foreground">{value}/200</span>
+                      <span className="text-muted-foreground">{total}/200</span>
                     </div>
-                    <Progress value={pct} className="h-2" />
+                    <PillarBar subscores={subscores} />
                     <p className="text-xs text-muted-foreground">{PILLAR_DESCRIPTIONS[key]}</p>
                   </div>
                 );
@@ -167,6 +260,7 @@ export default function VitanaIndexDetail() {
             </CardContent>
           </Card>
 
+          {/* How the Index moves — explainer */}
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
@@ -175,8 +269,19 @@ export default function VitanaIndexDetail() {
               </div>
             </CardHeader>
             <CardContent className="text-sm space-y-2 text-muted-foreground">
-              <p>Your Vitana Index is a single 0–999 number that summarises how you're tracking across the five pillars of a long healthy life: Nutrition, Hydration, Exercise, Sleep, Mental. The higher the number, the more your daily practice is compounding toward longevity.</p>
-              <p>Each completed Autopilot action lifts the pillar it targets. Each calendar event you mark done sends a small signal into tomorrow's recompute. Skipping doesn't punish you — it just slows the lift. The five pillars are conditional on each other, so balance across them matters more than peaking on one.</p>
+              <p>
+                Each of the five pillars (max 200 each) is the sum of four sub-scores:
+                a small <strong>baseline</strong> from your onboarding survey, <strong>completions</strong>
+                of journey actions in the last 30 days, <strong>connected data</strong> from wearables and logs,
+                and a <strong>streak bonus</strong> for consistency. We sum the five pillars, apply a
+                <strong> balance factor</strong> (it dampens when one pillar is far ahead of another),
+                and cap at 999.
+              </p>
+              <p>
+                Mark any journey event complete → the pillar it targets goes up. Keep it going day after day →
+                the streak bonus kicks in. Connect a wearable → the connected-data bar fills.
+                Balance across all five → the balance factor stays at 1.0× and every point counts fully.
+              </p>
               <p className="pt-2">
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/autopilot')}>
                   See your 90-day journey →
