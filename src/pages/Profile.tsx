@@ -17,6 +17,7 @@ import { SuccessStoryCarousel } from "@/components/profile/community/SuccessStor
 import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
 import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
 import { useProfileTheme } from "@/hooks/useProfileTheme";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -38,6 +39,9 @@ export default function Profile() {
   const { user } = useAuth();
   const location = useLocation();
   const { themeConfig, cycleTheme } = useProfileTheme(user?.id);
+  const { index: liveVitanaIndex } = useVitanaIndex();
+  const liveVitanaScore = liveVitanaIndex?.total ?? 0;
+  const liveVitanaPercentile = liveVitanaScore > 0 ? Math.min(99, Math.round((liveVitanaScore / 999) * 100)) : 0;
 
   // Scroll to social connections section if hash is present
   useEffect(() => {
@@ -72,8 +76,8 @@ export default function Profile() {
     languages: profile.languages || [],
     location: profile.location || "",
     stats: dummyProfileStats,
-    vitanaIndex: 750,
-    vitanaPercentile: 85,
+    vitanaIndex: liveVitanaScore,
+    vitanaPercentile: liveVitanaPercentile,
     longevityArchetype: profile.longevityArchetype || "",
     offerings: [],
     // Social URLs from ProfileProvider context
@@ -188,8 +192,8 @@ export default function Profile() {
               <TabsContent value="overview">
                 <div className="grid grid-cols-1 gap-6">
                   {/* Vitana Impact Panel */}
-                  <VitanaImpactPanel 
-                    vitanaIndex={mockUserProfile.vitanaIndex || 750}
+                  <VitanaImpactPanel
+                    vitanaIndex={liveVitanaScore || mockUserProfile.vitanaIndex || 0}
                     communityStats={{
                       posts: dummyProfileStats.posts,
                       helpedUsers: 12,

@@ -98,13 +98,23 @@ export default function PublicProfilePage() {
       } else {
         const dbProfile = data[0] as DatabaseProfile;
         console.log('Found profile:', dbProfile);
-        
-        // Transform database profile to UserProfile format
-        // Generate a consistent VITANA Index score based on user_id for demo purposes
-        const userIdHash = dbProfile.user_id.split('-')[0];
-        const hashValue = parseInt(userIdHash.substring(0, 8), 16);
-        const vitanaScore = 500 + (hashValue % 400); // Range: 500-899
-        
+
+        // Live Vitana Index via public RPC (SECURITY DEFINER). Returns null
+        // when the user has no Index yet — we render the card without the
+        // Index badge rather than a fake hash-derived number.
+        let vitanaScore: number | null = null;
+        try {
+          const { data: indexData, error: indexErr } = await (supabase as any)
+            .rpc('get_public_vitana_index', { p_user_id: dbProfile.user_id });
+          if (!indexErr) {
+            const row = Array.isArray(indexData) ? indexData[0] : indexData;
+            const raw = row?.score_total;
+            if (typeof raw === 'number' && raw > 0) vitanaScore = raw;
+          }
+        } catch (e) {
+          console.warn('PublicProfilePage: get_public_vitana_index failed', e);
+        }
+
         const transformedProfile: UserProfile = {
           id: dbProfile.user_id,
           name: dbProfile.display_name || dbProfile.full_name || 'Unknown User',
@@ -117,8 +127,8 @@ export default function PublicProfilePage() {
           membershipTier: 'standard',
           links: [],
           languages: ['English'],
-          vitanaIndex: vitanaScore,
-          vitanaPercentile: Math.min(95, Math.floor((vitanaScore / 999) * 100)),
+          vitanaIndex: vitanaScore ?? undefined,
+          vitanaPercentile: vitanaScore ? Math.min(99, Math.floor((vitanaScore / 999) * 100)) : undefined,
           // LinkedIn
           linkedin_url: dbProfile.linkedin_url || undefined,
           linkedin_headline: dbProfile.linkedin_headline || undefined,
