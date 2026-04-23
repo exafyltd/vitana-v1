@@ -108,7 +108,6 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "indexing", label: "Indexing", path: "/admin/knowledge/indexing" },
       { key: "search-test", label: "Search Test", path: "/admin/knowledge/search-test" },
       { key: "governance", label: "Governance", path: "/admin/knowledge/governance" },
-      { key: "system-kb", label: "System KB", path: "/admin/knowledge/system-kb" },
     ],
   },
   {
