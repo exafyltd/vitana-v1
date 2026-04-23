@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from './useRealtimeConnection';
 import { measurePerformance } from '@/utils/performanceLogger';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
+import { useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
 // Global event bus constant
@@ -84,6 +85,7 @@ export function useCalendarEvents() {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const { logActivity } = useActivityLogger();
+  const queryClient = useQueryClient();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Debounced refresh event dispatcher
@@ -271,6 +273,15 @@ export function useCalendarEvents() {
 
       // Dispatch global refresh event
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
+
+      // If the update marked this event completed, the DB trigger kicks off
+      // a Vitana Index recompute. Give Postgres a beat, then invalidate the
+      // React Query cache so the badge picks up the new score.
+      if (updates.completion_status === 'completed') {
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
+        }, 600);
+      }
 
       return data;
     } catch (err) {
