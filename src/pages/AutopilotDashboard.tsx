@@ -23,6 +23,7 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { VitanaIndexTrajectoryCard } from "@/components/health/VitanaIndexTrajectoryCard";
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -353,6 +354,9 @@ export default function AutopilotDashboard() {
               </div>
             ) : (
               <>
+                {/* Vitana Index trajectory (C1) */}
+                <VitanaIndexTrajectoryCard />
+
                 {/* Timeline */}
                 {sortedWaves.length > 0 && (
                   <JourneyTimeline waves={sortedWaves} userDayCount={userDayCount} />
@@ -472,6 +476,9 @@ export default function AutopilotDashboard() {
             </div>
           ) : (
             <>
+              {/* Vitana Index trajectory (C1) */}
+              <VitanaIndexTrajectoryCard />
+
               {/* Timeline calendar */}
               {sortedWaves.length > 0 && (
                 <JourneyTimeline waves={sortedWaves} userDayCount={userDayCount} />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { AutopilotAction, AutopilotState, AutopilotPriority, AutopilotCategory, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
+import { AutopilotAction, AutopilotState, AutopilotPriority, AutopilotCategory, ExecutionResult, AutopilotActionStatus, ContributionVector } from "@/types/autopilot";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
@@ -19,6 +19,7 @@ export interface AutopilotRecommendation {
   estimated_duration: string;
   signal_type: string;
   status: string;
+  contribution_vector?: ContributionVector;
 }
 
 // Domain → category mapping
@@ -65,6 +66,7 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
     timestamp: new Date(),
     status: uiStatus,
     selected: uiStatus === "pending", // only pre-select new items
+    contributionVector: rec.contribution_vector,
   };
 }
 
