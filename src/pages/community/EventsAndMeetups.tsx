@@ -695,14 +695,14 @@ const EventsAndMeetups = () => {
         <div 
           ref={mobileContainerRef}
           className={cn(
-            "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
+            "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background",
             isMobile ? "px-4 pt-2 pb-0 h-[100dvh] flex flex-col overflow-hidden" : "p-6 min-h-screen"
           )}
         >
           <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
             {/* Sticky header block on mobile: title + actions + tabs */}
             <div className={cn(
-              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-0"
+              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background pb-0"
             )}>
               <StandardHeader
                 title={isMobile ? translate('events.titleShort', 'Events & MeetUps') : translate('events.title', 'Events & MeetUps')}
