@@ -5,7 +5,6 @@ import { discoverNavigation } from "@/config/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { Timer, Flame, Percent, Package, Star, MapPin, Clock, TrendingDown, TrendingUp, Heart, Brain, Target, Activity, Sparkles, Users, Plane, Plus, RefreshCw } from "lucide-react";
@@ -482,12 +481,17 @@ function DealsOffersInner() {
                       </div>
 
                       {deal.claimed != null && deal.total != null && deal.total > 0 && (
-                        <div className="bg-muted rounded-lg p-2">
+                        <div className="bg-gray-100 rounded-lg p-2">
                           <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>{deal.claimed}/{deal.total} claimed</span>
                             <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
                           </div>
-                          <Progress value={(deal.claimed / deal.total) * 100} className="h-2" />
+                          <div className="w-full bg-gray-300 rounded-full h-2">
+                            <div
+                              className="bg-red-600 h-2 rounded-full transition-all"
+                              style={{ width: `${(deal.claimed / deal.total) * 100}%` }}
+                            />
+                          </div>
                         </div>
                       )}
 
