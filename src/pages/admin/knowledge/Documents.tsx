@@ -29,6 +29,8 @@ import { ChevronDown, ChevronRight, BookOpen, Library, Building2 } from "lucide-
 import {
   useUnifiedKbTree,
   useUnifiedKbSystemDoc,
+  useEditSystemDoc,
+  useEditBaselineDoc,
   type KbScope,
   type UnifiedKbDocEntry,
   type UnifiedKbGroup,
@@ -40,6 +42,17 @@ import {
   useReindexKBDocument,
   useKBBaselineOptout,
 } from "@/hooks/useAdminKnowledge";
+import { useTenant } from "@/hooks/useTenant";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
@@ -331,6 +344,21 @@ function DocViewer({
 
 function SystemDocViewer({ id }: { id: string }) {
   const query = useUnifiedKbSystemDoc(id);
+  const { isExafyAdmin } = useTenant();
+  const editMutation = useEditSystemDoc();
+
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [tagsCsv, setTagsCsv] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  // Reset edit state whenever the selected doc changes.
+  useEffect(() => {
+    setEditing(false);
+    setConfirmOpen(false);
+  }, [id]);
+
   if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (!query.data)
     return <p className="text-sm text-destructive">Document not found.</p>;
@@ -339,41 +367,161 @@ function SystemDocViewer({ id }: { id: string }) {
   const commandHubUrl = gatewayBase
     ? `${gatewayBase}/command-hub/docs/system-knowledge/?doc=${encodeURIComponent(doc.id)}`
     : null;
+
+  function startEdit() {
+    setTitle(doc.title);
+    setContent(doc.content);
+    setTagsCsv((doc.tags || []).join(", "));
+    setEditing(true);
+  }
+
+  async function doSave() {
+    try {
+      await editMutation.mutateAsync({
+        id: doc.id,
+        title: title.trim() || doc.title,
+        content,
+        tags: tagsCsv
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+      });
+      toast.success("System doc updated — applies across all tenants");
+      setEditing(false);
+      setConfirmOpen(false);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to save");
+      setConfirmOpen(false);
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div>
         <div className="flex items-center gap-2 mb-1">
           <Badge variant="secondary" className="text-[10px]">platform</Badge>
-          <span className="text-xs text-muted-foreground">read-only</span>
-          {commandHubUrl && (
-            <a
-              href={commandHubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-primary hover:underline ml-auto"
-            >
-              View in Command Hub →
-            </a>
+          {!editing && !isExafyAdmin && (
+            <span className="text-xs text-muted-foreground">read-only</span>
           )}
+          {editing && (
+            <span className="text-xs text-amber-600 font-medium">editing</span>
+          )}
+          <div className="ml-auto flex items-center gap-2">
+            {commandHubUrl && !editing && (
+              <a
+                href={commandHubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-primary hover:underline"
+              >
+                View in Command Hub →
+              </a>
+            )}
+            {isExafyAdmin && !editing && (
+              <Button size="sm" variant="outline" onClick={startEdit}>
+                Edit
+              </Button>
+            )}
+          </div>
         </div>
-        <h2 className="text-xl font-semibold">{doc.title}</h2>
+        {editing ? (
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="text-lg font-semibold"
+          />
+        ) : (
+          <h2 className="text-xl font-semibold">{doc.title}</h2>
+        )}
         <p className="text-xs text-muted-foreground mt-1 break-all">{doc.path}</p>
-        <div className="flex flex-wrap gap-1 mt-2">
-          {doc.tags?.map((t) => (
-            <Badge key={t} variant="secondary" className="text-[10px]">
-              {t}
-            </Badge>
-          ))}
-        </div>
+        {editing ? (
+          <Input
+            value={tagsCsv}
+            onChange={(e) => setTagsCsv(e.target.value)}
+            placeholder="Tags (comma-separated)"
+            className="mt-2 text-xs"
+          />
+        ) : (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {doc.tags?.map((t) => (
+              <Badge key={t} variant="secondary" className="text-[10px]">
+                {t}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
-      <ScrollArea className="h-[55vh] rounded-md border p-4 bg-muted/30">
-        <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
-          {doc.content}
-        </pre>
-      </ScrollArea>
-      <p className="text-xs text-muted-foreground">
-        {doc.word_count ?? 0} words · updated {new Date(doc.updated_at).toLocaleString()}
-      </p>
+
+      {editing ? (
+        <Textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={20}
+          className="font-mono text-sm"
+        />
+      ) : (
+        <ScrollArea className="h-[55vh] rounded-md border p-4 bg-muted/30">
+          <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
+            {doc.content}
+          </pre>
+        </ScrollArea>
+      )}
+
+      {editing ? (
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={() => setConfirmOpen(true)}
+            disabled={editMutation.isPending}
+          >
+            {editMutation.isPending ? "Saving…" : "Save changes"}
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setEditing(false)}
+            disabled={editMutation.isPending}
+          >
+            Cancel
+          </Button>
+          <span className="text-xs text-muted-foreground ml-auto">
+            Saving will apply to every tenant immediately.
+          </span>
+        </div>
+      ) : (
+        <p className="text-xs text-muted-foreground">
+          {doc.word_count ?? 0} words · updated {new Date(doc.updated_at).toLocaleString()}
+        </p>
+      )}
+
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Edit a platform document?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This document is part of the Vitana system knowledge base
+              (retrieval-router priority 100). Saving applies your changes
+              immediately to the Assistant's grounding for <b>every tenant</b>,
+              including the Book of the Vitana Index if this doc is part of it.
+              Continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={editMutation.isPending}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                doSave();
+              }}
+              disabled={editMutation.isPending}
+            >
+              {editMutation.isPending ? "Saving…" : "Yes, save for all tenants"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -393,12 +541,53 @@ function KbDocViewer({
   const deleteMutation = useDeleteKBDocument();
   const reindexMutation = useReindexKBDocument();
   const optoutMutation = useKBBaselineOptout();
+  const editBaselineMutation = useEditBaselineDoc();
+  const { isExafyAdmin } = useTenant();
+
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editBody, setEditBody] = useState("");
+  const [editTopicsCsv, setEditTopicsCsv] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  useEffect(() => {
+    setEditing(false);
+    setConfirmOpen(false);
+  }, [id]);
 
   if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (!query.data)
     return <p className="text-sm text-destructive">Document not found.</p>;
 
   const doc = query.data;
+
+  function startEdit() {
+    setEditTitle(doc.title);
+    setEditBody(doc.body ?? "");
+    setEditTopicsCsv((doc.topics || []).join(", "));
+    setEditing(true);
+  }
+
+  async function doSaveBaseline() {
+    try {
+      await editBaselineMutation.mutateAsync({
+        id: doc.id,
+        title: editTitle.trim() || doc.title,
+        body: editBody,
+        topics: editTopicsCsv
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+      });
+      toast.success("Baseline doc updated — applies to all non-opted-out tenants");
+      setEditing(false);
+      setConfirmOpen(false);
+      onOptoutChanged(); // refresh tree so title update shows
+    } catch (err: any) {
+      toast.error(err.message || "Failed to save");
+      setConfirmOpen(false);
+    }
+  }
 
   async function handleDelete() {
     try {
@@ -432,6 +621,8 @@ function KbDocViewer({
   const statusVariant =
     doc.status === "indexed" ? "active" : doc.status === "failed" ? "error" : "warning";
 
+  const canEditBaseline = scope === "baseline" && isExafyAdmin;
+
   return (
     <div className="space-y-4">
       <div>
@@ -440,25 +631,85 @@ function KbDocViewer({
             {scope}
           </Badge>
           <AdminStatusBadge variant={statusVariant as any}>{doc.status}</AdminStatusBadge>
+          {editing && (
+            <span className="text-xs text-amber-600 font-medium">editing</span>
+          )}
+          {canEditBaseline && !editing && (
+            <Button
+              size="sm"
+              variant="outline"
+              className="ml-auto"
+              onClick={startEdit}
+            >
+              Edit
+            </Button>
+          )}
         </div>
-        <h2 className="text-xl font-semibold">{doc.title}</h2>
-        <div className="flex flex-wrap gap-1 mt-2">
-          {doc.topics?.map((t) => (
-            <Badge key={t} variant="secondary" className="text-[10px]">
-              {t}
-            </Badge>
-          ))}
-        </div>
+        {editing ? (
+          <Input
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            className="text-lg font-semibold"
+          />
+        ) : (
+          <h2 className="text-xl font-semibold">{doc.title}</h2>
+        )}
+        {editing ? (
+          <Input
+            value={editTopicsCsv}
+            onChange={(e) => setEditTopicsCsv(e.target.value)}
+            placeholder="Topics (comma-separated)"
+            className="mt-2 text-xs"
+          />
+        ) : (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {doc.topics?.map((t) => (
+              <Badge key={t} variant="secondary" className="text-[10px]">
+                {t}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
 
-      <ScrollArea className="h-[50vh] rounded-md border p-4 bg-muted/30">
-        <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
-          {doc.body || "(no body)"}
-        </pre>
-      </ScrollArea>
+      {editing ? (
+        <Textarea
+          value={editBody}
+          onChange={(e) => setEditBody(e.target.value)}
+          rows={16}
+          className="font-mono text-sm"
+        />
+      ) : (
+        <ScrollArea className="h-[50vh] rounded-md border p-4 bg-muted/30">
+          <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">
+            {doc.body || "(no body)"}
+          </pre>
+        </ScrollArea>
+      )}
 
       <div className="flex items-center gap-2">
-        {scope === "tenant" ? (
+        {editing ? (
+          <>
+            <Button
+              size="sm"
+              onClick={() => setConfirmOpen(true)}
+              disabled={editBaselineMutation.isPending}
+            >
+              {editBaselineMutation.isPending ? "Saving…" : "Save changes"}
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setEditing(false)}
+              disabled={editBaselineMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <span className="text-xs text-muted-foreground ml-auto">
+              Applies to all non-opted-out tenants.
+            </span>
+          </>
+        ) : scope === "tenant" ? (
           <>
             <Button
               size="sm"
@@ -477,21 +728,54 @@ function KbDocViewer({
             >
               Delete
             </Button>
+            <span className="text-xs text-muted-foreground ml-auto">
+              updated {new Date(doc.updated_at).toLocaleString()}
+            </span>
           </>
         ) : (
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <Checkbox
-              checked={doc.is_opted_out}
-              onCheckedChange={(v) => handleOptout(!!v)}
-              disabled={optoutMutation.isPending}
-            />
-            Opt out of this baseline doc for my tenant
-          </label>
+          <>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <Checkbox
+                checked={doc.is_opted_out}
+                onCheckedChange={(v) => handleOptout(!!v)}
+                disabled={optoutMutation.isPending}
+              />
+              Opt out of this baseline doc for my tenant
+            </label>
+            <span className="text-xs text-muted-foreground ml-auto">
+              updated {new Date(doc.updated_at).toLocaleString()}
+            </span>
+          </>
         )}
-        <span className="text-xs text-muted-foreground ml-auto">
-          updated {new Date(doc.updated_at).toLocaleString()}
-        </span>
       </div>
+
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Edit a baseline document?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This document is shared across <b>all tenants</b>. Saving applies
+              your changes immediately to every tenant that hasn't opted out —
+              their Assistant will reflect the new content on the next retrieval.
+              Continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={editBaselineMutation.isPending}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                doSaveBaseline();
+              }}
+              disabled={editBaselineMutation.isPending}
+            >
+              {editBaselineMutation.isPending ? "Saving…" : "Yes, save for all tenants"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
