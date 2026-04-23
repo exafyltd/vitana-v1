@@ -271,7 +271,6 @@ const KnowledgeTopics = lazy(() => import("./pages/admin/knowledge/Topics"));
 const KnowledgeIndexing = lazy(() => import("./pages/admin/knowledge/Indexing"));
 const KnowledgeSearchTest = lazy(() => import("./pages/admin/knowledge/SearchTest"));
 const KnowledgeGovernance = lazy(() => import("./pages/admin/knowledge/Governance"));
-const KnowledgeSystemKB = lazy(() => import("./pages/admin/knowledge/SystemKB"));
 // Settings section pages
 const SettingsProfile = lazy(() => import("./pages/admin/settings/Profile"));
 const SettingsBranding = lazy(() => import("./pages/admin/settings/Branding"));
@@ -1381,9 +1380,6 @@ const App = () => {
           } />
           <Route path="/admin/knowledge/governance" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeGovernance /></ProtectedRoute></AuthGuard>
-          } />
-          <Route path="/admin/knowledge/system-kb" element={
-            <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeSystemKB /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Settings section */}
