@@ -1,7 +1,7 @@
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
-import { ProfileHeader } from "./ProfileHeader";
 import { ProfileStats } from "./ProfileStats";
+import { DesktopIdCardSwitcher } from "../desktop/DesktopIdCardSwitcher";
 import { ProfessionalCredentialsStrip } from "./ProfessionalCredentialsStrip";
 import { ProfessionalCTAs } from "./ProfessionalCTAs";
 import { CredentialUploadPopup } from "./CredentialUploadPopup";
@@ -378,15 +378,18 @@ export function ProfileLayout({
       )}
 
       <div className="space-y-0">
-        <div className="max-w-7xl mx-auto px-6">
-          <ProfileHeader
+        <div className="max-w-7xl mx-auto">
+          <DesktopIdCardSwitcher
             profile={profile}
             scope={scope}
             editMode={effectiveEditMode}
-            onEdit={onEditIdentity}
+            isOwner={isOwner}
+            onEditIdentity={onEditIdentity}
+            onEditSocial={onEditAbout}
+            onEditAccount={onEditAccount}
           />
         </div>
-        
+
         <div className="mt-2">
           <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
         </div>
