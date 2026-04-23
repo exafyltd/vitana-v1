@@ -9,12 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { useVitanaIndex, pillarKeys, pillarLabel, type VitanaPillarKey } from "@/hooks/useVitanaIndex";
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
-  physical: "Movement, heart rate, sleep and recovery signals",
-  mental: "Stress, mindfulness, cognitive load and mood",
-  nutritional: "Glucose, hydration, macro balance and meal timing",
-  social: "Relationships, community engagement and connection quality",
-  environmental: "Living-space, time outdoors and exposure signals",
-  prosperity: "Business progress, marketplace activity and reward accumulation",
+  nutrition: "What and how you eat — meals, macro balance, biomarkers",
+  hydration: "Water and fluids through the day, adjusted for activity and climate",
+  exercise:  "Movement, workouts, heart-rate zones, recovery",
+  sleep:     "Duration, regularity, stages, HRV — where the body rebuilds",
+  mental:    "Stress, mood, mindfulness, cognitive load",
 };
 
 function Sparkline({ history }: { history: Array<{ date: string; score: number }> }) {
@@ -63,14 +62,14 @@ export default function VitanaIndexDetail() {
 
   return (
     <AppLayout>
-      <SEO title="Vitana Index" description="Your single number for longevity and well-being across 6 pillars." canonical={window.location.href} />
+      <SEO title="Vitana Index" description="Your single number for longevity and well-being across the five pillars: Nutrition, Hydration, Exercise, Sleep, Mental." canonical={window.location.href} />
 
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-1">Your Vitana Index</h1>
-              <p className="text-muted-foreground">One number. Six pillars. Ninety days to lift it.</p>
+              <p className="text-muted-foreground">One number. Five pillars. Ninety days to lift it.</p>
             </div>
             <Button variant="outline" size="sm" onClick={() => refetch()}>Refresh</Button>
           </div>
@@ -148,7 +147,7 @@ export default function VitanaIndexDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Six pillars</CardTitle>
+              <CardTitle className="text-base">Five pillars</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {pillarKeys().map((key) => {
@@ -176,8 +175,8 @@ export default function VitanaIndexDetail() {
               </div>
             </CardHeader>
             <CardContent className="text-sm space-y-2 text-muted-foreground">
-              <p>Your Vitana Index is a single 0–999 number that summarises how you're tracking across six life pillars. The higher the number, the more your daily behaviour is compounding toward a longer, healthier life.</p>
-              <p>Each completed Autopilot action lifts the pillar it targets. Each calendar event you mark done sends a small signal into tomorrow's recompute. Skipping doesn't punish you — it just slows the lift.</p>
+              <p>Your Vitana Index is a single 0–999 number that summarises how you're tracking across the five pillars of a long healthy life: Nutrition, Hydration, Exercise, Sleep, Mental. The higher the number, the more your daily practice is compounding toward longevity.</p>
+              <p>Each completed Autopilot action lifts the pillar it targets. Each calendar event you mark done sends a small signal into tomorrow's recompute. Skipping doesn't punish you — it just slows the lift. The five pillars are conditional on each other, so balance across them matters more than peaking on one.</p>
               <p className="pt-2">
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/autopilot')}>
                   See your 90-day journey →
