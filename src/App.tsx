@@ -563,6 +563,8 @@ const App = () => {
           
           {/* Email Confirmation Routes */}
           <Route path="/auth/confirmed" element={<EmailConfirmed />} />
+          {/* /auth is a catalog alias for "generic sign-in screen" — redirect to the Maxina portal */}
+          <Route path="/auth" element={<Navigate to="/maxina" replace />} />
           <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
           <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
