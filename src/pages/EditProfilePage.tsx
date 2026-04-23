@@ -38,6 +38,7 @@ import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileSheet } from "@/components/profile/shared/ShareProfileSheet";
 import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareScreen";
 import { useProfileShare } from "@/hooks/useProfileShare";
+import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -82,8 +83,11 @@ export default function EditProfilePage() {
       mediaUploads: 89,
       groupsJoined: 12
     },
-    vitanaIndex: 742,
-    vitanaPercentile: 85,
+    // Placeholder — effect below overwrites with the live Index from
+    // useVitanaIndex() as soon as it resolves. Never render a hardcoded
+    // number on the profile card.
+    vitanaIndex: 0,
+    vitanaPercentile: 0,
     longevityArchetype: contextProfile.longevityArchetype || '',
     // Social URLs from context for immediate display
     linkedin_url: contextProfile.linkedin_url,
@@ -112,6 +116,17 @@ export default function EditProfilePage() {
       return prev;
     });
   }, [localizedDefaultBio]);
+
+  // Live Vitana Index for the signed-in user — replaces the legacy 742/85.
+  const { index: liveVitanaIndex } = useVitanaIndex();
+  useEffect(() => {
+    const score = liveVitanaIndex?.total ?? 0;
+    setProfile(prev => {
+      if (prev.vitanaIndex === score) return prev;
+      const percentile = score > 0 ? Math.min(99, Math.round((score / 999) * 100)) : 0;
+      return { ...prev, vitanaIndex: score, vitanaPercentile: percentile };
+    });
+  }, [liveVitanaIndex?.total]);
 
   // Sync identity fields when contextProfile updates (after IdentityDrawer save)
   useEffect(() => {

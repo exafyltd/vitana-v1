@@ -16,6 +16,7 @@ import { useProfileTheme } from "@/hooks/useProfileTheme";
 import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useVitanaIndexForUser } from "@/hooks/useVitanaIndexForUser";
 
 interface DatabaseProfile {
   user_id: string;
@@ -75,6 +76,8 @@ export function ProfilePreviewDialog() {
     staleTime: 60_000,
   });
 
+  const { data: liveIndex } = useVitanaIndexForUser(dbProfile?.user_id);
+
   const profile: UserProfile | null = dbProfile && stats ? {
     id: dbProfile.user_id,
     user_id: dbProfile.user_id,
@@ -94,11 +97,7 @@ export function ProfilePreviewDialog() {
     youtube_url: dbProfile.youtube_url || undefined,
     tiktok_url: dbProfile.tiktok_url || undefined,
     stats,
-    vitanaIndex: (() => {
-      const userIdHash = dbProfile.user_id.split('-')[0];
-      const hashValue = parseInt(userIdHash.substring(0, 8), 16);
-      return 500 + (hashValue % 400);
-    })(),
+    vitanaIndex: liveIndex?.score,
     vitanaPercentile: undefined,
     visibility: {
       about: 'public',
