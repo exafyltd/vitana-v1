@@ -7,7 +7,7 @@
  *   GET /api/v1/admin/tenants/:tenantId/kb/system-docs/:id — read-only system doc body
  */
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/admin-api";
 import { useTenant } from "@/hooks/useTenant";
 
@@ -75,5 +75,61 @@ export function useUnifiedKbSystemDoc(id: string | null) {
       return json.document as UnifiedKbSystemDoc;
     },
     enabled: !!activeTenantId && !!id,
+  });
+}
+
+/**
+ * Edit a system-scope (knowledge_docs) document. Exafy-admin only — the gateway
+ * enforces this. Changes apply immediately to the Vitana Assistant's
+ * retrieval-router priority-100 grounding across all tenants.
+ */
+export function useEditSystemDoc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: {
+      id: string;
+      title?: string;
+      content?: string;
+      tags?: string[];
+    }) => {
+      const { id, ...body } = input;
+      const json = await adminFetch(`/api/v1/admin/system-kb/docs/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+      });
+      return json.document as UnifiedKbSystemDoc;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kb-unified-system-doc"] });
+      qc.invalidateQueries({ queryKey: ["admin-kb-unified-tree"] });
+    },
+  });
+}
+
+/**
+ * Edit a baseline-scope (kb_documents WHERE tenant_id IS NULL) document.
+ * Exafy-admin only. Changes apply to every tenant that hasn't opted out.
+ */
+export function useEditBaselineDoc() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: {
+      id: string;
+      title?: string;
+      body?: string;
+      topics?: string[];
+    }) => {
+      const { id, ...body } = input;
+      const json = await adminFetch(`/api/v1/admin/system-kb/baseline-docs/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+      });
+      return json.document;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-kb-document"] });
+      qc.invalidateQueries({ queryKey: ["admin-kb-unified-tree"] });
+      qc.invalidateQueries({ queryKey: ["admin-kb-documents"] });
+    },
   });
 }
