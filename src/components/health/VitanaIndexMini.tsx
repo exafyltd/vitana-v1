@@ -30,9 +30,9 @@ function VitanaIndexMiniBase({
 
   const score = scoreOverride ?? index?.total ?? 0;
   const trend = trendOverride ?? index?.trend ?? "stable";
-  const physicalScore = index?.pillars.physical ?? 0;
-  const mentalScore = index?.pillars.mental ?? 0;
-  const socialScore = index?.pillars.social ?? 0;
+  const nutritionScore = index?.pillars.nutrition ?? 0;
+  const exerciseScore = index?.pillars.exercise ?? 0;
+  const sleepScore = index?.pillars.sleep ?? 0;
   const isComputing = isLoading || (!index && scoreOverride === undefined);
   
   const handleClick = () => {
@@ -166,16 +166,16 @@ function VitanaIndexMiniBase({
           </div>
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="text-center">
-              <div className="font-medium text-foreground">{physicalScore}</div>
-              <div className="text-muted-foreground">Physical</div>
+              <div className="font-medium text-foreground">{nutritionScore}</div>
+              <div className="text-muted-foreground">Nutrition</div>
             </div>
             <div className="text-center">
-              <div className="font-medium text-foreground">{mentalScore}</div>
-              <div className="text-muted-foreground">Mental</div>
+              <div className="font-medium text-foreground">{exerciseScore}</div>
+              <div className="text-muted-foreground">Exercise</div>
             </div>
             <div className="text-center">
-              <div className="font-medium text-foreground">{socialScore}</div>
-              <div className="text-muted-foreground">Social</div>
+              <div className="font-medium text-foreground">{sleepScore}</div>
+              <div className="text-muted-foreground">Sleep</div>
             </div>
           </div>
         </CardContent>

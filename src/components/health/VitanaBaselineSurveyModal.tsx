@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Heart, Brain, Apple } from "lucide-react";
+import { Apple, Droplets, Dumbbell, Moon, Brain } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +11,7 @@ const GATEWAY_URL =
   "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
 type Rating = 1 | 2 | 3 | 4 | 5;
+type PillarKey = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 
 interface Props {
   /** Controlled open state. When undefined, the modal checks status on mount and auto-opens for users who haven't taken the survey. */
@@ -19,28 +20,40 @@ interface Props {
 }
 
 const QUESTIONS: Array<{
-  key: "physical" | "mental" | "nutritional";
-  icon: typeof Heart;
+  key: PillarKey;
+  icon: typeof Apple;
   title: string;
   prompt: string;
 }> = [
   {
-    key: "physical",
-    icon: Heart,
-    title: "Your body right now",
-    prompt: "How physically well are you feeling today? (1 = very tired / unwell, 5 = energised)",
+    key: "nutrition",
+    icon: Apple,
+    title: "How you're eating",
+    prompt: "How well do you feel you're eating these days? (1 = poorly, 5 = nourishing and balanced)",
+  },
+  {
+    key: "hydration",
+    icon: Droplets,
+    title: "Your hydration",
+    prompt: "How much water and fluids are you getting? (1 = very little, 5 = steady all day)",
+  },
+  {
+    key: "exercise",
+    icon: Dumbbell,
+    title: "Your movement",
+    prompt: "How active has your body been this week? (1 = sedentary, 5 = strong and active)",
+  },
+  {
+    key: "sleep",
+    icon: Moon,
+    title: "Your sleep",
+    prompt: "How rested do you feel when you wake up? (1 = exhausted, 5 = fully rested)",
   },
   {
     key: "mental",
     icon: Brain,
     title: "Your mind right now",
-    prompt: "How mentally clear and calm are you today? (1 = very stressed, 5 = clear and calm)",
-  },
-  {
-    key: "nutritional",
-    icon: Apple,
-    title: "How you're eating",
-    prompt: "How well do you feel you're eating these days? (1 = poorly, 5 = nourishing and balanced)",
+    prompt: "How clear and calm is your mind today? (1 = very stressed, 5 = clear and calm)",
   },
 ];
 
@@ -66,7 +79,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
   const setOpen = (v: boolean) => (isControlled ? onOpenChange?.(v) : setUncontrolledOpen(v));
 
   const [step, setStep] = useState(0);
-  const [ratings, setRatings] = useState<{ physical?: Rating; mental?: Rating; nutritional?: Rating }>({});
+  const [ratings, setRatings] = useState<Partial<Record<PillarKey, Rating>>>({});
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -146,7 +159,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
             <DialogTitle>{current.title}</DialogTitle>
           </div>
           <DialogDescription>
-            Three quick questions to set your Day-0 Vitana Index. Step {step + 1} of {QUESTIONS.length}.
+            Five quick questions to set your Day-0 Vitana Index — one for each pillar. Step {step + 1} of {QUESTIONS.length}.
           </DialogDescription>
         </DialogHeader>
 

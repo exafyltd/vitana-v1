@@ -2,32 +2,35 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getVitanaIndexTier, type VitanaIndexTier } from "@/lib/vitanaIndex";
 
+/**
+ * The five canonical Vitana pillars. These are the only pillars the Vitana
+ * Index is built on — Nutrition, Hydration, Exercise, Sleep, Mental health.
+ * Any earlier "physical / social / environmental / prosperity" model was
+ * drift and has been erased.
+ */
 export type VitanaPillarKey =
-  | "physical"
-  | "mental"
-  | "nutritional"
-  | "social"
-  | "environmental"
-  | "prosperity";
+  | "nutrition"
+  | "hydration"
+  | "exercise"
+  | "sleep"
+  | "mental";
 
 export interface VitanaIndexPillars {
-  physical: number;
+  nutrition: number;
+  hydration: number;
+  exercise: number;
+  sleep: number;
   mental: number;
-  nutritional: number;
-  social: number;
-  environmental: number;
-  prosperity: number;
 }
 
 export interface VitanaIndexScoreRow {
   date: string;
   score_total: number;
-  score_physical: number | null;
+  score_nutrition: number | null;
+  score_hydration: number | null;
+  score_exercise: number | null;
+  score_sleep: number | null;
   score_mental: number | null;
-  score_nutritional: number | null;
-  score_social: number | null;
-  score_environmental: number | null;
-  score_prosperity: number | null;
   confidence: number | null;
   model_version: string | null;
 }
@@ -44,12 +47,11 @@ export interface VitanaIndexState {
 }
 
 const DEFAULT_PILLARS: VitanaIndexPillars = {
-  physical: 100,
-  mental: 100,
-  nutritional: 100,
-  social: 100,
-  environmental: 100,
-  prosperity: 100,
+  nutrition: 10,
+  hydration: 10,
+  exercise: 10,
+  sleep: 10,
+  mental: 10,
 };
 
 function deriveTrend(history: Array<{ date: string; score: number }>): "up" | "down" | "stable" {
@@ -71,7 +73,7 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   const { data, error } = await (supabase as any)
     .from("vitana_index_scores")
     .select(
-      "date, score_total, score_physical, score_mental, score_nutritional, score_social, score_environmental, score_prosperity, confidence, model_version"
+      "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version"
     )
     .gte("date", fromDate)
     .order("date", { ascending: true });
@@ -88,12 +90,11 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
     total: today.score_total,
     tier: getVitanaIndexTier(today.score_total),
     pillars: {
-      physical: today.score_physical ?? DEFAULT_PILLARS.physical,
-      mental: today.score_mental ?? DEFAULT_PILLARS.mental,
-      nutritional: today.score_nutritional ?? DEFAULT_PILLARS.nutritional,
-      social: today.score_social ?? DEFAULT_PILLARS.social,
-      environmental: today.score_environmental ?? DEFAULT_PILLARS.environmental,
-      prosperity: today.score_prosperity ?? DEFAULT_PILLARS.prosperity,
+      nutrition: today.score_nutrition ?? DEFAULT_PILLARS.nutrition,
+      hydration: today.score_hydration ?? DEFAULT_PILLARS.hydration,
+      exercise:  today.score_exercise  ?? DEFAULT_PILLARS.exercise,
+      sleep:     today.score_sleep     ?? DEFAULT_PILLARS.sleep,
+      mental:    today.score_mental    ?? DEFAULT_PILLARS.mental,
     },
     history,
     trend: deriveTrend(history),
@@ -133,18 +134,17 @@ export function useVitanaIndex(): UseVitanaIndexResult {
 
 export function pillarLabel(key: VitanaPillarKey): string {
   const labels: Record<VitanaPillarKey, string> = {
-    physical: "Physical",
-    mental: "Mental",
-    nutritional: "Nutritional",
-    social: "Social",
-    environmental: "Environmental",
-    prosperity: "Prosperity",
+    nutrition: "Nutrition",
+    hydration: "Hydration",
+    exercise:  "Exercise",
+    sleep:     "Sleep",
+    mental:    "Mental",
   };
   return labels[key];
 }
 
 export function pillarKeys(): VitanaPillarKey[] {
-  return ["physical", "mental", "nutritional", "social", "environmental", "prosperity"];
+  return ["nutrition", "hydration", "exercise", "sleep", "mental"];
 }
 
 export function weakestPillar(pillars: VitanaIndexPillars): VitanaPillarKey {
