@@ -43,6 +43,7 @@ import {
   YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
+import { ToastAction } from "@/components/ui/toast";
 import { useEffect } from "react";
 
 // Social platform icons for the import dialog
@@ -136,17 +137,25 @@ export function MobileConnectedAppsView() {
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     } else if (errorCode && (provider === "google" || provider === "youtube")) {
       const label = provider === "youtube" ? "YouTube" : "Google";
+      const retry = provider === "youtube"
+        ? () => startYouTube.mutate()
+        : () => startGoogle.mutate();
       toast({
         title: `${label} sign-in didn't finish`,
         description: errorCode.replace(/_/g, " "),
         variant: "destructive",
+        action: (
+          <ToastAction altText={`Retry ${label} sign-in`} onClick={retry}>
+            Try again
+          </ToastAction>
+        ),
       });
       params.delete("error");
       params.delete("provider");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     }
-  }, [toast]);
+  }, [toast, startGoogle, startYouTube]);
 
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
