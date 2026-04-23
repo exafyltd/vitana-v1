@@ -105,7 +105,7 @@ import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <OfflineProvider>
         <AuthProvider>
           <ProfileProvider>
