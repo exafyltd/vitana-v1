@@ -62,8 +62,11 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
 
   const handleEditProfile = () => {
     setOpen(false);
-    // Use window.location for a full page redirect to bypass any platform overlays
-    window.location.href = '/me/profile';
+    // Route to the profile view (not the edit page). Account/identity edits are
+    // now reachable from within the profile via the Account pill.
+    const identifier = profile.handle || user?.id;
+    const target = identifier ? `/u/${identifier}` : '/me/profile';
+    window.location.href = target;
   };
   
   // VTID-01230: get_my_permitted_roles() is the canonical source.
@@ -171,7 +174,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           <div className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" onClick={handleEditProfile}>
               <User className="mr-2 h-4 w-4" />
-              Edit Profile
+              Profile
             </Button>
           </div>
 
