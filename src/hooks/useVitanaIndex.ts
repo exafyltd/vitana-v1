@@ -33,12 +33,26 @@ export interface VitanaIndexScoreRow {
   score_mental: number | null;
   confidence: number | null;
   model_version: string | null;
+  feature_inputs: Record<string, any> | null;
 }
+
+/** Per-pillar sub-score breakdown (baseline / completions / data / streak),
+ *  each 0–40/80 per the v3 compute model. */
+export interface VitanaPillarSubscores {
+  baseline: number;
+  completions: number;
+  data: number;
+  streak: number;
+}
+
+export type VitanaIndexSubscores = Record<VitanaPillarKey, VitanaPillarSubscores>;
 
 export interface VitanaIndexState {
   total: number;
   tier: VitanaIndexTier;
   pillars: VitanaIndexPillars;
+  subscores: VitanaIndexSubscores | null;
+  balanceFactor: number | null;
   history: Array<{ date: string; score: number }>;
   trend: "up" | "down" | "stable";
   confidence: number;
@@ -73,7 +87,7 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   const { data, error } = await (supabase as any)
     .from("vitana_index_scores")
     .select(
-      "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version"
+      "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version, feature_inputs"
     )
     .gte("date", fromDate)
     .order("date", { ascending: true });
@@ -86,6 +100,23 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   const today = rows[rows.length - 1];
   const history = rows.map((r) => ({ date: r.date, score: r.score_total }));
 
+  const rawSubscores = today.feature_inputs?.subscores as
+    | Record<string, Partial<VitanaPillarSubscores>>
+    | undefined;
+  const subscores: VitanaIndexSubscores | null = rawSubscores
+    ? {
+        nutrition: normalizeSubscores(rawSubscores.nutrition),
+        hydration: normalizeSubscores(rawSubscores.hydration),
+        exercise:  normalizeSubscores(rawSubscores.exercise),
+        sleep:     normalizeSubscores(rawSubscores.sleep),
+        mental:    normalizeSubscores(rawSubscores.mental),
+      }
+    : null;
+  const balanceFactor =
+    typeof today.feature_inputs?.balance_factor === "number"
+      ? (today.feature_inputs.balance_factor as number)
+      : null;
+
   return {
     total: today.score_total,
     tier: getVitanaIndexTier(today.score_total),
@@ -96,11 +127,22 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
       sleep:     today.score_sleep     ?? DEFAULT_PILLARS.sleep,
       mental:    today.score_mental    ?? DEFAULT_PILLARS.mental,
     },
+    subscores,
+    balanceFactor,
     history,
     trend: deriveTrend(history),
     confidence: today.confidence ?? 0,
     isBaseline: today.model_version?.startsWith("baseline") ?? false,
     lastUpdated: today.date,
+  };
+}
+
+function normalizeSubscores(raw: Partial<VitanaPillarSubscores> | undefined | null): VitanaPillarSubscores {
+  return {
+    baseline:    Number(raw?.baseline    ?? 0),
+    completions: Number(raw?.completions ?? 0),
+    data:        Number(raw?.data        ?? 0),
+    streak:      Number(raw?.streak      ?? 0),
   };
 }
 

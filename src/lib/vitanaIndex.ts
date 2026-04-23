@@ -4,55 +4,78 @@ export interface VitanaIndexTier {
   label: string;
   color: string;
   description: string;
+  /** Short user-facing framing shown on the Index Detail Screen tier badge. */
+  framing: string;
 }
 
+/**
+ * The six honest tiers the Vitana Index is read through. Replaces the older
+ * Very Poor / Poor / Fair / Improving / Good / Excellent ladder with
+ * aspirational-range framing that's harder to feel like a pass/fail verdict.
+ *
+ * - Starting / Early / Building are the journey tiers — where new users
+ *   begin and climb through during the 90-day arc.
+ * - Strong is "where most people land after a real 90-day push."
+ * - Really good (600+) is the thriving zone.
+ * - Elite (800+) is sustained excellence across all five pillars — a
+ *   lifestyle result, not a 90-day goal.
+ */
 export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
   {
     min: 0,
     max: 99,
-    label: "Very Poor",
-    color: "#FEE2E2", // Pastel red
-    description: "Significant wellness concerns across multiple areas"
+    label: "Starting",
+    color: "#FECACA", // pastel red
+    description: "You've begun. Five pillars, 90 days — let's go.",
+    framing: "Just starting",
   },
   {
     min: 100,
     max: 299,
-    label: "Poor", 
-    color: "#FDE68A", // Red-orange to yellow
-    description: "Below optimal wellness with room for improvement"
+    label: "Early",
+    color: "#FDE68A", // amber
+    description: "Baseline established. Every completion counts now.",
+    framing: "Baseline established",
   },
   {
     min: 300,
     max: 499,
-    label: "Fair",
-    color: "#FFEFB3", // Yellow to darker blue
-    description: "Moderate wellness with some positive indicators"
+    label: "Building",
+    color: "#FEF08A", // yellow
+    description: "Habits are forming. Keep the balance across all five.",
+    framing: "Habits forming",
   },
   {
     min: 500,
-    max: 699,
-    label: "Improving",
-    color: "#D9F99D", // Yellow to darker blue (green tint)
-    description: "Good progress toward optimal wellness"
+    max: 599,
+    label: "Strong",
+    color: "#D9F99D", // lime
+    description: "This is where most people land after a real 90-day push.",
+    framing: "90-day milestone",
   },
   {
-    min: 700,
-    max: 849,
-    label: "Good",
-    color: "#BBF7D0", // Blue + light green (turquoise)
-    description: "Strong overall wellness across most areas"
+    min: 600,
+    max: 799,
+    label: "Really good",
+    color: "#BBF7D0", // light green
+    description: "Your practice is working. This is the 'thriving' zone.",
+    framing: "Thriving",
   },
   {
-    min: 850,
+    min: 800,
     max: 999,
-    label: "Excellent", 
-    color: "#BAE6FD", // Turquoise to purple (light blue)
-    description: "Exceptional wellness optimization achieved"
-  }
+    label: "Elite",
+    color: "#BAE6FD", // sky blue
+    description: "Sustained excellence across all five pillars. Rare and earned.",
+    framing: "Elite",
+  },
 ];
 
 export function getVitanaIndexTier(score: number): VitanaIndexTier {
-  return VITANA_INDEX_TIERS.find(tier => score >= tier.min && score <= tier.max) || VITANA_INDEX_TIERS[0];
+  return (
+    VITANA_INDEX_TIERS.find((tier) => score >= tier.min && score <= tier.max) ||
+    VITANA_INDEX_TIERS[0]
+  );
 }
 
 export function getVitanaIndexPercentage(score: number): number {
@@ -60,5 +83,5 @@ export function getVitanaIndexPercentage(score: number): number {
 }
 
 export function formatVitanaIndexScore(score: number): string {
-  return score.toString().padStart(3, '0');
+  return score.toString().padStart(3, "0");
 }
