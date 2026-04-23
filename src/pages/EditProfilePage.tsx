@@ -4,7 +4,6 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { UserProfile, ViewAsMode } from "@/types/profile";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
-import { EditToolbar } from "@/components/profile/EditToolbar";
 import { IdentityDrawer } from "@/components/profile/drawers/IdentityDrawer";
 import { AboutDrawer } from "@/components/profile/drawers/AboutDrawer";
 import { ServicesDrawer } from "@/components/profile/drawers/ServicesDrawer";
@@ -559,14 +558,6 @@ export default function EditProfilePage() {
       <SEO 
         title="Edit Profile – VITANA" 
         description="Edit your VITANA profile and customize your public presence" 
-      />
-      
-      <EditToolbar
-        viewAs={viewAs}
-        onViewAsChange={setViewAs}
-        hasUnsavedChanges={hasUnsavedChanges}
-        onSave={handleSave}
-        onCancel={handleCancel}
       />
       
       <ProfileLayout

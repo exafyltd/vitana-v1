@@ -16,7 +16,6 @@ import { CommunityImpactWidget } from "../community/CommunityImpactWidget";
 import { SuccessStoryCarousel } from "../community/SuccessStoryCarousel";
 import { CompatibilityIndicator } from "../engagement/CompatibilityIndicator";
 import { ContextualCTAs } from "../engagement/ContextualCTAs";
-import { SmartEditingToolbar } from "../editor/SmartEditingToolbar";
 import { ProfileProgressCard } from "../editor/ProfileProgressCard";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useState, useCallback } from "react";
@@ -77,43 +76,22 @@ export function ProfileLayout({
   onEditAccount,
   onRefreshProfile
 }: ProfileLayoutProps) {
-  // Smart editing state
-  const [isPreviewMode, setIsPreviewMode] = useState(false);
-  const [editHistory, setEditHistory] = useState<UserProfile[]>([profile]);
-  const [historyIndex, setHistoryIndex] = useState(0);
-  
   // Popup states
   const [showCredentialUpload, setShowCredentialUpload] = useState(false);
   const [showGoLive, setShowGoLive] = useState(false);
 
-  // Auto-save functionality
+  // Auto-save functionality (silent — saves in the background, no toolbar UI)
   const handleSaveProfile = useCallback(async (updatedProfile: UserProfile) => {
     // TODO: Implement actual profile saving logic
     console.log('Saving profile:', updatedProfile);
     // This would typically call a Supabase update function
   }, []);
 
-  const { forceSave, hasUnsavedChanges, isSaving } = useAutoSave({
+  useAutoSave({
     data: profile,
     onSave: handleSaveProfile,
-    enabled: editMode
+    enabled: editMode,
   });
-
-  // History management
-  const canUndo = historyIndex > 0;
-  const canRedo = historyIndex < editHistory.length - 1;
-
-  const handleUndo = useCallback(() => {
-    if (canUndo) {
-      setHistoryIndex(prev => prev - 1);
-    }
-  }, [canUndo]);
-
-  const handleRedo = useCallback(() => {
-    if (canRedo) {
-      setHistoryIndex(prev => prev + 1);
-    }
-  }, [canRedo]);
 
   // Section navigation
   const handleSectionClick = useCallback((sectionId: string) => {
@@ -141,7 +119,7 @@ export function ProfileLayout({
     }
   }, [onEditIdentity, onEditAbout, onEditShowcase, onEditServices]);
 
-  const effectiveEditMode = editMode && !isPreviewMode;
+  const effectiveEditMode = editMode;
 
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
@@ -353,30 +331,9 @@ export function ProfileLayout({
     );
   }
 
-  // Desktop layout (unchanged)
+  // Desktop layout
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-      {/* Smart Editing Toolbar */}
-      {editMode && (
-        <SmartEditingToolbar
-          hasUnsavedChanges={hasUnsavedChanges}
-          isSaving={isSaving}
-          isPreviewMode={isPreviewMode}
-          canUndo={canUndo}
-          canRedo={canRedo}
-          onSave={forceSave}
-          onTogglePreview={() => setIsPreviewMode(!isPreviewMode)}
-          onUndo={handleUndo}
-          onRedo={handleRedo}
-          onAutopilot={() => {
-            const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
-            if (autopilotElement) {
-              autopilotElement.click();
-            }
-          }}
-        />
-      )}
-
       <div className="space-y-0">
         <div className="max-w-7xl mx-auto">
           <DesktopIdCardSwitcher
@@ -390,12 +347,12 @@ export function ProfileLayout({
           />
         </div>
 
-        <div className="mt-2">
+        <div>
           <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
         </div>
-        
+
         {/* Main Profile Content - Unified spacing container */}
-        <div className="px-6 mt-8">
+        <div className="px-6 mt-3">
           <div className="max-w-7xl mx-auto flex flex-col gap-y-3">
             {/* Split Screen Content */}
             <ProfileSplitNavigation

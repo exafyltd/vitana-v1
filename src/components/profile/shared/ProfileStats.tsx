@@ -27,7 +27,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
   
   return (
     <>
-      <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
+      <div className="flex items-center justify-center gap-8 md:gap-12 pt-1 pb-2 border-y border-border/50">
         <div className="text-center">
           {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />

@@ -51,14 +51,14 @@ export function DesktopIdCardSwitcher({
   });
 
   return (
-    <div className={cn("relative pt-8 pb-6", className)}>
+    <div className={cn("relative pt-3 pb-3", className)}>
       <div className="container mx-auto px-6">
         <ProfileIdSegmentedControl<DesktopCardSide>
           segments={SEGMENTS}
           value={activeSide}
           onChange={setActiveSide}
           size="md"
-          className="mb-8"
+          className="mb-4"
         />
 
         <div className="relative max-w-4xl mx-auto">
