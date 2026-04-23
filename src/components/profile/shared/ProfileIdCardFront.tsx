@@ -169,18 +169,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
         </div>
       
         {/* Avatar with Premium Subtle Depth - NO ANIMATIONS */}
-        <div className="relative mb-3 z-10 animate-fade-in" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
+        <div className="relative mb-4 z-10 animate-fade-in" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
           {/* Static soft ambient glow - single layer */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div
-              className={`w-40 h-40 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[40px] opacity-30 transition-colors duration-300`}
+              className={`w-48 h-48 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[40px] opacity-30 transition-colors duration-300`}
             />
           </div>
 
           {/* Static elegant ring */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div
-              className={`w-[136px] h-[136px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`}
+              className={`w-[168px] h-[168px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`}
               style={{
                 boxShadow: '0 0 20px hsl(var(--sys-vitana-accent) / 0.15)'
               }}
@@ -188,7 +188,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           </div>
 
           <Avatar
-            className={`relative h-32 w-32 ${themeConfig.avatar.border} ring-1 ring-border/60 shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06)] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
+            className={`relative h-40 w-40 ${themeConfig.avatar.border} ring-1 ring-border/60 shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06)] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
             tabIndex={0}
             role="img"
             aria-label={`${profile.name}'s profile picture`}
