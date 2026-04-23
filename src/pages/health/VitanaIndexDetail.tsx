@@ -1,9 +1,10 @@
+import { useState } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, TrendingUp, TrendingDown, Minus, Target, Info, Scale } from "lucide-react";
+import { Activity, TrendingUp, TrendingDown, Minus, Target, Info, Scale, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   useVitanaIndex,
@@ -13,6 +14,7 @@ import {
   type VitanaPillarSubscores,
 } from "@/hooks/useVitanaIndex";
 import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
+import VitanaLogDataDialog from "@/components/health/VitanaLogDataDialog";
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
   nutrition: "What and how you eat — meals, macro balance, biomarkers",
@@ -122,6 +124,7 @@ function weakestPillarLabel(index: NonNullable<ReturnType<typeof useVitanaIndex>
 export default function VitanaIndexDetail() {
   const navigate = useNavigate();
   const { index, isLoading, isError, refetch } = useVitanaIndex();
+  const [logDialogOpen, setLogDialogOpen] = useState(false);
 
   // 90-day framing — milestone and stretch goal, not pass/fail.
   const milestoneGoal = 600;
@@ -144,8 +147,15 @@ export default function VitanaIndexDetail() {
                 One number. Five pillars. Ninety days to lift it — balanced, honest, aspirational.
               </p>
             </div>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>Refresh</Button>
+            <div className="flex items-center gap-2">
+              <Button size="sm" onClick={() => setLogDialogOpen(true)}>
+                <Plus className="w-4 h-4 mr-1" />
+                Log data
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => refetch()}>Refresh</Button>
+            </div>
           </div>
+          <VitanaLogDataDialog open={logDialogOpen} onOpenChange={setLogDialogOpen} />
 
           {/* Score card */}
           <Card>
