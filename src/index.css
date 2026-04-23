@@ -141,8 +141,8 @@ All colors MUST be HSL.
     --row-base: 70px;
     --grid-gap: 1.5rem;
     
-    /* Diary Voice Button */
-    --brand-live: #ff004f;
+    /* Diary Voice Button (HSL triplet — consume as hsl(var(--brand-live))) */
+    --brand-live: 341 100% 50%;
 
     /* Focus Profile Theme - Exclusive Design System */
     --profile-bg-start: 216 53% 8%;
@@ -281,6 +281,7 @@ All colors MUST be HSL.
     --brand-accent: 339 89% 49%;
     --brand-bg: 222.2 84% 4.9%;
     --brand-fg: 210 40% 98%;
+    --brand-live: 341 100% 50%;
 
     /* Focus Profile Theme - Dark Mode (same as light for this theme) */
     --profile-bg-start: 216 53% 8%;

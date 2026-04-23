@@ -130,8 +130,8 @@ export const DiaryOrb: React.FC = () => {
           "h-14 w-14 md:h-16 md:w-16 rounded-full ring-1 ring-black/10",
           "shadow-[0_6px_18px_rgba(0,0,0,0.12)] grid place-items-center",
           "transition-transform duration-150 select-none z-10",
-          isRecording 
-            ? "bg-[var(--brand-live)] text-white diary-pulse"
+          isRecording
+            ? "bg-[hsl(var(--brand-live))] text-white diary-pulse"
             : "bg-slate-900 text-white hover:scale-[1.03] active:scale-[0.98]"
         ].join(" ")}
         style={{ 
