@@ -23,7 +23,7 @@ export function MobileProfileHeader({
   displayName,
   handle,
   archetype,
-  vitanaIndex = 742,
+  vitanaIndex,
   vitanaPercentile = 15,
   editMode = false,
   onEdit,
