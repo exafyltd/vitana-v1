@@ -794,7 +794,7 @@ const renderEventGrid = (
     const isEvenRow = currentRowIndex % 2 === 0;
     
     rows.push(
-      <div key={i} className="grid grid-cols-12 gap-6 mb-6 min-h-72">
+      <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
         {isEvenRow ? (
           // Row pattern: big + small + small (1+2)
           <>
