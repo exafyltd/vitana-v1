@@ -162,6 +162,29 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
+// Inside the Appilix Android WebView, Google's account picker loops forever
+// because the embedded WebView isolates accounts.google.com cookies and
+// blocks third-party cookies by default. Routing OAuth through the OS
+// (system browser / Chrome Custom Tab) lets Google's real session cookies
+// persist, so picking an account actually reaches the consent screen.
+function isAppilixWebView(): boolean {
+  if (typeof window === "undefined") return false;
+  const w = window as unknown as { appilix?: { postMessage?: unknown } };
+  if (w.appilix && typeof w.appilix.postMessage === "function") return true;
+  if (typeof document !== "undefined" && /appilix_push_notification_user_identity=/.test(document.cookie || "")) {
+    return true;
+  }
+  return false;
+}
+
+function redirectToAuthUrl(authUrl: string) {
+  if (isAppilixWebView()) {
+    const opened = window.open(authUrl, "_system");
+    if (opened) return;
+  }
+  window.location.href = authUrl;
+}
+
 function useStartSocialOAuth(provider: "google" | "youtube") {
   return useMutation({
     mutationFn: async () => {
@@ -178,8 +201,7 @@ function useStartSocialOAuth(provider: "google" | "youtube") {
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      // Hand off to the provider — full page redirect so we preserve history.
-      window.location.href = json.auth_url;
+      redirectToAuthUrl(json.auth_url);
       return json.auth_url as string;
     },
   });

@@ -75,6 +75,7 @@ import {
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
@@ -157,17 +158,25 @@ function ConnectedApps() {
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     } else if (errorCode && (provider === "google" || provider === "youtube")) {
       const label = provider === "youtube" ? "YouTube" : "Google";
+      const retry = provider === "youtube"
+        ? () => startYouTube.mutate()
+        : () => startGoogle.mutate();
       toast({
         title: `${label} sign-in didn't finish`,
         description: errorCode.replace(/_/g, " "),
         variant: "destructive",
+        action: (
+          <ToastAction altText={`Retry ${label} sign-in`} onClick={retry}>
+            Try again
+          </ToastAction>
+        ),
       });
       params.delete("error");
       params.delete("provider");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     }
-  }, [toast]);
+  }, [toast, startGoogle, startYouTube]);
 
   // Mobile view - simplified, native-feeling experience
   if (isMobile) {
