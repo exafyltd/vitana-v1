@@ -1074,3 +1074,82 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   .message-highlight {
     animation: message-highlight-flash 1.5s ease-out;
   }
+
+/* ============================================================
+   Dark-mode safety net for hardcoded light pastel gradients.
+
+   Many pages use page-level gradients like
+   `bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50` without
+   `dark:` variants. In dark mode the background stays light while
+   `text-foreground` flips to white, making titles unreadable.
+
+   This block rewires the Tailwind gradient-stop CSS variables to the
+   theme --background token whenever `.dark` is active AND a light
+   pastel (-50 / -100) stop class is present. Scoped to gradient stops
+   only, so plain `bg-X-50/100` badges/chips are untouched.
+   ============================================================ */
+
+.dark [class~="from-purple-50"], .dark [class~="from-pink-50"], .dark [class~="from-blue-50"],
+.dark [class~="from-violet-50"], .dark [class~="from-indigo-50"], .dark [class~="from-fuchsia-50"],
+.dark [class~="from-rose-50"], .dark [class~="from-orange-50"], .dark [class~="from-amber-50"],
+.dark [class~="from-yellow-50"], .dark [class~="from-green-50"], .dark [class~="from-emerald-50"],
+.dark [class~="from-teal-50"], .dark [class~="from-cyan-50"], .dark [class~="from-sky-50"],
+.dark [class~="from-red-50"], .dark [class~="from-gray-50"], .dark [class~="from-slate-50"],
+.dark [class~="from-neutral-50"], .dark [class~="from-stone-50"],
+.dark [class~="from-purple-100"], .dark [class~="from-pink-100"], .dark [class~="from-blue-100"],
+.dark [class~="from-violet-100"], .dark [class~="from-indigo-100"], .dark [class~="from-fuchsia-100"],
+.dark [class~="from-rose-100"], .dark [class~="from-orange-100"], .dark [class~="from-amber-100"],
+.dark [class~="from-yellow-100"], .dark [class~="from-green-100"], .dark [class~="from-emerald-100"],
+.dark [class~="from-teal-100"], .dark [class~="from-cyan-100"], .dark [class~="from-sky-100"],
+.dark [class~="from-red-100"], .dark [class~="from-gray-100"], .dark [class~="from-slate-100"],
+.dark [class~="from-neutral-100"], .dark [class~="from-stone-100"] {
+  --tw-gradient-from: hsl(var(--background) / 1) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: hsl(var(--background) / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.dark [class~="via-purple-50"], .dark [class~="via-pink-50"], .dark [class~="via-blue-50"],
+.dark [class~="via-violet-50"], .dark [class~="via-indigo-50"], .dark [class~="via-fuchsia-50"],
+.dark [class~="via-rose-50"], .dark [class~="via-orange-50"], .dark [class~="via-amber-50"],
+.dark [class~="via-yellow-50"], .dark [class~="via-green-50"], .dark [class~="via-emerald-50"],
+.dark [class~="via-teal-50"], .dark [class~="via-cyan-50"], .dark [class~="via-sky-50"],
+.dark [class~="via-red-50"], .dark [class~="via-gray-50"], .dark [class~="via-slate-50"],
+.dark [class~="via-neutral-50"], .dark [class~="via-stone-50"],
+.dark [class~="via-purple-100"], .dark [class~="via-pink-100"], .dark [class~="via-blue-100"],
+.dark [class~="via-violet-100"], .dark [class~="via-indigo-100"], .dark [class~="via-fuchsia-100"],
+.dark [class~="via-rose-100"], .dark [class~="via-orange-100"], .dark [class~="via-amber-100"],
+.dark [class~="via-yellow-100"], .dark [class~="via-green-100"], .dark [class~="via-emerald-100"],
+.dark [class~="via-teal-100"], .dark [class~="via-cyan-100"], .dark [class~="via-sky-100"],
+.dark [class~="via-red-100"], .dark [class~="via-gray-100"], .dark [class~="via-slate-100"],
+.dark [class~="via-neutral-100"], .dark [class~="via-stone-100"] {
+  --tw-gradient-via: hsl(var(--background) / 1) var(--tw-gradient-via-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important;
+}
+
+.dark [class~="to-purple-50"], .dark [class~="to-pink-50"], .dark [class~="to-blue-50"],
+.dark [class~="to-violet-50"], .dark [class~="to-indigo-50"], .dark [class~="to-fuchsia-50"],
+.dark [class~="to-rose-50"], .dark [class~="to-orange-50"], .dark [class~="to-amber-50"],
+.dark [class~="to-yellow-50"], .dark [class~="to-green-50"], .dark [class~="to-emerald-50"],
+.dark [class~="to-teal-50"], .dark [class~="to-cyan-50"], .dark [class~="to-sky-50"],
+.dark [class~="to-red-50"], .dark [class~="to-gray-50"], .dark [class~="to-slate-50"],
+.dark [class~="to-neutral-50"], .dark [class~="to-stone-50"],
+.dark [class~="to-purple-100"], .dark [class~="to-pink-100"], .dark [class~="to-blue-100"],
+.dark [class~="to-violet-100"], .dark [class~="to-indigo-100"], .dark [class~="to-fuchsia-100"],
+.dark [class~="to-rose-100"], .dark [class~="to-orange-100"], .dark [class~="to-amber-100"],
+.dark [class~="to-yellow-100"], .dark [class~="to-green-100"], .dark [class~="to-emerald-100"],
+.dark [class~="to-teal-100"], .dark [class~="to-cyan-100"], .dark [class~="to-sky-100"],
+.dark [class~="to-red-100"], .dark [class~="to-gray-100"], .dark [class~="to-slate-100"],
+.dark [class~="to-neutral-100"], .dark [class~="to-stone-100"] {
+  --tw-gradient-to: hsl(var(--background) / 1) var(--tw-gradient-to-position) !important;
+}
+
+/* Maxina tenant top app bar — brand gradient with dark-mode variant.
+   Inline style was preventing `dark:` overrides, so we moved it here. */
+.maxina-topbar {
+  background: linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%);
+  color: rgba(255, 255, 255, 0.95);
+}
+.dark .maxina-topbar {
+  background: linear-gradient(180deg, hsl(201 55% 18%) 0%, hsl(201 60% 11%) 100%);
+  color: rgba(255, 255, 255, 0.95);
+}
