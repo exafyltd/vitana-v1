@@ -8,7 +8,8 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Plus, Palette, Globe, Type, Home, Monitor, Sun, Moon, Settings as SettingsIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { settingsNavigation } from "@/config/navigation";
@@ -22,6 +23,9 @@ function Preferences() {
   const [activeTab, setActiveTab] = useState("appearance");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [themeMounted, setThemeMounted] = useState(false);
+  useEffect(() => setThemeMounted(true), []);
 
   return (
     <AppLayout>
@@ -62,7 +66,7 @@ function Preferences() {
                       <div className="space-y-4">
                         <div>
                           <label className="text-sm font-medium mb-2 block">Theme</label>
-                          <Select>
+                          <Select value={themeMounted ? theme : undefined} onValueChange={setTheme}>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select theme" />
                             </SelectTrigger>
@@ -125,8 +129,12 @@ function Preferences() {
                     icon={Palette}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-purple-600">Light</div>
-                        <div className="text-xs text-muted-foreground">System default</div>
+                        <div className="text-2xl font-bold text-purple-600">
+                          {themeMounted ? (resolvedTheme === "dark" ? "Dark" : "Light") : "—"}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {themeMounted && theme === "system" ? "Following system" : "Manual override"}
+                        </div>
                       </div>
                     }
                   />
