@@ -109,7 +109,8 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
-        throw new Error(json.error || "Submission failed");
+        const detail = json.detail ? ` — ${json.detail}` : "";
+        throw new Error(`${json.error || "Submission failed"}${detail}`);
       }
       toast({
         title: "Your Vitana Index is live",
@@ -120,7 +121,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
     } catch (err: any) {
       toast({
         title: "Could not save your baseline",
-        description: err.message || "Try again in a moment.",
+        description: (err.message || "Try again in a moment.").slice(0, 400),
         variant: "destructive",
       });
     } finally {
