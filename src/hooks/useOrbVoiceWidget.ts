@@ -115,6 +115,15 @@ export function useOrbVoiceWidget() {
   // a smooth SPA change (works inside Appilix WebView with no full reload).
   const handleNavigationRequest = (url: string, _ctx: NavigationContext) => {
     try {
+      // Surface safety net: the community app serves community + admin routes
+      // only. If the Navigator ever returns a Command Hub route (it shouldn't —
+      // the backend is surface-scoped — but belt-and-suspenders against catalog
+      // drift), refuse to navigate instead of rendering a 404.
+      const pathPart = url.split('?')[0] || '';
+      if (pathPart.startsWith('/command-hub')) {
+        console.warn('[ORB] Refused cross-surface route (command-hub is developer-only):', url);
+        return;
+      }
       const parsed = new URL(url, window.location.origin);
       const openTarget = parsed.searchParams.get('open');
       // VTID-CAL-OPEN: If the backend sends ?open=calendar, do NOT navigate —
