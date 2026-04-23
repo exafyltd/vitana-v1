@@ -36,7 +36,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
     return (
       <div className={cn("pt-1 pb-0", className)}>
         <h1 className="text-lg font-bold tracking-tight text-foreground">
-          {title} {emoji}
+          {title}
         </h1>
       </div>
     );

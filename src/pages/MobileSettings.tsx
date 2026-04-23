@@ -29,6 +29,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
 export default function MobileSettings() {
@@ -43,6 +44,9 @@ export default function MobileSettings() {
   const [activeSection, setActiveSection] = useState('notifications');
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
+  const { theme, setTheme } = useTheme();
+  const [themeMounted, setThemeMounted] = useState(false);
+  useEffect(() => setThemeMounted(true), []);
 
   const settingsModes: ModeOption[] = [
     { value: 'notifications', label: 'Notifications', icon: '🔔' },
@@ -338,7 +342,7 @@ export default function MobileSettings() {
               </div>
               <div>
                 <label className="text-sm font-medium mb-2 block">Theme</label>
-                <Select>
+                <Select value={themeMounted ? theme : undefined} onValueChange={setTheme}>
                   <SelectTrigger className="w-full"><SelectValue placeholder="Select theme" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="light"><div className="flex items-center gap-2"><Sun className="w-4 h-4" /> Light</div></SelectItem>

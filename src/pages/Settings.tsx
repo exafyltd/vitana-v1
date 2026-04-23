@@ -134,7 +134,8 @@ function Settings() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Settings Overview ⚙️"
+            title="Settings Overview"
+            emoji="⚙️"
             description="Manage your account settings, privacy, and preferences to personalize your wellness journey"
           />
 

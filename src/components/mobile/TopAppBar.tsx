@@ -31,16 +31,9 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-40"
+      className={`fixed top-0 left-0 right-0 z-40 ${isMaxina ? 'maxina-topbar' : ''}`}
       style={{
         paddingTop: 'env(safe-area-inset-top, 0px)',
-        ...(isMaxina
-          ? {
-              background:
-                'linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%)',
-              color: 'rgba(255,255,255,0.95)',
-            }
-          : undefined),
       }}
     >
       {!isMaxina && (

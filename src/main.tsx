@@ -7,6 +7,7 @@ import { ProfileProvider } from './context/ProfileProvider'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { OfflineProvider } from './context/OfflineProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -104,18 +105,20 @@ import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <OfflineProvider>
-      <AuthProvider>
-        <ProfileProvider>
-          <LanguageProvider>
-            <TenantProvider>
-              <VitanaIndexProvider>
-                <App />
-              </VitanaIndexProvider>
-            </TenantProvider>
-          </LanguageProvider>
-        </ProfileProvider>
-      </AuthProvider>
-    </OfflineProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+      <OfflineProvider>
+        <AuthProvider>
+          <ProfileProvider>
+            <LanguageProvider>
+              <TenantProvider>
+                <VitanaIndexProvider>
+                  <App />
+                </VitanaIndexProvider>
+              </TenantProvider>
+            </LanguageProvider>
+          </ProfileProvider>
+        </AuthProvider>
+      </OfflineProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
