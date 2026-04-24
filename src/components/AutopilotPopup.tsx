@@ -108,6 +108,24 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       const navigateResult = results.find(r => r.success && r.action_type === "navigate" && r.target);
       if (navigateResult) {
         onOpenChange(false);
+        // G3d: set_goal (and any future goal-opening action) uses
+        // target=/?open=life_compass or /?open=goals. Dispatch the
+        // overlay event instead of navigating so the user stays on
+        // their current screen and the Life Compass modal opens on top.
+        try {
+          const parsed = new URL(navigateResult.target!, window.location.origin);
+          const openTarget = parsed.searchParams.get("open");
+          if (openTarget === "life_compass" || openTarget === "goals") {
+            window.dispatchEvent(new CustomEvent("vitana:open-life-compass"));
+            return;
+          }
+          if (openTarget === "calendar") {
+            window.dispatchEvent(new CustomEvent("calendar:open"));
+            return;
+          }
+        } catch {
+          // target wasn't URL-parsable — fall through to normal navigate
+        }
         navigate(navigateResult.target!);
         return;
       }
