@@ -463,7 +463,7 @@ export default function AutopilotDashboard() {
         canonical={window.location.href}
       />
       <div className="p-6 min-h-screen bg-gradient-subtle">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader
             title="My Journey"
             description="Your personalized 90-day autopilot journey"
