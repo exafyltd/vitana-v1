@@ -465,8 +465,8 @@ const MaxinaPortal = () => {
       <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-16 md:pt-16 md:justify-center md:px-6 pb-32 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
         <div className="max-w-md w-full">
           {/* Auth Tabs - Compact card */}
-          <Card 
-            className="bg-white/75 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.25)]"
+          <Card
+            className="bg-white/80 dark:bg-card/90 backdrop-blur-xl rounded-2xl border border-white/30 dark:border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
             onClick={ensureSoundscapePlaying}
           >
             <Tabs defaultValue={searchParams.get('tab') === 'signup' ? 'signup' : 'signin'} className="w-full">

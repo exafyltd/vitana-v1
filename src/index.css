@@ -1143,13 +1143,8 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   --tw-gradient-to: hsl(var(--background) / 1) var(--tw-gradient-to-position) !important;
 }
 
-/* Maxina tenant top app bar — brand gradient with dark-mode variant.
-   Inline style was preventing `dark:` overrides, so we moved it here. */
+/* Maxina tenant top app bar — brand gradient kept consistent across themes. */
 .maxina-topbar {
   background: linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%);
-  color: rgba(255, 255, 255, 0.95);
-}
-.dark .maxina-topbar {
-  background: linear-gradient(180deg, hsl(201 55% 18%) 0%, hsl(201 60% 11%) 100%);
   color: rgba(255, 255, 255, 0.95);
 }
