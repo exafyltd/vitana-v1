@@ -72,6 +72,10 @@ export function useSocialConnections() {
       return json.connections ?? [];
     },
     staleTime: 30_000,
+    // Global default in main.tsx is `false`, but this query specifically needs
+    // to refetch when the Appilix app regains focus after the user finishes
+    // OAuth in the OS browser — otherwise the Connected badge stays stale.
+    refetchOnWindowFocus: "always",
   });
 }
 
@@ -162,15 +166,20 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
-// Inside the Appilix Android WebView, Google's account picker loops forever
-// because the embedded WebView isolates accounts.google.com cookies and
-// blocks third-party cookies by default. Routing OAuth through the OS
-// (system browser / Chrome Custom Tab) lets Google's real session cookies
-// persist, so picking an account actually reaches the consent screen.
+// Google blocks OAuth inside embedded WebViews (disallowed_useragent,
+// enforced since 2017), so inside the Appilix wrapper the auth URL must
+// open in the OS browser instead. Appilix's JS bridge exposes
+// `window.appilix.postMessage({ type: "launch_url_externally" })` for that.
+// Detection uses any of: the bridge handle, an "Appilix" userAgent
+// fragment, or the push-notification cookie Appilix sets — so builds that
+// are missing one signal still get routed correctly.
 function isAppilixWebView(): boolean {
   if (typeof window === "undefined") return false;
   const w = window as unknown as { appilix?: { postMessage?: unknown } };
   if (w.appilix && typeof w.appilix.postMessage === "function") return true;
+  if (typeof navigator !== "undefined" && /Appilix/i.test(navigator.userAgent || "")) {
+    return true;
+  }
   if (typeof document !== "undefined" && /appilix_push_notification_user_identity=/.test(document.cookie || "")) {
     return true;
   }
@@ -179,8 +188,33 @@ function isAppilixWebView(): boolean {
 
 function redirectToAuthUrl(authUrl: string) {
   if (isAppilixWebView()) {
-    const opened = window.open(authUrl, "_system");
-    if (opened) return;
+    const w = window as unknown as {
+      appilix?: { postMessage?: (msg: string) => void };
+    };
+    if (typeof w.appilix?.postMessage === "function") {
+      try {
+        w.appilix.postMessage(
+          JSON.stringify({ type: "launch_url_externally", props: { url: authUrl } }),
+        );
+        return;
+      } catch {
+        // bridge threw — try the anchor fallback below
+      }
+    }
+    if (typeof document !== "undefined") {
+      try {
+        const a = document.createElement("a");
+        a.href = authUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        return;
+      } catch {
+        // fall through to last-resort redirect
+      }
+    }
   }
   window.location.href = authUrl;
 }
