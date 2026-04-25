@@ -69,8 +69,20 @@ export default function OAuthComplete() {
 
   useEffect(() => {
     let cancelled = false;
+
+    // Hard timeout: if neither the session-write nor the navigation has
+    // completed in 10 seconds, fall through to error state. Prevents the
+    // "endless spinner" failure mode reported on iOS WKWebView when
+    // setSession or exchangeCodeForSession silently hangs.
+    const timeoutId = window.setTimeout(() => {
+      if (cancelled) return;
+      setStatus("error");
+      setMessage("Sign-in is taking longer than expected. Please try again.");
+    }, 10_000);
+
     (async () => {
       if (gatewayError) {
+        window.clearTimeout(timeoutId);
         setStatus("error");
         setMessage(gatewayErrorDetail || gatewayError.replace(/_/g, " "));
         return;
@@ -95,11 +107,21 @@ export default function OAuthComplete() {
         }
 
         if (cancelled) return;
+        window.clearTimeout(timeoutId);
 
         // In-app (WebView) pass: session is now stored in the WebView's
-        // localStorage, so jump straight to the requested next route.
+        // localStorage. We force a FULL PAGE LOAD (not React Router
+        // navigate) so AuthProvider re-initializes from scratch with the
+        // fresh session in localStorage. Without this, the original page
+        // that started the OAuth flow can race the auth-state-change
+        // event and render with user=null long enough that the redirect
+        // useEffect doesn't fire — producing an endless spinner that
+        // only resolves when the user kills + reopens the app.
         if (inWebView) {
-          navigate(nextPath, { replace: true });
+          // Build an absolute URL so window.location.href triggers a
+          // hard navigation. Same-origin is guaranteed by the
+          // nextPath normalization above.
+          window.location.replace(window.location.origin + nextPath);
           return;
         }
 
@@ -117,12 +139,14 @@ export default function OAuthComplete() {
         }, 350);
       } catch (err) {
         if (cancelled) return;
+        window.clearTimeout(timeoutId);
         setStatus("error");
         setMessage(err instanceof Error ? err.message : "We couldn't finish signing you in.");
       }
     })();
     return () => {
       cancelled = true;
+      window.clearTimeout(timeoutId);
     };
   }, [deepLinkHref, gatewayError, gatewayErrorDetail, inWebView, navigate, nextPath, provider, searchParams]);
 
