@@ -317,6 +317,25 @@ export class OrbVoiceClient {
           case 'error':
             this.callbacks.onError?.(msg.message);
             break;
+          case 'identity_redirect':
+            // VTID-01954: brain detected an identity-mutation intent
+            // ("change my name to X" / "Ändere meinen Namen") and emits
+            // the redirect_target so we open the right Profile/Settings
+            // screen. The brain ALSO speaks the sanctioned refusal via
+            // Guardrail B — we just dispatch the deep-link event here.
+            // Identity Lock plan: Part 1.5.
+            try {
+              const target = msg.redirect_target;
+              if (target && typeof target.event === 'string' && target.event.startsWith('vitana:open-')) {
+                window.dispatchEvent(new CustomEvent(target.event, {
+                  detail: target.payload || {},
+                }));
+                console.log('[VTID-01954] Identity redirect dispatched:', target.event, target.payload);
+              }
+            } catch (err) {
+              console.warn('[VTID-01954] Failed to dispatch identity redirect:', err);
+            }
+            break;
           default:
             console.log('[OrbVoiceClient] SSE event type:', msg.type);
             break;

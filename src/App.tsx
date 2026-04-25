@@ -21,6 +21,7 @@ import { StreamingStateProvider, useStreamingState } from "@/context/StreamingSt
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { LifeCompassPopupProvider } from "@/context/LifeCompassPopupContext";
+import { IdentityRedirectListener } from "@/components/identity/IdentityRedirectListener";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
@@ -545,6 +546,10 @@ const App = () => {
                         useNavigate / useLocation) has a valid Router context.
                         Moving it outside crashes the whole app at boot. */}
                     <AppHooksInitializer />
+                    {/* VTID-01954: deep-link handler for identity-mutation
+                        intents emitted by the brain (Identity Lock, Plan Part 1.5).
+                        Lives inside <BrowserRouter> for useNavigate(). */}
+                    <IdentityRedirectListener />
                     <MilestoneCelebration />
                     <VitanalandNavigationProvider>
                       <LifeCompassPopupProvider>
