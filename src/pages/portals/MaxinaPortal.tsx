@@ -261,6 +261,24 @@ const MaxinaPortal = () => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
+  // Listen for the OAuth-complete postMessage sent by /oauth/complete
+  // when it's running in a popup (iOS WKWebView gesture-preservation
+  // pattern). The popup writes the session to localStorage then signals
+  // us to re-fetch it explicitly — Supabase's storage-event sync is
+  // sometimes throttled inside WKWebView, so this ensures the parent
+  // reliably refreshes its auth state and the redirect useEffect fires.
+  useEffect(() => {
+    function handleMessage(ev: MessageEvent) {
+      if (ev.origin !== window.location.origin) return;
+      if (!ev.data || (ev.data as { type?: string }).type !== "vitana:oauth-complete") return;
+      // Force Supabase to re-emit auth state from the current
+      // localStorage contents. Cheap and idempotent.
+      supabase.auth.getSession().catch(() => { /* noop */ });
+    }
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   // NOTE: Do NOT auto-start soundscape on mount/video load
   // Soundscape should only start on explicit user gesture (click)
   // The ensureSoundscapePlaying callback handles this correctly
