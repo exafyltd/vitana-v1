@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
+import { WebViewDiagBadge } from "@/components/auth/WebViewDiagBadge";
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -438,10 +439,11 @@ const MaxinaPortal = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <SEO 
-        title="Maxina Health Platform - VITANA" 
-        description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey." 
-        canonical={window.location.href} 
+      <WebViewDiagBadge />
+      <SEO
+        title="Maxina Health Platform - VITANA"
+        description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey."
+        canonical={window.location.href}
       />
       
       {/* Video Background */}
