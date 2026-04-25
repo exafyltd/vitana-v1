@@ -67,6 +67,7 @@ const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
+const OAuthComplete = lazy(() => import("./pages/auth/OAuthComplete"));
 const OnboardingWelcome = lazy(() => import("./pages/onboarding/OnboardingWelcome"));
 
 // Portal pages
@@ -563,6 +564,10 @@ const App = () => {
           
           {/* Email Confirmation Routes */}
           <Route path="/auth/confirmed" element={<EmailConfirmed />} />
+          {/* OAuth return landing — used by gateway connectors and Supabase social sign-in
+              when running inside the Appilix WebView. Persists session tokens and
+              attempts a deep link back into the app. */}
+          <Route path="/oauth/complete" element={<OAuthComplete />} />
           {/* /auth is a catalog alias for "generic sign-in screen" — redirect to the Maxina portal */}
           <Route path="/auth" element={<Navigate to="/maxina" replace />} />
           <Route path="/maxina/confirmed" element={<MaxinaConfirmed />} />

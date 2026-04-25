@@ -13,8 +13,10 @@
  * calendar scopes just to connect their YouTube account.
  */
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { isAppilixWebView, redirectViaSystemBrowser } from "@/lib/webview";
 
 const GATEWAY_BASE = (
   import.meta.env.VITE_GATEWAY_BASE ||
@@ -29,6 +31,13 @@ async function authHeaders(): Promise<HeadersInit> {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
+
+export class SocialConnectionsFetchError extends Error {
+  constructor(public status: number, public body: string) {
+    super(status === 401 ? "SESSION_EXPIRED" : `CONNECTIONS_FETCH_FAILED_${status}`);
+    this.name = "SocialConnectionsFetchError";
+  }
 }
 
 // Connector IDs on the Connected Apps page that route through Google OAuth
@@ -60,18 +69,31 @@ export interface SocialConnection {
 /**
  * Fetch the user's active social connections. Used to derive "Connected"
  * state for Google-backed connectors on the Connected Apps page.
+ *
+ * Throws `SocialConnectionsFetchError` on non-2xx responses (previously
+ * swallowed into an empty array, which made expired JWTs look like
+ * "no connections"). Consumers should render a session-expired banner
+ * when `error.status === 401`.
  */
 export function useSocialConnections() {
-  return useQuery<SocialConnection[]>({
+  return useQuery<SocialConnection[], SocialConnectionsFetchError>({
     queryKey: ["social-connections"],
     queryFn: async () => {
       const headers = await authHeaders();
       const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connections`, { headers });
-      if (!resp.ok) return [];
+      if (!resp.ok) {
+        const body = await resp.text().catch(() => "");
+        throw new SocialConnectionsFetchError(resp.status, body);
+      }
       const json = await resp.json();
       return json.connections ?? [];
     },
     staleTime: 30_000,
+    retry: (failureCount, error) => {
+      // Don't retry auth errors; the banner prompts the user to re-sign in.
+      if (error instanceof SocialConnectionsFetchError && error.status === 401) return false;
+      return failureCount < 2;
+    },
   });
 }
 
@@ -93,8 +115,31 @@ export interface GoogleVerifyResult {
 }
 
 /**
+ * Phase 4: thrown by `useInvokeCapability` when a capability fails because
+ * the stored token is missing one or more scopes. Carries the reconnect
+ * URL the UI uses for a one-tap "Grant access" prompt that re-runs the
+ * Google OAuth flow with `mode=incremental` so Google only asks for the
+ * missing scopes (and merges them onto the existing grant).
+ */
+export class InsufficientScopeError extends Error {
+  constructor(
+    public capability: string,
+    public neededScopes: string[],
+    public reconnectPath: string,
+    public friendlyMessage: string,
+  ) {
+    super(friendlyMessage);
+    this.name = "InsufficientScopeError";
+  }
+}
+
+/**
  * VTID-01939: Invoke any capability through the connector framework.
  * Returns the DispatchResult shape: { ok, url?, external_id?, raw?, ... }.
+ *
+ * Phase 4: when the dispatcher returns `error: 'insufficient_scope'` we
+ * throw an `InsufficientScopeError` instead of a plain Error so the
+ * caller can render a "Grant access" action.
  */
 export function useInvokeCapability() {
   return useMutation({
@@ -107,6 +152,14 @@ export function useInvokeCapability() {
       });
       const json = await resp.json().catch(() => ({}));
       if (!resp.ok || json?.ok === false) {
+        if (json?.error === "insufficient_scope" && json?.raw?.reconnect_url) {
+          throw new InsufficientScopeError(
+            String(json.raw.capability ?? opts.capability),
+            Array.isArray(json.raw.needed_scopes) ? json.raw.needed_scopes : [],
+            String(json.raw.reconnect_url),
+            String(json.raw.message ?? "Vitana needs an additional Google permission for this action."),
+          );
+        }
         throw new Error(json?.error ?? `Capability failed (${resp.status})`);
       }
       return json as {
@@ -120,6 +173,56 @@ export function useInvokeCapability() {
       };
     },
   });
+}
+
+/**
+ * Phase 4: helper to re-launch the Google connect flow asking for the
+ * missing scopes. Always uses `mode=incremental` so Google merges the
+ * new scopes onto the user's existing token row instead of forcing a
+ * full re-consent. The `reconnectPath` comes straight from the gateway's
+ * insufficient_scope response (already includes `?include=…&mode=…`).
+ */
+export async function launchIncrementalConsent(reconnectPath: string): Promise<void> {
+  const headers = await authHeaders();
+  const sep = reconnectPath.includes("?") ? "&" : "?";
+  const url = `${GATEWAY_BASE}${reconnectPath}${isAppilixWebView() ? `${sep}return=mobile` : ""}`;
+  const resp = await fetch(url, { method: "GET", headers });
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => "");
+    throw new Error(`Failed to start incremental consent (${resp.status}): ${text}`);
+  }
+  const json = await resp.json();
+  if (!json.auth_url) {
+    throw new Error("Gateway did not return an auth_url for incremental consent");
+  }
+  redirectViaSystemBrowser(json.auth_url);
+}
+
+/**
+ * Phase 4: surface an `InsufficientScopeError` as a sonner toast with a
+ * "Grant access" action that launches incremental consent. Callers can
+ * use this from any capability error handler instead of writing the
+ * boilerplate themselves.
+ *
+ *   try { await invokeCapability.mutateAsync(...) }
+ *   catch (err) { if (!handleInsufficientScope(err)) toast.error(err.message) }
+ */
+export function handleInsufficientScope(err: unknown): boolean {
+  if (!(err instanceof InsufficientScopeError)) return false;
+  toast.error(err.friendlyMessage, {
+    duration: 12_000,
+    action: {
+      label: "Grant access",
+      onClick: () => {
+        launchIncrementalConsent(err.reconnectPath).catch((reconnectErr) => {
+          const message =
+            reconnectErr instanceof Error ? reconnectErr.message : String(reconnectErr);
+          toast.error(`Couldn't open Google consent: ${message}`);
+        });
+      },
+    },
+  });
+  return true;
 }
 
 /**
@@ -162,30 +265,93 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
-// Inside the Appilix Android WebView, Google's account picker loops forever
-// because the embedded WebView isolates accounts.google.com cookies and
-// blocks third-party cookies by default. Routing OAuth through the OS
-// (system browser / Chrome Custom Tab) lets Google's real session cookies
-// persist, so picking an account actually reaches the consent screen.
-function isAppilixWebView(): boolean {
-  if (typeof window === "undefined") return false;
-  const w = window as unknown as { appilix?: { postMessage?: unknown } };
-  if (w.appilix && typeof w.appilix.postMessage === "function") return true;
-  if (typeof document !== "undefined" && /appilix_push_notification_user_identity=/.test(document.cookie || "")) {
-    return true;
-  }
-  return false;
+export type GoogleSubService = "gmail" | "calendar" | "contacts" | "youtube";
+
+export const ALL_GOOGLE_SUB_SERVICES: GoogleSubService[] = ["gmail", "calendar", "contacts", "youtube"];
+
+/**
+ * Phase 3 (unified Google connect): one Connect button covering any
+ * combination of Gmail / Calendar / Contacts / YouTube under a single
+ * consent screen. Backend builds the scopes from `?include=...`.
+ */
+export function useStartUnifiedGoogleConnect() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (opts: {
+      include: GoogleSubService[];
+      mode?: "full" | "incremental";
+    }) => {
+      if (!opts.include || opts.include.length === 0) {
+        throw new Error("Pick at least one Google service to connect.");
+      }
+      const headers = await authHeaders();
+      const params = new URLSearchParams({ include: opts.include.join(",") });
+      if (opts.mode === "incremental") params.set("mode", "incremental");
+      if (isAppilixWebView()) params.set("return", "mobile");
+      const resp = await fetch(
+        `${GATEWAY_BASE}/api/v1/social-accounts/connect/google?${params.toString()}`,
+        { method: "GET", headers },
+      );
+      if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(`Failed to start Google OAuth (${resp.status}): ${text}`);
+      }
+      const json = await resp.json();
+      if (!json.auth_url) {
+        throw new Error("Gateway did not return an auth_url");
+      }
+      if (isAppilixWebView()) {
+        startConnectionsPoller(queryClient, "google");
+      }
+      redirectViaSystemBrowser(json.auth_url);
+      return json.auth_url as string;
+    },
+  });
 }
 
-function redirectToAuthUrl(authUrl: string) {
-  if (isAppilixWebView()) {
-    const opened = window.open(authUrl, "_system");
-    if (opened) return;
-  }
-  window.location.href = authUrl;
+/**
+ * When running in the Appilix WebView, OAuth completes in the system browser
+ * (Chrome). The WebView never gets a callback or postMessage from the
+ * browser, so after kicking off the flow we poll `/connections` every 3s for
+ * 2 minutes. As soon as the expected provider row appears, react-query
+ * invalidates and the UI flips to "Connected" without the user doing
+ * anything beyond swiping back to the app.
+ */
+function startConnectionsPoller(
+  queryClient: ReturnType<typeof useQueryClient>,
+  provider: string,
+): void {
+  const startedAt = Date.now();
+  const intervalId = window.setInterval(async () => {
+    if (Date.now() - startedAt > 120_000) {
+      window.clearInterval(intervalId);
+      return;
+    }
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session.session) return;
+      const r = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connections`, {
+        headers: { Authorization: `Bearer ${session.session.access_token}` },
+      });
+      if (!r.ok) return;
+      const json = await r.json();
+      const match = (json.connections ?? []).some(
+        (c: SocialConnection & { is_active?: boolean }) =>
+          c.provider === provider && c.is_active !== false,
+      );
+      if (match) {
+        queryClient.invalidateQueries({ queryKey: ["social-connections"] });
+        queryClient.invalidateQueries({ queryKey: ["social-accounts", "google", "verify"] });
+        window.clearInterval(intervalId);
+      }
+    } catch {
+      // Network blips are fine; try again next tick.
+    }
+  }, 3000);
 }
 
 function useStartSocialOAuth(provider: "google" | "youtube") {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       const headers = await authHeaders();
@@ -201,7 +367,10 @@ function useStartSocialOAuth(provider: "google" | "youtube") {
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      redirectToAuthUrl(json.auth_url);
+      if (isAppilixWebView()) {
+        startConnectionsPoller(queryClient, provider);
+      }
+      redirectViaSystemBrowser(json.auth_url);
       return json.auth_url as string;
     },
   });

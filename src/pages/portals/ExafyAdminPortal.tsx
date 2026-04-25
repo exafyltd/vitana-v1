@@ -12,6 +12,9 @@ import { Loader2, Shield, Users, Settings, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
+import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
+import { friendlyOAuthError } from "@/lib/oauthErrors";
+import { toast } from "sonner";
 
 const ExafyAdminPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -24,6 +27,7 @@ const ExafyAdminPortal = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const oauthSignIn = useSupabaseOAuthSignIn();
 
   // Redirect authenticated Exafy admins to tenant management
   useEffect(() => {
@@ -34,16 +38,14 @@ const ExafyAdminPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      await oauthSignIn.mutateAsync({
         provider,
-        options: {
-          redirectTo: `${window.location.origin}/exafy-admin`,
-        }
+        redirectTo: `${window.location.origin}/exafy-admin`,
       });
-      if (error) throw error;
     } catch (err: any) {
-      console.error('OAuth error:', err);
-      setError(err.message || 'Social login failed. Please try again.');
+      const message = friendlyOAuthError(err, provider);
+      setError(message);
+      toast.error(message);
     }
   };
 

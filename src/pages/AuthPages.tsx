@@ -8,6 +8,9 @@ import SEO from "@/components/SEO";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from "@/hooks/useSupabaseOAuthSignIn";
+import { friendlyOAuthError } from "@/lib/oauthErrors";
+import { toast } from "sonner";
 
 
 const providers = [
@@ -45,23 +48,26 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const isRegister = mode === "register";
+  const oauthSignIn = useSupabaseOAuthSignIn();
 
   useEffect(() => {
     // SEO handled by component below
   }, []);
 
   const handleProvider = async (provider: string) => {
+    const normalized = provider.toLowerCase();
+    const supported: SupportedOAuthProvider[] = ["apple", "google", "facebook", "azure"];
+    if (!supported.includes(normalized as SupportedOAuthProvider)) {
+      toast.error(`Sign-in with ${provider} isn't supported yet.`);
+      return;
+    }
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: provider.toLowerCase() as any,
-        options: {
-          redirectTo: getEmailRedirectUrl('/dashboard')
-        }
+      await oauthSignIn.mutateAsync({
+        provider: normalized as SupportedOAuthProvider,
+        redirectTo: getEmailRedirectUrl('/dashboard'),
       });
-      if (error) throw error;
-    } catch (error: any) {
-      console.error('OAuth error:', error.message);
-      // TODO: Add proper error handling UI
+    } catch (err: any) {
+      toast.error(friendlyOAuthError(err, provider));
     }
   };
 
