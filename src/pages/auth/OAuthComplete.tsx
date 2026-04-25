@@ -109,18 +109,51 @@ export default function OAuthComplete() {
         if (cancelled) return;
         window.clearTimeout(timeoutId);
 
-        // In-app (WebView) pass: session is now stored in the WebView's
-        // localStorage. We force a FULL PAGE LOAD (not React Router
-        // navigate) so AuthProvider re-initializes from scratch with the
-        // fresh session in localStorage. Without this, the original page
-        // that started the OAuth flow can race the auth-state-change
-        // event and render with user=null long enough that the redirect
-        // useEffect doesn't fire — producing an endless spinner that
-        // only resolves when the user kills + reopens the app.
+        // In-app (WebView) pass: the session is now persisted in
+        // localStorage. Two return paths depending on how this page got
+        // loaded:
+        //
+        //   (a) We're a popup the parent app opened via window.open
+        //       (the iOS WKWebView gesture-preservation trick from
+        //       useSupabaseOAuthSignIn). The parent sees the storage
+        //       write via Supabase's built-in cross-tab sync AND a
+        //       postMessage we send below, then drives its own redirect.
+        //       We just close ourselves so the layered popup UI doesn't
+        //       sit on top of the parent.
+        //
+        //   (b) We were a full-screen navigation (no opener). Force a
+        //       hard reload of the parent route so AuthProvider
+        //       re-initializes with the fresh session — avoids the
+        //       endless-spinner race we saw on iPhone first-attempt.
+        const hasOpener = (() => {
+          try {
+            return Boolean(window.opener && !window.opener.closed);
+          } catch {
+            return false;
+          }
+        })();
+
+        if (inWebView && hasOpener) {
+          try {
+            // Notify the parent explicitly. Storage events alone are
+            // sometimes throttled inside iOS WKWebView, so a direct
+            // postMessage gives the parent a deterministic signal.
+            window.opener.postMessage(
+              { type: "vitana:oauth-complete", provider, nextPath },
+              window.location.origin,
+            );
+          } catch {
+            /* noop — parent's storage listener is the fallback */
+          }
+          try {
+            window.close();
+            return;
+          } catch {
+            /* fall through to same-window replace */
+          }
+        }
+
         if (inWebView) {
-          // Build an absolute URL so window.location.href triggers a
-          // hard navigation. Same-origin is guaranteed by the
-          // nextPath normalization above.
           window.location.replace(window.location.origin + nextPath);
           return;
         }
