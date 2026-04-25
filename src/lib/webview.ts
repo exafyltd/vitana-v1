@@ -14,21 +14,25 @@ import { isAppilix, launchExternal } from "@/lib/appilix";
 /**
  * True if the page is running inside the Appilix WebView.
  *
- * Checks three independent signals because each one is populated at a
- * different point in the WebView lifecycle. A user who taps Connect in
- * the first ~200ms after app launch may miss the first two signals, so
- * the UA-based fallback catches them.
+ * The bridge object (`window.appilix.postMessage`) is the strongest
+ * signal — when present we're definitely in the native shell. The
+ * Android WebView UA (`Android.*wv`) is the next best signal and fires
+ * even before the bridge is injected, which matters for users who tap
+ * Connect in the first ~200ms after app launch.
+ *
+ * The push-identity cookie is intentionally NOT used as a sole signal:
+ * `App.tsx` sets `appilix_push_notification_user_identity=<user_id>` on
+ * every successful login, including desktop browsers, so checking only
+ * the cookie produced false positives that routed desktop OAuth through
+ * the mobile-only `/oauth/complete` flow. The cookie only counts when
+ * paired with the WebView UA, never on its own.
  */
 export function isAppilixWebView(): boolean {
   if (typeof window === "undefined") return false;
   if (isAppilix()) return true;
-  if (typeof document !== "undefined" && /appilix_push_notification_user_identity=/.test(document.cookie || "")) {
-    return true;
-  }
   const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
-  if (/Android.*\bwv\b/.test(ua) && typeof location !== "undefined" && /vitanaland\.com/.test(location.origin)) {
-    return true;
-  }
+  const isAndroidWebViewUA = /Android.*\bwv\b/.test(ua);
+  if (isAndroidWebViewUA) return true;
   return false;
 }
 

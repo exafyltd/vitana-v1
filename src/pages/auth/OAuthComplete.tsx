@@ -32,7 +32,28 @@ export default function OAuthComplete() {
   const [message, setMessage] = useState<string>("");
 
   const provider = searchParams.get("provider") ?? "your account";
-  const nextPath = searchParams.get("next") ?? "/maxina";
+  // The `next` param can arrive as either a relative path (`/maxina`) or a
+  // full URL (`https://vitanaland.com/maxina`). React Router's
+  // `navigate()` treats anything without a leading `/` as a path-relative
+  // value, so passing a full URL produces a malformed path like
+  // `/oauth/complete/https://vitanaland.com/maxina`. Normalize to an
+  // absolute path on this origin; treat external/cross-origin values as
+  // an error (fall back to the safe default).
+  const nextPath = (() => {
+    const raw = searchParams.get("next") ?? "/maxina";
+    try {
+      if (/^https?:\/\//i.test(raw)) {
+        const u = new URL(raw);
+        if (typeof window !== "undefined" && u.origin === window.location.origin) {
+          return u.pathname + u.search + u.hash;
+        }
+        return "/maxina";
+      }
+      return raw.startsWith("/") ? raw : `/${raw}`;
+    } catch {
+      return "/maxina";
+    }
+  })();
   const gatewayError = searchParams.get("error");
   const gatewayErrorDetail = searchParams.get("error_detail");
   const inWebView = isAppilixWebView();
