@@ -44,6 +44,7 @@ import {
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
+import { UnifiedGoogleConnectCard } from "@/components/settings/UnifiedGoogleConnectCard";
 import { ToastAction } from "@/components/ui/toast";
 import { useEffect } from "react";
 
@@ -358,6 +359,15 @@ export function MobileConnectedAppsView() {
           connectedCount={connected}
           syncingCount={syncing}
         />
+
+        {/* Phase 3: unified Google card — one Connect button covering
+            Gmail / Calendar / Contacts / YouTube under a single consent. */}
+        {(activeCategory === 'all' || activeCategory === 'productivity') && (
+          <UnifiedGoogleConnectCard
+            onManage={() => setGoogleVerifyOpen(true)}
+            className="rounded-xl"
+          />
+        )}
 
         {/* Integration Sections */}
         <div className="space-y-3">

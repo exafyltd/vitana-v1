@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, CheckCircle2, XCircle, Music } from "lucide-react";
-import { useVerifyGoogleConnection, useInvokeCapability, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
+import { useVerifyGoogleConnection, useInvokeCapability, handleInsufficientScope, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -94,6 +94,10 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
           }
         },
         onError: (err) => {
+          if (handleInsufficientScope(err)) {
+            setPlayError("Vitana needs more permissions to play music — tap Grant access in the toast.");
+            return;
+          }
           const message = err instanceof Error ? err.message : String(err);
           setPlayError(message);
         },
