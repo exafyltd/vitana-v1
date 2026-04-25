@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/split-bar";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
+import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
 import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
@@ -255,6 +256,7 @@ export default function Home() {
           </UtilityActionButton>
           <div className="mt-3 space-y-2">
             <WelcomeBackBanner />
+            <DidYouKnowCard />
             <PriorityOfDayBanner />
           </div>
           {!isMobile && (
