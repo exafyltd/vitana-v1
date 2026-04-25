@@ -13,8 +13,9 @@
  * calendar scopes just to connect their YouTube account.
  */
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { isAppilixWebView, redirectViaSystemBrowser } from "@/lib/webview";
 
 const GATEWAY_BASE = (
   import.meta.env.VITE_GATEWAY_BASE ||
@@ -29,6 +30,13 @@ async function authHeaders(): Promise<HeadersInit> {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
+
+export class SocialConnectionsFetchError extends Error {
+  constructor(public status: number, public body: string) {
+    super(status === 401 ? "SESSION_EXPIRED" : `CONNECTIONS_FETCH_FAILED_${status}`);
+    this.name = "SocialConnectionsFetchError";
+  }
 }
 
 // Connector IDs on the Connected Apps page that route through Google OAuth
@@ -60,18 +68,31 @@ export interface SocialConnection {
 /**
  * Fetch the user's active social connections. Used to derive "Connected"
  * state for Google-backed connectors on the Connected Apps page.
+ *
+ * Throws `SocialConnectionsFetchError` on non-2xx responses (previously
+ * swallowed into an empty array, which made expired JWTs look like
+ * "no connections"). Consumers should render a session-expired banner
+ * when `error.status === 401`.
  */
 export function useSocialConnections() {
-  return useQuery<SocialConnection[]>({
+  return useQuery<SocialConnection[], SocialConnectionsFetchError>({
     queryKey: ["social-connections"],
     queryFn: async () => {
       const headers = await authHeaders();
       const resp = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connections`, { headers });
-      if (!resp.ok) return [];
+      if (!resp.ok) {
+        const body = await resp.text().catch(() => "");
+        throw new SocialConnectionsFetchError(resp.status, body);
+      }
       const json = await resp.json();
       return json.connections ?? [];
     },
     staleTime: 30_000,
+    retry: (failureCount, error) => {
+      // Don't retry auth errors; the banner prompts the user to re-sign in.
+      if (error instanceof SocialConnectionsFetchError && error.status === 401) return false;
+      return failureCount < 2;
+    },
   });
 }
 
@@ -162,30 +183,49 @@ export function useStartYouTubeConnect() {
   return useStartSocialOAuth("youtube");
 }
 
-// Inside the Appilix Android WebView, Google's account picker loops forever
-// because the embedded WebView isolates accounts.google.com cookies and
-// blocks third-party cookies by default. Routing OAuth through the OS
-// (system browser / Chrome Custom Tab) lets Google's real session cookies
-// persist, so picking an account actually reaches the consent screen.
-function isAppilixWebView(): boolean {
-  if (typeof window === "undefined") return false;
-  const w = window as unknown as { appilix?: { postMessage?: unknown } };
-  if (w.appilix && typeof w.appilix.postMessage === "function") return true;
-  if (typeof document !== "undefined" && /appilix_push_notification_user_identity=/.test(document.cookie || "")) {
-    return true;
-  }
-  return false;
-}
-
-function redirectToAuthUrl(authUrl: string) {
-  if (isAppilixWebView()) {
-    const opened = window.open(authUrl, "_system");
-    if (opened) return;
-  }
-  window.location.href = authUrl;
+/**
+ * When running in the Appilix WebView, OAuth completes in the system browser
+ * (Chrome). The WebView never gets a callback or postMessage from the
+ * browser, so after kicking off the flow we poll `/connections` every 3s for
+ * 2 minutes. As soon as the expected provider row appears, react-query
+ * invalidates and the UI flips to "Connected" without the user doing
+ * anything beyond swiping back to the app.
+ */
+function startConnectionsPoller(
+  queryClient: ReturnType<typeof useQueryClient>,
+  provider: string,
+): void {
+  const startedAt = Date.now();
+  const intervalId = window.setInterval(async () => {
+    if (Date.now() - startedAt > 120_000) {
+      window.clearInterval(intervalId);
+      return;
+    }
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session.session) return;
+      const r = await fetch(`${GATEWAY_BASE}/api/v1/social-accounts/connections`, {
+        headers: { Authorization: `Bearer ${session.session.access_token}` },
+      });
+      if (!r.ok) return;
+      const json = await r.json();
+      const match = (json.connections ?? []).some(
+        (c: SocialConnection & { is_active?: boolean }) =>
+          c.provider === provider && c.is_active !== false,
+      );
+      if (match) {
+        queryClient.invalidateQueries({ queryKey: ["social-connections"] });
+        queryClient.invalidateQueries({ queryKey: ["social-accounts", "google", "verify"] });
+        window.clearInterval(intervalId);
+      }
+    } catch {
+      // Network blips are fine; try again next tick.
+    }
+  }, 3000);
 }
 
 function useStartSocialOAuth(provider: "google" | "youtube") {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       const headers = await authHeaders();
@@ -201,7 +241,10 @@ function useStartSocialOAuth(provider: "google" | "youtube") {
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
-      redirectToAuthUrl(json.auth_url);
+      if (isAppilixWebView()) {
+        startConnectionsPoller(queryClient, provider);
+      }
+      redirectViaSystemBrowser(json.auth_url);
       return json.auth_url as string;
     },
   });

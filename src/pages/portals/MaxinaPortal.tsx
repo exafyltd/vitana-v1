@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Users, Eye, EyeOff, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
+import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -48,6 +50,7 @@ const MaxinaPortal = () => {
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const [signupEmail, setSignupEmail] = useState<string | null>(null);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const oauthSignIn = useSupabaseOAuthSignIn();
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
@@ -333,24 +336,20 @@ const MaxinaPortal = () => {
   };
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
+    // Always land back on /maxina so TenantDetector + setTenantBySlug run correctly
+    localStorage.setItem('tenant_slug', 'maxina');
+    const redirectPath = '/maxina';
+
     try {
-      // Always land back on /maxina so TenantDetector + setTenantBySlug run correctly
-      localStorage.setItem('tenant_slug', 'maxina');
-      const redirectPath = '/maxina';
-      
-      const { error } = await supabase.auth.signInWithOAuth({
+      await oauthSignIn.mutateAsync({
         provider,
-        options: {
-          redirectTo: getEmailRedirectUrl(redirectPath),
-          queryParams: {
-            tenant_slug: 'maxina'
-          }
-        }
+        redirectTo: getEmailRedirectUrl(redirectPath),
+        queryParams: { tenant_slug: 'maxina' },
       });
-      if (error) throw error;
     } catch (err: any) {
-      console.error('OAuth error:', err);
-      setError(err.message || 'Social login failed. Please try again.');
+      const message = friendlyOAuthError(err, provider);
+      setError(message);
+      toast.error(message);
     }
   };
 

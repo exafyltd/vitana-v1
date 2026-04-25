@@ -15,6 +15,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
+import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
+import { friendlyOAuthError } from "@/lib/oauthErrors";
+import { toast } from "sonner";
 
 const AlkalmaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -30,6 +33,7 @@ const AlkalmaPortal = () => {
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const [signupEmail, setSignupEmail] = useState<string | null>(null);
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const oauthSignIn = useSupabaseOAuthSignIn();
 
   // Switch to alkalma tenant if already authenticated
   useEffect(() => {
@@ -131,19 +135,15 @@ const AlkalmaPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      await oauthSignIn.mutateAsync({
         provider,
-        options: {
-          redirectTo: getEmailRedirectUrl('/home'),
-          queryParams: {
-            tenant_slug: 'alkalma'
-          }
-        }
+        redirectTo: getEmailRedirectUrl('/home'),
+        queryParams: { tenant_slug: 'alkalma' },
       });
-      if (error) throw error;
     } catch (err: any) {
-      console.error('OAuth error:', err);
-      setError(err.message || 'Social login failed. Please try again.');
+      const message = friendlyOAuthError(err, provider);
+      setError(message);
+      toast.error(message);
     }
   };
 

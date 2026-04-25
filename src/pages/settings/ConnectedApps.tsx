@@ -74,6 +74,7 @@ import {
   YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
+import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -90,7 +91,7 @@ function ConnectedApps() {
   // VTID-01928: Google connector state (single consent → Gmail/Calendar/Contacts)
   // + dedicated YouTube connection (YouTube / YouTube Music).
   const { toast } = useToast();
-  const { data: socialConnections = [] } = useSocialConnections();
+  const { data: socialConnections = [], error: socialConnectionsError } = useSocialConnections();
   const startGoogle = useStartGoogleConnect();
   const startYouTube = useStartYouTubeConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
@@ -1737,10 +1738,12 @@ function ConnectedApps() {
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader 
+          <StandardHeader
             title="Connected Apps 🔗"
             description="Seamless integration, maximum benefit - manage your connected apps and integrations"
           />
+
+          <SessionExpiredBanner error={socialConnectionsError} />
 
           <UtilityActionButton className="min-w-0">
             <div className="flex items-center gap-2 min-w-max">

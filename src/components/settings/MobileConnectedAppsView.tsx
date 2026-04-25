@@ -43,6 +43,7 @@ import {
   YOUTUBE_CONNECTOR_IDS,
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
+import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { ToastAction } from "@/components/ui/toast";
 import { useEffect } from "react";
 
@@ -96,7 +97,7 @@ export function MobileConnectedAppsView() {
   const [aiModalProvider, setAiModalProvider] = useState<AIProviderId | null>(null);
 
   // VTID-01928: Google connector state + dedicated YouTube connection.
-  const { data: socialConnections = [] } = useSocialConnections();
+  const { data: socialConnections = [], error: socialConnectionsError } = useSocialConnections();
   const startGoogle = useStartGoogleConnect();
   const startYouTube = useStartYouTubeConnect();
   const googleConnection = socialConnections.find((c) => c.provider === "google");
@@ -312,6 +313,8 @@ export function MobileConnectedAppsView() {
           title={translate('connectedApps.title')}
           description={translate('connectedApps.description')}
         />
+
+        <SessionExpiredBanner error={socialConnectionsError} />
 
         {/* Action Bar */}
         <UtilityActionButton
