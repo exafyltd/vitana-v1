@@ -1,0 +1,30 @@
+name: Trigger Platform Screens Regen
+# When admin-navigation.ts or screen-id.ts changes on main, fire a
+# repository_dispatch into exafyltd/vitana-platform so its
+# REGEN-SCREENS-CATALOG workflow rebuilds the spec and opens an auto-PR.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/config/admin-navigation.ts'
+      - 'src/lib/screen-id.ts'
+  workflow_dispatch: {}
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository dispatch to vitana-platform
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::PLATFORM_DISPATCH_TOKEN secret not set; cannot trigger vitana-platform regen."
+            exit 1
+          fi
+          gh api repos/exafyltd/vitana-platform/dispatches \
+            -f event_type=regen-screens-catalog \
+            -f 'client_payload[source_repo]=vitana-v1' \
+            -f "client_payload[source_sha]=$GITHUB_SHA"
+          echo "✓ Dispatched regen-screens-catalog to exafyltd/vitana-platform"
