@@ -3,10 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Mic, Square, Save } from "lucide-react";
+import { Mic, Square, Save, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import {
+  DiaryAudioRecorder,
+  shouldUseBackendSTT,
+  transcribeAudioBlob,
+} from "@/utils/diaryAudioRecorder";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,11 +23,13 @@ interface VoiceDiaryRecorderProps {
 
 export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }: VoiceDiaryRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcribedText, setTranscribedText] = useState("");
   const [interimText, setInterimText] = useState("");
   const [recordingDuration, setRecordingDuration] = useState(0);
-  
+
   const sttRef = useRef<ClientSTT | null>(null);
+  const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isRecordingRef = useRef(false);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -31,11 +38,32 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  const useBackendSTT = shouldUseBackendSTT();
   const queryClient = useQueryClient();
 
   useEffect(() => {
     onRecordingChange?.(isRecording);
   }, [isRecording, onRecordingChange]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+        restartTimeoutRef.current = null;
+      }
+      if (audioRecorderRef.current) {
+        audioRecorderRef.current.cancel();
+        audioRecorderRef.current = null;
+      }
+      if (sttRef.current) {
+        try { sttRef.current.stop(); } catch { /* noop */ }
+      }
+    };
+  }, []);
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -92,7 +120,65 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
     return `${existingTrimmed} ${tailWords}`.trim();
   };
 
+  const resolveLanguage = () => {
+    const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
+    return (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
+  };
+
+  const startBackendRecording = async () => {
+    if (!DiaryAudioRecorder.isSupported()) {
+      toast({
+        title: "Not Supported",
+        description: "Microphone recording is not supported on this device.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const sttLanguage = resolveLanguage();
+    console.log('[Voice Diary] Starting iOS-friendly MediaRecorder capture, language:', sttLanguage);
+
+    try {
+      const recorder = new DiaryAudioRecorder({ language: sttLanguage });
+      await recorder.start();
+      audioRecorderRef.current = recorder;
+
+      setIsRecording(true);
+      isRecordingRef.current = true;
+      setRecordingDuration(0);
+      setTranscribedText('');
+      setInterimText('');
+
+      timerRef.current = setInterval(() => {
+        setRecordingDuration(prev => prev + 1);
+      }, 1000);
+
+      toast({
+        title: "Recording Started",
+        description: "Speak now — your audio will be transcribed when you stop.",
+      });
+    } catch (error: any) {
+      console.error('[Voice Diary] MediaRecorder start failed:', error);
+      audioRecorderRef.current?.cancel();
+      audioRecorderRef.current = null;
+      isRecordingRef.current = false;
+      setIsRecording(false);
+      const description = error?.name === 'NotAllowedError'
+        ? "Microphone permission was denied. Enable it in Settings to record diary entries."
+        : "Could not start recording. Please try again.";
+      toast({
+        title: "Recording Error",
+        description,
+        variant: "destructive",
+      });
+    }
+  };
+
   const startRecording = async () => {
+    if (useBackendSTT) {
+      return startBackendRecording();
+    }
+
     if (!ClientSTT.isSupported()) {
       toast({
         title: "Not Supported",
@@ -104,8 +190,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
 
     try {
       // Initialize ClientSTT with real-time callbacks
-      const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
-      const sttLanguage = (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
+      const sttLanguage = resolveLanguage();
       const useContinuous = !isAndroid;
       console.log('[Voice Diary] Starting STT with language:', sttLanguage, 'continuous:', useContinuous);
       
@@ -214,26 +299,72 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
     }
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     // Set ref FIRST to prevent onEnd from restarting
     isRecordingRef.current = false;
-    
+
     // Clear any pending restart
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
       restartTimeoutRef.current = null;
     }
-    
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    if (audioRecorderRef.current) {
+      const recorder = audioRecorderRef.current;
+      audioRecorderRef.current = null;
+      setIsRecording(false);
+      setInterimText('');
+      setIsTranscribing(true);
+
+      try {
+        const blob = await recorder.stop();
+        if (!blob || blob.size === 0) {
+          toast({
+            title: "No Audio Captured",
+            description: "We didn't capture any audio. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        const transcript = await transcribeAudioBlob(blob, resolveLanguage());
+        if (!transcript) {
+          toast({
+            title: "No Speech Detected",
+            description: "We couldn't hear any speech. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        setTranscribedText(prev => prev ? `${prev} ${transcript}`.trim() : transcript);
+        toast({
+          title: "Recording Stopped",
+          description: "Review and edit your transcription before saving.",
+        });
+      } catch (error: any) {
+        console.error('[Voice Diary] Backend transcription failed:', error);
+        toast({
+          title: "Transcription Failed",
+          description: error?.message || "Could not transcribe the recording. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsTranscribing(false);
+      }
+      return;
+    }
+
     if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
-      
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-      
+
       toast({
         title: "Recording Stopped",
         description: "Review and edit your transcription before saving.",
@@ -290,16 +421,17 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       {/* Recording Controls */}
       <div className="flex items-center justify-center gap-4">
         {!isRecording ? (
-          <Button 
+          <Button
             onClick={startRecording}
             size="lg"
+            disabled={isTranscribing}
             className="h-16 w-16 rounded-full bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/40 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300"
           >
-            <Mic className="h-8 w-8" />
+            {isTranscribing ? <Loader2 className="h-8 w-8 animate-spin" /> : <Mic className="h-8 w-8" />}
           </Button>
         ) : (
           <div className="flex items-center gap-4">
-            <Button 
+            <Button
               onClick={stopRecording}
               size="lg"
               variant="destructive"
@@ -337,36 +469,49 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         </div>
       )}
 
+      {isTranscribing && (
+        <p className="text-sm text-center text-muted-foreground flex items-center justify-center gap-2">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Transcribing your recording…
+        </p>
+      )}
+
       {/* Real-time Transcription Display */}
-      {(isRecording || transcribedText) && (
+      {(isRecording || transcribedText || isTranscribing) && (
         <Card>
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">
-                {isRecording ? "Live Transcription" : "Your Voice Entry"}
+                {isRecording
+                  ? (useBackendSTT ? "Recording…" : "Live Transcription")
+                  : "Your Voice Entry"}
               </h3>
-              {!isRecording && (
+              {!isRecording && recordingDuration > 0 && (
                 <Badge variant="outline">
                   Duration: {formatDuration(recordingDuration)}
                 </Badge>
               )}
             </div>
-            
+
             <Textarea
               value={transcribedText + (interimText ? ' ' + interimText : '')}
               onChange={(e) => !isRecording && setTranscribedText(e.target.value)}
-              placeholder={isRecording ? "Start speaking..." : "Edit your transcribed text here..."}
+              placeholder={
+                isRecording
+                  ? (useBackendSTT ? "Recording — your transcription will appear after you stop." : "Start speaking...")
+                  : "Edit your transcribed text here..."
+              }
               className="min-h-32"
-              disabled={isRecording}
+              disabled={isRecording || isTranscribing}
             />
-            
-            {interimText && isRecording && (
+
+            {interimText && isRecording && !useBackendSTT && (
               <p className="text-xs text-muted-foreground italic">
                 Interim text appears in gray until finalized...
               </p>
             )}
-            
-            {!isRecording && transcribedText && (
+
+            {!isRecording && !isTranscribing && transcribedText && (
               <div className="flex gap-2">
                 <Button onClick={saveDiaryEntry} className="flex-1">
                   <Save className="h-4 w-4 mr-2" />
