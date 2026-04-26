@@ -26,6 +26,7 @@ import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
+import { VitanaIdOnboardingCard } from "@/components/onboarding/VitanaIdOnboardingCard";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
@@ -558,6 +559,10 @@ const App = () => {
                         <SoundscapeResumeBanner />
                         <MiniAudioPlayer />
                         <TenantDetector />
+                        {/* VTID-01967: Vitana ID onboarding interstitial.
+                            Renders only when profile.vitanaIdLocked === false
+                            — auto-hides after the user confirms their pick. */}
+                        <VitanaIdOnboardingCard />
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
