@@ -151,6 +151,12 @@ const Sharing = lazy(() => import("./pages/Sharing"));
 const Memory = lazy(() => import("./pages/Memory"));
 const EditProfilePage = lazy(() => import("./pages/EditProfilePage"));
 const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
+// VTID-01975: Vitana Intent Engine (P2-B) pages.
+const IntentBoard = lazy(() => import("./pages/IntentBoard"));
+const MyIntents = lazy(() => import("./pages/MyIntents"));
+const IntentMatchDetail = lazy(() => import("./pages/IntentMatchDetail"));
+const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities"));
+const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
@@ -1042,6 +1048,33 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+
+          {/* VTID-01975: Vitana Intent Engine — community + business hub pages. */}
+          <Route path="/intents/board" element={
+            <AuthGuard>
+              <IntentBoard />
+            </AuthGuard>
+          } />
+          <Route path="/intents/mine" element={
+            <AuthGuard>
+              <MyIntents />
+            </AuthGuard>
+          } />
+          <Route path="/intents/match/:id" element={
+            <AuthGuard>
+              <IntentMatchDetail />
+            </AuthGuard>
+          } />
+          <Route path="/business/opportunities" element={
+            <AuthGuard>
+              <BusinessOpportunities />
+            </AuthGuard>
+          } />
+          <Route path="/business/listings" element={
+            <AuthGuard>
+              <BusinessListings />
+            </AuthGuard>
+          } />
 
           {/* Autopilot Dashboard (My Journey) */}
           <Route path="/autopilot" element={
