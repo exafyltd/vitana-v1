@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
 import { playInstantGreeting, preloadInstantGreeting } from '@/lib/instantGreeting';
+import { getOrCreateUnlockedAudioContext } from '@/lib/iosAudioUnlock';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
 
@@ -102,6 +103,16 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         console.log('[useOrbVoiceClient] Session already active, ignoring connect');
         return;
       }
+
+      // BOOTSTRAP-ORB-IOS-UNLOCK: Create + unlock the shared AudioContext
+      // SYNCHRONOUSLY here, before any await. The connect flow below has 4+
+      // awaits (auth.getSession, setTenantBySlug, buildOrbContext, conversation
+      // insert) before client.start() ever runs — by then iOS has consumed
+      // the gesture, so unlocking later silently fails and the ORB context
+      // stays suspended. Doing it here against the live tap gesture is the
+      // only reliable way for iOS Safari / WKWebView. OrbVoiceClient picks
+      // up the same shared instance so PCM playback uses an unlocked context.
+      getOrCreateUnlockedAudioContext();
 
       // BOOTSTRAP-ORB-INSTANT: Fire the instant greeting SYNCHRONOUSLY inside the
       // user-gesture call stack, before any await. The real Gemini greeting still
