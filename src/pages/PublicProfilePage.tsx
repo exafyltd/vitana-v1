@@ -82,11 +82,42 @@ export default function PublicProfilePage() {
       
       // Clean identifier (remove @ if present)
       const cleanId = id.startsWith('@') ? id.slice(1) : id;
-      
+
       console.log('PublicProfilePage: Fetching profile for identifier:', cleanId);
-      
-      const { data, error: dbError } = await supabase
+
+      let { data, error: dbError } = await supabase
         .rpc('get_user_profile_by_identifier', { identifier: cleanId });
+
+      // VTID-01967: alias-redirect fallback. If the identifier doesn't match
+      // a current profiles.handle (which is now a mirror of vitana_id under
+      // the replace policy), check handle_aliases for a legacy mapping and
+      // redirect to the canonical /u/<vitana_id> URL.
+      if (!dbError && (!data || data.length === 0) && cleanId) {
+        try {
+          const { data: aliasRow } = await (supabase as any)
+            .from('handle_aliases')
+            .select('user_id')
+            .eq('old_handle', cleanId.toLowerCase())
+            .maybeSingle();
+          if (aliasRow?.user_id) {
+            const { data: canonicalProfile } = await supabase
+              .from('profiles')
+              .select('handle, vitana_id')
+              .eq('user_id', aliasRow.user_id)
+              .maybeSingle();
+            const canonical =
+              (canonicalProfile as any)?.vitana_id ||
+              (canonicalProfile as any)?.handle;
+            if (canonical && canonical !== cleanId) {
+              console.log(`[VTID-01967] alias redirect: @${cleanId} -> @${canonical}`);
+              navigate(`/u/${canonical}`, { replace: true });
+              return;
+            }
+          }
+        } catch (aliasErr) {
+          console.warn('[VTID-01967] alias lookup failed:', aliasErr);
+        }
+      }
 
       if (dbError) {
         console.error('Database error:', dbError);

@@ -20,6 +20,11 @@ interface ProfileData {
   tenantId: TenantType;
   initials: string;
   handle?: string;
+  // VTID-01967: Canonical Vitana ID. Permanent once locked. Under the
+  // replace policy, profiles.handle is a mirror of vitana_id, so existing
+  // `handle` consumers keep working while new code reads vitanaId.
+  vitanaId?: string;
+  vitanaIdLocked?: boolean;
   bio?: string;
   fullName?: string;
   email?: string;
@@ -151,6 +156,11 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         avatarOffsetX: profileData?.avatar_offset_x ?? 50,
         avatarOffsetY: profileData?.avatar_offset_y ?? 50,
         handle: profileData?.handle || undefined,
+        // VTID-01967: vitana_id + vitana_id_locked from Release A schema.
+        // Null-tolerant: undefined for users not yet covered by Release A
+        // backfill. Frontend falls back to handle/displayName in that case.
+        vitanaId: (profileData as any)?.vitana_id || undefined,
+        vitanaIdLocked: (profileData as any)?.vitana_id_locked === true,
         bio: profileData?.bio || undefined,
         fullName: profileData?.full_name || undefined,
         email: profileData?.email || user?.email || undefined,
