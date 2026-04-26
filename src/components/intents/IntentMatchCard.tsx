@@ -9,9 +9,10 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, Flag } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { transitionMatch, declineMatch, type IntentMatch } from "@/lib/intentApi";
+import { DisputeModal } from "./DisputeModal";
 
 interface IntentMatchCardProps {
   match: IntentMatch;
@@ -58,6 +59,11 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
   };
 
   const isMutual = match.state === "mutual_interest" || match.state === "engaged" || match.state === "fulfilled";
+  const [disputeOpen, setDisputeOpen] = useState(false);
+  // VTID-01976 (P2-C): dispute is available once the match has progressed
+  // beyond initial surfacing (mutual interest, engaged, or fulfilled). Not
+  // for `new` rows — there's nothing to dispute yet.
+  const canDispute = isMutual || match.state === "responded_by_a" || match.state === "responded_by_b";
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">
@@ -96,13 +102,22 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
       </div>
 
       {isMutual ? (
-        <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
-          🎉 Mutual interest — open the message thread to start chatting.
+        <div className="space-y-2">
+          <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
+            🎉 Mutual interest — open the message thread to start chatting.
+          </div>
+          <button
+            type="button"
+            onClick={() => setDisputeOpen(true)}
+            className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
+          >
+            <Flag className="h-3 w-3" /> Report an issue
+          </button>
         </div>
       ) : match.state === "declined" || match.state === "closed" ? (
         <p className="text-sm text-muted-foreground italic">{match.state}</p>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Button
             size="sm"
             onClick={expressInterest}
@@ -118,8 +133,25 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
           >
             {busy === "decline" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Decline"}
           </Button>
+          {canDispute && (
+            <button
+              type="button"
+              onClick={() => setDisputeOpen(true)}
+              className="ml-auto text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
+            >
+              <Flag className="h-3 w-3" /> Report
+            </button>
+          )}
         </div>
       )}
+
+      {/* VTID-01976 (P2-C): dispute modal mount */}
+      <DisputeModal
+        open={disputeOpen}
+        onOpenChange={setDisputeOpen}
+        matchId={match.match_id}
+        onRaised={() => onAction?.()}
+      />
     </div>
   );
 }
