@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useUserPreferences } from './useUserPreferences';
 import { useAIConsent } from './useAIConsent';
 import { supabase } from '@/integrations/supabase/client';
+import { playAudioBase64 } from '@/lib/playAudioBase64';
 
 export interface TTSOptions {
   onStart?: () => void;
@@ -112,20 +113,22 @@ export function useTextToSpeech() {
         if (error) throw error;
         if (!data?.audioContent) throw new Error('No audio content received');
 
-            const audio = new Audio(`data:audio/wav;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-        
-        audio.onended = () => {
+        // Play via Web Audio API instead of HTMLAudioElement so the
+        // greeting bypasses the iOS Silent switch (which silences <audio>
+        // tags but lets AudioContext through). Same path the streaming
+        // ORB response audio uses, so behavior is consistent.
+        try {
+          await playAudioBase64(data.audioContent, {
+            volume: (preferences.tts_volume ?? 100) / 100,
+            onEnd: () => {
+              setIsSpeaking(false);
+              options?.onEnd?.();
+            },
+          });
+        } catch (e) {
           setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Audio playback failed'));
-        };
-
-        await audio.play();
+          options?.onError?.(e instanceof Error ? e : new Error('Audio playback failed'));
+        }
       } else if (isSerbian || isGoogleSpeechVoice) {
         // Use Google Speech API (only for Serbian or explicitly selected Google Speech voices)
         const voiceId = isGoogleSpeechVoice ? userVoice : GOOGLE_SPEECH_VOICE_MAP[sttLanguage];
@@ -148,20 +151,18 @@ export function useTextToSpeech() {
         if (error) throw error;
         if (!data?.audioContent) throw new Error('No audio content received');
 
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-        
-        audio.onended = () => {
+        try {
+          await playAudioBase64(data.audioContent, {
+            volume: (preferences.tts_volume ?? 100) / 100,
+            onEnd: () => {
+              setIsSpeaking(false);
+              options?.onEnd?.();
+            },
+          });
+        } catch (e) {
           setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Audio playback failed'));
-        };
-
-        await audio.play();
+          options?.onError?.(e instanceof Error ? e : new Error('Audio playback failed'));
+        }
       } else {
         // Fallback to browser TTS
         console.log('[TTS] Fallback to browser TTS');
