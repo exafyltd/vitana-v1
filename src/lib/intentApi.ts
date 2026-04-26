@@ -145,6 +145,36 @@ export async function declineMatch(matchId: string): Promise<{ state: string }> 
   return res.json();
 }
 
+// VTID-01976: Dispute API.
+export type DisputeReasonCategory = "no_show" | "misrepresented" | "safety" | "payment" | "other";
+
+export interface DisputeRow {
+  dispute_id: string;
+  match_id: string;
+  raised_by: string;
+  raised_by_vitana_id: string | null;
+  counterparty_vitana_id: string | null;
+  reason_category: DisputeReasonCategory;
+  reason_detail: string;
+  status: "open" | "investigating" | "resolved" | "dismissed" | "withdrawn";
+  resolution: string | null;
+  created_at: string;
+  resolved_at: string | null;
+}
+
+export async function raiseDispute(matchId: string, reason_category: DisputeReasonCategory, reason_detail: string): Promise<DisputeRow> {
+  const res = await communityFetch(`/api/v1/intent-matches/${matchId}/dispute`, {
+    method: "POST",
+    body: JSON.stringify({ reason_category, reason_detail }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.error || `Raise dispute failed (${res.status})`);
+  }
+  const data = await res.json();
+  return data.dispute;
+}
+
 export interface BoardResponse {
   compass: string | null;
   kinds_shown: IntentKind[];
