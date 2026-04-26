@@ -11,6 +11,7 @@
  */
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
+import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -80,6 +81,12 @@ export class OrbVoiceClient {
   private audioQueue: string[] = [];
   private isProcessingQueue: boolean = false;
   private readonly MAX_QUEUE_SIZE = 50; // Drop oldest if exceeded
+
+  // Speaking-state watchdog: if onended for the last queued source never
+  // fires (iOS edge cases — context suspended without notice, decode quirk),
+  // force-reset isSpeaking so the UI doesn't freeze at "Vitana talking".
+  private speakingResetTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly SPEAKING_RESET_GUARD_MS = 4000; // ms past last scheduled chunk end
 
   // No-speech warning timer
   private noSpeechWarningTimer: ReturnType<typeof setTimeout> | null = null;
@@ -441,24 +448,20 @@ export class OrbVoiceClient {
    */
   private unlockIosAudio(): void {
     try {
-      if (!this.audioContext || (this.audioContext as any).state === 'closed') {
+      // Pull the SHARED AudioContext that was created+unlocked from the live
+      // user-gesture in useOrbVoiceClient.connect(), before any await ate the
+      // gesture. Creating a fresh AudioContext here would land outside the
+      // gesture window on iOS and stay suspended even after resume().
+      const shared = getOrCreateUnlockedAudioContext();
+      if (shared) {
+        this.audioContext = shared;
+      } else if (!this.audioContext || (this.audioContext as any).state === 'closed') {
+        // Non-browser / unsupported env — best-effort fallback.
         this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
-      // Play a 1-sample silent buffer. This is the canonical iOS unlock trick —
-      // merely creating the context is not enough; playing within the gesture is.
-      const silent = this.audioContext.createBuffer(1, 1, 22050);
-      const src = this.audioContext.createBufferSource();
-      src.buffer = silent;
-      src.connect(this.audioContext.destination);
-      src.start(0);
-      // Resume is synchronous from the gesture-handler perspective here.
-      if (this.audioContext.state === 'suspended') {
-        this.audioContext.resume().catch((e) => {
-          console.warn('[OrbVoiceClient] iOS unlock resume rejected:', e);
-        });
-      }
-      // iOS safety: listen for later suspends (e.g. phone call, route change)
-      // and auto-resume. Idempotent across multiple start() calls.
+
+      // iOS safety: listen for later suspends (phone call, route change) and
+      // auto-resume. Idempotent across start() calls.
       this.audioContext.onstatechange = () => {
         if (this.audioContext && this.audioContext.state === 'suspended') {
           console.log('[OrbVoiceClient] AudioContext suspended — auto-resuming');
@@ -474,15 +477,19 @@ export class OrbVoiceClient {
   }
 
   private async initAudioOutput(): Promise<void> {
-    // BOOTSTRAP-ORB-IOS-UNLOCK: context was created synchronously in
-    // unlockIosAudio() at the top of start(). Here we just ensure it's
-    // running — mic setup may have triggered a route change that suspended it.
+    // BOOTSTRAP-ORB-IOS-UNLOCK: context was unlocked synchronously in the tap
+    // handler (useOrbVoiceClient.connect → getOrCreateUnlockedAudioContext).
+    // Here we just ensure we still hold a reference to the shared context
+    // and that it's running — mic setup may have triggered a route change
+    // that suspended it.
     if (!this.audioContext || (this.audioContext as any).state === 'closed') {
-      // Fallback: unlock was somehow missed (e.g. start() called outside a
-      // gesture). Create fresh; resume may not succeed on iOS without a
-      // gesture but we log and continue.
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      console.warn('[OrbVoiceClient] initAudioOutput had no pre-unlocked context — creating fresh');
+      const shared = getOrCreateUnlockedAudioContext();
+      if (shared) {
+        this.audioContext = shared;
+      } else {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        console.warn('[OrbVoiceClient] initAudioOutput had no pre-unlocked context — creating fresh');
+      }
     }
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume().catch((e) => {
@@ -496,16 +503,17 @@ export class OrbVoiceClient {
   private handleAudioChunk(base64: string): void {
     if (!this.audioContext) return;
 
-    // Resume if suspended (browser autoplay policy / iOS audio route changes)
+    // Best-effort resume (iOS may suspend the context on mic activation /
+    // audio route change). Fire-and-forget; do NOT gate playback on the
+    // resume promise — when iOS rejects resume() outside a gesture, the
+    // chunks would otherwise be silently dropped and the UI would freeze
+    // at "Vitana talking" forever. Web Audio queues source.start() against
+    // a suspended context safely; once the context resumes (auto-resume on
+    // statechange or next gesture), the queued sources will play.
     if (this.audioContext.state === 'suspended') {
-      this.audioContext.resume().then(() => {
-        console.log('[OrbVoiceClient] AudioContext resumed from suspended state');
-        // Re-process this chunk now that context is active
-        this.playPCMChunk(base64);
-      }).catch(e => {
+      this.audioContext.resume().catch(e => {
         console.warn('[OrbVoiceClient] AudioContext resume failed:', e);
       });
-      return; // Don't try to play on a suspended context — wait for resume
     }
 
     this.playPCMChunk(base64);
@@ -547,12 +555,40 @@ export class OrbVoiceClient {
       source.onended = () => {
         if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
           this.callbacks.onSpeakingChange?.(false);
+          this.clearSpeakingResetGuard();
           // Schedule turn-complete fallback in case no SSE turn_complete event arrives
           this.scheduleTurnCompleteFallback();
         }
       };
+
+      // Watchdog: if onended never fires (iOS edge case where the BufferSource
+      // is queued against a context that suspends mid-playback or rejects
+      // resume silently), force-reset isSpeaking shortly after the last
+      // scheduled chunk should have ended. Recomputed on every chunk so it
+      // tracks the tail of the queue.
+      this.armSpeakingResetGuard();
     } catch (e) {
       console.error('[OrbVoiceClient] PCM playback error:', e);
+    }
+  }
+
+  private armSpeakingResetGuard(): void {
+    if (!this.audioContext) return;
+    this.clearSpeakingResetGuard();
+    const now = this.audioContext.currentTime;
+    const remainingMs = Math.max(0, (this.nextStartTime - now) * 1000);
+    this.speakingResetTimer = setTimeout(() => {
+      // Only force-reset if onended never reset us. Idempotent.
+      this.callbacks.onSpeakingChange?.(false);
+      this.scheduleTurnCompleteFallback();
+      this.speakingResetTimer = null;
+    }, remainingMs + this.SPEAKING_RESET_GUARD_MS);
+  }
+
+  private clearSpeakingResetGuard(): void {
+    if (this.speakingResetTimer) {
+      clearTimeout(this.speakingResetTimer);
+      this.speakingResetTimer = null;
     }
   }
 
@@ -966,8 +1002,9 @@ export class OrbVoiceClient {
       this.silenceTimer = null;
     }
     this.clearTurnCompleteTimeout();
+    this.clearSpeakingResetGuard();
     this.hasSpeechStarted = false;
-    
+
     // Clear no-speech warning
     this.clearNoSpeechWarning();
 
@@ -1006,9 +1043,13 @@ export class OrbVoiceClient {
       this.eventSource = null;
     }
 
-    // Close audio output context
+    // Drop our reference to the shared output AudioContext but DO NOT close
+    // it — closing the singleton would force the next ORB tap to recreate
+    // it, and on iOS the new context would land outside a gesture window
+    // (the user's tap calls disconnect+reconnect; only the reconnect side
+    // unlocks). Detach the statechange listener we attached in unlockIosAudio.
     if (this.audioContext) {
-      this.audioContext.close().catch(() => {});
+      try { this.audioContext.onstatechange = null; } catch { /* noop */ }
       this.audioContext = null;
     }
 
