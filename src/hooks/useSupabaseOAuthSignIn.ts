@@ -15,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { isAppilixWebView, redirectViaSystemBrowser } from "@/lib/webview";
 import { PUBLIC_BASE_URL } from "@/utils/redirectUrls";
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 
 export type SupportedOAuthProvider = "apple" | "google" | "facebook" | "azure";
 
@@ -29,6 +30,13 @@ interface SignInInput {
 export function useSupabaseOAuthSignIn() {
   return useMutation({
     mutationFn: async ({ provider, redirectTo, queryParams }: SignInInput) => {
+      // SYNCHRONOUS, must run before any await: bank an iOS audio
+      // unlock so the proactive greeting that fires ~5s after the post-
+      // OAuth landing can play. Without this, iOS WKWebView silently
+      // rejects the audio.play() call on the greeting because there's
+      // no fresh user gesture by the time the greeting fires.
+      unlockIOSAudioPlayback();
+
       const mobile = isAppilixWebView();
       const mobileRedirect = `${PUBLIC_BASE_URL}/oauth/complete?return=mobile&provider=${provider}&next=${encodeURIComponent(redirectTo)}`;
 
