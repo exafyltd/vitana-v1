@@ -27,14 +27,136 @@ function normalizeLanguage(lang: string): string {
   return ALLOWED_LANGUAGES.includes(lang) ? lang : 'en-US';
 }
 
-function detectEncoding(mimeType?: string): { encoding: string; sampleRateHertz?: number } {
+const LANGUAGE_NAMES: Record<string, string> = {
+  'en-US': 'English',
+  'de-DE': 'German',
+  'sr-RS': 'Serbian',
+  'ar-SA': 'Arabic',
+  'es-ES': 'Spanish',
+  'ru-RU': 'Russian',
+  'zh-CN': 'Chinese',
+  'fr-FR': 'French',
+  'pt-PT': 'Portuguese',
+  'pl-PL': 'Polish',
+};
+
+/**
+ * Gemini accepts a wide range of audio mime types directly. Map the browser-
+ * provided mime to one Gemini understands. Gemini 1.5 supports audio/mp3,
+ * audio/aac, audio/ogg, audio/wav, audio/flac, audio/m4a, audio/webm.
+ */
+function normalizeMimeForGemini(mimeType?: string): string {
   const mt = (mimeType || '').toLowerCase();
-  if (mt.includes('webm') || mt.includes('opus')) return { encoding: 'WEBM_OPUS' };
-  if (mt.includes('ogg')) return { encoding: 'OGG_OPUS' };
-  if (mt.includes('wav')) return { encoding: 'LINEAR16', sampleRateHertz: 16000 };
-  if (mt.includes('mp4') || mt.includes('m4a') || mt.includes('aac')) return { encoding: 'MP3' };
-  if (mt.includes('mpeg') || mt.includes('mp3')) return { encoding: 'MP3' };
-  return { encoding: 'WEBM_OPUS' };
+  if (!mt) return 'audio/mp4';
+  if (mt.startsWith('audio/webm')) return 'audio/webm';
+  if (mt.startsWith('audio/ogg')) return 'audio/ogg';
+  if (mt.startsWith('audio/wav') || mt.startsWith('audio/x-wav')) return 'audio/wav';
+  if (mt.startsWith('audio/flac')) return 'audio/flac';
+  if (mt.startsWith('audio/aac')) return 'audio/aac';
+  if (mt.startsWith('audio/mpeg') || mt.startsWith('audio/mp3')) return 'audio/mp3';
+  if (mt.startsWith('audio/mp4') || mt.startsWith('audio/m4a') || mt.startsWith('audio/x-m4a')) return 'audio/mp4';
+  // Strip codec suffix and retry
+  const bare = mt.split(';')[0].trim();
+  if (bare !== mt) return normalizeMimeForGemini(bare);
+  return 'audio/mp4';
+}
+
+async function transcribeWithGemini(
+  audioBase64: string,
+  mimeType: string,
+  language: string,
+  apiKey: string,
+): Promise<string> {
+  const langName = LANGUAGE_NAMES[language] || 'the spoken language';
+  const requestBody = {
+    contents: [{
+      parts: [
+        { inlineData: { mimeType, data: audioBase64 } },
+        {
+          text:
+            `Transcribe the spoken audio verbatim in ${langName}. ` +
+            `Output ONLY the transcript text — no commentary, no quotes, no labels. ` +
+            `If the audio is silent or has no speech, output an empty string.`,
+        },
+      ],
+    }],
+    generationConfig: {
+      temperature: 0,
+      maxOutputTokens: 2048,
+    },
+  };
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    },
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Gemini API ${response.status}: ${errorText.slice(0, 500)}`);
+  }
+
+  const data = await response.json();
+  const transcript: string = (data?.candidates?.[0]?.content?.parts || [])
+    .map((p: any) => p?.text || '')
+    .join('')
+    .trim();
+
+  // Strip a leading "Transcript:" label or surrounding quotes if Gemini adds them.
+  return transcript
+    .replace(/^transcript\s*:\s*/i, '')
+    .replace(/^["'`]+|["'`]+$/g, '')
+    .trim();
+}
+
+async function transcribeWithGoogleSTT(
+  audioBase64: string,
+  mimeType: string,
+  language: string,
+  apiKey: string,
+): Promise<string> {
+  // Encoding map for the synchronous v1 endpoint. iOS MP4/AAC is NOT supported
+  // here — that's why Gemini is the primary path. This is only used as a
+  // fallback when no Gemini key is configured AND the audio is webm/ogg/wav.
+  let encoding = 'WEBM_OPUS';
+  const mt = (mimeType || '').toLowerCase();
+  if (mt.includes('ogg')) encoding = 'OGG_OPUS';
+  else if (mt.includes('wav')) encoding = 'LINEAR16';
+  else if (mt.includes('webm')) encoding = 'WEBM_OPUS';
+  else throw new Error(`Google STT v1 does not support ${mimeType}; configure GOOGLE_GEMINI_API_KEY for full coverage.`);
+
+  const config: Record<string, unknown> = {
+    encoding,
+    languageCode: language,
+    alternativeLanguageCodes: ALLOWED_LANGUAGES.filter(l => l !== language).slice(0, 3),
+    model: 'latest_long',
+    enableAutomaticPunctuation: true,
+  };
+
+  const response = await fetch(
+    `https://speech.googleapis.com/v1/speech:recognize?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ config, audio: { content: audioBase64 } }),
+    },
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Google STT ${response.status}: ${errorText.slice(0, 500)}`);
+  }
+
+  const data = await response.json();
+  return ((data?.results || []) as any[])
+    .map(r => r?.alternatives?.[0]?.transcript || '')
+    .filter(Boolean)
+    .join(' ')
+    .trim();
 }
 
 serve(async (req) => {
@@ -73,71 +195,77 @@ serve(async (req) => {
       });
     }
 
-    let googleApiKey = Deno.env.get('GOOGLE_CLOUD_API_KEY');
-    if (!googleApiKey) {
+    const lang = normalizeLanguage(language);
+    const geminiMime = normalizeMimeForGemini(mimeType);
+
+    const geminiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
+    let googleSttKey = Deno.env.get('GOOGLE_CLOUD_API_KEY');
+    if (!googleSttKey) {
       const { data: keyData } = await supabase
         .from('user_api_keys')
         .select('api_key')
         .eq('user_id', user.id)
         .eq('service_name', 'google_cloud')
         .maybeSingle();
-      googleApiKey = keyData?.api_key || undefined;
+      googleSttKey = keyData?.api_key || undefined;
     }
 
-    if (!googleApiKey) {
-      return new Response(JSON.stringify({ error: 'Google Cloud API key not configured' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    const lang = normalizeLanguage(language);
-    const { encoding, sampleRateHertz } = detectEncoding(mimeType);
-    const alternativeLanguageCodes = ALLOWED_LANGUAGES.filter(l => l !== lang).slice(0, 3);
-
-    const config: Record<string, unknown> = {
-      encoding,
-      languageCode: lang,
-      alternativeLanguageCodes,
-      model: 'latest_long',
-      enableAutomaticPunctuation: true,
-    };
-    if (sampleRateHertz) config.sampleRateHertz = sampleRateHertz;
-
-    const sttResponse = await fetch(
-      `https://speech.googleapis.com/v1/speech:recognize?key=${googleApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ config, audio: { content: audio } }),
-      }
-    );
-
-    if (!sttResponse.ok) {
-      const errorText = await sttResponse.text();
-      console.error('[transcribe-audio] Google STT error:', sttResponse.status, errorText);
+    if (!geminiKey && !googleSttKey) {
       return new Response(
-        JSON.stringify({ error: 'Speech recognition failed', details: errorText }),
-        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'Neither GOOGLE_GEMINI_API_KEY nor GOOGLE_CLOUD_API_KEY is configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
 
-    const sttData = await sttResponse.json();
-    const transcript = (sttData.results || [])
-      .map((r: any) => r.alternatives?.[0]?.transcript || '')
-      .filter(Boolean)
-      .join(' ')
-      .trim();
+    let transcript = '';
+    let provider = '';
+    let firstError: string | null = null;
+
+    // Primary: Gemini (handles iOS MP4/AAC, WebM/Opus, mp3, wav, etc.)
+    if (geminiKey) {
+      try {
+        transcript = await transcribeWithGemini(audio, geminiMime, lang, geminiKey);
+        provider = 'gemini';
+      } catch (err: any) {
+        firstError = `gemini: ${err?.message || err}`;
+        console.error('[transcribe-audio] Gemini failed:', firstError);
+      }
+    }
+
+    // Fallback: Google Cloud Speech-to-Text (only useful for webm/ogg/wav)
+    if (!provider && googleSttKey) {
+      try {
+        transcript = await transcribeWithGoogleSTT(audio, geminiMime, lang, googleSttKey);
+        provider = 'google-stt';
+      } catch (err: any) {
+        const sttError = `google-stt: ${err?.message || err}`;
+        console.error('[transcribe-audio] Google STT failed:', sttError);
+        return new Response(
+          JSON.stringify({
+            error: 'Transcription failed',
+            details: firstError ? `${firstError} | ${sttError}` : sttError,
+          }),
+          { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+    }
+
+    if (!provider) {
+      return new Response(
+        JSON.stringify({ error: 'Transcription failed', details: firstError || 'unknown' }),
+        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      );
+    }
 
     return new Response(
-      JSON.stringify({ transcript, language: lang }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ transcript, language: lang, provider }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   } catch (error: any) {
     console.error('[transcribe-audio] Error:', error);
     return new Response(
       JSON.stringify({ error: error?.message || 'Internal error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   }
 });

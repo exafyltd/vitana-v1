@@ -231,12 +231,15 @@ export async function transcribeAudioBlob(
   });
 
   if (error) {
-    console.error('[transcribeAudioBlob] Edge function error:', error);
-    throw new Error(error.message || 'Transcription failed');
+    console.error('[transcribeAudioBlob] Edge function error:', error, 'data:', data);
+    // FunctionsHttpError loses the response body — pull details from `data`.
+    const detail = (data && (data.details || data.error)) ? ` — ${data.details || data.error}` : '';
+    throw new Error(`${error.message || 'Transcription failed'}${detail}`);
   }
 
   if (data?.error) {
-    throw new Error(data.error);
+    const detail = data.details ? ` — ${data.details}` : '';
+    throw new Error(`${data.error}${detail}`);
   }
 
   const transcript = (data?.transcript || '').trim();
