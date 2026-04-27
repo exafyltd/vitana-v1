@@ -406,7 +406,7 @@ export function MobileShortSlide({
       </div>
 
       {/* Right side action stack */}
-      <div className="absolute right-4 bottom-32 flex flex-col items-center gap-6 z-10">
+      <div className="absolute right-4 bottom-32 flex flex-col items-center gap-6 z-20">
         {/* Like */}
         <button
           onClick={(e) => {
