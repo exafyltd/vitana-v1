@@ -35,15 +35,15 @@ const EarthlinksPortal = () => {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const oauthSignIn = useSupabaseOAuthSignIn();
 
-  // Switch to earthlinks tenant if already authenticated
+  // VTID-01985: Earthlinks is retired. Only Exafy admins may reach this portal.
+  // Anonymous visitors and ordinary signed-in users are redirected to '/'.
+  const isExafyAdmin = user?.app_metadata?.exafy_admin === true;
   useEffect(() => {
-    if (!authLoading && user && !loading) {
-      // If user is already authenticated, switch to earthlinks tenant and redirect
-      setTenantBySlug('earthlinks').then(() => {
-        navigate('/comm/events-meetups?tab=hot');
-      });
+    if (authLoading) return;
+    if (!user || !isExafyAdmin) {
+      navigate('/', { replace: true });
     }
-  }, [user, authLoading, navigate, loading, setTenantBySlug]);
+  }, [authLoading, user, isExafyAdmin, navigate]);
 
   // Set tenant theme
   useEffect(() => {
@@ -147,8 +147,10 @@ const EarthlinksPortal = () => {
     }
   };
 
-  // Show loading state while checking auth OR if user exists (redirect in progress)
-  if (authLoading || user) {
+  // VTID-01985: render the loader while auth is resolving OR while the
+  // non-admin redirect is in flight. Only Exafy admins ever fall through
+  // to the portal markup below.
+  if (authLoading || !user || !isExafyAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50">
         <Loader2 className="h-8 w-8 animate-spin text-[#4ADE80]" />
