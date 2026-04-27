@@ -7,7 +7,7 @@
  * @returns Direct app URL with UTM parameters
  */
 export function getShareUrl(
-  type: 'event' | 'meetup' | 'group' | 'profile' | 'post' | 'campaign' | 'product',
+  type: 'event' | 'meetup' | 'group' | 'profile' | 'post' | 'campaign' | 'product' | 'short',
   id: string,
   options?: {
     utm_source?: string;
@@ -21,6 +21,14 @@ export function getShareUrl(
   // vitanaland-og-proxy worker; human clicks 302 to the SPA detail page.
   if (type === 'product') {
     return `https://e.vitanaland.com/products/${encodeURIComponent(id)}`;
+  }
+
+  // Shorts use e.vitanaland.com for OG previews. Crawlers get server-rendered
+  // OG HTML (thumbnail + title + creator) from the og-short Supabase Edge
+  // Function; humans 302 to /comm/media-hub?short=<id> which auto-opens the
+  // specific short.
+  if (type === 'short') {
+    return `https://e.vitanaland.com/shorts/${encodeURIComponent(id)}`;
   }
   // Campaigns use clean app URLs for sharing
   // OG previews work via client-side meta tag injection

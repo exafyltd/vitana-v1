@@ -3,6 +3,7 @@ import { MobileShortSlide } from './MobileShortSlide';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { useToggleLike } from '@/hooks/useShorts';
+import { getShareUrl } from '@/lib/shareUrl';
 
 interface VideoShort {
   id?: string;
@@ -122,9 +123,7 @@ export function MobileShortsFeed({
 
   // Handle share
   const handleShare = useCallback(async (video: VideoShort) => {
-    const shareUrl = video.id
-      ? `${window.location.origin}/comm/media-hub?short=${video.id}`
-      : window.location.href;
+    const shareUrl = video.id ? getShareUrl('short', video.id) : window.location.href;
     const shareData = {
       title: video.title,
       text: `Check out "${video.title}" by ${video.creator} on Vitana`,

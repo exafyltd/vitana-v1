@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
 import { toast } from "@/hooks/use-toast";
+import { getShareUrl } from "@/lib/shareUrl";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
 
@@ -193,9 +194,7 @@ export const VideoPlayerModal = ({
   const handleShare = async () => {
     if (!video) return;
 
-    const shareUrl = video.id
-      ? `${window.location.origin}/comm/media-hub?short=${video.id}`
-      : window.location.href;
+    const shareUrl = video.id ? getShareUrl('short', video.id) : window.location.href;
     const shareData = {
       title: video.title,
       text: `Check out "${video.title}" on Vitana`,
