@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
+import { toast } from "@/hooks/use-toast";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
 
@@ -190,15 +191,41 @@ export const VideoPlayerModal = ({
   };
 
   const handleShare = async () => {
-    if (navigator.share && video) {
+    if (!video) return;
+
+    const shareUrl = video.id
+      ? `${window.location.origin}/comm/media-hub?short=${video.id}`
+      : window.location.href;
+    const shareData = {
+      title: video.title,
+      text: `Check out "${video.title}" on Vitana`,
+      url: shareUrl,
+    };
+
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
-        await navigator.share({
-          title: video.title,
-          url: window.location.href
-        });
-      } catch (e) {
-        console.log('Share failed:', e);
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        if ((err as Error)?.name === 'AbortError') return;
+        // Fall through to clipboard fallback on any other error.
       }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast({
+        title: 'Link copied',
+        description: 'Short link copied to clipboard',
+        duration: 2000,
+      });
+    } catch {
+      toast({
+        title: 'Could not share',
+        description: 'Please try again.',
+        variant: 'destructive',
+        duration: 2000,
+      });
     }
   };
 
