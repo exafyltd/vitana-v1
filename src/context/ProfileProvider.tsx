@@ -25,6 +25,9 @@ interface ProfileData {
   // `handle` consumers keep working while new code reads vitanaId.
   vitanaId?: string;
   vitanaIdLocked?: boolean;
+  // VTID-01987: User's chronological signup rank. Suffix of vitana_id is
+  // always equal to this number. Useful for "Member #N" badges.
+  registrationSeq?: number;
   bio?: string;
   fullName?: string;
   email?: string;
@@ -156,11 +159,15 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         avatarOffsetX: profileData?.avatar_offset_x ?? 50,
         avatarOffsetY: profileData?.avatar_offset_y ?? 50,
         handle: profileData?.handle || undefined,
-        // VTID-01967: vitana_id + vitana_id_locked from Release A schema.
-        // Null-tolerant: undefined for users not yet covered by Release A
-        // backfill. Frontend falls back to handle/displayName in that case.
+        // VTID-01967 + VTID-01987: vitana_id, vitana_id_locked, and the v2
+        // chronological registration_seq. Null-tolerant on all three: any
+        // env that hasn't run the v2 backfill yet keeps working.
         vitanaId: (profileData as any)?.vitana_id || undefined,
         vitanaIdLocked: (profileData as any)?.vitana_id_locked === true,
+        registrationSeq:
+          typeof (profileData as any)?.registration_seq === 'number'
+            ? (profileData as any).registration_seq
+            : undefined,
         bio: profileData?.bio || undefined,
         fullName: profileData?.full_name || undefined,
         email: profileData?.email || user?.email || undefined,
