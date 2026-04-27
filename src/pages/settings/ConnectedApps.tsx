@@ -76,6 +76,7 @@ import {
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
 import { UnifiedGoogleConnectCard } from "@/components/settings/UnifiedGoogleConnectCard";
+import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 
@@ -2324,6 +2325,10 @@ function ConnectedApps() {
         open={googleVerifyOpen}
         onOpenChange={setGoogleVerifyOpen}
       />
+
+      {/* In-app overlay shown while user is bounced to system browser
+          for OAuth, so the button never feels dead. */}
+      <OAuthBouncePendingOverlay />
     </AppLayout>
   );
 }
