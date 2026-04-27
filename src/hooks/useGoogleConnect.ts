@@ -17,6 +17,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { isAppilixWebView, redirectViaSystemBrowser } from "@/lib/webview";
+import {
+  useOAuthBounceStore,
+  type OAuthBounceProvider,
+} from "@/hooks/useOAuthBounceStore";
 
 const GATEWAY_BASE = (
   import.meta.env.VITE_GATEWAY_BASE ||
@@ -300,7 +304,13 @@ export function useStartUnifiedGoogleConnect() {
       if (!json.auth_url) {
         throw new Error("Gateway did not return an auth_url");
       }
+      // Mobile WebView only: show the in-app "we're waiting" overlay
+      // BEFORE bouncing out, so the UI never looks like the button did
+      // nothing. The poller below flips status → success or → timed_out.
+      // Desktop navigates the whole page so React state is gone — the
+      // gateway redirect back to ?connected=google handles desktop UX.
       if (isAppilixWebView()) {
+        useOAuthBounceStore.getState().start("google");
         startConnectionsPoller(queryClient, "google");
       }
       redirectViaSystemBrowser(json.auth_url);
@@ -310,21 +320,34 @@ export function useStartUnifiedGoogleConnect() {
 }
 
 /**
- * When running in the Appilix WebView, OAuth completes in the system browser
- * (Chrome). The WebView never gets a callback or postMessage from the
- * browser, so after kicking off the flow we poll `/connections` every 3s for
- * 2 minutes. As soon as the expected provider row appears, react-query
- * invalidates and the UI flips to "Connected" without the user doing
- * anything beyond swiping back to the app.
+ * After kicking off OAuth we poll `/connections` every 3s for 2 minutes.
+ * As soon as the expected provider row appears, react-query invalidates,
+ * the bounce-overlay flips to "Connected", and the UI updates without
+ * the user doing anything beyond swiping back to the app. If the poll
+ * window expires without seeing the row we mark the overlay as
+ * `timed_out` so the user gets a "Check now / Retry" surface instead of
+ * silent abandonment.
+ *
+ * Always runs after a Connect button press — not just inside Appilix —
+ * so desktop tabs that come back via the OAuth callback also get the
+ * "Connected" toast even if the user navigated to a different page
+ * before the callback completed.
  */
 function startConnectionsPoller(
   queryClient: ReturnType<typeof useQueryClient>,
-  provider: string,
+  provider: OAuthBounceProvider,
 ): void {
   const startedAt = Date.now();
   const intervalId = window.setInterval(async () => {
+    // Stop polling if the user explicitly canceled the bounce overlay.
+    const status = useOAuthBounceStore.getState().status;
+    if (status === "idle") {
+      window.clearInterval(intervalId);
+      return;
+    }
     if (Date.now() - startedAt > 120_000) {
       window.clearInterval(intervalId);
+      useOAuthBounceStore.getState().timeout();
       return;
     }
     try {
@@ -342,6 +365,7 @@ function startConnectionsPoller(
       if (match) {
         queryClient.invalidateQueries({ queryKey: ["social-connections"] });
         queryClient.invalidateQueries({ queryKey: ["social-accounts", "google", "verify"] });
+        useOAuthBounceStore.getState().succeed();
         window.clearInterval(intervalId);
       }
     } catch {
@@ -350,7 +374,7 @@ function startConnectionsPoller(
   }, 3000);
 }
 
-function useStartSocialOAuth(provider: "google" | "youtube") {
+function useStartSocialOAuth(provider: OAuthBounceProvider) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
@@ -368,6 +392,7 @@ function useStartSocialOAuth(provider: "google" | "youtube") {
         throw new Error("Gateway did not return an auth_url");
       }
       if (isAppilixWebView()) {
+        useOAuthBounceStore.getState().start(provider);
         startConnectionsPoller(queryClient, provider);
       }
       redirectViaSystemBrowser(json.auth_url);
