@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { Loader2, Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useIsReseller } from "@/hooks/useRole";
+import { useIsReseller } from "@/hooks/useIsReseller";
 import { listMyIntents, type UserIntent } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";

@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useIsReseller } from "@/hooks/useRole";
+import { useIsReseller } from "@/hooks/useIsReseller";
 import { getIncomingMatches, type IntentMatch } from "@/lib/intentApi";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 
