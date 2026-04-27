@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
 import { VITANA_INDEX_OPEN_EVENT } from "./VitanaIndexSheet";
+import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
 
 /**
  * Sidebar-styled twin of the mobile `VitanaIndexChip`. Lives in the desktop
@@ -11,7 +12,9 @@ import { VITANA_INDEX_OPEN_EVENT } from "./VitanaIndexSheet";
  */
 export function DesktopVitanaIndexChip() {
   const { index } = useVitanaIndexCache();
+  const { current: streakDays } = useVitanaStreaks();
   const score = index?.total ?? null;
+  const showStreak = streakDays >= 3;
 
   const handleClick = () => {
     window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT));
@@ -28,7 +31,7 @@ export function DesktopVitanaIndexChip() {
               onClick={handleClick}
               aria-label={
                 score !== null
-                  ? `Open Vitana Index — currently ${score}`
+                  ? `Open Vitana Index — currently ${score}${showStreak ? `, ${streakDays}-day streak` : ""}`
                   : "Open Vitana Index"
               }
             >
@@ -36,7 +39,7 @@ export function DesktopVitanaIndexChip() {
                 🧬
               </span>
             </Button>
-            {score !== null && (
+            {score !== null && !showStreak && (
               <span
                 className="absolute -top-1.5 -right-1.5 min-w-[20px] h-4 px-1 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
                 aria-hidden="true"
@@ -44,10 +47,25 @@ export function DesktopVitanaIndexChip() {
                 {score}
               </span>
             )}
+            {showStreak && (
+              <span
+                className="absolute -top-1 -right-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none z-10"
+                aria-hidden="true"
+              >
+                🔥{streakDays}
+              </span>
+            )}
           </div>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>VITANA Index — your North Star</p>
+          <p>
+            VITANA Index — your North Star
+            {showStreak && (
+              <span className="block text-xs text-muted-foreground">
+                🔥 {streakDays}-day streak
+              </span>
+            )}
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

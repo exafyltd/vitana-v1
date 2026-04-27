@@ -37,10 +37,50 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
+import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
+import { EMPTY_COPY } from "@/lib/celebrate";
+import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
 
 interface AutopilotPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+}
+
+const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
+  nutrition: "Nutrition",
+  hydration: "Hydration",
+  exercise: "Exercise",
+  sleep: "Sleep",
+  mental: "Mental",
+};
+
+const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
+  nutrition: "🥗",
+  hydration: "💧",
+  exercise: "💪",
+  sleep: "😴",
+  mental: "🧠",
+};
+
+function dominantPillar(vector: ContributionVector | null | undefined): VitanaPillarKey | null {
+  if (!vector) return null;
+  let bestKey: VitanaPillarKey | null = null;
+  let bestVal = 0;
+  for (const [k, v] of Object.entries(vector) as Array<[VitanaPillarKey, number | undefined]>) {
+    if (typeof v === "number" && v > bestVal) {
+      bestKey = k;
+      bestVal = v;
+    }
+  }
+  return bestKey;
+}
+
+function sumVectorTotal(vector: ContributionVector | null | undefined): number {
+  if (!vector) return 0;
+  return Object.values(vector).reduce<number>(
+    (acc, v) => acc + (typeof v === "number" && v > 0 ? v : 0),
+    0,
+  );
 }
 
 export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
@@ -62,6 +102,41 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
   const [showBanner, setShowBanner] = useState(false);
   const [bannerMessage, setBannerMessage] = useState<string | null>(null);
+  const { index: vitanaIndex } = useVitanaIndexCache();
+  const currentTotal = vitanaIndex?.total ?? null;
+  const pillarScores = vitanaIndex?.pillars ?? null;
+
+  const selectedLift = selectedActions.reduce(
+    (acc, a) => acc + sumVectorTotal(a.contributionVector),
+    0,
+  );
+
+  // Group visible actions by dominant pillar; render group headers only when
+  // ≥2 groups exist (single-group case stays visually flat).
+  const groupedActions = (() => {
+    const groups = new Map<VitanaPillarKey | "_unassigned", AutopilotAction[]>();
+    for (const action of allVisibleActions) {
+      const pillar = dominantPillar(action.contributionVector);
+      const key = pillar ?? "_unassigned";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(action);
+    }
+    // Sort by ascending pillar score (most under-served first); _unassigned last.
+    const ordered = Array.from(groups.entries())
+      .filter(([k]) => k !== "_unassigned")
+      .sort(([a], [b]) => {
+        const av = pillarScores?.[a as VitanaPillarKey] ?? 0;
+        const bv = pillarScores?.[b as VitanaPillarKey] ?? 0;
+        return av - bv;
+      }) as Array<[VitanaPillarKey, AutopilotAction[]]>;
+    const unassigned = groups.get("_unassigned");
+    if (unassigned && unassigned.length > 0) {
+      ordered.push(["_unassigned" as unknown as VitanaPillarKey, unassigned]);
+    }
+    return ordered;
+  })();
+
+  const showGroupHeaders = groupedActions.length >= 2;
 
   // Fetch recommendations when popup opens (only if consent granted)
   useEffect(() => {
@@ -322,11 +397,62 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       <>
         {showBanner && renderBanner()}
 
+        {/* Index lift header strip — what the selection moves the Index by */}
+        <div className="rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 px-3 py-2 mb-3 text-sm flex items-center justify-between">
+          <span>
+            {currentTotal !== null ? (
+              <>
+                Now: <strong>{currentTotal}</strong>
+                {selectedLift > 0 ? (
+                  <>
+                    {" "}→ After GO:{" "}
+                    <strong className="text-green-600 font-semibold">
+                      {currentTotal + selectedLift}
+                    </strong>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              "Index loading…"
+            )}
+          </span>
+          {selectedLift > 0 ? (
+            <span className="text-xs text-green-600 font-semibold">+{selectedLift}</span>
+          ) : (
+            <span className="text-xs text-muted-foreground">{EMPTY_COPY.autopilotPopupZero}</span>
+          )}
+        </div>
+
         <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
           <div className="space-y-2">
-            {allVisibleActions.map((action) => (
-              <ActionItem key={action.id} action={action} />
-            ))}
+            {groupedActions.map(([pillarKey, actions], groupIdx) => {
+              const isUnassigned =
+                (pillarKey as unknown as string) === "_unassigned";
+              const pillar = isUnassigned ? null : (pillarKey as VitanaPillarKey);
+              return (
+                <div key={pillarKey as string}>
+                  {showGroupHeaders && pillar && (
+                    <div
+                      className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-pill-${pillar}-accent`}
+                    >
+                      <span aria-hidden="true">{PILLAR_EMOJI[pillar]}</span>
+                      {PILLAR_LABEL[pillar]}
+                    </div>
+                  )}
+                  {showGroupHeaders && isUnassigned && (
+                    <div className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-muted-foreground`}>
+                      <span aria-hidden="true">✨</span>
+                      Other
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    {actions.map((action) => (
+                      <ActionItem key={action.id} action={action} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </ScrollArea>
 

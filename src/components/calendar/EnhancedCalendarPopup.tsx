@@ -58,6 +58,51 @@ import { BookedVitanaEventsSection } from "./BookedVitanaEventsSection";
 import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { VitanaPillarKey } from "@/types/autopilot";
+
+const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
+  nutrition: "Nutrition",
+  hydration: "Hydration",
+  exercise: "Exercise",
+  sleep: "Sleep",
+  mental: "Mental",
+};
+
+const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
+  nutrition: "🥗",
+  hydration: "💧",
+  exercise: "💪",
+  sleep: "😴",
+  mental: "🧠",
+};
+
+/**
+ * Derive a Vitana pillar for a calendar event:
+ * 1. Look for an explicit `pillar:{key}` entry in `wellness_tags`.
+ * 2. Fall back to a small `event_type` heuristic — only when the mapping is
+ *    unambiguous (workout→exercise, nutrition→nutrition, health→mental).
+ * 3. Otherwise return null so the UI renders no chip rather than a wrong one.
+ */
+function derivePillar(event: CalendarEvent): VitanaPillarKey | null {
+  const tags = event.wellness_tags ?? [];
+  for (const tag of tags) {
+    const lower = tag.toLowerCase();
+    if (lower.startsWith("pillar:")) {
+      const key = lower.slice("pillar:".length) as VitanaPillarKey;
+      if (key in PILLAR_LABEL) return key;
+    }
+  }
+  switch (event.event_type) {
+    case "workout":
+      return "exercise";
+    case "nutrition":
+      return "nutrition";
+    case "health":
+      return "mental";
+    default:
+      return null;
+  }
+}
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -457,6 +502,39 @@ export function EnhancedCalendarPopup({
                     <CalendarListSkeleton />
                   ) : (
                     <>
+                      {/* Today's Index pulse strip */}
+                      {(() => {
+                        const tagged = todayEvents
+                          .map((e) => ({ event: e, pillar: derivePillar(e) }))
+                          .filter((x): x is { event: CalendarEvent; pillar: VitanaPillarKey } => x.pillar !== null);
+                        if (tagged.length === 0) return null;
+                        const counts: Partial<Record<VitanaPillarKey, number>> = {};
+                        for (const { pillar } of tagged) {
+                          counts[pillar] = (counts[pillar] ?? 0) + 1;
+                        }
+                        const totalCount = tagged.length;
+                        return (
+                          <div className="rounded-xl border ring-1 ring-border/60 px-3 py-2 mb-3">
+                            <div className="text-xs text-muted-foreground mb-1.5">
+                              Today's Index pulse: completing your {totalCount} pillar-tagged event
+                              {totalCount === 1 ? "" : "s"} will move your Index.
+                            </div>
+                            <div className="flex h-1.5 rounded-full overflow-hidden bg-muted">
+                              {(Object.entries(counts) as Array<[VitanaPillarKey, number]>).map(
+                                ([pillar, n]) => (
+                                  <div
+                                    key={pillar}
+                                    className={`bg-pill-${pillar}-accent`}
+                                    style={{ width: `${(n / totalCount) * 100}%` }}
+                                    title={`${PILLAR_LABEL[pillar]} — ${n} event${n === 1 ? "" : "s"}`}
+                                  />
+                                ),
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
+
                       {/* Booked Vitana Events Section */}
                       <BookedVitanaEventsSection
                         events={events}
@@ -489,6 +567,7 @@ export function EnhancedCalendarPopup({
                         <div className="space-y-1">
                           {todayEvents.map((event) => {
                             const CategoryIcon = getCategoryIcon(event.event_type);
+                            const pillar = derivePillar(event);
                             return (
                               <div
                                 key={event.id}
@@ -496,7 +575,7 @@ export function EnhancedCalendarPopup({
                                 onClick={() => setDetailsPanelEvent(event)}
                               >
                                 {/* Color Dot */}
-                                <div 
+                                <div
                                   className="w-2 h-2 rounded-full shrink-0"
                                   style={{ backgroundColor: getCategoryColor(event.event_type) }}
                                 />
@@ -522,6 +601,17 @@ export function EnhancedCalendarPopup({
                                       <CategoryIcon className="h-3 w-3 mr-0.5" />
                                       {event.event_type}
                                     </Badge>
+                                    {pillar && (
+                                      <Badge
+                                        variant="outline"
+                                        className={`text-[10px] px-1.5 py-0 h-5 bg-pill-${pillar}-tint text-pill-${pillar}-accent border-pill-${pillar}-accent/20`}
+                                      >
+                                        <span aria-hidden="true" className="mr-0.5">
+                                          {PILLAR_EMOJI[pillar]}
+                                        </span>
+                                        {PILLAR_LABEL[pillar]}
+                                      </Badge>
+                                    )}
                                   </div>
                                 </div>
 

@@ -4,8 +4,8 @@
  * The reward currency is the Index value itself. When any ingestion path
  * (diary, autopilot, calendar, wearable) lifts the user's Index, the
  * VitanaIndexLiftWatcher diffs the cache and routes the delta through this
- * module. Phase 1 ships the `index-lift` kind only; tier-up / streak /
- * pillar-threshold celebrations are added in Phase 2 against the same shape.
+ * module. Tier-up / streak / pillar-threshold celebrations land here too —
+ * one funnel so throttle and reduced-motion rules stay consistent.
  */
 
 import { toast } from "sonner";
@@ -20,6 +20,8 @@ export type CelebrateKind =
   | "streak"
   | "at-risk";
 
+export type StreakLevel = 3 | 7 | 14 | 30;
+
 export interface CelebrateInput {
   kind: CelebrateKind;
   vector?: ContributionVector | null;
@@ -27,6 +29,18 @@ export interface CelebrateInput {
   magnitude?: number;
   vtnReward?: number;
   source?: string;
+
+  // Tier-up
+  tierLabel?: string;
+  tierThreshold?: number;
+
+  // Pillar-threshold
+  pillar?: VitanaPillarKey;
+  thresholdValue?: number;
+
+  // Streak
+  streakDays?: number;
+  streakMilestone?: StreakLevel;
 }
 
 const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
@@ -43,6 +57,39 @@ const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   exercise: "💪",
   sleep: "😴",
   mental: "🧠",
+};
+
+const PILLAR_THRESHOLD_COPY: Record<VitanaPillarKey, Record<number, string>> = {
+  nutrition: {
+    50: "Nutrition just hit 50. Foundations forming 🥗",
+    100: "Nutrition just hit 100. You're rebuilding 🥗",
+    150: "Nutrition just hit 150. Strong fuel 🥗",
+    180: "Nutrition just hit 180. Elite range 🥗",
+  },
+  hydration: {
+    50: "Hydration just hit 50. Cells thank you 💧",
+    100: "Hydration just hit 100. Steady stream 💧",
+    150: "Hydration just hit 150. Crisp baseline 💧",
+    180: "Hydration just hit 180. Rare territory 💧",
+  },
+  exercise: {
+    50: "Exercise just hit 50. Body waking up 💪",
+    100: "Exercise just hit 100. Real movement 💪",
+    150: "Exercise just hit 150. Athlete mode 💪",
+    180: "Exercise just hit 180. Top tier 💪",
+  },
+  sleep: {
+    50: "Sleep just hit 50. Recovery starting 😴",
+    100: "Sleep just hit 100. You're rebuilding 💤",
+    150: "Sleep just hit 150. Deep, consistent rest 💤",
+    180: "Sleep just hit 180. Rare for any age 💤",
+  },
+  mental: {
+    50: "Mental just hit 50. Mind catching up 🧠",
+    100: "Mental just hit 100. Steadier ground 🧠",
+    150: "Mental just hit 150. Clear-headed 🧠",
+    180: "Mental just hit 180. Calm power 🧠",
+  },
 };
 
 const BIG_LIFT_THRESHOLD = 10;
@@ -83,19 +130,40 @@ function emitAnalytics(payload: Record<string, unknown>) {
   window.dispatchEvent(new CustomEvent("celebrate.fired", { detail: payload }));
 }
 
-function pickDominantPillar(
-  vector: ContributionVector | null | undefined,
-): VitanaPillarKey | null {
-  if (!vector) return null;
-  let bestKey: VitanaPillarKey | null = null;
-  let bestVal = 0;
-  for (const [k, v] of Object.entries(vector) as Array<[VitanaPillarKey, number | undefined]>) {
-    if (typeof v === "number" && v > bestVal && k in PILLAR_LABEL) {
-      bestKey = k;
-      bestVal = v;
-    }
+function todayKey(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function dayKeyFired(scope: string): boolean {
+  try {
+    const stored = localStorage.getItem(`vitana:celebrate:${scope}:day`);
+    return stored === todayKey();
+  } catch {
+    return false;
   }
-  return bestKey;
+}
+
+function markDayKeyFired(scope: string) {
+  try {
+    localStorage.setItem(`vitana:celebrate:${scope}:day`, todayKey());
+  } catch {
+    /* localStorage unavailable — accept duplicate fires */
+  }
+}
+
+function dispatchMilestone(detail: {
+  milestone: string;
+  title: string;
+  body: string;
+  url?: string;
+  rewardValue?: string;
+}) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent("vitana-milestone", {
+      detail: { url: "", ...detail },
+    }),
+  );
 }
 
 function movedPillars(
@@ -183,38 +251,160 @@ function fireIndexLift(input: CelebrateInput): { throttled: boolean } {
   return { throttled: false };
 }
 
+function fireTierUp(input: CelebrateInput): { throttled: boolean } {
+  const { tierLabel, tierThreshold, newTotal, source } = input;
+  if (!tierLabel) return { throttled: true };
+
+  const scope = `tier_up:${tierLabel.toLowerCase().replace(/\s+/g, "_")}`;
+  if (dayKeyFired(scope)) {
+    emitAnalytics({ kind: "tier-up", source, throttled: true, tierLabel });
+    return { throttled: true };
+  }
+  markDayKeyFired(scope);
+
+  dispatchMilestone({
+    milestone: `index_tier_up_${tierLabel.toLowerCase().replace(/\s+/g, "_")}`,
+    title: `Welcome to ${tierLabel}`,
+    body:
+      typeof tierThreshold === "number"
+        ? `Your Index just crossed ${tierThreshold}.`
+        : "Your Index just stepped up a tier.",
+    rewardValue:
+      typeof newTotal === "number" ? `Index ${newTotal}` : undefined,
+  });
+
+  const now = Date.now();
+  if (!prefersReducedMotion() && now - lastConfettiAt > CONFETTI_THROTTLE_MS) {
+    lastConfettiAt = now;
+    celebrateSuccess({ type: "reward_earned", message: `Welcome to ${tierLabel}` });
+    if (soundEnabled()) playSound("/audio/lift.mp3", 0.08);
+  }
+
+  emitAnalytics({ kind: "tier-up", source: source ?? "watcher", throttled: false, tierLabel });
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("celebrate.tier", { detail: { tierLabel, newTotal } }),
+    );
+  }
+  return { throttled: false };
+}
+
+function firePillarThreshold(input: CelebrateInput): { throttled: boolean } {
+  const { pillar, thresholdValue, source } = input;
+  if (!pillar || typeof thresholdValue !== "number") return { throttled: true };
+
+  const scope = `pillar:${pillar}:${thresholdValue}`;
+  if (dayKeyFired(scope)) {
+    emitAnalytics({ kind: "pillar-threshold", pillar, thresholdValue, source, throttled: true });
+    return { throttled: true };
+  }
+  markDayKeyFired(scope);
+
+  const copy =
+    PILLAR_THRESHOLD_COPY[pillar]?.[thresholdValue] ??
+    `${PILLAR_LABEL[pillar]} just hit ${thresholdValue} ${PILLAR_EMOJI[pillar]}`;
+
+  toast.success(copy);
+  emitAnalytics({ kind: "pillar-threshold", pillar, thresholdValue, source: source ?? "watcher", throttled: false });
+  return { throttled: false };
+}
+
+function fireStreak(input: CelebrateInput): { throttled: boolean } {
+  const { streakDays, streakMilestone, source } = input;
+  if (typeof streakDays !== "number" || streakDays < 1) return { throttled: true };
+
+  if (typeof streakMilestone === "number") {
+    const scope = `streak:${streakMilestone}`;
+    if (dayKeyFired(scope)) {
+      emitAnalytics({ kind: "streak", streakDays, streakMilestone, source, throttled: true });
+      return { throttled: true };
+    }
+    markDayKeyFired(scope);
+
+    dispatchMilestone({
+      milestone: `streak_${streakMilestone}`,
+      title: `🔥 ${streakMilestone}-day streak`,
+      body:
+        streakMilestone >= 30
+          ? "A whole month. This is becoming who you are."
+          : streakMilestone >= 14
+          ? "Two weeks. Autopilot is loving this."
+          : streakMilestone >= 7
+          ? "A full week. Habits are forming."
+          : "Three days. The streak is real.",
+    });
+    emitAnalytics({ kind: "streak", streakDays, streakMilestone, source: source ?? "streak-hook", throttled: false });
+    return { throttled: false };
+  }
+
+  toast.success(`🔥 ${streakDays}-day streak — Autopilot is loving this`);
+  emitAnalytics({ kind: "streak", streakDays, source: source ?? "streak-hook", throttled: false });
+  return { throttled: false };
+}
+
+function fireAtRisk(input: CelebrateInput): { throttled: boolean } {
+  const { source } = input;
+  const scope = "at_risk";
+  if (dayKeyFired(scope)) {
+    emitAnalytics({ kind: "at-risk", source, throttled: true });
+    return { throttled: true };
+  }
+  markDayKeyFired(scope);
+  toast.message("🔥 Don't break the streak — one small action today");
+  emitAnalytics({ kind: "at-risk", source: source ?? "streak-hook", throttled: false });
+  return { throttled: false };
+}
+
 /**
- * Fire a celebration. Phase 1 only handles `kind: "index-lift"`. Other kinds
- * are accepted but no-op so callers wired in Phase 2 can compile against the
- * stable shape.
+ * Fire a celebration. Routes by `kind` to the matching surface (Sonner toast,
+ * milestone modal event, etc.) with shared throttle / dedupe / reduced-motion
+ * rules so the user never gets a barrage.
  */
 export function celebrate(input: CelebrateInput): { fired: boolean; throttled: boolean } {
-  if (input.kind !== "index-lift") {
-    return { fired: false, throttled: false };
-  }
-  if (isLiftSuppressed()) {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(
-        new CustomEvent("vitana:index-lifted", {
-          detail: {
-            vector: input.vector,
-            newTotal: input.newTotal,
-            magnitude: input.magnitude,
-            source: input.source ?? "unknown",
-          },
-        }),
-      );
+  if (input.kind === "index-lift") {
+    if (isLiftSuppressed()) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("vitana:index-lifted", {
+            detail: {
+              vector: input.vector,
+              newTotal: input.newTotal,
+              magnitude: input.magnitude,
+              source: input.source ?? "unknown",
+            },
+          }),
+        );
+      }
+      emitAnalytics({
+        kind: "index-lift",
+        magnitude: input.magnitude ?? 0,
+        source: input.source ?? "unknown",
+        throttled: true,
+      });
+      return { fired: false, throttled: true };
     }
-    emitAnalytics({
-      kind: "index-lift",
-      magnitude: input.magnitude ?? 0,
-      source: input.source ?? "unknown",
-      throttled: true,
-    });
-    return { fired: false, throttled: true };
+    const { throttled } = fireIndexLift(input);
+    return { fired: !throttled, throttled };
   }
-  const { throttled } = fireIndexLift(input);
-  return { fired: !throttled, throttled };
+
+  let result: { throttled: boolean };
+  switch (input.kind) {
+    case "tier-up":
+      result = fireTierUp(input);
+      break;
+    case "pillar-threshold":
+      result = firePillarThreshold(input);
+      break;
+    case "streak":
+      result = fireStreak(input);
+      break;
+    case "at-risk":
+      result = fireAtRisk(input);
+      break;
+    default:
+      result = { throttled: true };
+  }
+  return { fired: !result.throttled, throttled: result.throttled };
 }
 
 /**

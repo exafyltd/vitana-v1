@@ -23,6 +23,7 @@ import { WalletPopup } from "@/components/WalletPopup";
 import { DesktopVitanaIndexChip } from "@/components/health/DesktopVitanaIndexChip";
 import { VitanaIndexSheet } from "@/components/health/VitanaIndexSheet";
 import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatcher";
+import { InviteSheet } from "@/components/InviteSheet";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useRoleRouteEnforcement } from "@/hooks/useSmartRouting";
@@ -507,6 +508,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       />
       <VitanaIndexSheet />
       <VitanaIndexLiftWatcher />
+      <InviteSheet />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}
