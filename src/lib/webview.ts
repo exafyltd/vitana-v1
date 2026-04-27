@@ -9,7 +9,7 @@
  * update when Appilix's surface changes.
  */
 
-import { isAppilix, launchExternal } from "@/lib/appilix";
+import { isAppilix } from "@/lib/appilix";
 
 /**
  * True if the page is running inside the Appilix WebView (or any in-app
@@ -55,34 +55,30 @@ export function isAppilixWebView(): boolean {
 
 /**
  * Route an OAuth authorization URL to a context where third-party cookies
- * survive: the Appilix native shell (preferred) or the OS system browser.
- * Falls back to same-window navigation off mobile.
+ * survive: the OS system browser on mobile, or same-window nav off mobile.
+ *
+ * The Appilix `launch_external` bridge call was previously tried first,
+ * but `window.appilix.postMessage(...)` returns no signal for whether the
+ * native shell actually opened the URL — `post()` returns true as long
+ * as the JS call didn't throw. On builds where the action is silently
+ * dropped, the OAuth button looks dead (mutation resolves, no browser
+ * opens, no error). Skip the bridge and use only the WebView paths that
+ * have proven to work.
  *
  * Strategy by platform:
- *   - Appilix native bridge present → `launchExternal(url)` posts to
- *     the bridge which opens an Android Intent (or iOS UIApplication
- *     openURL on builds that proxy it the same way).
- *   - Android WebView without bridge → `window.open(url, "_system")`,
- *     then an Android `intent://` URL as a last resort.
- *   - iOS WKWebView without bridge → most Appilix iOS builds intercept
- *     external navigations in `decidePolicyForNavigationAction:` and
- *     route them to Safari automatically. So plain
- *     `window.location.href = url` actually works *if* it fires within
- *     the user-gesture window. We do that synchronously after the
- *     `await` returns the auth URL — iOS allows the navigation if it
- *     happens within ~5s of the click and no other navigations have
- *     occurred in between.
- *   - Off-mobile → plain navigation, same as before the fix.
+ *   - Android WebView → `window.open(url, "_system")`, then an Android
+ *     `intent://` URL as a last resort.
+ *   - iOS WKWebView → Appilix iOS intercepts external navigations in
+ *     `decidePolicyForNavigationAction:` and hands them to Safari, so
+ *     plain `window.location.href = url` works inside the user-gesture
+ *     window. We fire it synchronously after the auth URL arrives.
+ *   - Off-mobile → plain navigation.
  */
 export function redirectViaSystemBrowser(url: string): void {
   if (!isAppilixWebView()) {
     window.location.href = url;
     return;
   }
-
-  // Try the Appilix bridge first — works on builds that inject
-  // `window.appilix.postMessage`.
-  if (launchExternal(url)) return;
 
   const ua = typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
   const isiOS = /iPhone|iPod|iPad/i.test(ua);
