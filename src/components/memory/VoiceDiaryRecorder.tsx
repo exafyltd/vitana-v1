@@ -13,6 +13,7 @@ import {
   transcribeAudioBlob,
 } from "@/utils/diaryAudioRecorder";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
@@ -28,6 +29,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   const [transcribedText, setTranscribedText] = useState("");
   const [interimText, setInterimText] = useState("");
   const [recordingDuration, setRecordingDuration] = useState(0);
+  // True once the user has started a recording in this session — kept true
+  // even after they delete all the transcribed text so the editor stays
+  // mounted (otherwise deleting the last character unmounts the textarea
+  // and looks like a "save and exit" event to the user).
+  const [hasActiveSession, setHasActiveSession] = useState(false);
 
   const sttRef = useRef<ClientSTT | null>(null);
   const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
@@ -38,6 +44,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   const lastFinalAtRef = useRef(0);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const { preferences } = useUserPreferences();
   const isAndroid = /Android/i.test(navigator.userAgent);
   const useBackendSTT = shouldUseBackendSTT();
   const queryClient = useQueryClient();
@@ -122,8 +129,24 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   };
 
   const resolveLanguage = () => {
-    const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
-    return (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
+    // Resolve order:
+    //   1. Server preferences (`stt_language`) — the source of truth the user
+    //      saw when they configured language in Settings. Beats anything in
+    //      WebView-isolated localStorage.
+    //   2. LanguageContext.selectedLanguage — runtime value, which is itself
+    //      hydrated from server prefs via LanguageContext.
+    //   3. localStorage `selected_language` — last-resort fallback that's
+    //      ONLY used when neither preferences nor selectedLanguage is set
+    //      yet (very early page load).
+    //   4. 'en-US' as the floor. Previously defaulted to 'de-DE' which was
+    //      wrong for non-German users on iPhone Appilix WebView whose
+    //      isolated localStorage had no entry for the key.
+    const fromServer = preferences?.stt_language;
+    if (fromServer) return fromServer.trim();
+    if (selectedLanguage && selectedLanguage.trim()) return selectedLanguage.trim();
+    const stored = getLocalStorageItem('global', 'language', 'selected_language');
+    if (typeof stored === 'string' && stored.trim()) return stored.trim();
+    return 'en-US';
   };
 
   const startBackendRecording = async () => {
@@ -146,6 +169,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
 
       setIsRecording(true);
       isRecordingRef.current = true;
+      setHasActiveSession(true);
       setRecordingDuration(0);
       setTranscribedText('');
       setInterimText('');
@@ -276,6 +300,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       sttRef.current.start();
       setIsRecording(true);
       isRecordingRef.current = true;
+      setHasActiveSession(true);
       setRecordingDuration(0);
       setTranscribedText('');
       setInterimText('');
@@ -404,6 +429,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       // Reset form
       setTranscribedText("");
       setRecordingDuration(0);
+      setHasActiveSession(false);
 
       // Refresh diary list + Vitana Index header badge.
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
@@ -493,8 +519,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         </p>
       )}
 
-      {/* Real-time Transcription Display */}
-      {(isRecording || transcribedText || isTranscribing) && (
+      {/* Real-time Transcription Display.
+          Stays mounted for the entire active recording session — even if
+          the user deletes all transcribed text — so editing the result
+          doesn't unmount the textarea and look like an unwanted "save". */}
+      {(hasActiveSession || isRecording || transcribedText || isTranscribing) && (
         <Card>
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
@@ -516,7 +545,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
               placeholder={
                 isRecording
                   ? (useBackendSTT ? "Recording — your transcription will appear after you stop." : "Start speaking...")
-                  : "Edit your transcribed text here..."
+                  : "Edit your transcribed text here, or record again to add more."
               }
               className="min-h-32"
               disabled={isRecording || isTranscribing}
@@ -528,11 +557,25 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
               </p>
             )}
 
-            {!isRecording && !isTranscribing && transcribedText && (
+            {!isRecording && !isTranscribing && (
               <div className="flex gap-2">
-                <Button onClick={saveDiaryEntry} className="flex-1">
+                <Button
+                  onClick={saveDiaryEntry}
+                  className="flex-1"
+                  disabled={!transcribedText.trim()}
+                >
                   <Save className="h-4 w-4 mr-2" />
                   Save Entry
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setTranscribedText('');
+                    setRecordingDuration(0);
+                    setHasActiveSession(false);
+                  }}
+                >
+                  Discard
                 </Button>
               </div>
             )}
