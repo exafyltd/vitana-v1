@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
+import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
@@ -386,27 +387,43 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      const savedText = transcribedText;
       const { error } = await supabase.from('diary_entries').insert({
         user_id: user.id,
-        text: transcribedText,
+        text: savedText,
         duration: recordingDuration,
         source: 'voice'
       });
 
       if (error) throw error;
 
+      // VTID-01983: run the Index sync on the transcript.
+      const sync = await syncDiaryToIndex(savedText);
+      const moved = sync?.index_delta?.total ?? 0;
+
       // Reset form
       setTranscribedText("");
       setRecordingDuration(0);
-      
-      // Refresh diary list
+
+      // Refresh diary list + Vitana Index header badge.
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
+      queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
       onSaveComplete?.();
-      
-      toast({
-        title: "Entry Saved",
-        description: "Your diary entry has been added to your memory timeline.",
-      });
+
+      if (sync && moved > 0) {
+        const breakdown = formatIndexDelta(sync.index_delta);
+        toast({
+          title: `Saved · Vitana Index +${moved}`,
+          description: breakdown
+            ? `${breakdown}. Tap your Index to see the move.`
+            : `${sync.health_features_written} health signals logged.`,
+        });
+      } else {
+        toast({
+          title: "Entry Saved",
+          description: "Your diary entry has been added to your memory timeline.",
+        });
+      }
     } catch (error) {
       toast({
         title: "Save Failed",

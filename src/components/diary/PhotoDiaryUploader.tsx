@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
 
 interface PhotoDiaryUploaderProps {
   onUploadComplete?: () => void;
@@ -115,10 +116,28 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       queryClient.setQueryData(['diary-entries', 'photo'], prependIfMissing);
       await queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
 
-      toast({
-        title: "Photos uploaded!",
-        description: "Your photo diary entry has been saved successfully.",
-      });
+      // VTID-01983: photo path syncs the caption to the Index when present.
+      // Photo-only entries (no caption) skip extraction but still mark the
+      // user as having journaled (the gateway always emits journal_entry).
+      const captionText = (caption || "").trim();
+      const sync = captionText.length > 0 ? await syncDiaryToIndex(captionText) : null;
+      const moved = sync?.index_delta?.total ?? 0;
+      queryClient.invalidateQueries({ queryKey: ['vitana_index'] });
+
+      if (sync && moved > 0) {
+        const breakdown = formatIndexDelta(sync.index_delta);
+        toast({
+          title: `Saved · Vitana Index +${moved}`,
+          description: breakdown
+            ? `${breakdown}. Tap your Index to see the move.`
+            : `${sync.health_features_written} health signals logged from your caption.`,
+        });
+      } else {
+        toast({
+          title: "Photos uploaded!",
+          description: "Your photo diary entry has been saved successfully.",
+        });
+      }
 
       // Reset form
       setSelectedFiles([]);
