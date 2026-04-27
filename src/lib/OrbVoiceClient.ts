@@ -12,6 +12,7 @@
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
+import { pinIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -137,6 +138,14 @@ export class OrbVoiceClient {
       // greeting audio plays on first attempt instead of sitting in the queue.
       this.unlockIosAudio();
 
+      // iOS LOUDSPEAKER PIN: getUserMedia (called inside startRecording below)
+      // switches WKWebView's audio session from Playback → PlayAndRecord, which
+      // routes output to the earpiece — Vitana goes from loud to quiet partway
+      // through the conversation. Starting a silent <audio playsinline> loop
+      // synchronously inside the user gesture keeps the route on loudspeaker
+      // for the rest of the session. iOS-only; no-op elsewhere.
+      pinIOSLoudspeakerRoute();
+
       // 1. Create session with auth
       const response = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/start`, {
         method: 'POST',
@@ -198,6 +207,9 @@ export class OrbVoiceClient {
       await this.requestWelcome();
     } catch (err: any) {
       console.error('[OrbVoiceClient] Failed to start:', err);
+      // Release the loudspeaker pin we installed at the top of start() so it
+      // doesn't outlive a failed session.
+      releaseIOSLoudspeakerRoute();
       this.callbacks.onError?.(err.message || 'Failed to start ORB');
       this.callbacks.onConnectionStateChange?.('disconnected');
       throw err;
@@ -1058,10 +1070,15 @@ export class OrbVoiceClient {
     this.nextStartTime = 0;
     this.diagnostics = null;
 
+    // Release the iOS loudspeaker pin (no-op elsewhere). Refcounted so
+    // overlapping start()/stop() calls during reconnects don't tear it
+    // down too early.
+    releaseIOSLoudspeakerRoute();
+
     this.callbacks.onConnectionStateChange?.('disconnected');
     this.callbacks.onSpeakingChange?.(false);
     this.callbacks.onProcessingChange?.(false);
-    
+
     console.log('[OrbVoiceClient] Stopped');
   }
 
