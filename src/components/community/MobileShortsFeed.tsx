@@ -122,23 +122,37 @@ export function MobileShortsFeed({
 
   // Handle share
   const handleShare = useCallback(async (video: VideoShort) => {
+    const shareUrl = video.id
+      ? `${window.location.origin}/comm/media-hub?short=${video.id}`
+      : window.location.href;
     const shareData = {
       title: video.title,
       text: `Check out "${video.title}" by ${video.creator} on Vitana`,
-      url: `${window.location.origin}/comm/media-hub?short=${video.id}`,
+      url: shareUrl,
     };
 
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
         await navigator.share(shareData);
+        return;
       } catch (err) {
-        // User cancelled
+        if ((err as Error)?.name === 'AbortError') return;
+        // Fall through to clipboard fallback on any other error.
       }
-    } else {
-      await navigator.clipboard.writeText(shareData.url);
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
       toast({
-        title: "Link copied",
-        description: "Short link copied to clipboard",
+        title: 'Link copied',
+        description: 'Short link copied to clipboard',
+        duration: 2000,
+      });
+    } catch {
+      toast({
+        title: 'Could not share',
+        description: 'Please try again.',
+        variant: 'destructive',
         duration: 2000,
       });
     }
