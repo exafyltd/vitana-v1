@@ -16,7 +16,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Building, Trash2 } from "lucide-react";
+import { User, LogOut, Shield, Building, Trash2, Loader2 } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole, UserRole } from "@/hooks/useRole";
@@ -222,13 +222,17 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         </div>
 
         <DrawerFooter>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handleSignOut}
             disabled={isLoggingOut}
             className="w-full"
           >
-            <LogOut className="mr-2 h-4 w-4" />
+            {isLoggingOut ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <LogOut className="mr-2 h-4 w-4" />
+            )}
             {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Button>
           <DrawerClose asChild>
