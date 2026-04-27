@@ -14,25 +14,30 @@ export default function EarthlinksConfirmed() {
   const { setTenantBySlug } = useTenant();
   const { getRedirectUrl } = useRoleBasedRedirect();
 
-  useEffect(() => {
-    // Set tenant context
-    setTenantBySlug('earthlinks');
-    
-    if (user && !isLoading) {
-      // Auto-redirect after 3 seconds
-      const timer = setTimeout(() => {
-        navigate(getRedirectUrl());
-      }, 3000);
+  // VTID-01985: Earthlinks is retired. Only Exafy admins may reach this
+  // confirmation page. Anyone else gets redirected straight to '/'.
+  const isExafyAdmin = user?.app_metadata?.exafy_admin === true;
 
-      return () => clearTimeout(timer);
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user || !isExafyAdmin) {
+      navigate('/', { replace: true });
+      return;
     }
-  }, [user, isLoading, navigate, setTenantBySlug]);
+    // Admins: leave them on the page; auto-redirect to dashboard after 3s.
+    const timer = setTimeout(() => {
+      navigate(getRedirectUrl());
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [user, isLoading, isExafyAdmin, navigate, getRedirectUrl]);
 
   const handleContinue = () => {
     navigate(getRedirectUrl());
   };
 
-  if (isLoading) {
+  // Loader covers: loading email confirmation, no user yet, or non-admin
+  // user being redirected away.
+  if (isLoading || !user || !isExafyAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500/10 via-background to-emerald-500/10">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
