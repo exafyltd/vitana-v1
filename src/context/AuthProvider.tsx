@@ -301,7 +301,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // ORB widget lifecycle is now managed solely by useOrbVoiceWidget hook
 
-      const { error } = await supabase.auth.signOut();
+      // scope: 'local' clears the client session synchronously without a
+      // round-trip to Supabase Auth's /logout endpoint. iOS WKWebView (Appilix)
+      // is much slower than Android Chromium on that round-trip, so the
+      // default 'global' revoke made logout feel like 5–6s on iPhone.
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
       if (error) {
         console.error('[AuthProvider] Sign out error:', error);
       } else {
