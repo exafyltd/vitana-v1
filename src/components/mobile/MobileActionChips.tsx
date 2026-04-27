@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface VitanaIndexChipProps {
@@ -10,18 +10,18 @@ interface VitanaIndexChipProps {
 }
 
 /**
- * Vitana Index chip for mobile action rail
- * Displays the user's longevity score in a compact gradient circle
+ * Vitana Index chip for mobile action rail. Opens the shared Index Sheet via
+ * the global `vitana:open-index` event — same destination as the desktop
+ * sidebar chip.
  */
 export function VitanaIndexChip({ className }: VitanaIndexChipProps) {
-  const navigate = useNavigate();
-  
   return (
-    <Button 
-      variant="ghost" 
-      size="sm" 
-      onClick={() => navigate('/health')}
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT))}
       className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0 ${className || ''}`}
+      aria-label="Open Vitana Index"
     >
       <span className="text-xs">🧬</span>
       <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>

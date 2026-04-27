@@ -20,6 +20,9 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { WalletPopup } from "@/components/WalletPopup";
+import { DesktopVitanaIndexChip } from "@/components/health/DesktopVitanaIndexChip";
+import { VitanaIndexSheet } from "@/components/health/VitanaIndexSheet";
+import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatcher";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
 import { useRoleRouteEnforcement } from "@/hooks/useSmartRouting";
@@ -227,12 +230,15 @@ function AppSidebar({
           {/* Row 2: Quick Actions - only show when sidebar is open and NOT on admin routes */}
           {open && !location.pathname.startsWith('/admin') && (
             <div className="flex items-center justify-end px-2 pb-2 space-x-1">
+              {/* VITANA Index Chip - opens shared Index Sheet */}
+              <DesktopVitanaIndexChip />
+
               {/* Calendar Button - Today's Overview */}
-              <div 
+              <div
                 className="relative shrink-0 transition-all duration-200"
                 title="Calendar & Events - Today's overview"
               >
-                <UniversalCalendarButton 
+                <UniversalCalendarButton
                   variant="ghost" 
                   size="sm"
                   className="h-8 w-8 p-0 text-white group-hover:text-primary transition-colors"
@@ -452,6 +458,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
     };
   }, [isMobile, sidebarOpen]);
 
+  // Global `autopilot:open` listener — lets any surface (Index Sheet,
+  // notifications, voice, devtools) request the Autopilot popup without
+  // prop-drilling. Mount-only so the handler isn't recreated per render.
+  useEffect(() => {
+    const handler = () => setAutopilotPopupOpen(true);
+    window.addEventListener("autopilot:open", handler);
+    return () => window.removeEventListener("autopilot:open", handler);
+  }, []);
+
   return (
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
@@ -478,18 +493,20 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </SidebarInset>
         </div>
       </SidebarProvider>
-      <AutopilotPopup 
-        open={autopilotPopupOpen} 
-        onOpenChange={setAutopilotPopupOpen} 
+      <AutopilotPopup
+        open={autopilotPopupOpen}
+        onOpenChange={setAutopilotPopupOpen}
       />
-      <WalletPopup 
-        open={walletPopupOpen} 
-        onOpenChange={setWalletPopupOpen} 
+      <WalletPopup
+        open={walletPopupOpen}
+        onOpenChange={setWalletPopupOpen}
       />
-      <CartSidebar 
-        open={cartOpen} 
-        onClose={() => setCartOpen(false)} 
+      <CartSidebar
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
       />
+      <VitanaIndexSheet />
+      <VitanaIndexLiftWatcher />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}
