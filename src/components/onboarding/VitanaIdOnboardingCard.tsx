@@ -1,13 +1,16 @@
 /**
- * VTID-01967: Vitana ID onboarding interstitial.
+ * VTID-01967 + VTID-01987: Vitana ID onboarding interstitial.
  *
  * Shown automatically once after signup when profile.vitanaIdLocked === false.
- * The user either accepts the auto-suggested ID ("Use this") or opens the
- * picker modal to choose from 3 alternative suggestions or type their own.
+ * The user accepts the auto-suggested ID ("Use this") or opens the picker
+ * modal to change the BASE name part. The SUFFIX is the user's
+ * chronological registration_seq — locked, never editable. This guarantees
+ * the property "vitana_id ends with the user's registration rank" holds for
+ * every account.
  *
  * One-shot: after POST /api/v1/users/me/vitana-id/confirm succeeds, the
  * server flips vitana_id_locked = true. This component never renders again
- * for that user — there is no subsequent edit path.
+ * for that user.
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -23,7 +26,7 @@ const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
   "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
-const VITANA_ID_REGEX = /^[a-z][a-z0-9]{3,11}$/;
+const BASE_REGEX = /^[a-z][a-z0-9]{1,7}$/;
 
 async function gatewayFetch(path: string, init: RequestInit, token?: string): Promise<Response> {
   return fetch(`${GATEWAY_URL}${path}`, {
@@ -36,45 +39,53 @@ async function gatewayFetch(path: string, init: RequestInit, token?: string): Pr
   });
 }
 
+function splitVitanaId(v: string | undefined): { base: string; seq: string } {
+  if (!v) return { base: "", seq: "" };
+  const m = v.match(/^([a-z][a-z0-9]*?)([0-9]+)$/);
+  if (!m) return { base: v, seq: "" };
+  return { base: m[1], seq: m[2] };
+}
+
 export function VitanaIdOnboardingCard() {
   const { session, user } = useAuth();
   const { profile, refreshProfile } = useProfile();
   const { toast } = useToast();
 
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [selected, setSelected] = useState<string>("");
-  const [customValue, setCustomValue] = useState<string>("");
+  const [baseAlternatives, setBaseAlternatives] = useState<string[]>([]);
+  const [selectedBase, setSelectedBase] = useState<string>("");
+  const [customBase, setCustomBase] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Show the card when authenticated AND profile says not yet locked AND we
-  // have a vitana_id to display. Hidden once the user confirms.
   const shouldShow = useMemo(() => {
     if (!user || !session) return false;
     if (!profile.vitanaId) return false;
     return profile.vitanaIdLocked === false;
   }, [user, session, profile.vitanaId, profile.vitanaIdLocked]);
 
-  // Validate the custom-typed value live so the picker disables submit
-  // before the user even reaches the server.
+  // Suffix is the user's registration_seq — never editable. We extract it
+  // from the current vitana_id as a safety net for older accounts where
+  // registrationSeq wasn't surfaced yet.
+  const { base: currentBase, seq: parsedSeq } = splitVitanaId(profile.vitanaId);
+  const seqDigits =
+    profile.registrationSeq !== undefined && profile.registrationSeq !== null
+      ? String(profile.registrationSeq)
+      : parsedSeq;
+
   const customValidationError = useMemo(() => {
-    if (!customValue) return "";
-    const normalized = customValue.trim().replace(/^@/, "").toLowerCase();
-    if (!VITANA_ID_REGEX.test(normalized)) {
-      return "4-12 characters, must start with a letter, lowercase + digits only.";
-    }
-    const letters = (normalized.match(/[a-z]/g) || []).length;
-    const digits = (normalized.match(/[0-9]/g) || []).length;
-    if (letters < 2 || digits < 2) {
-      return "Needs at least 2 letters and 2 digits.";
+    if (!customBase) return "";
+    const normalized = customBase.trim().replace(/^@/, "").toLowerCase();
+    if (!BASE_REGEX.test(normalized)) {
+      return "2-8 characters, must start with a letter, lowercase + digits only.";
     }
     return "";
-  }, [customValue]);
+  }, [customBase]);
 
-  const candidateToSubmit = (selected || customValue).trim().replace(/^@/, "").toLowerCase();
+  const candidateBase = (selectedBase || customBase).trim().replace(/^@/, "").toLowerCase();
+  const candidatePreview = candidateBase && seqDigits ? `${candidateBase}${seqDigits}` : "";
 
-  const fetchSuggestions = async () => {
+  const fetchSuggestion = async () => {
     if (!session?.access_token) return;
     try {
       const res = await gatewayFetch(
@@ -83,33 +94,34 @@ export function VitanaIdOnboardingCard() {
         session.access_token,
       );
       const data = await res.json();
-      if (res.ok && Array.isArray(data.suggestions)) {
-        setSuggestions(data.suggestions);
-        if (!selected && data.suggestions.length > 0 && !customValue) {
-          setSelected(data.suggestions[0]);
+      const alternatives: string[] | undefined = data?.data?.base_alternatives;
+      if (res.ok && Array.isArray(alternatives)) {
+        setBaseAlternatives(alternatives);
+        if (!selectedBase && alternatives.length > 0 && !customBase) {
+          setSelectedBase(alternatives[0]);
         }
       }
     } catch (err) {
-      console.warn("[VitanaIdOnboarding] failed to load suggestions:", err);
+      console.warn("[VitanaIdOnboarding] failed to load suggestion:", err);
     }
   };
 
   useEffect(() => {
     if (pickerOpen) {
-      fetchSuggestions();
+      fetchSuggestion();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickerOpen]);
 
-  const submit = async (value: string) => {
-    if (!session?.access_token || !value) return;
+  const submitBase = async (base: string) => {
+    if (!session?.access_token || !base) return;
     setSubmitting(true);
     try {
       const res = await gatewayFetch(
         "/users/me/vitana-id/confirm",
         {
           method: "POST",
-          body: JSON.stringify({ vitana_id: value }),
+          body: JSON.stringify({ base }),
         },
         session.access_token,
       );
@@ -121,15 +133,13 @@ export function VitanaIdOnboardingCard() {
             : data.error === "ALIAS_COLLISION"
               ? "That Vitana ID was previously used"
               : data.error === "RESERVED_TOKEN"
-                ? "That Vitana ID is reserved"
-                : data.error === "WEAK_COMPOSITION"
-                  ? "Need at least 2 letters and 2 digits"
-                  : data.error === "INVALID_FORMAT"
-                    ? "Invalid format"
-                    : data.error === "ALREADY_LOCKED"
-                      ? "Your Vitana ID was already set"
-                      : "Could not save Vitana ID",
-          description: data.message || data.error || "Please try a different value.",
+                ? "That name is reserved"
+                : data.error === "INVALID_BASE"
+                  ? "Invalid name"
+                  : data.error === "ALREADY_LOCKED"
+                    ? "Your Vitana ID was already set"
+                    : "Could not save Vitana ID",
+          description: data.message || data.error || "Please try a different name.",
           variant: "destructive",
         });
         return;
@@ -139,7 +149,6 @@ export function VitanaIdOnboardingCard() {
         description: "This is your speakable ID across Vitana. Permanent — pick wisely!",
       });
       setPickerOpen(false);
-      // Refresh profile so vitanaIdLocked flips true and this card unmounts.
       refreshProfile();
     } catch (err: any) {
       toast({
@@ -153,8 +162,8 @@ export function VitanaIdOnboardingCard() {
   };
 
   const handleUseCurrent = async () => {
-    if (!profile.vitanaId) return;
-    await submit(profile.vitanaId);
+    if (!currentBase) return;
+    await submitBase(currentBase);
   };
 
   const handleCopy = async () => {
@@ -172,8 +181,6 @@ export function VitanaIdOnboardingCard() {
 
   return (
     <>
-      {/* Sticky bottom-sheet style banner — non-dismissable interstitial.
-          User must Use this or Pick a different one before continuing. */}
       <div
         className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 backdrop-blur-md shadow-lg"
         role="dialog"
@@ -182,7 +189,7 @@ export function VitanaIdOnboardingCard() {
         <div className="max-w-xl mx-auto p-4 space-y-3">
           <div className="text-center space-y-1">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Your Vitana ID
+              Your Vitana ID — Member #{seqDigits || "?"}
             </p>
             <div className="flex items-center justify-center gap-2">
               <p className="text-2xl font-semibold tracking-wide">
@@ -199,8 +206,8 @@ export function VitanaIdOnboardingCard() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Speakable. Language-neutral. Permanent once you confirm.
-              Say it to invite friends or send messages by voice.
+              Speakable. Language-neutral. The number is your registration rank — locked.
+              You can change the name part once.
             </p>
           </div>
           <div className="flex gap-2">
@@ -208,7 +215,7 @@ export function VitanaIdOnboardingCard() {
               variant="default"
               className="flex-1"
               onClick={handleUseCurrent}
-              disabled={submitting}
+              disabled={submitting || !currentBase}
             >
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Use this"}
             </Button>
@@ -218,7 +225,7 @@ export function VitanaIdOnboardingCard() {
               onClick={() => setPickerOpen(true)}
               disabled={submitting}
             >
-              Pick a different one
+              Change the name
             </Button>
           </div>
         </div>
@@ -227,34 +234,36 @@ export function VitanaIdOnboardingCard() {
       <Dialog open={pickerOpen} onOpenChange={(open) => !submitting && setPickerOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Pick your Vitana ID</DialogTitle>
+            <DialogTitle>Pick the name part of your Vitana ID</DialogTitle>
             <DialogDescription>
-              Choose from a fresh suggestion or type your own. Once you confirm, your Vitana ID is permanent.
+              The number ({seqDigits}) is your registration rank — locked, can't be changed.
+              You can change the name. Once you confirm, your Vitana ID is permanent.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3 py-2">
-            {suggestions.length > 0 && (
+            {baseAlternatives.length > 0 && (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
                   Suggestions
                 </p>
                 <div className="grid grid-cols-3 gap-2">
-                  {suggestions.map((s) => (
+                  {baseAlternatives.map((b) => (
                     <button
-                      key={s}
+                      key={b}
                       type="button"
                       onClick={() => {
-                        setSelected(s);
-                        setCustomValue("");
+                        setSelectedBase(b);
+                        setCustomBase("");
                       }}
                       className={`px-3 py-2 rounded-md border text-sm font-medium transition-colors ${
-                        selected === s && !customValue
+                        selectedBase === b && !customBase
                           ? "border-primary bg-primary/10 text-primary"
                           : "border-border hover:bg-muted"
                       }`}
                     >
-                      @{s}
+                      @{b}
+                      <span className="text-muted-foreground">{seqDigits}</span>
                     </button>
                   ))}
                 </div>
@@ -263,20 +272,28 @@ export function VitanaIdOnboardingCard() {
 
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                Or type your own
+                Or type your own name
               </p>
-              <Input
-                value={customValue}
-                onChange={(e) => {
-                  setCustomValue(e.target.value);
-                  if (e.target.value) setSelected("");
-                }}
-                placeholder="e.g. alex3700"
-                aria-invalid={Boolean(customValidationError)}
-                aria-describedby="vitana-id-help"
-              />
+              <div className="flex items-center gap-1">
+                <span className="text-lg font-medium text-muted-foreground">@</span>
+                <Input
+                  value={customBase}
+                  onChange={(e) => {
+                    setCustomBase(e.target.value);
+                    if (e.target.value) setSelectedBase("");
+                  }}
+                  placeholder="e.g. alex"
+                  aria-invalid={Boolean(customValidationError)}
+                  aria-describedby="vitana-id-help"
+                  className="flex-1"
+                />
+                <span className="px-2 py-2 rounded-md bg-muted text-sm font-medium text-muted-foreground">
+                  {seqDigits}
+                </span>
+              </div>
               <p id="vitana-id-help" className="text-xs text-muted-foreground">
-                4–12 characters · lowercase letters and digits · at least 2 of each.
+                Name part: 2–8 characters · lowercase letters and digits · must start with a letter.
+                Final ID will be <span className="font-mono">@{candidatePreview || `(your name)${seqDigits}`}</span>.
                 {customValidationError && (
                   <span className="block text-destructive mt-1">{customValidationError}</span>
                 )}
@@ -294,15 +311,15 @@ export function VitanaIdOnboardingCard() {
             </Button>
             <Button
               variant="default"
-              onClick={() => submit(candidateToSubmit)}
+              onClick={() => submitBase(candidateBase)}
               disabled={
                 submitting ||
-                !candidateToSubmit ||
-                Boolean(customValidationError && customValue) ||
-                (Boolean(customValue) && customValue.trim().replace(/^@/, "").toLowerCase() !== candidateToSubmit)
+                !candidateBase ||
+                Boolean(customValidationError && customBase) ||
+                (Boolean(customBase) && customBase.trim().replace(/^@/, "").toLowerCase() !== candidateBase)
               }
             >
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Confirm permanently"}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : `Confirm @${candidatePreview || "..."}`}
             </Button>
           </DialogFooter>
         </DialogContent>
