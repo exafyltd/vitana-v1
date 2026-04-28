@@ -30,6 +30,8 @@ import { formatPrice, getRedirectUrl } from "@/hooks/useMarketplace";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
+import { getShareUrl } from "@/lib/shareUrl";
 
 export function ProductDetailsDrawer() {
   const { selectedProduct, clearSelection } = useProductSelection();
@@ -328,6 +330,20 @@ function DrawerBody() {
             Buy <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </Button>
+        <UniversalShareButton
+          content={{
+            type: "product",
+            id: p.id,
+            title: p.title,
+            description: p.description ?? "",
+            image_url: p.images?.[0],
+            url: getShareUrl("product", p.id),
+          }}
+          variant="outline"
+          size="default"
+          showLabel={false}
+          className="flex-shrink-0"
+        />
       </div>
     </div>
   );
