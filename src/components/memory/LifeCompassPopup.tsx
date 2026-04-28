@@ -20,34 +20,45 @@ interface LifeCompassPopupProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Canonical English titles double as the persisted DB value for suggested
+// goals — that's what makes "Current Compass" re-localizable after a language
+// switch (we match the stored title against the canonical one to decide
+// whether to render the translated label or fall through verbatim for a
+// user-typed custom goal). It also matches the legacy data already in DB.
 const SUGGESTED_GOALS = [
   {
     category: "wealth",
+    canonicalTitle: "Build Financial Freedom",
     icon: DollarSign,
     gradient: "from-yellow-500/20 to-amber-500/20",
   },
   {
     category: "relationship",
+    canonicalTitle: "Find Life Partner",
     icon: Heart,
     gradient: "from-pink-500/20 to-rose-500/20",
   },
   {
     category: "health",
+    canonicalTitle: "Transform Health",
     icon: TrendingUp,
     gradient: "from-green-500/20 to-emerald-500/20",
   },
   {
     category: "career",
+    canonicalTitle: "Advance Career",
     icon: Briefcase,
     gradient: "from-blue-500/20 to-cyan-500/20",
   },
   {
     category: "learning",
+    canonicalTitle: "Master New Skills",
     icon: GraduationCap,
     gradient: "from-purple-500/20 to-indigo-500/20",
   },
   {
     category: "spiritual",
+    canonicalTitle: "Spiritual Life",
     icon: Sparkles,
     gradient: "from-violet-500/20 to-fuchsia-500/20",
   },
@@ -55,6 +66,7 @@ const SUGGESTED_GOALS = [
     // System-seeded default goal — keep it available so users can swap back
     // to the longevity focus at any time after choosing a different primary.
     category: "longevity",
+    canonicalTitle: "Improve quality of life and extend lifespan",
     icon: InfinityIcon,
     gradient: "from-sky-500/20 to-teal-500/20",
   },
@@ -89,12 +101,29 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
   );
 
   const handleSuggestedGoal = (goal: typeof SUGGESTED_GOALS[0]) => {
+    // Persist the canonical (English) title, not the localized one — render
+    // re-localizes via lifeCompass.goals.<category>.title so a user who picks
+    // a goal in German still sees the English label after switching to EN.
     updateCompass({
-      primary_goal: translate(`lifeCompass.goals.${goal.category}.title`),
+      primary_goal: goal.canonicalTitle,
       category: goal.category,
     });
     onOpenChange(false);
   };
+
+  // Resolve the visible "Current Compass" string. Suggested goals (those
+  // whose stored primary_goal matches the canonical English title for the
+  // saved category) are re-translated at render time. User-typed custom
+  // goals are rendered verbatim — there's nothing to translate.
+  const displayedPrimaryGoal = (() => {
+    if (!compass) return "";
+    const match = SUGGESTED_GOALS.find(
+      (g) => g.category === compass.category && g.canonicalTitle === compass.primary_goal,
+    );
+    return match
+      ? translate(`lifeCompass.goals.${match.category}.title`, match.canonicalTitle)
+      : compass.primary_goal;
+  })();
 
   const handleCustomGoal = () => {
     if (!customGoal.trim() || !selectedCategory) return;
@@ -139,7 +168,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
             <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">
               {translate('lifeCompass.currentCompass', 'Current Compass')}
             </p>
-            <p className="text-base sm:text-lg font-semibold break-words">{compass.primary_goal}</p>
+            <p className="text-base sm:text-lg font-semibold break-words">{displayedPrimaryGoal}</p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm text-muted-foreground">
               <span>{applyReplacements(translate('lifeCompass.alignment'), { value: compass.alignment_score })}</span>
               <span className="hidden sm:inline">•</span>
