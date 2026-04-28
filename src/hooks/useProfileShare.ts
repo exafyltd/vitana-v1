@@ -25,12 +25,17 @@ const hashString = (s: string): string => {
 export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }: ShareOptions) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
 
-  // Canonical profile URL that hits the Cloudflare OG proxy for rich previews.
-  // When we have an avatar_url we append ?v=<hash(avatar_url)> so that
-  // WhatsApp/Facebook/Telegram invalidate their per-URL preview cache the
-  // moment the avatar changes — without busting cache on unrelated re-shares.
+  // Canonical profile URL on the apex (vitanaland.com) so iOS Universal
+  // Links + Android App Links fire on the recipient's tap and hand off to
+  // the Maxina app instead of opening WhatsApp/Telegram's in-app browser.
+  // Crawlers still get rich previews via the `vitanaland-og-proxy`
+  // worker, which is bound to `vitanaland.com/profiles/*` and proxies the
+  // OG render through the gateway. When we have an avatar_url we append
+  // ?v=<hash(avatar_url)> so that WhatsApp/Facebook/Telegram invalidate
+  // their per-URL preview cache the moment the avatar changes — without
+  // busting cache on unrelated re-shares.
   const getShareUrl = useCallback(() => {
-    const base = `https://e.vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
+    const base = `https://vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
     if (avatarUrl) {
       return `${base}?v=${hashString(avatarUrl)}`;
     }
