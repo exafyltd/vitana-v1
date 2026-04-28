@@ -241,6 +241,15 @@ export default function MediaHub() {
     return 'shorts'; // default fallback
   });
   const hasAutoOpenedShortRef = useRef(false);
+  // Set when the Shorts feed/modal was auto-opened by a `?short=<id>`
+  // deep-link. We use this on close to send the user to the app's home
+  // (`/comm/events-meetups?tab=hot` — Events / Hot is the mobile default
+  // landing) instead of leaving them on `/comm/media-hub`. Without this,
+  // the WebView in Appilix saves Media Hub as the last URL, and every
+  // subsequent cold-start of the app drops the user back into the Shorts
+  // tab (because MediaHub's default tab is 'shorts') even when they
+  // never intentionally navigated there.
+  const deepLinkOpenedRef = useRef(false);
   
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
@@ -460,6 +469,16 @@ export default function MediaHub() {
     } else if ('src_url' in target) {
       handleVideoClick(target, idx);
     }
+    // Mark for cold-start recovery: the user got here via a shared link,
+    // not by deliberate navigation. Rewrite the address bar to the app's
+    // mobile home so that even if they kill the app mid-watch, the next
+    // cold-start lands on Events / Hot rather than relooping into Shorts.
+    deepLinkOpenedRef.current = true;
+    window.history.replaceState(
+      window.history.state,
+      '',
+      '/comm/events-meetups?tab=hot',
+    );
   }, [shortParam, isShortsLoading, videoShorts, isMobile, setSearchParams]);
 
   const handleNextVideo = () => {
@@ -1318,7 +1337,16 @@ export default function MediaHub() {
         <MobileShortsFeed
           shorts={videoShorts}
           currentUserId={user?.id}
-          onClose={() => setMobileShortsFeedOpen(false)}
+          onClose={() => {
+            setMobileShortsFeedOpen(false);
+            // If the feed was opened by a deep-link, send the user to
+            // the mobile home (Events / Hot) so the WebView's saved
+            // last-URL is the home page, not Media Hub.
+            if (deepLinkOpenedRef.current) {
+              deepLinkOpenedRef.current = false;
+              navigate('/comm/events-meetups?tab=hot', { replace: true });
+            }
+          }}
           initialIndex={selectedVideoIndex >= 0 ? selectedVideoIndex : 0}
           onEdit={(short) => {
             const full = realShorts.find((r) => r.id === short.id);
@@ -1342,6 +1370,11 @@ export default function MediaHub() {
           setIsVideoPlayerOpen(false);
           setSelectedVideo(null);
           setSelectedVideoIndex(-1);
+          // Same cold-start recovery as MobileShortsFeed (desktop modal path).
+          if (deepLinkOpenedRef.current) {
+            deepLinkOpenedRef.current = false;
+            navigate('/comm/events-meetups?tab=hot', { replace: true });
+          }
         }}
         video={selectedVideo}
         onNext={handleNextVideo}
