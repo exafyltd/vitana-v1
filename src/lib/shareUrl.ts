@@ -23,12 +23,20 @@ export function getShareUrl(
     return `https://e.vitanaland.com/products/${encodeURIComponent(id)}`;
   }
 
-  // Shorts use e.vitanaland.com for OG previews. Crawlers get server-rendered
-  // OG HTML (thumbnail + title + creator) from the og-short Supabase Edge
-  // Function; humans 302 to /comm/media-hub?short=<id> which auto-opens the
-  // specific short.
+  // Shorts share through the apex (vitanaland.com) instead of the
+  // e.vitanaland.com OG-proxy subdomain. Reason: Appilix's Deep Link UI
+  // only allows ONE host in the iOS Universal Links entitlement, and the
+  // app is configured for vitanaland.com. Tapping an e.vitanaland.com
+  // link from WhatsApp on a phone where the user is already signed into
+  // the Appilix app would open WhatsApp's in-app browser instead of
+  // handing the URL to the app — forcing a sign-in detour. Sharing
+  // through the apex makes Universal Links fire and the app receives the
+  // tap directly. The Cloudflare worker (`vitanaland-og-proxy`) is bound
+  // to `vitanaland.com/shorts/*` so crawlers still get the og-short
+  // Supabase Edge Function HTML and humans still 302 to
+  // /comm/media-hub?short=<id>; only the public host has changed.
   if (type === 'short') {
-    return `https://e.vitanaland.com/shorts/${encodeURIComponent(id)}`;
+    return `https://vitanaland.com/shorts/${encodeURIComponent(id)}`;
   }
   // Campaigns use clean app URLs for sharing
   // OG previews work via client-side meta tag injection
