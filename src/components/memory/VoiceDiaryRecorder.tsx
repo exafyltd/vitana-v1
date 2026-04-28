@@ -34,6 +34,10 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   // mounted (otherwise deleting the last character unmounts the textarea
   // and looks like a "save and exit" event to the user).
   const [hasActiveSession, setHasActiveSession] = useState(false);
+  // Guards against double-saving when the user taps Save twice during the
+  // network round-trip. Without this, two diary_entries inserts fire and
+  // the same transcript is stored twice.
+  const [isSaving, setIsSaving] = useState(false);
 
   const sttRef = useRef<ClientSTT | null>(null);
   const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
@@ -399,6 +403,13 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   };
 
   const saveDiaryEntry = async () => {
+    if (isSaving) {
+      // In-flight guard: a previous Save click is still awaiting its
+      // insert. Without this, double-tapping the Save button (or even
+      // a slightly delayed second tap during the network round-trip)
+      // inserts the same entry twice.
+      return;
+    }
     if (!transcribedText.trim()) {
       toast({
         title: "No Content",
@@ -408,6 +419,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       return;
     }
 
+    setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
@@ -456,6 +468,8 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         description: "Could not save your diary entry. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -539,6 +553,14 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
               )}
             </div>
 
+            {isRecording && useBackendSTT && (
+              <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
+                Your transcription will appear here as soon as you tap <strong>Stop</strong>.
+                Your phone's browser doesn't support live word-by-word
+                transcription, so the full text shows up after recording ends.
+              </div>
+            )}
+
             <Textarea
               value={transcribedText + (interimText ? ' ' + interimText : '')}
               onChange={(e) => !isRecording && setTranscribedText(e.target.value)}
@@ -562,10 +584,19 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                 <Button
                   onClick={saveDiaryEntry}
                   className="flex-1"
-                  disabled={!transcribedText.trim()}
+                  disabled={!transcribedText.trim() || isSaving}
                 >
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Entry
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Saving…
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4 mr-2" />
+                      Save Entry
+                    </>
+                  )}
                 </Button>
                 <Button
                   variant="outline"
@@ -574,6 +605,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                     setRecordingDuration(0);
                     setHasActiveSession(false);
                   }}
+                  disabled={isSaving}
                 >
                   Discard
                 </Button>
