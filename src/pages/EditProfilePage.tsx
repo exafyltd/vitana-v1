@@ -11,6 +11,8 @@ import { ComplianceDrawer } from "@/components/profile/drawers/ComplianceDrawer"
 import { ShowcaseDrawer } from "@/components/profile/drawers/ShowcaseDrawer";
 import { VisibilityDrawer } from "@/components/profile/drawers/VisibilityDrawer";
 import { AccountEditDrawer } from "@/components/profile/drawers/AccountEditDrawer";
+// VTID-DANCE-D5
+import { DancePreferencesDrawer } from "@/components/profile/drawers/DancePreferencesDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -57,6 +59,16 @@ export default function EditProfilePage() {
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
+  // VTID-DANCE-D5
+  const [danceDrawerOpen, setDanceDrawerOpen] = useState(false);
+  // Open dance drawer when ?drawer=dance is present in URL (deep-link).
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("drawer") === "dance") {
+      setDanceDrawerOpen(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
@@ -626,6 +638,15 @@ export default function EditProfilePage() {
         open={accountDrawerOpen}
         onOpenChange={(open) => {
           setAccountDrawerOpen(open);
+          if (!open) refetchProfile();
+        }}
+      />
+
+      {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}
+      <DancePreferencesDrawer
+        open={danceDrawerOpen}
+        onOpenChange={(open) => {
+          setDanceDrawerOpen(open);
           if (!open) refetchProfile();
         }}
       />
