@@ -39,6 +39,7 @@ export function MobileBottomNav() {
     '/news/',
     '/payment-checkout',
     '/kyc-verification',
+    '/inbox',
   ];
   
   const shouldHideNav = hideNavRoutes.some(route => 
