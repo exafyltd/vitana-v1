@@ -20,7 +20,7 @@ import { MediaUploadPopup } from "@/components/MediaUploadPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { communityNavigation } from "@/config/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -227,8 +227,12 @@ export default function MediaHub() {
   const [mobileShortsFeedOpen, setMobileShortsFeedOpen] = useState(false);
   
   // Read tab parameter from URL and set initial active tab
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const shortParam = searchParams.get('short');
   const [activeMediaTab, setActiveMediaTab] = useState(() => {
+    // A ?short=<id> deep-link must land on the Shorts tab regardless of any
+    // stale ?tab= param that came along with it.
+    if (searchParams.get('short')) return 'shorts';
     const tabParam = searchParams.get('tab');
     // Validate tab parameter against allowed values
     if (tabParam === 'music' || tabParam === 'podcasts' || tabParam === 'shorts') {
@@ -236,6 +240,7 @@ export default function MediaHub() {
     }
     return 'shorts'; // default fallback
   });
+  const hasAutoOpenedShortRef = useRef(false);
   
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [podcastToDelete, setPodcastToDelete] = useState<string | null>(null);
@@ -429,6 +434,33 @@ export default function MediaHub() {
     setSelectedVideoIndex(index);
     setIsVideoPlayerOpen(true);
   };
+
+  // Deep-link: consume ?short=<id> once the shorts list has loaded and auto-open
+  // the matching slide. Works on both mobile (immersive feed) and desktop
+  // (VideoPlayerModal). Drops the param from the URL so refresh / navigate-back
+  // don't re-fire the open and the address bar stays clean.
+  useEffect(() => {
+    if (!shortParam) return;
+    if (hasAutoOpenedShortRef.current) return;
+    if (isShortsLoading) return;
+    const idx = videoShorts.findIndex((v) => v.id === shortParam);
+    hasAutoOpenedShortRef.current = true;
+    setSearchParams(
+      (prev) => {
+        prev.delete('short');
+        return prev;
+      },
+      { replace: true },
+    );
+    if (idx === -1) return;
+    const target = videoShorts[idx];
+    if (isMobile) {
+      setSelectedVideoIndex(idx);
+      setMobileShortsFeedOpen(true);
+    } else if ('src_url' in target) {
+      handleVideoClick(target, idx);
+    }
+  }, [shortParam, isShortsLoading, videoShorts, isMobile, setSearchParams]);
 
   const handleNextVideo = () => {
     if (selectedVideoIndex < videoShorts.length - 1) {
