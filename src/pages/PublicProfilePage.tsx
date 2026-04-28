@@ -4,6 +4,8 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
+// VTID-DANCE-D5/D9
+import { DancePublicSection } from "@/components/profile/sections/DancePublicSection";
 import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
@@ -316,11 +318,16 @@ export default function PublicProfilePage() {
         url={`https://vitana-v1.lovable.app/u/${profile.handle}`}
       />
       
-      <ProfileLayout 
+      <ProfileLayout
         profile={profile}
         scope={scope}
         editMode={false}
       />
+
+      {/* VTID-DANCE-D5/D9: dance preferences (visibility-honoring) */}
+      <div className="container max-w-3xl mx-auto px-4">
+        <DancePublicSection userId={profile.id} isOwn={false} />
+      </div>
     </AppLayout>
   );
 }
