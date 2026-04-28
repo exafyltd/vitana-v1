@@ -175,6 +175,33 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
           }
         }
 
+        // VTID-DANCE-D14: structured navigation targets from gateway voice tool.
+        if (call.name === 'navigate_to_screen') {
+          const target = String(call.args?.target || '');
+          const intentId = call.args?.intent_id ? String(call.args.intent_id) : null;
+          const matchId = call.args?.match_id ? String(call.args.match_id) : null;
+          const TARGET_TO_PATH: Record<string, string> = {
+            my_intents: '/intents/mine',
+            intent_board: '/intents/board',
+            intent_board_dance: '/intents/board?filter=dance',
+            open_asks: '/comm/open-asks',
+            members: '/comm/members',
+            edit_dance_preferences: '/profile/edit?drawer=dance',
+            events_meetups: '/comm/events-meetups',
+            community_feed: '/comm/feed',
+          };
+          let path = TARGET_TO_PATH[target] || null;
+          if (target === 'intent_match_detail' && matchId) path = `/intents/match/${matchId}`;
+          if (target === 'intent_post_public' && intentId) path = `/p/${intentId}`;
+          if (path) {
+            navigate(path);
+            toast({ title: `Opening: ${target.replace(/_/g, ' ')}` });
+            console.log(`[VITANA Tools] ✅ navigate_to_screen → ${path}`);
+            continue;
+          }
+          console.warn(`[VITANA Tools] navigate_to_screen unknown target: ${target}`);
+        }
+
         switch (call.name) {
           case 'start_glass_mode':
             toast({
