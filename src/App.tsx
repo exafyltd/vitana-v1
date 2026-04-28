@@ -195,6 +195,8 @@ const MediaHub = lazy(() => import("./pages/community/MediaHub"));
 const LiveRooms = lazy(() => import("./pages/community/LiveRooms"));
 // VTID-DANCE-D4: public community members directory
 const CommunityMembers = lazy(() => import("./pages/community/Members"));
+// VTID-DANCE-D7: open-asks public feed
+const CommunityOpenAsks = lazy(() => import("./pages/community/OpenAsks"));
 const LiveRoomViewer = lazy(() => import("./pages/community/LiveRoomViewer"));
 
 // AI sub-pages
@@ -901,6 +903,13 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/community/members" element={<Navigate to="/comm/members" replace />} />
+          {/* VTID-DANCE-D7: open-asks feed */}
+          <Route path="/comm/open-asks" element={
+            <AuthGuard>
+              <CommunityOpenAsks />
+            </AuthGuard>
+          } />
+          <Route path="/community/open-asks" element={<Navigate to="/comm/open-asks" replace />} />
           {/* Business Hub - Standalone Section with nested routes */}
           <Route path="/business" element={
             <AuthGuard>
