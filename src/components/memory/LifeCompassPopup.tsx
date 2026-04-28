@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useLifeCompass } from "@/hooks/useLifeCompass";
+import { useTranslation } from "@/hooks/useTranslation";
+import { applyReplacements } from "@/lib/i18n-helpers";
 import { cn } from "@/lib/utils";
 
 interface LifeCompassPopupProps {
@@ -18,77 +20,73 @@ interface LifeCompassPopupProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Canonical English titles double as the persisted DB value for suggested
+// goals — that's what makes "Current Compass" re-localizable after a language
+// switch (we match the stored title against the canonical one to decide
+// whether to render the translated label or fall through verbatim for a
+// user-typed custom goal). It also matches the legacy data already in DB.
 const SUGGESTED_GOALS = [
   {
     category: "wealth",
+    canonicalTitle: "Build Financial Freedom",
     icon: DollarSign,
-    title: "Build Financial Freedom",
-    description: "Achieve financial independence and wealth",
     gradient: "from-yellow-500/20 to-amber-500/20",
   },
   {
     category: "relationship",
+    canonicalTitle: "Find Life Partner",
     icon: Heart,
-    title: "Find Life Partner",
-    description: "Build meaningful romantic relationships",
     gradient: "from-pink-500/20 to-rose-500/20",
   },
   {
     category: "health",
+    canonicalTitle: "Transform Health",
     icon: TrendingUp,
-    title: "Transform Health",
-    description: "Achieve optimal physical and mental wellness",
     gradient: "from-green-500/20 to-emerald-500/20",
   },
   {
     category: "career",
+    canonicalTitle: "Advance Career",
     icon: Briefcase,
-    title: "Advance Career",
-    description: "Build a fulfilling and successful career",
     gradient: "from-blue-500/20 to-cyan-500/20",
   },
   {
     category: "learning",
+    canonicalTitle: "Master New Skills",
     icon: GraduationCap,
-    title: "Master New Skills",
-    description: "Learn and grow through knowledge",
     gradient: "from-purple-500/20 to-indigo-500/20",
   },
   {
     category: "spiritual",
+    canonicalTitle: "Spiritual Life",
     icon: Sparkles,
-    title: "Spiritual Life",
-    description: "Deepen purpose, presence, and inner peace",
     gradient: "from-violet-500/20 to-fuchsia-500/20",
   },
   {
     // System-seeded default goal — keep it available so users can swap back
     // to the longevity focus at any time after choosing a different primary.
     category: "longevity",
+    canonicalTitle: "Improve quality of life and extend lifespan",
     icon: InfinityIcon,
-    title: "Improve quality of life and extend lifespan",
-    description: "Focus on healthspan, energy, and longevity — Vitanaland's mission",
     gradient: "from-sky-500/20 to-teal-500/20",
   },
 ];
 
 // Whether a suggested goal is the same one that's currently active on the
-// user's compass. We match on both title and category (case-insensitive,
-// trimmed) so a suggestion selected from the list always matches what's stored.
+// user's compass. We match on the category (case-insensitive, trimmed) since
+// the localized title varies by language but the category is stable.
 function isActiveGoal(
-  goal: { title: string; category: string },
+  goal: { category: string },
   compass: { primary_goal: string; category: string } | null | undefined,
 ): boolean {
   if (!compass) return false;
   const norm = (s: string) => s.trim().toLowerCase();
-  return (
-    norm(compass.primary_goal) === norm(goal.title) ||
-    norm(compass.category) === norm(goal.category)
-  );
+  return norm(compass.category) === norm(goal.category);
 }
 
 export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) {
   const { compass, updateCompass, isUpdating } = useLifeCompass();
+  const { translate } = useTranslation();
   const [customGoal, setCustomGoal] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -103,12 +101,29 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
   );
 
   const handleSuggestedGoal = (goal: typeof SUGGESTED_GOALS[0]) => {
+    // Persist the canonical (English) title, not the localized one — render
+    // re-localizes via lifeCompass.goals.<category>.title so a user who picks
+    // a goal in German still sees the English label after switching to EN.
     updateCompass({
-      primary_goal: goal.title,
+      primary_goal: goal.canonicalTitle,
       category: goal.category,
     });
     onOpenChange(false);
   };
+
+  // Resolve the visible "Current Compass" string. Suggested goals (those
+  // whose stored primary_goal matches the canonical English title for the
+  // saved category) are re-translated at render time. User-typed custom
+  // goals are rendered verbatim — there's nothing to translate.
+  const displayedPrimaryGoal = (() => {
+    if (!compass) return "";
+    const match = SUGGESTED_GOALS.find(
+      (g) => g.category === compass.category && g.canonicalTitle === compass.primary_goal,
+    );
+    return match
+      ? translate(`lifeCompass.goals.${match.category}.title`, match.canonicalTitle)
+      : compass.primary_goal;
+  })();
 
   const handleCustomGoal = () => {
     if (!customGoal.trim() || !selectedCategory) return;
@@ -130,7 +145,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
             area. The framework's default Close is hidden by [&>button]:sr-only
             on DialogContent, so render our own with a clear target and z-index. */}
         <DialogClose
-          aria-label="Close"
+          aria-label={translate('lifeCompass.closeAria', 'Close')}
           className="absolute right-3 top-3 z-10 rounded-full p-1.5 bg-muted/80 hover:bg-muted text-foreground opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/60"
         >
           <X className="h-4 w-4" />
@@ -139,23 +154,25 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
         <DialogHeader className="pr-8">
           <div className="flex items-center gap-2 mb-1">
             <Target className="h-5 w-5 sm:h-6 sm:w-6 text-primary shrink-0" />
-            <DialogTitle className="text-xl sm:text-2xl break-words">Life Compass</DialogTitle>
+            <DialogTitle className="text-xl sm:text-2xl break-words">
+              {translate('lifeCompass.title', 'Life Compass')}
+            </DialogTitle>
           </div>
           <DialogDescription className="text-sm sm:text-base leading-relaxed break-words">
-            Your Life Compass guides all AI recommendations and decisions. Choose a primary goal
-            that matters most to you right now. The AI will prioritize suggestions that align
-            with this direction.
+            {translate('lifeCompass.description')}
           </DialogDescription>
         </DialogHeader>
 
         {compass && (
           <div className="p-3 sm:p-4 rounded-lg bg-primary/10 border border-primary/20">
-            <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">Current Compass</p>
-            <p className="text-base sm:text-lg font-semibold break-words">{compass.primary_goal}</p>
+            <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-1">
+              {translate('lifeCompass.currentCompass', 'Current Compass')}
+            </p>
+            <p className="text-base sm:text-lg font-semibold break-words">{displayedPrimaryGoal}</p>
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm text-muted-foreground">
-              <span>Alignment: {compass.alignment_score}%</span>
+              <span>{applyReplacements(translate('lifeCompass.alignment'), { value: compass.alignment_score })}</span>
               <span className="hidden sm:inline">•</span>
-              <span>Confidence: {compass.confidence_score}%</span>
+              <span>{applyReplacements(translate('lifeCompass.confidence'), { value: compass.confidence_score })}</span>
             </div>
           </div>
         )}
@@ -163,7 +180,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
         <div className="space-y-4">
           <div>
             <h3 className="text-xs sm:text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
-              Suggested Goals
+              {translate('lifeCompass.suggestedGoals', 'Suggested Goals')}
             </h3>
             <div className="grid gap-2.5 sm:gap-3">
               {visibleGoals.map((goal) => {
@@ -182,8 +199,12 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
                   >
                     <Icon className="h-5 w-5 mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm sm:text-base break-words">{goal.title}</p>
-                      <p className="text-xs sm:text-sm text-muted-foreground break-words">{goal.description}</p>
+                      <p className="font-semibold text-sm sm:text-base break-words">
+                        {translate(`lifeCompass.goals.${goal.category}.title`)}
+                      </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground break-words">
+                        {translate(`lifeCompass.goals.${goal.category}.description`)}
+                      </p>
                     </div>
                   </button>
                 );
@@ -193,10 +214,10 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
 
           <div className="pt-4 border-t">
             <h3 className="text-xs sm:text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">
-              Custom Goal
+              {translate('lifeCompass.customGoal', 'Custom Goal')}
             </h3>
             <Textarea
-              placeholder="Describe your primary goal in your own words..."
+              placeholder={translate('lifeCompass.customGoalPlaceholder')}
               value={customGoal}
               onChange={(e) => setCustomGoal(e.target.value)}
               className="min-h-20 sm:min-h-24 mb-3 text-sm sm:text-base"
@@ -213,7 +234,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
                       : "border-border hover:border-primary/50"
                   )}
                 >
-                  {goal.category}
+                  {translate(`lifeCompass.categoryLabels.${goal.category}`, goal.category)}
                 </button>
               ))}
             </div>
@@ -222,7 +243,7 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
               disabled={!customGoal.trim() || !selectedCategory || isUpdating}
               className="w-full"
             >
-              Set Custom Goal
+              {translate('lifeCompass.setCustomGoal', 'Set Custom Goal')}
             </Button>
           </div>
         </div>

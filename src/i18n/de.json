@@ -88,15 +88,29 @@
     "tiers": {
       "test": {
         "name": "Test",
-        "benefits": ["Nur für Zahlungstest", "Kein echter Gutschein", "Für Entwicklungstests"]
+        "benefits": [
+          "Nur für Zahlungstest",
+          "Kein echter Gutschein",
+          "Für Entwicklungstests"
+        ]
       },
       "experience": {
         "name": "Erlebnis",
-        "benefits": ["1 Premium-Community-Event-Zugang", "Personalisierte Wellness-Beratung", "30-Tage Vitana+ Testversion inklusive", "Wunderschön gestalteter E-Gutschein"]
+        "benefits": [
+          "1 Premium-Community-Event-Zugang",
+          "Personalisierte Wellness-Beratung",
+          "30-Tage Vitana+ Testversion inklusive",
+          "Wunderschön gestalteter E-Gutschein"
+        ]
       },
       "exclusive": {
         "name": "Exklusiv",
-        "benefits": ["3 Premium-Community-Events", "1-zu-1 Experten-Coaching", "90-Tage Vitana+ Abonnement", "Prioritätsbuchung + VIP-Vorteile"]
+        "benefits": [
+          "3 Premium-Community-Events",
+          "1-zu-1 Experten-Coaching",
+          "90-Tage Vitana+ Abonnement",
+          "Prioritätsbuchung + VIP-Vorteile"
+        ]
       }
     },
     "success": {
@@ -643,7 +657,7 @@
     "home": "Startseite",
     "news": "News",
     "community": "Community",
-    "discover": "Entdecken", 
+    "discover": "Entdecken",
     "inbox": "Postfach",
     "health": "Gesundheit",
     "wallet": "Wallet",
@@ -737,7 +751,23 @@
   },
   "autopilot": {
     "title": "Autopilot",
-    "suggestions": "KI-Vorschläge",
+    "suggestions": {
+      "bannerTitle": "Autopilot kann Ihr Profil optimieren",
+      "bannerDesc": "Erhalten Sie KI-gestützte Vorschläge, um Ihr Profil ansprechender zu gestalten.",
+      "enable": "Aktivieren",
+      "showcaseTitle": "Autopilot-Empfehlungen",
+      "showcaseBadge": "Smart",
+      "showcaseDesc": "Basierend auf Ihrer Aktivität könnten diese Beiträge gut als Featured-Inhalte funktionieren:",
+      "suggestPopular": "Beliebte Beiträge vorschlagen",
+      "recentHighlights": "Aktuelle Highlights",
+      "archetypeTitle": "Archetyp-Einblicke",
+      "archetypeBadge": "KI-Analyse",
+      "archetypeDesc": "Ihre Wellness-Aktivitäten deuten darauf hin, dass Sie \"The Mindful Mover\" sein könnten - möchten Sie aktualisieren?",
+      "updateArchetype": "Archetyp aktualisieren",
+      "profileSectionTitle": "Autopilot kann Ihr Profil aufpolieren ✨",
+      "profileSectionDesc": "Erhalten Sie KI-gestützte Vorschläge für Ihre Biografie, Ihren Archetyp und Ihre Highlights.",
+      "tryAutopilot": "Autopilot testen"
+    },
     "preview": "Autopilot-Vorschau",
     "viewAll": "Alle anzeigen",
     "noSuggestions": "Alles optimiert! 🎯",
@@ -789,7 +819,7 @@
     "profilePopup": {
       "title": "Profil Erweitern ✨",
       "polishBio": "Optimieren Sie ihr Profil",
-      "polishBioDesc": "Der Autopilot kann den Abschnitt \u201EÜber mich\u201C umschreiben, damit er inspirierender wird.",
+      "polishBioDesc": "Der Autopilot kann den Abschnitt „Über mich“ umschreiben, damit er inspirierender wird.",
       "refreshArchetype": "Profil anpassen",
       "refreshArchetypeDesc": "Profil-Aktualisierung basierend auf Aktivität vorschlagen",
       "highlightShowcase": "Meine Highlights",
@@ -808,23 +838,6 @@
       "applied": "Änderungen gespeichert!",
       "error": "Etwas ist schiefgelaufen",
       "comingSoon": "Bald verfügbar"
-    },
-    "suggestions": {
-      "bannerTitle": "Autopilot kann Ihr Profil optimieren",
-      "bannerDesc": "Erhalten Sie KI-gestützte Vorschläge, um Ihr Profil ansprechender zu gestalten.",
-      "enable": "Aktivieren",
-      "showcaseTitle": "Autopilot-Empfehlungen",
-      "showcaseBadge": "Smart",
-      "showcaseDesc": "Basierend auf Ihrer Aktivität könnten diese Beiträge gut als Featured-Inhalte funktionieren:",
-      "suggestPopular": "Beliebte Beiträge vorschlagen",
-      "recentHighlights": "Aktuelle Highlights",
-      "archetypeTitle": "Archetyp-Einblicke",
-      "archetypeBadge": "KI-Analyse",
-      "archetypeDesc": "Ihre Wellness-Aktivitäten deuten darauf hin, dass Sie \"The Mindful Mover\" sein könnten - möchten Sie aktualisieren?",
-      "updateArchetype": "Archetyp aktualisieren",
-      "profileSectionTitle": "Autopilot kann Ihr Profil aufpolieren ✨",
-      "profileSectionDesc": "Erhalten Sie KI-gestützte Vorschläge für Ihre Biografie, Ihren Archetyp und Ihre Highlights.",
-      "tryAutopilot": "Autopilot testen"
     },
     "actions": {
       "action1Title": "Heute Abend der Langlebigkeits-Tanzgruppe beitreten?",
@@ -916,7 +929,7 @@
     "title": "Vitana Gesundheitsindex",
     "subtitle": "Allgemeine Wellness-Balance über alle Gesundheitssäulen",
     "veryPoor": "Sehr schlecht",
-    "poor": "Schlecht", 
+    "poor": "Schlecht",
     "fair": "Ausreichend",
     "improving": "Verbessernd",
     "good": "Gut",
@@ -1228,15 +1241,15 @@
       "generatePlan": "Plan generieren",
       "generating": "Wird generiert..."
     },
-    "noSupplements": "Noch keine Nahrungserg\u00e4nzungsmittel",
-    "noSupplementsDesc": "Verfolgen Sie Ihre t\u00e4glichen Vitamine, Mineralien und Nahrungserg\u00e4nzungsmittel. F\u00fcgen Sie Ihr erstes Supplement hinzu.",
+    "noSupplements": "Noch keine Nahrungsergänzungsmittel",
+    "noSupplementsDesc": "Verfolgen Sie Ihre täglichen Vitamine, Mineralien und Nahrungsergänzungsmittel. Fügen Sie Ihr erstes Supplement hinzu.",
     "noReports": "Noch keine Gesundheitsberichte",
     "noReportsDesc": "Laden Sie Ihre Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
     "medical": "Medizin",
     "supplements": "Supplemente",
     "uploadDescription": "Bluttests, Bildgebung, Laborergebnisse",
     "unknownProvider": "Unbekannter Anbieter",
-    "addSupplement": "Supplement hinzuf\u00fcgen",
+    "addSupplement": "Supplement hinzufügen",
     "uploadFirstReport": "Ersten Bericht hochladen"
   },
   "home": {
@@ -1250,40 +1263,19 @@
     "dailyMatches": "Tägliche Matches"
   },
   "profile": {
-    "title": "Profil",
-    "editProfile": "Profil bearbeiten",
-    "viewProfile": "Profil anzeigen",
-    "myProfile": "Mein Profil",
-    "tabs": {
-      "posts": "Posts",
-      "about": "Über Mich",
-      "media": "Medien",
-      "groups": "Gruppen",
-      "events": "Events",
-      "health": "Gesundheit",
-      "services": "Dienste",
-      "insight": "Einblick"
+    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
+    "autopilot": {
+      "polishBio": "Bio, Profil & Highlights",
+      "editHighlights": "Highlights bearbeiten",
+      "saveHighlights": "Highlights speichern",
+      "highlightsDesc": "Wählen Sie Ihre besten Beiträge und Medien aus, die oben in Ihrem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an.",
+      "try": "Ausprobieren"
     },
-    "sections": {
-      "basicInfo": "Grundinformationen",
-      "contact": "Kontakt",
-      "social": "Soziale Medien",
-      "bio": "Biografie",
-      "interests": "Interessen"
-    },
-    "fields": {
-      "displayName": "Anzeigename",
-      "username": "Benutzername",
-      "email": "E-Mail",
-      "phone": "Telefon",
-      "location": "Standort",
-      "website": "Website",
-      "bio": "Über mich"
-    },
-    "noPostsYet": "Noch keine Posts",
-    "noPostsYetDesc": "Ihre Posts werden hier erscheinen.",
-    "noGroupsYet": "Noch keine Gruppen",
-    "noGroupsYetDesc": "Treten Sie Gruppen bei, um sich zu vernetzen."
+    "identity": {
+      "vitanaIndex": "Vitana Index",
+      "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
+      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
+    }
   },
   "profileTabs": {
     "posts": "Posts",
@@ -1513,34 +1505,20 @@
     "updating": "Wird aktualisiert..."
   },
   "empty": {
-    "noData": "Keine Daten vorhanden",
-    "noDataDesc": "Es gibt hier noch nichts zu sehen.",
-    "noResults": "Keine Ergebnisse gefunden",
-    "noResultsDesc": "Versuchen Sie andere Suchbegriffe.",
-    "noMessages": "Noch keine Nachrichten",
-    "noMessagesDesc": "Starten Sie eine Unterhaltung.",
-    "noEvents": "Keine Veranstaltungen",
-    "noEventsDesc": "Schauen Sie später wieder vorbei.",
-    "noOrders": "Noch keine Bestellungen",
-    "noOrdersDesc": "Ihre Bestellungen erscheinen hier.",
-    "noRooms": "Keine Live Rooms",
-    "noRoomsDesc": "Erstellen Sie einen Raum oder schauen Sie später vorbei.",
-    "noGroups": "Noch keine Gruppen",
-    "noGroupsDesc": "Treten Sie einer Gruppe bei oder erstellen Sie eine.",
-    "noMusic": "Noch keine Musik",
-    "noMusicDesc": "Musik wird hier erscheinen.",
-    "noPodcasts": "Noch keine Podcasts",
-    "noPodcastsDesc": "Podcasts werden hier erscheinen.",
-    "noServices": "Noch keine Dienste",
-    "noServicesDesc": "Dienste werden hier erscheinen.",
-    "noClients": "Noch keine Kunden",
-    "noClientsDesc": "Ihre Kunden werden hier erscheinen.",
-    "noNotifications": "Keine Benachrichtigungen",
-    "noNotificationsDesc": "Sie sind auf dem neuesten Stand.",
-    "noActivity": "Keine Aktivität",
-    "noActivityDesc": "Ihre Aktivitäten werden hier erscheinen.",
-    "noPlan": "Noch kein Plan",
-    "noPlanDesc": "Generieren Sie einen personalisierten Plan."
+    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
+    "noEventsFound": "Keine Veranstaltungen gefunden",
+    "noContactsFound": "Keine Kontakte gefunden",
+    "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
+    "noGroupsFound": "Keine Gruppen gefunden",
+    "noResultsFound": "Keine Ergebnisse gefunden",
+    "noReportsFound": "Keine Berichte gefunden",
+    "noUsersFound": "Keine Benutzer gefunden",
+    "noTransactionsFound": "Keine Transaktionen gefunden",
+    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
+    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen",
+    "noData": "Keine Daten verfügbar",
+    "noMessages": "Keine Nachrichten",
+    "noNotifications": "Keine Benachrichtigungen"
   },
   "confirm": {
     "delete": "Sind Sie sicher, dass Sie dies löschen möchten?",
@@ -1645,28 +1623,7 @@
     "terms": "Nutzungsbedingungen"
   },
   "consent": {
-    "privacy": {
-      "title": "Ihre Privatsphäre ist geschützt",
-      "subtitle": "So gehen wir mit Ihren Kontakten um",
-      "neverAutoMessage": "Wir senden niemals automatisch Nachrichten",
-      "neverAutoMessageDesc": "Sie entscheiden, wen und wann Sie kontaktieren",
-      "hashedLocally": "Kontakte werden lokal verschlüsselt",
-      "hashedLocallyDesc": "Wir verwenden nur verschlüsselte Kennungen",
-      "youChoose": "Sie wählen, wen Sie einladen",
-      "youChooseDesc": "Volle Kontrolle über jede Einladung",
-      "helperText": "Übereinstimmungen werden aus verschlüsselten Kontaktdaten generiert. Ihre Rohdaten verlassen niemals Ihr Gerät.",
-      "notNow": "Nicht jetzt",
-      "continue": "Fortfahren"
-    },
-    "dataAccess": {
-      "title": "Datenzugriff-Einwilligung erforderlich",
-      "description": "Sie sind dabei, {action}. Diese Aktion erfordert Ihre ausdrückliche Zustimmung.",
-      "gdprNotice": "Ihre persönlichen Daten sind durch Datenschutzvorschriften (DSGVO, HIPAA, PDPA) geschützt. Mit dem Fortfahren stimmen Sie nur dieser spezifischen Aktion zu.",
-      "revokeAnytime": "Sie können diese Einwilligung jederzeit widerrufen",
-      "loggedForSecurity": "Diese Einwilligung wird für Ihre Sicherheit protokolliert",
-      "recipientsComply": "Empfänger müssen die Datenschutzvorschriften einhalten",
-      "iConsent": "Ich stimme zu"
-    }
+    "searchPlaceholder": "Einwilligungspakete, Organisationen, Berechtigungen suchen..."
   },
   "audio": {
     "listening": "Ich höre zu...",
@@ -1993,22 +1950,6 @@
     "date": "Datum",
     "amount": "Betrag"
   },
-  "empty": {
-    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
-    "noEventsFound": "Keine Veranstaltungen gefunden",
-    "noContactsFound": "Keine Kontakte gefunden",
-    "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
-    "noGroupsFound": "Keine Gruppen gefunden",
-    "noResultsFound": "Keine Ergebnisse gefunden",
-    "noReportsFound": "Keine Berichte gefunden",
-    "noUsersFound": "Keine Benutzer gefunden",
-    "noTransactionsFound": "Keine Transaktionen gefunden",
-    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
-    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen",
-    "noData": "Keine Daten verfügbar",
-    "noMessages": "Keine Nachrichten",
-    "noNotifications": "Keine Benachrichtigungen"
-  },
   "loading": {
     "default": "Wird geladen...",
     "groups": "Gruppen werden geladen...",
@@ -2132,29 +2073,11 @@
       "cancel": "Abbrechen"
     }
   },
-  "profile": {
-    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
-    "autopilot": {
-      "polishBio": "Bio, Profil & Highlights",
-      "editHighlights": "Highlights bearbeiten",
-      "saveHighlights": "Highlights speichern",
-      "highlightsDesc": "Wählen Sie Ihre besten Beiträge und Medien aus, die oben in Ihrem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an.",
-      "try": "Ausprobieren"
-    },
-    "identity": {
-      "vitanaIndex": "Vitana Index",
-      "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
-      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
-    }
-  },
   "groups": {
     "searchPlaceholder": "Gruppen suchen..."
   },
   "challenges": {
     "searchPlaceholder": "Challenges suchen..."
-  },
-  "consent": {
-    "searchPlaceholder": "Einwilligungspakete, Organisationen, Berechtigungen suchen..."
   },
   "timeline": {
     "searchPlaceholder": "Aktivität suchen..."
@@ -2318,7 +2241,7 @@
       "avatarUploadedDesc": "Ihr Profilbild wurde aktualisiert.",
       "uploadFailed": "Hochladen fehlgeschlagen",
       "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
-    "identityUpdated": "Identität aktualisiert",
+      "identityUpdated": "Identität aktualisiert",
       "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
     }
   },
@@ -2672,15 +2595,15 @@
   },
   "groupDetail": {
     "members": "Mitglieder",
-    "public": "\u00d6ffentlich",
+    "public": "Öffentlich",
     "private": "Privat",
     "leaveGroup": "Gruppe verlassen",
     "leaving": "Verlassen...",
     "joinGroup": "Beitreten",
     "joining": "Beitreten...",
-    "back": "Zur\u00fcck",
+    "back": "Zurück",
     "notFound": "Gruppe nicht gefunden",
-    "notFoundDesc": "Diese Gruppe wurde m\u00f6glicherweise entfernt oder existiert nicht.",
+    "notFoundDesc": "Diese Gruppe wurde möglicherweise entfernt oder existiert nicht.",
     "browseGroups": "Gruppen durchsuchen",
     "support": "Hilfe"
   },
@@ -2691,19 +2614,19 @@
     "beFirst": "Schreibe den ersten Beitrag!",
     "joinToPost": "Tritt der Gruppe bei, um zu posten.",
     "messageSent": "Nachricht gesendet",
-    "deleteConfirm": "Diese Nachricht l\u00f6schen?",
-    "messageDeleted": "Nachricht gel\u00f6scht",
+    "deleteConfirm": "Diese Nachricht löschen?",
+    "messageDeleted": "Nachricht gelöscht",
     "error": "Fehler",
     "errorSend": "Nachricht konnte nicht gesendet werden",
-    "errorDelete": "Nachricht konnte nicht gel\u00f6scht werden"
+    "errorDelete": "Nachricht konnte nicht gelöscht werden"
   },
   "groupMembership": {
-    "joined": "Beigetreten! \ud83c\udf89",
+    "joined": "Beigetreten! 🎉",
     "joinedDesc": "Du bist jetzt Mitglied dieser Gruppe.",
     "left": "Gruppe verlassen",
     "leftDesc": "Du hast diese Gruppe verlassen.",
-    "errorJoin": "Beitritt nicht m\u00f6glich. Bitte versuche es erneut.",
-    "errorLeave": "Verlassen nicht m\u00f6glich. Bitte versuche es erneut."
+    "errorJoin": "Beitritt nicht möglich. Bitte versuche es erneut.",
+    "errorLeave": "Verlassen nicht möglich. Bitte versuche es erneut."
   },
   "follow": {
     "noFollowers": "Noch keine Follower",
@@ -2799,6 +2722,234 @@
       "sleep": "Schlaf",
       "exercise": "Bewegung",
       "mental": "Mental"
+    }
+  },
+  "lifeCompass": {
+    "title": "Lebenskompass",
+    "description": "Dein Lebenskompass leitet alle KI-Empfehlungen und Entscheidungen. Wähle ein Hauptziel, das dir gerade am wichtigsten ist. Die KI priorisiert Vorschläge, die zu dieser Richtung passen.",
+    "currentCompass": "Aktueller Kompass",
+    "alignment": "Ausrichtung: {value}%",
+    "confidence": "Vertrauen: {value}%",
+    "suggestedGoals": "Vorgeschlagene Ziele",
+    "customGoal": "Eigenes Ziel",
+    "customGoalPlaceholder": "Beschreibe dein Hauptziel in deinen eigenen Worten...",
+    "setCustomGoal": "Eigenes Ziel festlegen",
+    "closeAria": "Schließen",
+    "categoryLabels": {
+      "wealth": "Wohlstand",
+      "relationship": "Beziehung",
+      "health": "Gesundheit",
+      "career": "Karriere",
+      "learning": "Lernen",
+      "spiritual": "Spirituell",
+      "longevity": "Langlebigkeit"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Finanzielle Freiheit aufbauen",
+        "description": "Finanzielle Unabhängigkeit und Wohlstand erreichen"
+      },
+      "relationship": {
+        "title": "Lebenspartner finden",
+        "description": "Bedeutungsvolle romantische Beziehungen aufbauen"
+      },
+      "health": {
+        "title": "Gesundheit transformieren",
+        "description": "Optimales körperliches und geistiges Wohlbefinden erreichen"
+      },
+      "career": {
+        "title": "Karriere vorantreiben",
+        "description": "Eine erfüllende und erfolgreiche Karriere aufbauen"
+      },
+      "learning": {
+        "title": "Neue Fähigkeiten meistern",
+        "description": "Durch Wissen lernen und wachsen"
+      },
+      "spiritual": {
+        "title": "Spirituelles Leben",
+        "description": "Sinn, Präsenz und inneren Frieden vertiefen"
+      },
+      "longevity": {
+        "title": "Lebensqualität verbessern und Lebensdauer verlängern",
+        "description": "Fokus auf Healthspan, Energie und Langlebigkeit – die Mission von Vitanaland"
+      }
+    }
+  },
+  "memoryActions": {
+    "title": "Erinnerungs-Aktionen",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Sprach-Tagebuch aufnehmen",
+        "description": "Gedanken und Reflexionen per Sprachaufnahme festhalten"
+      },
+      "addMemoryNote": {
+        "title": "Erinnerungsnotiz hinzufügen",
+        "description": "Wichtige Gesundheitsmomente festhalten"
+      },
+      "viewTimeline": {
+        "title": "Zeitachse anzeigen",
+        "description": "Deine gesamte Wellness-Reise ansehen"
+      },
+      "searchMemories": {
+        "title": "Erinnerungen suchen",
+        "description": "Bestimmte Momente und Einsichten finden"
+      },
+      "photoMemory": {
+        "title": "Fotoerinnerung",
+        "description": "Visuelle Erinnerungen zu deiner Reise hinzufügen"
+      },
+      "aiMemoryAnalysis": {
+        "title": "KI-Erinnerungsanalyse",
+        "description": "Erkenntnisse aus deinen Erinnerungs-Mustern erhalten"
+      }
+    }
+  },
+  "diaryActions": {
+    "title": "Tagebuch-Aktionen",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Sprach-Eintrag aufnehmen",
+        "description": "Gedanken und Reflexionen per Sprachaufnahme festhalten"
+      },
+      "addPhotoEntry": {
+        "title": "Foto-Eintrag hinzufügen",
+        "description": "Bilder hochladen, um deine Wellness-Reise zu dokumentieren"
+      },
+      "writeTextEntry": {
+        "title": "Text-Eintrag schreiben",
+        "description": "Detaillierte schriftliche Reflexionen und Notizen erstellen"
+      },
+      "quickNote": {
+        "title": "Kurznotiz",
+        "description": "Kurze Gedanken oder Beobachtungen festhalten"
+      },
+      "videoDiary": {
+        "title": "Video-Tagebuch",
+        "description": "Video-Reflexionen und Fortschritts-Updates aufnehmen"
+      },
+      "scheduleEntry": {
+        "title": "Eintrag planen",
+        "description": "Zukünftige Tagebuch-Einträge und Erinnerungen planen"
+      },
+      "tagMemories": {
+        "title": "Erinnerungen markieren",
+        "description": "Bestehende Einträge mit Tags und Kategorien organisieren"
+      },
+      "importFiles": {
+        "title": "Dateien importieren",
+        "description": "Dokumente, Bilder oder andere Wellness-Dateien hochladen"
+      }
+    }
+  },
+  "timelineActions": {
+    "title": "Zeitachsen-Aktionen",
+    "items": {
+      "logHealthEvent": {
+        "title": "Gesundheitsereignis erfassen",
+        "description": "Wichtige Gesundheits-Meilensteine festhalten"
+      },
+      "markAchievement": {
+        "title": "Erfolg markieren",
+        "description": "Erreichte Wellness-Ziele feiern"
+      },
+      "recordLifeMoment": {
+        "title": "Lebensmoment festhalten",
+        "description": "Bedeutungsvolle Erlebnisse erfassen"
+      },
+      "addPhotoMemory": {
+        "title": "Fotoerinnerung hinzufügen",
+        "description": "Visuelle Zeitachse mit Gesundheits-Fotos"
+      },
+      "voiceTimelineEntry": {
+        "title": "Sprach-Zeitachsen-Eintrag",
+        "description": "Schnelle Audio-Gesundheits-Updates"
+      },
+      "trackProgress": {
+        "title": "Fortschritt verfolgen",
+        "description": "Wellness-Metriken und Trends erfassen"
+      },
+      "activityCheckIn": {
+        "title": "Aktivitäts-Check-in",
+        "description": "Workouts und Aktivitäten erfassen"
+      },
+      "setTimelineGoal": {
+        "title": "Zeitachsen-Ziel festlegen",
+        "description": "Zukünftige Gesundheitsziele erstellen"
+      }
+    }
+  },
+  "recallActions": {
+    "title": "Erinnerungs-Suche & Abruf",
+    "items": {
+      "askAiQuestion": {
+        "title": "KI-Frage stellen",
+        "description": "Deine Erinnerungen per natürlicher KI-Suche abfragen"
+      },
+      "advancedSearch": {
+        "title": "Erweiterte Suche",
+        "description": "Filter, Tags und Datumsbereiche nutzen, um Erinnerungen zu finden"
+      },
+      "patternAnalysis": {
+        "title": "Muster-Analyse",
+        "description": "Trends und Muster in deinen Wellness-Daten entdecken"
+      },
+      "memoryInsights": {
+        "title": "Erinnerungs-Einsichten",
+        "description": "KI-gestützte Erkenntnisse aus deiner Gesundheits-Reise erhalten"
+      },
+      "searchByDate": {
+        "title": "Nach Datum suchen",
+        "description": "Erinnerungen aus bestimmten Zeiträumen durchsuchen"
+      },
+      "locationMemories": {
+        "title": "Orts-Erinnerungen",
+        "description": "Einträge nach besuchten Orten finden"
+      },
+      "filterByCategory": {
+        "title": "Nach Kategorie filtern",
+        "description": "Erinnerungen nach Wellness-Säulen und Kategorien durchsuchen"
+      },
+      "quickRecalls": {
+        "title": "Schnellabruf",
+        "description": "Auf häufig gesuchte Erinnerungen und Abfragen zugreifen"
+      }
+    }
+  },
+  "permissionsActions": {
+    "title": "Datenschutz- & Berechtigungs-Aktionen",
+    "items": {
+      "privacySettings": {
+        "title": "Datenschutzeinstellungen",
+        "description": "Datenschutz und Freigabe-Einstellungen konfigurieren"
+      },
+      "manageAccess": {
+        "title": "Zugriff verwalten",
+        "description": "Steuern, wer deine Gesundheits-Erinnerungen sehen darf"
+      },
+      "securitySettings": {
+        "title": "Sicherheitseinstellungen",
+        "description": "Authentifizierungs- und Sicherheitseinstellungen aktualisieren"
+      },
+      "apiKeysAccess": {
+        "title": "API-Schlüssel & Zugriff",
+        "description": "Drittanbieter-Integrationen und API-Zugriffe verwalten"
+      },
+      "dataRights": {
+        "title": "Datenrechte",
+        "description": "Deine Rechte auf Datenübertragbarkeit und Löschung wahrnehmen"
+      },
+      "auditLogs": {
+        "title": "Audit-Logs",
+        "description": "Zugriffsverlauf und Sicherheits-Audit-Trail einsehen"
+      },
+      "permissionSettings": {
+        "title": "Berechtigungseinstellungen",
+        "description": "Granulare Berechtigungen für verschiedene Funktionen feinabstimmen"
+      },
+      "exportData": {
+        "title": "Daten exportieren",
+        "description": "Deine Erinnerungen und Gesundheitsdaten sicher herunterladen"
+      }
     }
   }
 }
