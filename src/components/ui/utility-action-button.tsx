@@ -6,6 +6,7 @@ import { GiftVoucherButton } from "@/components/voucher/GiftVoucherButton";
 import { MaxinaVoucherModal } from "@/components/voucher/MaxinaVoucherModal";
 import { isIAPRestricted } from "@/lib/appilix";
 import { useLifeCompassPopup } from "@/context/LifeCompassPopupContext";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface UtilityActionButtonProps {
   children: React.ReactNode;
@@ -41,6 +42,7 @@ export function UtilityActionButton({
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
   const shouldHideVoucher = hideGiftVoucher || isIAPRestricted();
   const { openPopup: openLifeCompass } = useLifeCompassPopup();
+  const { translate } = useTranslation();
 
   return (
     <>
@@ -60,7 +62,7 @@ export function UtilityActionButton({
                 className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
               >
                 <Target className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Life Compass</span>
+                <span className="text-sm">{translate('lifeCompass.title', 'Life Compass')}</span>
               </Button>
             )}
 
