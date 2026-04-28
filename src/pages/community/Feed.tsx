@@ -9,7 +9,8 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { Button } from "@/components/ui/button";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, MessageSquare } from "lucide-react";
+import { Plus, MessageSquare, Users, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
@@ -66,6 +67,30 @@ export default withScreenId(function Feed() {
             )}
           </div>
         </UtilityActionButton>
+
+        {/* VTID-DANCE-D4/D7: discovery primers — Members directory + Open Asks */}
+        <div className="grid grid-cols-2 gap-3 my-4">
+          <Link
+            to="/comm/members"
+            className="rounded-lg border border-border bg-card p-3 hover:border-primary/40 transition-colors flex items-center gap-3"
+          >
+            <Users className="h-5 w-5 text-primary flex-shrink-0" />
+            <div className="min-w-0">
+              <div className="text-sm font-medium">Browse members</div>
+              <div className="text-xs text-muted-foreground truncate">See who's in the community</div>
+            </div>
+          </Link>
+          <Link
+            to="/comm/open-asks"
+            className="rounded-lg border border-border bg-card p-3 hover:border-primary/40 transition-colors flex items-center gap-3"
+          >
+            <Sparkles className="h-5 w-5 text-primary flex-shrink-0" />
+            <div className="min-w-0">
+              <div className="text-sm font-medium">Open asks</div>
+              <div className="text-xs text-muted-foreground truncate">Help someone in the community</div>
+            </div>
+          </Link>
+        </div>
 
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
