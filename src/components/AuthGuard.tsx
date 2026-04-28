@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 
@@ -46,7 +47,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                          window.location.pathname.startsWith('/exafy-admin');
     if (isAdminRoute) return '/exafy-admin';
 
-    const slug = localStorage.getItem('tenant_slug');
+    // Prefer the localStorage tenant slug (set after a previous visit), but
+    // fall back to the hostname → tenant map so a fresh browser context (e.g.
+    // a shared link opened from WhatsApp) doesn't bounce through `/` →
+    // `/_intro/<tenant>` and lose the `?redirectTo=` deep-link target.
+    const slug = localStorage.getItem('tenant_slug')
+      || DOMAIN_TENANT_MAP[window.location.hostname];
     if (slug === 'maxina') return '/maxina';
     if (slug === 'alkalma') return '/alkalma';
     if (slug === 'earthlinks') return '/earthlinks';

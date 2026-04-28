@@ -87,11 +87,14 @@ export default function IntroExperience() {
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
     }
-    
+
     setFadeOut(true);
     setTimeout(() => {
-      // Let the portal handle auth-based routing
-      navigate(`/${tenantSlug}`, { replace: true });
+      // Forward query params (e.g. ?redirectTo=/comm/media-hub?short=<id>)
+      // so the portal's post-login flow can return the user to their original
+      // deep-link target instead of dropping them on the default home page.
+      const qs = window.location.search;
+      navigate(`/${tenantSlug}${qs}`, { replace: true });
     }, 800);
   }, [tenantSlug, navigate]);
 
