@@ -128,6 +128,54 @@ function isLiftSuppressed(): boolean {
 function emitAnalytics(payload: Record<string, unknown>) {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent("celebrate.fired", { detail: payload }));
+  // Best-effort backend ingestion. We only post the small analytics shape
+  // the gateway expects; never block the celebrate() funnel on the network
+  // call (`.catch()` swallows). Anonymous sessions still get aggregated —
+  // the gateway accepts unauthenticated POSTs.
+  try {
+    const body = JSON.stringify({
+      kind: payload.kind,
+      magnitude: typeof payload.magnitude === "number" ? payload.magnitude : undefined,
+      source: typeof payload.source === "string" ? payload.source : undefined,
+      throttled: payload.throttled === true,
+      meta: extractMeta(payload),
+    });
+    void postCelebrateAnalytics(body);
+  } catch {
+    /* never let analytics break the celebration */
+  }
+}
+
+function extractMeta(payload: Record<string, unknown>): Record<string, unknown> | undefined {
+  const meta: Record<string, unknown> = {};
+  for (const k of ["pillar", "thresholdValue", "tierLabel", "streakDays", "streakMilestone"]) {
+    if (payload[k] !== undefined) meta[k] = payload[k];
+  }
+  return Object.keys(meta).length > 0 ? meta : undefined;
+}
+
+async function postCelebrateAnalytics(body: string): Promise<void> {
+  const url = (import.meta.env?.VITE_GATEWAY_URL as string | undefined) ?? null;
+  if (!url) return;
+  let token: string | undefined;
+  try {
+    // Lazy import to keep this module tree-shakeable in non-React surfaces.
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getSession();
+    token = data.session?.access_token ?? undefined;
+  } catch {
+    /* anonymous post is fine */
+  }
+  await fetch(`${url.replace(/\/+$/, "")}/api/v1/analytics/celebrate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      "X-Vitana-Active-Role": "community",
+    },
+    body,
+    keepalive: true,
+  }).catch(() => {});
 }
 
 function todayKey(): string {

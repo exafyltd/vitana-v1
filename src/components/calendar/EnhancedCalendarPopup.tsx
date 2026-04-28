@@ -78,12 +78,14 @@ const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
 
 /**
  * Derive a Vitana pillar for a calendar event:
- * 1. Look for an explicit `pillar:{key}` entry in `wellness_tags`.
- * 2. Fall back to a small `event_type` heuristic — only when the mapping is
- *    unambiguous (workout→exercise, nutrition→nutrition, health→mental).
- * 3. Otherwise return null so the UI renders no chip rather than a wrong one.
+ * 1. Use the typed `pillar` column when present (set by gateway producers).
+ * 2. Fall back to an explicit `pillar:{key}` entry in `wellness_tags`.
+ * 3. Fall back to a small `event_type` heuristic — only when unambiguous
+ *    (workout→exercise, nutrition→nutrition, health→mental).
+ * 4. Otherwise return null so the UI renders no chip rather than a wrong one.
  */
 function derivePillar(event: CalendarEvent): VitanaPillarKey | null {
+  if (event.pillar && event.pillar in PILLAR_LABEL) return event.pillar;
   const tags = event.wellness_tags ?? [];
   for (const tag of tags) {
     const lower = tag.toLowerCase();

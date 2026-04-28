@@ -25,6 +25,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexTrajectoryCard } from "@/components/health/VitanaIndexTrajectoryCard";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
+import { useLifeCompass } from "@/hooks/useLifeCompass";
 import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import { HORIZON_BUCKETS, type HorizonBucket } from "@/lib/horizonBuckets";
@@ -40,6 +41,12 @@ interface Recommendation {
   wave_id?: string | number;
   wave_order?: number;
   contribution_vector?: ContributionVector;
+  /**
+   * Gateway-derived bucket. Populated by the autopilot recommendations
+   * route from `wave.timeline.start_day`. Older deploys may omit this; we
+   * fall back to wave_id-based bucketing when it's missing.
+   */
+  horizon?: HorizonBucket;
 }
 
 interface RecommendationsResponse {
@@ -64,13 +71,22 @@ const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
 
 function bucketFromWaveId(waveId: number | string | undefined): HorizonBucket {
   if (waveId === undefined || waveId === null) return "future";
-  const n = typeof waveId === "number" ? waveId : parseInt(String(waveId), 10);
+  // Wave IDs come back as strings like "wave-1". Strip the "wave-" prefix.
+  const raw = typeof waveId === "string" ? waveId.replace(/^wave-/, "") : String(waveId);
+  const n = parseInt(raw, 10);
   if (!Number.isFinite(n)) return "future";
   if (n <= 0) return "today";
   if (n === 1) return "next3";
   if (n === 2) return "thisWeek";
   if (n === 3) return "month";
   return "future";
+}
+
+const HORIZON_VALUES: HorizonBucket[] = ['today', 'next3', 'thisWeek', 'month', 'future'];
+
+function bucketFromRec(rec: Recommendation): HorizonBucket {
+  if (rec.horizon && HORIZON_VALUES.includes(rec.horizon)) return rec.horizon;
+  return bucketFromWaveId(rec.wave_id);
 }
 
 function dominantPillar(vector?: ContributionVector | null): VitanaPillarKey | null {
@@ -178,6 +194,7 @@ function PersonalPath({
 }
 
 function CompassLine() {
+  const { compass } = useLifeCompass();
   const handleClick = () => {
     window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
   };
@@ -188,7 +205,9 @@ function CompassLine() {
       className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline inline-flex items-center gap-1.5"
     >
       <Compass className="w-3.5 h-3.5" />
-      Set or review your Life Compass
+      {compass?.primary_goal
+        ? `Heading toward: ${compass.primary_goal}`
+        : "Set or review your Life Compass"}
     </button>
   );
 }
@@ -262,7 +281,7 @@ export default function AutopilotDashboard() {
       // Only show open work on the path; completed actions vanish to keep the
       // path forward-looking.
       if (rec.status === "completed") continue;
-      empty[bucketFromWaveId(rec.wave_id)].push(rec);
+      empty[bucketFromRec(rec)].push(rec);
     }
     return empty;
   }, [recommendations]);

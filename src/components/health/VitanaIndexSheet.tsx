@@ -9,8 +9,10 @@ import { pillarKeys, pillarLabel, type VitanaPillarKey } from "@/hooks/useVitana
 import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
+import { useLifeCompass } from "@/hooks/useLifeCompass";
 import { PillarDeltaBadges } from "./PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
+import { buildHorizonPoints, type ProjectedPoint } from "@/lib/vitana-projection";
 import type { ContributionVector } from "@/types/autopilot";
 
 export const VITANA_INDEX_OPEN_EVENT = "vitana:open-index";
@@ -50,37 +52,9 @@ function sumVectors(actions: Array<{ contributionVector?: ContributionVector }>)
   return { vector, total };
 }
 
-interface ProjectedPoint {
-  day: number;
-  score: number;
-  isProjection: boolean;
-}
-
-const HORIZON_DAYS = 30;
-
-function buildHorizonPoints(
-  history: Array<{ date: string; score: number }>,
-): ProjectedPoint[] {
-  if (history.length < 7) return [];
-
-  // Map history to days-from-today (negative for past, 0 for today)
-  const todayMs = new Date().setHours(0, 0, 0, 0);
-  const points = history.map((h) => {
-    const day = Math.floor((new Date(h.date).getTime() - todayMs) / 86400000);
-    return { day, score: h.score, isProjection: false };
-  });
-
-  const last = points[points.length - 1];
-  const tail = points.slice(-7);
-  const first = tail[0];
-  const slope =
-    tail.length > 1 && last.day !== first.day
-      ? (last.score - first.score) / (last.day - first.day)
-      : 0;
-  const projectedScore = Math.max(0, Math.min(999, Math.round(last.score + slope * HORIZON_DAYS)));
-
-  return [...points, { day: last.day + HORIZON_DAYS, score: projectedScore, isProjection: true }];
-}
+// Horizon-projection helpers live in `@/lib/vitana-projection` so the Index
+// Sheet, the My Journey trajectory card, and the gateway voice tool all
+// share the same slope math.
 
 function HorizonChart({ points }: { points: ProjectedPoint[] }) {
   if (points.length === 0) return null;
@@ -172,6 +146,7 @@ export function VitanaIndexSheet() {
   const { index, isLoading } = useVitanaIndexCache();
   const { pendingActions } = useAutopilot();
   const { current: streakDays } = useVitanaStreaks();
+  const { compass } = useLifeCompass();
 
   useEffect(() => {
     const handler = () => setOpen(true);
@@ -350,7 +325,9 @@ export function VitanaIndexSheet() {
             onClick={handleCompassClick}
             className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline w-full text-left"
           >
-            Open your Life Compass →
+            {compass?.primary_goal
+              ? `Compass: ${compass.primary_goal} →`
+              : "Set your Life Compass →"}
           </button>
         </div>
       </SheetContent>
