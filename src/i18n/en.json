@@ -88,15 +88,29 @@
     "tiers": {
       "test": {
         "name": "Test",
-        "benefits": ["Payment flow test only", "Not a real voucher", "For development testing"]
+        "benefits": [
+          "Payment flow test only",
+          "Not a real voucher",
+          "For development testing"
+        ]
       },
       "experience": {
         "name": "Experience",
-        "benefits": ["1 premium community event access", "Personalized wellness consultation", "30-day Vitana+ trial included", "Beautifully designed e-voucher"]
+        "benefits": [
+          "1 premium community event access",
+          "Personalized wellness consultation",
+          "30-day Vitana+ trial included",
+          "Beautifully designed e-voucher"
+        ]
       },
       "exclusive": {
         "name": "Exclusive",
-        "benefits": ["3 premium community events", "1-on-1 expert coaching session", "90-day Vitana+ subscription", "Priority booking + VIP perks"]
+        "benefits": [
+          "3 premium community events",
+          "1-on-1 expert coaching session",
+          "90-day Vitana+ subscription",
+          "Priority booking + VIP perks"
+        ]
       }
     },
     "success": {
@@ -737,7 +751,23 @@
   },
   "autopilot": {
     "title": "Autopilot",
-    "suggestions": "AI suggestions",
+    "suggestions": {
+      "bannerTitle": "Autopilot can help optimize your profile",
+      "bannerDesc": "Get AI-powered suggestions to make your profile more engaging and complete.",
+      "enable": "Enable",
+      "showcaseTitle": "Autopilot Recommendations",
+      "showcaseBadge": "Smart",
+      "showcaseDesc": "Based on your activity, these posts might perform well as featured content:",
+      "suggestPopular": "Suggest Popular Posts",
+      "recentHighlights": "Recent Highlights",
+      "archetypeTitle": "Archetype Insights",
+      "archetypeBadge": "AI Analysis",
+      "archetypeDesc": "Your wellness activities suggest you might be \"The Mindful Mover\" - want to update?",
+      "updateArchetype": "Update Archetype",
+      "profileSectionTitle": "Autopilot can polish your profile ✨",
+      "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and highlights.",
+      "tryAutopilot": "Try Autopilot"
+    },
     "preview": "Autopilot Preview",
     "viewAll": "View All",
     "noSuggestions": "All optimized! 🎯",
@@ -808,23 +838,6 @@
       "applied": "Changes saved!",
       "error": "Something went wrong",
       "comingSoon": "Coming Soon"
-    },
-    "suggestions": {
-      "bannerTitle": "Autopilot can help optimize your profile",
-      "bannerDesc": "Get AI-powered suggestions to make your profile more engaging and complete.",
-      "enable": "Enable",
-      "showcaseTitle": "Autopilot Recommendations",
-      "showcaseBadge": "Smart",
-      "showcaseDesc": "Based on your activity, these posts might perform well as featured content:",
-      "suggestPopular": "Suggest Popular Posts",
-      "recentHighlights": "Recent Highlights",
-      "archetypeTitle": "Archetype Insights",
-      "archetypeBadge": "AI Analysis",
-      "archetypeDesc": "Your wellness activities suggest you might be \"The Mindful Mover\" - want to update?",
-      "updateArchetype": "Update Archetype",
-      "profileSectionTitle": "Autopilot can polish your profile ✨",
-      "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and highlights.",
-      "tryAutopilot": "Try Autopilot"
     },
     "actions": {
       "action1Title": "Join Longevity Dance Group Tonight?",
@@ -1249,40 +1262,19 @@
     "dailyMatches": "Daily Matches"
   },
   "profile": {
-    "title": "Profile",
-    "editProfile": "Edit Profile",
-    "viewProfile": "View Profile",
-    "myProfile": "My Profile",
-    "tabs": {
-      "posts": "Posts",
-      "about": "About",
-      "media": "Media",
-      "groups": "Groups",
-      "events": "Events",
-      "health": "Health",
-      "services": "Services",
-      "insight": "Insight"
+    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
+    "autopilot": {
+      "polishBio": "Polish your bio, archetype & highlights",
+      "editHighlights": "Edit Highlights",
+      "saveHighlights": "Save Highlights",
+      "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
+      "try": "Try"
     },
-    "sections": {
-      "basicInfo": "Basic Information",
-      "contact": "Contact",
-      "social": "Social Media",
-      "bio": "Biography",
-      "interests": "Interests"
-    },
-    "fields": {
-      "displayName": "Display Name",
-      "username": "Username",
-      "email": "Email",
-      "phone": "Phone",
-      "location": "Location",
-      "website": "Website",
-      "bio": "About Me"
-    },
-    "noPostsYet": "No posts yet",
-    "noPostsYetDesc": "Your posts will appear here.",
-    "noGroupsYet": "No groups yet",
-    "noGroupsYetDesc": "Join groups to connect with others."
+    "identity": {
+      "vitanaIndex": "Vitana Index",
+      "basedOnActivity": "Based on activity, health engagement & contribution",
+      "viewLongevityId": "View my Longevity ID"
+    }
   },
   "profileTabs": {
     "posts": "Posts",
@@ -1512,34 +1504,20 @@
     "updating": "Updating..."
   },
   "empty": {
+    "noAppsFound": "No apps found matching your search.",
+    "noEventsFound": "No events found",
+    "noContactsFound": "No contacts found",
+    "noContactsFoundMatching": "No contacts found matching \"{query}\"",
+    "noGroupsFound": "No groups found",
+    "noResultsFound": "No results found",
+    "noReportsFound": "No reports found",
+    "noUsersFound": "No users found",
+    "noTransactionsFound": "No transactions found",
+    "noEventsYet": "No events yet. Create an event first.",
+    "tryAdjustingFilters": "Try adjusting your filters or search query",
     "noData": "No data available",
-    "noDataDesc": "There's nothing here yet.",
-    "noResults": "No results found",
-    "noResultsDesc": "Try different search terms.",
-    "noMessages": "No messages yet",
-    "noMessagesDesc": "Start a conversation.",
-    "noEvents": "No events",
-    "noEventsDesc": "Check back later.",
-    "noOrders": "No orders yet",
-    "noOrdersDesc": "Your orders will appear here.",
-    "noRooms": "No live rooms",
-    "noRoomsDesc": "Create a room or check back later.",
-    "noGroups": "No groups yet",
-    "noGroupsDesc": "Join a group or create one.",
-    "noMusic": "No music yet",
-    "noMusicDesc": "Music will appear here.",
-    "noPodcasts": "No podcasts yet",
-    "noPodcastsDesc": "Podcasts will appear here.",
-    "noServices": "No services yet",
-    "noServicesDesc": "Services will appear here.",
-    "noClients": "No clients yet",
-    "noClientsDesc": "Your clients will appear here.",
-    "noNotifications": "No notifications",
-    "noNotificationsDesc": "You're all caught up.",
-    "noActivity": "No activity",
-    "noActivityDesc": "Your activities will appear here.",
-    "noPlan": "No plan yet",
-    "noPlanDesc": "Generate a personalized plan."
+    "noMessages": "No messages",
+    "noNotifications": "No notifications"
   },
   "confirm": {
     "delete": "Are you sure you want to delete this?",
@@ -1644,28 +1622,7 @@
     "terms": "Terms of Service"
   },
   "consent": {
-    "privacy": {
-      "title": "Your privacy is protected",
-      "subtitle": "Here's how we handle your contacts",
-      "neverAutoMessage": "We never message automatically",
-      "neverAutoMessageDesc": "You choose who to contact and when",
-      "hashedLocally": "Contacts are hashed locally",
-      "hashedLocallyDesc": "We only use encrypted identifiers for matching",
-      "youChoose": "You choose who to invite",
-      "youChooseDesc": "Full control over every invitation sent",
-      "helperText": "Matches are generated from hashed contact data stored securely. Your raw contact information never leaves your device.",
-      "notNow": "Not now",
-      "continue": "Continue"
-    },
-    "dataAccess": {
-      "title": "Data Access Consent Required",
-      "description": "You're about to {action}. This action requires your explicit consent.",
-      "gdprNotice": "Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.",
-      "revokeAnytime": "You can revoke this consent at any time",
-      "loggedForSecurity": "This consent is logged for your security",
-      "recipientsComply": "Recipients must comply with privacy regulations",
-      "iConsent": "I Consent"
-    }
+    "searchPlaceholder": "Search consent packages, organizations, permissions..."
   },
   "audio": {
     "listening": "I'm listening...",
@@ -1988,22 +1945,6 @@
     "date": "Date",
     "amount": "Amount"
   },
-  "empty": {
-    "noAppsFound": "No apps found matching your search.",
-    "noEventsFound": "No events found",
-    "noContactsFound": "No contacts found",
-    "noContactsFoundMatching": "No contacts found matching \"{query}\"",
-    "noGroupsFound": "No groups found",
-    "noResultsFound": "No results found",
-    "noReportsFound": "No reports found",
-    "noUsersFound": "No users found",
-    "noTransactionsFound": "No transactions found",
-    "noEventsYet": "No events yet. Create an event first.",
-    "tryAdjustingFilters": "Try adjusting your filters or search query",
-    "noData": "No data available",
-    "noMessages": "No messages",
-    "noNotifications": "No notifications"
-  },
   "loading": {
     "default": "Loading...",
     "groups": "Loading groups...",
@@ -2127,29 +2068,11 @@
       "cancel": "Cancel"
     }
   },
-  "profile": {
-    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
-    "autopilot": {
-      "polishBio": "Polish your bio, archetype & highlights",
-      "editHighlights": "Edit Highlights",
-      "saveHighlights": "Save Highlights",
-      "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
-      "try": "Try"
-    },
-    "identity": {
-      "vitanaIndex": "Vitana Index",
-      "basedOnActivity": "Based on activity, health engagement & contribution",
-      "viewLongevityId": "View my Longevity ID"
-    }
-  },
   "groups": {
     "searchPlaceholder": "Search groups..."
   },
   "challenges": {
     "searchPlaceholder": "Search challenges..."
-  },
-  "consent": {
-    "searchPlaceholder": "Search consent packages, organizations, permissions..."
   },
   "timeline": {
     "searchPlaceholder": "Search activity..."
@@ -2313,7 +2236,7 @@
       "avatarUploadedDesc": "Your profile picture has been updated.",
       "uploadFailed": "Upload failed",
       "uploadFailedDesc": "Failed to upload image. Please try again.",
-    "identityUpdated": "Identity updated",
+      "identityUpdated": "Identity updated",
       "identityUpdatedDesc": "Your identity information has been saved successfully."
     }
   },
@@ -2689,7 +2612,7 @@
     "errorDelete": "Failed to delete message"
   },
   "groupMembership": {
-    "joined": "Joined! \ud83c\udf89",
+    "joined": "Joined! 🎉",
     "joinedDesc": "You're now a member of this group.",
     "left": "Left group",
     "leftDesc": "You've left this group.",
@@ -2790,6 +2713,234 @@
       "sleep": "Sleep",
       "exercise": "Exercise",
       "mental": "Mental"
+    }
+  },
+  "lifeCompass": {
+    "title": "Life Compass",
+    "description": "Your Life Compass guides all AI recommendations and decisions. Choose a primary goal that matters most to you right now. The AI will prioritize suggestions that align with this direction.",
+    "currentCompass": "Current Compass",
+    "alignment": "Alignment: {value}%",
+    "confidence": "Confidence: {value}%",
+    "suggestedGoals": "Suggested Goals",
+    "customGoal": "Custom Goal",
+    "customGoalPlaceholder": "Describe your primary goal in your own words...",
+    "setCustomGoal": "Set Custom Goal",
+    "closeAria": "Close",
+    "categoryLabels": {
+      "wealth": "wealth",
+      "relationship": "relationship",
+      "health": "health",
+      "career": "career",
+      "learning": "learning",
+      "spiritual": "spiritual",
+      "longevity": "longevity"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Build Financial Freedom",
+        "description": "Achieve financial independence and wealth"
+      },
+      "relationship": {
+        "title": "Find Life Partner",
+        "description": "Build meaningful romantic relationships"
+      },
+      "health": {
+        "title": "Transform Health",
+        "description": "Achieve optimal physical and mental wellness"
+      },
+      "career": {
+        "title": "Advance Career",
+        "description": "Build a fulfilling and successful career"
+      },
+      "learning": {
+        "title": "Master New Skills",
+        "description": "Learn and grow through knowledge"
+      },
+      "spiritual": {
+        "title": "Spiritual Life",
+        "description": "Deepen purpose, presence, and inner peace"
+      },
+      "longevity": {
+        "title": "Improve quality of life and extend lifespan",
+        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
+      }
+    }
+  },
+  "memoryActions": {
+    "title": "Memory Actions",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Record Voice Diary",
+        "description": "Capture thoughts and reflections with voice"
+      },
+      "addMemoryNote": {
+        "title": "Add Memory Note",
+        "description": "Write down important health moments"
+      },
+      "viewTimeline": {
+        "title": "View Timeline",
+        "description": "See your complete wellness journey"
+      },
+      "searchMemories": {
+        "title": "Search Memories",
+        "description": "Find specific moments and insights"
+      },
+      "photoMemory": {
+        "title": "Photo Memory",
+        "description": "Add visual memories to your journey"
+      },
+      "aiMemoryAnalysis": {
+        "title": "AI Memory Analysis",
+        "description": "Get insights from your memory patterns"
+      }
+    }
+  },
+  "diaryActions": {
+    "title": "Diary Entry Actions",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Record Voice Entry",
+        "description": "Capture thoughts and reflections with voice recording"
+      },
+      "addPhotoEntry": {
+        "title": "Add Photo Entry",
+        "description": "Upload images to document your wellness journey"
+      },
+      "writeTextEntry": {
+        "title": "Write Text Entry",
+        "description": "Create detailed written reflections and notes"
+      },
+      "quickNote": {
+        "title": "Quick Note",
+        "description": "Jot down brief thoughts or observations"
+      },
+      "videoDiary": {
+        "title": "Video Diary",
+        "description": "Record video reflections and progress updates"
+      },
+      "scheduleEntry": {
+        "title": "Schedule Entry",
+        "description": "Plan future diary entries and reminders"
+      },
+      "tagMemories": {
+        "title": "Tag Memories",
+        "description": "Organize existing entries with tags and categories"
+      },
+      "importFiles": {
+        "title": "Import Files",
+        "description": "Upload documents, images, or other wellness files"
+      }
+    }
+  },
+  "timelineActions": {
+    "title": "Timeline Actions",
+    "items": {
+      "logHealthEvent": {
+        "title": "Log Health Event",
+        "description": "Record important health milestones"
+      },
+      "markAchievement": {
+        "title": "Mark Achievement",
+        "description": "Celebrate wellness goals reached"
+      },
+      "recordLifeMoment": {
+        "title": "Record Life Moment",
+        "description": "Capture meaningful experiences"
+      },
+      "addPhotoMemory": {
+        "title": "Add Photo Memory",
+        "description": "Visual timeline with health photos"
+      },
+      "voiceTimelineEntry": {
+        "title": "Voice Timeline Entry",
+        "description": "Quick audio health updates"
+      },
+      "trackProgress": {
+        "title": "Track Progress",
+        "description": "Log wellness metrics and trends"
+      },
+      "activityCheckIn": {
+        "title": "Activity Check-in",
+        "description": "Record workouts and activities"
+      },
+      "setTimelineGoal": {
+        "title": "Set Timeline Goal",
+        "description": "Create future health targets"
+      }
+    }
+  },
+  "recallActions": {
+    "title": "Memory Search & Recall Actions",
+    "items": {
+      "askAiQuestion": {
+        "title": "Ask AI Question",
+        "description": "Query your memories with natural language AI search"
+      },
+      "advancedSearch": {
+        "title": "Advanced Search",
+        "description": "Use filters, tags, and date ranges to find memories"
+      },
+      "patternAnalysis": {
+        "title": "Pattern Analysis",
+        "description": "Discover trends and patterns in your wellness data"
+      },
+      "memoryInsights": {
+        "title": "Memory Insights",
+        "description": "Get AI-powered insights from your health journey"
+      },
+      "searchByDate": {
+        "title": "Search by Date",
+        "description": "Browse memories from specific time periods"
+      },
+      "locationMemories": {
+        "title": "Location Memories",
+        "description": "Find entries by places and locations visited"
+      },
+      "filterByCategory": {
+        "title": "Filter by Category",
+        "description": "Browse memories by wellness pillars and categories"
+      },
+      "quickRecalls": {
+        "title": "Quick Recalls",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  },
+  "permissionsActions": {
+    "title": "Privacy & Permission Actions",
+    "items": {
+      "privacySettings": {
+        "title": "Privacy Settings",
+        "description": "Configure data privacy and sharing preferences"
+      },
+      "manageAccess": {
+        "title": "Manage Access",
+        "description": "Control who can view your health memories"
+      },
+      "securitySettings": {
+        "title": "Security Settings",
+        "description": "Update authentication and security preferences"
+      },
+      "apiKeysAccess": {
+        "title": "API Keys & Access",
+        "description": "Manage third-party app integrations and API access"
+      },
+      "dataRights": {
+        "title": "Data Rights",
+        "description": "Exercise your rights to data portability and deletion"
+      },
+      "auditLogs": {
+        "title": "Audit Logs",
+        "description": "Review access history and security audit trail"
+      },
+      "permissionSettings": {
+        "title": "Permission Settings",
+        "description": "Fine-tune granular permissions for different features"
+      },
+      "exportData": {
+        "title": "Export Data",
+        "description": "Download your memories and health data securely"
+      }
     }
   }
 }

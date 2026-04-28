@@ -1,10 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Mic, 
-  Camera, 
-  PenTool, 
+import {
+  Mic,
+  Camera,
+  PenTool,
   FileText,
   Video,
   Calendar,
@@ -12,6 +12,7 @@ import {
   Upload
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface DiaryMasterActionPopupProps {
   open: boolean;
@@ -20,11 +21,11 @@ interface DiaryMasterActionPopupProps {
 
 export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterActionPopupProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   const diaryActions = [
     {
-      title: "Record Voice Entry",
-      description: "Capture thoughts and reflections with voice recording",
+      key: "recordVoiceEntry",
       icon: Mic,
       onClick: () => {
         console.log("Start voice recording");
@@ -33,8 +34,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-primary/10 text-primary hover:bg-primary/20"
     },
     {
-      title: "Add Photo Entry",
-      description: "Upload images to document your wellness journey",
+      key: "addPhotoEntry",
       icon: Camera,
       onClick: () => {
         console.log("Open photo upload");
@@ -43,8 +43,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-accent/10 text-accent-foreground hover:bg-accent/20"
     },
     {
-      title: "Write Text Entry",
-      description: "Create detailed written reflections and notes",
+      key: "writeTextEntry",
       icon: PenTool,
       onClick: () => {
         console.log("Open text editor");
@@ -53,8 +52,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-secondary/10 text-secondary-foreground hover:bg-secondary/20"
     },
     {
-      title: "Quick Note",
-      description: "Jot down brief thoughts or observations",
+      key: "quickNote",
       icon: FileText,
       onClick: () => {
         console.log("Create quick note");
@@ -63,8 +61,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-muted/20 text-muted-foreground hover:bg-muted/30"
     },
     {
-      title: "Video Diary",
-      description: "Record video reflections and progress updates",
+      key: "videoDiary",
       icon: Video,
       onClick: () => {
         console.log("Start video recording");
@@ -73,8 +70,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-primary/10 text-primary hover:bg-primary/20"
     },
     {
-      title: "Schedule Entry",
-      description: "Plan future diary entries and reminders",
+      key: "scheduleEntry",
       icon: Calendar,
       onClick: () => {
         navigate('/calendar');
@@ -83,8 +79,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-accent/10 text-accent-foreground hover:bg-accent/20"
     },
     {
-      title: "Tag Memories",
-      description: "Organize existing entries with tags and categories",
+      key: "tagMemories",
       icon: Tags,
       onClick: () => {
         console.log("Open tag manager");
@@ -93,8 +88,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       color: "bg-secondary/10 text-secondary-foreground hover:bg-secondary/20"
     },
     {
-      title: "Import Files",
-      description: "Upload documents, images, or other wellness files",
+      key: "importFiles",
       icon: Upload,
       onClick: () => {
         console.log("Open file import");
@@ -109,15 +103,15 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-4">
-            Diary Entry Actions
+            {translate('diaryActions.title', 'Diary Entry Actions')}
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {diaryActions.map((action, index) => {
             const Icon = action.icon;
             return (
-              <Card 
+              <Card
                 key={index}
                 className="cursor-pointer hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20"
                 onClick={action.onClick}
@@ -126,11 +120,13 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
                   <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-3`}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <CardTitle className="text-lg">{action.title}</CardTitle>
+                  <CardTitle className="text-lg">
+                    {translate(`diaryActions.items.${action.key}.title`)}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-sm">
-                    {action.description}
+                    {translate(`diaryActions.items.${action.key}.description`)}
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -140,7 +136,7 @@ export function DiaryMasterActionPopup({ open, onOpenChange }: DiaryMasterAction
 
         <div className="flex justify-center pt-4 border-t">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Close
+            {translate('buttons.close', 'Close')}
           </Button>
         </div>
       </DialogContent>
