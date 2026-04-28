@@ -256,13 +256,24 @@ export default function Messages() {
     setSelectedRecipientId(null);
   };
 
-  // Hide ORB on entire inbox/messages page (chat is text-only)
+  // Hide ORB only when actively inside a direct chat (chat is text-only).
+  // The inbox list view keeps the Orb visible.
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && selectedThreadId) {
       document.body.dataset.chatScreenOpen = "true";
       return () => { delete document.body.dataset.chatScreenOpen; };
     }
-  }, [isMobile]);
+  }, [isMobile, selectedThreadId]);
+
+  // Mark the inbox list view so the Orb stays visible even though we hide
+  // the bottom nav on this screen (the global "hide orb when nav hidden"
+  // CSS rule has an explicit exception for this attribute).
+  useEffect(() => {
+    if (isMobile && !selectedThreadId) {
+      document.body.dataset.inboxListOpen = "true";
+      return () => { delete document.body.dataset.inboxListOpen; };
+    }
+  }, [isMobile, selectedThreadId]);
 
   // Show skeleton when loading/fetching AND no cached data
   if ((isLoading || isFetching) && threads.length === 0) {

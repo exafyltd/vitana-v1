@@ -630,15 +630,15 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     ) !important;
   }
 
-  /* Hide ORB when bottom nav is not visible (except Maxina pages) */
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .vtorb-fab,
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .vitana-orb,
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [data-vitana-orb="true"],
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) #vitana-orb,
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .OrbFloatingButton,
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) #vitana-orb-fab,
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [id^="vitana-orb"],
-  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [class^="vtorb-fab"] {
+  /* Hide ORB when bottom nav is not visible (except Maxina pages and Inbox list) */
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) .vtorb-fab,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) .vitana-orb,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) [data-vitana-orb="true"],
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) #vitana-orb,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) .OrbFloatingButton,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) #vitana-orb-fab,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) [id^="vitana-orb"],
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page):not([data-inbox-list-open="true"]) [class^="vtorb-fab"] {
     z-index: 0 !important;
     pointer-events: none !important;
     opacity: 0 !important;
