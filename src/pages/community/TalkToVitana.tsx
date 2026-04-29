@@ -97,14 +97,18 @@ export default function TalkToVitana() {
     }
     setSubmitting(true);
     try {
+      const appVersion = (import.meta.env.VITE_APP_VERSION as string | undefined) || undefined;
+      const payload: Record<string, unknown> = {
+        raw_text: text.trim(),
+        kind,
+      };
+      if (typeof window !== "undefined") {
+        payload.screen_path = window.location.pathname;
+      }
+      if (appVersion) payload.app_version = appVersion;
       const res = await communityFetch("/api/v1/feedback/tickets", {
         method: "POST",
-        body: JSON.stringify({
-          raw_text: text.trim(),
-          kind,
-          screen_path: typeof window !== "undefined" ? window.location.pathname : undefined,
-          app_version: import.meta.env.VITE_APP_VERSION ?? null,
-        }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({} as Record<string, unknown>));
