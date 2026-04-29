@@ -30,7 +30,24 @@ export type AccountFieldKey =
   | 'verificationStatus'
   | 'handle'
   | 'avatarUrl'
-  | 'longevityArchetype';
+  | 'longevityArchetype'
+  // E5 — additions for new profile sections (sub-fields use dot notation).
+  // Server mirror: services/gateway/src/lib/account-visibility.ts FIELD_DEFAULTS.
+  | 'dancePreferences'
+  | 'dancePreferences.varieties'
+  | 'dancePreferences.level'
+  | 'dancePreferences.lookingFor'
+  | 'partnerPreferences'
+  | 'partnerPreferences.ageRange'
+  | 'partnerPreferences.gender'
+  | 'partnerPreferences.relationshipIntent'
+  | 'partnerPreferences.locationRadius'
+  | 'serviceOfferings'
+  | 'serviceOfferings.priceRange'
+  | 'myPosts'
+  | 'myPosts.commercial'
+  // 'myPosts.partnerSeek' is hardcoded private — NOT user-toggleable.
+  | 'derivedAgeBand';
 
 export type AccountVisibility = Record<AccountFieldKey, FieldVisibility>;
 
@@ -86,6 +103,21 @@ export const DEFAULT_ACCOUNT_VISIBILITY: AccountVisibility = {
   handle: 'public',
   avatarUrl: 'public',
   longevityArchetype: 'public',
+  // E5 — must mirror services/gateway/src/lib/account-visibility.ts FIELD_DEFAULTS.
+  dancePreferences: 'public',
+  'dancePreferences.varieties': 'public',
+  'dancePreferences.level': 'public',
+  'dancePreferences.lookingFor': 'public',
+  partnerPreferences: 'private',
+  'partnerPreferences.ageRange': 'private',
+  'partnerPreferences.gender': 'private',
+  'partnerPreferences.relationshipIntent': 'private',
+  'partnerPreferences.locationRadius': 'connections',
+  serviceOfferings: 'public',
+  'serviceOfferings.priceRange': 'public',
+  myPosts: 'public',
+  'myPosts.commercial': 'public',
+  derivedAgeBand: 'connections',
 };
 
 export interface ServiceOffering {

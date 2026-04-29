@@ -178,18 +178,90 @@ export async function raiseDispute(matchId: string, reason_category: DisputeReas
 export interface BoardResponse {
   compass: string | null;
   kinds_shown: IntentKind[];
+  surface?: string;
   intents: UserIntent[];
 }
 
-export async function getIntentBoard(filters?: { kind?: IntentKind; category?: string; limit?: number }): Promise<BoardResponse> {
+export type IntentSurface = 'default' | 'find_a_partner';
+
+export async function getIntentBoard(filters?: {
+  kind?: IntentKind;
+  category?: string;
+  /** Comma-joined list. Each entry can be exact (`activity_seek`) or a prefix (`dance.*`). */
+  categories?: string[];
+  /** E6 — when 'find_a_partner', server skips partner_seek redaction. */
+  surface?: IntentSurface;
+  limit?: number;
+}): Promise<BoardResponse> {
   const params = new URLSearchParams();
   if (filters?.kind) params.set("kind", filters.kind);
   if (filters?.category) params.set("category", filters.category);
+  if (filters?.categories && filters.categories.length > 0) {
+    params.set("categories", filters.categories.join(","));
+  }
+  if (filters?.surface) params.set("surface", filters.surface);
   if (filters?.limit) params.set("limit", String(filters.limit));
   const qs = params.toString();
   const res = await communityFetch(`/api/v1/intent-board${qs ? "?" + qs : ""}`);
   if (!res.ok) throw new Error(`Intent board failed (${res.status})`);
   return res.json();
+}
+
+/**
+ * E6 — count of community members (respects global_community_profiles.is_visible).
+ * Powers the Find a Partner Members tab gate (visible only while total ≤ 1000).
+ */
+export async function getCommunityMemberCount(): Promise<number> {
+  const res = await communityFetch(`/api/v1/community/members/count`);
+  if (!res.ok) throw new Error(`Members count failed (${res.status})`);
+  const data = await res.json();
+  return typeof data.total === 'number' ? data.total : 0;
+}
+
+/**
+ * E6 — fetch all matches across the user's open dance.* + fitness.* intents.
+ * Merges per-intent matches into a single sorted list; tags each row with
+ * the source intent's category so the UI can show a 💃 Dance / 💪 Fitness chip.
+ */
+export interface FindPartnerMatch extends IntentMatch {
+  source_intent_id: string;
+  source_category: string | null;
+  /** 'dance' | 'fitness' | null — derived from the source category prefix. */
+  vertical: 'dance' | 'fitness' | null;
+}
+
+function verticalFromCategory(cat: string | null): 'dance' | 'fitness' | null {
+  if (!cat) return null;
+  if (cat.startsWith('dance.')) return 'dance';
+  if (cat.startsWith('fitness.')) return 'fitness';
+  return null;
+}
+
+export async function getFindPartnerMatches(perIntentLimit = 5): Promise<FindPartnerMatch[]> {
+  const mine = await listMyIntents({ status: 'open' });
+  const danceFitness = mine.filter((it) => {
+    const v = verticalFromCategory(it.category);
+    return v !== null;
+  });
+  if (danceFitness.length === 0) return [];
+
+  const matches = await Promise.all(
+    danceFitness.map(async (it) => {
+      try {
+        const rows = await getIntentMatches(it.intent_id, perIntentLimit);
+        return rows.map((m): FindPartnerMatch => ({
+          ...m,
+          source_intent_id: it.intent_id,
+          source_category: it.category,
+          vertical: verticalFromCategory(it.category),
+        }));
+      } catch {
+        return [] as FindPartnerMatch[];
+      }
+    })
+  );
+
+  return matches.flat().sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 }
 
 export async function getIntentCategories(kind?: IntentKind): Promise<IntentCategory[]> {
