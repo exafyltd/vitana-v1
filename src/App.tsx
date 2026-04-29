@@ -153,6 +153,7 @@ const Sharing = lazy(() => import("./pages/Sharing"));
 const Memory = lazy(() => import("./pages/Memory"));
 const EditProfilePage = lazy(() => import("./pages/EditProfilePage"));
 const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
+const PrivacySettings = lazy(() => import("./pages/PrivacySettings"));
 // VTID-01975: Vitana Intent Engine (P2-B) pages.
 const IntentBoard = lazy(() => import("./pages/IntentBoard"));
 const MyIntents = lazy(() => import("./pages/MyIntents"));
@@ -179,6 +180,7 @@ const ProviderProfile = lazy(() => import("./pages/discover/ProviderProfile"));
 const DealsOffers = lazy(() => import("./pages/discover/DealsOffers"));
 const Orders = lazy(() => import("./pages/discover/Orders"));
 const AIPicksPage = lazy(() => import("./pages/discover/AIPicksPage"));
+const DiscoverMarketplace = lazy(() => import("./pages/discover/Marketplace"));
 
 // Health sub-pages
 const PillarsOfHealth = lazy(() => import("./pages/health/PillarsOfHealth"));
@@ -731,6 +733,12 @@ const App = () => {
               <AIPicksPage />
             </AuthGuard>
           } />
+          {/* E1 — Marketplace (commercial intents) */}
+          <Route path="/discover/marketplace" element={
+            <AuthGuard>
+              <DiscoverMarketplace />
+            </AuthGuard>
+          } />
           <Route path="/discover/supplements" element={
             <AuthGuard>
               <Supplements />
@@ -1096,6 +1104,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+          {/* E5 — Privacy & Visibility settings */}
+          <Route path="/profile/me/privacy" element={
+            <AuthGuard>
+              <PrivacySettings />
+            </AuthGuard>
+          } />
 
           {/* VTID-01975: Vitana Intent Engine — community + business hub pages. */}
           <Route path="/intents/board" element={
@@ -1103,6 +1117,10 @@ const App = () => {
               <IntentBoard />
             </AuthGuard>
           } />
+          {/* E1 — /intents/mine kept as a deprecated alias for now; new
+              destination is the MyPostsSection on the user's own
+              PublicProfilePage. Will fully retire once cross-user
+              section reads land for non-owners. */}
           <Route path="/intents/mine" element={
             <AuthGuard>
               <MyIntents />
