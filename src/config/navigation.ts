@@ -19,6 +19,7 @@ export const communityNavigation = [
   { id: "events-meetups", name: "Events & MeetUps", path: "/comm/events-meetups" },
   { id: "live-rooms", name: "Live Rooms", path: "/comm/live-rooms" },
   { id: "media-hub", name: "Media Hub", path: "/comm/media-hub" },
+  { id: "talk-to-vitana", name: "Talk to Vitana", path: "/comm/talk-to-vitana" },
 ];
 
 // Business Hub - standalone section (separate from Community)

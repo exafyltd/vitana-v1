@@ -199,6 +199,8 @@ const LiveRooms = lazy(() => import("./pages/community/LiveRooms"));
 const CommunityMembers = lazy(() => import("./pages/community/Members"));
 // VTID-DANCE-D7: open-asks public feed
 const CommunityOpenAsks = lazy(() => import("./pages/community/OpenAsks"));
+// VTID-02047: Talk to Vitana - unified feedback pipeline community capture
+const TalkToVitana = lazy(() => import("./pages/community/TalkToVitana"));
 const LiveRoomViewer = lazy(() => import("./pages/community/LiveRoomViewer"));
 
 // AI sub-pages
@@ -923,6 +925,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/community/open-asks" element={<Navigate to="/comm/open-asks" replace />} />
+          {/* VTID-02047: Talk to Vitana - unified feedback pipeline */}
+          <Route path="/comm/talk-to-vitana" element={
+            <AuthGuard>
+              <TalkToVitana />
+            </AuthGuard>
+          } />
           {/* Business Hub - Standalone Section with nested routes */}
           <Route path="/business" element={
             <AuthGuard>
