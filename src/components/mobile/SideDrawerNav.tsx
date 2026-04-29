@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, Check } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPopup';
 import { AutopilotPopup } from '@/components/AutopilotPopup';
 import { CartSidebar } from '@/components/cart/CartSidebar';
+import { NotificationsPanel } from '@/components/notifications/NotificationsPanel';
 import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
@@ -17,10 +17,8 @@ import { useAuth } from '@/context/AuthProvider';
 import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
-import { useNotifications, VitanaNotification } from '@/hooks/useNotifications';
+import { useNotifications } from '@/hooks/useNotifications';
 import { useCart } from '@/hooks/useCart';
-import { getNotificationIcon, resolveNotificationRoute } from '@/lib/notification-types';
-import { formatDistanceToNow } from 'date-fns';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
@@ -45,7 +43,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
   const { unreadCount } = useChatUnreadCount();
-  const { notifications, unreadCount: notificationUnreadCount, markAsRead, markAllAsRead } = useNotifications(20);
+  // Bell badge only — the panel re-subscribes inside <NotificationsPanel />
+  const { unreadCount: notificationUnreadCount } = useNotifications(20);
   const { cartCount } = useCart();
 
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -56,13 +55,6 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const openPopup = (setter: (v: boolean) => void) => {
     setter(true);
     onClose();
-  };
-
-  const handleNotificationTap = async (n: VitanaNotification) => {
-    if (!n.read_at) await markAsRead(n.id);
-    const route = resolveNotificationRoute(n.type, n.data);
-    setNotificationsOpen(false);
-    if (route) navigate(route);
   };
 
   const isMaxina = tenant?.slug === 'maxina';
@@ -403,63 +395,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
     <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
       <DialogContent className="max-w-md p-0 gap-0 rounded-2xl overflow-hidden">
-        <DialogHeader className="px-4 py-3 border-b flex-row items-center justify-between space-y-0">
-          <DialogTitle className="text-base font-semibold">Notifications</DialogTitle>
-          {notifications.length > 0 && notificationUnreadCount > 0 && (
-            <button
-              onClick={() => markAllAsRead()}
-              className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted text-muted-foreground"
-              title="Mark all read"
-              aria-label="Mark all notifications as read"
-            >
-              <Check className="h-4 w-4" />
-            </button>
-          )}
-        </DialogHeader>
-        <ScrollArea className="max-h-[60vh]">
-          {notifications.length === 0 ? (
-            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-              No notifications yet
-            </div>
-          ) : (
-            <ul className="divide-y divide-border/60">
-              {notifications.map((n) => {
-                const isUnread = !n.read_at;
-                return (
-                  <li key={n.id}>
-                    <button
-                      type="button"
-                      onClick={() => handleNotificationTap(n)}
-                      className={`w-full text-left flex items-start gap-3 px-4 py-3 hover:bg-muted transition-colors ${isUnread ? 'bg-muted/40' : ''}`}
-                    >
-                      <span className="text-lg leading-none pt-0.5 shrink-0" aria-hidden>
-                        {getNotificationIcon(n.type)}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className={`text-sm truncate ${isUnread ? 'font-semibold text-foreground' : 'text-foreground/90'}`}>
-                            {n.title}
-                          </p>
-                          {isUnread && (
-                            <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0" aria-hidden />
-                          )}
-                        </div>
-                        {n.body && (
-                          <p className="text-xs text-muted-foreground truncate mt-0.5">
-                            {n.body}
-                          </p>
-                        )}
-                        <p className="text-[11px] text-muted-foreground mt-1">
-                          {formatDistanceToNow(new Date(n.created_at), { addSuffix: true })}
-                        </p>
-                      </div>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </ScrollArea>
+        <NotificationsPanel
+          onNavigated={() => setNotificationsOpen(false)}
+          listMaxHeightClassName="max-h-[60vh]"
+        />
       </DialogContent>
     </Dialog>
     </>

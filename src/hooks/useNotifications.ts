@@ -133,16 +133,80 @@ export function useNotifications(limit = 20) {
   }, []);
 
   const deleteNotification = useCallback(async (notificationId: string) => {
-    const { error } = await (supabase as any).from('user_notifications').delete().eq('id', notificationId);
-    if (error) return;
+    // Optimistic update
+    let removed: VitanaNotification | undefined;
     setNotifications((prev) => {
-      const removed = prev.find((n) => n.id === notificationId);
+      removed = prev.find((n) => n.id === notificationId);
       if (removed && !removed.read_at) setUnreadCount((c) => Math.max(0, c - 1));
       return prev.filter((n) => n.id !== notificationId);
     });
+
+    const jwt = await getJwt();
+    if (!jwt) return;
+    const res = await fetch(`${GATEWAY_URL}/api/v1/notifications/${notificationId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    if (!res.ok) {
+      // Rollback on failure
+      if (removed) {
+        setNotifications((prev) => [removed!, ...prev]);
+        if (!removed.read_at) setUnreadCount((c) => c + 1);
+      }
+    }
   }, []);
 
-  return { notifications, unreadCount, loading, markAsRead, markAllAsRead, deleteNotification, refetch: fetchNotifications };
+  /**
+   * Delete all notifications for the user.
+   * Pass `{ types: [...] }` to limit the delete to a specific category's types,
+   * or `{ readOnly: true }` to keep unread items.
+   */
+  const deleteAll = useCallback(
+    async (opts?: { types?: string[]; readOnly?: boolean }) => {
+      const jwt = await getJwt();
+      if (!jwt) return;
+
+      const params = new URLSearchParams();
+      if (opts?.readOnly) params.set('read_only', 'true');
+      if (opts?.types && opts.types.length > 0) params.set('types', opts.types.join(','));
+      const qs = params.toString();
+      const url = `${GATEWAY_URL}/api/v1/notifications${qs ? `?${qs}` : ''}`;
+
+      const prev = notifications;
+      const prevUnread = unreadCount;
+
+      // Optimistic update
+      const matches = (n: VitanaNotification) => {
+        if (opts?.readOnly && !n.read_at) return false;
+        if (opts?.types && opts.types.length > 0 && !opts.types.includes(n.type)) return false;
+        return true;
+      };
+      const remaining = notifications.filter((n) => !matches(n));
+      setNotifications(remaining);
+      setUnreadCount(remaining.filter((n) => !n.read_at).length);
+
+      const res = await fetch(url, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${jwt}` },
+      });
+      if (!res.ok) {
+        setNotifications(prev);
+        setUnreadCount(prevUnread);
+      }
+    },
+    [notifications, unreadCount]
+  );
+
+  return {
+    notifications,
+    unreadCount,
+    loading,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    deleteAll,
+    refetch: fetchNotifications,
+  };
 }
 
 export function useNotificationPreferences() {
