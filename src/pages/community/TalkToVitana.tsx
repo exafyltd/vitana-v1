@@ -197,20 +197,62 @@ export default function TalkToVitana() {
           )}
           {ticketsQuery.data?.map(t => {
             const pill = STATUS_PILL[t.status] ?? { label: t.status, tone: "outline" as const };
+            const awaitingConfirm = t.status === "resolved";
+
+            const handleConfirm = async () => {
+              try {
+                const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/confirm`, { method: "POST" });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
+                toast({ title: "Thanks", description: "We'll keep an eye on it." });
+              } catch (err) {
+                toast({ title: "Couldn't confirm", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+              }
+            };
+            const handleReopen = async () => {
+              try {
+                const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/reopen`, { method: "POST" });
+                if (!res.ok) {
+                  const body = await res.json().catch(() => ({}));
+                  throw new Error(body.details ?? body.error ?? `HTTP ${res.status}`);
+                }
+                await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
+                toast({ title: "Reopened", description: "Vitana will follow up." });
+              } catch (err) {
+                toast({ title: "Couldn't reopen", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+              }
+            };
+
             return (
-              <Card key={t.id} className="flex items-center gap-3 p-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="font-medium">{t.ticket_number}</span>
-                    <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
-                    {t.resolver_agent && (
-                      <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
-                    )}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind} · {timeAgo(t.created_at)}
+              <Card key={t.id} className="flex flex-col gap-2 p-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="font-medium">{t.ticket_number}</span>
+                      <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
+                      {t.resolver_agent && (
+                        <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
+                      )}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind} · {timeAgo(t.created_at)}
+                    </div>
                   </div>
                 </div>
+                {awaitingConfirm && (
+                  <div className="rounded-md border border-primary/40 bg-primary/5 p-3 text-sm">
+                    <div className="mb-2 font-medium">
+                      {t.resolver_agent
+                        ? `${t.resolver_agent.charAt(0).toUpperCase() + t.resolver_agent.slice(1)} says this is fixed.`
+                        : "We think this is fixed."}{" "}
+                      Did it work?
+                    </div>
+                    <div className="flex gap-2">
+                      <Button size="sm" onClick={handleConfirm}>Yes, fixed</Button>
+                      <Button size="sm" variant="outline" onClick={handleReopen}>No, still broken</Button>
+                    </div>
+                  </div>
+                )}
               </Card>
             );
           })}
