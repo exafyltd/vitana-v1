@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
 // VTID-DANCE-D5/D9
 import { DancePublicSection } from "@/components/profile/sections/DancePublicSection";
+// E2
+import { PartnerPreferencesPublicSection } from "@/components/profile/sections/PartnerPreferencesPublicSection";
 import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
@@ -325,8 +327,11 @@ export default function PublicProfilePage() {
       />
 
       {/* VTID-DANCE-D5/D9: dance preferences (visibility-honoring) */}
-      <div className="container max-w-3xl mx-auto px-4">
+      <div className="container max-w-3xl mx-auto px-4 space-y-3">
         <DancePublicSection userId={profile.id} isOwn={false} />
+        {/* E2 — partner preferences. Owner-only render until E5 server-side
+            filter wiring lands; non-owners see nothing (privacy-safe default). */}
+        <PartnerPreferencesPublicSection userId={profile.id} />
       </div>
     </AppLayout>
   );
