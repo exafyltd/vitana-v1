@@ -49,6 +49,36 @@ export async function getProfilePrefs(): Promise<ProfilePrefsResponse> {
   };
 }
 
+export type ViewerRelationship = "self" | "connection" | "stranger";
+
+export interface ProfilePrefsByVidResponse {
+  vitana_id: string;
+  relationship: ViewerRelationship;
+  partner_preferences: PartnerPreferences;
+  service_offerings: ServiceOfferings;
+}
+
+/**
+ * E5 cross-user fetch — returns the SUBJECT's prefs filtered through
+ * their account_visibility map and the viewer's relationship. Self gets
+ * the full payload (same shape as /profiles/me/prefs).
+ */
+export async function getProfilePrefsByVitanaId(vid: string): Promise<ProfilePrefsByVidResponse> {
+  const clean = vid.replace(/^@/, "").trim();
+  const res = await communityFetch(`/api/v1/profiles/${encodeURIComponent(clean)}/prefs`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || err.error || `Get prefs failed (${res.status})`);
+  }
+  const data = await res.json();
+  return {
+    vitana_id: data.vitana_id ?? clean,
+    relationship: (data.relationship as ViewerRelationship) ?? "stranger",
+    partner_preferences: data.partner_preferences ?? {},
+    service_offerings: data.service_offerings ?? {},
+  };
+}
+
 export async function patchPartnerPreferences(
   prefs: PartnerPreferences
 ): Promise<PartnerPreferences> {

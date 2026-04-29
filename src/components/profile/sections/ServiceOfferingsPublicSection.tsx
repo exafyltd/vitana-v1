@@ -1,16 +1,11 @@
 /**
- * E2 — self-fetching wrapper for ServiceOfferingsSection.
+ * E5 (now cross-user enabled) — self-fetching wrapper for
+ * ServiceOfferingsSection.
  *
- * Default visibility for service_offerings is 'public' so this DOES
- * render for non-owners (unlike PartnerPreferences). Cross-user reads
- * still work today via /profiles/me/prefs because the column is
- * publicly readable on profiles via Supabase RLS for authenticated
- * users — but until the cross-user gateway endpoint lands, owners see
- * full data and non-owners see nothing.
- *
- * Once E5 server-side filter wiring ships, this will fan out to a
- * cross-user endpoint that returns visibility-filtered offers for any
- * subject.
+ * - Owner: fetches own data via /profiles/me/prefs.
+ * - Non-owner: fetches via /profiles/:vitana_id/prefs which the server
+ *   filters per the subject's account_visibility map. Default is public,
+ *   so most rows render normally; priceRange may be redacted per-row.
  */
 
 import { useEffect, useState } from "react";
@@ -18,50 +13,63 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import {
   getProfilePrefs,
+  getProfilePrefsByVitanaId,
   type ServiceOffering,
+  type ViewerRelationship,
 } from "@/lib/profilePrefsApi";
 import type { AccountVisibility } from "@/types/profile";
 import { ServiceOfferingsSection } from "./ServiceOfferingsSection";
 
 interface Props {
   userId: string;
+  vitanaId?: string;
 }
 
-export function ServiceOfferingsPublicSection({ userId }: Props) {
+export function ServiceOfferingsPublicSection({ userId, vitanaId }: Props) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [offers, setOffers] = useState<ServiceOffering[] | null>(null);
   const [vis, setVis] = useState<AccountVisibility | null>(null);
+  const [relationship, setRelationship] = useState<ViewerRelationship>("self");
 
   const isOwner = !!user?.id && user.id === userId;
 
   useEffect(() => {
-    if (!isOwner) {
+    if (isOwner) {
+      getProfilePrefs()
+        .then(({ service_offerings, account_visibility }) => {
+          setOffers(Array.isArray(service_offerings.offers) ? service_offerings.offers : []);
+          setVis(account_visibility as AccountVisibility);
+          setRelationship("self");
+        })
+        .catch((e) =>
+          toast({ title: "Could not load offerings", description: e?.message ?? "", variant: "destructive" })
+        );
+      return;
+    }
+    if (!vitanaId) {
       setOffers(null);
       setVis(null);
       return;
     }
-    getProfilePrefs()
-      .then(({ service_offerings, account_visibility }) => {
+    getProfilePrefsByVitanaId(vitanaId)
+      .then(({ service_offerings, relationship: rel }) => {
         setOffers(Array.isArray(service_offerings.offers) ? service_offerings.offers : []);
-        setVis(account_visibility as AccountVisibility);
+        setVis(null);
+        setRelationship(rel);
       })
-      .catch((e) => {
-        toast({
-          title: "Could not load offerings",
-          description: e?.message ?? "",
-          variant: "destructive",
-        });
+      .catch(() => {
+        setOffers(null);
       });
-  }, [isOwner, toast]);
+  }, [isOwner, vitanaId, toast]);
 
-  if (!isOwner) return null;
+  if (!offers || offers.length === 0) return null;
 
   return (
     <ServiceOfferingsSection
       offers={offers}
       visibility={vis}
-      viewerRelationship="self"
+      viewerRelationship={relationship}
     />
   );
 }

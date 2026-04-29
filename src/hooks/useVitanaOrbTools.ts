@@ -180,6 +180,7 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
           const target = String(call.args?.target || '');
           const intentId = call.args?.intent_id ? String(call.args.intent_id) : null;
           const matchId = call.args?.match_id ? String(call.args.match_id) : null;
+          const vitanaIdArg = call.args?.vitana_id ? String(call.args.vitana_id).replace(/^@/, '') : null;
           const TARGET_TO_PATH: Record<string, string> = {
             // E6 — Find a Partner unified destination + sub-view deep links.
             find_partner: '/comm/find-partner',
@@ -192,12 +193,22 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
             open_asks: '/comm/open-asks',
             members: '/comm/members',
             edit_dance_preferences: '/profile/edit?drawer=dance',
+            // E3 — new targets
+            edit_partner_preferences: '/me/profile?drawer=partner',
+            edit_service_offerings: '/me/profile?drawer=offerings',
+            privacy_settings: '/profile/me/privacy',
+            discover_marketplace: '/discover/marketplace',
             events_meetups: '/comm/events-meetups',
             community_feed: '/comm/feed',
           };
           let path = TARGET_TO_PATH[target] || null;
           if (target === 'intent_match_detail' && matchId) path = `/intents/match/${matchId}`;
           if (target === 'intent_post_public' && intentId) path = `/p/${intentId}`;
+          // E3 — profile-first match presentation
+          if (target === 'profile_with_match' && vitanaIdArg) {
+            const qs = intentId ? `?match_intent=${encodeURIComponent(intentId)}` : '';
+            path = `/u/${encodeURIComponent(vitanaIdArg)}${qs}`;
+          }
           if (path) {
             navigate(path);
             toast({ title: `Opening: ${target.replace(/_/g, ' ')}` });

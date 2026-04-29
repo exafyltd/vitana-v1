@@ -9,6 +9,7 @@ import { DancePublicSection } from "@/components/profile/sections/DancePublicSec
 // E2
 import { PartnerPreferencesPublicSection } from "@/components/profile/sections/PartnerPreferencesPublicSection";
 import { ServiceOfferingsPublicSection } from "@/components/profile/sections/ServiceOfferingsPublicSection";
+import { MyPostsSection } from "@/components/profile/sections/MyPostsSection";
 import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
@@ -330,12 +331,15 @@ export default function PublicProfilePage() {
       {/* VTID-DANCE-D5/D9: dance preferences (visibility-honoring) */}
       <div className="container max-w-3xl mx-auto px-4 space-y-3">
         <DancePublicSection userId={profile.id} isOwn={false} />
-        {/* E2 — partner preferences. Owner-only render until E5 server-side
-            filter wiring lands; non-owners see nothing (privacy-safe default). */}
-        <PartnerPreferencesPublicSection userId={profile.id} />
-        {/* E2 — service offerings. Owner-only render until E5 ships;
-            once cross-user reads land this becomes public-by-default. */}
-        <ServiceOfferingsPublicSection userId={profile.id} />
+        {/* E5 — partner preferences. Cross-user fetch via gateway with
+            server-side visibility filter applied per the subject's
+            account_visibility map. */}
+        <PartnerPreferencesPublicSection userId={profile.id} vitanaId={profile.handle} />
+        {/* E5 — service offerings. Default-public; priceRange may be
+            redacted per-row by the server. */}
+        <ServiceOfferingsPublicSection userId={profile.id} vitanaId={profile.handle} />
+        {/* E1 / E2 — owner's open posts (partner_seek excluded by hardcoded rule). */}
+        <MyPostsSection userId={profile.id} />
       </div>
     </AppLayout>
   );
