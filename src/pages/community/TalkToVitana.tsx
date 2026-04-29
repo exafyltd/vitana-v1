@@ -1,0 +1,217 @@
+// VTID-02047: Talk to Vitana — community feedback capture
+// Parent plan PR 2: minimal text-first capture screen for the unified
+// feedback pipeline. Voice intake (orb handoff to specialists) lands in
+// later PRs.
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { MessageSquare, Send } from "lucide-react";
+import SEO from "@/components/SEO";
+import AppLayout from "@/components/AppLayout";
+import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import { communityFetch } from "@/lib/community-gateway";
+import { communityNavigation } from "@/config/navigation";
+
+type Kind = "bug" | "ux_issue" | "support_question" | "account_issue" | "marketplace_claim" | "feature_request" | "feedback";
+
+const KIND_OPTIONS: { value: Kind; label: string; hint: string }[] = [
+  { value: "feedback", label: "General feedback", hint: "Ideas, thoughts, anything else" },
+  { value: "bug", label: "Bug or crash", hint: "Something is broken" },
+  { value: "ux_issue", label: "Confusing or hard to use", hint: "UI/UX feedback" },
+  { value: "support_question", label: "How do I…?", hint: "Question about using Vitana" },
+  { value: "account_issue", label: "Account problem", hint: "Login, profile, data" },
+  { value: "marketplace_claim", label: "Order or payment", hint: "Refunds, marketplace" },
+  { value: "feature_request", label: "Feature request", hint: "Something I wish existed" },
+];
+
+interface Ticket {
+  id: string;
+  ticket_number: string;
+  kind: Kind;
+  status: string;
+  priority: string;
+  surface: string | null;
+  created_at: string;
+  resolver_agent: string | null;
+  resolved_at: string | null;
+  user_confirmed_at: string | null;
+}
+
+const STATUS_PILL: Record<string, { label: string; tone: "default" | "secondary" | "destructive" | "outline" }> = {
+  new: { label: "Submitted", tone: "secondary" },
+  interviewing: { label: "Talking", tone: "secondary" },
+  triaged: { label: "Triaged", tone: "secondary" },
+  spec_pending: { label: "Reviewing", tone: "secondary" },
+  spec_ready: { label: "Reviewing", tone: "secondary" },
+  answer_pending: { label: "Drafting answer", tone: "secondary" },
+  answer_ready: { label: "Reviewing", tone: "secondary" },
+  approved: { label: "In progress", tone: "default" },
+  in_progress: { label: "In progress", tone: "default" },
+  resolved: { label: "Resolved", tone: "default" },
+  user_confirmed: { label: "Confirmed", tone: "default" },
+  duplicate: { label: "Duplicate", tone: "outline" },
+  rejected: { label: "Closed", tone: "outline" },
+  wont_fix: { label: "Closed", tone: "outline" },
+  needs_more_info: { label: "Needs info", tone: "outline" },
+  reopened: { label: "Reopened", tone: "destructive" },
+};
+
+function timeAgo(iso: string): string {
+  const ms = Date.now() - new Date(iso).getTime();
+  const min = Math.floor(ms / 60000);
+  if (min < 1) return "just now";
+  if (min < 60) return `${min}m ago`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  return `${d}d ago`;
+}
+
+export default function TalkToVitana() {
+  const [text, setText] = useState("");
+  const [kind, setKind] = useState<Kind>("feedback");
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const ticketsQuery = useQuery<Ticket[]>({
+    queryKey: ["feedback-tickets-mine"],
+    queryFn: async () => {
+      const res = await communityFetch("/api/v1/feedback/tickets/mine?limit=25");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      return json.tickets ?? [];
+    },
+  });
+
+  const handleSubmit = async () => {
+    if (!text.trim()) {
+      toast({ title: "Add a description", description: "Tell Vitana what's on your mind.", variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await communityFetch("/api/v1/feedback/tickets", {
+        method: "POST",
+        body: JSON.stringify({
+          raw_text: text.trim(),
+          kind,
+          screen_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+          app_version: import.meta.env.VITE_APP_VERSION ?? null,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({} as Record<string, unknown>));
+        throw new Error((body as { details?: string; error?: string }).details ?? (body as { error?: string }).error ?? `HTTP ${res.status}`);
+      }
+      const created = await res.json();
+      setText("");
+      setKind("feedback");
+      await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
+      toast({
+        title: "Thanks — Vitana has it",
+        description: `Ticket ${created.ticket_number} logged. We'll follow up here.`,
+      });
+    } catch (err) {
+      toast({
+        title: "Couldn't submit",
+        description: err instanceof Error ? err.message : "Try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <AppLayout>
+      <SEO
+        title="Talk to Vitana"
+        description="Report bugs, ask questions, or share feedback. Vitana and her colleagues will follow up."
+      />
+      <StandardHeader
+        title="Talk to Vitana"
+        description="Bugs, questions, feedback — Vitana hands off to a specialist colleague when the topic is outside her domain."
+      />
+      <SubNavigation items={communityNavigation} activeId="overview" />
+
+      <div className="mx-auto max-w-2xl space-y-6 p-4">
+        <Card className="space-y-3 p-4">
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <MessageSquare className="h-4 w-4" />
+            What's on your mind?
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-muted-foreground">Topic</label>
+            <Select value={kind} onValueChange={v => setKind(v as Kind)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {KIND_OPTIONS.map(o => (
+                  <SelectItem key={o.value} value={o.value}>
+                    <span className="font-medium">{o.label}</span>
+                    <span className="ml-2 text-xs text-muted-foreground">{o.hint}</span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Textarea
+            placeholder="Describe what happened, what you tried, what you expected…"
+            value={text}
+            onChange={e => setText(e.target.value)}
+            rows={6}
+            className="resize-none"
+            maxLength={10_000}
+          />
+          <div className="flex justify-end">
+            <Button onClick={handleSubmit} disabled={submitting || !text.trim()}>
+              <Send className="mr-2 h-4 w-4" />
+              {submitting ? "Sending…" : "Send to Vitana"}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Vitana, Devon, Sage, Atlas, and Mira are AI specialists. A human reviews actions before they apply to your account.
+          </p>
+        </Card>
+
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold">Your reports</h2>
+          {ticketsQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+          {ticketsQuery.error && (
+            <p className="text-sm text-destructive">Couldn't load your reports.</p>
+          )}
+          {ticketsQuery.data?.length === 0 && (
+            <p className="text-sm text-muted-foreground">Nothing here yet — your reports will appear above.</p>
+          )}
+          {ticketsQuery.data?.map(t => {
+            const pill = STATUS_PILL[t.status] ?? { label: t.status, tone: "outline" as const };
+            return (
+              <Card key={t.id} className="flex items-center gap-3 p-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="font-medium">{t.ticket_number}</span>
+                    <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
+                    {t.resolver_agent && (
+                      <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind} · {timeAgo(t.created_at)}
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
