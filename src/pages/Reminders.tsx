@@ -13,6 +13,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useReminders, useCreateReminder, useDeleteReminder, useDeleteAllReminders, useCompleteReminder } from "@/hooks/useReminders";
 import { ReminderRow } from "@/lib/reminders-api";
+import EnableRemindersPrompt from "@/components/reminders/EnableRemindersPrompt";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -209,6 +210,8 @@ const Reminders: React.FC = () => {
           New
         </Button>
       </div>
+
+      <EnableRemindersPrompt />
 
       {upcoming.length >= 2 ? (
         <button

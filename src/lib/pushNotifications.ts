@@ -405,7 +405,22 @@ export async function initializePushNotifications(): Promise<void> {
   try {
     const initialized = await pushNotificationManager.initialize();
     if (!initialized) return;
-    await pushNotificationManager.subscribe();
+
+    // VTID-02601: Only auto-subscribe when the user has previously granted
+    // notification permission. For first-time users (state='default') we defer
+    // the OS prompt to <EnableRemindersPrompt /> so the ask happens with
+    // context (on /reminders) and a single user gesture, not silently on login.
+    // For Appilix WebView the manager skips Notification API anyway and uses
+    // the native bridge token if injected.
+    const permission = typeof window !== 'undefined' && 'Notification' in window
+      ? Notification.permission
+      : 'default';
+
+    if (permission === 'granted' || isAppilix()) {
+      await pushNotificationManager.subscribe();
+    } else {
+      console.log(`[Push] Permission state '${permission}' — deferring subscribe until user opt-in`);
+    }
   } catch (error) {
     console.error('[Push] Initialization failed:', error);
   }
