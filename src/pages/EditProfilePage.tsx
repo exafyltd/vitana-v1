@@ -14,6 +14,7 @@ import { AccountEditDrawer } from "@/components/profile/drawers/AccountEditDrawe
 // VTID-DANCE-D5
 import { DancePreferencesDrawer } from "@/components/profile/drawers/DancePreferencesDrawer";
 import { PartnerPreferencesDrawer } from "@/components/profile/drawers/PartnerPreferencesDrawer";
+import { ServiceOfferingsDrawer } from "@/components/profile/drawers/ServiceOfferingsDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -64,12 +65,15 @@ export default function EditProfilePage() {
   const [danceDrawerOpen, setDanceDrawerOpen] = useState(false);
   // E2 — partner preferences (private-by-default profile section)
   const [partnerPrefsDrawerOpen, setPartnerPrefsDrawerOpen] = useState(false);
+  // E2 — service offerings (public-by-default profile section)
+  const [serviceOfferingsDrawerOpen, setServiceOfferingsDrawerOpen] = useState(false);
   // Open the right drawer when ?drawer=<name> is present in URL (deep-link).
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const which = params.get("drawer");
     if (which === "dance") setDanceDrawerOpen(true);
     if (which === "partner") setPartnerPrefsDrawerOpen(true);
+    if (which === "offerings") setServiceOfferingsDrawerOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
@@ -649,6 +653,12 @@ export default function EditProfilePage() {
       <PartnerPreferencesDrawer
         open={partnerPrefsDrawerOpen}
         onOpenChange={setPartnerPrefsDrawerOpen}
+      />
+
+      {/* E2: service offerings drawer (deep-linkable via ?drawer=offerings) */}
+      <ServiceOfferingsDrawer
+        open={serviceOfferingsDrawerOpen}
+        onOpenChange={setServiceOfferingsDrawerOpen}
       />
 
       {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}

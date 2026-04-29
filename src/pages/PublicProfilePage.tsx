@@ -8,6 +8,7 @@ import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
 import { DancePublicSection } from "@/components/profile/sections/DancePublicSection";
 // E2
 import { PartnerPreferencesPublicSection } from "@/components/profile/sections/PartnerPreferencesPublicSection";
+import { ServiceOfferingsPublicSection } from "@/components/profile/sections/ServiceOfferingsPublicSection";
 import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
@@ -332,6 +333,9 @@ export default function PublicProfilePage() {
         {/* E2 — partner preferences. Owner-only render until E5 server-side
             filter wiring lands; non-owners see nothing (privacy-safe default). */}
         <PartnerPreferencesPublicSection userId={profile.id} />
+        {/* E2 — service offerings. Owner-only render until E5 ships;
+            once cross-user reads land this becomes public-by-default. */}
+        <ServiceOfferingsPublicSection userId={profile.id} />
       </div>
     </AppLayout>
   );
