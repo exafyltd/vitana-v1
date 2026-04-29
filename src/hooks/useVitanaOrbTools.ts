@@ -181,6 +181,11 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
           const intentId = call.args?.intent_id ? String(call.args.intent_id) : null;
           const matchId = call.args?.match_id ? String(call.args.match_id) : null;
           const TARGET_TO_PATH: Record<string, string> = {
+            // E6 — Find a Partner unified destination + sub-view deep links.
+            find_partner: '/comm/find-partner',
+            find_partner_matches: '/comm/find-partner?view=matches',
+            find_partner_board: '/comm/find-partner?view=board',
+            find_partner_posts: '/comm/find-partner?view=posts',
             my_intents: '/intents/mine',
             intent_board: '/intents/board',
             intent_board_dance: '/intents/board?filter=dance',

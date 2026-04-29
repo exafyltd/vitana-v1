@@ -1338,11 +1338,19 @@ export default withScreenId(function Community() {
             </Button>
           </UtilityActionButton>
 
-          <SplitBar defaultValue="overview" className="w-full">
+          <SplitBar
+            defaultValue="overview"
+            className="w-full"
+            onValueChange={(v) => {
+              // E6 — find_partner is a route-tab, not a content-tab.
+              if (v === 'find_partner') navigate('/comm/find-partner');
+            }}
+          >
           <SplitBarList>
             <SplitBarTrigger value="overview">🏠 Overview</SplitBarTrigger>
             <SplitBarTrigger value="rankings">🏆 Rankings</SplitBarTrigger>
             <SplitBarTrigger value="spotlight">⭐ Spotlight</SplitBarTrigger>
+            <SplitBarTrigger value="find_partner">💑 Find a Partner</SplitBarTrigger>
           </SplitBarList>
 
         <SplitBarContent value="overview">
