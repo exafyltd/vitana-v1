@@ -285,6 +285,8 @@ const AssistantPlayground = lazy(() => import("./pages/admin/assistant/Playgroun
 const AssistantSessions = lazy(() => import("./pages/admin/assistant/Sessions"));
 // Batch 1.B2: Knowledge section pages
 const KnowledgeDocuments = lazy(() => import("./pages/admin/knowledge/Documents"));
+// VTID-02047: Tenant Admin Feedback page (tickets + specialists)
+const AdminFeedback = lazy(() => import("./pages/admin/feedback/Feedback"));
 const KnowledgeTopics = lazy(() => import("./pages/admin/knowledge/Topics"));
 const KnowledgeIndexing = lazy(() => import("./pages/admin/knowledge/Indexing"));
 const KnowledgeSearchTest = lazy(() => import("./pages/admin/knowledge/SearchTest"));
@@ -1476,6 +1478,12 @@ const App = () => {
           } />
           <Route path="/admin/knowledge/governance" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><KnowledgeGovernance /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* VTID-02047: Feedback section */}
+          <Route path="/admin/feedback" element={<Navigate to="/admin/feedback/tickets" replace />} />
+          <Route path="/admin/feedback/:tab" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminFeedback /></ProtectedRoute></AuthGuard>
           } />
 
           {/* Settings section */}

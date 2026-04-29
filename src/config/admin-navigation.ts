@@ -27,6 +27,7 @@ import {
   BarChart3,
   Settings,
   ShieldCheck,
+  Inbox,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -108,6 +109,19 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "indexing", label: "Indexing", path: "/admin/knowledge/indexing" },
       { key: "search-test", label: "Search Test", path: "/admin/knowledge/search-test" },
       { key: "governance", label: "Governance", path: "/admin/knowledge/governance" },
+    ],
+  },
+  {
+    // VTID-02047: Tenant admin view of feedback tickets + read-only specialists
+    key: "feedback",
+    label: "Feedback",
+    icon: Inbox,
+    basePath: "/admin/feedback",
+    defaultTab: "tickets",
+    wave: 1,
+    tabs: [
+      { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
+      { key: "specialists", label: "Specialists", path: "/admin/feedback/specialists" },
     ],
   },
   {
