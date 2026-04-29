@@ -39,6 +39,7 @@ import { useRouteTracker } from "@/hooks/useRouteTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
+import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 
 // Route loading fallback
 const RouteFallback = () => (
@@ -132,6 +133,7 @@ const SettingsTenants = lazy(() => import("./pages/dev/settings/Tenants"));
 // Main feature pages
 const Home = lazy(() => import("./pages/Home"));
 const Discover = lazy(() => import("./pages/Discover"));
+const Reminders = lazy(() => import("./pages/Reminders"));
 const Health = lazy(() => import("./pages/Health"));
 const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
@@ -562,6 +564,8 @@ const App = () => {
                         Lives inside <BrowserRouter> for useNavigate(). */}
                     <IdentityRedirectListener />
                     <MilestoneCelebration />
+                    {/* VTID-02601: reminder fire delivery — chime + voice + banner. */}
+                    <ReminderInterruptOverlay />
                     <VitanalandNavigationProvider>
                       <LifeCompassPopupProvider>
                       <GreetingProviderWrapper>
@@ -848,6 +852,15 @@ const App = () => {
           <Route path="/health-tracker/biomarker-results" element={<Navigate to="/health/my-health-tracker" replace />} />
           
           {/* Calendar routes */}
+
+          {/* VTID-02601 Reminders */}
+          <Route path="/reminders" element={
+            <AuthGuard>
+              <Reminders />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/reminder" element={<Navigate to="/reminders" replace />} />
+          <Route path="/messages/reminder" element={<Navigate to="/reminders" replace />} />
 
           <Route path="/comm" element={
             <AuthGuard>
