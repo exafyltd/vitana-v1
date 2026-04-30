@@ -72,11 +72,31 @@ export class OrbVoiceClient {
   private _isReconnecting: boolean = false;
   private _wasListeningBeforeReconnect: boolean = false;
 
+  // VTID-02637: SSE drop grace period. iOS Safari fires `onerror` on every
+  // brief network blip but the EventSource often re-opens within 1-2 s
+  // without any user-visible disruption. Schedule the full reconnecting state
+  // (mic mute + audio queue drain + spinner) only if the SSE doesn't recover
+  // within this window. `null` = no pending grace.
+  private _sseGraceTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly SSE_GRACE_MS = 3000;
+
+  // VTID-02637: Bounded reconnecting state. If we don't get back to a healthy
+  // SSE within this window, force-rebuild the EventSource ourselves rather
+  // than waiting forever for the browser. iOS Safari is the worst offender —
+  // its EventSource can stay in CLOSED without auto-reopening.
+  private _reconnectRebuildTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly RECONNECT_REBUILD_MS = 8000;
+
   // SSE stream watchdog: if no SSE traffic for STREAM_STALE_MS while we
   // believe we're listening, treat as a silent disconnect and surface it.
   private lastSseMessageAt: number = 0;
   private streamWatchdogInterval: ReturnType<typeof setInterval> | null = null;
   private readonly STREAM_STALE_MS = 20000; // 20s without any SSE message = stale
+
+  // VTID-02637: Page-visibility listener for iOS. Backgrounding Safari kills
+  // the EventSource silently; foregrounding does NOT auto-reopen it. Hold
+  // the bound handler so we can detach on stop().
+  private _visibilityHandler: (() => void) | null = null;
 
   // Sequential audio upload queue
   private audioQueue: string[] = [];
@@ -191,6 +211,30 @@ export class OrbVoiceClient {
 
       // 2. Connect to SSE stream
       this.connectSSE();
+
+      // VTID-02637: iOS Safari kills SSE connections silently on
+      // background→foreground transitions and does not auto-reopen them.
+      // Listen for visibility changes so we can rebuild proactively when
+      // the user returns to the tab/app.
+      if (typeof document !== 'undefined' && !this._visibilityHandler) {
+        this._visibilityHandler = () => {
+          if (document.visibilityState === 'visible' && this.sessionId) {
+            const stale = !this.eventSource || this.eventSource.readyState !== EventSource.OPEN;
+            if (stale) {
+              console.warn('[OrbVoiceClient] Returned to foreground with stale SSE — rebuilding');
+              this.handleReconnecting();
+              this.forceRebuildEventSource();
+            }
+            // iOS may also have suspended the AudioContext — try to resume.
+            if (this.audioContext && this.audioContext.state === 'suspended') {
+              this.audioContext.resume().catch((e) => {
+                console.warn('[OrbVoiceClient] AudioContext resume on visibility failed:', e);
+              });
+            }
+          }
+        };
+        document.addEventListener('visibilitychange', this._visibilityHandler);
+      }
 
       // 3. Start recording FIRST (uses iOS-safe polyfill)
       // On iOS, getUserMedia reconfigures audio routing to voice-chat mode.
@@ -326,11 +370,19 @@ export class OrbVoiceClient {
             break;
           case 'connection_issue':
           case 'live_api_disconnected':
-            // Hard disconnect — reconnection failed or genuine upstream loss.
-            console.error('[OrbVoiceClient] Connection issue from server', msg);
-            this.callbacks.onError?.(msg.message || 'Voice connection lost');
+            // VTID-02637: only surface as a user-visible error when the server
+            // says this is terminal (`should_close: true`). When the server
+            // sets `should_close: false`, the gateway is mid transparent
+            // reconnect and the user shouldn't see anything — they'll get
+            // 'reconnected' shortly. Logging it as a soft warning is enough.
             if (msg.should_close) {
+              console.error('[OrbVoiceClient] Connection issue from server (terminal)', msg);
+              this.callbacks.onError?.(msg.message || 'Voice connection lost');
               this.stop();
+            } else {
+              console.warn('[OrbVoiceClient] Connection issue from server (transient — server will reconnect)', msg);
+              // Make sure UI shows reconnecting so user doesn't keep talking.
+              this.handleReconnecting();
             }
             break;
           case 'error':
@@ -365,10 +417,30 @@ export class OrbVoiceClient {
     };
 
     this.eventSource.onerror = (error) => {
-      // EventSource auto-reconnects with backoff; reflect that in the UI
-      // so the user sees "reconnecting" instead of a stale "I'm listening".
-      console.warn('[OrbVoiceClient] SSE connection issue — entering reconnecting state', error);
-      this.handleReconnecting();
+      // VTID-02637: iOS Safari fires onerror on every brief blip, including
+      // ones that recover in <1s. Entering full `handleReconnecting()`
+      // immediately mutes the mic + drains the audio queue, which the user
+      // perceives as Vitana cutting them off. Give the EventSource a grace
+      // window to self-recover before we flip the UI/audio state.
+      const readyState = this.eventSource?.readyState;
+      console.warn('[OrbVoiceClient] SSE onerror — readyState=', readyState, error);
+      if (readyState === EventSource.CLOSED) {
+        // Browser gave up. Skip grace, immediately enter reconnecting and
+        // start the rebuild timer.
+        this.handleReconnecting();
+        return;
+      }
+      // Otherwise we're CONNECTING (browser auto-retry in flight) — schedule
+      // grace. If the connection re-opens, onopen clears it. If not, we go
+      // into the full reconnecting state then.
+      if (this._sseGraceTimer) clearTimeout(this._sseGraceTimer);
+      this._sseGraceTimer = setTimeout(() => {
+        this._sseGraceTimer = null;
+        if (this.eventSource?.readyState !== EventSource.OPEN) {
+          console.warn('[OrbVoiceClient] SSE grace expired — entering reconnecting state');
+          this.handleReconnecting();
+        }
+      }, this.SSE_GRACE_MS);
     };
 
     // Start stream watchdog — detect silent stalls the server can't signal.
@@ -378,8 +450,15 @@ export class OrbVoiceClient {
   /**
    * Enter reconnecting state: pause mic, flip UI, remember prior listening.
    * Safe to call multiple times — idempotent.
+   * VTID-02637: also starts a bounded rebuild timer — if we don't recover
+   * within RECONNECT_REBUILD_MS, force-rebuild the EventSource ourselves.
    */
   private handleReconnecting(): void {
+    // Cancel any pending grace timer — we're committing to reconnect now.
+    if (this._sseGraceTimer) {
+      clearTimeout(this._sseGraceTimer);
+      this._sseGraceTimer = null;
+    }
     if (this._isReconnecting) return;
     this._isReconnecting = true;
 
@@ -399,6 +478,18 @@ export class OrbVoiceClient {
     this.callbacks.onListeningChange?.(false);
     this.callbacks.onVolumeChange?.(0);
     this.callbacks.onReconnectingChange?.(true);
+
+    // VTID-02637: bounded rebuild — if reconnect doesn't resolve in time,
+    // tear down the dead EventSource and build a fresh one. iOS Safari
+    // doesn't always auto-reopen.
+    if (this._reconnectRebuildTimer) clearTimeout(this._reconnectRebuildTimer);
+    this._reconnectRebuildTimer = setTimeout(() => {
+      this._reconnectRebuildTimer = null;
+      if (this._isReconnecting) {
+        console.warn('[OrbVoiceClient] Reconnect timed out — force-rebuilding EventSource');
+        this.forceRebuildEventSource();
+      }
+    }, this.RECONNECT_REBUILD_MS);
   }
 
   /**
@@ -406,6 +497,14 @@ export class OrbVoiceClient {
    * the user was before the drop.
    */
   private handleReconnected(): void {
+    if (this._reconnectRebuildTimer) {
+      clearTimeout(this._reconnectRebuildTimer);
+      this._reconnectRebuildTimer = null;
+    }
+    if (this._sseGraceTimer) {
+      clearTimeout(this._sseGraceTimer);
+      this._sseGraceTimer = null;
+    }
     if (!this._isReconnecting) return;
     this._isReconnecting = false;
     this.callbacks.onReconnectingChange?.(false);
@@ -417,6 +516,34 @@ export class OrbVoiceClient {
         console.warn('[OrbVoiceClient] Failed to resume listening after reconnect:', e);
       });
     }
+  }
+
+  /**
+   * VTID-02637: Tear down a wedged EventSource and build a fresh one. The
+   * server-side session is unaffected — same sessionId, same Vertex WS —
+   * we just rebuild the SSE pipe to it. iOS Safari occasionally lands in a
+   * state where the EventSource is CLOSED but never re-opens; this is the
+   * escape hatch.
+   */
+  private forceRebuildEventSource(): void {
+    if (!this.sessionId) return;
+    try {
+      this.eventSource?.close();
+    } catch (_e) { /* ignore */ }
+    this.eventSource = null;
+    // Treat the rebuild as fresh liveness so the stream watchdog doesn't
+    // immediately re-fire while the new connection is in CONNECTING.
+    this.lastSseMessageAt = Date.now();
+    this.connectSSE();
+    // Give the rebuild another window to land before we'd rebuild again.
+    if (this._reconnectRebuildTimer) clearTimeout(this._reconnectRebuildTimer);
+    this._reconnectRebuildTimer = setTimeout(() => {
+      this._reconnectRebuildTimer = null;
+      if (this._isReconnecting && this.eventSource?.readyState !== EventSource.OPEN) {
+        console.warn('[OrbVoiceClient] Rebuild still not OPEN — rebuilding again');
+        this.forceRebuildEventSource();
+      }
+    }, this.RECONNECT_REBUILD_MS);
   }
 
   /**
@@ -434,12 +561,20 @@ export class OrbVoiceClient {
       // listening (mic hot) or the model is mid-turn. An idle session with
       // no activity is normal and shouldn't flip UI.
       if (!this._isListening) return;
+      // VTID-02637: if the EventSource is not in OPEN state, the browser is
+      // already retrying. Don't double-trigger reconnecting from the watchdog
+      // — onerror's grace handler owns that path.
+      if (this.eventSource.readyState !== EventSource.OPEN) return;
       const silentFor = Date.now() - this.lastSseMessageAt;
       if (silentFor > this.STREAM_STALE_MS) {
         console.warn(
-          `[OrbVoiceClient] SSE silent for ${silentFor}ms while listening — treating as reconnecting`
+          `[OrbVoiceClient] SSE silent for ${silentFor}ms while listening on OPEN ES — rebuilding`
         );
+        // Skip the full reconnecting state — go straight to rebuild. The SSE
+        // is OPEN but receiving nothing, which means the upstream pipe is
+        // wedged. Rebuilding bypasses the entire wedged path.
         this.handleReconnecting();
+        this.forceRebuildEventSource();
       }
     }, 5000);
   }
@@ -1007,6 +1142,14 @@ export class OrbVoiceClient {
       this.callbacks.onReconnectingChange?.(false);
     }
     this._wasListeningBeforeReconnect = false;
+    // VTID-02637: clear pending grace and rebuild timers
+    if (this._sseGraceTimer) { clearTimeout(this._sseGraceTimer); this._sseGraceTimer = null; }
+    if (this._reconnectRebuildTimer) { clearTimeout(this._reconnectRebuildTimer); this._reconnectRebuildTimer = null; }
+    // VTID-02637: detach the page-visibility listener
+    if (this._visibilityHandler && typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', this._visibilityHandler);
+      this._visibilityHandler = null;
+    }
 
     // Clear silence detection
     if (this.silenceTimer) {
