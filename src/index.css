@@ -747,6 +747,12 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     display: none !important;
   }
 
+  /* VTID-01967: Lift the Vitana ID onboarding card above the mobile bottom
+     nav so its CTAs ("Use this" / "Change the name") aren't covered. */
+  body[data-bottom-nav-visible="true"] [data-vtid-onboarding-card] {
+    bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px));
+  }
+
 
 
   /* VITANA ORB idle core pulse — lightweight CSS-only animation */
