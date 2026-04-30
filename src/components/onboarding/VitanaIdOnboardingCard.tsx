@@ -182,6 +182,7 @@ export function VitanaIdOnboardingCard() {
   return (
     <>
       <div
+        data-vtid-onboarding-card
         className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 backdrop-blur-md shadow-lg"
         role="dialog"
         aria-label="Pick your Vitana ID"
