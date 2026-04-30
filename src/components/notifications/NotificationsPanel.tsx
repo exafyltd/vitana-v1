@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Bell, Check, ChevronRight, Settings, Trash2, X } from 'lucide-react';
+import { Bell, Check, Settings, Trash2, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,8 +33,8 @@ interface NotificationsPanelProps {
   onOpenSettings?: () => void;
   /** Cap on how many notifications to fetch from the hook. */
   limit?: number;
-  /** Override the default max-height of the scrolling list. */
-  listMaxHeightClassName?: string;
+  /** Overrides the panel's max-height (Tailwind class). */
+  maxHeightClassName?: string;
   /** Hide the "Manage your notifications" footer (e.g. on mobile dialog). */
   hideSettingsFooter?: boolean;
   /** Additional class for the outer container. */
@@ -49,15 +48,15 @@ interface NotificationsPanelProps {
  *  - NotificationBell (desktop dropdown)
  *  - SideDrawerNav mobile notifications dialog
  *
- * Features: filter pills (All / Unread / per-category), grouping by category
- * when on "All", per-item delete, "delete all" with confirmation,
- * mark-all-read, click-to-navigate using `resolveNotificationRoute`.
+ * Layout uses a flex-column with a constrained max-height; the list area is
+ * `flex-1 min-h-0 overflow-y-auto` so it always scrolls inside the panel,
+ * never relying on the host overlay (Radix dropdown / Dialog) to handle it.
  */
 export function NotificationsPanel({
   onNavigated,
   onOpenSettings,
   limit = 20,
-  listMaxHeightClassName = 'max-h-[60vh] sm:max-h-[400px]',
+  maxHeightClassName = 'max-h-[min(80vh,560px)]',
   hideSettingsFooter = false,
   className,
 }: NotificationsPanelProps) {
@@ -127,9 +126,9 @@ export function NotificationsPanel({
       : `Clear all ${getCategoryDisplay(filter).label.toLowerCase()}?`;
 
   return (
-    <div className={className}>
+    <div className={`flex flex-col ${maxHeightClassName} ${className ?? ''}`}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b">
+      <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b">
         <div className="flex items-baseline gap-2">
           <h3 className="font-semibold text-base">Notifications</h3>
           {unreadCount > 0 && (
@@ -166,8 +165,8 @@ export function NotificationsPanel({
 
       {/* Filter pills */}
       {notifications.length > 0 && presentCategories.length > 0 && (
-        <div className="border-b px-2 py-2 overflow-x-auto">
-          <div className="flex items-center gap-1.5 pb-1 w-max">
+        <div className="shrink-0 border-b px-2 py-2 overflow-x-auto">
+          <div className="flex items-center gap-1.5 w-max">
             <FilterPill
               active={filter === 'all'}
               onClick={() => setFilter('all')}
@@ -197,8 +196,9 @@ export function NotificationsPanel({
         </div>
       )}
 
-      {/* List */}
-      <ScrollArea className={listMaxHeightClassName}>
+      {/* Scrollable list — flex-1 + min-h-0 lets it shrink below content size
+          and overflow-y-auto guarantees a scrollbar inside the panel */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         {filtered.length === 0 ? (
           <div className="px-4 py-12 text-center text-muted-foreground">
             <Bell className="h-12 w-12 mx-auto mb-3 opacity-20" />
@@ -214,7 +214,7 @@ export function NotificationsPanel({
           <div>
             {grouped.map(({ category, display, items }) => (
               <div key={category}>
-                <div className="sticky top-0 z-[1] bg-muted/60 backdrop-blur-sm px-3 py-1.5 border-b text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                <div className="sticky top-0 z-[1] bg-muted/80 backdrop-blur-sm px-3 py-1.5 border-b text-xs font-medium text-muted-foreground uppercase tracking-wide">
                   <span className="mr-1.5" aria-hidden="true">{display.icon}</span>
                   {display.label}
                   <span className="ml-1.5 text-muted-foreground/60 normal-case font-normal">
@@ -244,11 +244,11 @@ export function NotificationsPanel({
             ))}
           </div>
         )}
-      </ScrollArea>
+      </div>
 
       {/* Footer */}
       {!hideSettingsFooter && (
-        <div className="border-t px-4 py-2">
+        <div className="shrink-0 border-t px-4 py-2">
           <Button
             variant="ghost"
             className="w-full text-xs text-muted-foreground hover:text-foreground"
@@ -297,16 +297,9 @@ function NotificationRow({
 }) {
   return (
     <div
-      role="button"
-      tabIndex={0}
-      onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') onClick();
-        if (e.key === 'Delete' || e.key === 'Backspace') onDelete();
-      }}
       className={`
-        group relative flex items-start gap-3 px-3 py-3.5 cursor-pointer
-        transition-all duration-150 border-b last:border-b-0
+        relative flex items-start gap-3 px-3 py-3 border-b last:border-b-0
+        transition-all duration-150
         ${
           !notification.read_at
             ? 'bg-accent/10 border-l-2 border-l-primary hover:bg-accent/20'
@@ -314,41 +307,63 @@ function NotificationRow({
         }
       `}
     >
-      <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-muted">
-        <span className="text-xl" aria-hidden="true">
-          {getNotificationIcon(notification.type)}
-        </span>
-      </div>
-
-      <div className="flex-1 min-w-0 space-y-0.5">
-        <p className="text-sm leading-relaxed">
-          <span className={!notification.read_at ? 'font-medium' : ''}>
-            {notification.title}
-          </span>
-        </p>
-        {notification.body && (
-          <p className="text-xs text-muted-foreground line-clamp-2">{notification.body}</p>
-        )}
-        <p className="text-xs text-muted-foreground/70">
-          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-        </p>
-      </div>
-
-      <div className="flex flex-col items-center justify-between gap-2 self-stretch">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
+      {/* Tap target for the row body — opens the source screen */}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick();
+          }
+          if (e.key === 'Delete' || e.key === 'Backspace') {
+            e.preventDefault();
             onDelete();
-          }}
-          aria-label="Delete notification"
-          title="Delete"
-          className="flex-shrink-0 p-1.5 -mr-1 rounded-md hover:bg-destructive/10 hover:text-destructive text-muted-foreground/70 transition-colors"
-        >
-          <X className="h-4 w-4" />
-        </button>
-        <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 mb-0.5" aria-hidden="true" />
+          }
+        }}
+        className="flex-1 min-w-0 flex items-start gap-3 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-md -mx-1 px-1"
+      >
+        <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-muted">
+          <span className="text-xl" aria-hidden="true">
+            {getNotificationIcon(notification.type)}
+          </span>
+        </div>
+        <div className="flex-1 min-w-0 space-y-0.5 pt-0.5">
+          <p className="text-sm leading-snug">
+            <span className={!notification.read_at ? 'font-semibold' : ''}>
+              {notification.title}
+            </span>
+          </p>
+          {notification.body && (
+            <p className="text-xs text-muted-foreground line-clamp-2">{notification.body}</p>
+          )}
+          <p className="text-[11px] text-muted-foreground/70">
+            {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+          </p>
+        </div>
       </div>
+
+      {/* Delete — large, persistent, obviously the primary row action.
+          Sits in its own column so the row tap target above doesn't swallow taps on it. */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+        aria-label="Delete this notification"
+        title="Delete"
+        className="
+          shrink-0 self-start mt-0.5
+          h-8 w-8 flex items-center justify-center rounded-full
+          text-muted-foreground/70 hover:text-destructive
+          hover:bg-destructive/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
+          transition-colors
+        "
+      >
+        <X className="h-4 w-4" strokeWidth={2.5} />
+      </button>
     </div>
   );
 }

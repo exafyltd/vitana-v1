@@ -397,7 +397,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
       <DialogContent className="max-w-md p-0 gap-0 rounded-2xl overflow-hidden">
         <NotificationsPanel
           onNavigated={() => setNotificationsOpen(false)}
-          listMaxHeightClassName="max-h-[60vh]"
+          maxHeightClassName="max-h-[85vh]"
         />
       </DialogContent>
     </Dialog>
