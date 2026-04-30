@@ -49,8 +49,16 @@ function bucketFromDueAt(dueAt: Date, now: Date): HorizonBucket {
   return "future";
 }
 
-function bucketFromWaveId(waveId: number | string): HorizonBucket {
-  const n = typeof waveId === "number" ? waveId : parseInt(waveId, 10);
+/**
+ * Map a wave identifier to its journey horizon. Accepts both legacy formats:
+ *   - `"wave-1"` / `"wave-2"` (current API)
+ *   - `1` / `2` / `"1"` / `"2"` (older payloads / test fixtures)
+ * Used by My Journey's path bucketing AND its checkpoint week-fallback so
+ * "horizon missing" doesn't leak through as "future" for legacy data.
+ */
+export function bucketFromWaveId(waveId: number | string): HorizonBucket {
+  const raw = typeof waveId === "string" ? waveId.replace(/^wave-/, "") : String(waveId);
+  const n = parseInt(raw, 10);
   if (!Number.isFinite(n)) return "future";
   if (n <= 0) return "today";
   if (n === 1) return "next3";
