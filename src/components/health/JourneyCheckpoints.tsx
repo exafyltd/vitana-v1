@@ -15,6 +15,7 @@ import {
 import { PillarDeltaBadges } from "./PillarDeltaBadges";
 import { projectDays, trend7d } from "@/lib/vitana-projection";
 import { nextTier, pointsToNextTier } from "@/lib/vitanaIndex";
+import { bucketFromWaveId } from "@/lib/horizonBuckets";
 import type { ContributionVector } from "@/types/autopilot";
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
@@ -146,8 +147,14 @@ export function JourneyCheckpoints({
   const weekPicks = useMemo<Recommendation[]>(() => {
     const inWeek = open.filter((r) => {
       if (r.horizon === "today" || r.horizon === "next3" || r.horizon === "thisWeek") return true;
-      // Fallback when the gateway hasn't deployed the horizon field yet.
-      if (!r.horizon && (r.wave_id === "wave-1" || r.wave_id === "wave-2")) return true;
+      // Fallback when the gateway hasn't deployed the horizon field yet —
+      // reuse the same wave-to-horizon logic the rest of the dashboard uses
+      // so legacy numeric / plain-string wave_id formats (1, "1") still
+      // count as "this week" and don't undercount the checkpoint.
+      if (!r.horizon && r.wave_id !== undefined && r.wave_id !== null) {
+        const bucket = bucketFromWaveId(r.wave_id);
+        return bucket === "today" || bucket === "next3" || bucket === "thisWeek";
+      }
       return false;
     });
     return [...inWeek]

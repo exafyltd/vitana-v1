@@ -30,7 +30,7 @@ import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
 import { useLifeCompass } from "@/hooks/useLifeCompass";
 import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
-import { HORIZON_BUCKETS, type HorizonBucket } from "@/lib/horizonBuckets";
+import { HORIZON_BUCKETS, bucketFromWaveId, type HorizonBucket } from "@/lib/horizonBuckets";
 import { JourneyDayBadge } from "@/components/health/JourneyDayBadge";
 import { JourneyCheckpoints, dayNumberFromCreated } from "@/components/health/JourneyCheckpoints";
 import { JourneyWaveMap } from "@/components/health/JourneyWaveMap";
@@ -71,22 +71,11 @@ const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
   mental: "Mental",
 };
 
-function bucketFromWaveId(waveId: number | string | undefined): HorizonBucket {
-  if (waveId === undefined || waveId === null) return "future";
-  const raw = typeof waveId === "string" ? waveId.replace(/^wave-/, "") : String(waveId);
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n)) return "future";
-  if (n <= 0) return "today";
-  if (n === 1) return "next3";
-  if (n === 2) return "thisWeek";
-  if (n === 3) return "month";
-  return "future";
-}
-
 const HORIZON_VALUES: HorizonBucket[] = ["today", "next3", "thisWeek", "month", "future"];
 
 function bucketFromRec(rec: Recommendation): HorizonBucket {
   if (rec.horizon && HORIZON_VALUES.includes(rec.horizon)) return rec.horizon;
+  if (rec.wave_id === undefined || rec.wave_id === null) return "future";
   return bucketFromWaveId(rec.wave_id);
 }
 

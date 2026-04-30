@@ -64,13 +64,19 @@ export function projectDays(
  *
  * Returns null when input is missing — callers should fall back to
  * aspirational framing rather than a phantom projection.
+ *
+ * Post-Day-90 accounts (`daysSinceStart > 90`) clamp to the current total
+ * rather than returning null, matching the pre-refactor behaviour so any
+ * caller relying on a stable Day-90 number for mature accounts keeps
+ * getting one.
  */
 export function projectDay90(
   total: number,
   trend: number | null,
   daysSinceStart: number,
 ): number | null {
-  return projectDays(total, trend, 90 - daysSinceStart, daysSinceStart);
+  const daysAhead = Math.max(0, 90 - daysSinceStart);
+  return projectDays(total, trend, daysAhead, daysSinceStart);
 }
 
 /**
