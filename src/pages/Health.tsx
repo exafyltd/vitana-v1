@@ -26,9 +26,13 @@ import { useHealthLogger } from "@/hooks/useHealthLogger";
 import CompactVitanaIndex from "@/components/health/CompactVitanaIndex";
 import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
+import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
 import { useTranslation } from "@/hooks/useTranslation";
 import VitanaBaselineSurveyModal from "@/components/health/VitanaBaselineSurveyModal";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
+import { ChevronRight } from "lucide-react";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
+import { weakestPillar as findWeakestPillar } from "@/hooks/useVitanaIndex";
 
 import { healthNavigation } from "@/config/navigation";
 import { useProfile } from "@/context/ProfileProvider";
@@ -109,20 +113,30 @@ export default withScreenId(function Health() {
   
   const latestActions = getLatestActions(2);
 
-  // Health pillar data
+  // Live pillar values (fall back to a low default while the index loads).
+  const livePillars = liveVitanaIndex?.pillars ?? {
+    nutrition: 0,
+    hydration: 0,
+    exercise: 0,
+    sleep: 0,
+    mental: 0,
+  };
+  // Render as 0–100 percentages because the legacy CompactVitanaIndex /
+  // MobileHealthSnapshot props expect that scale; pillars are 0–200 internally.
   const pillars = {
-    nutrition: 85,
-    exercise: 68,
-    sleep: 90,
-    hydration: 72,
-    mental: 78
+    nutrition: Math.round((livePillars.nutrition / 200) * 100),
+    hydration: Math.round((livePillars.hydration / 200) * 100),
+    exercise:  Math.round((livePillars.exercise  / 200) * 100),
+    sleep:     Math.round((livePillars.sleep     / 200) * 100),
+    mental:    Math.round((livePillars.mental    / 200) * 100),
   };
 
-  // Find weakest pillar for priority focus
-  const pillarEntries = Object.entries(pillars) as [string, number][];
-  const weakestPillar = pillarEntries.reduce((min, curr) => 
-    curr[1] < min[1] ? curr : min
-  , pillarEntries[0]);
+  const weakestKey = findWeakestPillar(livePillars);
+  const weakestPillar: [string, number] = [weakestKey, pillars[weakestKey as keyof typeof pillars]];
+
+  const handleOpenIndexSheet = () => {
+    window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT));
+  };
   
   // Get translated pillar labels and emojis
   const getPillarLabel = (key: string) => translate(`health.pillars.${key}`);
@@ -254,13 +268,36 @@ export default withScreenId(function Health() {
 
           {/* Content based on active mode */}
           {mobileTab === 'overview' && (
-            <div className="flex-1 overflow-y-auto">
-              <MobileHealthSnapshot
-                vitanaIndex={vitanaScore}
-                vitanaPercentile={15}
-                trend="up"
-                pillars={pillars}
-              />
+            <div className="flex-1 overflow-y-auto space-y-4">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={handleOpenIndexSheet}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleOpenIndexSheet();
+                  }
+                }}
+                aria-label="Open Vitana Index forecast"
+                className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
+              >
+                <MobileHealthSnapshot
+                  vitanaIndex={vitanaScore}
+                  vitanaPercentile={15}
+                  trend={liveVitanaIndex?.trend ?? "stable"}
+                  pillars={pillars}
+                />
+              </div>
+
+              <div className="px-4">
+                <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+                  <CardContent className="p-3">
+                    <VitanaPillarAgentsPanel />
+                  </CardContent>
+                </Card>
+              </div>
+
               <MobilePriorityFocus
                 pillarName={getPillarLabel(weakestPillar[0])}
                 pillarScore={weakestPillar[1]}
@@ -274,6 +311,18 @@ export default withScreenId(function Health() {
                 ]}
                 onTakeAction={() => setHealthActionsOpen(true)}
               />
+
+              <div className="px-4 pb-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/autopilot')}
+                  className="text-sm w-full justify-center"
+                >
+                  View My Journey
+                  <ChevronRight className="w-4 h-4 ml-0.5" />
+                </Button>
+              </div>
             </div>
           )}
 
@@ -342,25 +391,55 @@ export default withScreenId(function Health() {
             </Button>
           </UtilityActionButton>
 
-          {/* Three-Column Hero Section */}
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <CompactVitanaIndex 
+          {/* Full-width Index hero — tap to open the Index Sheet for forecast / horizon */}
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleOpenIndexSheet}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleOpenIndexSheet();
+              }
+            }}
+            aria-label="Open Vitana Index forecast"
+            className="mb-4 cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <CompactVitanaIndex
               score={vitanaScore}
-              trend="up"
-              pillars={{
-                nutrition: 85,
-                hydration: 72,
-                exercise: 68,
-                sleep: 90,
-                mental: 78
-              }}
+              trend={liveVitanaIndex?.trend ?? "stable"}
+              pillars={pillars}
             />
-            
-            <MotivationalDataCard 
+          </div>
+
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/autopilot')}
+              className="text-sm"
+            >
+              View My Journey
+              <ChevronRight className="w-4 h-4 ml-0.5" />
+            </Button>
+          </div>
+
+          {/* Pillar agents — what each pillar is doing right now */}
+          <Card className="mb-6 rounded-2xl border ring-1 ring-border/60 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-lg">Your pillars right now</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <VitanaPillarAgentsPanel />
+            </CardContent>
+          </Card>
+
+          {/* Motivational + Next-best-action row */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <MotivationalDataCard
               userName={profile?.displayName || profile?.fullName?.split(' ')[0] || 'there'}
               dataCompleteness={45}
             />
-            
             <NextBestActionCard />
           </div>
 

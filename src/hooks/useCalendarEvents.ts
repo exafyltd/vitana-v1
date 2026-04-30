@@ -41,6 +41,10 @@ export interface CalendarEvent {
   role_context?: string;
   source_ref_id?: string | null;
   source_ref_type?: string | null;
+  // Vitana Index linkage (gateway migration 20260428000000). Both nullable;
+  // legacy events fall back to the wellness_tags `pillar:*` heuristic.
+  pillar?: 'nutrition' | 'hydration' | 'exercise' | 'sleep' | 'mental' | null;
+  contribution_vector?: Partial<Record<'nutrition' | 'hydration' | 'exercise' | 'sleep' | 'mental', number>> | null;
 }
 
 export interface CalendarInviteResponse {

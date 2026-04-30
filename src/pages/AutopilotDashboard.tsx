@@ -1,20 +1,19 @@
-import { useNavigate } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { communityFetch } from "@/lib/community-gateway";
 import {
-  CheckCircle2, Loader2, Rocket, Sun, Heart, Activity,
-  Lightbulb, Compass, Calendar, TrendingUp, HeartPulse, Sparkles,
-  Play,
+  Loader2,
+  Compass,
+  ChevronRight,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -24,8 +23,13 @@ import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileAction
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexTrajectoryCard } from "@/components/health/VitanaIndexTrajectoryCard";
-
-// ── Types ───────────────────────────────────────────────────
+import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
+import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
+import { useLifeCompass } from "@/hooks/useLifeCompass";
+import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
+import { EMPTY_COPY } from "@/lib/celebrate";
+import { HORIZON_BUCKETS, type HorizonBucket } from "@/lib/horizonBuckets";
+import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
 
 interface Recommendation {
   id: string;
@@ -34,216 +38,219 @@ interface Recommendation {
   status: string;
   source_ref: string;
   impact_score: number;
-  wave_id?: string;
+  wave_id?: string | number;
   wave_order?: number;
-}
-
-interface WaveMeta {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  order: number;
-  is_initiative: boolean;
-  timeline: { start_day: number; end_day: number };
+  contribution_vector?: ContributionVector;
+  /**
+   * Gateway-derived bucket. Populated by the autopilot recommendations
+   * route from `wave.timeline.start_day`. Older deploys may omit this; we
+   * fall back to wave_id-based bucketing when it's missing.
+   */
+  horizon?: HorizonBucket;
 }
 
 interface RecommendationsResponse {
   recommendations: Recommendation[];
-  waves?: WaveMeta[];
 }
 
-// ── Constants ───────────────────────────────────────────────
-
-const WAVE_ICONS: Record<string, React.ElementType> = {
-  rocket: Rocket,
-  sun: Sun,
-  heart: Heart,
-  activity: Activity,
-  lightbulb: Lightbulb,
-  compass: Compass,
-  calendar: Calendar,
-  "trending-up": TrendingUp,
-  "heart-pulse": HeartPulse,
+const BUCKET_LABEL: Record<HorizonBucket, string> = {
+  today: "Today",
+  next3: "Next 3 days",
+  thisWeek: "This week",
+  month: "30 days",
+  future: "Future",
 };
 
-const WAVE_COLORS = [
-  "bg-blue-500", "bg-amber-500", "bg-rose-500", "bg-green-500",
-  "bg-purple-500", "bg-cyan-500", "bg-orange-500", "bg-emerald-500", "bg-pink-500",
-];
+const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
+  nutrition: "Nutrition",
+  hydration: "Hydration",
+  exercise: "Exercise",
+  sleep: "Sleep",
+  mental: "Mental",
+};
 
-// ── Timeline Component ──────────────────────────────────────
+function bucketFromWaveId(waveId: number | string | undefined): HorizonBucket {
+  if (waveId === undefined || waveId === null) return "future";
+  // Wave IDs come back as strings like "wave-1". Strip the "wave-" prefix.
+  const raw = typeof waveId === "string" ? waveId.replace(/^wave-/, "") : String(waveId);
+  const n = parseInt(raw, 10);
+  if (!Number.isFinite(n)) return "future";
+  if (n <= 0) return "today";
+  if (n === 1) return "next3";
+  if (n === 2) return "thisWeek";
+  if (n === 3) return "month";
+  return "future";
+}
 
-function JourneyTimeline({ waves, userDayCount }: { waves: WaveMeta[]; userDayCount: number }) {
-  const maxDay = 90;
-  const markerPct = Math.min((userDayCount / maxDay) * 100, 100);
+const HORIZON_VALUES: HorizonBucket[] = ['today', 'next3', 'thisWeek', 'month', 'future'];
+
+function bucketFromRec(rec: Recommendation): HorizonBucket {
+  if (rec.horizon && HORIZON_VALUES.includes(rec.horizon)) return rec.horizon;
+  return bucketFromWaveId(rec.wave_id);
+}
+
+function dominantPillar(vector?: ContributionVector | null): VitanaPillarKey | null {
+  if (!vector) return null;
+  let bestKey: VitanaPillarKey | null = null;
+  let bestVal = 0;
+  for (const [k, v] of Object.entries(vector) as Array<[VitanaPillarKey, number | undefined]>) {
+    if (typeof v === "number" && v > bestVal) {
+      bestKey = k;
+      bestVal = v;
+    }
+  }
+  return bestKey;
+}
+
+function sumVectors(recs: Recommendation[]): { vector: ContributionVector; total: number } {
+  const vector: ContributionVector = {};
+  let total = 0;
+  for (const rec of recs) {
+    if (!rec.contribution_vector) continue;
+    for (const [k, v] of Object.entries(rec.contribution_vector) as Array<[VitanaPillarKey, number | undefined]>) {
+      if (typeof v === "number" && v > 0) {
+        vector[k] = (vector[k] ?? 0) + v;
+        total += v;
+      }
+    }
+  }
+  return { vector, total };
+}
+
+interface PathStopCardProps {
+  bucket: HorizonBucket;
+  recommendations: Recommendation[];
+  onOpen: () => void;
+}
+
+function PathStopCard({ bucket, recommendations, onOpen }: PathStopCardProps) {
+  const { vector, total } = sumVectors(recommendations);
+  const dom = dominantPillar(vector);
+  const tintClass = dom ? `before:bg-pill-${dom}-accent` : "before:bg-muted-foreground";
+  const labelTintClass = dom
+    ? `bg-pill-${dom}-tint text-pill-${dom}-accent border-transparent`
+    : "bg-muted text-muted-foreground";
+  const isEmpty = recommendations.length === 0;
 
   return (
-    <Card className="mb-6">
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-muted-foreground">Your Timeline</h3>
-          <Badge variant="outline" className="text-xs">Day {userDayCount}</Badge>
+    <Card
+      className={`min-w-[14rem] snap-start rounded-2xl border ring-1 ring-border/60 shadow-sm bg-card relative overflow-hidden ${
+        isEmpty ? "opacity-60" : ""
+      } before:absolute before:left-0 before:top-4 before:bottom-4 before:w-1 before:rounded-full ${tintClass}`}
+    >
+      <CardContent className="p-4 pl-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold">{BUCKET_LABEL[bucket]}</span>
+          {dom && (
+            <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${labelTintClass}`}>
+              {PILLAR_LABEL[dom]}
+            </Badge>
+          )}
         </div>
-        {/* Day markers */}
-        <div className="relative mb-2">
-          <div className="flex justify-between text-[10px] text-muted-foreground">
-            <span>Day 0</span>
-            <span>Day 30</span>
-            <span>Day 60</span>
-            <span>Day 90</span>
-          </div>
-          <div className="relative h-px bg-border mt-1">
-            {/* "You are here" marker */}
-            <div
-              className="absolute -top-1.5 w-3 h-3 rounded-full bg-primary border-2 border-background shadow-sm"
-              style={{ left: `${markerPct}%`, transform: "translateX(-50%)" }}
-            />
-          </div>
+        <div className="text-2xl font-bold">
+          {recommendations.length}
+          <span className="text-xs font-normal text-muted-foreground ml-1">
+            action{recommendations.length === 1 ? "" : "s"}
+          </span>
         </div>
-        {/* Wave bars */}
-        <div className="space-y-1 mt-3">
-          {waves.map((wave, i) => {
-            const left = (wave.timeline.start_day / maxDay) * 100;
-            const width = ((wave.timeline.end_day - wave.timeline.start_day) / maxDay) * 100;
-            return (
-              <div key={wave.id} className="relative h-4">
-                <div
-                  className={`absolute h-full rounded-sm ${WAVE_COLORS[i % WAVE_COLORS.length]} opacity-75`}
-                  style={{ left: `${left}%`, width: `${width}%` }}
-                >
-                  <span className="text-[9px] text-white font-medium px-1 truncate block leading-4">
-                    {wave.name}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {total > 0 ? (
+          <PillarDeltaBadges vector={vector} compact />
+        ) : (
+          <p className="text-xs text-muted-foreground">{EMPTY_COPY.myJourneyOnePillar}</p>
+        )}
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full"
+          disabled={isEmpty}
+          onClick={onOpen}
+        >
+          Open
+        </Button>
       </CardContent>
     </Card>
   );
 }
 
-// ── Wave Section Component ──────────────────────────────────
-
-function WaveSection({
-  wave,
-  recommendations,
-  index,
-  onActivate,
-  activatingId,
+function PersonalPath({
+  bucketed,
+  onOpenAutopilot,
 }: {
-  wave: WaveMeta;
-  recommendations: Recommendation[];
-  index: number;
-  onActivate: (rec: Recommendation) => void;
-  activatingId: string | null;
+  bucketed: Record<HorizonBucket, Recommendation[]>;
+  onOpenAutopilot: () => void;
 }) {
-  const Icon = WAVE_ICONS[wave.icon] || Sparkles;
-  const total = recommendations.length;
-  const activated = recommendations.filter(r => r.status === "activated").length;
-  const completed = recommendations.filter(r => r.status === "completed").length;
+  return (
+    <div className="overflow-x-auto flex gap-3 snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+      {HORIZON_BUCKETS.map((bucket) => (
+        <PathStopCard
+          key={bucket}
+          bucket={bucket}
+          recommendations={bucketed[bucket]}
+          onOpen={onOpenAutopilot}
+        />
+      ))}
+    </div>
+  );
+}
 
-  // Sort: completed last, activated middle, new first
-  const sorted = [...recommendations].sort((a, b) => {
-    const order = { new: 0, activated: 1, completed: 2 };
-    return (order[a.status as keyof typeof order] ?? 0) - (order[b.status as keyof typeof order] ?? 0);
-  });
+function CompassLine() {
+  const { compass } = useLifeCompass();
+  const handleClick = () => {
+    window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
+  };
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline inline-flex items-center gap-1.5"
+    >
+      <Compass className="w-3.5 h-3.5" />
+      {compass?.primary_goal
+        ? `Heading toward: ${compass.primary_goal}`
+        : "Set or review your Life Compass"}
+    </button>
+  );
+}
+
+function HeroBand() {
+  const { index } = useVitanaIndexCache();
+  const total = index?.total ?? null;
+  const tier = index?.tier ?? null;
 
   return (
-    <div className="mb-6">
-      {/* Wave header */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${WAVE_COLORS[index % WAVE_COLORS.length]} text-white flex-shrink-0`}>
-          <Icon className="w-3.5 h-3.5" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-sm">
-              {wave.name}
-            </h2>
-            {wave.is_initiative && (
-              <Badge className="text-[10px] px-1.5 py-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white border-0">
-                NEW
-              </Badge>
+    <div className="grid md:grid-cols-2 gap-4 mb-4">
+      <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+        <CardContent className="p-4 flex items-center gap-4">
+          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600">
+                {total === null ? "…" : total}
+              </div>
+              <div className="text-[10px] text-muted-foreground">of 999</div>
+            </div>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Your Index</p>
+            {tier && (
+              <p className="text-base font-semibold">{tier.label}</p>
+            )}
+            {tier && (
+              <p className="text-xs text-muted-foreground">{tier.framing ?? tier.description}</p>
             )}
           </div>
-        </div>
-        <span className="text-xs text-muted-foreground">
-          Day {wave.timeline.start_day}–{wave.timeline.end_day}
-        </span>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* Wave stats */}
-      <div className="text-xs text-muted-foreground mb-2 pl-9">
-        {total} tasks &middot; {activated + completed} activated &middot; {completed} completed
-      </div>
-
-      {/* Task cards */}
-      <div className="space-y-2 pl-9">
-        {sorted.map((rec) => (
-          <Card key={rec.id} className={rec.status === "completed" ? "opacity-60" : ""}>
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm text-foreground">{rec.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{rec.summary}</p>
-                </div>
-                <div className="flex-shrink-0">
-                  {rec.status === "completed" ? (
-                    <div className="flex items-center gap-1.5">
-                      <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs">
-                        <CheckCircle2 className="w-3 h-3 mr-1" />
-                        Done
-                      </Badge>
-                      <span className="text-xs font-semibold text-green-600">+10 VTN</span>
-                    </div>
-                  ) : rec.status === "activated" ? (
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs">
-                      Active
-                    </Badge>
-                  ) : (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-7 text-xs gap-1"
-                      onClick={() => onActivate(rec)}
-                      disabled={activatingId === rec.id}
-                    >
-                      {activatingId === rec.id ? (
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <>
-                          <Play className="w-3 h-3" />
-                          Activate
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-        {sorted.length === 0 && (
-          <p className="text-xs text-muted-foreground italic py-2">
-            Tasks coming soon...
-          </p>
-        )}
+      <div className="rounded-2xl">
+        <VitanaIndexTrajectoryCard />
       </div>
     </div>
   );
 }
 
-// ── Main Component ──────────────────────────────────────────
-
 export default function AutopilotDashboard() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const queryClient = useQueryClient();
-  const [activatingId, setActivatingId] = useState<string | null>(null);
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
 
@@ -251,7 +258,7 @@ export default function AutopilotDashboard() {
     queryKey: ["autopilot-onboarding"],
     queryFn: async () => {
       const res = await communityFetch(
-        "/api/v1/autopilot/recommendations?status=new,activated,completed&limit=100"
+        "/api/v1/autopilot/recommendations?status=new,activated,completed&limit=100",
       );
       if (!res.ok) throw new Error("Failed to fetch");
       return res.json() as Promise<RecommendationsResponse>;
@@ -261,59 +268,28 @@ export default function AutopilotDashboard() {
   });
 
   const recommendations = data?.recommendations ?? [];
-  const waves = data?.waves ?? [];
 
-  // Compute user day count from account creation
-  const userDayCount = useMemo(() => {
-    if (!user?.created_at) return 0;
-    const created = new Date(user.created_at);
-    const now = new Date();
-    return Math.floor((now.getTime() - created.getTime()) / 86400000);
-  }, [user?.created_at]);
-
-  // Group recommendations by wave
-  const waveGroups = useMemo(() => {
-    const groups = new Map<string, Recommendation[]>();
+  const bucketed = useMemo<Record<HorizonBucket, Recommendation[]>>(() => {
+    const empty: Record<HorizonBucket, Recommendation[]> = {
+      today: [],
+      next3: [],
+      thisWeek: [],
+      month: [],
+      future: [],
+    };
     for (const rec of recommendations) {
-      const waveId = rec.wave_id || "wave-1";
-      if (!groups.has(waveId)) groups.set(waveId, []);
-      groups.get(waveId)!.push(rec);
+      // Only show open work on the path; completed actions vanish to keep the
+      // path forward-looking.
+      if (rec.status === "completed") continue;
+      empty[bucketFromRec(rec)].push(rec);
     }
-    return groups;
+    return empty;
   }, [recommendations]);
 
-  // Ensure all waves have entries (even empty ones)
-  const sortedWaves = useMemo(() => {
-    return [...waves].sort((a, b) => a.order - b.order);
-  }, [waves]);
+  const allEmpty =
+    recommendations.filter((r) => r.status !== "completed").length === 0;
 
-  // Overall stats
-  const total = recommendations.length;
-  const activated = recommendations.filter(r => r.status === "activated" || r.status === "completed").length;
-  const completed = recommendations.filter(r => r.status === "completed").length;
-  const progressPct = total > 0 ? (activated / total) * 100 : 0;
-
-  const handleActivate = async (rec: Recommendation) => {
-    setActivatingId(rec.id);
-    try {
-      const res = await communityFetch(
-        `/api/v1/autopilot/recommendations/${rec.id}/activate`,
-        { method: "POST" }
-      );
-      if (!res.ok) throw new Error("Activation failed");
-      const result = await res.json();
-      if (result.action_type === "navigate") {
-        navigate(result.target);
-      } else if (result.action_type === "notify") {
-        toast.success(result.completion_message);
-      }
-      queryClient.invalidateQueries({ queryKey: ["autopilot-onboarding"] });
-    } catch {
-      toast.error("Could not start task");
-    } finally {
-      setActivatingId(null);
-    }
-  };
+  const handleOpenAutopilot = () => setAutopilotOpen(true);
 
   // ── Mobile layout ──────────────────────────────────────────
   if (isMobile) {
@@ -321,13 +297,11 @@ export default function AutopilotDashboard() {
       <AppLayout>
         <SEO title="My Journey" description="Your personalized autopilot journey" canonical={window.location.href} />
 
-        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
-          {/* Header */}
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-purple-50 via-blue-50 to-pink-50 pb-32">
           <div className="px-4 pt-2">
-            <StandardHeader title="My Journey" description="Your personalized 90-day autopilot journey" emoji="🚀" />
+            <StandardHeader title="My Journey" description="The path your Index walks" emoji="🚀" />
           </div>
 
-          {/* Utility Action Bar */}
           <div className="px-4">
             <UtilityActionButton
               compact
@@ -335,7 +309,7 @@ export default function AutopilotDashboard() {
               afterGiftVoucherChildren={
                 <>
                   <VitanaIndexChip />
-                  <AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} />
+                  <AutopilotChip pendingCount={pendingCount} onClick={handleOpenAutopilot} />
                 </>
               }
             >
@@ -346,103 +320,30 @@ export default function AutopilotDashboard() {
             </UtilityActionButton>
           </div>
 
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="flex-1 overflow-y-auto px-4 pt-2">
             {isLoading ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
             ) : (
               <>
-                {/* Vitana Index trajectory (C1) */}
-                <VitanaIndexTrajectoryCard />
-
-                {/* Timeline */}
-                {sortedWaves.length > 0 && (
-                  <JourneyTimeline waves={sortedWaves} userDayCount={userDayCount} />
-                )}
-
-                {/* Overall progress */}
-                <div className="mb-4 space-y-2">
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{activated} of {total} activated</span>
-                    <span>{completed} completed</span>
-                  </div>
-                  <Progress value={progressPct} className="h-3" />
+                <HeroBand />
+                <div className="mb-4">
+                  <CompassLine />
                 </div>
 
-                {/* Wave sections */}
-                {sortedWaves.length > 0 ? (
-                  sortedWaves.map((wave, i) => (
-                    <WaveSection
-                      key={wave.id}
-                      wave={wave}
-                      recommendations={waveGroups.get(wave.id) || []}
-                      index={i}
-                      onActivate={handleActivate}
-                      activatingId={activatingId}
-                    />
-                  ))
+                {allEmpty ? (
+                  <Card className="rounded-2xl border ring-1 ring-border/60 p-8 text-center">
+                    <div className="text-4xl mb-3">🧬</div>
+                    <p className="text-sm">{EMPTY_COPY.myJourneyPath}</p>
+                  </Card>
                 ) : (
-                  /* Flat fallback list */
-                  <div className="space-y-2">
-                    {recommendations
-                      .sort((a, b) => {
-                        if (a.status === "completed" && b.status !== "completed") return 1;
-                        if (a.status !== "completed" && b.status === "completed") return -1;
-                        return 0;
-                      })
-                      .map((rec) => (
-                        <Card key={rec.id} className={rec.status === "completed" ? "opacity-60" : ""}>
-                          <CardContent className="p-3">
-                            <div className="flex items-center justify-between gap-3">
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-medium text-sm">{rec.title}</h3>
-                                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{rec.summary}</p>
-                              </div>
-                              <div className="flex-shrink-0">
-                                {rec.status === "completed" ? (
-                                  <div className="flex items-center gap-1.5">
-                                    <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs">
-                                      <CheckCircle2 className="w-3 h-3 mr-1" />
-                                      Done
-                                    </Badge>
-                                    <span className="text-xs font-semibold text-green-600">+10 VTN</span>
-                                  </div>
-                                ) : rec.status === "activated" ? (
-                                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs">
-                                    Active
-                                  </Badge>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="h-7 text-xs gap-1"
-                                    onClick={() => handleActivate(rec)}
-                                    disabled={activatingId === rec.id}
-                                  >
-                                    {activatingId === rec.id ? (
-                                      <Loader2 className="w-3 h-3 animate-spin" />
-                                    ) : (
-                                      <>
-                                        <Play className="w-3 h-3" />
-                                        Activate
-                                      </>
-                                    )}
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                  </div>
+                  <PersonalPath bucketed={bucketed} onOpenAutopilot={handleOpenAutopilot} />
                 )}
 
-                {/* Footer */}
                 <div className="mt-6 text-center text-sm text-muted-foreground pb-4">
                   <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
-                  New features are added regularly by Vitana.
+                  New stops appear as Autopilot learns more about you.
                 </div>
               </>
             )}
@@ -457,18 +358,10 @@ export default function AutopilotDashboard() {
   // ── Desktop layout ─────────────────────────────────────────
   return (
     <AppLayout>
-      <SEO
-        title="My Journey"
-        description="Your personalized autopilot journey"
-        canonical={window.location.href}
-      />
-      <div className="p-6 min-h-screen bg-gradient-subtle">
+      <SEO title="My Journey" description="Your personalized autopilot journey" canonical={window.location.href} />
+      <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader
-            title="My Journey"
-            description="Your personalized 90-day autopilot journey"
-            emoji="🚀"
-          />
+          <StandardHeader title="My Journey" description="The path your Index walks" emoji="🚀" />
 
           {isLoading ? (
             <div className="flex justify-center py-12">
@@ -476,92 +369,34 @@ export default function AutopilotDashboard() {
             </div>
           ) : (
             <>
-              {/* Vitana Index trajectory (C1) */}
-              <VitanaIndexTrajectoryCard />
+              <HeroBand />
 
-              {/* Timeline calendar */}
-              {sortedWaves.length > 0 && (
-                <JourneyTimeline waves={sortedWaves} userDayCount={userDayCount} />
-              )}
-
-              {/* Overall progress */}
-              <div className="mb-6 space-y-2">
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>{activated} of {total} activated</span>
-                  <span>{completed} completed</span>
-                </div>
-                <Progress value={progressPct} className="h-3" />
+              <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
+                <CompassLine />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleOpenAutopilot}
+                  className="text-sm"
+                >
+                  <Zap className="w-4 h-4 mr-1.5" />
+                  Open Autopilot
+                  <ChevronRight className="w-4 h-4 ml-0.5" />
+                </Button>
               </div>
 
-              {/* Wave sections */}
-              {sortedWaves.length > 0 ? (
-                sortedWaves.map((wave, i) => (
-                  <WaveSection
-                    key={wave.id}
-                    wave={wave}
-                    recommendations={waveGroups.get(wave.id) || []}
-                    index={i}
-                    onActivate={handleActivate}
-                    activatingId={activatingId}
-                  />
-                ))
+              {allEmpty ? (
+                <Card className="rounded-2xl border ring-1 ring-border/60 p-8 text-center mb-6">
+                  <div className="text-5xl mb-3">🧬</div>
+                  <p className="text-base">{EMPTY_COPY.myJourneyPath}</p>
+                </Card>
               ) : (
-                /* Fallback: flat list if no wave metadata */
-                <div className="space-y-2">
-                  {recommendations
-                    .sort((a, b) => {
-                      if (a.status === "completed" && b.status !== "completed") return 1;
-                      if (a.status !== "completed" && b.status === "completed") return -1;
-                      return 0;
-                    })
-                    .map((rec) => (
-                      <Card key={rec.id} className={rec.status === "completed" ? "opacity-60" : ""}>
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-foreground">{rec.title}</h3>
-                              <p className="text-sm text-muted-foreground mt-1">{rec.summary}</p>
-                            </div>
-                            <div className="flex-shrink-0">
-                              {rec.status === "completed" ? (
-                                <div className="flex items-center gap-2">
-                                  <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                    <CheckCircle2 className="w-3 h-3 mr-1" />
-                                    Done
-                                  </Badge>
-                                  <span className="text-sm font-semibold text-green-600">+10 VTN</span>
-                                </div>
-                              ) : rec.status === "activated" ? (
-                                <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                                  In Progress
-                                </Badge>
-                              ) : (
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleActivate(rec)}
-                                  disabled={activatingId === rec.id}
-                                >
-                                  {activatingId === rec.id ? (
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                  ) : (
-                                    "Start"
-                                  )}
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                </div>
+                <PersonalPath bucketed={bucketed} onOpenAutopilot={handleOpenAutopilot} />
               )}
 
-              {/* Footer message */}
               <div className="mt-8 text-center text-sm text-muted-foreground pb-8">
                 <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
-                New features are added regularly by Vitana.
-                <br />
-                Check back for new tasks to activate!
+                New stops appear as Autopilot learns more about you.
               </div>
             </>
           )}

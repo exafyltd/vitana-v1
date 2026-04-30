@@ -1,31 +1,49 @@
 import { Button } from "@/components/ui/button";
 import VitanaIndexValue from "@/components/health/VitanaIndexValue";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
 
 interface VitanaIndexChipProps {
   className?: string;
 }
 
 /**
- * Vitana Index chip for mobile action rail
- * Displays the user's longevity score in a compact gradient circle
+ * Vitana Index chip for mobile action rail. Opens the shared Index Sheet via
+ * the global `vitana:open-index` event — same destination as the desktop
+ * sidebar chip.
  */
 export function VitanaIndexChip({ className }: VitanaIndexChipProps) {
-  const navigate = useNavigate();
-  
+  const { current: streakDays } = useVitanaStreaks();
+  const showStreak = streakDays >= 3;
+
   return (
-    <Button 
-      variant="ghost" 
-      size="sm" 
-      onClick={() => navigate('/health')}
-      className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0 ${className || ''}`}
-    >
-      <span className="text-xs">🧬</span>
-      <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
-    </Button>
+    <div className="relative shrink-0">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT))}
+        className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0 ${className || ''}`}
+        aria-label={
+          showStreak
+            ? `Open Vitana Index — ${streakDays}-day streak`
+            : "Open Vitana Index"
+        }
+      >
+        <span className="text-xs">🧬</span>
+        <span className="text-sm font-medium text-primary"><VitanaIndexValue /></span>
+      </Button>
+      {showStreak && (
+        <span
+          className="absolute -top-1 -right-1 h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-bold flex items-center justify-center leading-none pointer-events-none"
+          aria-hidden="true"
+        >
+          🔥{streakDays}
+        </span>
+      )}
+    </div>
   );
 }
 
