@@ -12,6 +12,7 @@ export type NotificationCategory =
   | 'live_room'
   | 'chat'
   | 'calendar'
+  | 'reminder'
   | 'recommendation'
   | 'health'
   | 'signal'
@@ -47,6 +48,7 @@ export const CATEGORY_TO_PREF_COLUMN: Record<NotificationCategory, string> = {
   live_room: 'live_room_notifications',
   chat: 'push_enabled',
   calendar: 'push_enabled',
+  reminder: 'task_notifications',
   recommendation: 'recommendation_notifications',
   health: 'health_notifications',
   signal: 'health_notifications',
@@ -409,6 +411,26 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '📰', label: 'Weekly Summary', category: 'system',
     channel: 'push_and_inapp', priority: 'p2',
   },
+
+  // ═══════════════════════════════════════════════════════════
+  // 16. REMINDERS (4)
+  // ═══════════════════════════════════════════════════════════
+  custom_reminder: {
+    icon: '⏰', label: 'Reminder', category: 'reminder',
+    channel: 'push_and_inapp', priority: 'p1', route: '/reminders/{id}',
+  },
+  task_reminder: {
+    icon: '✅', label: 'Task Reminder', category: 'reminder',
+    channel: 'push_and_inapp', priority: 'p1', route: '/tasks/{id}',
+  },
+  event_reminder: {
+    icon: '📅', label: 'Event Reminder', category: 'reminder',
+    channel: 'push_and_inapp', priority: 'p1', route: '/calendar/{id}',
+  },
+  medication_reminder: {
+    icon: '💊', label: 'Medication Reminder', category: 'reminder',
+    channel: 'push_and_inapp', priority: 'p0', route: '/health/medications/{id}',
+  },
 };
 
 // ── Helper Functions ────────────────────────────────────────
@@ -460,4 +482,74 @@ export function getNotificationChannel(type: string): NotificationChannel {
 
 export function getNotificationPriority(type: string): NotificationPriority {
   return NOTIFICATION_TYPES[type]?.priority || 'p2';
+}
+
+// ── Category Display Info ───────────────────────────────────
+//
+// User-facing label and icon for each category. `sort_order` controls
+// which categories appear first in the bell panel filter row and in
+// grouped views — high-signal categories (chat, reminders, health) come
+// first; ambient/low-signal (system, growth) come last.
+
+export interface CategoryDisplayInfo {
+  label: string;
+  icon: string;
+  sort_order: number;
+}
+
+export const CATEGORY_DISPLAY: Record<NotificationCategory, CategoryDisplayInfo> = {
+  chat:           { label: 'Messages',        icon: '💬', sort_order: 10 },
+  reminder:       { label: 'Reminders',       icon: '⏰', sort_order: 20 },
+  meetup:         { label: 'Meetups',         icon: '📅', sort_order: 30 },
+  live_room:      { label: 'Live Rooms',      icon: '🔴', sort_order: 40 },
+  match:          { label: 'Matches',         icon: '✨', sort_order: 50 },
+  community:      { label: 'Community',       icon: '👥', sort_order: 60 },
+  social:         { label: 'Connections',     icon: '🔗', sort_order: 70 },
+  health:         { label: 'Health',          icon: '❤️', sort_order: 80 },
+  signal:         { label: 'Signals',         icon: '🎯', sort_order: 90 },
+  recommendation: { label: 'Recommendations', icon: '💡', sort_order: 100 },
+  opportunity:    { label: 'Opportunities',   icon: '🌟', sort_order: 110 },
+  calendar:       { label: 'Calendar',        icon: '🗓️', sort_order: 120 },
+  diary:          { label: 'Diary',           icon: '📝', sort_order: 130 },
+  offer:          { label: 'Offers',          icon: '🛒', sort_order: 140 },
+  growth:         { label: 'Growth',          icon: '📈', sort_order: 150 },
+  system:         { label: 'System',          icon: '⚙️',  sort_order: 160 },
+};
+
+export function getCategoryDisplay(category: NotificationCategory): CategoryDisplayInfo {
+  return CATEGORY_DISPLAY[category] ?? CATEGORY_DISPLAY.system;
+}
+
+// ── Grouping & Filtering Helpers ────────────────────────────
+
+export interface GroupedNotifications<T extends { type: string }> {
+  category: NotificationCategory;
+  display: CategoryDisplayInfo;
+  items: T[];
+}
+
+/** Group an ordered notification list by category, preserving in-group order. */
+export function groupByCategory<T extends { type: string }>(
+  items: T[]
+): GroupedNotifications<T>[] {
+  const buckets = new Map<NotificationCategory, T[]>();
+  for (const item of items) {
+    const cat = getNotificationCategory(item.type);
+    const arr = buckets.get(cat);
+    if (arr) arr.push(item); else buckets.set(cat, [item]);
+  }
+  return Array.from(buckets.entries())
+    .map(([category, items]) => ({
+      category,
+      display: getCategoryDisplay(category),
+      items,
+    }))
+    .sort((a, b) => a.display.sort_order - b.display.sort_order);
+}
+
+/** Return the list of types that belong to a category — used for scoped delete-all. */
+export function getTypesForCategory(category: NotificationCategory): string[] {
+  return Object.entries(NOTIFICATION_TYPES)
+    .filter(([, def]) => def.category === category)
+    .map(([type]) => type);
 }
