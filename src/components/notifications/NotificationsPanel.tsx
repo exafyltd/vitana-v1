@@ -344,8 +344,9 @@ function NotificationRow({
         </div>
       </div>
 
-      {/* Delete — large, persistent, obviously the primary row action.
-          Sits in its own column so the row tap target above doesn't swallow taps on it. */}
+      {/* Delete — solid bordered button so it reads unmistakably as the
+          per-row delete action on every device, even at low contrast.
+          Sibling of the tap target above so taps land cleanly. */}
       <button
         type="button"
         onClick={(e) => {
@@ -355,14 +356,16 @@ function NotificationRow({
         aria-label="Delete this notification"
         title="Delete"
         className="
-          shrink-0 self-start mt-0.5
-          h-8 w-8 flex items-center justify-center rounded-full
-          text-muted-foreground/70 hover:text-destructive
-          hover:bg-destructive/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
+          shrink-0 self-center
+          h-9 w-9 flex items-center justify-center rounded-full
+          bg-muted text-muted-foreground border border-border
+          hover:bg-destructive hover:text-destructive-foreground hover:border-destructive
+          active:scale-95
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40
           transition-colors
         "
       >
-        <X className="h-4 w-4" strokeWidth={2.5} />
+        <X className="h-[18px] w-[18px]" strokeWidth={2.75} />
       </button>
     </div>
   );
