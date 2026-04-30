@@ -14,6 +14,8 @@ import {
   ChevronRight,
   Sparkles,
   Zap,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -29,6 +31,10 @@ import { useLifeCompass } from "@/hooks/useLifeCompass";
 import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import { HORIZON_BUCKETS, type HorizonBucket } from "@/lib/horizonBuckets";
+import { JourneyDayBadge } from "@/components/health/JourneyDayBadge";
+import { JourneyCheckpoints, dayNumberFromCreated } from "@/components/health/JourneyCheckpoints";
+import { JourneyWaveMap } from "@/components/health/JourneyWaveMap";
+import { trend7d } from "@/lib/vitana-projection";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
 
 interface Recommendation {
@@ -41,11 +47,7 @@ interface Recommendation {
   wave_id?: string | number;
   wave_order?: number;
   contribution_vector?: ContributionVector;
-  /**
-   * Gateway-derived bucket. Populated by the autopilot recommendations
-   * route from `wave.timeline.start_day`. Older deploys may omit this; we
-   * fall back to wave_id-based bucketing when it's missing.
-   */
+  /** Gateway-derived bucket; falls back to wave_id when missing. */
   horizon?: HorizonBucket;
 }
 
@@ -71,7 +73,6 @@ const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
 
 function bucketFromWaveId(waveId: number | string | undefined): HorizonBucket {
   if (waveId === undefined || waveId === null) return "future";
-  // Wave IDs come back as strings like "wave-1". Strip the "wave-" prefix.
   const raw = typeof waveId === "string" ? waveId.replace(/^wave-/, "") : String(waveId);
   const n = parseInt(raw, 10);
   if (!Number.isFinite(n)) return "future";
@@ -82,7 +83,7 @@ function bucketFromWaveId(waveId: number | string | undefined): HorizonBucket {
   return "future";
 }
 
-const HORIZON_VALUES: HorizonBucket[] = ['today', 'next3', 'thisWeek', 'month', 'future'];
+const HORIZON_VALUES: HorizonBucket[] = ["today", "next3", "thisWeek", "month", "future"];
 
 function bucketFromRec(rec: Recommendation): HorizonBucket {
   if (rec.horizon && HORIZON_VALUES.includes(rec.horizon)) return rec.horizon;
@@ -91,15 +92,15 @@ function bucketFromRec(rec: Recommendation): HorizonBucket {
 
 function dominantPillar(vector?: ContributionVector | null): VitanaPillarKey | null {
   if (!vector) return null;
-  let bestKey: VitanaPillarKey | null = null;
+  let best: VitanaPillarKey | null = null;
   let bestVal = 0;
   for (const [k, v] of Object.entries(vector) as Array<[VitanaPillarKey, number | undefined]>) {
     if (typeof v === "number" && v > bestVal) {
-      bestKey = k;
+      best = k;
       bestVal = v;
     }
   }
-  return bestKey;
+  return best;
 }
 
 function sumVectors(recs: Recommendation[]): { vector: ContributionVector; total: number } {
@@ -117,13 +118,103 @@ function sumVectors(recs: Recommendation[]): { vector: ContributionVector; total
   return { vector, total };
 }
 
-interface PathStopCardProps {
+// ── Hero cards ───────────────────────────────────────────────────────────
+
+function NowCard() {
+  const { index } = useVitanaIndexCache();
+  const total = index?.total ?? null;
+  const tier = index?.tier ?? null;
+  const trend = index?.history ? trend7d(index.history) : null;
+
+  const trendLabel = (() => {
+    if (trend === null) return null;
+    if (trend > 0) return { icon: TrendingUp, text: `+${trend} this week`, cls: "text-green-600" };
+    if (trend < 0) return { icon: TrendingDown, text: `${trend} this week`, cls: "text-red-600" };
+    return { icon: TrendingUp, text: "Steady this week", cls: "text-muted-foreground" };
+  })();
+
+  return (
+    <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+      <CardContent className="p-4 flex items-center gap-4">
+        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-600">{total === null ? "…" : total}</div>
+            <div className="text-[10px] text-muted-foreground">of 999</div>
+          </div>
+        </div>
+        <div className="space-y-1 min-w-0">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Your Index</p>
+          {tier && <p className="text-base font-semibold">{tier.label}</p>}
+          {trendLabel && (
+            <p className={`text-xs flex items-center gap-1 ${trendLabel.cls}`}>
+              <trendLabel.icon className="w-3 h-3" />
+              {trendLabel.text}
+            </p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function CompassCard({ alignedCount }: { alignedCount: number }) {
+  const { compass } = useLifeCompass();
+  const handleClick = () => {
+    window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
+  };
+  return (
+    <Card
+      className="rounded-2xl border ring-1 ring-border/60 shadow-sm cursor-pointer hover:bg-muted/30 transition-colors"
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+    >
+      <CardContent className="p-4 space-y-2">
+        <div className="flex items-center gap-2">
+          <Compass className="w-4 h-4 text-primary" />
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Your compass</p>
+        </div>
+        {compass?.primary_goal ? (
+          <>
+            <p className="text-base font-semibold leading-snug line-clamp-2">
+              Heading toward: {compass.primary_goal}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {alignedCount > 0
+                ? `${alignedCount} action${alignedCount === 1 ? "" : "s"} pending`
+                : "No actions matched yet — Autopilot is shaping suggestions."}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-base font-semibold leading-snug">Set your Life Compass</p>
+            <p className="text-xs text-muted-foreground">
+              Pick a direction so suggestions stay aligned with what matters to you.
+            </p>
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ── Personal Path stop-cards (demoted secondary nav) ─────────────────────
+
+function PathStopCard({
+  bucket,
+  recommendations,
+  onOpen,
+}: {
   bucket: HorizonBucket;
   recommendations: Recommendation[];
   onOpen: () => void;
-}
-
-function PathStopCard({ bucket, recommendations, onOpen }: PathStopCardProps) {
+}) {
   const { vector, total } = sumVectors(recommendations);
   const dom = dominantPillar(vector);
   const tintClass = dom ? `before:bg-pill-${dom}-accent` : "before:bg-muted-foreground";
@@ -134,20 +225,20 @@ function PathStopCard({ bucket, recommendations, onOpen }: PathStopCardProps) {
 
   return (
     <Card
-      className={`min-w-[14rem] snap-start rounded-2xl border ring-1 ring-border/60 shadow-sm bg-card relative overflow-hidden ${
+      className={`min-w-[12rem] snap-start rounded-2xl border ring-1 ring-border/60 shadow-sm bg-card relative overflow-hidden ${
         isEmpty ? "opacity-60" : ""
-      } before:absolute before:left-0 before:top-4 before:bottom-4 before:w-1 before:rounded-full ${tintClass}`}
+      } before:absolute before:left-0 before:top-3 before:bottom-3 before:w-1 before:rounded-full ${tintClass}`}
     >
-      <CardContent className="p-4 pl-5 space-y-3">
+      <CardContent className="p-3 pl-4 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold">{BUCKET_LABEL[bucket]}</span>
+          <span className="text-xs font-semibold">{BUCKET_LABEL[bucket]}</span>
           {dom && (
             <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${labelTintClass}`}>
               {PILLAR_LABEL[dom]}
             </Badge>
           )}
         </div>
-        <div className="text-2xl font-bold">
+        <div className="text-xl font-bold">
           {recommendations.length}
           <span className="text-xs font-normal text-muted-foreground ml-1">
             action{recommendations.length === 1 ? "" : "s"}
@@ -156,12 +247,12 @@ function PathStopCard({ bucket, recommendations, onOpen }: PathStopCardProps) {
         {total > 0 ? (
           <PillarDeltaBadges vector={vector} compact />
         ) : (
-          <p className="text-xs text-muted-foreground">{EMPTY_COPY.myJourneyOnePillar}</p>
+          <p className="text-[10px] text-muted-foreground">{EMPTY_COPY.myJourneyOnePillar}</p>
         )}
         <Button
           variant="outline"
           size="sm"
-          className="w-full"
+          className="w-full text-xs h-7"
           disabled={isEmpty}
           onClick={onOpen}
         >
@@ -180,81 +271,34 @@ function PersonalPath({
   onOpenAutopilot: () => void;
 }) {
   return (
-    <div className="overflow-x-auto flex gap-3 snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-      {HORIZON_BUCKETS.map((bucket) => (
-        <PathStopCard
-          key={bucket}
-          bucket={bucket}
-          recommendations={bucketed[bucket]}
-          onOpen={onOpenAutopilot}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CompassLine() {
-  const { compass } = useLifeCompass();
-  const handleClick = () => {
-    window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
-  };
-  return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline inline-flex items-center gap-1.5"
-    >
-      <Compass className="w-3.5 h-3.5" />
-      {compass?.primary_goal
-        ? `Heading toward: ${compass.primary_goal}`
-        : "Set or review your Life Compass"}
-    </button>
-  );
-}
-
-function HeroBand() {
-  const { index } = useVitanaIndexCache();
-  const total = index?.total ?? null;
-  const tier = index?.tier ?? null;
-
-  return (
-    <div className="grid md:grid-cols-2 gap-4 mb-4">
-      <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
-        <CardContent className="p-4 flex items-center gap-4">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">
-                {total === null ? "…" : total}
-              </div>
-              <div className="text-[10px] text-muted-foreground">of 999</div>
-            </div>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Your Index</p>
-            {tier && (
-              <p className="text-base font-semibold">{tier.label}</p>
-            )}
-            {tier && (
-              <p className="text-xs text-muted-foreground">{tier.framing ?? tier.description}</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="rounded-2xl">
-        <VitanaIndexTrajectoryCard />
+    <div className="space-y-2 mb-6">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">By horizon</p>
+      <div className="overflow-x-auto flex gap-2 snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+        {HORIZON_BUCKETS.map((bucket) => (
+          <PathStopCard
+            key={bucket}
+            bucket={bucket}
+            recommendations={bucketed[bucket]}
+            onOpen={onOpenAutopilot}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
+// ── Page ─────────────────────────────────────────────────────────────────
+
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const { pendingCount } = useAutopilot();
+  const { compass } = useLifeCompass();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const dayNumber = dayNumberFromCreated(user?.created_at);
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["autopilot-onboarding"],
     queryFn: async () => {
       const res = await communityFetch(
@@ -278,20 +322,23 @@ export default function AutopilotDashboard() {
       future: [],
     };
     for (const rec of recommendations) {
-      // Only show open work on the path; completed actions vanish to keep the
-      // path forward-looking.
       if (rec.status === "completed") continue;
       empty[bucketFromRec(rec)].push(rec);
     }
     return empty;
   }, [recommendations]);
 
-  const allEmpty =
-    recommendations.filter((r) => r.status !== "completed").length === 0;
+  const openCount = recommendations.filter((r) => r.status !== "completed").length;
+  const allEmpty = openCount === 0;
+
+  // Best-effort "actions aligned with your compass" count: until the gateway
+  // surfaces compass alignment per rec, we mirror the open-action count when
+  // a goal is set, otherwise zero. Keeps the UI honest without inventing data.
+  const compassAlignedCount = compass?.primary_goal ? openCount : 0;
 
   const handleOpenAutopilot = () => setAutopilotOpen(true);
 
-  // ── Mobile layout ──────────────────────────────────────────
+  // ── Mobile layout ──────────────────────────────────────────────────────
   if (isMobile) {
     return (
       <AppLayout>
@@ -320,28 +367,40 @@ export default function AutopilotDashboard() {
             </UtilityActionButton>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-4 pt-2">
+          <div className="flex-1 overflow-y-auto px-4 pt-3">
             {isLoading ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
             ) : (
               <>
-                <HeroBand />
-                <div className="mb-4">
-                  <CompassLine />
+                <JourneyDayBadge />
+
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  <NowCard />
+                  <CompassCard alignedCount={compassAlignedCount} />
+                  <VitanaIndexTrajectoryCard />
                 </div>
 
+                <JourneyCheckpoints
+                  recommendations={recommendations}
+                  dayNumber={dayNumber}
+                  onOpenAutopilot={handleOpenAutopilot}
+                  onActivated={() => refetch()}
+                />
+
                 {allEmpty ? (
-                  <Card className="rounded-2xl border ring-1 ring-border/60 p-8 text-center">
-                    <div className="text-4xl mb-3">🧬</div>
+                  <Card className="rounded-2xl border ring-1 ring-border/60 p-6 text-center mb-6">
+                    <div className="text-4xl mb-2">🧬</div>
                     <p className="text-sm">{EMPTY_COPY.myJourneyPath}</p>
                   </Card>
                 ) : (
                   <PersonalPath bucketed={bucketed} onOpenAutopilot={handleOpenAutopilot} />
                 )}
 
-                <div className="mt-6 text-center text-sm text-muted-foreground pb-4">
+                <JourneyWaveMap dayNumber={dayNumber} />
+
+                <div className="text-center text-sm text-muted-foreground pb-4">
                   <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
                   New stops appear as Autopilot learns more about you.
                 </div>
@@ -355,7 +414,7 @@ export default function AutopilotDashboard() {
     );
   }
 
-  // ── Desktop layout ─────────────────────────────────────────
+  // ── Desktop layout ─────────────────────────────────────────────────────
   return (
     <AppLayout>
       <SEO title="My Journey" description="Your personalized autopilot journey" canonical={window.location.href} />
@@ -369,10 +428,23 @@ export default function AutopilotDashboard() {
             </div>
           ) : (
             <>
-              <HeroBand />
+              <JourneyDayBadge />
 
-              <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
-                <CompassLine />
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
+                <NowCard />
+                <CompassCard alignedCount={compassAlignedCount} />
+                <VitanaIndexTrajectoryCard />
+              </div>
+
+              <JourneyCheckpoints
+                recommendations={recommendations}
+                dayNumber={dayNumber}
+                onOpenAutopilot={handleOpenAutopilot}
+                onActivated={() => refetch()}
+              />
+
+              <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">All your work</p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -394,7 +466,9 @@ export default function AutopilotDashboard() {
                 <PersonalPath bucketed={bucketed} onOpenAutopilot={handleOpenAutopilot} />
               )}
 
-              <div className="mt-8 text-center text-sm text-muted-foreground pb-8">
+              <JourneyWaveMap dayNumber={dayNumber} />
+
+              <div className="text-center text-sm text-muted-foreground pb-8">
                 <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
                 New stops appear as Autopilot learns more about you.
               </div>
@@ -402,6 +476,8 @@ export default function AutopilotDashboard() {
           )}
         </div>
       </div>
+
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>
   );
 }

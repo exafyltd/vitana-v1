@@ -33,6 +33,29 @@ export function trend7d(history: IndexHistoryPoint[]): number | null {
 }
 
 /**
+ * Project the user's score `daysAhead` days from now using their 7-day trend,
+ * capped at the 90-day finish line. Used by the My Journey checkpoints
+ * ("By Day {N+7}", "By Day {N+30}") so each card quotes the same slope math
+ * the backend voice tool uses.
+ *
+ *   daysToProject = min(daysAhead, max(0, 90 - daysSinceStart))
+ *   projected     = clamp(0, 999, total + trend × daysToProject / 7)
+ */
+export function projectDays(
+  total: number,
+  trend: number | null,
+  daysAhead: number,
+  daysSinceStart: number,
+): number | null {
+  if (!Number.isFinite(total) || trend === null || !Number.isFinite(trend)) return null;
+  if (!Number.isFinite(daysAhead) || daysAhead < 0) return null;
+  const daysRemaining = Math.max(0, 90 - daysSinceStart);
+  const daysToProject = Math.min(daysAhead, daysRemaining);
+  if (daysToProject === 0) return clampIndex(total);
+  return clampIndex(total + (trend * daysToProject) / 7);
+}
+
+/**
  * Project the user's Day-90 score from current total + 7-day trend.
  * Mirrors the backend voice tool so the Assistant and the Index Sheet
  * always quote the same number.
@@ -47,10 +70,7 @@ export function projectDay90(
   trend: number | null,
   daysSinceStart: number,
 ): number | null {
-  if (!Number.isFinite(total) || trend === null || !Number.isFinite(trend)) return null;
-  const daysRemaining = Math.max(0, 90 - daysSinceStart);
-  if (daysRemaining === 0) return clampIndex(total);
-  return clampIndex(total + (trend * daysRemaining) / 7);
+  return projectDays(total, trend, 90 - daysSinceStart, daysSinceStart);
 }
 
 /**

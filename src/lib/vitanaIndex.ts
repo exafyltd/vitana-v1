@@ -78,6 +78,28 @@ export function getVitanaIndexTier(score: number): VitanaIndexTier {
   );
 }
 
+/**
+ * The next tier up from the user's current score, or `null` when already in
+ * the top band (Elite). Used by My Journey's 30-day checkpoint copy to
+ * frame the goal: "Reach Strong (500+) by lifting Sleep most."
+ */
+export function nextTier(score: number): VitanaIndexTier | null {
+  const current = getVitanaIndexTier(score);
+  const idx = VITANA_INDEX_TIERS.indexOf(current);
+  if (idx < 0 || idx >= VITANA_INDEX_TIERS.length - 1) return null;
+  return VITANA_INDEX_TIERS[idx + 1];
+}
+
+/**
+ * Points the user needs to gain to cross into the next tier (Δ to
+ * `nextTier.min`). Returns `null` when already at Elite.
+ */
+export function pointsToNextTier(score: number): number | null {
+  const next = nextTier(score);
+  if (!next) return null;
+  return Math.max(0, next.min - score);
+}
+
 export function getVitanaIndexPercentage(score: number): number {
   return Math.round((score / 999) * 100);
 }
