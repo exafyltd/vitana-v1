@@ -179,7 +179,14 @@ async function postCelebrateAnalytics(body: string): Promise<void> {
 }
 
 function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+  // Local calendar day-key — 24-hour dedupe windows are a local-day concept,
+  // not a UTC concept. UTC-based slicing would let an evening Pacific user
+  // re-fire the same milestone after midnight UTC.
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 function dayKeyFired(scope: string): boolean {

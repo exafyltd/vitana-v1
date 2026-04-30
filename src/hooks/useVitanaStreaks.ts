@@ -12,8 +12,16 @@ interface StreakStore {
   longest: number;
 }
 
-function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+/**
+ * Day-key in the user's LOCAL calendar (YYYY-MM-DD). Streak continuity is
+ * a local-day concept — a 9pm-PT lift on April 28th must not be filed under
+ * April 29th just because it crossed midnight UTC.
+ */
+function todayKey(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 function readStore(): StreakStore {
@@ -48,8 +56,7 @@ function consecutiveStreak(days: Set<string>, today: Date): number {
   let count = 0;
   const cursor = new Date(today);
   while (true) {
-    const key = cursor.toISOString().slice(0, 10);
-    if (!days.has(key)) break;
+    if (!days.has(todayKey(cursor))) break;
     count += 1;
     cursor.setDate(cursor.getDate() - 1);
   }
@@ -57,10 +64,10 @@ function consecutiveStreak(days: Set<string>, today: Date): number {
 }
 
 function isAtRisk(days: Set<string>, today: Date): boolean {
-  if (days.has(todayKey())) return false;
+  if (days.has(todayKey(today))) return false;
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
-  return days.has(yesterday.toISOString().slice(0, 10));
+  return days.has(todayKey(yesterday));
 }
 
 function pickCrossedMilestone(
