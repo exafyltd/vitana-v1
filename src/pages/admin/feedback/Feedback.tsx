@@ -2,7 +2,7 @@
 // specialist roster. Mirrors the data shown in the Command Hub but scoped
 // to the admin's active tenant.
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { Inbox } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -10,6 +10,8 @@ import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { useTenant } from "@/hooks/useTenant";
 import { communityFetch } from "@/lib/community-gateway";
 // VTID-02656 Phase 6: tenant SpecialistConfig drawer (enable/disable, KB
@@ -33,6 +35,10 @@ interface Ticket {
   created_at: string;
   resolved_at: string | null;
   user_confirmed_at: string | null;
+  // VTID-02659: profile join from gateway PR #1161 — single batch profiles
+  // query keyed by unique vitana_ids, merged into each ticket row.
+  avatar_url?: string | null;
+  display_name?: string | null;
 }
 
 interface Persona {
@@ -69,8 +75,11 @@ const STATUS_LABEL: Record<string, string> = {
 interface CustomerGroup {
   customer_key: string;        // vitana_id when set, else "(anonymous)" sentinel
   vitana_id: string | null;
+  avatar_url: string | null;     // VTID-02659: from profiles join
+  display_name: string | null;   // VTID-02659: from profiles join
   total: number;               // total tickets from this customer
   open: number;                // unresolved (anything except resolved/user_confirmed/rejected/wont_fix/duplicate)
+  actionable: number;          // VTID-02659: spec_ready or answer_ready — Approve-All targets
   latest: Ticket;              // most recent ticket — used as the header
   tickets: Ticket[];           // chronological, latest first
 }
@@ -78,6 +87,8 @@ interface CustomerGroup {
 const TERMINAL_STATUSES = new Set([
   "resolved", "user_confirmed", "rejected", "wont_fix", "duplicate",
 ]);
+// VTID-02659: status set the Approve-All endpoint can advance.
+const ACTIONABLE_STATUSES = new Set(["spec_ready", "answer_ready"]);
 
 function groupTicketsByCustomer(tickets: Ticket[]): CustomerGroup[] {
   const groups = new Map<string, CustomerGroup>();
@@ -88,16 +99,25 @@ function groupTicketsByCustomer(tickets: Ticket[]): CustomerGroup[] {
       g = {
         customer_key: key,
         vitana_id: t.vitana_id,
+        avatar_url: t.avatar_url ?? null,
+        display_name: t.display_name ?? null,
         total: 0,
         open: 0,
+        actionable: 0,
         latest: t,
         tickets: [],
       };
       groups.set(key, g);
     }
+    // Profile fields may arrive on any ticket from the same customer; keep
+    // the first non-null we see (gateway returns the same value per
+    // vitana_id so order doesn't matter).
+    if (!g.avatar_url && t.avatar_url) g.avatar_url = t.avatar_url;
+    if (!g.display_name && t.display_name) g.display_name = t.display_name;
     g.tickets.push(t);
     g.total++;
     if (!TERMINAL_STATUSES.has(t.status)) g.open++;
+    if (ACTIONABLE_STATUSES.has(t.status)) g.actionable++;
     // Keep latest as the most recent created_at
     if (new Date(t.created_at).getTime() > new Date(g.latest.created_at).getTime()) {
       g.latest = t;
@@ -134,10 +154,56 @@ interface CustomerGroupedTicketsProps {
   isLoading: boolean;
   error: unknown;
   onSelectTicket: (t: Ticket) => void;
+  tenantId: string | null;
 }
 
-function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket }: CustomerGroupedTicketsProps) {
+function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, tenantId }: CustomerGroupedTicketsProps) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [approving, setApproving] = useState<Record<string, boolean>>({});
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // VTID-02659: per-customer Approve-All. Calls
+  // POST /api/v1/admin/tenants/:tenantId/customers/:vitanaId/approve-all
+  // (gateway PR #1161). Spec_ready → in_progress (autopilot picks up);
+  // answer_ready → resolved (Sage's drafted answer goes out). Single
+  // confirm step then optimistic UI; refetch invalidates the tickets
+  // query so the latest state lands.
+  const handleApproveAll = async (g: CustomerGroup) => {
+    if (!tenantId || !g.vitana_id) return;
+    if (g.actionable === 0) return;
+    const confirmText = `Approve all ${g.actionable} actionable ticket${g.actionable === 1 ? "" : "s"} from ${g.vitana_id}?`;
+    if (!window.confirm(confirmText)) return;
+    setApproving(s => ({ ...s, [g.customer_key]: true }));
+    try {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/customers/${encodeURIComponent(g.vitana_id)}/approve-all`,
+        { method: "POST" }
+      );
+      const json = await res.json().catch(() => ({} as Record<string, unknown>));
+      if (!res.ok) {
+        throw new Error(((json as { error?: string }).error) || `HTTP ${res.status}`);
+      }
+      const r = json as { approved?: number; sent?: number; skipped?: number; total?: number };
+      const parts: string[] = [];
+      if ((r.approved ?? 0) > 0) parts.push(`${r.approved} approved`);
+      if ((r.sent ?? 0) > 0) parts.push(`${r.sent} answers sent`);
+      if ((r.skipped ?? 0) > 0) parts.push(`${r.skipped} skipped`);
+      toast({
+        title: `Batch action complete for ${g.vitana_id}`,
+        description: parts.length > 0 ? parts.join(" · ") : "Nothing to action.",
+      });
+      await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
+    } catch (err) {
+      toast({
+        title: "Approve all failed",
+        description: err instanceof Error ? err.message : "Try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setApproving(s => ({ ...s, [g.customer_key]: false }));
+    }
+  };
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">Loading…</p>;
@@ -164,41 +230,82 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket }: C
         const pillVariant = statusVariant(g.latest.status);
         return (
           <Card key={g.customer_key} className="overflow-hidden">
-            {/* Customer header — click to expand/collapse */}
-            <button
-              type="button"
-              onClick={() => setExpanded(s => ({ ...s, [g.customer_key]: !isOpen }))}
-              className="flex w-full items-center gap-3 p-3 text-left hover:bg-accent"
-            >
-              <div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white"
-                style={{ background: color }}
-                aria-label={`Avatar for ${g.customer_key}`}
+            {/* Customer header — click anywhere outside the Approve button
+                to expand/collapse the ticket list. */}
+            <div className="flex w-full items-center gap-3 p-3 hover:bg-accent">
+              <button
+                type="button"
+                onClick={() => setExpanded(s => ({ ...s, [g.customer_key]: !isOpen }))}
+                className="flex flex-1 min-w-0 items-center gap-3 text-left"
               >
-                {initials}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-mono text-sm font-semibold">{g.vitana_id ?? "(anonymous)"}</span>
-                  {g.open > 0 && (
-                    <Badge variant="destructive" className="text-[10px]">{g.open} open</Badge>
-                  )}
-                  <Badge variant="outline" className="text-[10px]">{g.total} total</Badge>
+                {/* VTID-02659: real avatar (profiles.avatar_url) when present;
+                    otherwise initials on deterministic pastel. */}
+                {g.avatar_url ? (
+                  <img
+                    src={g.avatar_url}
+                    alt={`Avatar for ${g.display_name ?? g.customer_key}`}
+                    className="h-10 w-10 shrink-0 rounded-full object-cover"
+                    onError={(e) => {
+                      // Fallback to initials if the image 404s — common when
+                      // a tenant member uploaded then deleted their avatar.
+                      const img = e.currentTarget;
+                      img.style.display = "none";
+                      const sibling = img.nextElementSibling as HTMLElement | null;
+                      if (sibling) sibling.style.display = "flex";
+                    }}
+                  />
+                ) : null}
+                <div
+                  className={`h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white ${g.avatar_url ? "hidden" : "flex"}`}
+                  style={{ background: color }}
+                  aria-label={`Avatar for ${g.customer_key}`}
+                >
+                  {initials}
                 </div>
-                <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="font-mono">{g.latest.ticket_number}</span>
-                  <Badge variant={pillVariant} className="text-[10px]">
-                    {STATUS_LABEL[g.latest.status] ?? g.latest.status}
-                  </Badge>
-                  <span>{g.latest.kind}</span>
-                  {g.latest.resolver_agent && (
-                    <span>· handled by {g.latest.resolver_agent}</span>
-                  )}
-                  <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {g.display_name && (
+                      <span className="text-sm font-semibold">{g.display_name}</span>
+                    )}
+                    <span className="font-mono text-xs text-muted-foreground">{g.vitana_id ?? "(anonymous)"}</span>
+                    {g.open > 0 && (
+                      <Badge variant="destructive" className="text-[10px]">{g.open} open</Badge>
+                    )}
+                    <Badge variant="outline" className="text-[10px]">{g.total} total</Badge>
+                    {g.actionable > 0 && (
+                      <Badge variant="secondary" className="text-[10px]">{g.actionable} ready</Badge>
+                    )}
+                  </div>
+                  <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                    <span className="font-mono">{g.latest.ticket_number}</span>
+                    <Badge variant={pillVariant} className="text-[10px]">
+                      {STATUS_LABEL[g.latest.status] ?? g.latest.status}
+                    </Badge>
+                    <span>{g.latest.kind}</span>
+                    {g.latest.resolver_agent && (
+                      <span>· handled by {g.latest.resolver_agent}</span>
+                    )}
+                    <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
+                  </div>
                 </div>
-              </div>
-              <span className="text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
-            </button>
+                <span className="ml-2 text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
+              </button>
+              {/* VTID-02659: per-customer Approve-All. Visible only when this
+                  customer has at least one ticket waiting in spec_ready or
+                  answer_ready. Single click batches every actionable ticket
+                  for that customer through the autopilot pipeline. */}
+              {g.actionable > 0 && tenantId && g.vitana_id && (
+                <Button
+                  size="sm"
+                  variant="default"
+                  className="shrink-0"
+                  disabled={approving[g.customer_key] === true}
+                  onClick={() => handleApproveAll(g)}
+                >
+                  {approving[g.customer_key] ? "Approving…" : `Approve all (${g.actionable})`}
+                </Button>
+              )}
+            </div>
 
             {/* Expanded list of all of this customer's tickets */}
             {isOpen && (
@@ -338,6 +445,7 @@ export default function AdminFeedback() {
               isLoading={ticketsQuery.isLoading}
               error={ticketsQuery.error}
               onSelectTicket={setSelected}
+              tenantId={activeTenantId}
             />
 
             {selected && (
