@@ -41,6 +41,10 @@ interface Ticket {
   // query keyed by unique vitana_ids, merged into each ticket row.
   avatar_url?: string | null;
   display_name?: string | null;
+  // VTID-02659: short transcript preview from gateway so the supervisor
+  // can read the gist of a claim inline and prioritise without opening
+  // the actionable drawer.
+  raw_transcript_excerpt?: string | null;
 }
 
 interface Persona {
@@ -310,29 +314,42 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
             </div>
 
             {/* Expanded list of all of this customer's tickets */}
+            {/* VTID-02659: zebra striping + row numbers + inline excerpt so the
+                supervisor can scan and prioritise without opening every drawer. */}
             {isOpen && (
-              <div className="border-t bg-muted/30">
-                {g.tickets.map(t => {
+              <div className="border-t border-border bg-background">
+                {g.tickets.map((t, idx) => {
                   const tVariant = statusVariant(t.status);
+                  const zebra = idx % 2 === 0 ? "bg-muted/40" : "bg-background";
                   return (
                     <button
                       type="button"
                       key={t.id}
                       onClick={() => onSelectTicket(t)}
-                      className="flex w-full items-center gap-3 px-12 py-2 text-left text-sm hover:bg-accent border-t border-border/50"
+                      className={`flex w-full flex-col gap-1 px-4 py-3 text-left text-sm border-t border-border/60 hover:bg-accent ${zebra}`}
                     >
-                      <span className="font-mono text-xs">{t.ticket_number}</span>
-                      <Badge variant={tVariant} className="text-[10px]">
-                        {STATUS_LABEL[t.status] ?? t.status}
-                      </Badge>
-                      <span className="text-muted-foreground">{t.kind}</span>
-                      <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
-                      {t.resolver_agent && (
-                        <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="w-6 shrink-0 text-right font-mono text-xs text-muted-foreground/70">
+                          {idx + 1}.
+                        </span>
+                        <span className="font-mono text-xs">{t.ticket_number}</span>
+                        <Badge variant={tVariant} className="text-[10px]">
+                          {STATUS_LABEL[t.status] ?? t.status}
+                        </Badge>
+                        <span className="text-muted-foreground">{t.kind}</span>
+                        <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
+                        {t.resolver_agent && (
+                          <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
+                        )}
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          {new Date(t.created_at).toLocaleString()}
+                        </span>
+                      </div>
+                      {t.raw_transcript_excerpt && (
+                        <p className="ml-9 line-clamp-2 text-xs text-foreground/80">
+                          {t.raw_transcript_excerpt}
+                        </p>
                       )}
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        {new Date(t.created_at).toLocaleString()}
-                      </span>
                     </button>
                   );
                 })}

@@ -175,16 +175,34 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     reject.mutate(reason || null);
   };
 
+  // VTID-02659: block close while a mutation is in flight so the action
+  // completes cleanly (LLM draft can take 10–30s — closing mid-flight
+  // leaves the supervisor staring at a stale list while onSuccess fires
+  // into thin air). Both backdrop click and the ✕ button respect this.
+  const isBusy = activate.isPending || reject.isPending;
+  const safeClose = () => {
+    if (isBusy) return;
+    onClose();
+  };
+
   // Layout
   const renderShell = (body: React.ReactNode) => (
     <div
       className="fixed inset-0 z-50 flex justify-end bg-black/40"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) safeClose(); }}
     >
       <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6 shadow-2xl">
         <div className="mb-4 flex items-start justify-between">
           <h2 className="font-mono text-lg font-bold">{ticketNumber}</h2>
-          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+          <button
+            onClick={safeClose}
+            disabled={isBusy}
+            className="text-2xl text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label="Close"
+            title={isBusy ? "Working — please wait" : "Close"}
+          >
+            ×
+          </button>
         </div>
         {body}
       </div>
@@ -253,6 +271,18 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               Reject
             </Button>
           </div>
+          {/* VTID-02659: visible progress strip — Activate calls the LLM
+              router to draft a fix spec / answer / resolution, which can
+              take 10–30s. Without this hint the button looks frozen. */}
+          {activate.isPending && (
+            <div className="flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
+              <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <span>
+                Drafting via specialist resolver — this can take up to 30 seconds.
+                Safe to leave the drawer open.
+              </span>
+            </div>
+          )}
         </Card>
       )}
       {isTerminal && (
