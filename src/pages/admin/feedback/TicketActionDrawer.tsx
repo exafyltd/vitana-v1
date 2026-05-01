@@ -380,6 +380,39 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
   });
 
+  // VTID-02667: stranded-ticket recovery. Calls the gateway's manual
+  // /dispatch endpoint to bridge an in_progress bug/ux_issue ticket
+  // through to the dev autopilot when the activate-time bridge didn't
+  // fire (e.g. activated before VTID-02665 deployed).
+  const dispatchToAutopilot = useMutation({
+    mutationFn: async () => {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/dispatch`,
+        { method: "POST" }
+      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+      return body as { recommendation_id: string; execution_id?: string; skipped?: string };
+    },
+    onSuccess: async (r) => {
+      toast({
+        title: `${ticketNumber} dispatched`,
+        description: r.execution_id
+          ? `Dev autopilot is running execution ${r.execution_id.slice(0, 8)}.`
+          : "Sent to dev autopilot.",
+      });
+      await queryClient.invalidateQueries({ queryKey });
+      await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
+    },
+    onError: (err: unknown) => {
+      toast({
+        title: "Dispatch failed",
+        description: err instanceof Error ? err.message : "Try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const generateSpec = useMutation({
     mutationFn: async () => {
       const res = await communityFetch(
@@ -498,7 +531,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending || dispatchToAutopilot.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -573,6 +606,37 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           execution={detailQuery.data?.execution ?? null}
           findingId={t.linked_finding_id}
         />
+      )}
+
+      {/* VTID-02667: stranded-ticket recovery. Some tickets reach
+          status=in_progress without ever being dispatched (activated
+          before the bridge deployed, or a transient bridge error). Show
+          a one-click recovery button so the supervisor doesn't have to
+          re-classify or re-generate. */}
+      {!t.linked_finding_id
+        && t.status === "in_progress"
+        && (t.kind === "bug" || t.kind === "ux_issue")
+        && t.spec_md && (
+          <Card className="flex flex-col gap-2 border-amber-500/40 bg-amber-500/5 p-3 text-sm">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold">Not yet dispatched to dev autopilot</div>
+                <div className="text-xs text-muted-foreground">
+                  This ticket is in progress but never made it to the executor. Click below to send it now — Devon's spec is already drafted.
+                </div>
+              </div>
+            </div>
+            <div>
+              <Button
+                size="sm"
+                disabled={isBusy || dispatchToAutopilot.isPending}
+                onClick={() => dispatchToAutopilot.mutate()}
+              >
+                {dispatchToAutopilot.isPending ? "Dispatching…" : "Dispatch to dev autopilot"}
+              </Button>
+            </div>
+          </Card>
       )}
 
       {/* VTID-02665: kind reclassify dropdown. The classifier is wrong
