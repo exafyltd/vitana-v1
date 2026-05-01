@@ -96,10 +96,25 @@ interface Handoff {
   ts: string;
 }
 
+// VTID-02666: dev autopilot execution stage as returned by the gateway
+// when the ticket has been dispatched (linked_finding_id set).
+interface DevAutopilotExecution {
+  id: string;
+  status: string; // cooling | running | ci | merging | deploying | verifying | completed | failed
+  pr_url: string | null;
+  pr_number: number | null;
+  branch: string | null;
+  failure_stage: string | null;
+  created_at: string;
+  updated_at: string;
+  completed_at: string | null;
+}
+
 interface DetailResponse {
   ok: boolean;
   ticket: FullTicket;
   handoffs: Handoff[];
+  execution: DevAutopilotExecution | null;
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -132,6 +147,160 @@ const TERMINAL_STATUSES = new Set([
   "resolved", "user_confirmed", "rejected", "wont_fix", "duplicate",
 ]);
 
+// VTID-02666: dev autopilot pipeline stages, in order. The bar shows one
+// segment per stage; the segment is "complete" if the current execution
+// status is at or past it, "active" if it matches, "pending" otherwise.
+// On `failed`, the failed_stage segment turns red and the trailing
+// segments stay pending.
+const PIPELINE_STAGES: Array<{ key: string; label: string; pct: number }> = [
+  { key: "cooling",   label: "Queued",    pct: 10 },
+  { key: "running",   label: "Coding",    pct: 30 },
+  { key: "ci",        label: "CI",        pct: 55 },
+  { key: "merging",   label: "Merging",   pct: 75 },
+  { key: "deploying", label: "Deploying", pct: 90 },
+  { key: "verifying", label: "Verifying", pct: 97 },
+  { key: "completed", label: "Completed", pct: 100 },
+];
+
+function stageIndex(status: string): number {
+  const idx = PIPELINE_STAGES.findIndex(s => s.key === status);
+  return idx === -1 ? 0 : idx;
+}
+
+interface PipelineProgressProps {
+  execution: import('react').ReactNode extends never ? never : ({
+    id: string;
+    status: string;
+    pr_url: string | null;
+    pr_number: number | null;
+    branch: string | null;
+    failure_stage: string | null;
+    created_at: string;
+    updated_at: string;
+    completed_at: string | null;
+  } | null);
+  findingId: string;
+}
+
+function PipelineProgress({ execution, findingId }: PipelineProgressProps) {
+  // Pre-execution state — the autopilot finding exists but the execution
+  // row hasn't been claimed yet (typically <30s after Activate). Show a
+  // queued indicator so the supervisor knows we're waiting.
+  if (!execution) {
+    return (
+      <Card className="flex flex-col gap-3 border-amber-500/40 bg-amber-500/5 p-3 text-sm">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">⚙️</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold">Dispatched to dev autopilot</div>
+            <div className="text-xs text-muted-foreground">
+              Recommendation <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
+            </div>
+          </div>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+          <div className="h-full w-[5%] animate-pulse rounded-full bg-amber-500" />
+        </div>
+      </Card>
+    );
+  }
+
+  const status = execution.status;
+  const isFailed = status === "failed";
+  const isCompleted = status === "completed";
+  const failedAt = execution.failure_stage ?? null;
+  const idxNow = stageIndex(status);
+  const pctNow = isFailed
+    ? (PIPELINE_STAGES.find(s => s.key === failedAt)?.pct ?? PIPELINE_STAGES[idxNow].pct)
+    : PIPELINE_STAGES[idxNow].pct;
+
+  const barClass = isFailed
+    ? "bg-red-500"
+    : isCompleted
+      ? "bg-emerald-500"
+      : "bg-amber-500";
+
+  const stalledMs = Date.now() - new Date(execution.updated_at).getTime();
+  const isStalled = !isCompleted && !isFailed && stalledMs > 5 * 60 * 1000;
+
+  return (
+    <Card
+      className={`flex flex-col gap-3 p-3 text-sm ${
+        isFailed
+          ? "border-red-500/40 bg-red-500/5"
+          : isCompleted
+            ? "border-emerald-500/40 bg-emerald-500/5"
+            : "border-amber-500/40 bg-amber-500/5"
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <span className="text-2xl">
+          {isFailed ? "⚠️" : isCompleted ? "✅" : "⚙️"}
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold">
+            {isFailed
+              ? `Failed at ${failedAt ?? status}`
+              : isCompleted
+                ? "Completed — deployed to production"
+                : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Execution <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
+            {execution.pr_url && (
+              <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">PR #{execution.pr_number ?? "?"}</a></>
+            )}
+            {isStalled && <> · <span className="text-amber-600 font-semibold">stalled {Math.round(stalledMs / 60000)} min</span></>}
+            {execution.completed_at && <> · finished {new Date(execution.completed_at).toLocaleTimeString()}</>}
+          </div>
+        </div>
+      </div>
+
+      {/* Solid coloured bar showing overall % through the pipeline. */}
+      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+        <div
+          className={`h-full rounded-full transition-all duration-700 ${barClass}`}
+          style={{ width: `${Math.max(5, Math.min(100, pctNow))}%` }}
+        />
+      </div>
+
+      {/* Stage row — each stage is a small chip. Completed stages get a
+          checkmark, the active stage gets a dot, failed gets an X. */}
+      <div className="flex flex-wrap gap-1.5 text-[10px]">
+        {PIPELINE_STAGES.map((stage, i) => {
+          const passed = i < idxNow;
+          const active = i === idxNow && !isFailed;
+          const failedHere = isFailed && stage.key === failedAt;
+          const tone = failedHere
+            ? "bg-red-500 text-white border-transparent"
+            : passed || (isCompleted && i <= idxNow)
+              ? "bg-emerald-500 text-white border-transparent"
+              : active
+                ? "bg-amber-500 text-white border-transparent animate-pulse"
+                : "bg-background text-muted-foreground border-border";
+          const symbol = failedHere ? "✕" : passed || (isCompleted && i <= idxNow) ? "✓" : active ? "●" : "○";
+          return (
+            <span
+              key={stage.key}
+              className={`flex items-center gap-1 rounded-full border px-2 py-0.5 ${tone}`}
+              title={stage.label}
+            >
+              <span>{symbol}</span>
+              <span>{stage.label}</span>
+            </span>
+          );
+        })}
+      </div>
+
+      {isStalled && !isFailed && (
+        <p className="text-[11px] text-amber-700 dark:text-amber-300">
+          No update for {Math.round(stalledMs / 60000)} minutes — the executor reaper will reclaim stuck runs every few minutes. Come back later.
+        </p>
+      )}
+    </Card>
+  );
+}
+
 interface Props {
   tenantId: string;
   ticketId: string;
@@ -156,6 +325,16 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       return res.json();
     },
     enabled: !!tenantId && !!ticketId,
+    // VTID-02666: poll while the autopilot execution is in flight so the
+    // supervisor's progress bar updates live without manual refresh. Stop
+    // once the run lands in a terminal state.
+    refetchInterval: (q) => {
+      const data = q.state.data as DetailResponse | undefined;
+      const ex = data?.execution;
+      if (!ex) return false;
+      const inflight = ["cooling","running","ci","merging","deploying","verifying"].includes(ex.status);
+      return inflight ? 5000 : false;
+    },
   });
 
   // VTID-02664: supervisor instructions — local state, seeded from the
@@ -383,19 +562,17 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         )}
       </div>
 
-      {/* VTID-02665: dispatch indicator. If this ticket has already been
-          handed to the dev autopilot, surface it loud so the supervisor
-          can follow the run. */}
+      {/* VTID-02665 / VTID-02666: dispatch indicator + pipeline progress bar.
+          When the ticket has been handed to the dev autopilot, render a
+          colored, stage-by-stage progress bar so the supervisor can see at
+          a glance whether the run is healthy or stuck without clicking
+          into anything. Polls every 5s while in flight (refetchInterval
+          on detailQuery). */}
       {t.linked_finding_id && (
-        <Card className="flex items-center gap-3 border-primary/40 bg-primary/10 p-3 text-sm">
-          <span className="text-2xl">⚙️</span>
-          <div className="flex-1 min-w-0">
-            <div className="font-semibold">Running in dev autopilot</div>
-            <div className="text-xs text-muted-foreground">
-              Recommendation <code className="text-[10px]">{t.linked_finding_id.slice(0, 8)}</code> — Claude is working on the spec, then a PR will open and CI / deploy will run automatically. Reclassify is locked.
-            </div>
-          </div>
-        </Card>
+        <PipelineProgress
+          execution={detailQuery.data?.execution ?? null}
+          findingId={t.linked_finding_id}
+        />
       )}
 
       {/* VTID-02665: kind reclassify dropdown. The classifier is wrong
