@@ -19,6 +19,10 @@ import { communityFetch } from "@/lib/community-gateway";
 import { SpecialistConfigDrawer } from "./SpecialistConfigDrawer";
 // VTID-02660: actionable ticket drawer — full transcript + Activate/Reject.
 import { TicketActionDrawer } from "./TicketActionDrawer";
+// Forwarding-rules feature (VTID-02661): Vitana-specific drawer that edits
+// the global Gate A phrase lists + a test sandbox.
+import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
+import { Switch } from "@/components/ui/switch";
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -369,6 +373,75 @@ function statusVariant(status: string): "default" | "secondary" | "destructive" 
   return "secondary";
 }
 
+// Vitana renders first on the Specialists tab (with the "Always on" affordance);
+// the remaining personas keep their alphabetical / server order. Without this,
+// the receptionist would scroll-mix with her own colleagues.
+function sortedPersonasWithVitanaFirst(personas: Persona[]): Persona[] {
+  const vitana = personas.find(p => p.key === "vitana");
+  const rest = personas.filter(p => p.key !== "vitana");
+  return vitana ? [vitana, ...rest] : rest;
+}
+
+// Per-card enable/disable for Devon/Sage/Atlas/Mira. Calls the platform-level
+// PATCH /:key/status endpoint (rejects vitana server-side). Stops click
+// propagation so toggling doesn't open the drawer.
+function SpecialistEnableToggle({
+  personaKey,
+  status,
+  onChanged,
+}: {
+  personaKey: string;
+  status: string;
+  onChanged: () => void;
+}) {
+  const { toast } = useToast();
+  const [pending, setPending] = useState(false);
+  const enabled = status === "active";
+
+  const toggle = async (next: boolean) => {
+    setPending(true);
+    try {
+      const res = await communityFetch(`/api/v1/admin/specialists/${personaKey}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ enabled: next }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? `HTTP ${res.status}`);
+      }
+      toast({
+        title: next ? `${personaKey} enabled` : `${personaKey} disabled`,
+        description: next
+          ? "Vitana can now route eligible requests to this specialist."
+          : "Vitana will not route to this specialist (gate=unrouted on a match).",
+      });
+      onChanged();
+    } catch (err) {
+      toast({
+        title: "Toggle failed",
+        description: err instanceof Error ? err.message : "Try again",
+        variant: "destructive",
+      });
+    } finally {
+      setPending(false);
+    }
+  };
+
+  return (
+    <div onClick={e => e.stopPropagation()} className="flex items-center gap-2">
+      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+        {enabled ? "On" : "Off"}
+      </span>
+      <Switch
+        checked={enabled}
+        disabled={pending}
+        onCheckedChange={toggle}
+        aria-label={`Toggle ${personaKey} ${enabled ? "off" : "on"}`}
+      />
+    </div>
+  );
+}
+
 export default function AdminFeedback() {
   const navigate = useNavigate();
   const { tab } = useParams<{ tab?: string }>();
@@ -529,38 +602,67 @@ export default function AdminFeedback() {
         {activeTab === "specialists" && (
           <>
             <p className="text-sm text-muted-foreground">
-              These are AI specialists. Vitana hands off to them when a member's question is outside her domain.
-              <strong> Click any card to customize them for your tenant</strong> — enable/disable, attach your knowledge base,
-              add routing keywords, configure intake.
+              <strong>Vitana is your members' life companion.</strong> Almost every conversation stays with her. The
+              colleagues below take over only when a member explicitly asks to be connected for a corporate /
+              organizational issue (bug, refund, account, support escalation). Click any card to customize.
             </p>
             {personasQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
             <div className="grid gap-3 sm:grid-cols-2">
-              {personasQuery.data?.map(p => (
-                <Card
-                  key={p.key}
-                  className="cursor-pointer p-4 transition-colors hover:bg-accent"
-                  onClick={() => setSelectedSpecialist(p.key)}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-base font-semibold">{p.display_name}</h3>
-                      <p className="text-xs text-muted-foreground">{p.role}</p>
+              {sortedPersonasWithVitanaFirst(personasQuery.data ?? []).map(p => {
+                const isVitana = p.key === "vitana";
+                const isActive = p.status === "active";
+                return (
+                  <Card
+                    key={p.key}
+                    className={`cursor-pointer p-4 transition-colors hover:bg-accent ${
+                      !isActive && !isVitana ? "opacity-60" : ""
+                    }`}
+                    onClick={() => setSelectedSpecialist(p.key)}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base font-semibold">{p.display_name}</h3>
+                          {isVitana && (
+                            <Badge variant="default" className="text-[9px]">
+                              receptionist
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground">{p.role}</p>
+                      </div>
+                      {isVitana ? (
+                        <span className="whitespace-nowrap rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                          Always on
+                        </span>
+                      ) : (
+                        <SpecialistEnableToggle
+                          personaKey={p.key}
+                          status={p.status}
+                          onChanged={() => personasQuery.refetch()}
+                        />
+                      )}
                     </div>
-                    <Badge variant={p.status === "active" ? "default" : "outline"} className="text-[10px]">
-                      {p.status}
-                    </Badge>
-                  </div>
-                  <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                    <div>Handles: {p.handles_kinds.join(", ") || "—"}</div>
-                    <div>Voice: {p.voice_id || "(not set)"}</div>
-                    <div>Version: v{p.version}</div>
-                  </div>
-                </Card>
-              ))}
+                    <div className="mt-3 space-y-1 text-xs text-muted-foreground">
+                      <div>
+                        Handles: {isVitana
+                          ? "everything except customer-support handoffs"
+                          : (p.handles_kinds.join(", ") || "—")}
+                      </div>
+                      <div>Voice: {p.voice_id || "(not set)"}</div>
+                      <div>Version: v{p.version}</div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
 
-            {/* VTID-02656 Phase 6 — tenant-side configuration drawer */}
-            {selectedSpecialist && activeTenantId && (
+            {/* Vitana → global Forwarding Rules drawer (Gate A phrases + test sandbox).
+                Specialist → existing tenant-scoped config drawer (enable, KB, keywords). */}
+            {selectedSpecialist === "vitana" && (
+              <VitanaConfigDrawer onClose={() => setSelectedSpecialist(null)} />
+            )}
+            {selectedSpecialist && selectedSpecialist !== "vitana" && activeTenantId && (
               <SpecialistConfigDrawer
                 tenantId={activeTenantId}
                 personaKey={selectedSpecialist}
