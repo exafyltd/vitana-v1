@@ -64,6 +64,178 @@ const STATUS_LABEL: Record<string, string> = {
   reopened: "Reopened",
 };
 
+// VTID-02658: helpers for the customer-grouped tickets view.
+
+interface CustomerGroup {
+  customer_key: string;        // vitana_id when set, else "(anonymous)" sentinel
+  vitana_id: string | null;
+  total: number;               // total tickets from this customer
+  open: number;                // unresolved (anything except resolved/user_confirmed/rejected/wont_fix/duplicate)
+  latest: Ticket;              // most recent ticket — used as the header
+  tickets: Ticket[];           // chronological, latest first
+}
+
+const TERMINAL_STATUSES = new Set([
+  "resolved", "user_confirmed", "rejected", "wont_fix", "duplicate",
+]);
+
+function groupTicketsByCustomer(tickets: Ticket[]): CustomerGroup[] {
+  const groups = new Map<string, CustomerGroup>();
+  for (const t of tickets) {
+    const key = t.vitana_id ?? "(anonymous)";
+    let g = groups.get(key);
+    if (!g) {
+      g = {
+        customer_key: key,
+        vitana_id: t.vitana_id,
+        total: 0,
+        open: 0,
+        latest: t,
+        tickets: [],
+      };
+      groups.set(key, g);
+    }
+    g.tickets.push(t);
+    g.total++;
+    if (!TERMINAL_STATUSES.has(t.status)) g.open++;
+    // Keep latest as the most recent created_at
+    if (new Date(t.created_at).getTime() > new Date(g.latest.created_at).getTime()) {
+      g.latest = t;
+    }
+  }
+  // Each group's tickets in latest-first order
+  for (const g of groups.values()) {
+    g.tickets.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+  // Group ordering: customer with the most-recent ticket first
+  return [...groups.values()].sort(
+    (a, b) => new Date(b.latest.created_at).getTime() - new Date(a.latest.created_at).getTime()
+  );
+}
+
+function customerInitials(key: string): string {
+  // Strip leading @ if vitana_id, take first two letters that are alphanumeric.
+  const stripped = key.replace(/^@/, "").replace(/[^A-Za-z0-9]/g, "");
+  if (stripped.length === 0) return "??";
+  return stripped.slice(0, 2).toUpperCase();
+}
+
+function customerColor(key: string): string {
+  // Deterministic pastel from a tiny hash so the avatar is visually
+  // distinguishable per customer at a glance.
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  const hue = h % 360;
+  return `hsl(${hue}, 65%, 50%)`;
+}
+
+interface CustomerGroupedTicketsProps {
+  tickets: Ticket[];
+  isLoading: boolean;
+  error: unknown;
+  onSelectTicket: (t: Ticket) => void;
+}
+
+function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket }: CustomerGroupedTicketsProps) {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  if (isLoading) {
+    return <p className="text-sm text-muted-foreground">Loading…</p>;
+  }
+  if (error) {
+    return <p className="text-sm text-destructive">Failed to load tickets.</p>;
+  }
+  if (tickets.length === 0) {
+    return (
+      <Card className="p-6 text-center text-sm text-muted-foreground">
+        <Inbox className="mx-auto mb-2 h-8 w-8 opacity-50" />
+        No tickets yet. Your members' submissions via "Talk to Vitana" will land here.
+      </Card>
+    );
+  }
+  const groups = groupTicketsByCustomer(tickets);
+
+  return (
+    <div className="space-y-2">
+      {groups.map(g => {
+        const isOpen = expanded[g.customer_key] ?? false;
+        const initials = customerInitials(g.customer_key);
+        const color = customerColor(g.customer_key);
+        const pillVariant = statusVariant(g.latest.status);
+        return (
+          <Card key={g.customer_key} className="overflow-hidden">
+            {/* Customer header — click to expand/collapse */}
+            <button
+              type="button"
+              onClick={() => setExpanded(s => ({ ...s, [g.customer_key]: !isOpen }))}
+              className="flex w-full items-center gap-3 p-3 text-left hover:bg-accent"
+            >
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white"
+                style={{ background: color }}
+                aria-label={`Avatar for ${g.customer_key}`}
+              >
+                {initials}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono text-sm font-semibold">{g.vitana_id ?? "(anonymous)"}</span>
+                  {g.open > 0 && (
+                    <Badge variant="destructive" className="text-[10px]">{g.open} open</Badge>
+                  )}
+                  <Badge variant="outline" className="text-[10px]">{g.total} total</Badge>
+                </div>
+                <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="font-mono">{g.latest.ticket_number}</span>
+                  <Badge variant={pillVariant} className="text-[10px]">
+                    {STATUS_LABEL[g.latest.status] ?? g.latest.status}
+                  </Badge>
+                  <span>{g.latest.kind}</span>
+                  {g.latest.resolver_agent && (
+                    <span>· handled by {g.latest.resolver_agent}</span>
+                  )}
+                  <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
+                </div>
+              </div>
+              <span className="text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
+            </button>
+
+            {/* Expanded list of all of this customer's tickets */}
+            {isOpen && (
+              <div className="border-t bg-muted/30">
+                {g.tickets.map(t => {
+                  const tVariant = statusVariant(t.status);
+                  return (
+                    <button
+                      type="button"
+                      key={t.id}
+                      onClick={() => onSelectTicket(t)}
+                      className="flex w-full items-center gap-3 px-12 py-2 text-left text-sm hover:bg-accent border-t border-border/50"
+                    >
+                      <span className="font-mono text-xs">{t.ticket_number}</span>
+                      <Badge variant={tVariant} className="text-[10px]">
+                        {STATUS_LABEL[t.status] ?? t.status}
+                      </Badge>
+                      <span className="text-muted-foreground">{t.kind}</span>
+                      <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
+                      {t.resolver_agent && (
+                        <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
+                      )}
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {new Date(t.created_at).toLocaleString()}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+
 function statusVariant(status: string): "default" | "secondary" | "destructive" | "outline" {
   if (["resolved", "user_confirmed", "approved", "in_progress"].includes(status)) return "default";
   if (["rejected", "wont_fix", "duplicate"].includes(status)) return "outline";
@@ -155,44 +327,18 @@ export default function AdminFeedback() {
               <Badge variant="default">Resolved: {counts.resolved}</Badge>
             </div>
 
-            {ticketsQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
-            {ticketsQuery.error && (
-              <p className="text-sm text-destructive">Failed to load tickets.</p>
-            )}
-            {ticketsQuery.data?.length === 0 && (
-              <Card className="p-6 text-center text-sm text-muted-foreground">
-                <Inbox className="mx-auto mb-2 h-8 w-8 opacity-50" />
-                No tickets yet. Your members' submissions via "Talk to Vitana" will land here.
-              </Card>
-            )}
-
-            <div className="space-y-1">
-              {ticketsQuery.data?.map(t => (
-                <Card
-                  key={t.id}
-                  className="cursor-pointer p-3 hover:bg-accent"
-                  onClick={() => setSelected(t)}
-                >
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="font-mono font-semibold">{t.ticket_number}</span>
-                    <Badge variant={statusVariant(t.status)} className="text-[10px]">
-                      {STATUS_LABEL[t.status] ?? t.status}
-                    </Badge>
-                    <span className="text-muted-foreground">{t.kind}</span>
-                    <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
-                    {t.resolver_agent && (
-                      <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
-                    )}
-                    <span className="ml-auto text-xs text-muted-foreground">
-                      {new Date(t.created_at).toLocaleString()}
-                    </span>
-                  </div>
-                  {t.vitana_id && (
-                    <div className="text-xs text-muted-foreground">{t.vitana_id}</div>
-                  )}
-                </Card>
-              ))}
-            </div>
+            {/* VTID-02658: tickets grouped by customer (vitana_id) so a single
+                customer with many open tickets doesn't crowd out other
+                customers. Each card = one customer. Header shows latest
+                ticket; click to expand and see the rest. Inspired by
+                Zendesk's Requester view + Intercom's conversation grouping —
+                one row per person, badges show open/total counts. */}
+            <CustomerGroupedTickets
+              tickets={ticketsQuery.data ?? []}
+              isLoading={ticketsQuery.isLoading}
+              error={ticketsQuery.error}
+              onSelectTicket={setSelected}
+            />
 
             {selected && (
               <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={e => { if (e.target === e.currentTarget) setSelected(null); }}>
