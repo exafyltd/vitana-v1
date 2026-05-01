@@ -41,6 +41,10 @@ interface Ticket {
   resolver_agent: string | null;
   resolved_at: string | null;
   user_confirmed_at: string | null;
+  // VTID-02047: voice tool sets structured_fields.voice_origin=true so we
+  // can render a "captured by voice" indicator. Backend includes this on
+  // the /mine response when the field exists.
+  structured_fields?: { voice_origin?: boolean } | null;
 }
 
 const STATUS_PILL: Record<string, { label: string; tone: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -88,6 +92,12 @@ export default function TalkToVitana() {
       const json = await res.json();
       return json.tickets ?? [];
     },
+    // Refetch every 30s so voice-captured tickets (created via Vitana ORB
+    // tool report_to_specialist) appear without manual refresh, and so
+    // status transitions (resolved, etc.) are visible to the user soon
+    // after they happen.
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: true,
   });
 
   const handleSubmit = async () => {
@@ -227,9 +237,12 @@ export default function TalkToVitana() {
               <Card key={t.id} className="flex flex-col gap-2 p-3">
                 <div className="flex items-center gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex items-center gap-2 text-sm flex-wrap">
                       <span className="font-medium">{t.ticket_number}</span>
                       <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
+                      {t.structured_fields?.voice_origin && (
+                        <Badge variant="outline" className="text-[10px]">via voice</Badge>
+                      )}
                       {t.resolver_agent && (
                         <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
                       )}
