@@ -86,8 +86,13 @@ async function transcribeWithGemini(
     },
   };
 
+  // gemini-1.5-flash was retired (404 on this key as of 2026-05-01).
+  // gemini-2.5-flash is the current cheap+fast model that accepts inline
+  // audio (mp3/aac/wav/webm/ogg/flac/mp4). Allow override via env so we can
+  // switch models without another deploy if Google retires this one too.
+  const model = Deno.env.get('GEMINI_TRANSCRIBE_MODEL') || 'gemini-2.5-flash';
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
