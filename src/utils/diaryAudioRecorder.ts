@@ -231,10 +231,35 @@ export async function transcribeAudioBlob(
   });
 
   if (error) {
-    console.error('[transcribeAudioBlob] Edge function error:', error, 'data:', data);
-    // FunctionsHttpError loses the response body — pull details from `data`.
-    const detail = (data && (data.details || data.error)) ? ` — ${data.details || data.error}` : '';
-    throw new Error(`${error.message || 'Transcription failed'}${detail}`);
+    // supabase-js throws FunctionsHttpError on non-2xx and stashes the raw
+    // Response on `error.context`. `data` is null in that path, so the
+    // server's JSON body (with the actual Gemini/STT message) only lives
+    // there. Read it once and surface it in the toast.
+    let serverDetail = '';
+    const ctxResp: Response | undefined = (error as { context?: Response }).context;
+    if (ctxResp && typeof ctxResp.text === 'function') {
+      try {
+        const bodyText = await ctxResp.clone().text();
+        if (bodyText) {
+          try {
+            const j = JSON.parse(bodyText);
+            serverDetail = j.details || j.error || bodyText;
+          } catch {
+            serverDetail = bodyText;
+          }
+        }
+      } catch {
+        /* clone/read failed — fall through to error.message only */
+      }
+    }
+    if (!serverDetail && data && typeof data === 'object') {
+      serverDetail = (data as { details?: string; error?: string }).details
+        || (data as { details?: string; error?: string }).error
+        || '';
+    }
+    console.error('[transcribeAudioBlob] Edge function error:', error, 'serverDetail:', serverDetail);
+    const baseMsg = error.message || 'Transcription failed';
+    throw new Error(serverDetail ? `${baseMsg} — ${serverDetail}` : baseMsg);
   }
 
   if (data?.error) {
