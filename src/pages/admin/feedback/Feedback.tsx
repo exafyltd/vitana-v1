@@ -237,9 +237,9 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
         const isOpen = expanded[g.customer_key] ?? false;
         const initials = customerInitials(g.customer_key);
         const color = customerColor(g.customer_key);
-        const pillVariant = statusVariant(g.latest.status);
+        const headerAccent = statusAccent(g.latest.status);
         return (
-          <Card key={g.customer_key} className="overflow-hidden">
+          <Card key={g.customer_key} className={`overflow-hidden ${headerAccent.border}`}>
             {/* Customer header — click anywhere outside the Approve button
                 to expand/collapse the ticket list. */}
             <div className="flex w-full items-center gap-3 p-3 hover:bg-accent">
@@ -288,7 +288,10 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
                     <span className="font-mono">{g.latest.ticket_number}</span>
-                    <Badge variant={pillVariant} className="text-[10px]">
+                    <Badge
+                      className={`text-[10px] ${headerAccent.pill}`}
+                      variant={headerAccent.pill ? undefined : statusVariant(g.latest.status)}
+                    >
                       {STATUS_LABEL[g.latest.status] ?? g.latest.status}
                     </Badge>
                     <span>{g.latest.kind}</span>
@@ -318,26 +321,29 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
             </div>
 
             {/* Expanded list of all of this customer's tickets */}
-            {/* VTID-02659: zebra striping + row numbers + inline excerpt so the
-                supervisor can scan and prioritise without opening every drawer. */}
+            {/* VTID-02659: row numbers + inline excerpt so the supervisor
+                can scan and prioritise without opening every drawer.
+                VTID-02666: status-tinted left border + pill matching the
+                Command Hub Tasks palette (amber=in progress, green=
+                completed/resolved, blue=scheduled/new, red=needs attention,
+                muted=closed without fix). */}
             {isOpen && (
               <div className="border-t border-border bg-background">
                 {g.tickets.map((t, idx) => {
-                  const tVariant = statusVariant(t.status);
-                  const zebra = idx % 2 === 0 ? "bg-muted/40" : "bg-background";
+                  const accent = statusAccent(t.status);
                   return (
                     <button
                       type="button"
                       key={t.id}
                       onClick={() => onSelectTicket(t)}
-                      className={`flex w-full flex-col gap-1 px-4 py-3 text-left text-sm border-t border-border/60 hover:bg-accent ${zebra}`}
+                      className={`flex w-full flex-col gap-1 px-4 py-3 text-left text-sm border-t border-border/60 hover:bg-accent ${accent.border} ${accent.tint}`}
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-6 shrink-0 text-right font-mono text-xs text-muted-foreground/70">
                           {idx + 1}.
                         </span>
                         <span className="font-mono text-xs">{t.ticket_number}</span>
-                        <Badge variant={tVariant} className="text-[10px]">
+                        <Badge className={`text-[10px] ${accent.pill}`} variant={accent.pill ? undefined : statusVariant(t.status)}>
                           {STATUS_LABEL[t.status] ?? t.status}
                         </Badge>
                         <span className="text-muted-foreground">{t.kind}</span>
@@ -371,6 +377,65 @@ function statusVariant(status: string): "default" | "secondary" | "destructive" 
   if (["rejected", "wont_fix", "duplicate"].includes(status)) return "outline";
   if (["reopened", "needs_more_info"].includes(status)) return "destructive";
   return "secondary";
+}
+
+// VTID-02666: status-tinted row + pill, mirroring the Command Hub Tasks
+// board palette so the supervisor reads a row's state at a glance instead
+// of parsing the badge text.
+//   in_progress / spec_ready / answer_ready / approved → amber  (active work)
+//   resolved / user_confirmed                          → green  (completed)
+//   new / triaged / spec_pending / answer_pending      → blue   (scheduled)
+//   needs_more_info / reopened                         → red    (attention)
+//   rejected / wont_fix / duplicate                    → muted  (closed-no-fix)
+//   anything else (interviewing etc.)                  → neutral
+function statusAccent(status: string): {
+  // 4px left border in the bright accent colour.
+  border: string;
+  // Faint background tint so the row pops without screaming.
+  tint: string;
+  // Pill colour for the status badge — vivid version of the same family.
+  pill: string;
+} {
+  if (["in_progress", "spec_ready", "answer_ready", "approved"].includes(status)) {
+    return {
+      border: "border-l-4 border-l-amber-500",
+      tint: "bg-amber-500/10",
+      pill: "bg-amber-500 text-white border-transparent",
+    };
+  }
+  if (["resolved", "user_confirmed"].includes(status)) {
+    return {
+      border: "border-l-4 border-l-emerald-500",
+      tint: "bg-emerald-500/10",
+      pill: "bg-emerald-500 text-white border-transparent",
+    };
+  }
+  if (["new", "triaged", "spec_pending", "answer_pending"].includes(status)) {
+    return {
+      border: "border-l-4 border-l-sky-500",
+      tint: "bg-sky-500/10",
+      pill: "bg-sky-500 text-white border-transparent",
+    };
+  }
+  if (["needs_more_info", "reopened"].includes(status)) {
+    return {
+      border: "border-l-4 border-l-red-500",
+      tint: "bg-red-500/10",
+      pill: "bg-red-500 text-white border-transparent",
+    };
+  }
+  if (["rejected", "wont_fix", "duplicate"].includes(status)) {
+    return {
+      border: "border-l-4 border-l-muted-foreground/40",
+      tint: "bg-muted/30",
+      pill: "bg-muted text-muted-foreground border-transparent",
+    };
+  }
+  return {
+    border: "border-l-4 border-l-transparent",
+    tint: "",
+    pill: "",
+  };
 }
 
 // Vitana renders first on the Specialists tab (with the "Always on" affordance);
