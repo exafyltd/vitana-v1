@@ -12,6 +12,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useTenant } from "@/hooks/useTenant";
 import { communityFetch } from "@/lib/community-gateway";
+// VTID-02656 Phase 6: tenant SpecialistConfig drawer (enable/disable, KB
+// bindings, routing keywords, intake extras, connections).
+import { SpecialistConfigDrawer } from "./SpecialistConfigDrawer";
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -74,6 +77,8 @@ export default function AdminFeedback() {
   const activeTab = tab && TABS.find(t => t.key === tab) ? tab : "tickets";
   const { activeTenantId } = useTenant();
   const [selected, setSelected] = useState<Ticket | null>(null);
+  // VTID-02656: open SpecialistConfigDrawer when a tenant admin clicks a card
+  const [selectedSpecialist, setSelectedSpecialist] = useState<string | null>(null);
 
   const ticketsQuery = useQuery<Ticket[]>({
     queryKey: ["admin-feedback-tickets", activeTenantId],
@@ -252,12 +257,17 @@ export default function AdminFeedback() {
           <>
             <p className="text-sm text-muted-foreground">
               These are AI specialists. Vitana hands off to them when a member's question is outside her domain.
-              A human reviews actions before they apply to your account.
+              <strong> Click any card to customize them for your tenant</strong> — enable/disable, attach your knowledge base,
+              add routing keywords, configure intake.
             </p>
             {personasQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
             <div className="grid gap-3 sm:grid-cols-2">
               {personasQuery.data?.map(p => (
-                <Card key={p.key} className="p-4">
+                <Card
+                  key={p.key}
+                  className="cursor-pointer p-4 transition-colors hover:bg-accent"
+                  onClick={() => setSelectedSpecialist(p.key)}
+                >
                   <div className="flex items-start justify-between">
                     <div>
                       <h3 className="text-base font-semibold">{p.display_name}</h3>
@@ -275,6 +285,15 @@ export default function AdminFeedback() {
                 </Card>
               ))}
             </div>
+
+            {/* VTID-02656 Phase 6 — tenant-side configuration drawer */}
+            {selectedSpecialist && activeTenantId && (
+              <SpecialistConfigDrawer
+                tenantId={activeTenantId}
+                personaKey={selectedSpecialist}
+                onClose={() => setSelectedSpecialist(null)}
+              />
+            )}
           </>
         )}
       </div>
