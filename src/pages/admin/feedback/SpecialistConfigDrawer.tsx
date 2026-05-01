@@ -196,18 +196,54 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
 
   const removeKbScope = (s: string) => setKbScopes(kbScopes.filter(x => x !== s));
 
+  // VTID-02657 fix: every drawer state needs a working close button +
+  // clickable backdrop. Earlier the error state trapped the user — they had
+  // to refresh the whole page. Now loading + error + success all share the
+  // same overlay/close pattern.
   if (overridesQuery.isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex justify-end bg-black/40">
-        <div className="h-full w-full max-w-2xl bg-background p-6">Loading…</div>
+      <div
+        className="fixed inset-0 z-50 flex justify-end bg-black/40"
+        onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      >
+        <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
+          <div className="mb-4 flex items-start justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Loading specialist…</h2>
+            </div>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+          </div>
+        </div>
       </div>
     );
   }
   const data = overridesQuery.data;
   if (!data) {
+    const errMsg = overridesQuery.error instanceof Error
+      ? overridesQuery.error.message
+      : "The overrides endpoint did not return data.";
     return (
-      <div className="fixed inset-0 z-50 flex justify-end bg-black/40">
-        <div className="h-full w-full max-w-2xl bg-background p-6 text-destructive">Failed to load specialist.</div>
+      <div
+        className="fixed inset-0 z-50 flex justify-end bg-black/40"
+        onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      >
+        <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
+          <div className="mb-4 flex items-start justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Couldn't load {personaKey}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{errMsg}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Possible causes: the gateway hasn't redeployed the tenant-overlay endpoint yet (PR #1153),
+                your role isn't permitted on this tenant, or the persona key doesn't exist server-side.
+              </p>
+            </div>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => overridesQuery.refetch()}>Retry</Button>
+            <Button variant="ghost" onClick={onClose}>Close</Button>
+          </div>
+        </div>
       </div>
     );
   }
