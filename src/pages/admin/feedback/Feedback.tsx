@@ -17,6 +17,8 @@ import { communityFetch } from "@/lib/community-gateway";
 // VTID-02656 Phase 6: tenant SpecialistConfig drawer (enable/disable, KB
 // bindings, routing keywords, intake extras, connections).
 import { SpecialistConfigDrawer } from "./SpecialistConfigDrawer";
+// VTID-02660: actionable ticket drawer — full transcript + Activate/Reject.
+import { TicketActionDrawer } from "./TicketActionDrawer";
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -356,6 +358,10 @@ export default function AdminFeedback() {
   const activeTab = tab && TABS.find(t => t.key === tab) ? tab : "tickets";
   const { activeTenantId } = useTenant();
   const [selected, setSelected] = useState<Ticket | null>(null);
+  // VTID-02660: filter view. 'active' = exclude terminal-status tickets so
+  // the supervisor's main board only shows what needs work. Resolved /
+  // rejected / duplicate / wont_fix go to Archive.
+  const [ticketView, setTicketView] = useState<"active" | "archive" | "all">("active");
   // VTID-02656: open SpecialistConfigDrawer when a tenant admin clicks a card
   const [selectedSpecialist, setSelectedSpecialist] = useState<string | null>(null);
 
@@ -391,6 +397,19 @@ export default function AdminFeedback() {
       resolved: tickets.filter(t => ["resolved", "user_confirmed"].includes(t.status)).length,
     };
   }, [ticketsQuery.data]);
+
+  // VTID-02660: derive the list shown in the customer-grouped view from
+  // ticketView. Active = non-terminal only (default). Archive = everything
+  // that's already been actioned. All = no filter.
+  const filteredTickets = useMemo(() => {
+    const tickets = ticketsQuery.data ?? [];
+    const TERMINAL = new Set([
+      "resolved", "user_confirmed", "rejected", "wont_fix", "duplicate",
+    ]);
+    if (ticketView === "active") return tickets.filter(t => !TERMINAL.has(t.status));
+    if (ticketView === "archive") return tickets.filter(t => TERMINAL.has(t.status));
+    return tickets;
+  }, [ticketsQuery.data, ticketView]);
 
   if (!tab) {
     return <Navigate to="/admin/feedback/tickets" replace />;
@@ -428,10 +447,34 @@ export default function AdminFeedback() {
       <div className="p-4 space-y-4">
         {activeTab === "tickets" && (
           <>
-            <div className="flex gap-2 text-xs">
+            <div className="flex gap-2 text-xs items-center flex-wrap">
               <Badge variant="outline">Total: {counts.total}</Badge>
               <Badge variant="secondary">Open: {counts.open}</Badge>
               <Badge variant="default">Resolved: {counts.resolved}</Badge>
+              {/* VTID-02660: Active / Archive filter. Default = active so
+                  resolved/rejected tickets disappear from the supervisor's
+                  view immediately after they're acted on. Switch to Archive
+                  to read past decisions without cluttering the live work. */}
+              <div className="ml-auto flex gap-1 rounded-md bg-muted p-0.5">
+                <button
+                  className={`px-2 py-0.5 text-xs rounded ${ticketView === "active" ? "bg-background shadow" : "text-muted-foreground"}`}
+                  onClick={() => setTicketView("active")}
+                >
+                  Active ({counts.open})
+                </button>
+                <button
+                  className={`px-2 py-0.5 text-xs rounded ${ticketView === "archive" ? "bg-background shadow" : "text-muted-foreground"}`}
+                  onClick={() => setTicketView("archive")}
+                >
+                  Archive ({counts.total - counts.open})
+                </button>
+                <button
+                  className={`px-2 py-0.5 text-xs rounded ${ticketView === "all" ? "bg-background shadow" : "text-muted-foreground"}`}
+                  onClick={() => setTicketView("all")}
+                >
+                  All ({counts.total})
+                </button>
+              </div>
             </div>
 
             {/* VTID-02658: tickets grouped by customer (vitana_id) so a single
@@ -439,70 +482,29 @@ export default function AdminFeedback() {
                 customers. Each card = one customer. Header shows latest
                 ticket; click to expand and see the rest. Inspired by
                 Zendesk's Requester view + Intercom's conversation grouping —
-                one row per person, badges show open/total counts. */}
+                one row per person, badges show open/total counts.
+                VTID-02660: filtered by ticketView so resolved/rejected
+                drop out of the supervisor's view by default. */}
             <CustomerGroupedTickets
-              tickets={ticketsQuery.data ?? []}
+              tickets={filteredTickets}
               isLoading={ticketsQuery.isLoading}
               error={ticketsQuery.error}
               onSelectTicket={setSelected}
               tenantId={activeTenantId}
             />
 
-            {selected && (
-              <div className="fixed inset-0 z-50 flex justify-end bg-black/40" onClick={e => { if (e.target === e.currentTarget) setSelected(null); }}>
-                <div className="h-full w-full max-w-xl overflow-y-auto bg-background p-6 shadow-2xl">
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="float-right text-2xl text-muted-foreground"
-                  >
-                    ×
-                  </button>
-                  <h2 className="mb-2 font-mono text-lg font-bold">{selected.ticket_number}</h2>
-                  <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">
-                    <Badge variant={statusVariant(selected.status)}>
-                      {STATUS_LABEL[selected.status] ?? selected.status}
-                    </Badge>
-                    <span className="text-muted-foreground">
-                      {selected.kind} · {(selected.priority || "p2").toUpperCase()}
-                    </span>
-                    {selected.resolver_agent && (
-                      <span className="text-muted-foreground">handled by {selected.resolver_agent}</span>
-                    )}
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    {selected.vitana_id && (
-                      <div>
-                        <span className="text-muted-foreground">Reporter:</span> {selected.vitana_id}
-                      </div>
-                    )}
-                    {selected.surface && (
-                      <div>
-                        <span className="text-muted-foreground">Surface:</span> {selected.surface}
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-muted-foreground">Created:</span>{" "}
-                      {new Date(selected.created_at).toLocaleString()}
-                    </div>
-                    {selected.resolved_at && (
-                      <div>
-                        <span className="text-muted-foreground">Resolved:</span>{" "}
-                        {new Date(selected.resolved_at).toLocaleString()}
-                      </div>
-                    )}
-                    {selected.user_confirmed_at && (
-                      <div>
-                        <span className="text-muted-foreground">Confirmed:</span>{" "}
-                        {new Date(selected.user_confirmed_at).toLocaleString()}
-                      </div>
-                    )}
-                  </div>
-                  <p className="mt-6 text-xs text-muted-foreground">
-                    Full transcript and intake messages are visible in the Command Hub Feedback Inbox.
-                    This admin view is summary-only by design — operator approves resolutions there.
-                  </p>
-                </div>
-              </div>
+            {/* VTID-02660: actionable ticket drawer — replaces the legacy
+                summary-only drawer. Full transcript + intake messages +
+                Activate/Reject buttons that drive the autopilot pipeline.
+                When the action succeeds the drawer closes and the ticket
+                drops out of the Active list (terminal status filter). */}
+            {selected && activeTenantId && (
+              <TicketActionDrawer
+                tenantId={activeTenantId}
+                ticketId={selected.id}
+                ticketNumber={selected.ticket_number}
+                onClose={() => setSelected(null)}
+              />
             )}
           </>
         )}
