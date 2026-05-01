@@ -75,7 +75,6 @@ import {
 } from "@/hooks/useGoogleConnect";
 import { GoogleConnectionVerifyDialog } from "@/components/settings/GoogleConnectionVerifyDialog";
 import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner";
-import { UnifiedGoogleConnectCard } from "@/components/settings/UnifiedGoogleConnectCard";
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
@@ -1782,10 +1781,6 @@ function ConnectedApps() {
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
         <SplitBarContent value="connected">
           <div className="space-y-8">
-            {/* Phase 3: one Google card with sub-service checkboxes — covers
-                Gmail / Calendar / Contacts / YouTube under a single consent. */}
-            <UnifiedGoogleConnectCard onManage={manageGoogle} />
-
             {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
