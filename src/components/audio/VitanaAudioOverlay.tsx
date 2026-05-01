@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
-import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
+// VTID-LIVEKIT-FOUNDATION: useOrbVoiceUnified picks Vertex or LiveKit at
+// runtime based on system_config['voice.active_provider']. Surface contract
+// matches useOrbVoiceClient — drop-in swap.
+import { useOrbVoiceUnified as useOrbVoiceClient } from '@/hooks/useOrbVoiceUnified';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
