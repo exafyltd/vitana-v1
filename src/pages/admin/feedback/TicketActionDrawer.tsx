@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
 
@@ -48,12 +49,26 @@ interface FullTicket {
   resolution_md: string | null;
   supervisor_notes: string | null;
   resolver_agent: string | null;
+  // VTID-02665: set by /activate when bug/ux_issue is dispatched through
+  // the dev autopilot. Drives "Already running in autopilot" UI hint.
+  linked_finding_id: string | null;
   screen_path: string | null;
   app_version: string | null;
   created_at: string;
   resolved_at: string | null;
   user_confirmed_at: string | null;
 }
+
+// VTID-02665: kinds the supervisor can pick from the reclassify dropdown.
+const KIND_OPTIONS: Array<{ value: string; label: string; description: string }> = [
+  { value: "bug",               label: "Bug",                 description: "Code defect — runs Devon spec → dev autopilot" },
+  { value: "ux_issue",          label: "UX issue",            description: "Visual / interaction defect — runs Devon → dev autopilot" },
+  { value: "support_question",  label: "Support question",    description: "User wants information — Sage drafts answer" },
+  { value: "marketplace_claim", label: "Marketplace claim",   description: "Refund / dispute — Atlas drafts resolution" },
+  { value: "account_issue",     label: "Account issue",       description: "Login / role / data — Mira drafts resolution" },
+  { value: "feedback",          label: "Feedback (no draft)", description: "Opinion / nice-to-have — straight to in_progress" },
+  { value: "feature_request",   label: "Feature request",     description: "New capability — straight to in_progress" },
+];
 
 // VTID-02664: per-kind labels for the supervisor flow. Drives the
 // Generate-button text + the draft preview heading + which field the
@@ -153,6 +168,39 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailQuery.data?.ticket?.id]);
 
+  // VTID-02665: re-classify a misclassified ticket. Lets the supervisor
+  // change kind (e.g. support_question → bug) which clears any existing
+  // draft and resets the ticket to triaged so /draft-spec runs against
+  // the correct resolver next.
+  const reclassify = useMutation({
+    mutationFn: async (kind: string) => {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/reclassify`,
+        { method: "PUT", body: JSON.stringify({ kind }) }
+      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+      return body as { kind: string; status: string };
+    },
+    onSuccess: async (r) => {
+      toast({
+        title: `${ticketNumber} reclassified`,
+        description: `Kind is now ${r.kind}. Generate the new draft when ready.`,
+      });
+      // Clear local instructions textarea so the supervisor starts fresh.
+      setSupervisorInstructions("");
+      await queryClient.invalidateQueries({ queryKey });
+      await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
+    },
+    onError: (err: unknown) => {
+      const raw = err instanceof Error ? err.message : "Try again.";
+      const friendly = raw === "ALREADY_DISPATCHED"
+        ? "This ticket is already running in dev autopilot. Reclassify is locked once dispatched."
+        : raw;
+      toast({ title: "Reclassify failed", description: friendly, variant: "destructive" });
+    },
+  });
+
   const generateSpec = useMutation({
     mutationFn: async () => {
       const res = await communityFetch(
@@ -191,13 +239,36 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       );
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
-      return body as { from: string; to: string; action: string };
+      return body as {
+        from: string;
+        to: string;
+        action: string;
+        // VTID-02665: when /activate dispatches a bug/ux_issue ticket
+        // through the dev autopilot, the gateway returns the resulting
+        // recommendation_id + execution_id (or skipped/error).
+        dispatch?: {
+          recommendation_id?: string;
+          execution_id?: string;
+          skipped?: string;
+          error?: string;
+        } | null;
+      };
     },
     onSuccess: async (r) => {
+      const dispatched = r.dispatch?.execution_id
+        ? ` Dev autopilot is running execution ${r.dispatch.execution_id.slice(0, 8)}.`
+        : r.dispatch?.skipped === "already_linked"
+          ? " Already running in dev autopilot."
+          : r.dispatch?.error
+            ? ` (Dispatch failed: ${r.dispatch.error})`
+            : "";
       toast({
         title: `${ticketNumber} activated`,
-        description: `${r.from} → ${r.to}${r.action ? ` (${r.action})` : ""}. The ticket leaves the active list.`,
+        description: `${r.from} → ${r.to}${r.action ? ` (${r.action})` : ""}.${dispatched} The ticket leaves the active list.`,
       });
+      // VTID-02665: re-fetch the ticket detail (now with linked_finding_id)
+      // before closing so the parent list can show the dispatch state.
+      await queryClient.invalidateQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
       onClose();
     },
@@ -248,7 +319,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -311,6 +382,60 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <span className="ml-auto font-mono text-xs text-muted-foreground">{t.vitana_id}</span>
         )}
       </div>
+
+      {/* VTID-02665: dispatch indicator. If this ticket has already been
+          handed to the dev autopilot, surface it loud so the supervisor
+          can follow the run. */}
+      {t.linked_finding_id && (
+        <Card className="flex items-center gap-3 border-primary/40 bg-primary/10 p-3 text-sm">
+          <span className="text-2xl">⚙️</span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold">Running in dev autopilot</div>
+            <div className="text-xs text-muted-foreground">
+              Recommendation <code className="text-[10px]">{t.linked_finding_id.slice(0, 8)}</code> — Claude is working on the spec, then a PR will open and CI / deploy will run automatically. Reclassify is locked.
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* VTID-02665: kind reclassify dropdown. The classifier is wrong
+          sometimes (e.g. a bug report ends up as support_question). Lets
+          the supervisor pick the right resolver before drafting. Locked
+          once the ticket is dispatched to dev autopilot. */}
+      {!isTerminal && !t.linked_finding_id && (
+        <Card className="flex flex-col gap-2 p-3">
+          <div className="flex items-center justify-between gap-2">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Kind</div>
+              <div className="text-sm">{KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind}</div>
+            </div>
+            <Select
+              disabled={isBusy}
+              value={t.kind}
+              onValueChange={(value) => {
+                if (value !== t.kind) reclassify.mutate(value);
+              }}
+            >
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Reclassify…" />
+              </SelectTrigger>
+              <SelectContent>
+                {KIND_OPTIONS.map(opt => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{opt.label}</span>
+                      <span className="text-[11px] text-muted-foreground">{opt.description}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {reclassify.isPending && (
+            <p className="text-xs text-muted-foreground">Reclassifying — this clears any existing draft.</p>
+          )}
+        </Card>
+      )}
 
       {/* VTID-02664: 3-step supervisor action panel. Step 1 instructions
           (optional but encouraged), step 2 generate via the right resolver,
