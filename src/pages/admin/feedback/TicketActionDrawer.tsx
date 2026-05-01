@@ -1,17 +1,25 @@
 // VTID-02660: actionable ticket drawer for the tenant admin Feedback page.
+// VTID-02664: split into a 3-step supervisor flow — write instructions,
+// generate spec via AI, then activate. The supervisor is the domain expert;
+// their instructions are higher-priority than the user's report when the
+// LLM drafts the spec/answer/resolution.
 //
-// Replaces the previous summary-only drawer. Shows the full transcript,
-// per-turn intake messages with agent attribution, classifier metadata,
-// handoff timeline, and — critically — Activate / Reject buttons that
-// drive the ticket through the autopilot pipeline.
+// Flow:
+//   Step 1 — supervisor types optional instructions in a textarea
+//   Step 2 — "Generate spec / answer / resolution" button → /draft-spec
+//             (LLM call ~10-30s; markdown shown in preview)
+//   Step 3 — supervisor reads the draft, optionally re-generates with
+//             revised instructions, then clicks "Activate" → /activate
+//             advances spec_ready → in_progress (or answer_ready → resolved)
 //
-// Once acted upon, the ticket transitions to a terminal status and
-// disappears from the active list (the parent's filter excludes terminal
-// statuses by default), so the supervisor's view stays clean.
+// Once activated, the ticket transitions to a terminal/in-progress status
+// and disappears from the active list.
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
 
@@ -38,6 +46,7 @@ interface FullTicket {
   spec_md: string | null;
   draft_answer_md: string | null;
   resolution_md: string | null;
+  supervisor_notes: string | null;
   resolver_agent: string | null;
   screen_path: string | null;
   app_version: string | null;
@@ -45,6 +54,22 @@ interface FullTicket {
   resolved_at: string | null;
   user_confirmed_at: string | null;
 }
+
+// VTID-02664: per-kind labels for the supervisor flow. Drives the
+// Generate-button text + the draft preview heading + which field the
+// drawer reads to know whether a draft already exists.
+const RESOLVER_BY_KIND: Record<string, {
+  resolver: string;
+  draftField: "spec_md" | "draft_answer_md" | "resolution_md";
+  generateLabel: string;
+  draftLabel: string;
+}> = {
+  support_question:  { resolver: "sage",  draftField: "draft_answer_md", generateLabel: "Generate answer (Sage)",      draftLabel: "Sage's draft answer" },
+  bug:               { resolver: "devon", draftField: "spec_md",         generateLabel: "Generate spec (Devon)",       draftLabel: "Devon's spec" },
+  ux_issue:          { resolver: "devon", draftField: "spec_md",         generateLabel: "Generate spec (Devon)",       draftLabel: "Devon's spec" },
+  marketplace_claim: { resolver: "atlas", draftField: "resolution_md",   generateLabel: "Generate resolution (Atlas)", draftLabel: "Atlas's resolution" },
+  account_issue:     { resolver: "mira",  draftField: "resolution_md",   generateLabel: "Generate resolution (Mira)",  draftLabel: "Mira's resolution" },
+};
 
 interface Handoff {
   id: string;
@@ -118,6 +143,46 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     enabled: !!tenantId && !!ticketId,
   });
 
+  // VTID-02664: supervisor instructions — local state, seeded from the
+  // ticket's existing supervisor_notes once the detail loads so the
+  // supervisor can iterate on a previous draft.
+  const [supervisorInstructions, setSupervisorInstructions] = useState("");
+  useEffect(() => {
+    const seed = detailQuery.data?.ticket?.supervisor_notes;
+    if (seed && !supervisorInstructions) setSupervisorInstructions(seed);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detailQuery.data?.ticket?.id]);
+
+  const generateSpec = useMutation({
+    mutationFn: async () => {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/draft-spec`,
+        {
+          method: "POST",
+          body: JSON.stringify({ supervisor_instructions: supervisorInstructions.trim() || null }),
+        }
+      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+      return body as { resolver_agent: string; status: string; provider: string };
+    },
+    onSuccess: async (r) => {
+      toast({
+        title: `${ticketNumber} drafted by ${r.resolver_agent}`,
+        description: `Now ${r.status}. Review the draft below, then Activate to advance.${r.provider === "fallback" ? " (LLM unavailable — placeholder shown.)" : ""}`,
+      });
+      await queryClient.invalidateQueries({ queryKey });
+      await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
+    },
+    onError: (err: unknown) => {
+      toast({
+        title: "Generate spec failed",
+        description: err instanceof Error ? err.message : "Try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const activate = useMutation({
     mutationFn: async () => {
       const res = await communityFetch(
@@ -137,9 +202,13 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       onClose();
     },
     onError: (err: unknown) => {
+      const raw = err instanceof Error ? err.message : "Try again.";
+      const friendly = raw === "DRAFT_REQUIRED"
+        ? "Generate a draft first — write your instructions and click Generate."
+        : raw;
       toast({
         title: "Activate failed",
-        description: err instanceof Error ? err.message : "Try again.",
+        description: friendly,
         variant: "destructive",
       });
     },
@@ -179,7 +248,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -243,48 +312,129 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         )}
       </div>
 
-      {/* Action bar — the whole point of this drawer */}
-      {!isTerminal && (
-        <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
-          <div>
-            <div className="text-sm font-semibold">What do you want to do with this ticket?</div>
-            <p className="text-xs text-muted-foreground">
-              <strong>Activate</strong> drafts a fix spec / answer / resolution if not yet drafted, then advances to{" "}
-              <em>in progress</em> (or <em>resolved</em> for support questions). Autopilot picks up from there.{" "}
-              <strong>Reject</strong> closes the ticket without action.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              onClick={() => activate.mutate()}
-              disabled={activate.isPending || reject.isPending}
-            >
-              {activate.isPending ? "Activating…" : "Activate"}
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleReject}
-              disabled={activate.isPending || reject.isPending}
-            >
-              Reject
-            </Button>
-          </div>
-          {/* VTID-02659: visible progress strip — Activate calls the LLM
-              router to draft a fix spec / answer / resolution, which can
-              take 10–30s. Without this hint the button looks frozen. */}
-          {activate.isPending && (
-            <div className="flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
-              <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-              <span>
-                Drafting via specialist resolver — this can take up to 30 seconds.
-                Safe to leave the drawer open.
-              </span>
+      {/* VTID-02664: 3-step supervisor action panel. Step 1 instructions
+          (optional but encouraged), step 2 generate via the right resolver,
+          step 3 activate once the supervisor approves the draft. */}
+      {!isTerminal && (() => {
+        const cfg = RESOLVER_BY_KIND[t.kind];
+        const draftKindHasResolver = !!cfg;
+        const existingDraft = cfg ? (t[cfg.draftField] ?? null) : null;
+        const hasDraft = !!existingDraft;
+        const draftReadyStatus = ["spec_ready", "answer_ready"].includes(t.status);
+        const canActivate = draftReadyStatus || ["in_progress"].includes(t.status) || !draftKindHasResolver;
+        return (
+          <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
+            <div>
+              <div className="text-sm font-semibold">Process this ticket</div>
+              <p className="text-xs text-muted-foreground">
+                You're the domain expert. Add your instructions below — they take priority over the user's words when the AI drafts the {cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item"}. Then generate, review, and activate.
+              </p>
             </div>
-          )}
-        </Card>
-      )}
+
+            {/* Step 1 — supervisor instructions */}
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                1. Your instructions <span className="font-normal normal-case opacity-70">(takes priority over the user's report)</span>
+              </label>
+              <Textarea
+                value={supervisorInstructions}
+                onChange={(e) => setSupervisorInstructions(e.target.value)}
+                placeholder={
+                  cfg?.resolver === "devon"
+                    ? "e.g. The real bug is the SSE reconnect logic; user is seeing the symptom but the root cause is in orb-live.ts. Touch only the reconnect bucket. Add a unit test for the single-utterance case."
+                    : cfg?.resolver === "sage"
+                      ? "e.g. Answer should mention the new beta opt-in flow on /settings, not the legacy toggle."
+                      : cfg?.resolver === "atlas"
+                        ? "e.g. This claim is borderline-fraud — start with eligibility check, hold any refund pending operator review."
+                        : cfg?.resolver === "mira"
+                          ? "e.g. Verify the user's email first; the role corruption is likely a stale OAuth claim, not a DB issue."
+                          : "Your direction for the work item."
+                }
+                rows={4}
+                disabled={isBusy}
+                className="text-sm"
+              />
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Persisted as <code>supervisor_notes</code>. Saved with the next Generate.
+              </p>
+            </div>
+
+            {/* Step 2 — generate via resolver */}
+            {draftKindHasResolver && (
+              <div>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  2. {hasDraft ? "Re-generate" : "Generate"} the draft
+                </label>
+                <Button
+                  size="sm"
+                  variant={hasDraft ? "outline" : "default"}
+                  onClick={() => generateSpec.mutate()}
+                  disabled={isBusy}
+                >
+                  {generateSpec.isPending
+                    ? "Drafting…"
+                    : hasDraft
+                      ? `Re-generate with ${cfg!.resolver}`
+                      : cfg!.generateLabel}
+                </Button>
+                {generateSpec.isPending && (
+                  <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
+                    <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                    <span>
+                      AI is drafting via {cfg!.resolver} — this can take up to 30 seconds. Safe to leave the drawer open.
+                    </span>
+                  </div>
+                )}
+                {hasDraft && !generateSpec.isPending && (
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    A draft already exists below. Edit your instructions and click Re-generate to replace it.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Step 3 — activate (gated on draft existing for kinds with a resolver) */}
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {draftKindHasResolver ? "3. " : ""}Activate or reject
+              </label>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => activate.mutate()}
+                  disabled={isBusy || (draftKindHasResolver && !canActivate)}
+                  title={
+                    draftKindHasResolver && !canActivate
+                      ? "Generate a draft first."
+                      : "Advance the ticket to the next stage."
+                  }
+                >
+                  {activate.isPending ? "Activating…" : "Activate"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleReject}
+                  disabled={isBusy}
+                >
+                  Reject
+                </Button>
+              </div>
+              {draftKindHasResolver && !canActivate && (
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Activate is disabled until the draft is generated.
+                </p>
+              )}
+              {activate.isPending && (
+                <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
+                  <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  <span>Advancing the ticket — almost done.</span>
+                </div>
+              )}
+            </div>
+          </Card>
+        );
+      })()}
       {isTerminal && (
         <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">
           This ticket is in a terminal state ({STATUS_LABEL[t.status] ?? t.status}). No further action available.
