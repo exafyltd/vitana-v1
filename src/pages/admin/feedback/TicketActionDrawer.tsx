@@ -213,13 +213,35 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
   }
 
   const status = execution.status;
-  const isFailed = status === "failed";
+  // VTID-02678: 'failed' and 'failed_escalated' are both terminal-failure
+  // states. Treat them the same in the UI.
+  const isFailed = status === "failed" || status === "failed_escalated";
   const isCompleted = status === "completed";
   const failedAt = execution.failure_stage ?? null;
-  const idxNow = stageIndex(status);
+  // Don't index against PIPELINE_STAGES with a non-stage value like "failed"
+  // — fall back to the deepest stage we've seen evidence of.
+  const failedStageIdx = failedAt ? PIPELINE_STAGES.findIndex(s => s.key === failedAt) : -1;
+  const idxNow = isFailed
+    ? (failedStageIdx >= 0 ? failedStageIdx : 1) // assume at least past Queued
+    : stageIndex(status);
   const pctNow = isFailed
-    ? (PIPELINE_STAGES.find(s => s.key === failedAt)?.pct ?? PIPELINE_STAGES[idxNow].pct)
+    ? (failedStageIdx >= 0 ? PIPELINE_STAGES[failedStageIdx].pct : 30)
     : PIPELINE_STAGES[idxNow].pct;
+  // Human-readable label for where the run died.
+  const STAGE_FAIL_LABEL: Record<string, string> = {
+    cooling: 'before it could start',
+    running: 'while writing the code',
+    ci: 'in CI (tests / typecheck)',
+    merging: 'while merging',
+    deploying: 'during deploy',
+    verifying: 'during post-deploy verification',
+    plan_gen: 'while generating the plan',
+    approve_safety: 'at the safety gate',
+  };
+  const failureCopy = isFailed
+    ? (failedAt && STAGE_FAIL_LABEL[failedAt])
+      || (failedAt && failedAt !== 'failed' ? `at ${failedAt}` : '')
+    : '';
 
   const barClass = isFailed
     ? "bg-red-500"
@@ -248,11 +270,16 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           <div className="font-semibold flex items-center gap-2 flex-wrap">
             <span>
               {isFailed
-                ? `Failed at ${failedAt ?? status}`
+                ? (failureCopy ? `Run failed ${failureCopy}` : 'Run failed')
                 : isCompleted
                   ? "Completed — deployed to production"
                   : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
             </span>
+            {isFailed && (
+              <span className="rounded-full bg-red-500/10 text-red-700 dark:text-red-300 text-[10px] px-2 py-0.5 font-normal border border-red-500/30">
+                Click Activate to retry
+              </span>
+            )}
             {isCompleted && playwrightVerified && (
               <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">
                 ✓ Visually verified
@@ -284,7 +311,14 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
         {PIPELINE_STAGES.map((stage, i) => {
           const passed = i < idxNow;
           const active = i === idxNow && !isFailed;
-          const failedHere = isFailed && stage.key === failedAt;
+          // VTID-02678: when failedAt isn't a known stage key (e.g. "failed"),
+          // mark the deepest known stage as the failure point so the chip
+          // row isn't all-empty-circles.
+          const failedHere = isFailed && (
+            (failedAt && stage.key === failedAt) ||
+            (!failedAt && i === idxNow) ||
+            (failedAt && failedStageIdx === -1 && i === idxNow)
+          );
           const tone = failedHere
             ? "bg-red-500 text-white border-transparent"
             : passed || (isCompleted && i <= idxNow)
@@ -658,7 +692,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         const existingDraft = cfg ? (t[cfg.draftField] ?? null) : null;
         const hasDraft = !!existingDraft;
         const draftReadyStatus = ["spec_ready", "answer_ready"].includes(t.status);
-        const canActivate = draftReadyStatus || !draftKindHasResolver;
+        // VTID-02678: enable Activate from needs_more_info / reopened too —
+        // the spec already exists from the prior failed run; this is a
+        // one-click retry path without forcing a re-generate.
+        const isRetryable = ["needs_more_info", "reopened"].includes(t.status) && hasDraft;
+        const canActivate = draftReadyStatus || isRetryable || !draftKindHasResolver;
         return (
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
@@ -746,7 +784,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                       : "Advance the ticket to the next stage."
                   }
                 >
-                  {activate.isPending ? "Activating…" : "Activate"}
+                  {activate.isPending
+                    ? "Activating…"
+                    : isRetryable
+                      ? "Retry autopilot"
+                      : "Activate"}
                 </Button>
                 <Button
                   size="sm"
