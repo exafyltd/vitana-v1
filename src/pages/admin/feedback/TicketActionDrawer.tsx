@@ -52,6 +52,9 @@ interface FullTicket {
   // VTID-02665: set by /activate when bug/ux_issue is dispatched through
   // the dev autopilot. Drives "Already running in autopilot" UI hint.
   linked_finding_id: string | null;
+  // VTID-02669: stamped by feedback-completion-reconciler when the
+  // post-deploy visual verification (Playwright/screenshot) ran clean.
+  playwright_verified?: boolean | null;
   screen_path: string | null;
   app_version: string | null;
   created_at: string;
@@ -180,9 +183,13 @@ interface PipelineProgressProps {
     completed_at: string | null;
   } | null);
   findingId: string;
+  // VTID-02669: when feedback-completion-reconciler stamped the ticket
+  // playwright_verified=true (visual verification ran clean post-deploy),
+  // the Completed chip gets a green "✓ Visually verified" suffix.
+  playwrightVerified?: boolean;
 }
 
-function PipelineProgress({ execution, findingId }: PipelineProgressProps) {
+function PipelineProgress({ execution, findingId, playwrightVerified }: PipelineProgressProps) {
   // Pre-execution state — the autopilot finding exists but the execution
   // row hasn't been claimed yet (typically <30s after Activate). Show a
   // queued indicator so the supervisor knows we're waiting.
@@ -238,12 +245,19 @@ function PipelineProgress({ execution, findingId }: PipelineProgressProps) {
           {isFailed ? "⚠️" : isCompleted ? "✅" : "⚙️"}
         </span>
         <div className="flex-1 min-w-0">
-          <div className="font-semibold">
-            {isFailed
-              ? `Failed at ${failedAt ?? status}`
-              : isCompleted
-                ? "Completed — deployed to production"
-                : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
+          <div className="font-semibold flex items-center gap-2 flex-wrap">
+            <span>
+              {isFailed
+                ? `Failed at ${failedAt ?? status}`
+                : isCompleted
+                  ? "Completed — deployed to production"
+                  : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
+            </span>
+            {isCompleted && playwrightVerified && (
+              <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">
+                ✓ Visually verified
+              </span>
+            )}
           </div>
           <div className="text-xs text-muted-foreground">
             Execution <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
@@ -380,41 +394,18 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
   });
 
-  // VTID-02667: stranded-ticket recovery. Calls the gateway's manual
-  // /dispatch endpoint to bridge an in_progress bug/ux_issue ticket
-  // through to the dev autopilot when the activate-time bridge didn't
-  // fire (e.g. activated before VTID-02665 deployed).
-  const dispatchToAutopilot = useMutation({
-    mutationFn: async () => {
-      const res = await communityFetch(
-        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/dispatch`,
-        { method: "POST" }
-      );
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
-      return body as { recommendation_id: string; execution_id?: string; skipped?: string };
-    },
-    onSuccess: async (r) => {
-      toast({
-        title: `${ticketNumber} dispatched`,
-        description: r.execution_id
-          ? `Dev autopilot is running execution ${r.execution_id.slice(0, 8)}.`
-          : "Sent to dev autopilot.",
-      });
-      await queryClient.invalidateQueries({ queryKey });
-      await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
-    },
-    onError: (err: unknown) => {
-      toast({
-        title: "Dispatch failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  // VTID-02669: standalone Dispatch removed. Activate is the last human
+  // touch — the backend dispatches atomically inside /activate; if the
+  // safety gate rejects, /activate returns 409 with violations[] and the
+  // ticket stays at spec_ready (no stranded state to recover from).
+
+  // VTID-02669: violations surfaced inline when /activate is rejected by
+  // the dispatch pre-flight or safety gate. Cleared on next user action.
+  const [activateViolations, setActivateViolations] = useState<Array<{ code: string; message: string }> | null>(null);
 
   const generateSpec = useMutation({
     mutationFn: async () => {
+      setActivateViolations(null);
       const res = await communityFetch(
         `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/draft-spec`,
         {
@@ -443,57 +434,61 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     },
   });
 
+  // VTID-02669: Activate is the last human touch. The backend dispatches
+  // atomically inside /activate. On 409 with violations, we surface them
+  // inline (not as a toast) so the supervisor can read & revise.
   const activate = useMutation({
     mutationFn: async () => {
+      setActivateViolations(null);
       const res = await communityFetch(
         `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/activate`,
         { method: "POST" }
       );
       const body = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+      if (!res.ok) {
+        const e = body as { error?: string; message?: string; violations?: Array<{ code: string; message: string }> };
+        const err: Error & { violations?: typeof e.violations } = new Error(e.error ?? `HTTP ${res.status}`);
+        err.violations = e.violations ?? undefined;
+        throw err;
+      }
       return body as {
         from: string;
         to: string;
         action: string;
-        // VTID-02665: when /activate dispatches a bug/ux_issue ticket
-        // through the dev autopilot, the gateway returns the resulting
-        // recommendation_id + execution_id (or skipped/error).
         dispatch?: {
           recommendation_id?: string;
           execution_id?: string;
           skipped?: string;
-          error?: string;
         } | null;
       };
     },
     onSuccess: async (r) => {
       const dispatched = r.dispatch?.execution_id
-        ? ` Dev autopilot is running execution ${r.dispatch.execution_id.slice(0, 8)}.`
-        : r.dispatch?.skipped === "already_linked"
-          ? " Already running in dev autopilot."
-          : r.dispatch?.error
-            ? ` (Dispatch failed: ${r.dispatch.error})`
-            : "";
+        ? ` Dev autopilot is running execution ${r.dispatch.execution_id.slice(0, 8)} — autonomous from here.`
+        : "";
       toast({
         title: `${ticketNumber} activated`,
-        description: `${r.from} → ${r.to}${r.action ? ` (${r.action})` : ""}.${dispatched} The ticket leaves the active list.`,
+        description: `${r.from} → ${r.to}.${dispatched}`,
       });
-      // VTID-02665: re-fetch the ticket detail (now with linked_finding_id)
-      // before closing so the parent list can show the dispatch state.
       await queryClient.invalidateQueries({ queryKey });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
-      onClose();
+      // Don't auto-close — the drawer should now show the live progress
+      // bar so the supervisor can watch the run kick off.
     },
     onError: (err: unknown) => {
-      const raw = err instanceof Error ? err.message : "Try again.";
+      const e = err as Error & { violations?: Array<{ code: string; message: string }> };
+      if (e.violations && e.violations.length > 0) {
+        // Show structured violations inline; no toast spam.
+        setActivateViolations(e.violations);
+        return;
+      }
+      const raw = e.message ?? "Try again.";
       const friendly = raw === "DRAFT_REQUIRED"
         ? "Generate a draft first — write your instructions and click Generate."
-        : raw;
-      toast({
-        title: "Activate failed",
-        description: friendly,
-        variant: "destructive",
-      });
+        : raw === "ALREADY_IN_PROGRESS"
+          ? "This ticket is already running. The autopilot will close it when done."
+          : raw;
+      toast({ title: "Activate failed", description: friendly, variant: "destructive" });
     },
   });
 
@@ -531,7 +526,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending || dispatchToAutopilot.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -605,45 +600,20 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         <PipelineProgress
           execution={detailQuery.data?.execution ?? null}
           findingId={t.linked_finding_id}
+          playwrightVerified={!!t.playwright_verified}
         />
       )}
 
-      {/* VTID-02667: stranded-ticket recovery. Some tickets reach
-          status=in_progress without ever being dispatched (activated
-          before the bridge deployed, or a transient bridge error). Show
-          a one-click recovery button so the supervisor doesn't have to
-          re-classify or re-generate. */}
-      {!t.linked_finding_id
-        && t.status === "in_progress"
-        && (t.kind === "bug" || t.kind === "ux_issue")
-        && t.spec_md && (
-          <Card className="flex flex-col gap-2 border-amber-500/40 bg-amber-500/5 p-3 text-sm">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">⚠️</span>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold">Not yet dispatched to dev autopilot</div>
-                <div className="text-xs text-muted-foreground">
-                  This ticket is in progress but never made it to the executor. Click below to send it now — Devon's spec is already drafted.
-                </div>
-              </div>
-            </div>
-            <div>
-              <Button
-                size="sm"
-                disabled={isBusy || dispatchToAutopilot.isPending}
-                onClick={() => dispatchToAutopilot.mutate()}
-              >
-                {dispatchToAutopilot.isPending ? "Dispatching…" : "Dispatch to dev autopilot"}
-              </Button>
-            </div>
-          </Card>
-      )}
+      {/* VTID-02669: stranded-ticket recovery card REMOVED. Activate is
+          now atomic — a ticket cannot land at in_progress without
+          linked_finding_id. Recovery for any pre-Phase-7 stranded ticket
+          is via the one-off SQL fixup that resets it to spec_ready. */}
 
-      {/* VTID-02665: kind reclassify dropdown. The classifier is wrong
-          sometimes (e.g. a bug report ends up as support_question). Lets
-          the supervisor pick the right resolver before drafting. Locked
-          once the ticket is dispatched to dev autopilot. */}
-      {!isTerminal && !t.linked_finding_id && (
+      {/* VTID-02665 / VTID-02669: kind reclassify dropdown. Visible only
+          when the supervisor still has a meaningful choice — i.e. before
+          the ticket has been activated. Hidden on in_progress (activate
+          is the last touch) and on dispatched (linked_finding_id set). */}
+      {!isTerminal && !t.linked_finding_id && t.status !== "in_progress" && (
         <Card className="flex flex-col gap-2 p-3">
           <div className="flex items-center justify-between gap-2">
             <div>
@@ -678,16 +648,17 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         </Card>
       )}
 
-      {/* VTID-02664: 3-step supervisor action panel. Step 1 instructions
-          (optional but encouraged), step 2 generate via the right resolver,
-          step 3 activate once the supervisor approves the draft. */}
-      {!isTerminal && (() => {
+      {/* VTID-02664 / VTID-02669: 3-step supervisor action panel. Step 1
+          instructions, step 2 Generate, step 3 Activate. Hidden once the
+          ticket is in_progress or terminal — Activate is the last human
+          touch, the rest is autonomous. */}
+      {!isTerminal && t.status !== "in_progress" && (() => {
         const cfg = RESOLVER_BY_KIND[t.kind];
         const draftKindHasResolver = !!cfg;
         const existingDraft = cfg ? (t[cfg.draftField] ?? null) : null;
         const hasDraft = !!existingDraft;
         const draftReadyStatus = ["spec_ready", "answer_ready"].includes(t.status);
-        const canActivate = draftReadyStatus || ["in_progress"].includes(t.status) || !draftKindHasResolver;
+        const canActivate = draftReadyStatus || !draftKindHasResolver;
         return (
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
@@ -794,7 +765,25 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               {activate.isPending && (
                 <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  <span>Advancing the ticket — almost done.</span>
+                  <span>Activating + dispatching to dev autopilot — atomic, takes a few seconds.</span>
+                </div>
+              )}
+              {/* VTID-02669: violations from /activate 409. Surfaces pre-flight
+                  scope hits, safety-gate rejections, etc. inline so the
+                  supervisor can revise + Re-generate without leaving Step 3. */}
+              {activateViolations && activateViolations.length > 0 && (
+                <div className="mt-3 rounded border border-red-500/40 bg-red-500/5 p-3 text-xs">
+                  <div className="mb-1 font-semibold text-red-700 dark:text-red-300">
+                    Activate blocked. Revise the spec and Re-generate.
+                  </div>
+                  <ul className="ml-4 list-disc space-y-1 text-foreground/80">
+                    {activateViolations.map((v, i) => (
+                      <li key={i}>
+                        <span className="font-mono text-[10px] uppercase opacity-70">{v.code}</span>{" "}
+                        {v.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
