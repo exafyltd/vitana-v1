@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
-// VTID-LIVEKIT-FOUNDATION: useOrbVoiceUnified picks Vertex or LiveKit at
-// runtime based on system_config['voice.active_provider']. Surface contract
-// matches useOrbVoiceClient — drop-in swap.
-import { useOrbVoiceUnified as useOrbVoiceClient } from '@/hooks/useOrbVoiceUnified';
+// VTID-02695: ROLLBACK of useOrbVoiceUnified wire-up — useLiveKitVoice's
+// livekit-client import was crashing the overlay on iOS WebView and the
+// production ORB disappeared from mobile. Reverting to the original
+// Vertex-only useOrbVoiceClient until the LiveKit hook is hardened
+// (lazy-loaded SDK / try/catch around imports / WebRTC capability gate).
+import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
