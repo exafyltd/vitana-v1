@@ -237,7 +237,7 @@ export const useVertexLive = () => {
           }
           
           if (elapsed > 15000) {
-            throw new Error('Connection timeout starting audio. Please check your internet connection and try again.');
+            throw new Error('Connection timed out while starting audio. Tap to retry.');
           }
         }
       }
