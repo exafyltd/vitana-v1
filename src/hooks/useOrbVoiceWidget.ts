@@ -158,9 +158,15 @@ export function useOrbVoiceWidget() {
       const orb = (window as any).VitanaOrb;
       if (!orb) return false;
 
-      // If we think we're initialized but the widget was destroyed externally, reset
+      // VTID-02720: If the FAB DOM was torn down externally (route change,
+      // layout reflow, framework remount) while we still think the widget is
+      // initialized, the underlying mic stream + SSE + AudioContext on the
+      // VitanaOrb global are still live — just invisible. The user perceives
+      // "orb closed but still listening". Call destroy() before reinit so the
+      // session is actually stopped, then re-init cleanly.
       if (initialized.current && !isOrbAlive()) {
-        console.log("[ORB] Widget was destroyed externally, resetting state");
+        console.log("[ORB] Widget DOM destroyed externally — tearing down stale session before reinit");
+        try { orb.destroy(); } catch (e) { /* widget may already be partially gone */ }
         initialized.current = false;
       }
 
