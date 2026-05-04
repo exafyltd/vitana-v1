@@ -12,7 +12,15 @@
  * gesture (click/tap handler) — before any await — otherwise iOS Safari will
  * refuse to play audio. preloadInstantGreeting() can run any time to warm the
  * buffer cache for a faster first playback.
+ *
+ * VTID-02680: this module shares the same AudioContext as the ORB voice
+ * pipeline (`getOrCreateUnlockedAudioContext()` in `iosAudioUnlock.ts`). Owning
+ * a separate context here was the iOS-only failure mode where the instant
+ * greeting played into a context that was never unlocked inside a user
+ * gesture, so it was silent on Safari/WKWebView while the Gemini chunks that
+ * came later played fine through the unlocked shared context.
  */
+import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
 
 type InstantLang = 'en' | 'de';
 
@@ -28,24 +36,10 @@ const FILE_URL: Record<InstantLang, string> = {
 
 const bufferCache = new Map<InstantLang, AudioBuffer>();
 const preloadInFlight = new Map<InstantLang, Promise<void>>();
-let sharedCtx: AudioContext | null = null;
 
 function normalizeLang(lang: string | undefined | null): InstantLang {
   const base = (lang || 'en').split('-')[0].toLowerCase();
   return base === 'de' ? 'de' : 'en';
-}
-
-function getContext(): AudioContext | null {
-  try {
-    if (!sharedCtx || (sharedCtx as any).state === 'closed') {
-      const Ctx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!Ctx) return null;
-      sharedCtx = new Ctx();
-    }
-    return sharedCtx;
-  } catch {
-    return null;
-  }
 }
 
 export async function preloadInstantGreeting(lang: string): Promise<void> {
@@ -59,7 +53,7 @@ export async function preloadInstantGreeting(lang: string): Promise<void> {
       const res = await fetch(FILE_URL[l], { cache: 'force-cache' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const arr = await res.arrayBuffer();
-      const ctx = getContext();
+      const ctx = getOrCreateUnlockedAudioContext();
       if (!ctx) return;
       const buf = await ctx.decodeAudioData(arr.slice(0));
       bufferCache.set(l, buf);
@@ -77,7 +71,10 @@ export async function preloadInstantGreeting(lang: string): Promise<void> {
 
 export function playInstantGreeting(lang: string): void {
   const l = normalizeLang(lang);
-  const ctx = getContext();
+  // Pull the SHARED context that was unlocked in the live tap gesture by
+  // useOrbVoiceClient.connect() before this call. Owning our own context here
+  // was the iOS-only regression source — that context never saw a gesture.
+  const ctx = getOrCreateUnlockedAudioContext();
   const cached = bufferCache.get(l);
 
   if (cached && ctx) {
@@ -89,7 +86,7 @@ export function playInstantGreeting(lang: string): void {
       src.buffer = cached;
       src.connect(ctx.destination);
       src.start(0);
-      console.log(`[instantGreeting] Played file ${l}, duration=${cached.duration.toFixed(2)}s`);
+      console.log(`[instantGreeting] Played file ${l}, duration=${cached.duration.toFixed(2)}s, ctx=${(ctx as any).state}`);
       return;
     } catch (e) {
       console.warn(`[instantGreeting] File playback failed for ${l}, falling back:`, e);
