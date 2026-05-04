@@ -1,13 +1,17 @@
 /**
  * VTID-02601 — Reminders list page.
  *
- * - Upcoming + Recent sections
- * - Per-row red trash (single-click + AlertDialog confirm)
- * - "Delete all" link (AlertDialog with count)
- * - "+ New reminder" modal with action_text + datetime-local picker
+ * Layered model:
+ *   1. Suggested by Vitana — created_via='system' (Autopilot-driven; placeholder
+ *      until the autopilot-worker starts populating these).
+ *   2. Scheduled by you — created_via in ('voice','ui'), still pending/dispatching.
+ *   3. Recent — any origin, fired/completed/cancelled (last 30).
  *
- * Aligns with the plan: simple, fast surface for users who want to manage
- * their reminders. Voice path via ORB stays the primary creation flow.
+ * Voice (ORB) is the primary creation path. Manual "Add" is available as a
+ * de-emphasized ghost-button — present, not promoted.
+ *
+ * Filter modes (?filter=upcoming|completed|missed) bypass the layered grouping
+ * and render a single titled section. See PR #347 for filter details.
  */
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -37,7 +41,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Bell, Check, Plus, Trash2 } from "lucide-react";
+import { Bell, Check, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 function formatTime(iso: string): string {
@@ -62,10 +66,19 @@ function isoLocalNow(plusMinutes = 5): string {
 }
 
 const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderRow) => void; onComplete: (r: ReminderRow) => void }> = ({ reminder, onDelete, onComplete }) => {
+  const isSystem = reminder.created_via === "system";
   return (
     <div className="flex items-center justify-between gap-3 p-3 rounded-lg border bg-card">
       <div className="min-w-0 flex-1">
-        <div className="font-medium truncate">{reminder.action_text}</div>
+        <div className="flex items-center gap-2">
+          <div className="font-medium truncate">{reminder.action_text}</div>
+          {isSystem ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+              <Sparkles className="h-3 w-3" />
+              Vitana
+            </span>
+          ) : null}
+        </div>
         <div className="text-sm text-muted-foreground">{formatTime(reminder.next_fire_at)}</div>
         {reminder.description ? (
           <div className="text-xs text-muted-foreground mt-1 truncate">{reminder.description}</div>
@@ -121,6 +134,16 @@ const Reminders: React.FC = () => {
         .filter((r) => r.status === "pending" || r.status === "dispatching")
         .sort((a, b) => a.next_fire_at.localeCompare(b.next_fire_at)),
     [list],
+  );
+  // Split the active queue by origin so the UI can lead with what Vitana
+  // is scheduling and follow with what the user manually added.
+  const suggestedByVitana = useMemo(
+    () => upcoming.filter((r) => r.created_via === "system"),
+    [upcoming],
+  );
+  const scheduledByYou = useMemo(
+    () => upcoming.filter((r) => r.created_via === "voice" || r.created_via === "ui"),
+    [upcoming],
   );
   const recent = useMemo(
     () =>
@@ -237,34 +260,38 @@ const Reminders: React.FC = () => {
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Bell className="h-6 w-6" />
-            Reminders
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {filteredView
-              ? `Showing ${filteredView.title.toLowerCase()} reminders.`
-              : "Voice or tap. We chime + speak at the right moment."}
-          </p>
-        </div>
-        <Button onClick={() => setOpenCreate(true)}>
-          <Plus className="h-4 w-4 mr-1" />
-          New
-        </Button>
+      <div>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <Bell className="h-6 w-6" />
+          Reminders
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {filteredView
+            ? `Showing ${filteredView.title.toLowerCase()} reminders.`
+            : "What Vitana is scheduling for you. Talk to the ORB to add naturally."}
+        </p>
       </div>
 
       <EnableRemindersPrompt />
 
-      {!filteredView && upcoming.length >= 2 ? (
-        <button
-          type="button"
-          onClick={() => setConfirmDeleteAll(true)}
-          className="text-xs text-muted-foreground hover:text-destructive underline self-end"
-        >
-          Delete all {upcoming.length} reminders
-        </button>
+      {!filteredView ? (
+        <div className="flex items-center justify-between gap-3 -mt-2">
+          {upcoming.length >= 2 ? (
+            <button
+              type="button"
+              onClick={() => setConfirmDeleteAll(true)}
+              className="text-xs text-muted-foreground hover:text-destructive underline"
+            >
+              Delete all {upcoming.length} reminders
+            </button>
+          ) : (
+            <span />
+          )}
+          <Button variant="ghost" size="sm" onClick={() => setOpenCreate(true)}>
+            <Plus className="h-4 w-4 mr-1" />
+            Add manually
+          </Button>
+        </div>
       ) : null}
 
       {filteredView ? (
@@ -295,17 +322,39 @@ const Reminders: React.FC = () => {
         <>
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Upcoming</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                Suggested by Vitana
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {isLoading ? (
                 <div className="text-sm text-muted-foreground">Loading…</div>
-              ) : upcoming.length === 0 ? (
+              ) : suggestedByVitana.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-6 text-center">
-                  No reminders yet. Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
+                  Vitana hasn't suggested any reminders yet. Once Autopilot connects, contextual nudges will appear here.
                 </div>
               ) : (
-                upcoming.map((r) => (
+                suggestedByVitana.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Scheduled by you</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">Loading…</div>
+              ) : scheduledByYou.length === 0 ? (
+                <div className="text-sm text-muted-foreground py-6 text-center">
+                  Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
+                </div>
+              ) : (
+                scheduledByYou.map((r) => (
                   <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
                 ))
               )}
