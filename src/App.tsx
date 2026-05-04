@@ -214,7 +214,6 @@ const Companion = lazy(() => import("./pages/ai/Companion"));
 
 // Messages sub-pages
 const Archived = lazy(() => import("./pages/messages/Archived"));
-const Reminder = lazy(() => import("./pages/messages/Reminder"));
 const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
 
 // Settings sub-pages
@@ -1014,11 +1013,6 @@ const App = () => {
           <Route path="/inbox/archived" element={
             <AuthGuard>
               <Archived />
-            </AuthGuard>
-          } />
-          <Route path="/inbox/reminder" element={
-            <AuthGuard>
-              <Reminder />
             </AuthGuard>
           } />
           <Route path="/inbox/inspiration" element={

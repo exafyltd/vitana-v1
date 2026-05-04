@@ -43,7 +43,6 @@ export const discoverNavigation = [
 
 export const messagesNavigation = [
   { id: "overview", name: "Overview", path: "/inbox" },
-  { id: "reminder", name: "Reminder", path: "/inbox/reminder" },
   { id: "inspiration", name: "Inspiration", path: "/inbox/inspiration" },
   { id: "archived", name: "Archived", path: "/inbox/archived" },
 ];
