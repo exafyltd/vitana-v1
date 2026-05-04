@@ -1,0 +1,87 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Gift a Maxina Voucher",
+      "subtitle": "Give the gift of wellness and community connection",
+      "buyVoucher": "Buy Voucher",
+      "openingCheckout": "Opening secure checkout..."
+    },
+    "tiers": {
+      "test": {
+        "name": "Test",
+        "benefits": [
+          "Payment flow test only",
+          "Not a real voucher",
+          "For development testing"
+        ]
+      },
+      "experience": {
+        "name": "Experience",
+        "benefits": [
+          "1 premium community event access",
+          "Personalized wellness consultation",
+          "30-day Vitana+ trial included",
+          "Beautifully designed e-voucher"
+        ]
+      },
+      "exclusive": {
+        "name": "Exclusive",
+        "benefits": [
+          "3 premium community events",
+          "1-on-1 expert coaching session",
+          "90-day Vitana+ subscription",
+          "Priority booking + VIP perks"
+        ]
+      }
+    },
+    "success": {
+      "title": "Voucher Purchased!",
+      "ready": "Your {tier} voucher is ready",
+      "download": "Download Voucher",
+      "sendEmail": "Send to Recipient by Email",
+      "viewOrders": "View in Orders",
+      "done": "Done"
+    },
+    "email": {
+      "title": "Send Voucher by Email",
+      "subtitle": "We'll send a beautifully designed email with the voucher",
+      "recipientEmail": "Recipient Email *",
+      "recipientName": "Recipient Name (optional)",
+      "personalMessage": "Personal Message (optional)",
+      "messagePlaceholder": "Happy Birthday! Enjoy this wellness treat...",
+      "back": "Back",
+      "send": "Send Voucher"
+    },
+    "preview": {
+      "title": "Your Voucher",
+      "giftVoucher": "Gift Voucher",
+      "validUntil": "Valid until {date}",
+      "voucherCode": "Voucher Code",
+      "whatsIncluded": "What's Included",
+      "downloadPdf": "Download PDF",
+      "downloadDirect": "Download Direct",
+      "openInBrowser": "Open in Browser",
+      "copyLink": "Copy Link",
+      "share": "Save / Share",
+      "shareHint": "Save to Files, Drive, or send to someone",
+      "downloadHint": "If download opens blank, tap Open in Browser"
+    },
+    "toast": {
+      "downloadStarted": "Download started!",
+      "downloadFailed": "Download failed",
+      "linkCopied": "Link copied!",
+      "linkCopiedDesc": "Paste in browser to download.",
+      "voucherSent": "Voucher sent to {email}!",
+      "voucherShared": "Voucher shared successfully!",
+      "checkoutFailed": "Failed to start checkout. Please try again.",
+      "generatingVoucher": "Generating voucher...",
+      "failedToLoadVoucher": "Failed to load voucher data",
+      "downloadFailedCopyLink": "Download failed. Try copying the link.",
+      "useTicketView": "Use the ticket view to print or save your ticket",
+      "pdfNotAvailable": "PDF download not available for this order type",
+      "enterRecipientEmail": "Please enter recipient email",
+      "emailOnlyForVouchers": "Email sending only available for vouchers",
+      "sendingVoucherEmail": "Sending voucher email..."
+    }
+  }
+}

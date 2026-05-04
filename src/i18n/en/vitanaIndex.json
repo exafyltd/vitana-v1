@@ -1,0 +1,19 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana Health Index",
+    "subtitle": "Overall wellness balance across all health pillars",
+    "veryPoor": "Very Poor",
+    "poor": "Poor",
+    "fair": "Fair",
+    "improving": "Improving",
+    "good": "Good",
+    "excellent": "Excellent",
+    "sleep": "Sleep",
+    "exercise": "Exercise",
+    "nutrition": "Nutrition",
+    "hydration": "Hydration",
+    "mental": "Mental",
+    "viewFullReport": "View Full Report",
+    "trackToday": "Track Today"
+  }
+}

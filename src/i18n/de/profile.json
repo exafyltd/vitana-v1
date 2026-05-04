@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
+    "autopilot": {
+      "polishBio": "Bio, Profil & Highlights",
+      "editHighlights": "Highlights bearbeiten",
+      "saveHighlights": "Highlights speichern",
+      "highlightsDesc": "Wählen Sie Ihre besten Beiträge und Medien aus, die oben in Ihrem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an.",
+      "try": "Ausprobieren"
+    },
+    "identity": {
+      "vitanaIndex": "Vitana Index",
+      "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
+      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
+    }
+  }
+}

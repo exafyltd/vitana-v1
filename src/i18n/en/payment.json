@@ -1,0 +1,23 @@
+{
+  "payment": {
+    "completed": "Payment Completed! ✅",
+    "sentSuccess": "{amount} sent successfully",
+    "alreadyProcessed": "Already processed",
+    "requestIs": "This request is {status}.",
+    "alreadyAccepted": "This payment request was already accepted.",
+    "declined": "Payment Declined",
+    "declinedDesc": "Payment request has been declined",
+    "exchangeSuccess": "Exchange & Send Successful! ✨",
+    "exchangeSuccessDesc": "Converted and sent {amount}",
+    "insufficientBalance": "Insufficient Balance",
+    "insufficientBalanceDesc": "You don't have enough {currency} for this exchange",
+    "transactionFailed": "Transaction Failed",
+    "paymentFailed": "Payment Failed",
+    "paymentFailedDesc": "Failed to process payment. Please try again.",
+    "balanceRefreshed": "Balance Refreshed",
+    "balanceRefreshedDesc": "Wallet balance has been updated",
+    "refreshFailed": "Refresh Failed",
+    "refreshFailedDesc": "Could not refresh balance. Please try again.",
+    "error": "Error"
+  }
+}

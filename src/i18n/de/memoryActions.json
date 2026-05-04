@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Erinnerungs-Aktionen",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Sprach-Tagebuch aufnehmen",
+        "description": "Gedanken und Reflexionen per Sprachaufnahme festhalten"
+      },
+      "addMemoryNote": {
+        "title": "Erinnerungsnotiz hinzufügen",
+        "description": "Wichtige Gesundheitsmomente festhalten"
+      },
+      "viewTimeline": {
+        "title": "Zeitachse anzeigen",
+        "description": "Deine gesamte Wellness-Reise ansehen"
+      },
+      "searchMemories": {
+        "title": "Erinnerungen suchen",
+        "description": "Bestimmte Momente und Einsichten finden"
+      },
+      "photoMemory": {
+        "title": "Fotoerinnerung",
+        "description": "Visuelle Erinnerungen zu deiner Reise hinzufügen"
+      },
+      "aiMemoryAnalysis": {
+        "title": "KI-Erinnerungsanalyse",
+        "description": "Erkenntnisse aus deinen Erinnerungs-Mustern erhalten"
+      }
+    }
+  }
+}

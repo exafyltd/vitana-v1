@@ -1,0 +1,39 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "Teilen",
+      "save": "Speichern",
+      "saved": "Gespeichert",
+      "summarize": "Mit Vitana zusammenfassen",
+      "copyLink": "Link kopieren",
+      "openInBrowser": "Im Browser öffnen",
+      "hide": "Diesen Artikel ausblenden",
+      "showLess": "Weniger davon zeigen",
+      "muteSource": "Diese Quelle stummschalten",
+      "linkCopied": "Link kopiert",
+      "savedToast": "Zum Lesen gespeichert",
+      "unsavedToast": "Aus Gespeichert entfernt",
+      "summarizeToast": "An Vitana übergeben",
+      "hiddenToast": "Artikel ausgeblendet",
+      "showLessToast": "Wir zeigen weniger davon",
+      "mutedToast": "Quelle stummgeschaltet",
+      "undo": "Rückgängig",
+      "unmute": "Stummschaltung aufheben"
+    },
+    "detail": {
+      "back": "Zurück",
+      "continueReading": "Weiterlesen auf",
+      "openInBrowser": "Im Browser öffnen",
+      "couldNotLoad": "Dieser Artikel kann nicht inline angezeigt werden",
+      "readOn": "Lesen auf"
+    },
+    "pillars": {
+      "all": "Alle",
+      "nutrition": "Ernährung",
+      "hydration": "Hydration",
+      "sleep": "Schlaf",
+      "exercise": "Bewegung",
+      "mental": "Mental"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "socialImport": {
+    "dialogTitle": "{platform} Profil verbinden",
+    "dialogDescription": "Verbinden Sie Ihr {platform}-Profil, um Ihre Vitana-Identität mit KI-gestützten Einblicken zu bereichern.",
+    "profileUrl": "{platform} Profil-URL",
+    "bioLabel": "Bio / Über-Bereich",
+    "bioOptional": "(Optional)",
+    "cancel": "Abbrechen",
+    "importProfile": "Profil importieren",
+    "importing": "Wird importiert...",
+    "urlRequired": "URL erforderlich",
+    "urlRequiredDesc": "Bitte geben Sie Ihre {platform} Profil-URL ein",
+    "importSuccess": "Import erfolgreich",
+    "importSuccessDesc": "Ihr {platform}-Profil wurde importiert und mit KI-Einblicken angereichert.",
+    "importFailed": "Import fehlgeschlagen",
+    "connect": "Verbinden:",
+    "socialPresence": "Soziale Präsenz",
+    "verifiedConnections": "Verifizierte Verbindungen in Ihrem digitalen Leben",
+    "tapToVisit": "Tippen, um Profil zu besuchen",
+    "noAccountsConnected": "Keine Social-Accounts verbunden",
+    "connectAccounts": "Accounts verbinden",
+    "platformHelp": {
+      "linkedin": "Wir verwenden KI, um Ihre Überschrift, Zusammenfassung und beruflichen Fähigkeiten zu extrahieren.",
+      "instagram": "Wir analysieren Ihre Bio, um Ihre Interessen und Lifestyle-Themen zu verstehen.",
+      "tiktok": "Wir extrahieren Ihre Content-Themen und kreative Persönlichkeit aus Ihrer Bio.",
+      "youtube": "Wir identifizieren Ihre Content-Kategorien und Fachbereiche aus Ihrer Beschreibung.",
+      "facebook": "Wir extrahieren Ihre Interessen und Community-Beteiligung aus Ihrer Bio.",
+      "x": "Wir analysieren Ihre Bio, um Ihre Themengebiete und Kommunikationsstil zu verstehen."
+    }
+  }
+}

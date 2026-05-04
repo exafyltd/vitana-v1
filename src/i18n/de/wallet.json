@@ -1,0 +1,27 @@
+{
+  "wallet": {
+    "title": "Wallet",
+    "description": "Ihr Guthaben, Credits und Belohnungen",
+    "usdBalance": "USD-Guthaben",
+    "creditsBalance": "Credits-Guthaben",
+    "vtnaTokens": "VTNA-Token",
+    "available": "Verfügbar",
+    "staked": "Gesperrt",
+    "searchWallet": "Wallet durchsuchen...",
+    "tabs": {
+      "balances": "Guthaben",
+      "activity": "Aktivität",
+      "actions": "Aktionen"
+    },
+    "filters": {
+      "commissions": "Provisionen",
+      "transfers": "Überweisungen",
+      "exchanges": "Umtausch",
+      "rewards": "Belohnungen",
+      "purchases": "Käufe",
+      "pending": "Ausstehende Auszahlungen"
+    },
+    "noActivity": "Noch keine Aktivitäten",
+    "noActivityDesc": "Ihre Transaktionen werden hier erscheinen."
+  }
+}

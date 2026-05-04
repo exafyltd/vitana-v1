@@ -1,0 +1,23 @@
+{
+  "navigation": {
+    "navigatingTo": "Navigating to",
+    "hydrationTracker": "Hydration Tracker",
+    "sleepTracker": "Sleep Tracker",
+    "nutritionTracker": "Nutrition Tracker",
+    "workoutTracker": "Workout Tracker",
+    "biomarkers": "Biomarkers",
+    "calendar": "Calendar",
+    "community": "Community",
+    "groups": "Groups",
+    "messages": "Messages",
+    "discover": "Discover",
+    "supplements": "Supplements",
+    "wallet": "Wallet",
+    "profile": "Profile",
+    "settings": "Settings",
+    "diary": "Diary",
+    "home": "Home",
+    "myJourney": "My Journey",
+    "news": "Longevity News"
+  }
+}

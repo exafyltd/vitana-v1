@@ -1,0 +1,39 @@
+{
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Verwalten Sie Ihre Kontoeinstellungen, Datenschutz und Präferenzen",
+    "searchPlaceholder": "Einstellungen, Datenschutz, Integrationen suchen...",
+    "quickSetup": "Schnelleinrichtung",
+    "tabs": {
+      "overview": "Übersicht",
+      "notifications": "Benachrichtigungen",
+      "quickActions": "Schnellaktionen"
+    },
+    "categories": {
+      "privacy": "Datenschutz",
+      "privacyDesc": "Steuern Sie, wer Ihr Profil und Ihre Aktivitäten sieht",
+      "notifications": "Benachrichtigungen",
+      "notificationsDesc": "Verwalten Sie Ihre Benachrichtigungseinstellungen",
+      "preferences": "Präferenzen",
+      "preferencesDesc": "Sprache, Thema und Anzeigeoptionen",
+      "connectedApps": "Verbundene Apps",
+      "connectedAppsDesc": "Verwalten Sie Integrationen und Berechtigungen",
+      "tenantRole": "Mandant & Rolle",
+      "tenantRoleDesc": "Wechseln Sie zwischen Rollen und Mandanten",
+      "billing": "Abrechnung",
+      "billingDesc": "Abonnement und Zahlungsinformationen",
+      "support": "Support",
+      "supportDesc": "Hilfe, FAQ und Kontaktoptionen"
+    },
+    "status": {
+      "privacyStatus": "Datenschutzstatus",
+      "subscription": "Abonnement",
+      "protected": "Geschützt",
+      "premium": "Premium",
+      "notificationsActive": "Aktive Benachrichtigungen",
+      "connectedAppsCount": "Verbundene Apps",
+      "types": "Typen",
+      "apps": "Apps"
+    }
+  }
+}

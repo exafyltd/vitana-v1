@@ -1,0 +1,21 @@
+{
+  "gallery": {
+    "title": "Fotogalerie",
+    "upload": "Foto hochladen",
+    "caption": "Beschriftung",
+    "captionPlaceholder": "Beschriftung hinzufügen...",
+    "empty": "Noch keine Fotos",
+    "uploadFirst": "Erstes Foto hinzufügen",
+    "photo": "Foto",
+    "dropzone": "Ziehen & ablegen oder klicken",
+    "publicLabel": "Für alle sichtbar",
+    "videos": "Videogalerie",
+    "uploadVideo": "Video hochladen",
+    "noVideos": "Noch keine Videos",
+    "addFirstVideo": "Erstes Video hinzufügen",
+    "invalidFormat": "Ungültiges Format",
+    "fileTooLarge": "Datei zu groß",
+    "maxSize": "Maximale Dateigröße: 500 MB",
+    "maxSizeHint": "Max. 500 MB"
+  }
+}

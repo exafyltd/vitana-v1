@@ -1,0 +1,11 @@
+{
+  "walletActions": {
+    "title": "Quick Actions",
+    "addFunds": "Add Funds",
+    "send": "Send",
+    "exchange": "Exchange",
+    "withdraw": "Withdraw",
+    "buyCredits": "Buy Credits",
+    "stakeTokens": "Stake Tokens"
+  }
+}

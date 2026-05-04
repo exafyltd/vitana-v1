@@ -1,0 +1,10 @@
+{
+  "createSelection": {
+    "title": "Create New",
+    "description": "Choose the type of gathering you want to create",
+    "event": "Event",
+    "eventDescription": "Formal gatherings with scheduled times and structured programs",
+    "meetup": "MeetUp",
+    "meetupDescription": "Casual gatherings for networking and community building"
+  }
+}

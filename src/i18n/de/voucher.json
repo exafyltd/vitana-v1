@@ -1,0 +1,87 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Maxina Gutschein verschenken",
+      "subtitle": "Verschenken Sie Wellness und Community-Verbindung",
+      "buyVoucher": "Gutschein kaufen",
+      "openingCheckout": "Sicheren Checkout öffnen..."
+    },
+    "tiers": {
+      "test": {
+        "name": "Test",
+        "benefits": [
+          "Nur für Zahlungstest",
+          "Kein echter Gutschein",
+          "Für Entwicklungstests"
+        ]
+      },
+      "experience": {
+        "name": "Erlebnis",
+        "benefits": [
+          "1 Premium-Community-Event-Zugang",
+          "Personalisierte Wellness-Beratung",
+          "30-Tage Vitana+ Testversion inklusive",
+          "Wunderschön gestalteter E-Gutschein"
+        ]
+      },
+      "exclusive": {
+        "name": "Exklusiv",
+        "benefits": [
+          "3 Premium-Community-Events",
+          "1-zu-1 Experten-Coaching",
+          "90-Tage Vitana+ Abonnement",
+          "Prioritätsbuchung + VIP-Vorteile"
+        ]
+      }
+    },
+    "success": {
+      "title": "Gutschein gekauft!",
+      "ready": "Ihr {tier} Gutschein ist bereit",
+      "download": "Gutschein herunterladen",
+      "sendEmail": "Per E-Mail an Empfänger senden",
+      "viewOrders": "In Bestellungen anzeigen",
+      "done": "Fertig"
+    },
+    "email": {
+      "title": "Gutschein per E-Mail senden",
+      "subtitle": "Wir senden eine schön gestaltete E-Mail mit dem Gutschein",
+      "recipientEmail": "Empfänger-E-Mail *",
+      "recipientName": "Empfängername (optional)",
+      "personalMessage": "Persönliche Nachricht (optional)",
+      "messagePlaceholder": "Alles Gute zum Geburtstag! Genieße dieses Wellness-Geschenk...",
+      "back": "Zurück",
+      "send": "Gutschein senden"
+    },
+    "preview": {
+      "title": "Ihr Gutschein",
+      "giftVoucher": "Geschenkgutschein",
+      "validUntil": "Gültig bis {date}",
+      "voucherCode": "Gutschein-Code",
+      "whatsIncluded": "Was enthalten ist",
+      "downloadPdf": "PDF herunterladen",
+      "downloadDirect": "Direkt herunterladen",
+      "openInBrowser": "Im Browser öffnen",
+      "copyLink": "Link kopieren",
+      "share": "Speichern / Teilen",
+      "shareHint": "In Dateien, Drive speichern oder versenden",
+      "downloadHint": "Wenn Download leer öffnet, tippen Sie auf Im Browser öffnen"
+    },
+    "toast": {
+      "downloadStarted": "Download gestartet!",
+      "downloadFailed": "Download fehlgeschlagen",
+      "linkCopied": "Link kopiert!",
+      "linkCopiedDesc": "Im Browser einfügen zum Herunterladen.",
+      "voucherSent": "Gutschein an {email} gesendet!",
+      "voucherShared": "Gutschein erfolgreich geteilt!",
+      "checkoutFailed": "Checkout konnte nicht gestartet werden. Bitte erneut versuchen.",
+      "generatingVoucher": "Gutschein wird erstellt...",
+      "failedToLoadVoucher": "Gutscheindaten konnten nicht geladen werden",
+      "downloadFailedCopyLink": "Download fehlgeschlagen. Versuchen Sie, den Link zu kopieren.",
+      "useTicketView": "Nutzen Sie die Ticketansicht zum Drucken oder Speichern",
+      "pdfNotAvailable": "PDF-Download für diesen Bestelltyp nicht verfügbar",
+      "enterRecipientEmail": "Bitte Empfänger-E-Mail eingeben",
+      "emailOnlyForVouchers": "E-Mail-Versand nur für Gutscheine verfügbar",
+      "sendingVoucherEmail": "Gutschein-E-Mail wird gesendet..."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "wallet": {
+    "title": "Wallet",
+    "description": "Your balance, credits, and rewards",
+    "usdBalance": "USD Balance",
+    "creditsBalance": "Credits Balance",
+    "vtnaTokens": "VTNA Tokens",
+    "available": "Available",
+    "staked": "Staked",
+    "searchWallet": "Search wallet...",
+    "tabs": {
+      "balances": "Balances",
+      "activity": "Activity",
+      "actions": "Actions"
+    },
+    "filters": {
+      "commissions": "Sell & Earn Commissions",
+      "transfers": "Transfers",
+      "exchanges": "Exchanges",
+      "rewards": "Rewards",
+      "purchases": "Purchases",
+      "pending": "Pending Payouts"
+    },
+    "noActivity": "No activity yet",
+    "noActivityDesc": "Your transactions will appear here."
+  }
+}

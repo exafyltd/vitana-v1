@@ -1,0 +1,11 @@
+{
+  "walletActions": {
+    "title": "Schnellaktionen",
+    "addFunds": "Geld hinzufügen",
+    "send": "Senden",
+    "exchange": "Umtauschen",
+    "withdraw": "Abheben",
+    "buyCredits": "Credits kaufen",
+    "stakeTokens": "Token staken"
+  }
+}

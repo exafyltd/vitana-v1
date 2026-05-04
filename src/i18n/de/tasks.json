@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "noOpenTasks": "Keine offenen Aufgaben",
+    "confirmCancelTask": "Sind Sie sicher, dass Sie diese Aufgabe abbrechen möchten?",
+    "postponeComingSoon": "Verschieben-Funktion demnächst verfügbar",
+    "addNotePrompt": "Fügen Sie dieser Aufgabe eine Notiz hinzu:",
+    "noteAdded": "Notiz hinzugefügt: {note}",
+    "navigateTo": "Navigieren zu: {url}",
+    "openVtid": "VTID öffnen: {vtid}",
+    "description": "Beschreibung",
+    "activityLog": "Aktivitätsprotokoll",
+    "relatedLinks": "Verwandte Links",
+    "complete": "Abschließen",
+    "postpone": "Verschieben",
+    "addNote": "Notiz hinzufügen",
+    "openContext": "Kontext öffnen",
+    "assignee": "Bearbeiter"
+  }
+}

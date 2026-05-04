@@ -1,0 +1,19 @@
+{
+  "vitanaIndex": {
+    "title": "مؤشر فيتانا الصحي",
+    "subtitle": "توازن العافية الشامل عبر جميع ركائز الصحة",
+    "veryPoor": "ضعيف جداً",
+    "poor": "ضعيف",
+    "fair": "مقبول",
+    "improving": "يتحسن",
+    "good": "جيد",
+    "excellent": "ممتاز",
+    "sleep": "النوم",
+    "exercise": "التمرين",
+    "nutrition": "التغذية",
+    "hydration": "الترطيب",
+    "mental": "العقلي",
+    "viewFullReport": "عرض التقرير الكامل",
+    "trackToday": "تتبع اليوم"
+  }
+}

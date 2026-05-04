@@ -1,0 +1,21 @@
+{
+  "editProfile": {
+    "unsavedChanges": "Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie verlassen möchten?",
+    "notAuthenticated": "Nicht angemeldet",
+    "notAuthenticatedDesc": "Bitte melden Sie sich an, um Ihr Profil zu speichern.",
+    "profileUpdated": "Profil erfolgreich aktualisiert!",
+    "profileUpdatedDesc": "Ihre Änderungen sind jetzt live. Ihr VITANA-Profil sieht großartig aus.",
+    "error": "Fehler",
+    "refreshFailed": "Profildaten konnten nicht aktualisiert werden.",
+    "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
+    "showcaseTitle": "Highlights",
+    "manage": "Verwalten",
+    "about": "Über mich",
+    "addBio": "Bio hinzufügen...",
+    "tapToEdit": "Tippen zum Bearbeiten",
+    "title": "Titel",
+    "titlePlaceholder": "Videotitel",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Beschreibung..."
+  }
+}

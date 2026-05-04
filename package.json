@@ -9,7 +9,11 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "extract-routes": "node scripts/extract-routes.mjs"
+    "extract-routes": "node scripts/extract-routes.mjs",
+    "i18n:split": "node scripts/split-i18n.mjs",
+    "i18n:audit": "node scripts/i18n-audit.mjs",
+    "i18n:audit:strict": "node scripts/i18n-audit.mjs --strict",
+    "i18n:inventory": "node scripts/generate-screen-inventory.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",

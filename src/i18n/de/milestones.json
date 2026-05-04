@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Magic Moments",
+    "add": "Moment hinzufügen",
+    "edit": "Moment bearbeiten",
+    "empty": "Noch keine Magic Moments",
+    "addFirst": "Ersten Magic Moment hinzufügen",
+    "date": "Datum",
+    "description": "Was ist passiert?",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "z.B. Universitätsabschluss",
+    "descPlaceholder": "Beschreibe diesen Moment...",
+    "icon": "Symbol",
+    "publicLabel": "Für alle sichtbar",
+    "private": "Privat"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "recallActions": {
+    "title": "Memory Search & Recall Actions",
+    "items": {
+      "askAiQuestion": {
+        "title": "Ask AI Question",
+        "description": "Query your memories with natural language AI search"
+      },
+      "advancedSearch": {
+        "title": "Advanced Search",
+        "description": "Use filters, tags, and date ranges to find memories"
+      },
+      "patternAnalysis": {
+        "title": "Pattern Analysis",
+        "description": "Discover trends and patterns in your wellness data"
+      },
+      "memoryInsights": {
+        "title": "Memory Insights",
+        "description": "Get AI-powered insights from your health journey"
+      },
+      "searchByDate": {
+        "title": "Search by Date",
+        "description": "Browse memories from specific time periods"
+      },
+      "locationMemories": {
+        "title": "Location Memories",
+        "description": "Find entries by places and locations visited"
+      },
+      "filterByCategory": {
+        "title": "Filter by Category",
+        "description": "Browse memories by wellness pillars and categories"
+      },
+      "quickRecalls": {
+        "title": "Quick Recalls",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  }
+}

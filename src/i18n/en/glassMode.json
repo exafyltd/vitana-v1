@@ -1,0 +1,19 @@
+{
+  "glassMode": {
+    "shareWithAI": "Share selection with AI?",
+    "screenSharingComingSoon": "🖥️ Screen Sharing Coming Soon",
+    "screenSharingDesc": "Share your screen with VITANA for contextual assistance.",
+    "screenSharingStopped": "Screen Sharing Stopped",
+    "glassModeDisabled": "Glass mode disabled",
+    "cameraModeComingSoon": "📹 Camera Mode Coming Soon",
+    "cameraModeDesc": "Vision-based AI interactions will be available in the next update.",
+    "diaryReady": "Diary Ready",
+    "openingDiary": "Opening diary entry",
+    "autopilotActivated": "Autopilot Activated",
+    "runningAutopilot": "Running autopilot mode",
+    "textInputReady": "Text Input Ready",
+    "typeMessage": "You can now type your message",
+    "actionFailed": "Action Failed",
+    "couldNotExecute": "Could not execute {action}"
+  }
+}

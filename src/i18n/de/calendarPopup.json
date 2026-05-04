@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "Kalender",
+    "nextEvents": "Nächste {count} Termine",
+    "conflicts": "{count} Konflikte",
+    "upcomingSchedule": "Ihr anstehender Zeitplan und Termine",
+    "addNewEvent": "Neuen Termin hinzufügen",
+    "noUpcomingEvents": "Keine anstehenden Termine",
+    "createFirstEvent": "Ersten Termin erstellen",
+    "aiSuggestions": "KI-Vorschläge",
+    "findBetterSlot": "Besseren Termin finden",
+    "prepareBrief": "Briefing vorbereiten",
+    "shareAvailability": "Verfügbarkeit teilen",
+    "syncExternal": "Extern synchronisieren",
+    "addEvent": "Termin hinzufügen",
+    "quickAdd": "Schnell hinzufügen",
+    "eventFormComingSoon": "Event-Erstellungsformular bald verfügbar",
+    "externalSync": "Externe Synchronisierung",
+    "connectingCalendars": "Verbinde mit externen Kalendern..."
+  }
+}
