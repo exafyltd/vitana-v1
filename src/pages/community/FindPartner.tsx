@@ -190,7 +190,8 @@ export default function FindPartner() {
 
       <AppLayout>
         {!isMobile && <SubNavigation items={communityNavigation} />}
-        <div className="container mx-auto px-4 py-4 max-w-4xl">
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
         <StandardHeader
           title="Find a Match"
           description="Dance and fitness partners — matched by AI, ranked by fit."
@@ -366,6 +367,7 @@ export default function FindPartner() {
             )
           )}
         </div>
+          </div>
         </div>
       </AppLayout>
 
