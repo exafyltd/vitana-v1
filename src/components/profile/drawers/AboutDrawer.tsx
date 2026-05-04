@@ -33,16 +33,19 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
 
       console.log('[AboutDrawer] Saving profile data:', formData);
 
+      // The profiles row is created on signup so it always exists here.
+      // UPSERT would attempt an INSERT first and fail the profiles.vitana_id
+      // NOT NULL constraint because vitana_id isn't part of this payload.
       const { error, data } = await supabase
         .from('profiles' as any)
-        .upsert({
-          user_id: user.id,
+        .update({
           bio: formData.bio,
           location: formData.location,
           links: formData.links,
           languages: formData.languages,
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'user_id' })
+        })
+        .eq('user_id', user.id)
         .select();
 
       if (error) {
