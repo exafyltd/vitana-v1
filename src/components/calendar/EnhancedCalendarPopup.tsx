@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { de as deLocale } from "date-fns/locale/de";
 import { 
   format, 
@@ -43,6 +44,7 @@ import {
   Edit,
   Trash2,
   MessageCircle,
+  Bell,
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -162,6 +164,7 @@ export function EnhancedCalendarPopup({
   const { toast } = useToast();
   const { translate, isGerman } = useTranslation();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const ownHook = useCalendarEvents();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = calendarHook ?? ownHook;
   
@@ -880,9 +883,22 @@ export function EnhancedCalendarPopup({
                 {translate('calendar.lastSynced', 'Last synced')} {getTimeSinceSync()}
               </p>
             </div>
-            <Button variant="secondary" onClick={() => onOpenChange(false)}>
-              {translate('calendar.close', 'Close')}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  onOpenChange(false);
+                  navigate('/reminders?filter=upcoming');
+                }}
+              >
+                <Bell className="h-4 w-4 mr-1.5" />
+                {translate('calendar.viewAllReminders', 'View all reminders')}
+              </Button>
+              <Button variant="secondary" onClick={() => onOpenChange(false)}>
+                {translate('calendar.close', 'Close')}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

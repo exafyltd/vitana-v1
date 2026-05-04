@@ -11,6 +11,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useReminders, useCreateReminder, useDeleteReminder, useDeleteAllReminders, useCompleteReminder } from "@/hooks/useReminders";
 import { ReminderRow } from "@/lib/reminders-api";
 import EnableRemindersPrompt from "@/components/reminders/EnableRemindersPrompt";
@@ -90,12 +91,20 @@ const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderR
   );
 };
 
+type ReminderFilter = "upcoming" | "completed" | "missed";
+const VALID_FILTERS: readonly ReminderFilter[] = ["upcoming", "completed", "missed"];
+
 const Reminders: React.FC = () => {
   const { data: list = [], isLoading } = useReminders({ include_fired: true, limit: 100 });
   const createMut = useCreateReminder();
   const deleteMut = useDeleteReminder();
   const deleteAllMut = useDeleteAllReminders();
   const completeMut = useCompleteReminder();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterParam = searchParams.get("filter");
+  const activeFilter: ReminderFilter | null =
+    VALID_FILTERS.includes(filterParam as ReminderFilter) ? (filterParam as ReminderFilter) : null;
 
   const [openCreate, setOpenCreate] = useState(false);
   const [actionText, setActionText] = useState("");
@@ -121,6 +130,37 @@ const Reminders: React.FC = () => {
         .slice(0, 30),
     [list],
   );
+  // Fired-but-not-yet-completed: the reminder went off but the user hasn't
+  // acknowledged it. This is what a `custom_reminder` push deep-link wants.
+  const missed = useMemo(
+    () =>
+      list
+        .filter((r) => r.status === "fired")
+        .sort((a, b) => b.next_fire_at.localeCompare(a.next_fire_at)),
+    [list],
+  );
+  const completed = useMemo(
+    () =>
+      list
+        .filter((r) => r.status === "completed")
+        .sort((a, b) => b.next_fire_at.localeCompare(a.next_fire_at)),
+    [list],
+  );
+
+  const filteredView: { title: string; items: ReminderRow[]; emptyText: string } | null = useMemo(() => {
+    switch (activeFilter) {
+      case "upcoming":
+        return { title: "Upcoming", items: upcoming, emptyText: "No upcoming reminders." };
+      case "completed":
+        return { title: "Completed", items: completed, emptyText: "No completed reminders yet." };
+      case "missed":
+        return { title: "Missed", items: missed, emptyText: "No missed reminders — you're all caught up." };
+      default:
+        return null;
+    }
+  }, [activeFilter, upcoming, completed, missed]);
+
+  const clearFilter = () => setSearchParams({});
 
   const handleCreate = async () => {
     const text = actionText.trim();
@@ -189,11 +229,11 @@ const Reminders: React.FC = () => {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Reminders | Vitana";
+    document.title = filteredView ? `${filteredView.title} reminders | Vitana` : "Reminders | Vitana";
     return () => {
       document.title = prev;
     };
-  }, []);
+  }, [filteredView]);
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-6">
@@ -203,7 +243,11 @@ const Reminders: React.FC = () => {
             <Bell className="h-6 w-6" />
             Reminders
           </h1>
-          <p className="text-sm text-muted-foreground">Voice or tap. We chime + speak at the right moment.</p>
+          <p className="text-sm text-muted-foreground">
+            {filteredView
+              ? `Showing ${filteredView.title.toLowerCase()} reminders.`
+              : "Voice or tap. We chime + speak at the right moment."}
+          </p>
         </div>
         <Button onClick={() => setOpenCreate(true)}>
           <Plus className="h-4 w-4 mr-1" />
@@ -213,7 +257,7 @@ const Reminders: React.FC = () => {
 
       <EnableRemindersPrompt />
 
-      {upcoming.length >= 2 ? (
+      {!filteredView && upcoming.length >= 2 ? (
         <button
           type="button"
           onClick={() => setConfirmDeleteAll(true)}
@@ -223,37 +267,65 @@ const Reminders: React.FC = () => {
         </button>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Upcoming</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {isLoading ? (
-            <div className="text-sm text-muted-foreground">Loading…</div>
-          ) : upcoming.length === 0 ? (
-            <div className="text-sm text-muted-foreground py-6 text-center">
-              No reminders yet. Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
-            </div>
-          ) : (
-            upcoming.map((r) => (
-              <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
-            ))
-          )}
-        </CardContent>
-      </Card>
-
-      {recent.length > 0 ? (
+      {filteredView ? (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Recent</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-lg">{filteredView.title}</CardTitle>
+            <button
+              type="button"
+              onClick={clearFilter}
+              className="text-xs text-muted-foreground hover:text-foreground underline"
+            >
+              Show all
+            </button>
           </CardHeader>
           <CardContent className="space-y-2">
-            {recent.map((r) => (
-              <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
-            ))}
+            {isLoading ? (
+              <div className="text-sm text-muted-foreground">Loading…</div>
+            ) : filteredView.items.length === 0 ? (
+              <div className="text-sm text-muted-foreground py-6 text-center">{filteredView.emptyText}</div>
+            ) : (
+              filteredView.items.map((r) => (
+                <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+              ))
+            )}
           </CardContent>
         </Card>
-      ) : null}
+      ) : (
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Upcoming</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">Loading…</div>
+              ) : upcoming.length === 0 ? (
+                <div className="text-sm text-muted-foreground py-6 text-center">
+                  No reminders yet. Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
+                </div>
+              ) : (
+                upcoming.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))
+              )}
+            </CardContent>
+          </Card>
+
+          {recent.length > 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Recent</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {recent.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))}
+              </CardContent>
+            </Card>
+          ) : null}
+        </>
+      )}
 
       {/* Create modal */}
       <Dialog open={openCreate} onOpenChange={setOpenCreate}>
