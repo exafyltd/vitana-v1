@@ -60,7 +60,19 @@ interface FullTicket {
   created_at: string;
   resolved_at: string | null;
   user_confirmed_at: string | null;
+  // VTID-02669: dev-autopilot ↔ ticket linkage for the rollback feature.
+  auto_resolved?: boolean | null;
+  linked_pr_url?: string | null;
+  // VTID-02702: rollback feature — tenant admin can revert an
+  // autopilot-resolved fix within ROLLBACK_WINDOW_HOURS (default 72h).
+  rolled_back_at?: string | null;
+  rollback_pr_url?: string | null;
 }
+
+// VTID-02702: 3-day rollback window, mirrored from the gateway env var
+// FEEDBACK_ROLLBACK_WINDOW_HOURS. Hardcoded here so the button's visibility
+// matches the backend's eligibility check without an extra round-trip.
+const ROLLBACK_WINDOW_MS = 72 * 60 * 60 * 1000;
 
 // VTID-02665: kinds the supervisor can pick from the reclassify dropdown.
 const KIND_OPTIONS: Array<{ value: string; label: string; description: string }> = [
@@ -556,11 +568,43 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     reject.mutate(reason || null);
   };
 
+  // VTID-02702: rollback mutation. Posts to the new endpoint, refreshes
+  // detail + list. The endpoint stamps rolled_back_at + flips status to
+  // reopened so the normal action panel reappears for a fresh attempt.
+  const rollback = useMutation({
+    mutationFn: async () => {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/rollback`,
+        { method: "POST", body: JSON.stringify({}) },
+      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((body as { error?: string; message?: string }).message ?? (body as { error?: string }).error ?? `HTTP ${res.status}`);
+      return body as { revert_pr_url: string; revert_pr_number: number };
+    },
+    onSuccess: async (data) => {
+      toast({
+        title: `${ticketNumber} rolled back`,
+        description: `Revert PR ${data.revert_pr_url ? `#${data.revert_pr_number}` : "created"}. The ticket has been reopened.`,
+      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] }),
+        queryClient.invalidateQueries({ queryKey: ["admin-feedback-ticket", tenantId, ticketId] }),
+      ]);
+    },
+    onError: (err: unknown) => {
+      toast({
+        title: "Rollback failed",
+        description: err instanceof Error ? err.message : "Try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   // VTID-02659: block close while a mutation is in flight so the action
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending || rollback.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -636,6 +680,69 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           findingId={t.linked_finding_id}
           playwrightVerified={!!t.playwright_verified}
         />
+      )}
+
+      {/* VTID-02702: Rollback card. Shown only on autopilot-resolved
+          tickets within the 3-day rollback window. One click creates a
+          revert PR which the watcher auto-merges + deploys. The original
+          ticket flips back to `reopened` for re-attempt. After the
+          window expires the card disappears (the supervisor can't
+          undo via this surface — change is "kept"). */}
+      {t.status === "resolved"
+        && t.auto_resolved === true
+        && !t.rolled_back_at
+        && t.linked_pr_url
+        && t.resolved_at
+        && (Date.now() - new Date(t.resolved_at).getTime()) < ROLLBACK_WINDOW_MS
+        && (() => {
+          const elapsedHours = Math.floor((Date.now() - new Date(t.resolved_at!).getTime()) / 3_600_000);
+          const remainingHours = Math.max(0, 72 - elapsedHours);
+          return (
+            <Card className="border-amber-300 bg-amber-50 p-3 dark:border-amber-700 dark:bg-amber-950/30">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1 text-sm">
+                  <div className="font-semibold">Rollback available</div>
+                  <p className="text-muted-foreground">
+                    Auto-resolved by dev autopilot. You can revert {" "}
+                    <a href={t.linked_pr_url ?? "#"} target="_blank" rel="noreferrer"
+                       className="underline underline-offset-2">
+                      this fix
+                    </a>
+                    {" "}for the next {remainingHours}h.
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-500 text-amber-900 hover:bg-amber-100 dark:text-amber-100 dark:hover:bg-amber-900/40"
+                  disabled={isBusy || rollback.isPending}
+                  onClick={() => {
+                    if (!window.confirm(`Revert ${t.linked_pr_url} and reopen ${ticketNumber}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.`)) return;
+                    rollback.mutate();
+                  }}
+                >
+                  {rollback.isPending ? "Rolling back…" : "Rollback"}
+                </Button>
+              </div>
+            </Card>
+          );
+        })()}
+
+      {/* VTID-02702: post-rollback indicator. Once a rollback has fired,
+          surface the revert PR link so the supervisor can audit. The
+          ticket has flipped to `reopened` so the normal action panel
+          will reappear below. */}
+      {t.rolled_back_at && t.rollback_pr_url && (
+        <Card className="border-orange-300 bg-orange-50 p-3 text-sm dark:border-orange-700 dark:bg-orange-950/30">
+          <div className="font-semibold">Rolled back</div>
+          <p className="mt-1 text-muted-foreground">
+            The autopilot fix was rolled back on {new Date(t.rolled_back_at).toLocaleString()}.{" "}
+            <a href={t.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+              Revert PR
+            </a>
+            . The ticket has been reopened — refine instructions and re-activate to try again.
+          </p>
+        </Card>
       )}
 
       {/* VTID-02669: stranded-ticket recovery card REMOVED. Activate is
