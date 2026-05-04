@@ -1350,7 +1350,7 @@ export default withScreenId(function Community() {
             <SplitBarTrigger value="overview">🏠 Overview</SplitBarTrigger>
             <SplitBarTrigger value="rankings">🏆 Rankings</SplitBarTrigger>
             <SplitBarTrigger value="spotlight">⭐ Spotlight</SplitBarTrigger>
-            <SplitBarTrigger value="find_partner">💃🕺 Find a Match</SplitBarTrigger>
+            <SplitBarTrigger value="find_partner">👯 Find a Match</SplitBarTrigger>
           </SplitBarList>
 
         <SplitBarContent value="overview">
