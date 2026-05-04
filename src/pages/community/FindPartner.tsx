@@ -53,7 +53,7 @@ const MEMBERS_TAB_THRESHOLD = 1000;
 type View = 'matches' | 'board' | 'posts' | 'members';
 
 const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: 'matches', icon: '💃🕺', label: 'My Matches' },
+  { value: 'matches', icon: '💃', label: 'My Matches' },
   { value: 'board',   icon: '📣',   label: 'Community Board' },
   { value: 'posts',   icon: '📝',   label: 'My Posts' },
   { value: 'members', icon: '👥',   label: 'Members' },
