@@ -17,6 +17,7 @@ export const calendarNavigation = [];
 export const communityNavigation = [
   { id: "overview", name: "Overview", path: "/comm" },
   { id: "events-meetups", name: "Events & MeetUps", path: "/comm/events-meetups" },
+  { id: "find-partner", name: "Find a Match", path: "/comm/find-partner" },
   { id: "live-rooms", name: "Live Rooms", path: "/comm/live-rooms" },
   { id: "media-hub", name: "Media Hub", path: "/comm/media-hub" },
   { id: "talk-to-vitana", name: "Talk to Vitana", path: "/comm/talk-to-vitana" },

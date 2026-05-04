@@ -1,5 +1,5 @@
 /**
- * E6 — Find a Partner: unified dance + fitness destination.
+ * E6 — Find a Match: unified dance + fitness destination.
  *
  * Single page with four sub-views switched via a pill-dropdown next to the
  * search box (mobile) or a SplitBar (desktop). Sub-view selected via
@@ -20,6 +20,9 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import StandardHeader from '@/components/StandardHeader';
+import AppLayout from '@/components/AppLayout';
+import SubNavigation from '@/components/SubNavigation';
+import { communityNavigation } from '@/config/navigation';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { SplitBar, SplitBarList, SplitBarTrigger } from '@/components/ui/split-bar';
@@ -50,10 +53,10 @@ const MEMBERS_TAB_THRESHOLD = 1000;
 type View = 'matches' | 'board' | 'posts' | 'members';
 
 const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: 'matches', icon: '💞', label: 'My Matches' },
-  { value: 'board',   icon: '📣', label: 'Community Board' },
-  { value: 'posts',   icon: '📝', label: 'My Posts' },
-  { value: 'members', icon: '👥', label: 'Members' },
+  { value: 'matches', icon: '💃🕺', label: 'My Matches' },
+  { value: 'board',   icon: '📣',   label: 'Community Board' },
+  { value: 'posts',   icon: '📝',   label: 'My Posts' },
+  { value: 'members', icon: '👥',   label: 'Members' },
 ];
 
 function viewMeta(v: View) {
@@ -183,11 +186,13 @@ export default function FindPartner() {
 
   return (
     <>
-      <SEO title="Find a Partner — Vitana" description="Find a dance or fitness partner in the Vitana community." />
+      <SEO title="Find a Match — Vitana" description="Find a dance or fitness match in the Vitana community." />
 
-      <div className="container mx-auto px-4 py-4 max-w-4xl">
+      <AppLayout>
+        {!isMobile && <SubNavigation items={communityNavigation} />}
+        <div className="container mx-auto px-4 py-4 max-w-4xl">
         <StandardHeader
-          title="Find a Partner"
+          title="Find a Match"
           description="Dance and fitness partners — matched by AI, ranked by fit."
         />
 
@@ -361,7 +366,8 @@ export default function FindPartner() {
             )
           )}
         </div>
-      </div>
+        </div>
+      </AppLayout>
 
       {/* Mobile sub-view picker sheet */}
       <Sheet open={pickerOpen} onOpenChange={setPickerOpen}>
