@@ -44,11 +44,12 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
 
       console.log('Saving profile data:', formData);
 
-      // Use upsert to create record if it doesn't exist, or update if it does
+      // The profiles row is created on signup so it always exists here.
+      // UPSERT would attempt an INSERT first and fail the profiles.vitana_id
+      // NOT NULL constraint because vitana_id isn't part of this payload.
       const { error, data } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: user.id,
+        .update({
           display_name: formData.displayName,
           handle: formData.handle,
           avatar_url: formData.avatarUrl,
@@ -56,9 +57,8 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
           avatar_offset_y: formData.avatarOffsetY,
           longevity_archetype: formData.longevityArchetype,
           updated_at: new Date().toISOString(),
-        }, {
-          onConflict: 'user_id'
         })
+        .eq('user_id', user.id)
         .select();
 
       if (error) {
