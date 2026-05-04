@@ -49,6 +49,11 @@ export interface IntentMatch {
   state: string;
   created_at: string;
   redacted?: boolean; // server-side flag for partner_seek pre-reveal
+  // E6 — counterparty profile fields (populated by gateway intent-match-enrich).
+  // null when redacted, when the counterparty is hidden, or when the field is unset.
+  partner_display_name?: string | null;
+  partner_avatar_url?: string | null;
+  partner_gender?: 'male' | 'female' | null;
 }
 
 export interface IntentCategory {
