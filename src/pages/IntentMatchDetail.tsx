@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +17,7 @@ import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 
 export default function IntentMatchDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [intent, setIntent] = useState<UserIntent | null>(null);
   const [matches, setMatches] = useState<IntentMatch[]>([]);
@@ -46,7 +47,8 @@ export default function IntentMatchDetail() {
     try {
       await closeIntent(id);
       toast({ title: "Intent closed" });
-      load();
+      // VTID-02719: jump straight to /intents/mine so the user sees the freed slot.
+      navigate("/intents/mine", { replace: true });
     } catch (err: any) {
       toast({ title: "Could not close", description: err?.message ?? "", variant: "destructive" });
     }

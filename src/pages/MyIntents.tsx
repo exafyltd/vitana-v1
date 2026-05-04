@@ -5,6 +5,8 @@
  * match count + a "View matches" link → IntentMatchDetail.
  */
 
+const PER_KIND_SLOT_CAP = 20; // VTID-02719: must mirror MATURE_MAX_OPEN_PER_KIND in gateway intent-throttle.ts
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
@@ -31,10 +33,14 @@ export default function MyIntents() {
   const [tab, setTab] = useState<IntentKind | "all">("all");
   const [composerOpen, setComposerOpen] = useState(false);
 
+  // VTID-02719: always filter to open so a closed intent disappears from the
+  // list as soon as the user returns from the detail page.
   const load = async () => {
     setLoading(true);
     try {
-      const result = await listMyIntents(tab === "all" ? {} : { kind: tab });
+      const filters: { kind?: IntentKind; status?: string } = { status: "open" };
+      if (tab !== "all") filters.kind = tab;
+      const result = await listMyIntents(filters);
       setIntents(result);
     } catch (err: any) {
       toast({ title: "Could not load intents", description: err?.message ?? "", variant: "destructive" });
@@ -51,6 +57,20 @@ export default function MyIntents() {
         <div>
           <h1 className="text-2xl font-semibold">My intents</h1>
           <p className="text-sm text-muted-foreground">Your open requests, listings, and partner searches.</p>
+          {!loading && (
+            tab === "all" ? (
+              <p className="text-xs text-muted-foreground mt-1">
+                {intents.length} open · up to {PER_KIND_SLOT_CAP} per category
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground mt-1">
+                {intents.length} of {PER_KIND_SLOT_CAP} slots used
+                {intents.length >= PER_KIND_SLOT_CAP && (
+                  <span className="ml-2 text-amber-700">— cap reached, close one to post a new {KIND_TABS.find(k => k.value === tab)?.label.toLowerCase()}</span>
+                )}
+              </p>
+            )
+          )}
         </div>
         <Button onClick={() => setComposerOpen(true)} size="sm">
           <Plus className="h-4 w-4 mr-1" /> New
