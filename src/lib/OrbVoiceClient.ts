@@ -12,7 +12,7 @@
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
-import { pinIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
+import { pinIOSLoudspeakerRoute, kickIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -508,6 +508,12 @@ export class OrbVoiceClient {
     if (!this._isReconnecting) return;
     this._isReconnecting = false;
     this.callbacks.onReconnectingChange?.(false);
+
+    // VTID-02715: re-assert the iOS loudspeaker route. iOS sometimes
+    // downgrades the audio session to earpiece during a brief connection
+    // blip; without this kick, Vitana resumes speaking through the small
+    // phone-call speaker (barely audible). Idempotent + iOS-only.
+    kickIOSLoudspeakerRoute();
 
     if (this._wasListeningBeforeReconnect) {
       this._wasListeningBeforeReconnect = false;
