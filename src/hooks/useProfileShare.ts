@@ -30,16 +30,21 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
   // the Maxina app instead of opening WhatsApp/Telegram's in-app browser.
   // Crawlers still get rich previews via the `vitanaland-og-proxy`
   // worker, which is bound to `vitanaland.com/profiles/*` and proxies the
-  // OG render through the gateway. When we have an avatar_url we append
-  // ?v=<hash(avatar_url)> so that WhatsApp/Facebook/Telegram invalidate
-  // their per-URL preview cache the moment the avatar changes — without
-  // busting cache on unrelated re-shares.
+  // OG render through the gateway.
+  //
+  // We ALWAYS append `?v=<hash>` — even when avatarUrl is null. WhatsApp/
+  // Facebook/Telegram cache previews per-URL for ~7d, and a profile that
+  // had no avatar at first-share would otherwise be permanently stuck on
+  // whatever the worker rendered that first time (often "no image" while
+  // the default-images bucket was 403'ing). Hashing `noavatar:<id>` gives
+  // those URLs a distinct, stable key that flips the moment an avatar is
+  // added, forcing a fresh scrape.
   const getShareUrl = useCallback(() => {
     const base = `https://vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
-    if (avatarUrl) {
-      return `${base}?v=${hashString(avatarUrl)}`;
-    }
-    return base;
+    const versionInput = avatarUrl && avatarUrl.length > 0
+      ? avatarUrl
+      : `noavatar:${profileId}`;
+    return `${base}?v=${hashString(versionInput)}`;
   }, [profileId, avatarUrl]);
 
   // Check if Web Share API is available
