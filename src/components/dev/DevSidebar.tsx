@@ -4,7 +4,7 @@ import { User } from "@supabase/supabase-js";
 import {
   Home, Satellite, Users, GitBranch, Database, 
   FileText, Globe, Workflow, Activity, Settings,
-  LogOut, ChevronRight, Search
+  LogOut, ChevronRight, Search, Tag
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -39,6 +39,8 @@ const DEV_NAV_ITEMS = [
   { title: "VTID Ledger", url: "/dev/vtid", icon: FileText },
   { title: "Gateway", url: "/dev/gateway", icon: Globe },
   { title: "CI/CD & Deploys", url: "/dev/cicd", icon: Workflow },
+  // R6: Releases — system-wide release matrix (per F1 placement is alongside CI/CD).
+  { title: "Releases", url: "/dev/releases", icon: Tag },
   { title: "Observability", url: "/dev/observability", icon: Activity },
   { title: "Settings", url: "/dev/settings", icon: Settings },
 ] as const;
