@@ -251,7 +251,6 @@ export default withScreenId(function Health() {
                   modes={healthModes}
                   activeMode={mobileTab}
                   onModeChange={(v) => setMobileTab(v as any)}
-                  variant="pastel"
                 />
                 <UniversalCalendarButton />
                 <Button
