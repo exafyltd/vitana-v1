@@ -50,6 +50,7 @@ import {
   kindColorClass,
   kindLabel,
 } from '@/lib/intentKind';
+import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
 
 interface FindPartnerMatchCardProps {
@@ -86,34 +87,6 @@ const VERTICAL_THEME: Record<
   },
 };
 
-function initialsFor(name: string | null | undefined): string {
-  if (!name) return '?';
-  return (
-    name
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((p) => p[0]?.toUpperCase())
-      .join('')
-      .slice(0, 2) || '?'
-  );
-}
-
-// Gender-aware DiceBear seed — same logic as IntentMatchCard so a user
-// keeps a consistent avatar across the app.
-function buildAvatarFallbackUrl(seed: string, gender: 'male' | 'female' | null): string {
-  const params = new URLSearchParams({ seed });
-  if (gender === 'male') {
-    params.set('topType', 'ShortHairShortFlat,ShortHairTheCaesar,ShortHairFrizzle,ShortHairShortCurly');
-    params.set('facialHairType', 'Default,BeardLight,BeardMedium');
-    params.set('clotheType', 'ShirtCrewNeck,Hoodie,GraphicShirt');
-  } else if (gender === 'female') {
-    params.set('topType', 'LongHairStraight,LongHairCurly,LongHairBob,LongHairCurvy,LongHairStraight2');
-    params.set('accessoriesType', 'Round,Sunglasses,Blank');
-    params.set('clotheType', 'BlazerShirt,Hoodie,ShirtVNeck');
-  }
-  return `https://api.dicebear.com/9.x/avataaars/svg?${params.toString()}`;
-}
-
 export function FindPartnerMatchCard({
   match,
   vertical,
@@ -131,13 +104,15 @@ export function FindPartnerMatchCard({
   const isPartnerSeek = match.kind_pairing.startsWith('partner_seek');
   const isRedacted = !counterpartyVid && (match.redacted || isPartnerSeek);
 
-  // Cover banner image — landscape. Distinct from the avatar.
-  const coverUrl = !isRedacted ? match.partner_match_cover_url ?? null : null;
-  const avatarUrl =
-    !isRedacted && counterpartyVid
-      ? match.partner_avatar_url ??
-        buildAvatarFallbackUrl(counterpartyVid, match.partner_gender ?? null)
-      : null;
+  // Cover banner is always a real photo: either the partner's
+  // uploaded cover, or a deterministic themed pick from the brand
+  // library (community-dance-group, wellness-yoga-nature, …) keyed
+  // on match_id so the same card keeps the same cover across renders.
+  const coverTheme: CoverTheme =
+    vertical === 'dance' ? 'dance' : vertical === 'fitness' ? 'fitness' : 'generic';
+  const coverUrl = !isRedacted
+    ? match.partner_match_cover_url ?? pickThemedCover(coverTheme, match.match_id)
+    : null;
 
   const displayName = match.partner_display_name ?? null;
   const handle = counterpartyVid;
@@ -295,30 +270,18 @@ export function FindPartnerMatchCard({
           </span>
         )}
 
-        {/* Bottom identity strip — name + handle ONLY (no intent line) */}
+        {/* Bottom identity strip — name + handle ONLY (no avatar pill, no intent line) */}
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white">
           {isRedacted ? (
             <h3 className="text-lg font-semibold leading-tight">Anonymous match</h3>
           ) : (
-            <div className="flex items-end gap-3">
-              {avatarUrl && !coverUrl && (
-                <div className="h-11 w-11 shrink-0 rounded-full bg-white/90 ring-2 ring-white/60 overflow-hidden flex items-center justify-center">
-                  <img src={avatarUrl} alt="" className="h-full w-full object-cover" loading="lazy" />
-                </div>
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold leading-tight truncate">
+                {displayName ?? (handle ? `@${handle}` : 'Member')}
+              </h3>
+              {displayName && handle && (
+                <p className="text-xs opacity-90 truncate">@{handle}</p>
               )}
-              {!avatarUrl && !coverUrl && (
-                <div className="h-11 w-11 shrink-0 rounded-full bg-white/30 ring-2 ring-white/40 flex items-center justify-center text-sm font-semibold">
-                  {initialsFor(displayName ?? handle)}
-                </div>
-              )}
-              <div className="min-w-0 flex-1">
-                <h3 className="text-lg font-semibold leading-tight truncate">
-                  {displayName ?? (handle ? `@${handle}` : 'Member')}
-                </h3>
-                {displayName && handle && (
-                  <p className="text-xs opacity-90 truncate">@{handle}</p>
-                )}
-              </div>
             </div>
           )}
         </div>
