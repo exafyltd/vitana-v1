@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, ExternalLink } from "lucide-react";
 import { CHANNEL_INFO } from "@/lib/campaign-templates";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface InlineChannelConnectorProps {
   open: boolean;
@@ -46,7 +47,7 @@ export function InlineChannelConnector({
 
   const handleConnectSocialMedia = async () => {
     if (!formData.url.trim()) {
-      toast.error("Please enter your profile URL");
+      notifyError('toasts.sharing.pleaseEnterYourProfileUrl');
       return;
     }
 
@@ -67,7 +68,7 @@ export function InlineChannelConnector({
       onOpenChange(false);
     } catch (error) {
       console.error("Connection error:", error);
-      toast.error("Failed to connect channel");
+      notifyError('toasts.sharing.failedConnectChannel');
     } finally {
       setLoading(false);
     }
@@ -78,25 +79,25 @@ export function InlineChannelConnector({
     try {
       if (channelKey === 'email') {
         if (!formData.email || !formData.senderName) {
-          toast.error("Please fill in all email fields");
+          notifyError('toasts.sharing.pleaseFillAllEmailFields');
           return;
         }
-        toast.success("Email configuration looks good! (Test email not sent in preview)");
+        notifySuccess('toasts.sharing.emailConfigurationLooksGoodTestEmail');
       } else if (channelKey === 'sms') {
         if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
-          toast.error("Please fill in all Twilio fields");
+          notifyError('toasts.sharing.pleaseFillAllTwilioFields');
           return;
         }
-        toast.success("Twilio configuration validated!");
+        notifySuccess('toasts.sharing.twilioConfigurationValidated');
       } else if (channelKey === 'whatsapp') {
         if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
-          toast.error("Please fill in all WhatsApp fields");
+          notifyError('toasts.sharing.pleaseFillAllWhatsappFields');
           return;
         }
-        toast.success("WhatsApp Business API configuration validated!");
+        notifySuccess('toasts.sharing.whatsappBusinessApiConfigurationValidated');
       }
     } catch (error) {
-      toast.error("Connection test failed");
+      notifyError('toasts.sharing.connectionTestFailed');
     } finally {
       setTesting(false);
     }
@@ -112,7 +113,7 @@ export function InlineChannelConnector({
       
       if (channelKey === 'email') {
         if (!formData.email || !formData.senderName) {
-          toast.error("Please fill in sender name and email");
+          notifyError('toasts.sharing.pleaseFillSenderNameEmail');
           setLoading(false);
           return;
         }
@@ -122,7 +123,7 @@ export function InlineChannelConnector({
         };
       } else if (channelKey === 'sms') {
         if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
-          toast.error("Please fill in all Twilio credentials");
+          notifyError('toasts.sharing.pleaseFillAllTwilioCredentials');
           setLoading(false);
           return;
         }
@@ -133,7 +134,7 @@ export function InlineChannelConnector({
         };
       } else if (channelKey === 'whatsapp') {
         if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
-          toast.error("Please fill in Meta API credentials");
+          notifyError('toasts.sharing.pleaseFillMetaApiCredentials');
           setLoading(false);
           return;
         }
@@ -157,7 +158,7 @@ export function InlineChannelConnector({
       onOpenChange(false);
     } catch (error) {
       console.error("Connection error:", error);
-      toast.error("Failed to connect channel");
+      notifyError('toasts.sharing.failedConnectChannel');
     } finally {
       setLoading(false);
     }

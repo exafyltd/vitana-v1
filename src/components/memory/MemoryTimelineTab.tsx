@@ -10,10 +10,10 @@ import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal
 import { horizontalCardsSLO } from "@/lib/horizontal-cards-slo";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { SCREEN_IDS } from "@/lib/screen-id";
-import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
 import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
@@ -44,12 +44,12 @@ export function MemoryTimelineTab() {
   // Action Handlers
   const handlePromoteToKnowledge = (itemId: string) => {
     console.log('[Memory] Promoting to knowledge:', itemId);
-    toast.success('Saved to knowledge base');
+    notifySuccess('toasts.memory.savedKnowledgeBase');
   };
 
   const handleDeleteActivity = (itemId: string) => {
     console.log('[Memory] Deleting activity:', itemId);
-    toast.success('Activity deleted');
+    notifySuccess('toasts.memory.activityDeleted');
   };
 
   const getAccentForSource = (source: string): string => {
@@ -290,19 +290,19 @@ export function MemoryTimelineTab() {
           prev ? { ...prev, mode: 'lightbox' } : null
         )}
         onAddToFavorites={() => {
-          toast.success('Added to favorites');
+          notifySuccess('toasts.memory.addedFavorites');
         }}
         onCopyLink={() => {
           if (photoViewState?.images[photoViewState.currentIndex]) {
             navigator.clipboard.writeText(photoViewState.images[photoViewState.currentIndex]);
-            toast.success('Link copied to clipboard');
+            notifySuccess('toasts.memory.linkCopiedClipboard');
           }
         }}
         onEdit={() => {
-          toast.info('Edit functionality coming soon');
+          notifyInfo('toasts.memory.editFunctionalityComingSoon');
         }}
         onDelete={() => {
-          toast.success('Photo deleted');
+          notifySuccess('toasts.memory.photoDeleted');
           setPhotoViewState(null);
         }}
       />

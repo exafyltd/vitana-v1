@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface UploadMetadata {
   title: string;
@@ -201,21 +202,12 @@ export const useVideoUpload = () => {
 
       setProgress(100);
 
-      toast({
-        title: 'Upload successful!',
-        description: customThumbnailUrl
-          ? 'Your video has been published.'
-          : 'Your video has been published — thumbnail will appear in a moment.',
-      });
+      notify('toasts.hooks.uploadSuccessful');
 
       return video;
     } catch (error: any) {
       console.error('Upload error:', error);
-      toast({
-        title: 'Upload failed',
-        description: error.message || 'Please try again',
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.uploadFailed');
       throw error;
     } finally {
       setIsUploading(false);

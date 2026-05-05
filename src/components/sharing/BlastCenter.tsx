@@ -22,7 +22,7 @@ import {
   Coins,
   Loader2,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import { useChannels, type DistributionChannel } from "@/hooks/useChannels";
@@ -30,6 +30,7 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
+import { notifyError } from '@/lib/i18n-toast';
 
 const CHANNEL_ICONS: Record<string, any> = {
   email: Mail,
@@ -68,11 +69,7 @@ export function BlastCenter() {
   const toggleChannel = (channelId: string) => {
     const channel = channels?.find((c) => c.id === channelId);
     if (!channel?.is_connected) {
-      toast({
-        title: "Channel not connected",
-        description: `Please connect this channel first.`,
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.channelNotConnected');
       return;
     }
 
@@ -89,29 +86,17 @@ export function BlastCenter() {
 
   const handleBlastNow = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to blast posts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogBlastPosts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
     if (selectedChannels.size === 0) {
-      toast({
-        title: "No channels selected",
-        description: "Please select at least one channel to distribute.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.noChannelsSelected', 'toasts.sharing.pleaseSelectAtLeastOneChannel');
       return;
     }
 
@@ -144,20 +129,12 @@ export function BlastCenter() {
 
   const handleSaveDraft = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to save drafts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogSaveDrafts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
@@ -179,29 +156,17 @@ export function BlastCenter() {
 
   const handleScheduleClick = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to schedule posts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogSchedulePosts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
     if (selectedChannels.size === 0) {
-      toast({
-        title: "No channels selected",
-        description: "Please select at least one channel.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.noChannelsSelected', 'toasts.sharing.pleaseSelectAtLeastOneChannel2');
       return;
     }
 

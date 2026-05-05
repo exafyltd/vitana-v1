@@ -12,9 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Flag } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { transitionMatch, declineMatch, type IntentMatch } from "@/lib/intentApi";
 import { DisputeModal } from "./DisputeModal";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface IntentMatchCardProps {
   match: IntentMatch;
@@ -76,10 +77,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
     try {
       const newState = perspective === "outgoing" ? "responded_by_a" : "responded_by_b";
       await transitionMatch(match.match_id, newState);
-      toast({ title: "Interest recorded", description: "If they're interested too, we'll connect you." });
+      notify('toasts.intents.interestRecorded', 'toasts.intents.ifTheyReInterestedTooWe');
       onAction?.();
     } catch (err: any) {
-      toast({ title: "Could not record interest", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotRecordInterest');
     } finally {
       setBusy(null);
     }
@@ -89,10 +90,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
     setBusy("decline");
     try {
       await declineMatch(match.match_id);
-      toast({ title: "Declined" });
+      notify('toasts.intents.declined');
       onAction?.();
     } catch (err: any) {
-      toast({ title: "Could not decline", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotDecline');
     } finally {
       setBusy(null);
     }

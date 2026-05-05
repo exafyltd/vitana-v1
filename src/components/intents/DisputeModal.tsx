@@ -18,8 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { raiseDispute, type DisputeReasonCategory } from "@/lib/intentApi";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface DisputeModalProps {
   open: boolean;
@@ -44,18 +45,18 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
 
   const submit = async () => {
     if (detail.trim().length < 10) {
-      toast({ title: "More detail needed", description: "Minimum 10 characters.", variant: "destructive" });
+      notifyError('toasts.intents.moreDetailNeeded', 'toasts.intents.minimum10Characters');
       return;
     }
     setSubmitting(true);
     try {
       await raiseDispute(matchId, category, detail.trim());
-      toast({ title: "Dispute raised", description: "Our support team will review and follow up." });
+      notify('toasts.intents.disputeRaised', 'toasts.intents.ourSupportTeamWillReviewFollow');
       setDetail("");
       onRaised?.();
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Could not raise dispute", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotRaiseDispute');
     } finally {
       setSubmitting(false);
     }

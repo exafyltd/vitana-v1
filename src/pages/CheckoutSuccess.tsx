@@ -7,7 +7,8 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { useCart } from "@/hooks/useCart";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
@@ -20,10 +21,7 @@ export default function CheckoutSuccess() {
     // Clear cart after successful checkout
     if (sessionId) {
       clearCart();
-      toast({
-        title: "Order confirmed!",
-        description: "Your payment was successful. Check your email for order details.",
-      });
+      notify('toasts.checkoutsuccess.orderConfirmed', 'toasts.checkoutsuccess.yourPaymentSuccessfulCheckYourEmail');
     }
   }, [sessionId]);
 

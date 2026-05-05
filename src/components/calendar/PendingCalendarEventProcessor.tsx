@@ -3,7 +3,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { listPendingSenderEvents, dequeueBySourceMessageId } from "@/lib/calendarPendingQueue";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 /**
  * Processes locally queued sender calendar events after the user signs in.
@@ -101,10 +102,7 @@ export default function PendingCalendarEventProcessor() {
         const processedCount = pending.length - remainingPending.length;
         
         if (processedCount > 0) {
-          toast({
-            title: 'Calendar Updated',
-            description: `Added ${processedCount} event${processedCount > 1 ? 's' : ''} to your calendar`,
-          });
+          notify('toasts.calendar.calendarUpdated');
 
           // Smart refresh - only if we actually processed events
           await fetchEvents();

@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -133,11 +134,7 @@ const generateImageUrl = (title: string, description: string) => {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast({
-        title: "Form Incomplete",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.formIncomplete', 'toasts.common.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -145,11 +142,7 @@ const generateImageUrl = (title: string, description: string) => {
     const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
     const now = new Date();
     if (selectedDateTime < now) {
-      toast({
-        title: "Invalid Date",
-        description: "You cannot create a meetup in the past. Please select a future date and time.",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.invalidDate', 'toasts.common.youCannotCreateMeetupPastPlease');
       return;
     }
 
@@ -203,11 +196,7 @@ const generateImageUrl = (title: string, description: string) => {
           uploadedImageUrl = pub.publicUrl;
         } catch (e) {
           console.error('Image upload failed:', e);
-          toast({
-            title: "Image upload failed",
-            description: "We’ll use an automatic fallback image.",
-            variant: "default",
-          });
+          notify('toasts.common.imageUploadFailed', 'toasts.common.weLlUseAutomaticFallbackImage');
         }
       }
 
@@ -226,10 +215,7 @@ const generateImageUrl = (title: string, description: string) => {
       const result = await createEvent(eventData);
       
       if (result.success) {
-        toast({
-          title: "Meetup Created!",
-          description: "Your meetup has been successfully created and will appear in the community.",
-        });
+        notify('toasts.common.meetupCreated', 'toasts.common.yourMeetupHasSuccessfullyCreatedWill');
         
         // Call the callback FIRST (before closing) to allow parent to handle event display
         if (onEventCreated && result.eventId) {
@@ -282,11 +268,7 @@ const generateImageUrl = (title: string, description: string) => {
           window.dispatchEvent(new PopStateEvent('popstate'));
         }
       } else {
-        toast({
-          title: "Error Creating Meetup",
-          description: "There was an issue creating your meetup. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.errorCreatingMeetup', 'toasts.common.thereIssueCreatingYourMeetupPlease');
       }
     } finally {
       setLoading(false);

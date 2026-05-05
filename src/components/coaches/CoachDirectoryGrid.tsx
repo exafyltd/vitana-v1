@@ -2,7 +2,8 @@ import { UserCheck } from "lucide-react";
 import { CoachCard } from "./CoachCard";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export function CoachDirectoryGrid() {
   const navigate = useNavigate();
@@ -11,11 +12,7 @@ export function CoachDirectoryGrid() {
 
   const handleBookCoach = (coachId: string, coachName: string) => {
     if (coachId.startsWith('demo-')) {
-      toast({
-        title: "📅 Booking started",
-        description: `Opening booking for ${coachName}...`,
-        duration: 3000,
-      });
+      notify('toasts.coaches.bookingStarted');
       return;
     }
     navigate(`/discover/doctors-coaches/${coachId}`);

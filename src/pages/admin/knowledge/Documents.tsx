@@ -53,6 +53,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
@@ -386,7 +387,7 @@ function SystemDocViewer({ id }: { id: string }) {
           .map((t) => t.trim())
           .filter(Boolean),
       });
-      toast.success("System doc updated — applies across all tenants");
+      notifySuccess('toasts.admin.systemDocUpdatedAppliesAcrossAll');
       setEditing(false);
       setConfirmOpen(false);
     } catch (err: any) {
@@ -579,7 +580,7 @@ function KbDocViewer({
           .map((t) => t.trim())
           .filter(Boolean),
       });
-      toast.success("Baseline doc updated — applies to all non-opted-out tenants");
+      notifySuccess('toasts.admin.baselineDocUpdatedAppliesAllNonoptedout');
       setEditing(false);
       setConfirmOpen(false);
       onOptoutChanged(); // refresh tree so title update shows
@@ -592,7 +593,7 @@ function KbDocViewer({
   async function handleDelete() {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success("Document deleted");
+      notifySuccess('toasts.admin.documentDeleted');
       onDeleted();
     } catch (err: any) {
       toast.error(err.message || "Failed to delete");
@@ -602,7 +603,7 @@ function KbDocViewer({
   async function handleReindex() {
     try {
       await reindexMutation.mutateAsync(id);
-      toast.success("Reindex triggered");
+      notifySuccess('toasts.admin.reindexTriggered');
     } catch (err: any) {
       toast.error(err.message || "Failed to reindex");
     }
@@ -796,7 +797,7 @@ function UploadCard({ onDone }: { onDone: () => void }) {
         body: body.trim() || undefined,
         topics: topics.split(",").map((t) => t.trim()).filter(Boolean),
       });
-      toast.success("Document created");
+      notifySuccess('toasts.admin.documentCreated');
       setTitle("");
       setBody("");
       setTopics("");

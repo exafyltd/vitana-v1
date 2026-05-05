@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useProfilePosts } from '@/hooks/useProfilePosts';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface MobileCreatePostSheetProps {
   open: boolean;
@@ -29,11 +30,11 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
     // Reset input so the same file can be re-selected
     e.target.value = '';
     if (!file.type.startsWith('image/')) {
-      toast({ title: 'Only images are allowed', variant: 'destructive' });
+      notifyError('toasts.profile.onlyImagesAllowed');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      toast({ title: 'Image must be under 10MB', variant: 'destructive' });
+      notifyError('toasts.profile.imageMustUnder10mb');
       return;
     }
     // Materialize into memory immediately to prevent Android file descriptor issues
@@ -45,7 +46,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       setImagePreview(URL.createObjectURL(materializedFile));
     } catch (err) {
       console.error('[PostUpload] Failed to read file:', err);
-      toast({ title: 'Could not read selected image', variant: 'destructive' });
+      notifyError('toasts.profile.couldNotReadSelectedImage');
     }
   };
 

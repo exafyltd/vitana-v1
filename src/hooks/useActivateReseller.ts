@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "./useTenant";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "./use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 /**
  * Hook to activate reseller capability for the current user.
@@ -40,11 +41,7 @@ export function useActivateReseller() {
     const { redirectAfter = true, showToast = true } = options || {};
 
     if (!session?.user?.id || !activeTenantId) {
-      toast({
-        title: "Error",
-        description: "You must be logged in to activate reseller mode.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.youMustLoggedActivateResellerMode');
       return false;
     }
 
@@ -76,10 +73,7 @@ export function useActivateReseller() {
         }
 
         if (showToast) {
-          toast({
-            title: "Reseller Mode Active",
-            description: "Your reseller dashboard is now available in My Business.",
-          });
+          notify('toasts.hooks.resellerModeActive', 'toasts.hooks.yourResellerDashboardNowAvailableMy');
         }
       } else {
         // Create new reseller profile
@@ -105,10 +99,7 @@ export function useActivateReseller() {
         }
 
         if (showToast) {
-          toast({
-            title: "Welcome, Reseller! 🎉",
-            description: "You can now promote events and earn commissions. Check out your Sell & Earn dashboard.",
-          });
+          notify('toasts.hooks.welcomeReseller', 'toasts.hooks.youCanNowPromoteEventsEarn');
         }
       }
 
@@ -123,11 +114,7 @@ export function useActivateReseller() {
       return true;
     } catch (error: any) {
       console.error("Error activating reseller:", error);
-      toast({
-        title: "Activation Failed",
-        description: error.message || "Failed to activate reseller mode. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.activationFailed');
       return false;
     } finally {
       setIsActivating(false);

@@ -34,7 +34,8 @@ import { isFeatureEnabled } from "@/lib/feature-flags";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -110,10 +111,7 @@ export default function AIFeed() {
                 newMap.delete(activityId);
                 return newMap;
               });
-              toast({
-                title: "Removed from Memory",
-                description: "Activity has been removed from your knowledge base.",
-              });
+              notify('toasts.home.removedFromMemory', 'toasts.home.activityHasRemovedFromYourKnowledge');
             }
           } else {
             // Save: create knowledge item with metadata
@@ -134,10 +132,7 @@ export default function AIFeed() {
                   if (data?.id) {
                     setSavedActivityIds(prev => new Map(prev).set(activityId, data.id));
                   }
-                  toast({
-                    title: "Saved to Memory",
-                    description: "Activity has been saved to your knowledge base.",
-                  });
+                  notify('toasts.home.savedMemory', 'toasts.home.activityHasSavedYourKnowledgeBase');
                 }
               }
             );

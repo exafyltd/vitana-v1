@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
+import { notify } from '@/lib/i18n-toast';
 
 interface ImportScreenListModalProps {
   open: boolean;
@@ -21,10 +22,7 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
   const [notes, setNotes] = useState("");
 
   const handleImport = () => {
-    toast({
-      title: "Screen list imported",
-      description: "Screen definitions have been imported successfully.",
-    });
+    notify('toasts.dev.screenListImported', 'toasts.dev.screenDefinitionsHaveImportedSuccessfully');
     onOpenChange(false);
     setImportFormat("");
     setSource("");

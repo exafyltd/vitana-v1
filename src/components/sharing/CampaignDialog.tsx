@@ -35,7 +35,7 @@ import type { AudienceData } from "@/types/audience";
 import { AudienceSelector } from "./AudienceSelector";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
-import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface CampaignDialogProps {
   open: boolean;
@@ -201,7 +201,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         coverImageUrl = publicUrl;
       } catch (error) {
         console.error('Image upload failed:', error);
-        toast.error("Failed to upload image");
+        notifyError('toasts.sharing.failedUploadImage');
         setUploadingImage(false);
         return null;
       } finally {
@@ -362,11 +362,11 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       } catch {
         // No draft posts to activate is fine
       }
-      toast.success("Campaign saved and activated!");
+      notifySuccess('toasts.sharing.campaignSavedActivated');
       handleClose();
     } catch (error) {
       console.error('Activation failed:', error);
-      toast.error("Failed to activate campaign");
+      notifyError('toasts.sharing.failedActivateCampaign');
     } finally {
       setIsActivating(false);
     }
@@ -533,11 +533,11 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                           const file = e.target.files?.[0];
                           if (file) {
                             if (!file.type.startsWith('image/')) {
-                              toast.error("Please select an image file");
+                              notifyError('toasts.sharing.pleaseSelectImageFile');
                               return;
                             }
                             if (file.size > 5 * 1024 * 1024) {
-                              toast.error("Image must be smaller than 5MB");
+                              notifyError('toasts.sharing.imageMustSmallerThan5mb');
                               return;
                             }
                             setSelectedImage(file);

@@ -78,6 +78,7 @@ import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
@@ -107,11 +108,7 @@ function ConnectedApps() {
       startYouTube.mutate(undefined, {
         onError: (err: unknown) => {
           const message = err instanceof Error ? err.message : String(err);
-          toast({
-            title: "Couldn't start YouTube sign-in",
-            description: message,
-            variant: "destructive",
-          });
+          notifyError('toasts.settings.couldnTStartYoutubeSignin');
         },
       });
       return;
@@ -119,11 +116,7 @@ function ConnectedApps() {
     startGoogle.mutate(undefined, {
       onError: (err: unknown) => {
         const message = err instanceof Error ? err.message : String(err);
-        toast({
-          title: "Couldn't start Google sign-in",
-          description: message,
-          variant: "destructive",
-        });
+        notifyError('toasts.settings.couldnTStartGoogleSignin');
       },
     });
   };
@@ -136,24 +129,14 @@ function ConnectedApps() {
     const provider = params.get("provider");
     if (connected === "google") {
       const username = params.get("username") || "";
-      toast({
-        title: "Google connected",
-        description: username
-          ? `Gmail, Calendar and Contacts are now linked to ${username}.`
-          : "Gmail, Calendar and Contacts are now linked.",
-      });
+      notify('toasts.settings.googleConnected');
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     } else if (connected === "youtube") {
       const username = params.get("username") || "";
-      toast({
-        title: "YouTube connected",
-        description: username
-          ? `YouTube and YouTube Music are now linked to ${username}.`
-          : "YouTube and YouTube Music are now linked.",
-      });
+      notify('toasts.settings.youtubeConnected');
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();

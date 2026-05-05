@@ -13,7 +13,7 @@ import {
 import { Download, Maximize2, Share2, X, MoreHorizontal, ChevronLeft, ChevronRight, Heart, Copy, Edit, Trash2, Flag } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 interface PhotoPeekPanelProps {
   open: boolean;
@@ -208,7 +208,7 @@ export function PhotoPeekPanel({
                 onCopyLink();
               } else if (image) {
                 navigator.clipboard.writeText(image);
-                toast.success("Link copied to clipboard");
+                notifySuccess('toasts.diary.linkCopiedClipboard');
               }
             }}>
               <Copy className="h-4 w-4 mr-2" />
@@ -223,7 +223,7 @@ export function PhotoPeekPanel({
                   // User cancelled or share not available
                 });
               } else {
-                toast.info("Sharing not available on this device");
+                notifyInfo('toasts.diary.sharingNotAvailableThisDevice');
               }
             }}>
               <Share2 className="h-4 w-4 mr-2" />

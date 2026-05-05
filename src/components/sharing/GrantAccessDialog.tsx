@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { notify } from '@/lib/i18n-toast';
 
 interface GrantAccessDialogProps {
   open: boolean;
@@ -33,10 +34,7 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Access granted",
-      description: `${permissionLevel} permission granted to ${entityEmail}`,
-    });
+    notify('toasts.sharing.accessGranted');
     setEntityEmail("");
     setPermissionLevel("");
     setExpirationDate("");

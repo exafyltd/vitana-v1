@@ -4,9 +4,10 @@ import { CheckCircle, Package, Gift, ShoppingBag, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
+import { notify } from '@/lib/i18n-toast';
 
 interface PackageItem {
   id: string;
@@ -64,10 +65,7 @@ const PackagePurchaseSuccess = () => {
         }
 
         setPurchase(data.purchase);
-        toast({
-          title: "Payment Confirmed!",
-          description: "Your package purchase was successful.",
-        });
+        notify('toasts.packagepurchasesuccess.paymentConfirmed', 'toasts.packagepurchasesuccess.yourPackagePurchaseSuccessful');
       } catch (err) {
         console.error("Verification error:", err);
         setError(err instanceof Error ? err.message : "Failed to verify payment");

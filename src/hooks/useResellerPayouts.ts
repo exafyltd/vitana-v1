@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useResellerProfile } from "./useResellerProfile";
 import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 export interface ResellerPayout {
   id: string;
@@ -102,7 +103,7 @@ export function useResellerPayouts() {
     },
     onError: (error) => {
       console.error("Payout request error:", error);
-      toast.error("Failed to request payout");
+      notifyError('toasts.hooks.failedRequestPayout');
     },
   });
 
@@ -128,11 +129,11 @@ export function useResellerPayouts() {
       queryClient.invalidateQueries({ queryKey: ["reseller-payouts"] });
       queryClient.invalidateQueries({ queryKey: ["reseller-attributed-sales"] });
       queryClient.invalidateQueries({ queryKey: ["user-wallet"] });
-      toast.success("Commission credited to wallet!");
+      notifySuccess('toasts.hooks.commissionCreditedWallet');
     },
     onError: (error) => {
       console.error("Credit payout error:", error);
-      toast.error("Failed to credit payout to wallet");
+      notifyError('toasts.hooks.failedCreditPayoutWallet');
     },
   });
 
@@ -190,7 +191,7 @@ export function useResellerPayouts() {
     },
     onError: (error) => {
       console.error("Transfer to wallet error:", error);
-      toast.error("Failed to transfer to wallet");
+      notifyError('toasts.hooks.failedTransferWallet');
     },
   });
 

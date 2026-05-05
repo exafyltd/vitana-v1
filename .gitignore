@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Codemod artifacts
+scripts/.codemod-*.manifest.json

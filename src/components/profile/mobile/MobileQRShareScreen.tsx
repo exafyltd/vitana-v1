@@ -7,6 +7,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useCallback } from "react";
 import { toast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface MobileQRShareScreenProps {
   isOpen: boolean;
@@ -46,7 +47,7 @@ export function MobileQRShareScreen({
       toast({ title: translate('qrShare.linkCopied', 'Link copied!') });
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast({ title: "Failed to copy", variant: "destructive" });
+      notifyError('toasts.profile.failedCopy');
     }
   }, [profileUrl, translate]);
 
@@ -60,7 +61,7 @@ export function MobileQRShareScreen({
         });
       } catch (e) {
         if ((e as Error).name !== "AbortError") {
-          toast({ title: "Share failed", variant: "destructive" });
+          notifyError('toasts.profile.shareFailed');
         }
       }
     }
@@ -88,7 +89,7 @@ export function MobileQRShareScreen({
           a.download = `${profileHandle || "profile"}-qr.png`;
           a.click();
           URL.revokeObjectURL(url);
-          toast({ title: "QR Code downloaded" });
+          notify('toasts.profile.qrCodeDownloaded2');
         }
       });
     };

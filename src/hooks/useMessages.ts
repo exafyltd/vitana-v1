@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 export interface Message {
   id: string;
@@ -256,11 +257,7 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
       return transformedMessage;
     } catch (error) {
       console.error('Error sending message:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to send message',
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedSendMessage');
       throw error;
     } finally {
       setSending(false);
@@ -316,11 +313,7 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
       return thread;
     } catch (error) {
       console.error('Error creating thread:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to create conversation',
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedCreateConversation');
       return null;
     }
   }, [toast, fetchThreads]);

@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { FolderOpen, Plus, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ManageCategoriesDialogProps {
   open: boolean;
@@ -38,11 +39,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) {
-      toast({
-        title: "Error",
-        description: "Category name is required",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.error', 'toasts.memory.categoryNameRequired');
       return;
     }
 
@@ -58,10 +55,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
     setNewCategoryName("");
     setNewCategoryEmoji("");
     
-    toast({
-      title: "Category Added",
-      description: `"${newCategoryName}" has been added successfully.`,
-    });
+    notify('toasts.memory.categoryAdded');
   };
 
   const handleDeleteCategory = (id: string, name: string) => {
@@ -70,10 +64,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
     }
 
     setCategories(categories.filter(cat => cat.id !== id));
-    toast({
-      title: "Category Deleted",
-      description: `"${name}" has been removed.`,
-    });
+    notify('toasts.memory.categoryDeleted');
   };
 
   return (
@@ -141,10 +132,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        toast({
-                          title: "Coming Soon",
-                          description: "Edit functionality will be available soon.",
-                        });
+                        notify('toasts.memory.comingSoon', 'toasts.memory.editFunctionalityWillAvailableSoon');
                       }}
                     >
                       <Edit2 className="w-4 h-4" />

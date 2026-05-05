@@ -31,6 +31,7 @@ import { scaleQuantity } from "@/lib/recipeUtils";
 import { toast } from "sonner";
 import { MacroRings } from "./MacroRings";
 import { CookModeFullScreen } from "./CookModeFullScreen";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 interface RecipeSheetProps {
   recipe: Recipe | null;
@@ -238,7 +239,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    onClick={() => toast.success('Added to shopping list')}
+                    onClick={() => notifySuccess('toasts.health.addedShoppingList')}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Add to List
@@ -369,7 +370,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.success('Recipe saved to favorites')}
+                onClick={() => notifySuccess('toasts.health.recipeSavedFavorites')}
               >
                 <Heart className="w-4 h-4" />
                 <span className="hidden sm:inline">Save</span>
@@ -378,7 +379,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.info('Finding similar recipes...')}
+                onClick={() => notifyInfo('toasts.health.findingSimilarRecipes')}
               >
                 <Repeat className="w-4 h-4" />
                 <span className="hidden sm:inline">Replace</span>
@@ -387,7 +388,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.success('Added to food diary')}
+                onClick={() => notifySuccess('toasts.health.addedFoodDiary')}
               >
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Diary</span>
@@ -395,7 +396,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               
               <Button 
                 className="flex-1 gap-2 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 hover:scale-[1.02] transition-all border-0"
-                onClick={() => toast.success('Added to shopping list')}
+                onClick={() => notifySuccess('toasts.health.addedShoppingList')}
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline">Shop</span>

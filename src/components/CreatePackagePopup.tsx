@@ -11,9 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Package, Calendar as CalendarIcon, Users, Shield, FileText } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { notify } from '@/lib/i18n-toast';
 
 interface CreatePackagePopupProps {
   isOpen: boolean;
@@ -66,10 +67,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
   };
 
   const handleSubmit = () => {
-    toast({
-      title: "Package Created! 📦",
-      description: `Your health data package "${formData.name}" has been created successfully.`
-    });
+    notify('toasts.common.packageCreated');
     onClose();
     // Reset form
     setFormData({ name: "", description: "", recipient: "", privacy: "healthcare-provider" });

@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
 import { UnifiedEventCard } from "@/types/community";
+import { notify } from '@/lib/i18n-toast';
 
 
 interface EventMatchCardProps {
@@ -82,11 +83,7 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
 
   const handleEventClick = (event: UnifiedEventCard) => {
     if (event.id.startsWith('demo-')) {
-      toast({
-        title: "✓ Event Selected",
-        description: `Viewing ${event.title}`,
-        duration: 2000,
-      });
+      notify('toasts.crossover.eventSelected');
       return;
     }
     navigate(`/community/events/${event.id}`);

@@ -30,7 +30,7 @@ import {
   Send
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
 import MakePaymentPopup from "@/components/payment/MakePaymentPopup";
@@ -38,6 +38,7 @@ import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
 import ExchangeAndSendPopup from "@/components/payment/ExchangeAndSendPopup";
 import { ExchangeRateDisplay } from "@/components/wallet/ExchangeRateDisplay";
 import { QuickExchangeWidget } from "@/components/wallet/QuickExchangeWidget";
+import { notify } from '@/lib/i18n-toast';
 
 interface Transaction {
   id: string;
@@ -126,17 +127,11 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   };
   
   const handleRedeem = () => {
-    toast({
-      title: "Redeem Points",
-      description: "Redemption options opening soon"
-    });
+    notify('toasts.common.redeemPoints', 'toasts.common.redemptionOptionsOpeningSoon');
   };
 
   const handleExportData = () => {
-    toast({
-      title: "Export Data",
-      description: "Preparing your data export..."
-    });
+    notify('toasts.common.exportData', 'toasts.common.preparingYourDataExport');
   };
 
   return (

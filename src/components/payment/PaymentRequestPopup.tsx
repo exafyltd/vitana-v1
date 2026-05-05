@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { CreditCard, Coins, DollarSign, Users, Send } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface PaymentRequestPopupProps {
   isOpen: boolean;
@@ -41,11 +42,7 @@ export default function PaymentRequestPopup({
 
   const handleSendRequest = async () => {
     if (!amount || !description) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAmountDescription');
       return;
     }
 
@@ -83,10 +80,7 @@ export default function PaymentRequestPopup({
         actionButtons
       );
 
-      toast({
-        title: "Payment Request Sent! 💸",
-        description: `Request for ${currency === 'credits' ? amount + ' credits' : '$' + amount} sent to ${recipient?.name || 'recipient'}`
-      });
+      notify('toasts.payment.paymentRequestSent');
 
       onClose();
       setAmount('');
@@ -94,11 +88,7 @@ export default function PaymentRequestPopup({
       setDueDate('');
     } catch (error) {
       console.error('Error sending payment request:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send payment request",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.error', 'toasts.payment.failedSendPaymentRequest');
     }
   };
 

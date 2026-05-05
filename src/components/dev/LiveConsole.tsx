@@ -17,6 +17,7 @@ import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw, Activity } from "lucide-react";
 import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
@@ -85,7 +86,7 @@ export default function LiveConsole() {
       .catch(err => {
         console.error("Failed to load history:", err);
         if (err.message?.includes("401")) {
-          toast({ title: "Session expired", description: "Please sign in." });
+          notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
         }
       });
   }, [filters]);
@@ -126,11 +127,7 @@ export default function LiveConsole() {
         // Only show disconnect toast if we were stable for >3s and not already in fallback
         if (timeSinceLastStatus > 3000 && !useFallback) {
           lastToastTimeRef.current = now;
-          toast({ 
-            title: "⚠️ Connection Lost", 
-            description: "Attempting to reconnect...",
-            variant: "destructive"
-          });
+          notifyError('toasts.dev.connectionLost', 'toasts.dev.attemptingReconnect');
         }
       } else {
         setSseFailCount(0);
@@ -143,10 +140,7 @@ export default function LiveConsole() {
         // 3. Not a fresh page load (lastStatusRef was set before)
         if (statusChanged && timeSinceLastStatus > 3000 && lastStatusRef.current !== null) {
           lastToastTimeRef.current = now;
-          toast({ 
-            title: "✅ Reconnected", 
-            description: "Live event stream restored" 
-          });
+          notify('toasts.dev.reconnected', 'toasts.dev.liveEventStreamRestored');
         }
       }
     },
@@ -154,11 +148,7 @@ export default function LiveConsole() {
       console.error('🔴 Max SSE retries exceeded, activating polling fallback');
       setUseFallback(true);
       setShowFallbackPrompt(false);
-      toast({ 
-        title: "⚠️ Connection Failed", 
-        description: "Switched to polling mode (5s refresh)",
-        variant: "destructive"
-      });
+      notifyError('toasts.dev.connectionFailed2', 'toasts.dev.switchedPollingMode5sRefresh');
     },
     onEvent: (ev: Event) => {
       eventCountRef.current++;
@@ -167,7 +157,7 @@ export default function LiveConsole() {
       } else {
         addEvents([ev]);
         if (ev.kind === "telemetry.smoke") {
-          toast({ title: "Smoke test received ✓", description: "Event arrived successfully" });
+          notify('toasts.dev.smokeTestReceived', 'toasts.dev.eventArrivedSuccessfully');
         }
       }
     }
@@ -224,7 +214,7 @@ export default function LiveConsole() {
         } catch (err) {
           console.error("Failed to load more events:", err);
           if (err.message?.includes("401")) {
-            toast({ title: "Session expired", description: "Please sign in." });
+            notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
           }
         }
       }
@@ -265,10 +255,7 @@ export default function LiveConsole() {
     // Retry backend health check
     backendStatus.retryAll();
     
-    toast({ 
-      title: "🔄 Reconnecting...", 
-      description: "Attempting to restore live connection" 
-    });
+    notify('toasts.dev.reconnecting', 'toasts.dev.attemptingRestoreLiveConnection');
   };
 
   const handleRunSmoke = async () => {
@@ -279,9 +266,9 @@ export default function LiveConsole() {
         mode: "cors",
         credentials: "include"
       });
-      toast({ title: "Smoke test sent ✓", description: "Waiting for event..." });
+      notify('toasts.dev.smokeTestSent', 'toasts.dev.waitingForEvent');
     } catch (err) {
-      toast({ title: "Failed to send smoke test", description: String(err), variant: "destructive" });
+      notifyError('toasts.dev.failedSendSmokeTest');
     }
   };
 

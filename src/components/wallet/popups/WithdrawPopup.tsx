@@ -23,6 +23,7 @@ import { ArrowDown, CreditCard, Building2, Clock, DollarSign, Loader2 } from "lu
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface WithdrawPopupProps {
   open: boolean;
@@ -67,11 +68,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
   const handleWithdraw = async () => {
     if (!withdrawAmount || !selectedMethod) {
-      toast({
-        title: "Missing Information",
-        description: "Please enter an amount and select a withdrawal method.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseEnterAmountSelectWithdrawalMethod');
       return;
     }
 
@@ -80,20 +77,12 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
     const totalCost = amount + (method?.fee || 0);
     
     if (amount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid withdrawal amount.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidWithdrawalAmount');
       return;
     }
 
     if (totalCost > usdBalance) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You need $${totalCost.toFixed(2)} (including fees) but only have $${usdBalance.toFixed(2)}.`,
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 
@@ -106,21 +95,14 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
       // Update balance (subtract the total cost including fees)
       await updateBalance('USD', totalCost, 'subtract');
       
-      toast({
-        title: "Withdrawal Initiated",
-        description: `$${amount.toFixed(2)} withdrawal to ${method?.name} has been initiated. ${method?.processingTime}`,
-      });
+      notify('toasts.wallet.withdrawalInitiated2');
       
       // Reset form and close
       setWithdrawAmount("");
       setSelectedMethod("");
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: "Withdrawal Failed",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.withdrawalFailed', 'toasts.wallet.somethingWentWrongPleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }

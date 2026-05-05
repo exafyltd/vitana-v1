@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Key, Eye, EyeOff, Shield, Plus, Trash2, Check } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface Credential {
   id: string;
@@ -50,11 +51,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
 
   const handleAddCredential = async () => {
     if (!newCredential.name || !newCredential.value) {
-      toast({
-        title: "Missing fields",
-        description: "Please provide both name and value",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.missingFields', 'toasts.admin.pleaseProvideBothNameValue');
       return;
     }
 
@@ -89,19 +86,12 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
       setNewCredential({ name: "", type: "api_key", value: "" });
       setShowDialog(false);
 
-      toast({
-        title: "Credential added",
-        description: "The credential has been securely stored"
-      });
+      notify('toasts.admin.credentialAdded', 'toasts.admin.credentialHasSecurelyStored');
 
       onCredentialAdded?.();
 
     } catch (error: any) {
-      toast({
-        title: "Failed to add credential",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.failedAddCredential');
     }
   };
 
@@ -119,17 +109,10 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
 
       setCredentials(credentials.filter(c => c.id !== credId));
 
-      toast({
-        title: "Credential deleted",
-        description: "The credential has been removed"
-      });
+      notify('toasts.admin.credentialDeleted', 'toasts.admin.credentialHasRemoved');
 
     } catch (error: any) {
-      toast({
-        title: "Failed to delete credential",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.failedDeleteCredential');
     }
   };
 

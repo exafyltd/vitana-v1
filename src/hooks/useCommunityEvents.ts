@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -196,19 +197,12 @@ export function useCommunityEvents() {
       });
       queryClient.invalidateQueries({ queryKey });
       
-      toast({
-        title: "Meetup Created! 🎉",
-        description: `${eventData.title} has been created successfully.`,
-      });
+      notify('toasts.hooks.meetupCreated');
 
       return { success: true, data, eventId: data.id };
     } catch (error) {
       console.error("Error creating event:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create meetup. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedCreateMeetupPleaseTryAgain');
       return { success: false, error };
     }
   };
@@ -256,19 +250,12 @@ export function useCommunityEvents() {
         }) || [];
       });
       
-      toast({
-        title: "Meetup Updated! ✏️",
-        description: `${eventData.title} has been updated successfully.`,
-      });
+      notify('toasts.hooks.meetupUpdated');
 
       return { success: true, data };
     } catch (error) {
       console.error("Error updating event:", error);
-      toast({
-        title: "Error",
-        description: "Failed to update meetup. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedUpdateMeetupPleaseTryAgain');
       return { success: false, error };
     }
   };

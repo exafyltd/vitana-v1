@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { Search, Loader2, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -75,7 +76,7 @@ export default function MarketplaceProducts() {
 
   const load = useCallback(async () => {
     if (!GATEWAY_URL) {
-      toast({ title: "Gateway URL not configured", variant: "destructive" });
+      notifyError('toasts.admin.gatewayUrlNotConfigured');
       setLoading(false);
       return;
     }
@@ -95,7 +96,7 @@ export default function MarketplaceProducts() {
       setSelected(new Set());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Load failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.loadFailed');
     } finally {
       setLoading(false);
     }
@@ -107,7 +108,7 @@ export default function MarketplaceProducts() {
 
   async function bulkAction(action: "hide" | "clear_review" | "flag_review" | "deactivate" | "reactivate") {
     if (selected.size === 0) {
-      toast({ title: "No products selected" });
+      notify('toasts.admin.noProductsSelected');
       return;
     }
     if (!GATEWAY_URL) return;
@@ -125,7 +126,7 @@ export default function MarketplaceProducts() {
       await load();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Bulk action failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.bulkActionFailed');
     } finally {
       setBusy(false);
     }

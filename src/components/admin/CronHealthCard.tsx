@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, AlertTriangle, CheckCircle, PlayCircle, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function CronHealthCard() {
   const [triggering, setTriggering] = useState(false);
@@ -22,17 +23,10 @@ export default function CronHealthCard() {
 
       if (error) throw error;
 
-      toast({
-        title: "✅ Manual trigger successful",
-        description: "Appointment reminder function has been executed",
-      });
+      notify('toasts.admin.manualTriggerSuccessful', 'toasts.admin.appointmentReminderFunctionHasExecuted');
     } catch (error) {
       console.error('Error triggering function:', error);
-      toast({
-        title: "❌ Trigger failed",
-        description: "Failed to execute reminder function",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.triggerFailed', 'toasts.admin.failedExecuteReminderFunction');
     } finally {
       setTriggering(false);
     }

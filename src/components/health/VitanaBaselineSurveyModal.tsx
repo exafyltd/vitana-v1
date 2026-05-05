@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Apple, Droplets, Dumbbell, Moon, Brain } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -125,18 +126,11 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
         const detail = json.detail ? ` — ${json.detail}` : "";
         throw new Error(`${json.error || "Submission failed"}${detail}`);
       }
-      toast({
-        title: "Your Vitana Index is live",
-        description: `Starting score: ${json.index?.score_total ?? "…"}. This is your Day-0 baseline.`,
-      });
+      notify('toasts.health.yourVitanaIndexLive');
       queryClient.invalidateQueries({ queryKey: ["vitana_index"] });
       setOpen(false);
     } catch (err: any) {
-      toast({
-        title: "Could not save your baseline",
-        description: (err.message || "Try again in a moment.").slice(0, 400),
-        variant: "destructive",
-      });
+      notifyError('toasts.health.couldNotSaveYourBaseline');
     } finally {
       setSubmitting(false);
     }

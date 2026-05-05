@@ -8,13 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { useWallet } from "@/hooks/useWallet";
 import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet, Search, Users } from "lucide-react";
 import { getCurrencyIcon } from "@/lib/currencies";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface MakePaymentPopupProps {
   isOpen: boolean;
@@ -75,29 +76,17 @@ export default function MakePaymentPopup({
 
   const handleMakePayment = async () => {
     if (!amount || !description) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAmountDescription');
       return;
     }
 
     if (!selectedRecipient) {
-      toast({
-        title: "No Recipient Selected",
-        description: "Please select who to send the payment to",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.noRecipientSelected', 'toasts.payment.pleaseSelectWhoSendPayment');
       return;
     }
 
     if (!canAfford()) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You don't have enough ${currency} to make this payment`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
@@ -135,11 +124,7 @@ export default function MakePaymentPopup({
         }
       );
 
-      toast({
-        title: "Payment Sent! ✅",
-        description: `${currency === 'CREDITS' ? amount + ' credits' : '$' + amount} sent to ${selectedRecipient.name}`,
-        duration: 5000
-      });
+      notify('toasts.payment.paymentSent');
 
       onClose();
       setAmount('');
@@ -148,11 +133,7 @@ export default function MakePaymentPopup({
       setSearchTerm('');
     } catch (error) {
       console.error('Error making payment:', error);
-      toast({
-        title: "Payment Failed",
-        description: "Failed to process payment. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.paymentFailed', 'toasts.payment.failedProcessPaymentPleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }

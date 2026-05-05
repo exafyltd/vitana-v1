@@ -17,6 +17,7 @@ import {
   Receipt
 } from 'lucide-react';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface PaymentMessageHandlerProps {
   message: any;
@@ -114,16 +115,9 @@ export function PaymentMessageHandler({
     setForceRefreshBalance(true);
     try {
       await refreshData();
-      toast({
-        title: "Balance Refreshed",
-        description: "Wallet balance has been updated",
-      });
+      notify('toasts.payment.balanceRefreshed', 'toasts.payment.walletBalanceHasUpdated');
     } catch (error) {
-      toast({
-        title: "Refresh Failed",
-        description: "Could not refresh balance. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.refreshFailed', 'toasts.payment.couldNotRefreshBalancePleaseTry');
     } finally {
       setForceRefreshBalance(false);
     }
@@ -134,11 +128,11 @@ export function PaymentMessageHandler({
 
     // Prevent duplicate processing
     if (paymentData?.status && paymentData.status !== 'pending') {
-      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      notify('toasts.payment.alreadyProcessed');
       return;
     }
     if (isLocked) {
-      toast({ title: "Already accepted", description: "This payment request was already accepted.", duration: 3000 });
+      notify('toasts.payment.alreadyAccepted', 'toasts.payment.thisPaymentRequestAlreadyAccepted');
       return;
     }
 
@@ -151,11 +145,7 @@ export function PaymentMessageHandler({
     const { amount, currency, description } = paymentData;
     
     // Show instant success feedback
-    toast({
-      title: "Payment Completed! ✅",
-      description: `${formatCurrency(amount, currency)} sent successfully`,
-      duration: 5000
-    });
+    notify('toasts.payment.paymentCompleted');
     
     // Send confirmation message immediately
     try {
@@ -201,11 +191,7 @@ export function PaymentMessageHandler({
       setIsCompleted(false); // Reset on error so user can retry
       setIsLocked(false);
       setLocalStorageItem('global', 'payments', `lock:${message.id}`, '0');
-      toast({
-        title: "Payment Failed",
-        description: (error && (error.message || error.toString())) || "Failed to process payment. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.paymentFailed');
     } finally {
       setIsProcessing(false);
     }
@@ -216,11 +202,11 @@ export function PaymentMessageHandler({
 
     // Prevent duplicate processing
     if (paymentData?.status && paymentData.status !== 'pending') {
-      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      notify('toasts.payment.alreadyProcessed');
       return;
     }
     if (isDeclined || isLocked) {
-      toast({ title: "Already processed", description: "This payment request has already been processed.", duration: 3000 });
+      notify('toasts.payment.alreadyProcessed', 'toasts.payment.thisPaymentRequestHasAlreadyProcessed');
       return;
     }
 
@@ -250,10 +236,7 @@ export function PaymentMessageHandler({
         content_data: { ...paymentData, status: 'declined' }
       });
 
-      toast({
-        title: "Payment Declined",
-        description: "Payment request has been declined",
-      });
+      notify('toasts.payment.paymentDeclined', 'toasts.payment.paymentRequestHasDeclined');
 
     } catch (error: any) {
       console.error('Payment decline error:', error);
@@ -262,11 +245,7 @@ export function PaymentMessageHandler({
       setIsLocked(false);
       setLocalStorageItem('global', 'payments', `declined:${message.id}`, '0');
       setLocalStorageItem('global', 'payments', `lock:${message.id}`, '0');
-      toast({
-        title: "Error",
-        description: error?.message || "Failed to decline payment",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.error');
     } finally {
       setIsProcessing(false);
     }
@@ -277,11 +256,11 @@ export function PaymentMessageHandler({
 
     // Prevent duplicate processing
     if (paymentData?.status && paymentData.status !== 'pending') {
-      toast({ title: "Already processed", description: `This request is ${paymentData.status}.`, duration: 3000 });
+      notify('toasts.payment.alreadyProcessed');
       return;
     }
     if (isLocked) {
-      toast({ title: "Already accepted", description: "This request was already accepted.", duration: 3000 });
+      notify('toasts.payment.alreadyAccepted', 'toasts.payment.thisRequestAlreadyAccepted');
       return;
     }
 
@@ -295,11 +274,7 @@ export function PaymentMessageHandler({
     
     // Show instant success feedback
     const convertedAmount = fromAmount * exchangeRate;
-    toast({
-      title: "Exchange & Send Successful! ✨",
-      description: `Converted and sent ${convertedAmount.toLocaleString()} ${toCurrency}`,
-      duration: 6000
-    });
+    notify('toasts.payment.exchangeSendSuccessful');
     
     // Send confirmation message immediately
     try {
@@ -328,11 +303,7 @@ export function PaymentMessageHandler({
       } = paymentData;
 
       if (!canAfford(originalAmount, originalCurrency)) {
-        toast({
-          title: "Insufficient Balance",
-          description: `You don't have enough ${originalCurrency} for this exchange`,
-          variant: "destructive"
-        });
+        notifyError('toasts.payment.insufficientBalance');
         return;
       }
 
@@ -373,21 +344,13 @@ export function PaymentMessageHandler({
           }
         );
 
-        toast({
-          title: "Exchange & Send Completed! ✨",
-          description: `Converted and sent ${formatCurrency(result.netAmount, exchangedCurrency)}`,
-          duration: 6000
-        });
+        notify('toasts.payment.exchangeSendCompleted');
       }
 
     } catch (error) {
       console.error('Exchange and send error:', error);
       setIsCompleted(false); // Reset on error so user can retry
-      toast({
-        title: "Transaction Failed",
-        description: error.message || "Failed to complete exchange and send",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.transactionFailed');
     } finally {
       setIsProcessing(false);
     }

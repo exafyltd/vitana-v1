@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface EventParticipation {
   eventId: string;
@@ -108,11 +109,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please log in to join events",
-          variant: "destructive"
-        });
+        notifyError('toasts.hooks.authenticationRequired', 'toasts.hooks.pleaseLogJoinEvents');
         return;
       }
 
@@ -155,10 +152,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
         queryClient.setQueryData(participationQueryKey, { isParticipating: false });
         setParticipantCount(prev => Math.max(0, prev - 1));
         
-        toast({
-          title: "Left Event",
-          description: "You've successfully left this event"
-        });
+        notify('toasts.hooks.leftEvent', 'toasts.hooks.youVeSuccessfullyLeftThisEvent');
       } else {
         // Join event - insert into global_event_participants
         const { error } = await supabase
@@ -208,20 +202,11 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
         queryClient.setQueryData(participationQueryKey, { isParticipating: true });
         setParticipantCount(prev => prev + 1);
         
-        toast({
-          title: "Joined Event! 🎉",
-          description: eventDetails 
-            ? "Event added to your VITANA Smart Calendar"
-            : "You've successfully joined this event"
-        });
+        notify('toasts.hooks.joinedEvent');
       }
     } catch (error: any) {
       console.error('Error toggling participation:', error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update participation",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.error');
     } finally {
       setLoading(false);
     }

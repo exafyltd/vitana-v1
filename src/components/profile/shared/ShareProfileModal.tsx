@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
 import { QRCodeSVG } from "qrcode.react";
-import { toast } from "@/hooks/use-toast";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
 import { XIcon } from "@/components/icons/XIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
@@ -19,6 +18,7 @@ import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { useTranslation } from "@/hooks/useTranslation";
+import { notify } from '@/lib/i18n-toast';
 
 export interface ConnectedPlatforms {
   linkedin?: boolean;
@@ -97,10 +97,7 @@ export function ShareProfileModal({
           a.download = `${profile.handle}-qr.png`;
           a.click();
           URL.revokeObjectURL(url);
-          toast({
-            title: "QR Code downloaded",
-            description: "QR code saved successfully"
-          });
+          notify('toasts.profile.qrCodeDownloaded2', 'toasts.profile.qrCodeSavedSuccessfully');
         }
       });
     };

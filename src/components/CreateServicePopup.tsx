@@ -23,10 +23,11 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useWallet } from "@/hooks/useWallet";
+import { notify } from '@/lib/i18n-toast';
 
 interface CreateServicePopupProps {
   isOpen: boolean;
@@ -126,10 +127,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
   };
 
   const handleSaveDraft = () => {
-    toast({
-      title: "Draft Saved ✨",
-      description: "Your service draft has been saved successfully."
-    });
+    notify('toasts.common.draftSaved', 'toasts.common.yourServiceDraftHasSavedSuccessfully');
     onClose();
   };
 
@@ -157,10 +155,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
       console.error('Error broadcasting service:', error);
     }
 
-    toast({
-      title: "Service Published! 🚀",
-      description: "Your service is now live and accepting bookings."
-    });
+    notify('toasts.common.servicePublished', 'toasts.common.yourServiceNowLiveAcceptingBookings');
     
     // Demo the booking flow
     setShowPaymentDemo(true);

@@ -15,10 +15,11 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -88,7 +89,7 @@ export default function MarketplaceOverview() {
       setData({ stats: json.stats, runs: json.recent_runs ?? [] });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Load failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.loadFailed');
     } finally {
       setLoading(false);
     }

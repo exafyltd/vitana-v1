@@ -43,6 +43,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Bell, Check, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 function formatTime(iso: string): string {
   try {
@@ -188,16 +189,16 @@ const Reminders: React.FC = () => {
   const handleCreate = async () => {
     const text = actionText.trim();
     if (!text) {
-      toast.error("Please enter what to remind you about");
+      notifyError('toasts.reminders.pleaseEnterWhatRemindYouAbout');
       return;
     }
     if (!whenLocal) {
-      toast.error("Please pick a time");
+      notifyError('toasts.reminders.pleasePickTime');
       return;
     }
     const fireAt = new Date(whenLocal);
     if (isNaN(fireAt.getTime())) {
-      toast.error("Invalid time");
+      notifyError('toasts.reminders.invalidTime');
       return;
     }
     try {
@@ -207,7 +208,7 @@ const Reminders: React.FC = () => {
         scheduled_for_iso: fireAt.toISOString(),
         description: description.trim() || undefined,
       });
-      toast.success("Reminder created");
+      notifySuccess('toasts.reminders.reminderCreated');
       setOpenCreate(false);
       setActionText("");
       setSpokenMessage("");
@@ -222,7 +223,7 @@ const Reminders: React.FC = () => {
     if (!confirmDelete) return;
     try {
       await deleteMut.mutateAsync(confirmDelete.id);
-      toast.success("Reminder deleted");
+      notifySuccess('toasts.reminders.reminderDeleted');
     } catch (err: any) {
       toast.error(err?.message || "Failed to delete reminder");
     } finally {
@@ -244,7 +245,7 @@ const Reminders: React.FC = () => {
   const handleComplete = async (r: ReminderRow) => {
     try {
       await completeMut.mutateAsync(r.id);
-      toast.success("Marked done");
+      notifySuccess('toasts.reminders.markedDone');
     } catch (err: any) {
       toast.error(err?.message || "Failed to mark done");
     }

@@ -55,6 +55,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import type { LiveRoom } from "./LiveRoomCard";
+import { notify } from '@/lib/i18n-toast';
 
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
@@ -143,15 +144,9 @@ export function LiveRoomDrawer({
 
     if (platform === "copy") {
       navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied",
-        description: "Room link copied to clipboard",
-      });
+      notify('toasts.liverooms.linkCopied', 'toasts.liverooms.roomLinkCopiedClipboard');
     } else {
-      toast({
-        title: "Share",
-        description: `Sharing to ${platform}`,
-      });
+      notify('toasts.liverooms.share');
     }
   };
 
@@ -172,16 +167,10 @@ export function LiveRoomDrawer({
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(room.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(room.description || "")}&location=Virtual`;
       window.open(url, "_blank");
     } else if (type === "apple" || type === "ics") {
-      toast({
-        title: "Calendar export",
-        description: "ICS file will be downloaded",
-      });
+      notify('toasts.liverooms.calendarExport', 'toasts.liverooms.icsFileWillDownloaded');
     }
 
-    toast({
-      title: "Opening calendar",
-      description: `Adding to ${type} calendar`,
-    });
+    notify('toasts.liverooms.openingCalendar');
   };
 
   const handleJoin = () => {

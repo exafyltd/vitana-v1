@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Linkedin } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface LinkedInImportDialogProps {
   open: boolean;
@@ -30,11 +31,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
 
   const handleImport = async () => {
     if (!linkedinUrl.trim()) {
-      toast({
-        title: "LinkedIn URL Required",
-        description: "Please enter your LinkedIn profile URL",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.linkedinUrlRequired', 'toasts.profile.pleaseEnterYourLinkedinProfileUrl');
       return;
     }
 
@@ -50,10 +47,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
 
       if (error) throw error;
 
-      toast({
-        title: "LinkedIn Data Imported",
-        description: "Your profile has been enriched with LinkedIn data",
-      });
+      notify('toasts.profile.linkedinDataImported', 'toasts.profile.yourProfileHasEnrichedWithLinkedin');
 
       onOpenChange(false);
       setLinkedinUrl("");
@@ -63,11 +57,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
       window.location.reload();
     } catch (error) {
       console.error('LinkedIn import error:', error);
-      toast({
-        title: "Import Failed",
-        description: error instanceof Error ? error.message : "Failed to import LinkedIn data",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.importFailed');
     } finally {
       setImporting(false);
     }

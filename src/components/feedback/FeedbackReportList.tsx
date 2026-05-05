@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   ResponsiveConfirmDialog,
   ResponsiveConfirmDialogAction,
@@ -16,6 +16,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface FeedbackReport {
   id: string;
@@ -103,9 +104,9 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
       if (error) throw error;
 
       queryClient.invalidateQueries({ queryKey: ['feedback-reports'], exact: false });
-      toast({ title: "Report deleted", description: "The feedback report has been removed." });
+      notify('toasts.feedback.reportDeleted', 'toasts.feedback.feedbackReportHasRemoved');
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete report. Please try again.", variant: "destructive" });
+      notifyError('toasts.feedback.error', 'toasts.feedback.failedDeleteReportPleaseTryAgain');
     } finally {
       setIsDeleting(false);
       setDeleteTarget(null);

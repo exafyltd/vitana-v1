@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sheet'
 import { supabase } from '@/integrations/supabase/client'
 import { useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface DiaryQuickEntryProps {
   open: boolean
@@ -52,7 +52,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        toast.error('Please sign in to save diary entries')
+        notifyError('toasts.diary.pleaseSignSaveDiaryEntries')
         return
       }
 
@@ -71,7 +71,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
 
       if (error) throw error
 
-      toast.success('Diary entry saved')
+      notifySuccess('toasts.diary.diaryEntrySaved')
 
       // Invalidate diary queries so lists update
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] })
@@ -92,7 +92,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
       onClose()
     } catch (error: any) {
       console.error('[DiaryQuickEntry] Save failed:', error)
-      toast.error('Failed to save diary entry')
+      notifyError('toasts.diary.failedSaveDiaryEntry')
     } finally {
       setIsSaving(false)
     }

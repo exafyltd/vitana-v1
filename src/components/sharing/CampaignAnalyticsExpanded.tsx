@@ -23,8 +23,8 @@ import { format } from "date-fns";
 import type { Campaign } from "@/hooks/useCampaigns";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { useCampaignAnalytics } from "@/hooks/useCampaignAnalytics";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 interface CampaignAnalyticsExpandedProps {
   campaign: Campaign;
@@ -172,7 +172,7 @@ export function CampaignAnalyticsExpanded({
     const csvContent = generateCSV(campaign, displayData);
     const filename = `campaign-analytics-${campaign.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     downloadCSV(csvContent, filename);
-    toast.success("Analytics report downloaded successfully");
+    notifySuccess('toasts.sharing.analyticsReportDownloadedSuccessfully');
   };
 
   const handleOpenFullDashboard = () => {

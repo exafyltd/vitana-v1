@@ -20,10 +20,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, ExternalLink, Share2, Megaphone, Check } from "lucide-react";
-import { toast } from "sonner";
 import { getResellerShareUrl } from "@/lib/shareUrl";
 import { useNavigate } from "react-router-dom";
 import { siWhatsapp, siInstagram } from "simple-icons";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface SellEventModalProps {
   open: boolean;
@@ -54,10 +54,10 @@ export function SellEventModal({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      toast.success("Link copied to clipboard!");
+      notifySuccess('toasts.reseller.linkCopiedClipboard');
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      toast.error("Failed to copy. Please select and copy manually.");
+      notifyError('toasts.reseller.failedCopyPleaseSelectCopyManually');
     }
   };
 
@@ -71,9 +71,9 @@ export function SellEventModal({
   const handleInstagramShare = () => {
     // Instagram doesn't support direct URL sharing, so we copy and inform user
     navigator.clipboard.writeText(shareUrl).then(() => {
-      toast.success("Link copied! Paste it in your Instagram bio or story.");
+      notifySuccess('toasts.reseller.linkCopiedPasteItYourInstagram');
     }).catch(() => {
-      toast.error("Failed to copy link.");
+      notifyError('toasts.reseller.failedCopyLink');
     });
   };
 

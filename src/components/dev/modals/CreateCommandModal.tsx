@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface CreateCommandModalProps {
   open: boolean;
@@ -25,7 +25,7 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
 
   const handleSubmit = async () => {
     if (!commandType || !targetVTID) {
-      toast.error("Please fill in all required fields");
+      notifyError('toasts.dev.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -34,7 +34,7 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    toast.success("Command created successfully");
+    notifySuccess('toasts.dev.commandCreatedSuccessfully');
     onOpenChange(false);
     onSuccess?.();
     

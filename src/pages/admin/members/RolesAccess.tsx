@@ -33,6 +33,7 @@ import {
 import { toast } from "sonner";
 import { useTenant } from "@/hooks/useTenant";
 import { useMembers, useGrantRole, useRevokeRole } from "@/hooks/useAdminMembers";
+import { notifyError } from '@/lib/i18n-toast';
 
 const TENANT_ADMIN_ROLES = ["community", "patient", "professional", "staff", "admin"];
 const SUPER_ADMIN_ROLES = [...TENANT_ADMIN_ROLES, "developer", "infra"];
@@ -75,7 +76,7 @@ export default function MembersRolesAccess() {
   async function handleRevoke(userId: string, role: string) {
     if (!activeTenantId) return;
     if (role === "community") {
-      toast.error("Cannot revoke the community role — it's the minimum.");
+      notifyError('toasts.admin.cannotRevokeCommunityRoleItS');
       return;
     }
     try {

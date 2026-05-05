@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface SpendCreditsPopupProps {
   open: boolean;
@@ -84,20 +85,12 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
     const amount = parseInt(customAmount);
     
     if (!amount || amount <= 0) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid amount",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.error', 'toasts.wallet.pleaseEnterValidAmount');
       return;
     }
 
     if (amount > creditsBalance) {
-      toast({
-        title: "Error", 
-        description: "Insufficient credits balance",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.error', 'toasts.wallet.insufficientCreditsBalance');
       return;
     }
 
@@ -106,23 +99,14 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
     try {
       await updateBalance('CREDITS', amount, 'subtract');
       
-      toast({
-        title: "Success",
-        description: selectedItem 
-          ? `Successfully purchased ${selectedItem.name}!` 
-          : `Successfully spent ${amount} credits!`
-      });
+      notify('toasts.wallet.success');
       
       onOpenChange(false);
       setSelectedItem(null);
       setCustomAmount('');
       setSelectedCategory(null);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to process spending. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.error', 'toasts.wallet.failedProcessSpendingPleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }

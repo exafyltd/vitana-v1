@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import { notify } from '@/lib/i18n-toast';
 
 interface BrandGuidelineDialogProps {
   open: boolean;
@@ -34,10 +35,7 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Brand guideline created",
-      description: `Guidelines for ${channel} have been saved.`,
-    });
+    notify('toasts.sharing.brandGuidelineCreated');
     setChannel("");
     setImageSpecs("");
     setBestTimes("");

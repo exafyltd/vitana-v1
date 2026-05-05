@@ -40,6 +40,7 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -236,10 +237,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         if (reward) toast.success(`+${reward} VTN earned!`);
         fetchRecommendations();
       } else {
-        toast.error("Could not complete task");
+        notifyError('toasts.common.couldNotCompleteTask');
       }
     } catch {
-      toast.error("Could not complete task");
+      notifyError('toasts.common.couldNotCompleteTask');
     } finally {
       setCompletingId(null);
     }

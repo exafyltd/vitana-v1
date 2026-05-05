@@ -13,6 +13,7 @@ import { VertexMediaPreview } from "@/components/vertex/VertexMediaPreview";
 import { VertexDebugConsole } from "@/components/vertex/VertexDebugConsole";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface LogEntry {
   timestamp: string;
@@ -452,11 +453,7 @@ export default function VertexTesting() {
       });
       
     } catch (error) {
-      toast({
-        title: "❌ Test Failed",
-        description: error instanceof Error ? error.message : "Unknown error",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.testFailed2');
     } finally {
       disconnect();
       setIsTestRunning(false);
@@ -472,10 +469,7 @@ export default function VertexTesting() {
     a.download = `vertex-debug-${new Date().toISOString()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({
-      title: "Logs Exported",
-      description: "Debug logs downloaded successfully",
-    });
+    notify('toasts.admin.logsExported', 'toasts.admin.debugLogsDownloadedSuccessfully');
   };
 
   const getTestIcon = (step: string) => {

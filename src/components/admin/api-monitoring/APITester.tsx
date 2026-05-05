@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { PlayCircle, Copy, Check, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface APITesterProps {
   integrationId?: string;
@@ -40,11 +41,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
       try {
         parsedHeaders = JSON.parse(headers);
       } catch (e) {
-        toast({
-          title: "Invalid headers",
-          description: "Headers must be valid JSON",
-          variant: "destructive"
-        });
+        notifyError('toasts.admin.invalidHeaders', 'toasts.admin.headersMustValidJson');
         setLoading(false);
         return;
       }
@@ -65,11 +62,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
         try {
           fetchOptions.body = JSON.stringify(JSON.parse(body));
         } catch (e) {
-          toast({
-            title: "Invalid request body",
-            description: "Body must be valid JSON",
-            variant: "destructive"
-          });
+          notifyError('toasts.admin.invalidRequestBody', 'toasts.admin.bodyMustValidJson');
           setLoading(false);
           return;
         }
@@ -122,11 +115,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
         stack: error.stack
       });
 
-      toast({
-        title: "Request failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.requestFailed');
 
       // Log error
       if (integrationId) {
@@ -146,10 +135,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
     navigator.clipboard.writeText(JSON.stringify(response, null, 2));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast({
-      title: "Copied",
-      description: "Response copied to clipboard"
-    });
+    notify('toasts.admin.copied', 'toasts.admin.responseCopiedClipboard');
   };
 
   const getStatusColor = (status: number) => {

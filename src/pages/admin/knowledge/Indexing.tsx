@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 import { useKBDocuments, useReindexKBDocument } from "@/hooks/useAdminKnowledge";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 const STATUS_ORDER = ["failed", "pending", "indexed"] as const;
 
@@ -32,7 +33,7 @@ export default function KnowledgeIndexing() {
   async function handleRetry(id: string) {
     try {
       await reindexMutation.mutateAsync(id);
-      toast.success("Reindex triggered");
+      notifySuccess('toasts.admin.reindexTriggered');
     } catch (err: any) {
       toast.error(err.message || "Reindex failed");
     }

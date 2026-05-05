@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Loader2, MessageCircle } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/context/AuthProvider";
 import { communityFetch } from "@/lib/community-gateway";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 export const REFERRAL_OPEN_EVENT = "referral:open";
 
@@ -79,10 +79,10 @@ export function InviteSheet() {
     try {
       await navigator.clipboard.writeText(link.url);
       setCopied(true);
-      toast.success("Invite link copied");
+      notifySuccess('toasts.common.inviteLinkCopied');
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Couldn't copy — please copy the link manually");
+      notifyError('toasts.common.couldnTCopyPleaseCopyLink');
     }
   };
 

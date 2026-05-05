@@ -14,6 +14,7 @@ import { Coins, TrendingUp, Shield, Loader2 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface StakeTokensPopupProps {
   open: boolean;
@@ -38,20 +39,12 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
 
   const handleStake = async (period: string, apy: string) => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid staking amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidStakingAmount');
       return;
     }
 
     if (parseFloat(stakeAmount) > vtnaBalance) {
-      toast({
-        title: '❌ Insufficient Balance',
-        description: 'You don\'t have enough VTNA tokens to stake',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance', 'toasts.wallet.youDonTHaveEnoughVtna');
       return;
     }
 
@@ -61,19 +54,12 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
       // Simulate staking by deducting from balance
       await updateBalance('VTNA', parseFloat(stakeAmount), 'subtract');
       
-      toast({
-        title: '✅ Tokens Staked Successfully!',
-        description: `Staked ${stakeAmount} VTNA for ${period} at ${apy} APY`,
-      });
+      notify('toasts.wallet.tokensStakedSuccessfully');
       
       onOpenChange(false);
       setStakeAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Staking Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.stakingFailed');
     } finally {
       setLoading(false);
     }

@@ -10,10 +10,11 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { getIntent, getIntentMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function IntentMatchDetail() {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +35,7 @@ export default function IntentMatchDetail() {
       setIntent(intentData);
       setMatches(matchesData);
     } catch (err: any) {
-      toast({ title: "Could not load match detail", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentmatchdetail.couldNotLoadMatchDetail');
     } finally {
       setLoading(false);
     }
@@ -46,11 +47,11 @@ export default function IntentMatchDetail() {
     if (!id || !intent) return;
     try {
       await closeIntent(id);
-      toast({ title: "Intent closed" });
+      notify('toasts.intentmatchdetail.intentClosed');
       // VTID-02719: jump straight to /intents/mine so the user sees the freed slot.
       navigate("/intents/mine", { replace: true });
     } catch (err: any) {
-      toast({ title: "Could not close", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentmatchdetail.couldNotClose');
     }
   };
 

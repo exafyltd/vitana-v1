@@ -44,6 +44,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -212,11 +213,7 @@ export default function LiveRooms() {
 
   const handleJoinRoom = (roomId: string) => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to join live rooms",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
       return;
     }
 
@@ -224,11 +221,7 @@ export default function LiveRooms() {
     const room = [...liveRooms, ...scheduledRooms].find(r => r.id === roomId);
     
     if (!room) {
-      toast({
-        title: "Room not found",
-        description: "This live room no longer exists",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.roomNotFound', 'toasts.community.thisLiveRoomNoLongerExists');
       return;
     }
 
@@ -264,10 +257,7 @@ export default function LiveRooms() {
 
   const handleEditRoom = async () => {
     // Edit mode removed in session-based architecture
-    toast({
-      title: "Not yet supported",
-      description: "Editing sessions will be available soon",
-    });
+    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
@@ -277,30 +267,20 @@ export default function LiveRooms() {
     try {
       console.log('Attempting to delete stream:', idToDelete);
       await deleteStream(idToDelete);
-      toast({
-        title: "Stream deleted",
-        description: "Your live stream has been deleted",
-      });
+      notify('toasts.community.streamDeleted', 'toasts.community.yourLiveStreamHasDeleted');
       setDeleteConfirmRoomId(null);
       if (selectedRoomId === idToDelete) {
         handleDrawerClose();
       }
     } catch (error) {
       console.error('Delete stream error:', error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete stream",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.error');
     }
   };
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    toast({
-      title: "Not yet supported",
-      description: "Editing sessions will be available soon",
-    });
+    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {

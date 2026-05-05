@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePodcastFavorite } from "@/hooks/usePodcastFavorite";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { format, isToday, isThisWeek, isThisYear } from "date-fns";
 import { useAuth } from "@/context/AuthProvider";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import { notify } from '@/lib/i18n-toast';
 
 interface PodcastCardProps {
   id: string;
@@ -91,11 +92,7 @@ export function PodcastCard({
     } else {
       // Fallback to clipboard
       await navigator.clipboard.writeText(shareData.url);
-      toast({
-        title: "Link copied",
-        description: "Podcast link copied to clipboard",
-        duration: 2000,
-      });
+      notify('toasts.crossover.linkCopied', 'toasts.crossover.podcastLinkCopiedClipboard');
     }
   };
 

@@ -7,9 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
+import { notify } from '@/lib/i18n-toast';
 
 interface PeopleMatch {
   user_id: string;
@@ -128,11 +129,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const handleChatClick = (match: PeopleMatch) => {
     // Check if it's a demo user (DiceBear avatar URLs or demo- prefix)
     if (match.user_id.startsWith('demo-') || match.avatar_url?.includes('dicebear.com')) {
-      toast({
-        title: "💬 Chat started",
-        description: `Opening conversation with ${match.display_name}...`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.chatStarted');
       return;
     }
     

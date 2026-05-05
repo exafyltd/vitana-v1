@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useProfile } from '@/context/ProfileProvider';
 import { useAuth } from '@/context/AuthProvider';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface GrowthAction {
   id: string;
@@ -148,17 +149,10 @@ export function useProactiveGrowth() {
           break;
       }
 
-      toast({
-        title: 'Great choice!',
-        description: action.benefit
-      });
+      notify('toasts.hooks.greatChoice');
     } catch (error) {
       console.error('Error executing growth action:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to execute action',
-        variant: 'destructive'
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedExecuteAction');
     }
   }, [actions, user?.id, toast]);
 

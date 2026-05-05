@@ -8,7 +8,8 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@/components/ui/button";
 import { Download, Share2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface QRCodeModalProps {
   isOpen: boolean;
@@ -36,10 +37,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
         document.body.removeChild(downloadLink);
         URL.revokeObjectURL(svgUrl);
         
-        toast({
-          title: "QR Code Downloaded",
-          description: "Your Vitana ID QR code has been saved.",
-        });
+        notify('toasts.profile.qrCodeDownloaded', 'toasts.profile.yourVitanaIdQrCodeHas');
       }
     }
   };

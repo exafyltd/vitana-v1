@@ -13,6 +13,7 @@ import { CheckCircle, XCircle, Flag, Eye, Calendar, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -63,7 +64,7 @@ const EventsModeration = () => {
       setEvents(data || []);
     } catch (error) {
       console.error('Error fetching events:', error);
-      toast.error('Failed to load events');
+      notifyError('toasts.admin.failedLoadEvents');
     } finally {
       setLoading(false);
     }
@@ -85,7 +86,7 @@ const EventsModeration = () => {
       fetchEvents();
     } catch (error) {
       console.error('Error moderating event:', error);
-      toast.error('Failed to moderate event');
+      notifyError('toasts.admin.failedModerateEvent');
     }
   };
 

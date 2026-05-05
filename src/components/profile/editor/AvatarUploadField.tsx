@@ -3,9 +3,10 @@ import { Upload, X, Move } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { AvatarPositioner } from "./AvatarPositioner";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface AvatarUploadValue {
   url: string;
@@ -51,21 +52,12 @@ export function AvatarUploadField({
       fileExt === "heif";
 
     if (isHeic) {
-      toast({
-        title: "Upload failed",
-        description:
-          "HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.uploadFailed', 'toasts.profile.heicheifFormatNotSupportedByBrowsers');
       return;
     }
 
     if (!file.type.startsWith("image/") || !ALLOWED_EXTS.includes(fileExt)) {
-      toast({
-        title: "Upload failed",
-        description: `Unsupported image format (.${fileExt}). Please use JPG, PNG, GIF, or WebP.`,
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.uploadFailed');
       return;
     }
 
@@ -93,17 +85,10 @@ export function AvatarUploadField({
       } = supabase.storage.from("avatars").getPublicUrl(fileName);
 
       onChange({ url: publicUrl, offsetX: 50, offsetY: 50 });
-      toast({
-        title: "Avatar uploaded",
-        description: "Reposition the image if needed.",
-      });
+      notify('toasts.profile.avatarUploaded', 'toasts.profile.repositionImageIfNeeded');
       setShowPositioner(true);
     } catch (error: any) {
-      toast({
-        title: "Upload failed",
-        description: error?.message ?? "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.uploadFailed');
     } finally {
       setUploading(false);
     }

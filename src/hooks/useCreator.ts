@@ -6,6 +6,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 // VTID-01230: No fallback to prod - fail loudly if missing
 const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE;
@@ -108,11 +109,7 @@ export function useCreatorOnboard() {
       window.location.href = onboardingUrl;
     },
     onError: (error: Error) => {
-      toast({
-        title: 'Onboarding failed',
-        description: error.message,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.onboardingFailed');
     },
   });
 }
@@ -148,11 +145,7 @@ export function useCreatorDashboard() {
       window.open(dashboardUrl, '_blank');
     },
     onError: (error: Error) => {
-      toast({
-        title: 'Dashboard unavailable',
-        description: error.message,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.dashboardUnavailable');
     },
   });
 }

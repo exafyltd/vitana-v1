@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail, MessageSquare, Copy, Check, Link2, Share2 } from "lucide-react";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { siWhatsapp, siViber } from "simple-icons";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 interface PersonalShareButtonsProps {
   shareUrl: string;
@@ -46,7 +46,7 @@ export function PersonalShareButtons({
     const checkTimer = setTimeout(() => {
       if (!hasOpened) {
         navigator.clipboard.writeText(fullMessage);
-        toast.info("Message copied – paste it into Viber");
+        notifyInfo('toasts.sharing.messageCopiedPasteItIntoViber');
       }
     }, 1500);
     
@@ -77,7 +77,7 @@ export function PersonalShareButtons({
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
-    toast.success("Link copied to clipboard");
+    notifySuccess('toasts.sharing.linkCopiedClipboard');
     setTimeout(() => setCopied(false), 2000);
   };
 

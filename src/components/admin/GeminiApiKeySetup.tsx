@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, Copy, ExternalLink, AlertCircle, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function GeminiApiKeySetup() {
   const [apiKey, setApiKey] = useState("");
@@ -14,20 +15,12 @@ export function GeminiApiKeySetup() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied",
-      description: "Text copied to clipboard",
-      duration: 2000,
-    });
+    notify('toasts.admin.copied', 'toasts.admin.textCopiedClipboard');
   };
 
   const testConnection = async () => {
     if (!apiKey.trim()) {
-      toast({
-        title: "API Key Required",
-        description: "Please enter your Gemini API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.apiKeyRequired', 'toasts.admin.pleaseEnterYourGeminiApiKey');
       return;
     }
 
@@ -42,25 +35,14 @@ export function GeminiApiKeySetup() {
 
       if (response.ok) {
         setTestResult("success");
-        toast({
-          title: "API Key Valid",
-          description: "Your Gemini API key is working correctly",
-        });
+        notify('toasts.admin.apiKeyValid', 'toasts.admin.yourGeminiApiKeyWorkingCorrectly');
       } else {
         setTestResult("error");
-        toast({
-          title: "Invalid API Key",
-          description: "The API key could not be verified",
-          variant: "destructive",
-        });
+        notifyError('toasts.admin.invalidApiKey', 'toasts.admin.apiKeyCouldNotVerified');
       }
     } catch (error) {
       setTestResult("error");
-      toast({
-        title: "Connection Error",
-        description: "Failed to test API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.connectionError', 'toasts.admin.failedTestApiKey');
     } finally {
       setIsTesting(false);
     }

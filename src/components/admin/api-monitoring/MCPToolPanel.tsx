@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Server, PlayCircle, Code, FileJson, AlertCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface MCPTool {
   name: string;
@@ -57,11 +58,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
         );
         
         if (missing.length > 0) {
-          toast({
-            title: "Missing required parameters",
-            description: `Please provide: ${missing.join(", ")}`,
-            variant: "destructive"
-          });
+          notifyError('toasts.admin.missingRequiredParameters');
           setExecuting(null);
           return;
         }
@@ -80,17 +77,10 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
         [tool.name]: result
       }));
 
-      toast({
-        title: "Tool executed successfully",
-        description: `${tool.name} completed`
-      });
+      notify('toasts.admin.toolExecutedSuccessfully');
 
     } catch (error: any) {
-      toast({
-        title: "Tool execution failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.toolExecutionFailed');
       
       setToolResults(prev => ({
         ...prev,

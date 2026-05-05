@@ -9,7 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
 import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   ResponsiveConfirmDialog,
   ResponsiveConfirmDialogAction,
@@ -20,6 +20,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
@@ -113,9 +114,9 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       if (error) throw error;
       
       queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
-      toast({ title: "Entry deleted", description: "The diary entry has been removed." });
+      notify('toasts.diary.entryDeleted', 'toasts.diary.diaryEntryHasRemoved');
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete entry. Please try again.", variant: "destructive" });
+      notifyError('toasts.diary.error', 'toasts.diary.failedDeleteEntryPleaseTryAgain');
     } finally {
       setIsDeleting(false);
       setDeleteTarget(null);

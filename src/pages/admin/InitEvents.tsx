@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle, XCircle, Copy } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 const SQL_SCRIPT = `INSERT INTO public.global_community_events (title, description, event_type, location, virtual_link, start_time, end_time, max_participants, participant_count, image_url, created_by, metadata) 
 VALUES
@@ -57,10 +58,7 @@ export default function InitEvents() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(SQL_SCRIPT);
     setCopied(true);
-    toast({
-      title: "Copied!",
-      description: "SQL script copied to clipboard",
-    });
+    notify('toasts.admin.copied2', 'toasts.admin.sqlScriptCopiedClipboard');
     setTimeout(() => setCopied(false), 2000);
   };
 

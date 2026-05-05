@@ -5,7 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Archive } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface ArchiveSettingsDialogProps {
   open: boolean;
@@ -19,10 +20,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
   const [showArchivedInViews, setShowArchivedInViews] = useState(true);
 
   const handleSave = () => {
-    toast({
-      title: "Settings Saved",
-      description: "Archive settings have been updated successfully.",
-    });
+    notify('toasts.memory.settingsSaved', 'toasts.memory.archiveSettingsHaveUpdatedSuccessfully');
     onOpenChange(false);
   };
 

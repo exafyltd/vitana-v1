@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Zap, ChevronRight, Sparkles } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/context/AuthProvider";
 import { communityFetch } from "@/lib/community-gateway";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
@@ -17,6 +16,7 @@ import { projectDays, trend7d } from "@/lib/vitana-projection";
 import { nextTier, pointsToNextTier } from "@/lib/vitanaIndex";
 import { bucketFromWaveId } from "@/lib/horizonBuckets";
 import type { ContributionVector } from "@/types/autopilot";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
@@ -200,20 +200,20 @@ export function JourneyCheckpoints({
         { method: "POST" },
       );
       if (!res.ok) {
-        toast.error("Couldn't start that yet — open Autopilot to try again.");
+        notifyError('toasts.health.couldnTStartThatYetOpen');
         onOpenAutopilot();
         return;
       }
       const json = await res.json();
       if (json?.ok) {
-        toast.success("Activated — find it in Autopilot when you're ready.");
+        notifySuccess('toasts.health.activatedFindItAutopilotWhenYou');
         onActivated?.();
         onOpenAutopilot();
       } else {
         onOpenAutopilot();
       }
     } catch {
-      toast.error("Network hiccup — open Autopilot to try again.");
+      notifyError('toasts.health.networkHiccupOpenAutopilotTryAgain');
       onOpenAutopilot();
     } finally {
       setStartingId(null);

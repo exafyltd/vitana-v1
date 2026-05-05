@@ -25,7 +25,8 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { HorizontalVisualCardsScroll } from "@/components/ui/horizontal-visual-cards-scroll";
 import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
 import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -40,18 +41,12 @@ export default function Actions() {
 
   const handleExecuteAction = async (actionId: string) => {
     await executeActions([actionId]);
-    toast({
-      title: "Action Executed",
-      description: "Your action has been completed successfully.",
-    });
+    notify('toasts.home.actionExecuted', 'toasts.home.yourActionHasCompletedSuccessfully');
   };
 
   const handleDismissAction = (actionId: string) => {
     dismissActions([actionId]);
-    toast({
-      title: "Action Dismissed",
-      description: "This action has been removed from your list.",
-    });
+    notify('toasts.home.actionDismissed', 'toasts.home.thisActionHasRemovedFromYour');
   };
 
   const getCategoryIcon = (category: AutopilotCategory) => {

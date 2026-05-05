@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
 import { useWallet } from "@/hooks/useWallet";
@@ -26,6 +26,7 @@ import {
   ArrowRight,
   DollarSign
 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface BookingPaymentFlowProps {
   isOpen: boolean;
@@ -119,21 +120,13 @@ export default function BookingPaymentFlow({
   const handleConfirmBooking = async () => {
     // Validate date and time are selected
     if (!selectedDate || !selectedTime) {
-      toast({
-        title: "Missing Information",
-        description: "Please select a date and time for your booking",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseSelectDateTimeForYour');
       return;
     }
 
     if (!canAfford()) {
       const currencyLabel = paymentMethod === 'cash' ? 'USD' : paymentMethod.toUpperCase();
-      toast({
-        title: "Insufficient Balance",
-        description: `You need ${formatCurrency(getRequiredAmount(currencyLabel as any), currencyLabel)} to complete this booking`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
@@ -187,10 +180,7 @@ export default function BookingPaymentFlow({
           throw new Error("Please allow popups to complete payment");
         }
 
-        toast({
-          title: "Redirecting to Payment",
-          description: "Complete your payment in the popup window",
-        });
+        notify('toasts.payment.redirectingPayment', 'toasts.payment.completeYourPaymentPopupWindow');
 
         setIsProcessing(false);
         onClose();
@@ -255,21 +245,14 @@ export default function BookingPaymentFlow({
           ? ` Converted ${formatCurrency(amountPaid, currencyUsed)} to $${booking.price} USD.`
           : '';
 
-        toast({
-          title: "Booking Confirmed! 🎉",
-          description: `Your ${booking.type} has been booked and payment processed.${conversionMsg}`
-        });
+        notify('toasts.payment.bookingConfirmed');
 
         setIsProcessing(false);
         onClose();
       }
     } catch (error) {
       console.error('Booking error:', error);
-      toast({
-        title: "Booking Failed",
-        description: error.message || "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.bookingFailed');
       setIsProcessing(false);
     }
   };

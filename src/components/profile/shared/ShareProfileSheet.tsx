@@ -1,7 +1,8 @@
 import { QrCode, Share2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ShareProfileSheetProps {
   isOpen: boolean;
@@ -45,17 +46,10 @@ export function ShareProfileSheet({
 
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast({
-        title: "Link copied",
-        description: "Share it anywhere you like.",
-      });
+      notify('toasts.profile.linkCopied', 'toasts.profile.shareItAnywhereYouLike');
       onOpenChange(false);
     } catch {
-      toast({
-        title: "Could not share",
-        description: "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.couldNotShare', 'toasts.profile.pleaseTryAgain');
     }
   };
 

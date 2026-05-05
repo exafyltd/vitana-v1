@@ -3,8 +3,9 @@ import { Target, TrendingUp, Zap, ArrowUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from "react";
+import { notify } from '@/lib/i18n-toast';
 
 interface CompatibilityCardProps {
   className?: string;
@@ -42,11 +43,7 @@ function CompatibilityCardBase({ className }: CompatibilityCardProps) {
   }, [overallScore]);
 
   const handleImproveScore = () => {
-    toast({
-      title: "🎯 Smart nudges added",
-      description: "Added 2 optimized actions to your Actions tab.",
-      duration: 3000,
-    });
+    notify('toasts.crossover.smartNudgesAdded', 'toasts.crossover.added2OptimizedActionsYourActions');
   };
 
   const content = (

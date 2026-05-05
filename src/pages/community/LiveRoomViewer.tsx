@@ -26,6 +26,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -91,11 +92,11 @@ export default function LiveRoomViewer() {
         .from('community_live_streams')
         .update({ status: 'ended', ended_at: new Date().toISOString() })
         .eq('id', id);
-      toast({ title: 'Room ended', description: 'Your session has ended' });
+      notify('toasts.community.roomEnded', 'toasts.community.yourSessionHasEnded');
       navigate('/comm/live-rooms');
     } catch (err) {
       console.error('[EndRoom] Fallback also failed:', err);
-      toast({ title: 'Failed to end room', variant: 'destructive' });
+      notifyError('toasts.community.failedEndRoom');
     }
   };
 
@@ -145,11 +146,7 @@ export default function LiveRoomViewer() {
   // Redirect if no proper state
   useEffect(() => {
     if (!effectiveUserId) {
-      toast({
-        title: "Invalid access",
-        description: "Please sign in to join live rooms",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.invalidAccess', 'toasts.community.pleaseSignJoinLiveRooms');
       navigate('/comm/live-rooms');
     }
   }, [effectiveUserId, navigate, toast]);
@@ -165,10 +162,7 @@ export default function LiveRoomViewer() {
           endRoomFallback(roomId);
         },
       });
-      toast({
-        title: "Stream Ended",
-        description: "Your live stream has ended",
-      });
+      notify('toasts.community.streamEnded', 'toasts.community.yourLiveStreamHasEnded');
     }
     navigate('/comm/live-rooms');
   };
@@ -315,7 +309,7 @@ export default function LiveRoomViewer() {
                       }}
                       onError={(err) => {
                         console.error('[Daily] Error:', err);
-                        toast({ title: 'Video error', description: err, variant: 'destructive' });
+                        notifyError('toasts.community.videoError');
                       }}
                     />
                   ) : (

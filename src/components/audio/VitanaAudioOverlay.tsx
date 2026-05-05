@@ -18,10 +18,10 @@ import { AutopilotPopup } from '@/components/AutopilotPopup';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
-import { toast } from 'sonner';
 import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
 import { useAIConsent } from '@/hooks/useAIConsent';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 export function VitanaAudioOverlay() {
   const { 
@@ -200,16 +200,16 @@ export function VitanaAudioOverlay() {
         setConfig(prev => ({ ...prev, enableCamera: false }));
         stopCapture();
         setCameraActive(false);
-        toast.success('Camera stopped');
+        notifySuccess('toasts.audio.cameraStopped');
       } else {
         setConfig(prev => ({ ...prev, enableCamera: true, enableScreen: false }));
         await startCapture();
         setCameraActive(true);
-        toast.success('Camera started');
+        notifySuccess('toasts.audio.cameraStarted');
       }
     } catch (error) {
       console.error('Camera toggle error:', error);
-      toast.error('Failed to toggle camera');
+      notifyError('toasts.audio.failedToggleCamera');
     }
   };
 
@@ -219,16 +219,16 @@ export function VitanaAudioOverlay() {
         setConfig(prev => ({ ...prev, enableScreen: false }));
         stopCapture();
         setScreenShareActive(false);
-        toast.success('Screen sharing stopped');
+        notifySuccess('toasts.audio.screenSharingStopped');
       } else {
         setConfig(prev => ({ ...prev, enableScreen: true, enableCamera: false }));
         await startCapture();
         setScreenShareActive(true);
-        toast.success('Screen sharing started');
+        notifySuccess('toasts.audio.screenSharingStarted');
       }
     } catch (error) {
       console.error('Screen share toggle error:', error);
-      toast.error('Failed to toggle screen sharing');
+      notifyError('toasts.audio.failedToggleScreenSharing');
     }
   };
 

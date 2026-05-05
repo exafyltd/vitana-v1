@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { liveRoomService, type MyRoomResponse, type CreateSessionRequest, type RoomStateResponse } from '@/services/liveRoomService';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function useMyRoom() {
   const { user } = useAuth();
@@ -55,11 +56,7 @@ export function useCreateSession() {
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
     },
     onError: (error: Error) => {
-      toast({
-        title: 'Failed to create session',
-        description: error.message,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.failedCreateSession');
     },
   });
 }
@@ -71,7 +68,7 @@ export function useEndRoom() {
   return useMutation({
     mutationFn: (roomId: string) => liveRoomService.endRoom(roomId),
     onSuccess: (_data, roomId) => {
-      toast({ title: 'Room ended', description: 'Your session has ended' });
+      notify('toasts.hooks.roomEnded', 'toasts.hooks.yourSessionHasEnded');
       // Gateway handles DB cleanup (current_session_id + community_live_streams)
       // Removed redundant direct DB writes that caused deadlock (40P01)
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
@@ -79,7 +76,7 @@ export function useEndRoom() {
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to end room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedEndRoom');
     },
   });
 }
@@ -95,13 +92,13 @@ export function useCancelRoom() {
       return liveRoomService.cancelRoom(roomId, user.id);
     },
     onSuccess: () => {
-      toast({ title: 'Session cancelled' });
+      notify('toasts.hooks.sessionCancelled');
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to cancel', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedCancel');
     },
   });
 }

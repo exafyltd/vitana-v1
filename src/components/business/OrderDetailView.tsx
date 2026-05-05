@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { TicketOrder } from "@/hooks/useOrderManagement";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { toast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface OrderDetailViewProps {
   order: TicketOrder;
@@ -28,27 +28,17 @@ interface OrderDetailViewProps {
 export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) {
   const handlePrintTickets = () => {
     // TODO: Implement print functionality
-    toast({
-      title: "Print Tickets",
-      description: "Ticket printing will be available soon.",
-    });
+    notify('toasts.business.printTickets', 'toasts.business.ticketPrintingWillAvailableSoon');
   };
 
   const handleResendConfirmation = () => {
     // TODO: Implement resend email
-    toast({
-      title: "Confirmation Sent",
-      description: `Confirmation email sent to ${order.buyer_email}`,
-    });
+    notify('toasts.business.confirmationSent');
   };
 
   const handleRefund = () => {
     // TODO: Implement refund flow
-    toast({
-      title: "Refund",
-      description: "Refund functionality will be available soon.",
-      variant: "destructive",
-    });
+    notifyError('toasts.business.refund', 'toasts.business.refundFunctionalityWillAvailableSoon');
   };
 
   return (

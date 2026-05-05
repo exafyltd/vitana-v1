@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 interface Props {
   effectiveConfig: Record<string, unknown>;
@@ -86,7 +87,7 @@ export default function CompanionFieldsSection({
     }
     try {
       await onSave(parsed);
-      toast.success("Companion overrides saved — voice cache refreshes within 30s.");
+      notifySuccess('toasts.admin.companionOverridesSavedVoiceCacheRefreshes');
       setJsonOpen(false);
     } catch (err: any) {
       toast.error(err.message || "Save failed");

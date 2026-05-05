@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
 import { UnifiedEventCard, UnifiedGroupCard } from "@/types/community";
 import { GroupImageCard } from "@/components/groups/GroupImageCard";
 import { transformGroupRecommendationToCard } from "@/lib/groupCardTransformers";
+import { notify } from '@/lib/i18n-toast';
 
 interface GroupMatchCardProps {
   className?: string;
@@ -142,11 +143,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
   const handleJoinGroup = (group: UnifiedGroupCard) => {
     if (group.id.startsWith('demo-')) {
-      toast({
-        title: "✓ Joined",
-        description: `You're now part of ${group.name}!`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.joined');
       return;
     }
     navigate(`/comm/groups/${group.id}`);
@@ -154,11 +151,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
   const handleEventClick = (event: UnifiedEventCard) => {
     if (event.id.startsWith('demo-')) {
-      toast({
-        title: "✓ Event Selected",
-        description: `Viewing ${event.title}`,
-        duration: 2000,
-      });
+      notify('toasts.crossover.eventSelected');
       return;
     }
     navigate(`/community/events/${event.id}`);

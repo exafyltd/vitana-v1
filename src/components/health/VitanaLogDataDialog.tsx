@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -81,7 +82,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
   const handleSubmit = async () => {
     const numericValue = Number(value);
     if (!Number.isFinite(numericValue)) {
-      toast({ title: "Enter a number", variant: "destructive" });
+      notifyError('toasts.health.enterNumber');
       return;
     }
     setSubmitting(true);
@@ -105,21 +106,14 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
       if (!res.ok || !json.ok) {
         throw new Error(json.detail || json.error || "Log failed");
       }
-      toast({
-        title: "Logged — your Index is recomputing",
-        description: `${PILLAR_LABELS[pillar]} · ${selected.label}: ${numericValue} ${selected.unit}`,
-      });
+      notify('toasts.health.loggedYourIndexRecomputing');
       // Invalidate Index + agent queries so the badge + Detail refresh.
       queryClient.invalidateQueries({ queryKey: ["vitana_index"] });
       queryClient.invalidateQueries({ queryKey: ["pillar_agents_outputs"] });
       setValue("");
       onOpenChange(false);
     } catch (err: any) {
-      toast({
-        title: "Could not save",
-        description: (err.message || "Try again in a moment.").slice(0, 300),
-        variant: "destructive",
-      });
+      notifyError('toasts.health.couldNotSave');
     } finally {
       setSubmitting(false);
     }

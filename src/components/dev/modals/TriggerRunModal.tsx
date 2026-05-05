@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface TriggerRunModalProps {
   open: boolean;
@@ -23,7 +23,7 @@ export function TriggerRunModal({ open, onOpenChange, onSuccess }: TriggerRunMod
 
   const handleSubmit = async () => {
     if (!template || !runName) {
-      toast.error("Please fill in all required fields");
+      notifyError('toasts.dev.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -32,7 +32,7 @@ export function TriggerRunModal({ open, onOpenChange, onSuccess }: TriggerRunMod
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    toast.success("Autopilot run triggered successfully");
+    notifySuccess('toasts.dev.autopilotRunTriggeredSuccessfully');
     onOpenChange(false);
     onSuccess?.();
     

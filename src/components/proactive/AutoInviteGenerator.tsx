@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Sparkles, Copy, Send, RefreshCw } from "lucide-react";
 import { useProfile } from '@/context/ProfileProvider';
+import { notify } from '@/lib/i18n-toast';
 
 const inviteTemplates = [
   {
@@ -37,19 +38,13 @@ export function AutoInviteGenerator() {
     setTimeout(() => {
       setMessage(generated);
       setGenerating(false);
-      toast({
-        title: "Message Generated!",
-        description: "Feel free to customize it before sending"
-      });
+      notify('toasts.proactive.messageGenerated', 'toasts.proactive.feelFreeCustomizeItBeforeSending');
     }, 1000);
   };
 
   const copyMessage = () => {
     navigator.clipboard.writeText(message);
-    toast({
-      title: "Copied!",
-      description: "Invitation message copied to clipboard"
-    });
+    notify('toasts.proactive.copied', 'toasts.proactive.invitationMessageCopiedClipboard');
   };
 
   return (

@@ -8,7 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface ActiveVTIDChipProps {
   showClear?: boolean;
@@ -20,17 +21,11 @@ export function ActiveVTIDChip({ showClear = true, className = "" }: ActiveVTIDC
   const { toast } = useToast();
 
   const handleCreateNew = () => {
-    toast({
-      title: "Create VTID",
-      description: "VTID creation will be available in Phase 2",
-    });
+    notify('toasts.dev.createVtid', 'toasts.dev.vtidCreationWillAvailablePhase2');
   };
 
   const handleSelect = () => {
-    toast({
-      title: "Select VTID",
-      description: "VTID selection will be available in Phase 2",
-    });
+    notify('toasts.dev.selectVtid', 'toasts.dev.vtidSelectionWillAvailablePhase2');
   };
 
   if (!activeVTID) {

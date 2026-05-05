@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface VitanaPersona {
   id: string;
@@ -121,17 +122,17 @@ export function VitanaConfigDrawer({ onClose }: Props) {
   const saveForward = async () => {
     try {
       await forwardMutation.mutateAsync(forwardPhrases);
-      toast({ title: "Forward triggers saved", description: `${forwardPhrases.length} phrases.` });
+      notify('toasts.admin.forwardTriggersSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
   const saveStayInline = async () => {
     try {
       await stayInlineMutation.mutateAsync(stayInlinePhrases);
-      toast({ title: "Stay-inline overrides saved", description: `${stayInlinePhrases.length} phrases.` });
+      notify('toasts.admin.stayinlineOverridesSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
@@ -148,7 +149,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       const body = await res.json();
       setTestResult(body);
     } catch (err) {
-      toast({ title: "Test failed", description: err instanceof Error ? err.message : "Network error", variant: "destructive" });
+      notifyError('toasts.admin.testFailed');
     } finally {
       setTestRunning(false);
     }

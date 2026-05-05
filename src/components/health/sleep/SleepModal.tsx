@@ -21,7 +21,7 @@ import {
   Bed
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 interface SleepModalProps {
   data: DailySleepData | null;
@@ -238,7 +238,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             <Button 
               variant="outline" 
               className="flex-1 gap-2"
-              onClick={() => toast.info('Sleep insights opened')}
+              onClick={() => notifyInfo('toasts.health.sleepInsightsOpened')}
             >
               <TrendingUp className="w-4 h-4" />
               View Trends
@@ -247,7 +247,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             <Button 
               className="flex-1 gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 
                 hover:from-indigo-600 hover:to-purple-600"
-              onClick={() => toast.success('Sleep data logged! 🌙')}
+              onClick={() => notifySuccess('toasts.health.sleepDataLogged')}
             >
               <Sparkles className="w-4 h-4" />
               Log Sleep

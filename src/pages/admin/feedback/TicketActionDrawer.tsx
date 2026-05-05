@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface IntakeMessage {
   agent?: string;
@@ -424,7 +425,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       const friendly = raw === "ALREADY_DISPATCHED"
         ? "This ticket is already running in dev autopilot. Reclassify is locked once dispatched."
         : raw;
-      toast({ title: "Reclassify failed", description: friendly, variant: "destructive" });
+      notifyError('toasts.admin.reclassifyFailed');
     },
   });
 
@@ -460,11 +461,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     },
     onError: (err: unknown) => {
-      toast({
-        title: "Generate spec failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.generateSpecFailed');
     },
   });
 
@@ -522,7 +519,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         : raw === "ALREADY_IN_PROGRESS"
           ? "This ticket is already running. The autopilot will close it when done."
           : raw;
-      toast({ title: "Activate failed", description: friendly, variant: "destructive" });
+      notifyError('toasts.admin.activateFailed');
     },
   });
 
@@ -542,11 +539,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       onClose();
     },
     onError: (err: unknown) => {
-      toast({
-        title: "Reject failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.rejectFailed');
     },
   });
 

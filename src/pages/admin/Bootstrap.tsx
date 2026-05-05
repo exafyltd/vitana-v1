@@ -11,9 +11,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { adminSystemNavigation } from "@/config/navigation";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface BootstrapResult {
   email: string;
@@ -69,17 +70,10 @@ export default function Bootstrap() {
       if (error) throw error;
 
       setCurrentAdmins(data.admins || []);
-      toast({
-        title: "Admins loaded",
-        description: `Found ${data.admins?.length || 0} super administrators`,
-      });
+      notify('toasts.admin.adminsLoaded');
     } catch (error) {
       console.error('Error loading admins:', error);
-      toast({
-        title: "Error loading admins",
-        description: "Failed to load current administrators",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.errorLoadingAdmins', 'toasts.admin.failedLoadCurrentAdministrators');
     } finally {
       setLoadingAdmins(false);
     }
@@ -93,20 +87,13 @@ export default function Bootstrap() {
 
       if (error) throw error;
 
-      toast({
-        title: "Admin removed",
-        description: `${email} is no longer a super administrator`,
-      });
+      notify('toasts.admin.adminRemoved');
 
       // Reload the admin list
       await loadCurrentAdmins();
     } catch (error) {
       console.error('Error removing admin:', error);
-      toast({
-        title: "Error removing admin",
-        description: error instanceof Error ? error.message : "Failed to remove administrator",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.errorRemovingAdmin');
     }
   };
 
@@ -117,20 +104,12 @@ export default function Bootstrap() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (!emailRegex.test(email)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.invalidEmail', 'toasts.admin.pleaseEnterValidEmailAddress');
       return;
     }
 
     if (adminEmails.includes(email)) {
-      toast({
-        title: "Email already added",
-        description: "This email is already in the list",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.emailAlreadyAdded', 'toasts.admin.thisEmailAlreadyList');
       return;
     }
 
@@ -144,11 +123,7 @@ export default function Bootstrap() {
 
   const runBootstrap = async () => {
     if (adminEmails.length === 0) {
-      toast({
-        title: "No emails to process",
-        description: "Please add at least one email address",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.noEmailsProcess', 'toasts.admin.pleaseAddAtLeastOneEmail');
       return;
     }
 
@@ -167,10 +142,7 @@ export default function Bootstrap() {
       // Show success notification
       const successful = data.results?.filter((r: BootstrapResult) => r.status === 'elevated').length || 0;
       if (successful > 0) {
-        toast({
-          title: "Bootstrap completed",
-          description: `Successfully elevated ${successful} user(s) to admin`,
-        });
+        notify('toasts.admin.bootstrapCompleted');
       }
 
       // Reload current admins
@@ -181,11 +153,7 @@ export default function Bootstrap() {
       
     } catch (error) {
       console.error('Bootstrap error:', error);
-      toast({
-        title: "Bootstrap failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.bootstrapFailed');
     } finally {
       setIsLoading(false);
       setShowConfirmDialog(false);

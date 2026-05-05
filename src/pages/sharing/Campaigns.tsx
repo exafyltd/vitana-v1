@@ -18,6 +18,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Plus, FileText, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 export default withScreenId(function Campaigns() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
@@ -114,11 +115,11 @@ export default withScreenId(function Campaigns() {
     link.click();
     URL.revokeObjectURL(url);
     
-    toast.success("Campaigns exported to CSV");
+    notifySuccess('toasts.sharing.campaignsExportedCsv');
   };
 
   const handleSmartReschedule = () => {
-    toast.info("Smart-Reschedule feature coming soon!");
+    notifyInfo('toasts.sharing.smartrescheduleFeatureComingSoon');
   };
 
   return (

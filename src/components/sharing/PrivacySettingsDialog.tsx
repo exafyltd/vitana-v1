@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
+import { notify } from '@/lib/i18n-toast';
 
 interface PrivacySettingsDialogProps {
   open: boolean;
@@ -34,10 +35,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Privacy settings updated",
-      description: "Your global privacy controls have been saved.",
-    });
+    notify('toasts.sharing.privacySettingsUpdated', 'toasts.sharing.yourGlobalPrivacyControlsHaveSaved');
     onOpenChange(false);
   };
 

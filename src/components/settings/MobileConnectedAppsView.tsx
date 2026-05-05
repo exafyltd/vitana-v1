@@ -55,6 +55,7 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { XIcon } from "@/components/icons/XIcon";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 type SocialPlatform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -115,24 +116,14 @@ export function MobileConnectedAppsView() {
     const provider = params.get("provider");
     if (connected === "google") {
       const username = params.get("username") || "";
-      toast({
-        title: "Google connected",
-        description: username
-          ? `Gmail, Calendar and Contacts are now linked to ${username}.`
-          : "Gmail, Calendar and Contacts are now linked.",
-      });
+      notify('toasts.settings.googleConnected');
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (cleaned ? `?${cleaned}` : ""));
     } else if (connected === "youtube") {
       const username = params.get("username") || "";
-      toast({
-        title: "YouTube connected",
-        description: username
-          ? `YouTube and YouTube Music are now linked to ${username}.`
-          : "YouTube and YouTube Music are now linked.",
-      });
+      notify('toasts.settings.youtubeConnected');
       params.delete("connected");
       params.delete("username");
       const cleaned = params.toString();
@@ -235,11 +226,7 @@ export function MobileConnectedAppsView() {
       startGoogle.mutate(undefined, {
         onError: (err: unknown) => {
           const message = err instanceof Error ? err.message : String(err);
-          toast({
-            title: "Couldn't start Google sign-in",
-            description: message,
-            variant: "destructive",
-          });
+          notifyError('toasts.settings.couldnTStartGoogleSignin');
         },
       });
       return;
@@ -257,11 +244,7 @@ export function MobileConnectedAppsView() {
       startYouTube.mutate(undefined, {
         onError: (err: unknown) => {
           const message = err instanceof Error ? err.message : String(err);
-          toast({
-            title: "Couldn't start YouTube sign-in",
-            description: message,
-            variant: "destructive",
-          });
+          notifyError('toasts.settings.couldnTStartYoutubeSignin');
         },
       });
       return;

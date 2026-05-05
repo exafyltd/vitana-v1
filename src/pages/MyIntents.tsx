@@ -11,10 +11,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { listMyIntents, type UserIntent, type IntentKind } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
+import { notifyError } from '@/lib/i18n-toast';
 
 const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -43,7 +44,7 @@ export default function MyIntents() {
       const result = await listMyIntents(filters);
       setIntents(result);
     } catch (err: any) {
-      toast({ title: "Could not load intents", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.myintents.couldNotLoadIntents');
     } finally {
       setLoading(false);
     }

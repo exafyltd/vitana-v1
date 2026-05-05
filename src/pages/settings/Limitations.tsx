@@ -21,9 +21,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { settingsNavigation } from "@/config/navigation";
 import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility, Loader2 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -163,7 +164,7 @@ export default function Limitations() {
 
   async function loadAll() {
     if (!GATEWAY_URL) {
-      toast({ title: "Gateway URL not configured", variant: "destructive" });
+      notifyError('toasts.settings.gatewayUrlNotConfigured');
       setLoading(false);
       return;
     }
@@ -198,7 +199,7 @@ export default function Limitations() {
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Could not load limitations", description: message, variant: "destructive" });
+      notifyError('toasts.settings.couldNotLoadLimitations');
     } finally {
       setLoading(false);
     }
@@ -219,13 +220,13 @@ export default function Limitations() {
         body: JSON.stringify(partial),
       });
       if (!resp.ok) throw new Error(`Save failed: ${resp.status}`);
-      toast({ title: "Saved" });
+      notify('toasts.settings.saved');
       // Refresh impact counter
       const impactResp = await fetch(`${GATEWAY_URL}/api/v1/user/limitations/impact`, { headers });
       if (impactResp.ok) setImpact(await impactResp.json());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Save failed", description: message, variant: "destructive" });
+      notifyError('toasts.settings.saveFailed');
     } finally {
       setSaving(false);
     }

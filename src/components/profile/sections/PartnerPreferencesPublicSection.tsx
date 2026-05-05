@@ -13,7 +13,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import {
   getProfilePrefs,
@@ -23,6 +23,7 @@ import {
 } from "@/lib/profilePrefsApi";
 import type { AccountVisibility } from "@/types/profile";
 import { PartnerPreferencesSection } from "./PartnerPreferencesSection";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface PartnerPreferencesPublicSectionProps {
   userId: string;       // subject's user_id (used to detect owner)
@@ -47,7 +48,7 @@ export function PartnerPreferencesPublicSection({ userId, vitanaId }: PartnerPre
           setRelationship("self");
         })
         .catch((e) =>
-          toast({ title: "Could not load partner preferences", description: e?.message ?? "", variant: "destructive" })
+          notifyError('toasts.profile.couldNotLoadPartnerPreferences')
         );
       return;
     }

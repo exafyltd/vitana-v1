@@ -31,12 +31,12 @@ import {
   Youtube,
   Video,
 } from "lucide-react";
-import { toast } from "sonner";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 // Static channel definitions - no database setup required
 const STATIC_CHANNELS = [
@@ -121,15 +121,15 @@ export function CreatePostDialog({
 
   const validateForm = () => {
     if (!userId) {
-      toast.error("Please log in to create posts.");
+      notifyError('toasts.sharing.pleaseLogCreatePosts');
       return false;
     }
     if (!title || !description) {
-      toast.error("Please fill in title and description.");
+      notifyError('toasts.sharing.pleaseFillTitleDescription');
       return false;
     }
     if (selectedChannels.size === 0) {
-      toast.error("Please select at least one channel.");
+      notifyError('toasts.sharing.pleaseSelectAtLeastOneChannel2');
       return false;
     }
     return true;
@@ -166,11 +166,11 @@ export function CreatePostDialog({
 
   const handleSaveDraft = async () => {
     if (!userId) {
-      toast.error("Please log in to save drafts.");
+      notifyError('toasts.sharing.pleaseLogSaveDrafts');
       return;
     }
     if (!title || !description) {
-      toast.error("Please fill in title and description.");
+      notifyError('toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
@@ -187,7 +187,7 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
-          toast.success("Post saved as draft");
+          notifySuccess('toasts.sharing.postSavedAsDraft');
           resetForm();
           onOpenChange(false);
           onPostCreated?.();
@@ -231,7 +231,7 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
-          toast.success("Post scheduled successfully");
+          notifySuccess('toasts.sharing.postScheduledSuccessfully');
           resetForm();
           setPendingPostId(null);
           setShowScheduleDialog(false);

@@ -14,9 +14,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { communityNavigation } from "@/config/navigation";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 type Kind = "bug" | "ux_issue" | "support_question" | "account_issue" | "marketplace_claim" | "feature_request" | "feedback";
 
@@ -102,7 +103,7 @@ export default function TalkToVitana() {
 
   const handleSubmit = async () => {
     if (!text.trim()) {
-      toast({ title: "Add a description", description: "Tell Vitana what's on your mind.", variant: "destructive" });
+      notifyError('toasts.community.addDescription', 'toasts.community.tellVitanaWhatSYourMind');
       return;
     }
     setSubmitting(true);
@@ -128,16 +129,9 @@ export default function TalkToVitana() {
       setText("");
       setKind("feedback");
       await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-      toast({
-        title: "Thanks — Vitana has it",
-        description: `Ticket ${created.ticket_number} logged. We'll follow up here.`,
-      });
+      notify('toasts.community.thanksVitanaHasIt');
     } catch (err) {
-      toast({
-        title: "Couldn't submit",
-        description: err instanceof Error ? err.message : "Try again in a moment.",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.couldnTSubmit');
     } finally {
       setSubmitting(false);
     }
@@ -214,9 +208,9 @@ export default function TalkToVitana() {
                 const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/confirm`, { method: "POST" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-                toast({ title: "Thanks", description: "We'll keep an eye on it." });
+                notify('toasts.community.thanks', 'toasts.community.weLlKeepEyeIt');
               } catch (err) {
-                toast({ title: "Couldn't confirm", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+                notifyError('toasts.community.couldnTConfirm');
               }
             };
             const handleReopen = async () => {
@@ -227,9 +221,9 @@ export default function TalkToVitana() {
                   throw new Error(body.details ?? body.error ?? `HTTP ${res.status}`);
                 }
                 await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-                toast({ title: "Reopened", description: "Vitana will follow up." });
+                notify('toasts.community.reopened', 'toasts.community.vitanaWillFollowUp');
               } catch (err) {
-                toast({ title: "Couldn't reopen", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+                notifyError('toasts.community.couldnTReopen');
               }
             };
 

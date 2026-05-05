@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useAssistantSurface, useUpdateAssistantSurface } from "@/hooks/useAdminAssistant";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 const LANGUAGES = [
   { value: "de-DE", label: "Deutsch" },
@@ -51,7 +52,7 @@ export default function AssistantVoice() {
         surfaceKey: "voice_live",
         updates: { voice_config_override: { voice_id: voiceId, language } },
       });
-      toast.success("Voice configuration saved");
+      notifySuccess('toasts.admin.voiceConfigurationSaved');
       setDirty(false);
     } catch (err: any) {
       toast.error(err.message || "Failed to save");

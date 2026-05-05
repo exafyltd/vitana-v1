@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -47,7 +48,7 @@ export default function SettingsBranding() {
     updateMutation.mutate(
       { branding: { brand_accent: accent, brand_bg: bg, brand_fg: fg, logo_url: logoUrl } },
       {
-        onSuccess: () => toast.success("Branding saved"),
+        onSuccess: () => notifySuccess('toasts.admin.brandingSaved'),
         onError: (err) => toast.error((err as Error).message || "Failed to save"),
       }
     );

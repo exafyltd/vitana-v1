@@ -27,7 +27,8 @@ import {
   Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface DevAutopilotPopupProps {
   open: boolean;
@@ -86,20 +87,13 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
       const results = await executeActions(actionIds);
       const successCount = results.filter(r => r.success).length;
       
-      toast({
-        title: "Dev Actions Executed",
-        description: `${successCount}/${results.length} dev actions completed successfully`,
-      });
+      notify('toasts.dev.devActionsExecuted');
       
       onOpenChange(false);
       setShowOptions(false);
       setExecutionProgress(0);
     } catch (error) {
-      toast({
-        title: "Execution Failed", 
-        description: "Something went wrong. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.dev.executionFailed', 'toasts.dev.somethingWentWrongPleaseTryAgain');
     }
   };
 

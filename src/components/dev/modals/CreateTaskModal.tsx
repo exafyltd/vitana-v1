@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface CreateTaskModalProps {
   open: boolean;
@@ -24,7 +24,7 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
 
   const handleSubmit = async () => {
     if (!title || !priority) {
-      toast.error("Please fill in all required fields");
+      notifyError('toasts.dev.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -33,7 +33,7 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
     
-    toast.success("Task created successfully");
+    notifySuccess('toasts.dev.taskCreatedSuccessfully');
     onOpenChange(false);
     onSuccess?.();
     

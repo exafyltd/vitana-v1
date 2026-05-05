@@ -37,6 +37,7 @@ import {
   useCreateInvitation,
   useRevokeInvitation,
 } from "@/hooks/useAdminMembers";
+import { notifyError, notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 const AVAILABLE_ROLES = ["community", "patient", "professional", "staff", "admin"];
 
@@ -60,11 +61,11 @@ export default function MembersInvitations() {
 
   async function handleInvite() {
     if (!email || !email.includes("@")) {
-      toast.error("Please enter a valid email address.");
+      notifyError('toasts.admin.pleaseEnterValidEmailAddress2');
       return;
     }
     if (selectedRoles.length === 0) {
-      toast.error("Select at least one role.");
+      notifyError('toasts.admin.selectAtLeastOneRole');
       return;
     }
 
@@ -79,7 +80,7 @@ export default function MembersInvitations() {
       if (result?.invitation?.token) {
         const acceptUrl = `${window.location.origin}/admin/invitations/accept/${result.invitation.token}`;
         await navigator.clipboard.writeText(acceptUrl).catch(() => {});
-        toast.info("Accept link copied to clipboard");
+        notifyInfo('toasts.admin.acceptLinkCopiedClipboard');
       }
     } catch (err: any) {
       toast.error(err.message || "Failed to create invitation");
@@ -89,7 +90,7 @@ export default function MembersInvitations() {
   async function handleRevoke(id: string) {
     try {
       await revokeMutation.mutateAsync(id);
-      toast.success("Invitation revoked");
+      notifySuccess('toasts.admin.invitationRevoked');
     } catch (err: any) {
       toast.error(err.message || "Failed to revoke invitation");
     }

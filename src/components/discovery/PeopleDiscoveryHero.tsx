@@ -5,7 +5,7 @@ import { ProfileCardStack } from "./ProfileCardStack";
 import { BookFlipView } from "./BookFlipView";
 import { Button } from "@/components/ui/button";
 import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import confetti from "canvas-confetti";
+import { notify } from '@/lib/i18n-toast';
 
 interface DailyMatch {
   id: string;
@@ -181,10 +182,7 @@ export function PeopleDiscoveryHero() {
       colors: ['#10b981', '#34d399', '#6ee7b7']
     });
     
-    toast({
-      title: "Connection request sent! 💚",
-      description: "They'll be notified of your interest.",
-    });
+    notify('toasts.discovery.connectionRequestSent', 'toasts.discovery.theyLlNotifiedYourInterest');
   };
 
   const handlePass = (userId: string) => {
@@ -210,10 +208,7 @@ export function PeopleDiscoveryHero() {
       startVelocity: 45,
     });
     
-    toast({
-      title: "Super Connect sent! ⭐",
-      description: "You'll appear at the top of their matches!",
-    });
+    notify('toasts.discovery.superConnectSent', 'toasts.discovery.youLlAppearAtTopTheir');
   };
 
   const handleProfileTap = (userId: string) => {

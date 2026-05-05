@@ -8,7 +8,8 @@ import {
   UserProfile,
 } from "@/types/profile";
 import { useProfile } from "@/context/ProfileProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 export interface AccountFieldDef {
   key: AccountFieldKey;
@@ -140,11 +141,7 @@ export function useAccountVisibility({
       try {
         await setFieldVisibility(key, next);
       } catch (error: any) {
-        toast({
-          title: "Could not update visibility",
-          description: error?.message ?? "Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.profile.couldNotUpdateVisibility');
       }
     },
     [isOwner, visibility, setFieldVisibility, toast],

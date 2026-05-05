@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Copy, ExternalLink, RefreshCw, CheckCircle, XCircle } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { notify } from '@/lib/i18n-toast';
 
 interface ServiceStatus {
   name: string;
@@ -67,7 +67,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
     `.trim();
 
     navigator.clipboard.writeText(text);
-    toast({ title: "Diagnostics copied to clipboard" });
+    notify('toasts.dev.diagnosticsCopiedClipboard');
   };
 
   return (

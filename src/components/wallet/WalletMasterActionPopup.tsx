@@ -28,6 +28,7 @@ import { ExchangeAndSendStep } from './steps/ExchangeAndSendStep';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface WalletMasterActionPopupProps {
   open: boolean;
@@ -58,42 +59,26 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
       switch (actionType) {
         case 'buy-credits':
           await updateBalance('CREDITS', 100, 'add');
-          toast({
-            title: '✅ Credits Purchased!',
-            description: 'Added 100 CREDITS to your wallet',
-          });
+          notify('toasts.wallet.creditsPurchased', 'toasts.wallet.added100CreditsYourWallet');
           break;
 
         case 'buy-tokens':
           await updateBalance('VTNA', 50, 'add');
-          toast({
-            title: '✅ Tokens Purchased!',
-            description: 'Added 50 VTNA tokens to your wallet',
-          });
+          notify('toasts.wallet.tokensPurchased', 'toasts.wallet.added50VtnaTokensYourWallet');
           break;
 
         case 'claim-rewards':
           await updateBalance('VTNA', 25, 'add');
-          toast({
-            title: '✅ Rewards Claimed!',
-            description: 'Added 25 VTNA rewards to your wallet',
-          });
+          notify('toasts.wallet.rewardsClaimed', 'toasts.wallet.added25VtnaRewardsYourWallet');
           break;
 
         case 'withdraw-cashout':
           await updateBalance('USD', 50, 'subtract');
-          toast({
-            title: '✅ Withdrawal Initiated!',
-            description: 'Withdrawal request submitted for processing',
-          });
+          notify('toasts.wallet.withdrawalInitiated', 'toasts.wallet.withdrawalRequestSubmittedForProcessing');
           break;
       }
     } catch (error) {
-      toast({
-        title: '❌ Action Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.actionFailed2');
     } finally {
       setLoading(null);
       onOpenChange(false);

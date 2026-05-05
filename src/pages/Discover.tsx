@@ -53,6 +53,7 @@ import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 function DiscoverInner() {
   const { selectProduct } = useProductSelection();
@@ -92,11 +93,7 @@ function DiscoverInner() {
       if (attempts < 5) {
         setTimeout(() => tryScroll(attempts + 1), 400);
       } else {
-        toast({
-          title: "Match not found",
-          description: "This match is no longer available",
-          variant: "destructive",
-        });
+        notifyError('toasts.discover.matchNotFound', 'toasts.discover.thisMatchNoLongerAvailable');
       }
     };
 
