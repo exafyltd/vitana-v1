@@ -25,3 +25,5 @@ dist-ssr
 
 # Codemod artifacts
 scripts/.codemod-*.manifest.json
+
+supabase/.temp/
