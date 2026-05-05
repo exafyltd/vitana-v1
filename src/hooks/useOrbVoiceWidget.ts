@@ -126,19 +126,56 @@ export function useOrbVoiceWidget() {
       }
       const parsed = new URL(url, window.location.origin);
       const openTarget = parsed.searchParams.get('open');
-      // VTID-CAL-OPEN: If the backend sends ?open=calendar, do NOT navigate —
-      // just open the calendar popup as an overlay on the current screen.
-      if (openTarget === 'calendar') {
-        window.dispatchEvent(new CustomEvent('calendar:open'));
-        return;
-      }
-      // Life Compass overlay: voice "open my goals" / "open my life compass"
-      // resolves to ?open=life_compass. Keep the user on their current screen
-      // and surface the popup so they can pick or customize their goal without
-      // losing context.
-      if (openTarget === 'life_compass' || openTarget === 'goals') {
-        window.dispatchEvent(new CustomEvent('vitana:open-life-compass'));
-        return;
+      // VTID-02770: Catalog-driven overlay dispatch. The gateway emits
+      // `${host_route}?open=<query_marker>` for any catalog entry whose
+      // `entry_kind === 'overlay'`. We route the `open` param to the
+      // matching CustomEvent so popups can render on the user's current
+      // screen without a full route change.
+      //
+      // Each entry takes the full URL detail (the entire URLSearchParams) so
+      // entity-id params like `meetup_id`, `event_id`, `user_id` arrive on the
+      // event so listeners can fetch the right resource.
+      if (openTarget) {
+        const detail = Object.fromEntries(parsed.searchParams.entries());
+        const dispatch = (eventName: string) => {
+          window.dispatchEvent(new CustomEvent(eventName, { detail }));
+        };
+        switch (openTarget) {
+          case 'calendar':
+            // VTID-CAL-OPEN
+            dispatch('calendar:open');
+            return;
+          case 'life_compass':
+          case 'goals':
+            dispatch('vitana:open-life-compass');
+            return;
+          case 'index':
+          case 'vitana_index':
+            dispatch('vitana:open-index');
+            return;
+          case 'profile_preview':
+            dispatch('profile:open');
+            return;
+          case 'meetup':
+            dispatch('meetup:open');
+            return;
+          case 'event':
+            dispatch('event:open');
+            return;
+          case 'wallet':
+            dispatch('wallet:open');
+            return;
+          case 'master_action':
+            dispatch('master_action:open');
+            return;
+          case 'presence':
+            dispatch('presence-debug:open');
+            return;
+          // Unknown overlay marker: log and fall through to a regular
+          // navigation so the URL is at least visible to the user.
+          default:
+            console.warn(`[ORB] Unknown overlay marker: ?open=${openTarget} — falling back to navigation`);
+        }
       }
       navigateRef.current(url);
     } catch (err) {
