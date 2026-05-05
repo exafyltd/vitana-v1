@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './button';
 import { Square, Trash2, Send, Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface VoiceRecorderProps {
   onRecordingComplete?: (audioBlob: Blob, duration: number) => void;
@@ -183,7 +184,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   if (permissionDenied) {
     return (
       <div className={cn("flex items-center gap-2 px-3 py-2 text-sm text-destructive", className)}>
-        Microphone access denied
+        {t('screens.ui.microphoneAccessDenied')}
       </div>
     );
   }
@@ -275,7 +276,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   // Loading state (waiting for permission)
   return (
     <div className={cn("flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground", className)}>
-      Starting recorder...
+      {t('screens.ui.startingRecorder')}
     </div>
   );
 };

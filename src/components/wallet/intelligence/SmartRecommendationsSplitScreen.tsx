@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, TrendingUp, Clock, Users, Target, Zap } from "lucide-react";
 import { PersonalizedSubscriptionRecommendationCard } from "./PersonalizedSubscriptionRecommendationCard";
 import { SubscriptionROIAnalyticsCard } from "./SubscriptionROIAnalyticsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface TimingIntelligence {
   id: string;
@@ -149,19 +150,19 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
-            Timing Intelligence
+            {t('screens.wallet.timingIntelligence')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Savings Summary */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-emerald-500/5 to-green-500/5 border border-emerald-200/50">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Potential Savings</span>
-              <span className="text-sm text-muted-foreground">{avgConfidence}% confidence</span>
+              <span className="text-sm font-medium">{t('screens.wallet.potentialSavings')}</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.avgconfidenceConfidence', { avgConfidence })}</span>
             </div>
             <div className="text-2xl font-bold text-emerald-600 mb-1">${totalPotentialSavings}</div>
             <p className="text-xs text-muted-foreground">
-              By timing your subscriptions optimally
+              {t('screens.wallet.byTimingYourSubscriptionsOptimally')}
             </p>
           </div>
 
@@ -169,7 +170,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Target className="h-4 w-4 text-purple-500" />
-              Price Predictions
+              {t('screens.wallet.pricePredictions')}
             </h4>
             
             {mockTimingIntelligence.map((intel) => (
@@ -177,13 +178,10 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{intel.service}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      Current: ${intel.currentPrice} → Predicted: ${intel.predictedPrice}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentCurrentpricePredictedPredictedprice', { currentPrice: intel.currentPrice, predictedPrice: intel.predictedPrice })}</p>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className="text-xs mb-1">
-                      {intel.confidence}% confidence
+                    <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.confidenceConfidence', { confidence: intel.confidence })}
                     </Badge>
                     <div className={`text-xs flex items-center gap-1 ${getTrendColor(intel.trend)}`}>
                       {getTrendIcon(intel.trend)} {intel.trend}
@@ -193,12 +191,10 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 
                 <div className="flex items-center justify-between">
                   <div className="text-xs">
-                    <span className="text-muted-foreground">Best time:</span>
+                    <span className="text-muted-foreground">{t('screens.wallet.bestTime')}</span>
                     <span className="font-semibold ml-1">{intel.bestTime}</span>
                   </div>
-                  <div className="text-xs text-emerald-600 font-semibold">
-                    Save ${intel.savings}
-                  </div>
+                  <div className="text-xs text-emerald-600 font-semibold">{t('screens.wallet.saveSavings', { savings: intel.savings })}</div>
                 </div>
               </div>
             ))}
@@ -211,21 +207,21 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-primary" />
-            Community Trends
+            {t('screens.wallet.communityTrends')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Trending Summary */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-blue-500/5 to-purple-500/5 border border-blue-200/50">
-            <div className="text-sm font-medium mb-2">What's Popular</div>
+            <div className="text-sm font-medium mb-2">{t('screens.wallet.whatSPopular')}</div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-lg font-bold text-blue-600">89%</div>
-                <div className="text-xs text-muted-foreground">Adoption Rate</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.adoptionRate')}</div>
               </div>
               <div>
                 <div className="text-lg font-bold text-purple-600">4.8</div>
-                <div className="text-xs text-muted-foreground">Avg Rating</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgRating')}</div>
               </div>
             </div>
           </div>
@@ -234,7 +230,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-green-500" />
-              Trending Services
+              {t('screens.wallet.trendingServices')}
             </h4>
             
             {mockCommunityTrends.slice(0, 2).map((trend) => (
@@ -242,9 +238,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{trend.service}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      {trend.userCount.toLocaleString()} users • {trend.category}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.value0UsersCategory', { value0: trend.userCount.toLocaleString(), category: trend.category })}</p>
                   </div>
                   <Badge variant="outline" className={`text-xs ${getTrendColor(trend.popularityTrend)}`}>
                     {getTrendIcon(trend.popularityTrend)} {trend.popularityTrend}
@@ -254,14 +248,14 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="grid grid-cols-2 gap-3 mb-2">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-muted-foreground">Adoption</span>
+                      <span className="text-xs text-muted-foreground">{t('screens.wallet.adoption')}</span>
                       <span className="text-xs text-muted-foreground">{trend.adoptionRate}%</span>
                     </div>
                     <Progress value={trend.adoptionRate} className="h-1.5" />
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold">{trend.satisfaction}</div>
-                    <div className="text-xs text-muted-foreground">satisfaction</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.wallet.satisfaction')}</div>
                   </div>
                 </div>
               </div>
@@ -272,14 +266,14 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Brain className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Community Insight</span>
+              <span className="text-sm font-medium">{t('screens.wallet.communityInsight')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
-              Users similar to you are 3x more likely to stick with AI Wellness Coach
+              {t('screens.wallet.usersSimilarYou3xMoreLikely')}
             </p>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
               <Zap className="h-3 w-3 mr-1" />
-              Apply Community Insights
+              {t('screens.wallet.applyCommunityInsights')}
             </Button>
           </div>
         </CardContent>

@@ -6,6 +6,7 @@ import { Lightbulb, Sparkles, Brain, Zap } from "lucide-react";
 // Import AI neural insights image
 import aiNeuralInsightsImg from "@/assets/ai-feed/ai-neural-insights.jpg";
 import meditationMindfulnessImg from "@/assets/ai-feed/meditation-mindfulness.jpg";
+import { t } from '@/lib/i18n-toast';
 
 interface AISuggestion {
   id: string;
@@ -133,8 +134,7 @@ export function GlowingSuggestionsGrid({
 
                 {/* Confidence badge */}
                 <div className="absolute bottom-3 left-3">
-                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white shadow-lg">
-                    {suggestion.confidence}% confident
+                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white shadow-lg">{t('screens.ai-feed.confidenceConfident', { confidence: suggestion.confidence })}
                   </Badge>
                 </div>
               </div>
@@ -172,15 +172,14 @@ export function GlowingSuggestionsGrid({
                     className="flex-1 h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Sparkles className="w-3 h-3 mr-1" />
-                    Try It
+                    {t('screens.ai-feed.tryIt')}
                   </Button>
                   <Button 
                     size="sm" 
                     variant="ghost"
                     onClick={() => onDismissSuggestion?.(suggestion.id)}
                     className="h-9 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300"
-                  >
-                    Later
+                  >{t('screens.ai-feed.later')}
                   </Button>
                 </div>
               </div>

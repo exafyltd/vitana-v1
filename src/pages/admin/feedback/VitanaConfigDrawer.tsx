@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface VitanaPersona {
   id: string;
@@ -121,17 +122,17 @@ export function VitanaConfigDrawer({ onClose }: Props) {
   const saveForward = async () => {
     try {
       await forwardMutation.mutateAsync(forwardPhrases);
-      toast({ title: "Forward triggers saved", description: `${forwardPhrases.length} phrases.` });
+      notify('toasts.admin.forwardTriggersSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
   const saveStayInline = async () => {
     try {
       await stayInlineMutation.mutateAsync(stayInlinePhrases);
-      toast({ title: "Stay-inline overrides saved", description: `${stayInlinePhrases.length} phrases.` });
+      notify('toasts.admin.stayinlineOverridesSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
@@ -148,7 +149,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       const body = await res.json();
       setTestResult(body);
     } catch (err) {
-      toast({ title: "Test failed", description: err instanceof Error ? err.message : "Network error", variant: "destructive" });
+      notifyError('toasts.admin.testFailed');
     } finally {
       setTestRunning(false);
     }
@@ -162,8 +163,8 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       >
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
-            <h2 className="text-xl font-bold">Loading Vitana…</h2>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <h2 className="text-xl font-bold">{t('screens.admin.loadingVitana')}</h2>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
         </div>
       </div>
@@ -182,18 +183,16 @@ export function VitanaConfigDrawer({ onClose }: Props) {
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold">Couldn't load Vitana</h2>
+              <h2 className="text-xl font-bold">{t('screens.admin.couldnTLoadVitana')}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{errMsg}</p>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Possible causes: the gateway hasn't redeployed the new admin endpoints (PR forwarding-rules-gateway-VTID-02660),
-                your role isn't permitted, or the migration that adds the phrase columns hasn't applied yet.
+              <p className="mt-2 text-xs text-muted-foreground">{t('screens.admin.possibleCausesGatewayHasnTRedeployed2')}
               </p>
             </div>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => personaQuery.refetch()}>Retry</Button>
-            <Button variant="ghost" onClick={onClose}>Close</Button>
+            <Button variant="outline" onClick={() => personaQuery.refetch()}>{t('screens.admin.retry')}</Button>
+            <Button variant="ghost" onClick={onClose}>{t('screens.admin.close')}</Button>
           </div>
         </div>
       </div>
@@ -210,29 +209,26 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6 shadow-2xl">
         <div className="mb-4 flex items-start justify-between">
           <div>
-            <h2 className="text-xl font-bold">{p.display_name} — Forwarding Rules</h2>
+            <h2 className="text-xl font-bold">{t('screens.admin.display_nameForwardingRules', { display_name: p.display_name })}</h2>
             <p className="text-sm text-muted-foreground">{p.role}</p>
             <div className="mt-2 flex gap-2 text-xs">
-              <Badge variant="outline">always on</Badge>
+              <Badge variant="outline">{t('screens.admin.always')}</Badge>
               <Badge variant="outline">v{p.version}</Badge>
             </div>
           </div>
-          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
         </div>
 
         {/* Rulebook header — frames the rules so admins read the philosophy first. */}
         <Card className="mb-4 border-primary/30 bg-primary/5 p-4">
-          <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-primary">Rulebook</h3>
+          <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-primary">{t('screens.admin.rulebook')}</h3>
           <p className="text-sm leading-relaxed">{RULEBOOK_HEADER}</p>
         </Card>
 
         {/* Gate A — forward triggers */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Forward triggers</h3>
-          <p className="text-xs text-muted-foreground">
-            Phrases that signal the user EXPLICITLY wants to be connected to a customer-support colleague.
-            Without one of these, Vitana stays inline. Lowercase, partial-match — "talk to support" matches
-            "I'd like to talk to support, please".
+          <h3 className="font-semibold">{t('screens.admin.forwardTriggers')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.phrasesThatSignalUserExplicitlyWants')}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {forwardPhrases.map(ph => (
@@ -247,11 +243,11 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 </button>
               </Badge>
             ))}
-            {forwardPhrases.length === 0 && <span className="text-xs text-muted-foreground">(none — Vitana will never forward)</span>}
+            {forwardPhrases.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.noneVitanaWillNeverForward')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='Add a phrase (e.g. "I have a complaint")'
+              placeholder={t('screens.admin.addPhraseEGIHave')}
               value={forwardDraft}
               onChange={e => setForwardDraft(e.target.value)}
               onKeyDown={e => {
@@ -265,23 +261,20 @@ export function VitanaConfigDrawer({ onClose }: Props) {
               variant="outline"
               onClick={() => addPhrase(forwardDraft, forwardPhrases, setForwardPhrases, () => setForwardDraft(""))}
             >
-              Add
+              {t('screens.admin.add')}
             </Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveForward} disabled={forwardMutation.isPending}>
-              Save forward triggers
+              {t('screens.admin.saveForwardTriggers')}
             </Button>
           </div>
         </Card>
 
         {/* Gate A override — stay-inline */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Stay-inline overrides</h3>
-          <p className="text-xs text-muted-foreground">
-            Phrases that force the conversation to stay with Vitana even if a forward trigger would otherwise fire.
-            Covers life-companion question patterns ("I have a question", "how does this work?",
-            "tell me about X") so general curiosity never turns into a customer-support handoff.
+          <h3 className="font-semibold">{t('screens.admin.stayinlineOverrides')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.phrasesThatForceConversationStayWith')}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {stayInlinePhrases.map(ph => (
@@ -296,11 +289,11 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 </button>
               </Badge>
             ))}
-            {stayInlinePhrases.length === 0 && <span className="text-xs text-muted-foreground">(none — every forward trigger fires)</span>}
+            {stayInlinePhrases.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.noneEveryForwardTriggerFires')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='Add a phrase (e.g. "tell me about")'
+              placeholder={t('screens.admin.addPhraseEGTellMe')}
               value={stayDraft}
               onChange={e => setStayDraft(e.target.value)}
               onKeyDown={e => {
@@ -314,26 +307,24 @@ export function VitanaConfigDrawer({ onClose }: Props) {
               variant="outline"
               onClick={() => addPhrase(stayDraft, stayInlinePhrases, setStayInlinePhrases, () => setStayDraft(""))}
             >
-              Add
+              {t('screens.admin.add')}
             </Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveStayInline} disabled={stayInlineMutation.isPending}>
-              Save stay-inline overrides
+              {t('screens.admin.saveStayinlineOverrides')}
             </Button>
           </div>
         </Card>
 
         {/* Test sandbox */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Test sandbox</h3>
-          <p className="text-xs text-muted-foreground">
-            Paste a sentence the user might say. The router runs both gates and shows the decision so you can
-            verify a rule change before it goes live.
+          <h3 className="font-semibold">{t('screens.admin.testSandbox')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.pasteSentenceUserMightSayRouter')}
           </p>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='e.g. "I have a question, how does this work?"'
+              placeholder={t('screens.admin.eGIHaveQuestionHow')}
               value={testText}
               onChange={e => setTestText(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); runTest(); } }}
@@ -349,20 +340,19 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                   {testResult.handoff ? `forward → ${testResult.persona_key}` : "answer inline (Vitana)"}
                 </Badge>
                 {testResult.gate && (
-                  <Badge variant="outline">gate: {testResult.gate}</Badge>
+                  <Badge variant="outline">{t('screens.admin.gateGate', { gate: testResult.gate })}</Badge>
                 )}
                 {testResult.decision && (
-                  <Badge variant="outline">decision: {testResult.decision}</Badge>
+                  <Badge variant="outline">{t('screens.admin.decisionDecision', { decision: testResult.decision })}</Badge>
                 )}
               </div>
               {(testResult.matched_phrase || testResult.matched_keyword) && (
                 <div className="mt-2 text-muted-foreground">
-                  Matched phrase: <code className="rounded bg-background px-1">{testResult.matched_phrase ?? testResult.matched_keyword}</code>
+                  {t('screens.admin.matchedPhrase')} <code className="rounded bg-background px-1">{testResult.matched_phrase ?? testResult.matched_keyword}</code>
                 </div>
               )}
               {typeof testResult.confidence === "number" && (
-                <div className="mt-1 text-muted-foreground">
-                  Confidence: {(testResult.confidence * 100).toFixed(0)}%
+                <div className="mt-1 text-muted-foreground">{t('screens.admin.confidenceValue0', { value0: (testResult.confidence * 100).toFixed(0) })}
                 </div>
               )}
             </div>

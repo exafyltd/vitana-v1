@@ -2,6 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { t } from '@/lib/i18n-toast';
 
 export default function Reports() {
   return (
@@ -10,11 +11,11 @@ export default function Reports() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="📑"
-          title="Reports"
+          title={t('screens.admin.reports')}
           description="Build and schedule custom tenant-specific reports"
         />
         <AdminEmptyState
-          title="Custom Reports"
+          title={t('screens.admin.customReports')}
           description="Custom reports coming soon — build and schedule tenant-specific reports."
         />
       </div>

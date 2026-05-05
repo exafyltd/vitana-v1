@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface ShareableEventCardProps {
   event: {
@@ -121,7 +122,7 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
               {/* CTA hint */}
               <div className="pt-8">
                 <div className="inline-flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-full">
-                  <span className="text-2xl font-bold">Tap link in bio to join</span>
+                  <span className="text-2xl font-bold">{t('screens.sharing.tapLinkBioJoin')}</span>
                 </div>
               </div>
             </div>

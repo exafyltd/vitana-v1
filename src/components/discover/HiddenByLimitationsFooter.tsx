@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ChevronUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 export interface HiddenBreakdown {
   allergies: number;
@@ -52,7 +53,7 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
       >
         <span className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-emerald-700" />
-          <span><strong>{total}</strong> {total === 1 ? "product" : "products"} hidden by your preferences</span>
+          <span><strong>{total}</strong>{t('screens.discover.value0HiddenByYourPreferences', { value0: total === 1 ? "product" : "products" })}</span>
         </span>
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
@@ -67,7 +68,7 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
                   <strong>{count}</strong> {label.text}
                 </span>
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to={label.href}>Adjust</Link>
+                  <Link to={label.href}>{t('screens.discover.adjust')}</Link>
                 </Button>
               </li>
             );

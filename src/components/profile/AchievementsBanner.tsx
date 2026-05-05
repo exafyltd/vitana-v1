@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Award, Star, Trophy, Zap, Heart, Target, Crown, Flame } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { t } from '@/lib/i18n-toast';
 
 interface Achievement {
   id: string;
@@ -29,9 +30,9 @@ export function AchievementsBanner() {
           <Award className="w-4 h-4 text-[hsl(var(--pill-sleep-accent))]" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-foreground">Achievements</h3>
+          <h3 className="text-sm font-bold text-foreground">{t('screens.profile.achievements')}</h3>
           <p className="text-xs text-muted-foreground">
-            {achievements.filter(a => a.unlocked).length} of {achievements.length} unlocked
+            {achievements.filter(a => a.unlocked).length}{t('screens.profile.lengthUnlocked', { length: achievements.length })}
           </p>
         </div>
       </div>

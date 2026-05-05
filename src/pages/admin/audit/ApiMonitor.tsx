@@ -6,6 +6,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { t } from '@/lib/i18n-toast';
 
 const SERVICES = [
   { name: "Gateway", url: "https://gateway-86804897789.us-central1.run.app/alive" },
@@ -54,7 +55,7 @@ export default function AuditApiMonitor() {
       <SubNavigation items={adminAuditNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="API Monitor"
+          title={t('screens.admin.apiMonitor')}
           description="Real-time health status of platform services"
           rightAction={
             <Badge variant={unhealthy > 0 ? "destructive" : "default"} className="text-sm px-3 py-1">
@@ -91,20 +92,20 @@ export default function AuditApiMonitor() {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Status</span>
+                      <span className="text-muted-foreground">{t('screens.admin.status')}</span>
                       <Badge variant={svc.status === "healthy" ? "default" : "destructive"}>
                         {svc.status}
                       </Badge>
                     </div>
                     {svc.responseTime != null && (
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Response Time</span>
-                        <span className="font-mono text-xs">{svc.responseTime}ms</span>
+                        <span className="text-muted-foreground">{t('screens.admin.responseTime')}</span>
+                        <span className="font-mono text-xs">{t('screens.admin.responsetimeMs', { responseTime: svc.responseTime })}</span>
                       </div>
                     )}
                     {svc.data?.timestamp && (
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Timestamp</span>
+                        <span className="text-muted-foreground">{t('screens.admin.timestamp')}</span>
                         <span className="text-xs">{new Date(svc.data.timestamp).toLocaleTimeString()}</span>
                       </div>
                     )}
@@ -118,7 +119,7 @@ export default function AuditApiMonitor() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Auto-refreshes every 30 seconds. Additional services will appear as they are registered.
+          {t('screens.admin.autorefreshesEvery30SecondsAdditionalServices')}
         </p>
       </div>
     </AppLayout>

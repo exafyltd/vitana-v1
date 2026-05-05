@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { liveRoomService, LiveRoom, CreateRoomRequest } from '@/services/liveRoomService';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function useLiveRoom(roomId: string) {
   const { toast } = useToast();
@@ -32,12 +33,12 @@ export function useLiveRoom(roomId: string) {
   const startRoomMutation = useMutation({
     mutationFn: () => liveRoomService.startRoom(roomId),
     onSuccess: () => {
-      toast({ title: 'Room started!' });
+      notify('toasts.hooks.roomStarted');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to start room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedStartRoom');
     },
   });
 
@@ -45,12 +46,12 @@ export function useLiveRoom(roomId: string) {
   const endRoomMutation = useMutation({
     mutationFn: () => liveRoomService.endRoom(roomId),
     onSuccess: () => {
-      toast({ title: 'Room ended' });
+      notify('toasts.hooks.roomEnded');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to end room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedEndRoom');
     },
   });
 
@@ -58,11 +59,11 @@ export function useLiveRoom(roomId: string) {
   const joinRoomMutation = useMutation({
     mutationFn: (userId: string) => liveRoomService.joinRoom(roomId, userId),
     onSuccess: () => {
-      toast({ title: 'Joined room!' });
+      notify('toasts.hooks.joinedRoom');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to join room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedJoinRoom');
     },
   });
 
@@ -70,11 +71,11 @@ export function useLiveRoom(roomId: string) {
   const leaveRoomMutation = useMutation({
     mutationFn: () => liveRoomService.leaveRoom(roomId),
     onSuccess: () => {
-      toast({ title: 'Left room' });
+      notify('toasts.hooks.leftRoom');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to leave room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedLeaveRoom');
     },
   });
 
@@ -99,11 +100,11 @@ export function useCreateLiveRoom() {
   return useMutation({
     mutationFn: (request: CreateRoomRequest) => liveRoomService.createRoom(request),
     onSuccess: (room) => {
-      toast({ title: 'Room created!', description: `"${room.title}" is ready` });
+      notify('toasts.hooks.roomCreated');
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to create room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedCreateRoom');
     },
   });
 }

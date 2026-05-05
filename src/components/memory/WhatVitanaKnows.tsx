@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway-q74ibpv6ia-uc.a.run.app/api/v1';
 
@@ -66,8 +67,7 @@ export function WhatVitanaKnows() {
         <CardTitle className="flex items-center gap-2 text-base font-semibold">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-primary" />
-          </div>
-          What Vitana remembers about you
+          </div>{t('screens.memory.whatVitanaRemembersAboutYou')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -91,7 +91,7 @@ export function WhatVitanaKnows() {
             className="h-8 text-xs"
           >
             <Edit3 className="w-3 h-3 mr-1.5" />
-            Edit what I remember
+            {t('screens.memory.editWhatIRemember')}
           </Button>
           <Button
             variant="ghost"
@@ -100,7 +100,7 @@ export function WhatVitanaKnows() {
             className="h-8 text-xs"
           >
             <Pause className="w-3 h-3 mr-1.5" />
-            Pause proactivity
+            {t('screens.memory.pauseProactivity')}
           </Button>
         </div>
       </CardContent>

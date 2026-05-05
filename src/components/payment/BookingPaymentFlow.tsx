@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
 import { useWallet } from "@/hooks/useWallet";
@@ -26,6 +26,7 @@ import {
   ArrowRight,
   DollarSign
 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BookingPaymentFlowProps {
   isOpen: boolean;
@@ -119,21 +120,13 @@ export default function BookingPaymentFlow({
   const handleConfirmBooking = async () => {
     // Validate date and time are selected
     if (!selectedDate || !selectedTime) {
-      toast({
-        title: "Missing Information",
-        description: "Please select a date and time for your booking",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseSelectDateTimeForYour');
       return;
     }
 
     if (!canAfford()) {
       const currencyLabel = paymentMethod === 'cash' ? 'USD' : paymentMethod.toUpperCase();
-      toast({
-        title: "Insufficient Balance",
-        description: `You need ${formatCurrency(getRequiredAmount(currencyLabel as any), currencyLabel)} to complete this booking`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
@@ -187,10 +180,7 @@ export default function BookingPaymentFlow({
           throw new Error("Please allow popups to complete payment");
         }
 
-        toast({
-          title: "Redirecting to Payment",
-          description: "Complete your payment in the popup window",
-        });
+        notify('toasts.payment.redirectingPayment', 'toasts.payment.completeYourPaymentPopupWindow');
 
         setIsProcessing(false);
         onClose();
@@ -255,21 +245,14 @@ export default function BookingPaymentFlow({
           ? ` Converted ${formatCurrency(amountPaid, currencyUsed)} to $${booking.price} USD.`
           : '';
 
-        toast({
-          title: "Booking Confirmed! 🎉",
-          description: `Your ${booking.type} has been booked and payment processed.${conversionMsg}`
-        });
+        notify('toasts.payment.bookingConfirmed');
 
         setIsProcessing(false);
         onClose();
       }
     } catch (error) {
       console.error('Booking error:', error);
-      toast({
-        title: "Booking Failed",
-        description: error.message || "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.bookingFailed');
       setIsProcessing(false);
     }
   };
@@ -280,7 +263,7 @@ export default function BookingPaymentFlow({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            Complete Booking
+            {t('screens.payment.completeBooking')}
           </DialogTitle>
         </DialogHeader>
 
@@ -314,7 +297,7 @@ export default function BookingPaymentFlow({
               {/* Booking Details */}
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="col-span-2">
-                  <label className="text-xs text-muted-foreground mb-1 block">Select Date</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{t('screens.payment.selectDate')}</label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -338,12 +321,12 @@ export default function BookingPaymentFlow({
                   </Popover>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-xs text-muted-foreground mb-1 block">Select Time</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{t('screens.payment.selectTime')}</label>
                   <Select value={selectedTime} onValueChange={setSelectedTime}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center">
                         <Clock className="mr-2 h-4 w-4" />
-                        <SelectValue placeholder="Pick a time" />
+                        <SelectValue placeholder={t('screens.payment.pickTime')} />
                       </div>
                     </SelectTrigger>
                     <SelectContent>
@@ -370,7 +353,7 @@ export default function BookingPaymentFlow({
           {/* Payment Method Selection */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Payment Method</CardTitle>
+              <CardTitle className="text-lg">{t('screens.payment.paymentMethod')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {/* Credits Option */}
@@ -384,10 +367,8 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <Coins className="w-5 h-5 text-orange-500" />
                     <div>
-                      <p className="font-medium">Credits</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.credits || 0, 'CREDITS')}
-                      </p>
+                      <p className="font-medium">{t('screens.payment.credits')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.credits || 0, 'CREDITS') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -408,10 +389,8 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <Coins className="w-5 h-5 text-blue-500" />
                     <div>
-                      <p className="font-medium">VTNA Tokens</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.vtna || 0, 'VTNA')}
-                      </p>
+                      <p className="font-medium">{t('screens.payment.vtnaTokens')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.vtna || 0, 'VTNA') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -432,10 +411,8 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <DollarSign className="w-5 h-5 text-green-500" />
                     <div>
-                      <p className="font-medium">USD Wallet</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.usd || 0, 'USD')}
-                      </p>
+                      <p className="font-medium">{t('screens.payment.usdWallet')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.usd || 0, 'USD') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -455,9 +432,9 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <CreditCard className="w-5 h-5 text-purple-500" />
                     <div>
-                      <p className="font-medium">Debit/Credit Card</p>
+                      <p className="font-medium">{t('screens.payment.debitcreditCard')}</p>
                       <p className="text-sm text-muted-foreground">
-                        Pay with Stripe
+                        {t('screens.payment.payWithStripe')}
                       </p>
                     </div>
                   </div>
@@ -475,10 +452,10 @@ export default function BookingPaymentFlow({
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 text-red-600">
                   <Shield className="w-4 h-4" />
-                  <span className="text-sm font-medium">Insufficient Balance</span>
+                  <span className="text-sm font-medium">{t('screens.payment.insufficientBalance')}</span>
                 </div>
                 <p className="text-sm text-red-600 mt-1">
-                  Top up your wallet to complete this booking
+                  {t('screens.payment.topUpYourWalletCompleteThis')}
                 </p>
               </CardContent>
             </Card>
@@ -488,7 +465,7 @@ export default function BookingPaymentFlow({
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between text-lg font-semibold">
-                <span>Total</span>
+                <span>{t('screens.payment.total')}</span>
                 <span>
                   {paymentMethod === 'cash' 
                     ? `$${booking.price.toFixed(2)}`
@@ -500,8 +477,7 @@ export default function BookingPaymentFlow({
                 </span>
               </div>
               {paymentMethod !== 'cash' && paymentMethod !== 'usd' && (
-                <p className="text-sm text-muted-foreground text-right mt-1">
-                  Converts to ${booking.price.toFixed(2)} USD
+                <p className="text-sm text-muted-foreground text-right mt-1">{t('screens.payment.convertsValue0Usd', { value0: booking.price.toFixed(2) })}
                 </p>
               )}
             </CardContent>
@@ -510,7 +486,7 @@ export default function BookingPaymentFlow({
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleConfirmBooking} 
@@ -519,13 +495,12 @@ export default function BookingPaymentFlow({
             >
               {isProcessing ? (
                 <>
-                  <Clock className="w-4 h-4 mr-2 animate-spin" />
-                  Processing...
+                  <Clock className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Confirm Booking
+                  {t('screens.payment.confirmBooking')}
                 </>
               )}
             </Button>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Brain, AlertTriangle, TrendingDown, Calendar, DollarSign } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SpendingInsight {
   id: string;
@@ -98,10 +99,9 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            Spending Intelligence
+            {t('screens.wallet.spendingIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {totalSavings} VTNA Savings Available
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.totalsavingsVtnaSavingsAvailable', { totalSavings })}
           </Badge>
         </div>
       </CardHeader>
@@ -110,12 +110,12 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         {/* Efficiency Score */}
         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Spending Efficiency</span>
+            <span className="text-sm font-medium">{t('screens.wallet.spendingEfficiency')}</span>
             <span className="text-sm text-muted-foreground">{spendingEfficiency}%</span>
           </div>
           <Progress value={spendingEfficiency} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">22% improvement</span> from last month
+            <span className="font-semibold text-emerald-600">{t('screens.wallet.text22Improvement')}</span>{t('screens.wallet.fromLastMonth')}
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Brain className="h-4 w-4 text-purple-500" />
-            Smart Insights
+            {t('screens.wallet.smartInsights')}
           </h4>
           
           {mockInsights.slice(0, 2).map((insight) => {
@@ -150,8 +150,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                   </Badge>
                   {insight.savings && (
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
-                      <DollarSign className="h-3 w-3" />
-                      Save {insight.savings} VTNA
+                      <DollarSign className="h-3 w-3" />{t('screens.wallet.saveSavingsVtna', { savings: insight.savings })}
                     </div>
                   )}
                 </div>
@@ -164,20 +163,20 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-4 w-4 text-amber-600" />
-            <span className="text-sm font-medium">Market Timing Alert</span>
+            <span className="text-sm font-medium">{t('screens.wallet.marketTimingAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            VTNA conversion rates are expected to increase by 12% in the next 48 hours
+            {t('screens.wallet.vtnaConversionRatesExpectedIncreaseBy')}
           </p>
           <Button size="sm" variant="outline" className="text-xs h-7">
-            Set Reminder
+            {t('screens.wallet.setReminder')}
           </Button>
         </div>
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Brain className="h-4 w-4 mr-2" />
-          View Detailed Analysis
+          {t('screens.wallet.viewDetailedAnalysis')}
         </Button>
       </CardContent>
     </Card>

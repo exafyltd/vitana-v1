@@ -28,6 +28,7 @@ import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/component
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileOrdersView, UnifiedMobileOrder } from "@/components/orders/MobileOrdersView";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
@@ -532,7 +533,7 @@ export default function Orders() {
 
   return (
     <AppLayout>
-      <SEO title="Orders | Discover" description="Track your wellness service bookings and product orders" canonical={window.location.href} />
+      <SEO title={t('screens.discover.ordersDiscover')} description="Track your wellness service bookings and product orders" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
       <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
@@ -549,7 +550,7 @@ export default function Orders() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>

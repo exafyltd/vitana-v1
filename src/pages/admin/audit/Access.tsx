@@ -9,6 +9,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAccessLog } from "@/hooks/useAdminAudit";
+import { t } from '@/lib/i18n-toast';
 
 export default function AuditAccess() {
   const query = useAccessLog(100);
@@ -20,16 +21,16 @@ export default function AuditAccess() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔐"
-          title="Access Log"
+          title={t('screens.admin.accessLog')}
           description="Authentication events and access records for your tenant"
         />
 
         {query.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading access log...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingAccessLog')}</p>
         )}
 
         {!query.isLoading && entries.length === 0 && (
-          <AdminEmptyState title="No access log entries" description="Authentication and access events will appear here as they occur." />
+          <AdminEmptyState title={t('screens.admin.noAccessLogEntries')} description="Authentication and access events will appear here as they occur." />
         )}
 
         {entries.length > 0 && (
@@ -37,10 +38,10 @@ export default function AuditAccess() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Topic</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>VTID</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.topic')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

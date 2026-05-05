@@ -9,6 +9,7 @@
 import { Briefcase } from "lucide-react";
 import type { ServiceOffering } from "@/lib/profilePrefsApi";
 import type { AccountVisibility, FieldVisibility } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 type ViewerRel = "self" | "connection" | "stranger";
 
@@ -62,7 +63,7 @@ export function ServiceOfferingsSection({ offers, visibility, viewerRelationship
       <header className="flex items-center gap-2">
         <Briefcase className="h-4 w-4 text-emerald-600" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Services I offer
+          {t('screens.profile.servicesIOffer')}
         </h3>
       </header>
 

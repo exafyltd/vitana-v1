@@ -21,6 +21,7 @@ import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@/lib/i18n-toast';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -76,21 +77,21 @@ export function MessageContextMenu({
         {onReply && (
           <ContextMenuItem onClick={onReply} className="flex items-center gap-2 px-3 py-2">
             <Reply className="w-4 h-4" />
-            <span>Reply</span>
+            <span>{t('screens.messages.reply')}</span>
           </ContextMenuItem>
         )}
         
         {onCopy && (
           <ContextMenuItem onClick={handleCopy} className="flex items-center gap-2 px-3 py-2">
             <Copy className="w-4 h-4" />
-            <span>Copy</span>
+            <span>{t('screens.messages.copy')}</span>
           </ContextMenuItem>
         )}
         
         {onForward && (
           <ContextMenuItem onClick={onForward} className="flex items-center gap-2 px-3 py-2">
             <Forward className="w-4 h-4" />
-            <span>Forward</span>
+            <span>{t('screens.messages.forward')}</span>
           </ContextMenuItem>
         )}
 
@@ -113,14 +114,14 @@ export function MessageContextMenu({
         {onSelect && (
           <ContextMenuItem onClick={onSelect} className="flex items-center gap-2 px-3 py-2">
             <MousePointer2 className="w-4 h-4" />
-            <span>Select</span>
+            <span>{t('screens.messages.select')}</span>
           </ContextMenuItem>
         )}
         
         {isOwnMessage && onEdit && (
           <ContextMenuItem onClick={onEdit} className="flex items-center gap-2 px-3 py-2">
             <Pencil className="w-4 h-4" />
-            <span>Edit</span>
+            <span>{t('screens.messages.edit')}</span>
           </ContextMenuItem>
         )}
 
@@ -132,7 +133,7 @@ export function MessageContextMenu({
               className="flex items-center gap-2 px-3 py-2 text-destructive focus:text-destructive"
             >
               <Trash2 className="w-4 h-4" />
-              <span>Delete for me</span>
+              <span>{t('screens.messages.deleteForMe')}</span>
             </ContextMenuItem>
           </>
         )}
@@ -142,7 +143,7 @@ export function MessageContextMenu({
             <ContextMenuSeparator />
             <div className="px-1 py-1">
               <div className="text-xs font-medium text-muted-foreground mb-1 px-2">
-                Quick reactions
+                {t('screens.messages.quickReactions')}
               </div>
               <div className="flex gap-1 px-1">
                 {QUICK_REACTIONS.map((emoji) => (

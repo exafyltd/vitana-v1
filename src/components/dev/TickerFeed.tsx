@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface TickerFeedProps {
   onVTIDClick?: () => void;
@@ -43,14 +44,14 @@ export function TickerFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
     )}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Live Ticker</CardTitle>
+          <CardTitle className="text-lg">{t('screens.dev.liveTicker')}</CardTitle>
           {hasUnread && !isFocused && (
             <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
               •
             </Badge>
           )}
         </div>
-        <p className="text-xs text-muted-foreground">Recent events • Auto-refresh 10s</p>
+        <p className="text-xs text-muted-foreground">{t('screens.dev.recentEventsAutorefresh10s')}</p>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden flex flex-col">
         {!available && error && (
@@ -65,8 +66,8 @@ export function TickerFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           </div>
         ) : events.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            <p className="text-sm">No events available</p>
-            <p className="text-xs mt-2">Events will appear here once the gateway is active</p>
+            <p className="text-sm">{t('screens.dev.noEventsAvailable')}</p>
+            <p className="text-xs mt-2">{t('screens.dev.eventsWillAppearHereOnceGateway')}</p>
           </div>
         ) : (
           <div className="space-y-2 overflow-y-auto flex-1">

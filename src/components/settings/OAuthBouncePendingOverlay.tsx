@@ -34,6 +34,7 @@ import { Loader2, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useOAuthBounceStore, type OAuthBounceProvider } from "@/hooks/useOAuthBounceStore";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 const PROVIDER_LABEL: Record<OAuthBounceProvider, string> = {
   google: "Google",
@@ -87,7 +88,7 @@ export function OAuthBouncePendingOverlay() {
       <button
         type="button"
         onClick={reset}
-        aria-label="Dismiss"
+        aria-label={t('screens.settings.dismiss')}
         className="absolute right-2 top-2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <X className="h-4 w-4" />
@@ -98,18 +99,18 @@ export function OAuthBouncePendingOverlay() {
           <div className="flex items-start gap-3">
             <Loader2 className="mt-0.5 h-5 w-5 shrink-0 animate-spin text-primary" />
             <div className="space-y-1">
-              <p className="font-medium leading-tight">Connecting {label}…</p>
+              <p className="font-medium leading-tight">{t('screens.settings.connectingLabel', { label })}</p>
               <p className="text-sm text-muted-foreground">
-                Finish signing in in your browser, then come back to Maxina. We're checking in the background.
+                {t('screens.settings.finishSigningYourBrowserThenCome')}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
-              I'm back — check now
+              {t('screens.settings.iMBackCheckNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
-              Cancel
+              {t('screens.settings.cancel')}
             </Button>
           </div>
         </div>
@@ -119,8 +120,8 @@ export function OAuthBouncePendingOverlay() {
         <div className="flex items-start gap-3 pr-6">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
           <div className="space-y-1">
-            <p className="font-medium leading-tight text-green-700">{label} connected</p>
-            <p className="text-sm text-green-700/80">You're all set.</p>
+            <p className="font-medium leading-tight text-green-700">{t('screens.settings.labelConnected', { label })}</p>
+            <p className="text-sm text-green-700/80">{t('screens.settings.youReAllSet')}</p>
           </div>
         </div>
       )}
@@ -130,18 +131,18 @@ export function OAuthBouncePendingOverlay() {
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
             <div className="space-y-1">
-              <p className="font-medium leading-tight text-amber-700">We didn't see {label} confirm</p>
+              <p className="font-medium leading-tight text-amber-700">{t('screens.settings.weDidnTSeeLabelConfirm', { label })}</p>
               <p className="text-sm text-amber-700/80">
-                If you completed sign-in, tap Check now. Otherwise, close this and tap Connect again.
+                {t('screens.settings.ifYouCompletedSigninTapCheck')}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
-              Check now
+              {t('screens.settings.checkNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
-              Close
+              {t('screens.settings.close')}
             </Button>
           </div>
         </div>

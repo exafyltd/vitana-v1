@@ -17,6 +17,7 @@ import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw, Activity } from "lucide-react";
 import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
@@ -85,7 +86,7 @@ export default function LiveConsole() {
       .catch(err => {
         console.error("Failed to load history:", err);
         if (err.message?.includes("401")) {
-          toast({ title: "Session expired", description: "Please sign in." });
+          notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
         }
       });
   }, [filters]);
@@ -126,11 +127,7 @@ export default function LiveConsole() {
         // Only show disconnect toast if we were stable for >3s and not already in fallback
         if (timeSinceLastStatus > 3000 && !useFallback) {
           lastToastTimeRef.current = now;
-          toast({ 
-            title: "⚠️ Connection Lost", 
-            description: "Attempting to reconnect...",
-            variant: "destructive"
-          });
+          notifyError('toasts.dev.connectionLost', 'toasts.dev.attemptingReconnect');
         }
       } else {
         setSseFailCount(0);
@@ -143,10 +140,7 @@ export default function LiveConsole() {
         // 3. Not a fresh page load (lastStatusRef was set before)
         if (statusChanged && timeSinceLastStatus > 3000 && lastStatusRef.current !== null) {
           lastToastTimeRef.current = now;
-          toast({ 
-            title: "✅ Reconnected", 
-            description: "Live event stream restored" 
-          });
+          notify('toasts.dev.reconnected', 'toasts.dev.liveEventStreamRestored');
         }
       }
     },
@@ -154,11 +148,7 @@ export default function LiveConsole() {
       console.error('🔴 Max SSE retries exceeded, activating polling fallback');
       setUseFallback(true);
       setShowFallbackPrompt(false);
-      toast({ 
-        title: "⚠️ Connection Failed", 
-        description: "Switched to polling mode (5s refresh)",
-        variant: "destructive"
-      });
+      notifyError('toasts.dev.connectionFailed2', 'toasts.dev.switchedPollingMode5sRefresh');
     },
     onEvent: (ev: Event) => {
       eventCountRef.current++;
@@ -167,7 +157,7 @@ export default function LiveConsole() {
       } else {
         addEvents([ev]);
         if (ev.kind === "telemetry.smoke") {
-          toast({ title: "Smoke test received ✓", description: "Event arrived successfully" });
+          notify('toasts.dev.smokeTestReceived', 'toasts.dev.eventArrivedSuccessfully');
         }
       }
     }
@@ -224,7 +214,7 @@ export default function LiveConsole() {
         } catch (err) {
           console.error("Failed to load more events:", err);
           if (err.message?.includes("401")) {
-            toast({ title: "Session expired", description: "Please sign in." });
+            notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
           }
         }
       }
@@ -265,10 +255,7 @@ export default function LiveConsole() {
     // Retry backend health check
     backendStatus.retryAll();
     
-    toast({ 
-      title: "🔄 Reconnecting...", 
-      description: "Attempting to restore live connection" 
-    });
+    notify('toasts.dev.reconnecting', 'toasts.dev.attemptingRestoreLiveConnection');
   };
 
   const handleRunSmoke = async () => {
@@ -279,9 +266,9 @@ export default function LiveConsole() {
         mode: "cors",
         credentials: "include"
       });
-      toast({ title: "Smoke test sent ✓", description: "Waiting for event..." });
+      notify('toasts.dev.smokeTestSent', 'toasts.dev.waitingForEvent');
     } catch (err) {
-      toast({ title: "Failed to send smoke test", description: String(err), variant: "destructive" });
+      notifyError('toasts.dev.failedSendSmokeTest');
     }
   };
 
@@ -330,13 +317,13 @@ export default function LiveConsole() {
         >
           <div className="flex gap-2 mt-2">
             <Button size="sm" onClick={() => { setUseFallback(true); setShowFallbackPrompt(false); }}>
-              Enable Polling
+              {t('screens.dev.enablePolling')}
             </Button>
             <Button size="sm" variant="outline" onClick={handleForceReconnect}>
-              Force Reconnect
+              {t('screens.dev.forceReconnect')}
             </Button>
             <Button size="sm" variant="ghost" onClick={() => setShowFallbackPrompt(false)}>
-              Dismiss
+              {t('screens.dev.dismiss')}
             </Button>
           </div>
         </SoftWarningBanner>
@@ -348,7 +335,7 @@ export default function LiveConsole() {
           dismissible={true}
         >
           <Button size="sm" onClick={handleForceReconnect} className="mt-2">
-            Try Reconnecting to Live Stream
+            {t('screens.dev.tryReconnectingLiveStream')}
           </Button>
         </SoftWarningBanner>
       )}
@@ -356,11 +343,11 @@ export default function LiveConsole() {
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b">
         <div className="flex items-center gap-2">
-          <span className="font-semibold">Live Console</span>
+          <span className="font-semibold">{t('screens.dev.liveConsole')}</span>
           <Badge variant={streaming ? "success" : "secondary"}>
             {streaming ? "LIVE" : "RECONNECTING"}
           </Badge>
-          {useFallback && <Badge variant="outline">POLLING</Badge>}
+          {useFallback && <Badge variant="outline">{t('screens.dev.polling')}</Badge>}
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider>
@@ -391,13 +378,12 @@ export default function LiveConsole() {
                     onClick={handleRunSmoke}
                     disabled={isOffline}
                   >
-                    Run Smoke
+                    {t('screens.dev.runSmoke')}
                   </Button>
                 </span>
               </TooltipTrigger>
               {isOffline && (
-                <TooltipContent>
-                  Cannot send smoke test: Backend is offline
+                <TooltipContent>{t('screens.dev.cannotSendSmokeTestBackendOffline')}
                 </TooltipContent>
               )}
             </Tooltip>
@@ -408,11 +394,9 @@ export default function LiveConsole() {
               checked={paused} 
               onChange={e => paused ? handleUnpause() : setPaused(true)}
               className="cursor-pointer"
-            />
-            Pause
+            />{t('screens.dev.pause')}
             {paused && bufferedEvents.length > 0 && (
-              <Badge variant="secondary" className="ml-1">
-                {bufferedEvents.length} new
+              <Badge variant="secondary" className="ml-1">{t('screens.dev.lengthNew', { length: bufferedEvents.length })}
               </Badge>
             )}
           </label>
@@ -423,28 +407,28 @@ export default function LiveConsole() {
       <div className="flex gap-2 p-2 border-b bg-muted/50">
         <Select value={filters.layer || "ALL"} onValueChange={(v) => setFilters({ layer: v as Layer | "ALL" })}>
           <SelectTrigger className="w-[140px] h-8">
-            <SelectValue placeholder="Layer" />
+            <SelectValue placeholder={t('screens.dev.layer')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All Layers</SelectItem>
-            <SelectItem value="CICDL">CICDL</SelectItem>
-            <SelectItem value="AICOR">AICOR</SelectItem>
-            <SelectItem value="AGENT">AGENT</SelectItem>
-            <SelectItem value="GATEWAY">GATEWAY</SelectItem>
-            <SelectItem value="OASIS">OASIS</SelectItem>
+            <SelectItem value="ALL">{t('screens.dev.allLayers')}</SelectItem>
+            <SelectItem value="CICDL">{t('screens.dev.cicdl')}</SelectItem>
+            <SelectItem value="AICOR">{t('screens.dev.aicor')}</SelectItem>
+            <SelectItem value="AGENT">{t('screens.dev.agent2')}</SelectItem>
+            <SelectItem value="GATEWAY">{t('screens.dev.gateway')}</SelectItem>
+            <SelectItem value="OASIS">{t('screens.dev.oasis')}</SelectItem>
           </SelectContent>
         </Select>
 
         <Select value={filters.status || "ALL"} onValueChange={(v) => setFilters({ status: v as Status | "ALL" })}>
           <SelectTrigger className="w-[140px] h-8">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder={t('screens.dev.status')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All Status</SelectItem>
-            <SelectItem value="info">Info</SelectItem>
-            <SelectItem value="success">Success</SelectItem>
-            <SelectItem value="warn">Warning</SelectItem>
-            <SelectItem value="error">Error</SelectItem>
+            <SelectItem value="ALL">{t('screens.dev.allStatus')}</SelectItem>
+            <SelectItem value="info">{t('screens.dev.info')}</SelectItem>
+            <SelectItem value="success">{t('screens.dev.success')}</SelectItem>
+            <SelectItem value="warn">{t('screens.dev.warning')}</SelectItem>
+            <SelectItem value="error">{t('screens.dev.error')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -468,16 +452,14 @@ export default function LiveConsole() {
                 </span>
               </div>
               {streaming && eventRate > 0 && (
-                <span className="text-muted-foreground">
-                  {eventRate}/s rate
+                <span className="text-muted-foreground">{t('screens.dev.eventratesRate', { eventRate })}
                 </span>
               )}
               {useFallback && (
-                <span className="text-muted-foreground">5s refresh</span>
+                <span className="text-muted-foreground">{t('screens.dev.text5sRefresh')}</span>
               )}
             </div>
-            <div className="text-muted-foreground">
-              Showing {filteredEvents.length} • Loaded {totalLoaded} more
+            <div className="text-muted-foreground">{t('screens.dev.showingLengthLoadedTotalloadedMore', { length: filteredEvents.length, totalLoaded })}
             </div>
           </div>
         )}

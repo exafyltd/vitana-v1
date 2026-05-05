@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, AlertTriangle, Calendar, Target, DollarSign } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SubscriptionMetric {
   id: string;
@@ -101,10 +102,9 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
-            Subscription ROI Analytics
+            {t('screens.wallet.subscriptionRoiAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {averageROI}% Avg ROI
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.averageroiAvgRoi', { averageROI })}
           </Badge>
         </div>
       </CardHeader>
@@ -115,19 +115,19 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-primary">${totalCost}</div>
-              <div className="text-xs text-muted-foreground">Monthly Cost</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.monthlyCost')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">${totalValue}</div>
-              <div className="text-xs text-muted-foreground">Monthly Value</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.monthlyValue')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{averageUsage}%</div>
-              <div className="text-xs text-muted-foreground">Avg Usage</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.avgUsage')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your subscriptions deliver <span className="font-semibold text-emerald-600">${totalValue - totalCost} net value</span> monthly
+            {t('screens.wallet.yourSubscriptionsDeliver')} <span className="font-semibold text-emerald-600">{t('screens.wallet.value0NetValue', { value0: totalValue - totalCost })}</span>{t('screens.wallet.monthly')}
           </p>
         </div>
 
@@ -135,7 +135,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-purple-500" />
-            Performance Analysis
+            {t('screens.wallet.performanceAnalysis')}
           </h4>
           
           {mockSubscriptions.slice(0, 2).map((subscription) => {
@@ -147,13 +147,11 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{subscription.name}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      ${subscription.cost}/month • {subscription.usage}% usage
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.costmonthUsageUsage', { cost: subscription.cost, usage: subscription.usage })}
                     </p>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className={`text-xs mb-1 ${getROIColor(subscription.roi)}`}>
-                      {subscription.roi}% ROI
+                    <Badge variant="outline" className={`text-xs mb-1 ${getROIColor(subscription.roi)}`}>{t('screens.wallet.roiRoi', { roi: subscription.roi })}
                     </Badge>
                     <div className={`flex items-center gap-1 text-xs ${trendConfig.color}`}>
                       <TrendIcon className="h-3 w-3" />
@@ -164,7 +162,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">Usage Rate</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.usageRate')}</span>
                     <span className="text-xs text-muted-foreground">{subscription.usage}%</span>
                   </div>
                   <Progress value={subscription.usage} className="h-1.5" />
@@ -172,12 +170,9 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
-                    Renews {subscription.renewalDate}
-                  </div>
+                    <Calendar className="h-3 w-3" />{t('screens.wallet.renewsRenewaldate', { renewalDate: subscription.renewalDate })}</div>
                   <div className="flex items-center gap-1 text-xs text-emerald-600">
-                    <DollarSign className="h-3 w-3" />
-                    ${subscription.value} value
+                    <DollarSign className="h-3 w-3" />{t('screens.wallet.valueValue', { value: subscription.value })}
                   </div>
                 </div>
               </div>
@@ -187,7 +182,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
 
         {/* Optimization Recommendations */}
         <div className="space-y-2">
-          <h4 className="text-sm font-medium">Smart Recommendations</h4>
+          <h4 className="text-sm font-medium">{t('screens.wallet.smartRecommendations')}</h4>
           {mockSubscriptions
             .filter(sub => sub.trend === "decreasing" || sub.usage < 70)
             .slice(0, 1)
@@ -201,7 +196,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                   {subscription.recommendation}
                 </p>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Optimize Plan
+                  {t('screens.wallet.optimizePlan')}
                 </Button>
               </div>
             ))}
@@ -210,7 +205,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <BarChart3 className="h-4 w-4 mr-2" />
-          View Detailed Analysis
+          {t('screens.wallet.viewDetailedAnalysis')}
         </Button>
       </CardContent>
     </Card>

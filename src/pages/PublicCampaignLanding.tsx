@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface PublicCampaignData {
   id: string;
@@ -248,9 +249,9 @@ export default function PublicCampaignLanding() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-foreground">Campaign Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('screens.publiccampaignlanding.campaignNotFound')}</h1>
           <p className="text-muted-foreground">{error || "The campaign you're looking for doesn't exist."}</p>
-          <Button onClick={() => navigate("/")}>Go to Home</Button>
+          <Button onClick={() => navigate("/")}>{t('screens.publiccampaignlanding.goHome')}</Button>
         </div>
       </div>
     );
@@ -329,7 +330,7 @@ export default function PublicCampaignLanding() {
                   <div className="flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Campaign Period</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.campaignPeriod')}</p>
                       <p className="text-sm font-medium text-foreground">
                         {startDate} {endDate && `- ${endDate}`}
                       </p>
@@ -341,10 +342,8 @@ export default function PublicCampaignLanding() {
                   <div className="flex items-start gap-3">
                     <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Channels</p>
-                      <p className="text-sm font-medium text-foreground">
-                        {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.channels')}</p>
+                      <p className="text-sm font-medium text-foreground">{t('screens.publiccampaignlanding.lengthChannelValue1', { length: campaign.target_channels.length, value1: campaign.target_channels.length !== 1 ? 's' : '' })}</p>
                     </div>
                   </div>
                 )}
@@ -352,15 +351,15 @@ export default function PublicCampaignLanding() {
                 <div className="flex items-start gap-3">
                   <Target className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Type</p>
-                    <p className="text-sm font-medium text-foreground">Marketing Campaign</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.type')}</p>
+                    <p className="text-sm font-medium text-foreground">{t('screens.publiccampaignlanding.marketingCampaign')}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Community</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.community')}</p>
                     <p className="text-sm font-medium text-foreground">VITANA</p>
                   </div>
                 </div>
@@ -411,7 +410,7 @@ export default function PublicCampaignLanding() {
                     <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
                     <div className="flex items-center justify-center gap-3 md:hidden">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
-                      <span className="text-xs text-muted-foreground font-medium">or</span>
+                      <span className="text-xs text-muted-foreground font-medium">{t('screens.publiccampaignlanding.text')}</span>
                       <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
                     </div>
                     
@@ -420,7 +419,7 @@ export default function PublicCampaignLanding() {
                       <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                          Discover more events and longevity communities.
+                          {t('screens.publiccampaignlanding.discoverMoreEventsLongevityCommunities')}
                         </span>
                       </div>
                       <Button
@@ -440,8 +439,7 @@ export default function PublicCampaignLanding() {
                         {user ? "Explore VITANA" : "Join in VITANA"}
                       </Button>
                       {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
-                          You'll sign in or create an account in the next step.
+                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">{t('screens.publiccampaignlanding.youLlSignCreateAccountNext')}
                         </p>
                       )}
                     </div>
@@ -457,7 +455,7 @@ export default function PublicCampaignLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
+              {t('screens.publiccampaignlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span>{t('screens.publiccampaignlanding.YourLongevityCommunity')}
             </p>
           </div>
         </div>
@@ -469,9 +467,7 @@ export default function PublicCampaignLanding() {
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Ticket className="h-5 w-5 text-primary" />
-                Get Tickets for {linkedEventTickets?.event_title || campaign.name}
-              </DialogTitle>
+                <Ticket className="h-5 w-5 text-primary" />{t('screens.publiccampaignlanding.getTicketsForValue0', { value0: linkedEventTickets?.event_title || campaign.name })}</DialogTitle>
             </DialogHeader>
             <EventTicketSelector 
               eventId={linkedEventId} 

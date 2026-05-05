@@ -8,7 +8,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminUserManagementNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +36,7 @@ import {
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
 import { Users, UserPlus, Shield, Trash2, Search, Filter } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface User {
   id: string;
@@ -218,10 +219,7 @@ export default function UserManagement() {
         // Auto-create reseller profile removed - reseller is now self-service capability
       }
       
-      toast({
-        title: "Role Assigned",
-        description: `Successfully assigned ${selectedRole} role to ${assigningTo.email}`,
-      });
+      notify('toasts.admin.roleAssigned');
       
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       setAssignDialogOpen(false);
@@ -241,11 +239,7 @@ export default function UserManagement() {
         errorMessage = error.message;
       }
       
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     } finally {
       setIsAssigning(false);
     }
@@ -260,18 +254,11 @@ export default function UserManagement() {
         
       if (error) throw error;
       
-      toast({
-        title: "Role Revoked",
-        description: `Successfully revoked ${role} role from ${userEmail}`,
-      });
+      notify('toasts.admin.roleRevoked');
       
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to revoke role",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -316,18 +303,11 @@ export default function UserManagement() {
 
       // Reseller profile auto-creation removed - now self-service capability
 
-      toast({
-        title: "Role Updated",
-        description: `${userEmail} is now ${newRole}`,
-      });
+      notify('toasts.admin.roleUpdated');
 
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update role",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -344,7 +324,7 @@ export default function UserManagement() {
   return (
     <AppLayout>
       <SEO 
-        title="User Management | VITANA Admin" 
+        title={t('screens.admin.userManagementVitanaAdmin')} 
         description="Manage user roles and permissions across tenants" 
         canonical={window.location.href} 
       />
@@ -353,7 +333,7 @@ export default function UserManagement() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="User Management"
+            title={t('screens.admin.userManagement')}
             description={isExafyAdmin 
               ? "Manage user roles and permissions across all tenants" 
               : `Manage user roles within ${tenant?.name}`
@@ -366,16 +346,16 @@ export default function UserManagement() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="h-5 w-5" />
-                Search & Filter Users
+                {t('screens.admin.searchFilterUsers')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex gap-4 items-end">
                 <div className="flex-1">
-                  <Label htmlFor="search">Search by Email</Label>
+                  <Label htmlFor="search">{t('screens.admin.searchByEmail')}</Label>
                   <Input
                     id="search"
-                    placeholder="Enter email address..."
+                    placeholder={t('screens.admin.enterEmailAddress')}
                     value={searchEmail}
                     onChange={(e) => setSearchEmail(e.target.value)}
                   />
@@ -384,17 +364,17 @@ export default function UserManagement() {
                   <ResponsiveDialogTrigger asChild>
                     <Button>
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Assign Role
+                      {t('screens.admin.assignRole')}
                     </Button>
                   </ResponsiveDialogTrigger>
                   <ResponsiveDialogContent>
                     <ResponsiveDialogHeader>
-                      <ResponsiveDialogTitle>Assign Role to User</ResponsiveDialogTitle>
+                      <ResponsiveDialogTitle>{t('screens.admin.assignRoleUser')}</ResponsiveDialogTitle>
                     </ResponsiveDialogHeader>
                     <ResponsiveDialogBody>
                       <div className="space-y-4">
                         <div>
-                          <Label>Select User (by email)</Label>
+                          <Label>{t('screens.admin.selectUserByEmail')}</Label>
                           <Select
                             value={assigningTo?.id || ""}
                             onValueChange={(value) => {
@@ -403,7 +383,7 @@ export default function UserManagement() {
                             }}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Choose a user..." />
+                              <SelectValue placeholder={t('screens.admin.chooseUser')} />
                             </SelectTrigger>
                             <SelectContent>
                               {filteredUsers.map((user) => (
@@ -417,10 +397,10 @@ export default function UserManagement() {
                         
                         {isExafyAdmin && (
                           <div>
-                            <Label>Select Tenant</Label>
+                            <Label>{t('screens.admin.selectTenant')}</Label>
                             <Select value={selectedTenant} onValueChange={setSelectedTenant}>
                               <SelectTrigger>
-                                <SelectValue placeholder="Choose a tenant..." />
+                                <SelectValue placeholder={t('screens.admin.chooseTenant')} />
                               </SelectTrigger>
                               <SelectContent>
                                 {tenants?.map((tenant) => (
@@ -434,10 +414,10 @@ export default function UserManagement() {
                         )}
                         
                         <div>
-                          <Label>Select Role</Label>
+                          <Label>{t('screens.admin.selectRole2')}</Label>
                           <Select value={selectedRole} onValueChange={setSelectedRole}>
                             <SelectTrigger>
-                              <SelectValue placeholder="Choose a role..." />
+                              <SelectValue placeholder={t('screens.admin.chooseRole')} />
                             </SelectTrigger>
                             <SelectContent>
                               {ROLE_OPTIONS.filter(role => canAssignRole(role.value)).map((role) => (
@@ -457,7 +437,7 @@ export default function UserManagement() {
                             variant="outline" 
                             onClick={() => setAssignDialogOpen(false)}
                           >
-                            Cancel
+                            {t('screens.admin.cancel')}
                           </Button>
                           <Button 
                             onClick={handleAssignRole}
@@ -490,9 +470,7 @@ export default function UserManagement() {
                           {user.full_name && (
                             <p className="text-sm text-muted-foreground">{user.full_name}</p>
                           )}
-                          <p className="text-xs text-muted-foreground">
-                            Joined: {new Date(user.created_at).toLocaleDateString()}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{t('screens.admin.joinedValue0', { value0: new Date(user.created_at).toLocaleDateString() })}</p>
                         </div>
                       </div>
                       
@@ -545,19 +523,16 @@ export default function UserManagement() {
                                       </ResponsiveConfirmDialogTrigger>
                                       <ResponsiveConfirmDialogContent>
                                         <ResponsiveConfirmDialogHeader>
-                                          <ResponsiveConfirmDialogTitle>Revoke Role</ResponsiveConfirmDialogTitle>
-                                          <ResponsiveConfirmDialogDescription>
-                                            Are you sure you want to revoke the {membership.role} role from {user.email} 
-                                            at {membership.tenant.name}? This action cannot be undone.
+                                          <ResponsiveConfirmDialogTitle>{t('screens.admin.revokeRole')}</ResponsiveConfirmDialogTitle>
+                                          <ResponsiveConfirmDialogDescription>{t('screens.admin.youSureYouWantRevokeRole', { role: membership.role, email: user.email, name: membership.tenant.name })}
                                           </ResponsiveConfirmDialogDescription>
                                         </ResponsiveConfirmDialogHeader>
                                         <ResponsiveConfirmDialogFooter>
-                                          <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                                          <ResponsiveConfirmDialogCancel>{t('screens.admin.cancel')}</ResponsiveConfirmDialogCancel>
                                           <ResponsiveConfirmDialogAction 
                                             onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
                                             className="bg-destructive text-destructive-foreground"
-                                          >
-                                            Revoke Role
+                                          >{t('screens.admin.revokeRole')}
                                           </ResponsiveConfirmDialogAction>
                                         </ResponsiveConfirmDialogFooter>
                                       </ResponsiveConfirmDialogContent>
@@ -567,7 +542,7 @@ export default function UserManagement() {
                               );
                             })
                         ) : (
-                          <Badge variant="outline">No active roles</Badge>
+                          <Badge variant="outline">{t('screens.admin.noActiveRoles')}</Badge>
                         )}
                       </div>
                     </div>
@@ -580,7 +555,7 @@ export default function UserManagement() {
               <Card>
                 <CardContent className="p-12 text-center">
                   <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No Users Found</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('screens.admin.noUsersFound2')}</h3>
                   <p className="text-muted-foreground">
                     {searchEmail ? "No users match your search criteria." : "No users available to manage."}
                   </p>

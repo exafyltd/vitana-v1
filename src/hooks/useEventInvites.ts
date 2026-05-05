@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface Contact {
   user_id: string;
@@ -66,21 +67,12 @@ export function useEventInvites() {
           }
         );
 
-      toast({
-        title: "Invites sent!",
-        description: `${contacts.length} ${
-          contacts.length === 1 ? "person has" : "people have"
-        } been invited to your event.`,
-      });
+      notify('toasts.hooks.invitesSent');
 
       return { success: true };
     } catch (error) {
       console.error("Error sending invites:", error);
-      toast({
-        title: "Failed to send invites",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedSendInvites', 'toasts.hooks.pleaseTryAgainLater');
       return { success: false, error };
     } finally {
       setSending(false);

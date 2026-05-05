@@ -53,6 +53,7 @@ import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 function DiscoverInner() {
   const { selectProduct } = useProductSelection();
@@ -92,11 +93,7 @@ function DiscoverInner() {
       if (attempts < 5) {
         setTimeout(() => tryScroll(attempts + 1), 400);
       } else {
-        toast({
-          title: "Match not found",
-          description: "This match is no longer available",
-          variant: "destructive",
-        });
+        notifyError('toasts.discover.matchNotFound', 'toasts.discover.thisMatchNoLongerAvailable');
       }
     };
 
@@ -220,7 +217,7 @@ function DiscoverInner() {
   return (
     <AppLayout>
       <SEO 
-        title="Discover Marketplace | VITANA" 
+        title={t('screens.discover.discoverMarketplaceVitana')} 
         description="AI-powered longevity marketplace with personalized recommendations, wellness services, supplements, and community shopping"
         canonical={window.location.href} 
       />
@@ -281,7 +278,7 @@ function DiscoverInner() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -309,7 +306,7 @@ function DiscoverInner() {
                   onClick={() => setMasterActionOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-2">Action</span>
+                  <span className="ml-2">{t('screens.discover.action')}</span>
                 </Button>
               )}
             </div>
@@ -323,13 +320,13 @@ function DiscoverInner() {
             <SplitBar value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="suggested">
-                  💡 Suggested for You
+                  {t('screens.discover.suggestedForYou')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="categories">
-                  📂 Categories
+                  {t('screens.discover.categories')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="share">
-                  💰 Share & Earn
+                  {t('screens.discover.shareEarn')}
                 </SplitBarTrigger>
               </SplitBarList>
 
@@ -344,8 +341,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Based on your Vitana Index, biomarkers, sleep scores, stress levels, and health goals
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.basedYourVitanaIndexBiomarkersSleep')}
                     </p>
                   )}
                   
@@ -360,7 +356,7 @@ function DiscoverInner() {
                   </div>
 
                   {feedLoading ? (
-                    <div className="text-center py-12 text-muted-foreground">Loading your personalized feed…</div>
+                    <div className="text-center py-12 text-muted-foreground">{t('screens.discover.loadingYourPersonalizedFeed')}</div>
                   ) : (
                   <div className={cn(
                     "grid gap-4",
@@ -430,8 +426,7 @@ function DiscoverInner() {
                               size="sm" 
                               className="flex-1"
                               onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
-                            >
-                              View
+                            >{t('screens.discover.view')}
                             </Button>
                           </div>
                         </CardContent>
@@ -458,8 +453,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Explore supplements, wellness services, lab tests, devices, and experiences
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.exploreSupplementsWellnessServicesLabTests')}
                     </p>
                   )}
                   
@@ -513,8 +507,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Curated product bundles you can share to earn credits and commissions
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.curatedProductBundlesYouCanShare')}
                     </p>
                   )}
 
@@ -553,7 +546,7 @@ function DiscoverInner() {
                             {isMobile ? "Rank" : "Top Performer"}
                           </span>
                         </div>
-                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>Top 5%</p>
+                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>{t('screens.discover.top5')}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -571,9 +564,7 @@ function DiscoverInner() {
                             alt={item.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 left-2 bg-green-500 text-white">
-                            Earn {item.commission}
-                          </Badge>
+                          <Badge className="absolute top-2 left-2 bg-green-500 text-white">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
                         </div>
                         <CardContent className={cn("p-4", isMobile && "p-3")}>
                           <h3 className={cn("font-semibold mb-2 group-hover:text-primary transition-colors", isMobile && "text-sm")}>
@@ -587,13 +578,12 @@ function DiscoverInner() {
                           <div className="flex items-center justify-between mb-3">
                             <span className={cn("font-bold", isMobile ? "text-base" : "text-lg")}>{item.price}</span>
                             <div className="text-xs text-muted-foreground">
-                              <Users className="h-3 w-3 inline mr-1" />
-                              {item.shares} shares
+                              <Users className="h-3 w-3 inline mr-1" />{t('screens.discover.sharesShares', { shares: item.shares })}
                             </div>
                           </div>
                           <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">
                             <p className="text-xs text-green-700 dark:text-green-300">
-                              Community earned: <span className="font-bold">{item.earnings}</span>
+                              {t('screens.discover.communityEarned')} <span className="font-bold">{item.earnings}</span>
                             </p>
                           </div>
                           <div className="flex gap-2">

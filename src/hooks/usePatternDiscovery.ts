@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface Pattern {
   id: string;
@@ -66,37 +67,22 @@ export function usePatternDiscovery(filters?: { type?: string; status?: string }
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["pattern_discoveries"] });
-      toast({
-        title: "Analysis Complete",
-        description: `Discovered ${data.patterns_discovered} new patterns`,
-      });
+      notify('toasts.hooks.analysisComplete');
     },
     onError: (error: Error) => {
       console.error("Pattern analysis error:", error);
       
       if (error.message?.includes('Rate limits exceeded')) {
-        toast({
-          title: "Rate Limit Reached",
-          description: "Too many requests. Please wait a moment and try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.hooks.rateLimitReached', 'toasts.hooks.tooManyRequestsPleaseWaitMoment');
         return;
       }
       
       if (error.message?.includes('Payment required')) {
-        toast({
-          title: "Credits Required",
-          description: "Please add credits to your Lovable AI workspace to continue.",
-          variant: "destructive",
-        });
+        notifyError('toasts.hooks.creditsRequired', 'toasts.hooks.pleaseAddCreditsYourLovableAi');
         return;
       }
 
-      toast({
-        title: "Analysis Failed",
-        description: error.message || "Failed to analyze patterns",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.analysisFailed');
     },
   });
 
@@ -115,17 +101,10 @@ export function usePatternDiscovery(filters?: { type?: string; status?: string }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pattern_discoveries"] });
-      toast({
-        title: "Pattern Reviewed",
-        description: "Pattern marked as reviewed",
-      });
+      notify('toasts.hooks.patternReviewed', 'toasts.hooks.patternMarkedAsReviewed');
     },
     onError: (error: Error) => {
-      toast({
-        title: "Review Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.reviewFailed');
     },
   });
 
@@ -144,17 +123,10 @@ export function usePatternDiscovery(filters?: { type?: string; status?: string }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pattern_discoveries"] });
-      toast({
-        title: "Pattern Implemented",
-        description: "Pattern linked to automation rule",
-      });
+      notify('toasts.hooks.patternImplemented', 'toasts.hooks.patternLinkedAutomationRule');
     },
     onError: (error: Error) => {
-      toast({
-        title: "Implementation Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.implementationFailed');
     },
   });
 
@@ -172,17 +144,10 @@ export function usePatternDiscovery(filters?: { type?: string; status?: string }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pattern_discoveries"] });
-      toast({
-        title: "Pattern Dismissed",
-        description: "Pattern marked as not relevant",
-      });
+      notify('toasts.hooks.patternDismissed', 'toasts.hooks.patternMarkedAsNotRelevant');
     },
     onError: (error: Error) => {
-      toast({
-        title: "Dismiss Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.dismissFailed');
     },
   });
 

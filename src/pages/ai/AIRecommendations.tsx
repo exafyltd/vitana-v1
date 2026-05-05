@@ -9,6 +9,7 @@ import { recommendations } from "@/mocks/ai";
 import { ProgressStreaksCard } from "@/components/crossover/ProgressStreaksCard";
 import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -89,7 +90,7 @@ export default function AIRecommendations() {
 
   return (
     <AppLayout>
-      <SEO title="Recommendations | AI Intelligence" description="Personalized AI recommendations for wellness" canonical={window.location.href} />
+      <SEO title={t('screens.ai.recommendationsAiIntelligence')} description="Personalized AI recommendations for wellness" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -99,8 +100,8 @@ export default function AIRecommendations() {
             {/* Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">AI Recommendations ✨</h1>
-                <p className="text-muted-foreground">Personalized suggestions to enhance your wellness journey.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.ai.aiRecommendations')}</h1>
+                <p className="text-muted-foreground">{t('screens.ai.personalizedSuggestionsEnhanceYourWellnessJourney')}</p>
               </div>
             </div>
             
@@ -127,7 +128,7 @@ export default function AIRecommendations() {
             {/* Health Recommendations - C-010 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-010">
               <RecommendationCard
-                title="Health Recommendations"
+                title={t('screens.ai.healthRecommendations')}
                 items={healthRecommendations}
                 onItemClick={(item) => handleRecommendationClick(item, "C-010")}
                 maxItems={3}
@@ -137,7 +138,7 @@ export default function AIRecommendations() {
             {/* Lifestyle Suggestions - C-011 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-011">
               <RecommendationCard
-                title="Lifestyle"
+                title={t('screens.ai.lifestyle')}
                 items={lifestyleSuggestions}
                 onItemClick={(item) => handleRecommendationClick(item, "C-011")}
                 maxItems={3}
@@ -152,7 +153,7 @@ export default function AIRecommendations() {
             {/* Wellness Services - C-013 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-WS-001" data-system-card-id="C-013">
               <OfferCard
-                title="Wellness Services"
+                title={t('screens.ai.wellnessServices')}
                 offers={[{
                   id: "wellness-001",
                   title: "Comprehensive Wellness Assessment", 
@@ -190,7 +191,7 @@ export default function AIRecommendations() {
             {/* Personalization Insights - C-015 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-007" data-system-card-id="C-015">
               <RecommendationCard
-                title="Personalization Insights"
+                title={t('screens.ai.personalizationInsights')}
                 items={personalizationInsights}
                 onItemClick={(item) => handleRecommendationClick(item, "C-015")}
                 maxItems={2}

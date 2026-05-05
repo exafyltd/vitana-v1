@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 import { ExternalLink, LinkIcon } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 type Platform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -41,18 +42,18 @@ export default function SocialConnect() {
 
   return (
     <AppLayout>
-      <SEO title="Social Accounts" />
+      <SEO title={t('screens.settings.socialAccounts')} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
-            title="Social Accounts"
+            title={t('screens.settings.socialAccounts')}
             description="Connect your accounts to auto-fill your profile"
             emoji="🔗"
           />
 
           <p className="text-sm text-muted-foreground">
-            Paste your social profile URL and we'll use AI to enrich your Vitana profile — no OAuth needed!
+            {t('screens.settings.pasteYourSocialProfileUrlWe')}
           </p>
 
           <div className="space-y-3">
@@ -78,7 +79,7 @@ export default function SocialConnect() {
                               {platform.url}
                             </a>
                           ) : (
-                            <p className="text-xs text-muted-foreground">Not connected</p>
+                            <p className="text-xs text-muted-foreground">{t('screens.settings.notConnected')}</p>
                           )}
                         </div>
                       </div>
@@ -86,7 +87,7 @@ export default function SocialConnect() {
                         {platform.connected ? (
                           <>
                             <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                              Connected
+                              {t('screens.settings.connected')}
                             </Badge>
                             <Button
                               variant="outline"
@@ -94,7 +95,7 @@ export default function SocialConnect() {
                               onClick={() => handleOpenDialog(platform.id, platform.name, platform.icon)}
                             >
                               <ExternalLink className="w-4 h-4 mr-1" />
-                              Reconnect
+                              {t('screens.settings.reconnect')}
                             </Button>
                           </>
                         ) : (
@@ -103,7 +104,7 @@ export default function SocialConnect() {
                             onClick={() => handleOpenDialog(platform.id, platform.name, platform.icon)}
                           >
                             <LinkIcon className="w-4 h-4 mr-1" />
-                            Connect
+                            {t('screens.settings.connect')}
                           </Button>
                         )}
                       </div>

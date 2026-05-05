@@ -8,6 +8,7 @@ import { NutritionEmptyState } from "./NutritionEmptyState";
 import { NutritionOverviewCard } from "./NutritionOverviewCard";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockNutritionPlan } from "@/data/mockRecipes";
+import { t } from '@/lib/i18n-toast';
 
 function sortMealsBySlot(meals: Recipe[]): Recipe[] {
   const order = { breakfast: 0, snack1: 1, lunch: 2, snack2: 3, dinner: 4 };
@@ -70,26 +71,24 @@ export function NutritionPlanView() {
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start bg-muted/50">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="breakfast">Breakfast</TabsTrigger>
-            <TabsTrigger value="lunch">Lunch</TabsTrigger>
-            <TabsTrigger value="dinner">Dinner</TabsTrigger>
-            <TabsTrigger value="snacks">Snacks</TabsTrigger>
+            <TabsTrigger value="all">{t('screens.health.all')}</TabsTrigger>
+            <TabsTrigger value="breakfast">{t('screens.health.breakfast')}</TabsTrigger>
+            <TabsTrigger value="lunch">{t('screens.health.lunch')}</TabsTrigger>
+            <TabsTrigger value="dinner">{t('screens.health.dinner')}</TabsTrigger>
+            <TabsTrigger value="snacks">{t('screens.health.snacks')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value={activeTab} className="mt-6">
             {mealsByDay.size === 0 ? (
               <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed">
-                <p className="text-muted-foreground">No recipes match your filters</p>
+                <p className="text-muted-foreground">{t('screens.health.noRecipesMatchYourFilters')}</p>
               </div>
             ) : (
               <div className="space-y-8">
                 {Array.from(mealsByDay.entries()).map(([day, meals]) => (
                   <div key={day}>
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-primary" />
-                      Day {day}
-                    </h3>
+                      <Calendar className="w-5 h-5 text-primary" />{t('screens.health.dayDay', { day })}</h3>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                       {sortMealsBySlot(meals).map(recipe => (

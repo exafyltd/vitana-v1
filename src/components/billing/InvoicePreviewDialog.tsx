@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Download, Printer } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export interface InvoiceData {
   id: string;
@@ -55,12 +56,10 @@ export function InvoicePreviewDialog({
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Invoice #{invoiceData.id}</span>
-            <Badge variant="secondary">Paid</Badge>
+            <span>{t('screens.billing.invoiceId', { id: invoiceData.id })}</span>
+            <Badge variant="secondary">{t('screens.billing.paid')}</Badge>
           </DialogTitle>
-          <DialogDescription>
-            Invoice date: {invoiceData.date}
-          </DialogDescription>
+          <DialogDescription>{t('screens.billing.invoiceDateDate', { date: invoiceData.date })}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -69,22 +68,19 @@ export function InvoicePreviewDialog({
             <CardContent className="pt-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold mb-2">From:</h3>
+                  <h3 className="font-semibold mb-2">{t('screens.billing.from')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Vitanaland Inc.<br />
-                    123 Wellness Street<br />
-                    Health City, HC 12345
+                    {t('screens.billing.vitanalandInc')}<br />
+                    {t('screens.billing.text123WellnessStreet')}<br />{t('screens.billing.healthCityHc12345')}
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Bill To:</h3>
+                  <h3 className="font-semibold mb-2">{t('screens.billing.bill')}</h3>
                   <p className="text-sm text-muted-foreground">
                     {invoiceData.billingAddress || "Account Holder\nEmail on file"}
                   </p>
                   {invoiceData.paymentMethod && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Payment Method: {invoiceData.paymentMethod}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">{t('screens.billing.paymentMethodPaymentmethod', { paymentMethod: invoiceData.paymentMethod })}</p>
                   )}
                 </div>
               </div>
@@ -94,13 +90,13 @@ export function InvoicePreviewDialog({
           {/* Line Items */}
           <Card>
             <CardContent className="pt-6">
-              <h3 className="font-semibold mb-4">Invoice Details</h3>
+              <h3 className="font-semibold mb-4">{t('screens.billing.invoiceDetails')}</h3>
               <div className="space-y-2">
                 <div className="grid grid-cols-12 gap-4 text-sm font-medium text-muted-foreground pb-2 border-b">
-                  <div className="col-span-6">Description</div>
-                  <div className="col-span-2 text-right">Quantity</div>
-                  <div className="col-span-2 text-right">Price</div>
-                  <div className="col-span-2 text-right">Amount</div>
+                  <div className="col-span-6">{t('screens.billing.description')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.quantity')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.price')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.amount')}</div>
                 </div>
                 {invoiceData.items.map((item, index) => (
                   <div key={index} className="grid grid-cols-12 gap-4 text-sm py-2">
@@ -121,16 +117,16 @@ export function InvoicePreviewDialog({
               {/* Totals */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="text-muted-foreground">{t('screens.billing.subtotal')}</span>
                   <span className="font-medium">${invoiceData.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tax</span>
+                  <span className="text-muted-foreground">{t('screens.billing.tax')}</span>
                   <span className="font-medium">${invoiceData.tax.toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-semibold">
-                  <span>Total</span>
+                  <span>{t('screens.billing.total')}</span>
                   <span>${invoiceData.total.toFixed(2)}</span>
                 </div>
               </div>
@@ -141,11 +137,11 @@ export function InvoicePreviewDialog({
           <div className="flex gap-2 justify-end">
             <Button variant="outline" onClick={handlePrint}>
               <Printer className="w-4 h-4 mr-2" />
-              Print
+              {t('screens.billing.print')}
             </Button>
             <Button variant="outline" onClick={handleDownload}>
               <Download className="w-4 h-4 mr-2" />
-              Download PDF
+              {t('screens.billing.downloadPdf')}
             </Button>
           </div>
         </div>

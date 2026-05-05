@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PresenceIndicator from '@/components/messages/PresenceIndicator';
+import { t } from '@/lib/i18n-toast';
 
 interface StickyConversationHeaderProps {
   title: string;
@@ -79,8 +80,7 @@ const StickyConversationHeader: React.FC<StickyConversationHeaderProps> = ({
             <div className="flex items-center text-xs text-muted-foreground">
               {isGroup ? (
                 <>
-                  <Users className="w-3 h-3 mr-1" />
-                  {participantCount} members
+                  <Users className="w-3 h-3 mr-1" />{t('screens.messages.participantcountMembers', { participantCount })}
                 </>
               ) : participantUserId ? (
                 <PresenceIndicator

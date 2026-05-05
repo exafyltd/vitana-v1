@@ -4,6 +4,7 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { t } from '@/lib/i18n-toast';
 
 // ============================================================================
 // ResponsivePopover - Renders as popover on desktop, bottom sheet on mobile
@@ -166,7 +167,7 @@ const ResponsivePopoverContent = React.forwardRef<
               {!hideCloseButton && (
                 <SheetPrimitive.Close style={{ boxShadow: 'none' }} className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-accent -mr-2">
                   <X className="h-5 w-5" />
-                  <span className="sr-only">Close</span>
+                  <span className="sr-only">{t('screens.ui.close')}</span>
                 </SheetPrimitive.Close>
               )}
             </div>

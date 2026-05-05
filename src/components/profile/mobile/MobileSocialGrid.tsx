@@ -1,5 +1,6 @@
 import { Check, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface SocialPlatform {
   id: string;
@@ -18,7 +19,7 @@ interface MobileSocialGridProps {
 
 // Default platforms with simple icons
 const DEFAULT_PLATFORMS: SocialPlatform[] = [
-  { id: "linkedin", name: "LinkedIn", icon: <span className="text-sm">in</span>, connected: false },
+  { id: "linkedin", name: "LinkedIn", icon: <span className="text-sm">{t('screens.profile.text')}</span>, connected: false },
   { id: "instagram", name: "Instagram", icon: <span className="text-sm">📸</span>, connected: false },
   { id: "tiktok", name: "TikTok", icon: <span className="text-sm">🎵</span>, connected: false },
   { id: "youtube", name: "YouTube", icon: <span className="text-sm">▶️</span>, connected: false },
@@ -36,13 +37,13 @@ export function MobileSocialGrid({
     <div className={cn("px-4 py-3", className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-foreground">Social Presence</h3>
+        <h3 className="text-sm font-semibold text-foreground">{t('screens.profile.socialPresence')}</h3>
         {onManage && (
           <button
             onClick={onManage}
             className="text-xs text-primary hover:underline"
           >
-            Manage
+            {t('screens.profile.manage')}
           </button>
         )}
       </div>

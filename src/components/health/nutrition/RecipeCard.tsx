@@ -1,5 +1,6 @@
 import { Recipe } from "@/types/recipe";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -43,14 +44,12 @@ export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
           
           {/* Macro Chips */}
           <div className="flex gap-2 flex-wrap">
-            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">
-              {recipe.calories} cal
+            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">{t('screens.health.caloriesCal', { calories: recipe.calories })}
             </Badge>
             <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">
               {recipe.macros.protein}P
             </Badge>
-            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">
-              {recipe.prep.timeMin} min
+            <Badge variant="secondary" className="bg-white/90 text-foreground text-xs font-medium">{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}
             </Badge>
           </div>
         </div>

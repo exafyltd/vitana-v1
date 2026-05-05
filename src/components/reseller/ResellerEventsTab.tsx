@@ -23,7 +23,7 @@ import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card
 import { OrganizerEventSalesSheet } from "@/components/business/OrganizerEventSalesSheet";
 import { SellEventModal } from "./SellEventModal";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { toast } from "sonner";
+import { notifyInfo } from '@/lib/i18n-toast';
 
 interface ResellerEventsTabProps {
   searchQuery: string;
@@ -76,7 +76,7 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
   const handleSellEvent = async (event: ResellerEvent) => {
     // If not a reseller yet, activate first
     if (!resellerProfile?.reseller_code) {
-      toast.info("Activating your reseller profile...");
+      notifyInfo('toasts.reseller.activatingYourResellerProfile');
       const success = await activateResellerForCurrentUser({ showToast: true, redirectAfter: false });
       if (!success) return;
     }

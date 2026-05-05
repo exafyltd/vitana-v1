@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PrivacySettingsDialogProps {
   open: boolean;
@@ -34,10 +35,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Privacy settings updated",
-      description: "Your global privacy controls have been saved.",
-    });
+    notify('toasts.sharing.privacySettingsUpdated', 'toasts.sharing.yourGlobalPrivacyControlsHaveSaved');
     onOpenChange(false);
   };
 
@@ -45,56 +43,55 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className="sm:max-w-[550px]">
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Privacy Settings</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle>{t('screens.sharing.privacySettings')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Configure global privacy controls and data handling policies
+            {t('screens.sharing.configureGlobalPrivacyControlsDataHandling')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <form onSubmit={handleSubmit}>
           <ResponsiveDialogBody>
             <div className="grid gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="dataRetention">Data Retention Period</Label>
+                <Label htmlFor="dataRetention">{t('screens.sharing.dataRetentionPeriod')}</Label>
                 <Select value={dataRetention} onValueChange={setDataRetention}>
                   <SelectTrigger id="dataRetention">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="30days">30 Days</SelectItem>
-                    <SelectItem value="90days">90 Days</SelectItem>
-                    <SelectItem value="1year">1 Year</SelectItem>
-                    <SelectItem value="2years">2 Years</SelectItem>
-                    <SelectItem value="indefinite">Indefinite</SelectItem>
+                    <SelectItem value="30days">{t('screens.sharing.text30Days')}</SelectItem>
+                    <SelectItem value="90days">{t('screens.sharing.text90Days')}</SelectItem>
+                    <SelectItem value="1year">{t('screens.sharing.text1Year')}</SelectItem>
+                    <SelectItem value="2years">{t('screens.sharing.text2Years')}</SelectItem>
+                    <SelectItem value="indefinite">{t('screens.sharing.indefinite')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  How long to keep data before automatic deletion
+                  {t('screens.sharing.howLongKeepDataBeforeAutomatic')}
                 </p>
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="defaultConsent">Default Consent Level</Label>
+                <Label htmlFor="defaultConsent">{t('screens.sharing.defaultConsentLevel')}</Label>
                 <Select value={defaultConsent} onValueChange={setDefaultConsent}>
                   <SelectTrigger id="defaultConsent">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="opt-in">Opt-in (Explicit consent required)</SelectItem>
-                    <SelectItem value="opt-out">Opt-out (Consent assumed)</SelectItem>
-                    <SelectItem value="informed">Informed consent only</SelectItem>
+                    <SelectItem value="opt-in">{t('screens.sharing.optinExplicitConsentRequired')}</SelectItem>
+                    <SelectItem value="opt-out">{t('screens.sharing.optoutConsentAssumed')}</SelectItem>
+                    <SelectItem value="informed">{t('screens.sharing.informedConsentOnly')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
-                  Default permission model for new access requests
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.defaultPermissionModelForNewAccess')}
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="thirdPartySharing">Third-Party Data Sharing</Label>
+                    <Label htmlFor="thirdPartySharing">{t('screens.sharing.thirdpartyDataSharing')}</Label>
                     <p className="text-xs text-muted-foreground">
-                      Allow sharing data with external partners
+                      {t('screens.sharing.allowSharingDataWithExternalPartners')}
                     </p>
                   </div>
                   <Switch
@@ -106,9 +103,8 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="autoExportRequests">Auto-process Export Requests</Label>
-                    <p className="text-xs text-muted-foreground">
-                      Automatically fulfill data export requests
+                    <Label htmlFor="autoExportRequests">{t('screens.sharing.autoprocessExportRequests')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('screens.sharing.automaticallyFulfillDataExportRequests')}
                     </p>
                   </div>
                   <Switch
@@ -120,9 +116,9 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="activityLogging">Access Activity Logging</Label>
+                    <Label htmlFor="activityLogging">{t('screens.sharing.accessActivityLogging')}</Label>
                     <p className="text-xs text-muted-foreground">
-                      Track who accessed your data and when
+                      {t('screens.sharing.trackWhoAccessedYourDataWhen')}
                     </p>
                   </div>
                   <Switch
@@ -136,9 +132,9 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
           </ResponsiveDialogBody>
           <ResponsiveDialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
-            <Button type="submit">Save Settings</Button>
+            <Button type="submit">{t('screens.sharing.saveSettings')}</Button>
           </ResponsiveDialogFooter>
         </form>
       </ResponsiveDialogContent>

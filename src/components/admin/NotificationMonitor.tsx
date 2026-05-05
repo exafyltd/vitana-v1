@@ -5,6 +5,7 @@ import { Activity, Mail, Smartphone, Bell, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface NotificationLog {
   id: string;
@@ -69,21 +70,20 @@ export default function NotificationMonitor() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Activity className="w-5 h-5" />
-          Real-Time Notification Monitor
+          {t('screens.admin.realtimeNotificationMonitor')}
           <Badge variant="outline" className="ml-auto">
-            Live
+            {t('screens.admin.live')}
           </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[500px]">
           {loading ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Loading notification logs...
+            <div className="text-center py-8 text-muted-foreground">{t('screens.admin.loadingNotificationLogs')}
             </div>
           ) : logs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No recent notifications
+              {t('screens.admin.noRecentNotifications')}
             </div>
           ) : (
             <div className="space-y-3">
@@ -96,8 +96,7 @@ export default function NotificationMonitor() {
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">
-                        User: {log.user_id.substring(0, 8)}...
+                      <span className="text-sm font-medium">{t('screens.admin.userValue0', { value0: log.user_id.substring(0, 8) })}
                       </span>
                       <Badge variant="outline" className="text-xs">
                         {log.action}

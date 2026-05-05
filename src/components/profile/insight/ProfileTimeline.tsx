@@ -8,6 +8,7 @@ import {
   Video
 } from "lucide-react";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface TimelineItem {
   date: string;
@@ -80,7 +81,7 @@ export function ProfileTimeline({ milestones, className }: ProfileTimelineProps)
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Calendar className="h-5 w-5 text-[hsl(var(--util-profile-accent))]" />
-          Community Journey
+          {t('screens.profile.communityJourney')}
         </CardTitle>
       </CardHeader>
       <CardContent>

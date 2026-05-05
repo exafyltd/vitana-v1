@@ -12,6 +12,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useKBTopics, useKBDocuments } from "@/hooks/useAdminKnowledge";
+import { t } from '@/lib/i18n-toast';
 
 export default function KnowledgeTopics() {
   const topicsQuery = useKBTopics();
@@ -32,17 +33,17 @@ export default function KnowledgeTopics() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🏷️"
-          title="Knowledge Topics"
+          title={t('screens.admin.knowledgeTopics')}
           description="All topic tags used across your knowledge base documents."
         />
 
         {topicsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading topics...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingTopics')}</p>
         )}
 
         {!topicsQuery.isLoading && topics.length === 0 && (
           <AdminEmptyState
-            title="No topics found"
+            title={t('screens.admin.noTopicsFound')}
             description="Topics will appear here once documents are tagged."
           />
         )}
@@ -63,9 +64,7 @@ export default function KnowledgeTopics() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                {topics.length} topic{topics.length !== 1 ? "s" : ""} across {docs.length} document{docs.length !== 1 ? "s" : ""}
-              </p>
+              <p className="text-xs text-muted-foreground mt-4">{t('screens.admin.lengthTopicValue1AcrossLength2Document', { length: topics.length, value1: topics.length !== 1 ? "s" : "", length2: docs.length, value3: docs.length !== 1 ? "s" : "" })}</p>
             </CardContent>
           </Card>
         )}

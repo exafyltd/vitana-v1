@@ -6,6 +6,7 @@ import { OpenTasksList } from "./OpenTasksList";
 import { useSplitFocus } from "@/hooks/dev/useSplitFocus";
 import { Card } from "@/components/ui/card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 export function LiveConsoleTab() {
   const [nestedTab, setNestedTab] = useState("command-center");
@@ -38,8 +39,8 @@ export function LiveConsoleTab() {
       <div className="border-b bg-muted/30">
         <SplitBar value={nestedTab} onValueChange={setNestedTab}>
           <SplitBarList className="w-full p-1">
-            <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
-            <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
+            <SplitBarTrigger value="command-center">{t('screens.dev.commandCenter')}</SplitBarTrigger>
+            <SplitBarTrigger value="open-tasks">{t('screens.dev.openTasks')}</SplitBarTrigger>
           </SplitBarList>
         </SplitBar>
       </div>
@@ -61,7 +62,7 @@ export function LiveConsoleTab() {
 
       <div className="p-2 border-t bg-muted/30 text-center">
         <p className="text-xs text-muted-foreground">
-          Keyboard shortcuts: <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd> Focus Left • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd> Focus Right • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd> Switch
+          {t('screens.dev.keyboardShortcuts')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd>{t('screens.dev.focusLeft')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd>{t('screens.dev.focusRight')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd>{t('screens.dev.switch')}
         </p>
       </div>
     </Card>

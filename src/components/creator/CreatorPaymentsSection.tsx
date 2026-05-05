@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { useCreatorStatus, useCreatorDashboard } from '@/hooks/useCreator';
 import { EnablePaymentsButton } from './EnablePaymentsButton';
 import { DollarSign, ExternalLink, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 export function CreatorPaymentsSection() {
   const { data: status, isLoading } = useCreatorStatus();
@@ -20,13 +21,13 @@ export function CreatorPaymentsSection() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5" />
-            Creator Payments
+            {t('screens.creator.creatorPayments')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-4 h-4 animate-spin" />
-            Loading payment status...
+            {t('screens.creator.loadingPaymentStatus')}
           </div>
         </CardContent>
       </Card>
@@ -42,34 +43,32 @@ export function CreatorPaymentsSection() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <DollarSign className="w-5 h-5" />
-          Creator Payments
+          {t('screens.creator.creatorPayments')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Status Badge */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-medium">Payment Status</h3>
-            <p className="text-sm text-muted-foreground">
-              Receive 90% of revenue from paid Live Rooms
+            <h3 className="font-medium">{t('screens.creator.paymentStatus')}</h3>
+            <p className="text-sm text-muted-foreground">{t('screens.creator.receive90RevenueFromPaidLive')}
             </p>
           </div>
           {isFullyOnboarded && (
             <Badge variant="default" className="bg-green-600">
               <CheckCircle className="w-3 h-3 mr-1" />
-              Active
+              {t('screens.creator.active')}
             </Badge>
           )}
           {isPartiallyOnboarded && (
             <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
               <AlertCircle className="w-3 h-3 mr-1" />
-              Setup Incomplete
+              {t('screens.creator.setupIncomplete')}
             </Badge>
           )}
           {notOnboarded && (
             <Badge variant="outline">
-              <AlertCircle className="w-3 h-3 mr-1" />
-              Not Enabled
+              <AlertCircle className="w-3 h-3 mr-1" />{t('screens.creator.notEnabled')}
             </Badge>
           )}
         </div>
@@ -81,9 +80,9 @@ export function CreatorPaymentsSection() {
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-medium text-green-900">Payments Enabled</h4>
+                  <h4 className="font-medium text-green-900">{t('screens.creator.paymentsEnabled')}</h4>
                   <p className="text-sm text-green-700 mt-1">
-                    You can now create paid Live Rooms and receive earnings directly to your bank account.
+                    {t('screens.creator.youCanNowCreatePaidLive')}
                   </p>
                 </div>
               </div>
@@ -91,14 +90,14 @@ export function CreatorPaymentsSection() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="p-3 bg-gray-50 rounded-lg">
-                <div className="text-sm text-muted-foreground">Your Share</div>
+                <div className="text-sm text-muted-foreground">{t('screens.creator.yourShare')}</div>
                 <div className="text-2xl font-bold text-green-600">90%</div>
-                <div className="text-xs text-muted-foreground">of room price</div>
+                <div className="text-xs text-muted-foreground">{t('screens.creator.roomPrice')}</div>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg">
-                <div className="text-sm text-muted-foreground">Platform Fee</div>
+                <div className="text-sm text-muted-foreground">{t('screens.creator.platformFee')}</div>
                 <div className="text-2xl font-bold text-gray-600">10%</div>
-                <div className="text-xs text-muted-foreground">service fee</div>
+                <div className="text-xs text-muted-foreground">{t('screens.creator.serviceFee')}</div>
               </div>
             </div>
           </>
@@ -110,9 +109,8 @@ export function CreatorPaymentsSection() {
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium text-yellow-900">Setup Incomplete</h4>
-                <p className="text-sm text-yellow-700 mt-1">
-                  Complete your payment setup to start receiving earnings from paid Live Rooms.
+                <h4 className="font-medium text-yellow-900">{t('screens.creator.setupIncomplete')}</h4>
+                <p className="text-sm text-yellow-700 mt-1">{t('screens.creator.completeYourPaymentSetupStartReceiving')}
                 </p>
               </div>
             </div>
@@ -125,9 +123,8 @@ export function CreatorPaymentsSection() {
             <div className="flex items-start gap-3">
               <DollarSign className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium text-blue-900">Earn from Your Live Rooms</h4>
-                <p className="text-sm text-blue-700 mt-1">
-                  Enable payments to create paid Live Rooms and receive 90% of the revenue. Quick 2-minute setup with Stripe Connect.
+                <h4 className="font-medium text-blue-900">{t('screens.creator.earnFromYourLiveRooms')}</h4>
+                <p className="text-sm text-blue-700 mt-1">{t('screens.creator.enablePaymentsCreatePaidLiveRooms')}
                 </p>
               </div>
             </div>
@@ -153,7 +150,7 @@ export function CreatorPaymentsSection() {
         {/* Revenue Examples */}
         {!notOnboarded && (
           <div className="pt-4 border-t">
-            <h4 className="text-sm font-medium mb-3">Revenue Examples</h4>
+            <h4 className="text-sm font-medium mb-3">{t('screens.creator.revenueExamples')}</h4>
             <div className="space-y-2">
               {[
                 { price: 9.99, creator: 8.99, platform: 1.00 },
@@ -161,10 +158,10 @@ export function CreatorPaymentsSection() {
                 { price: 49.99, creator: 44.99, platform: 5.00 },
               ].map(({ price, creator, platform }) => (
                 <div key={price} className="flex items-center justify-between text-sm p-2 bg-gray-50 rounded">
-                  <span className="text-muted-foreground">Room Price: ${price}</span>
+                  <span className="text-muted-foreground">{t('screens.creator.roomPricePrice', { price })}</span>
                   <div className="flex gap-4">
-                    <span className="text-green-600 font-medium">You: ${creator}</span>
-                    <span className="text-gray-500">Fee: ${platform}</span>
+                    <span className="text-green-600 font-medium">{t('screens.creator.youCreator', { creator })}</span>
+                    <span className="text-gray-500">{t('screens.creator.feePlatform', { platform })}</span>
                   </div>
                 </div>
               ))}

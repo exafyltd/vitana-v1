@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Sparkles, TrendingUp, Users, Send, Link, Share2 } from "lucide-react";
 import { useProactiveGrowth } from "@/hooks/useProactiveGrowth";
+import { t } from '@/lib/i18n-toast';
 
 const iconMap: Record<string, typeof Users> = {
   Users,
@@ -51,7 +52,7 @@ export function GrowthNudge() {
                   <div className="flex items-center gap-2 mb-1">
                     <TrendingUp className="h-4 w-4 text-primary" />
                     <span className="text-xs font-medium text-primary uppercase tracking-wider">
-                      Growth Opportunity
+                      {t('screens.proactive.growthOpportunity')}
                     </span>
                   </div>
                   <h3 className="text-lg font-semibold mb-1">{topAction.title}</h3>
@@ -71,7 +72,7 @@ export function GrowthNudge() {
                 {topAction.metadata?.currentCount !== undefined && topAction.metadata?.targetCount && (
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>Progress</span>
+                      <span>{t('screens.proactive.progress')}</span>
                       <span>{topAction.metadata.currentCount} / {topAction.metadata.targetCount}</span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -98,8 +99,7 @@ export function GrowthNudge() {
                     <Button
                       variant="outline"
                       onClick={() => dismissAction(topAction.id)}
-                    >
-                      See Next ({actions.length - 1} more)
+                    >{t('screens.proactive.seeNextValue0More', { value0: actions.length - 1 })}
                     </Button>
                   )}
                 </div>

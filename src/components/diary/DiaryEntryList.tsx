@@ -9,7 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
 import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   ResponsiveConfirmDialog,
   ResponsiveConfirmDialogAction,
@@ -20,6 +20,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
@@ -113,9 +114,9 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       if (error) throw error;
       
       queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
-      toast({ title: "Entry deleted", description: "The diary entry has been removed." });
+      notify('toasts.diary.entryDeleted', 'toasts.diary.diaryEntryHasRemoved');
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete entry. Please try again.", variant: "destructive" });
+      notifyError('toasts.diary.error', 'toasts.diary.failedDeleteEntryPleaseTryAgain');
     } finally {
       setIsDeleting(false);
       setDeleteTarget(null);
@@ -193,8 +194,8 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
           <div className={`w-12 h-12 rounded-full ${getIconBgForSource(entryType)} flex items-center justify-center mx-auto mb-2`}>
             {getIconForSource(entryType)}
           </div>
-          <p>No {entryType || ''} entries yet</p>
-          <p className="text-sm mt-1">Start recording your wellness journey</p>
+          <p>{t('screens.diary.noValue0EntriesYet', { value0: entryType || '' })}</p>
+          <p className="text-sm mt-1">{t('screens.diary.startRecordingYourWellnessJourney')}</p>
         </CardContent>
       </Card>
     );
@@ -257,7 +258,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                             <button
                               onClick={() => setDeleteTarget(entry.id)}
                               className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                              aria-label="Delete entry"
+                              aria-label={t('screens.diary.deleteEntry')}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -293,8 +294,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
           <button
             onClick={() => setDisplayCount(prev => prev + 10)}
             className="px-6 py-2 text-sm font-medium text-primary hover:text-primary/80 bg-muted/60 hover:bg-muted rounded-full transition-colors"
-          >
-            Load more ({entries!.length - displayCount} remaining)
+          >{t('screens.diary.loadMoreValue0Remaining', { value0: entries!.length - displayCount })}
           </button>
         </div>
       )}
@@ -312,13 +312,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <ResponsiveConfirmDialogContent className="max-w-sm">
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Entry?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.diary.deleteEntry')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              This diary entry will be permanently deleted. This action cannot be undone.
+              {t('screens.diary.thisDiaryEntryWillPermanentlyDeleted')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>{t('screens.diary.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

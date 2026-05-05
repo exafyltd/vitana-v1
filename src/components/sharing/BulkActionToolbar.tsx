@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Copy, Trash2, Download, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface BulkActionToolbarProps {
   selectedCount: number;
@@ -37,22 +38,21 @@ export function BulkActionToolbar({
         {/* Left Side - Selection Info */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-gray-900">
-              {selectedCount} campaign{selectedCount !== 1 ? "s" : ""} selected
+            <span className="text-sm font-semibold text-gray-900">{t('screens.sharing.selectedcountCampaignValue1Selected', { selectedCount, value1: selectedCount !== 1 ? "s" : "" })}
             </span>
             <div className="flex items-center gap-2 mt-1">
               <button
                 onClick={onSelectAll}
                 className="text-xs text-teal-600 hover:text-teal-700 font-medium"
               >
-                Select all
+                {t('screens.sharing.selectAll')}
               </button>
               <span className="text-gray-400">•</span>
               <button
                 onClick={onDeselectAll}
                 className="text-xs text-gray-600 hover:text-gray-700 font-medium"
               >
-                Deselect all
+                {t('screens.sharing.deselectAll')}
               </button>
             </div>
           </div>
@@ -68,7 +68,7 @@ export function BulkActionToolbar({
             disabled={selectedCount === 0}
           >
             <Copy className="w-4 h-4" />
-            Duplicate
+            {t('screens.sharing.duplicate')}
           </Button>
 
           <Button
@@ -79,7 +79,7 @@ export function BulkActionToolbar({
             disabled={selectedCount === 0}
           >
             <Sparkles className="w-4 h-4" />
-            Smart-Reschedule
+            {t('screens.sharing.smartreschedule')}
           </Button>
 
           <Button
@@ -90,7 +90,7 @@ export function BulkActionToolbar({
             disabled={selectedCount === 0}
           >
             <Download className="w-4 h-4" />
-            Export CSV
+            {t('screens.sharing.exportCsv')}
           </Button>
 
           <Button
@@ -101,7 +101,7 @@ export function BulkActionToolbar({
             disabled={selectedCount === 0}
           >
             <Trash2 className="w-4 h-4" />
-            Delete
+            {t('screens.sharing.delete')}
           </Button>
 
           <div className="w-px h-6 bg-gray-300 mx-2" />

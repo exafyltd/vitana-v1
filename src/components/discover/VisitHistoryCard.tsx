@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface VisitHistoryCardProps {
   visit: {
@@ -35,7 +36,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
               <p className="text-sm text-muted-foreground">{visit.provider_specialty}</p>
             </div>
           </div>
-          <Badge variant="secondary">Completed</Badge>
+          <Badge variant="secondary">{t('screens.discover.completed')}</Badge>
         </div>
 
         <div className="space-y-2 mb-3">
@@ -45,7 +46,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="h-4 w-4" />
-            <span>{visit.duration_minutes} minutes</span>
+            <span>{t('screens.discover.duration_minutesMinutes', { duration_minutes: visit.duration_minutes })}</span>
           </div>
         </div>
 
@@ -55,8 +56,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
               variant="ghost"
               size="sm"
               onClick={() => setNotesExpanded(!notesExpanded)}
-            >
-              {notesExpanded ? 'Hide' : 'View'} Notes
+            >{t('screens.discover.value0Notes', { value0: notesExpanded ? 'Hide' : 'View' })}
             </Button>
             {notesExpanded && (
               <p className="text-sm mt-2 p-3 bg-muted/50 rounded">{visit.patient_notes}</p>
@@ -65,8 +65,8 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
         )}
 
         <div className="flex gap-2">
-          <Button size="sm" variant="outline">Book Follow-up</Button>
-          <Button size="sm" variant="outline">View Details</Button>
+          <Button size="sm" variant="outline">{t('screens.discover.bookFollowup')}</Button>
+          <Button size="sm" variant="outline">{t('screens.discover.viewDetails')}</Button>
         </div>
       </CardContent>
     </Card>

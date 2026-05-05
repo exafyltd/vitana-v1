@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tag, Check, X, Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface DiscountCodeInputProps {
   onApply: (code: string) => Promise<{ valid: boolean; message?: string }>;
@@ -66,7 +67,7 @@ export default function DiscountCodeInput({ onApply, appliedCode, onClear }: Dis
         <Input
           value={code}
           onChange={(e) => { setCode(e.target.value.toUpperCase()); setError(null); }}
-          placeholder="MAXINA-XXXXXX"
+          placeholder={t('screens.tickets.maxinaxxxxxx')}
           className="font-mono text-sm uppercase"
           maxLength={13}
         />

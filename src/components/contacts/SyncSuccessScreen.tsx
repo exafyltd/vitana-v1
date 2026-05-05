@@ -1,6 +1,7 @@
 import { PartyPopper, Users, UserPlus, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { t } from '@/lib/i18n-toast';
 
 interface SyncSuccessScreenProps {
   totalImported: number;
@@ -38,10 +39,9 @@ export function SyncSuccessScreen({
       {/* Title */}
       <div className="space-y-2">
         <h3 className="text-xl font-semibold text-foreground">
-          Contacts Synced!
+          {t('screens.contacts.contactsSynced')}
         </h3>
-        <p className="text-sm text-muted-foreground">
-          We found {totalImported} contacts and matched them with VITANA
+        <p className="text-sm text-muted-foreground">{t('screens.contacts.weFoundTotalimportedContactsMatchedThem', { totalImported })}
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export function SyncSuccessScreen({
               {matchesFound}
             </span>
             <span className="text-xs text-muted-foreground">
-              on VITANA
+              {t('screens.contacts.vitana2')}
             </span>
           </motion.div>
         )}
@@ -76,7 +76,7 @@ export function SyncSuccessScreen({
               {newContacts}
             </span>
             <span className="text-xs text-muted-foreground">
-              to invite
+              {t('screens.contacts.invite2')}
             </span>
           </motion.div>
         )}
@@ -84,8 +84,7 @@ export function SyncSuccessScreen({
 
       {/* Message */}
       {matchesFound > 0 && (
-        <p className="text-sm text-foreground bg-[hsl(var(--contact-success)/0.1)] rounded-lg p-3">
-          🎉 {matchesFound} of your friends are already on VITANA!
+        <p className="text-sm text-foreground bg-[hsl(var(--contact-success)/0.1)] rounded-lg p-3">{t('screens.contacts.matchesfoundYourFriendsAlreadyVitana', { matchesFound })}
         </p>
       )}
 
@@ -96,7 +95,7 @@ export function SyncSuccessScreen({
             onClick={onViewMatches}
             className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
           >
-            View Matches
+            {t('screens.contacts.viewMatches')}
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         )}
@@ -108,7 +107,7 @@ export function SyncSuccessScreen({
             className={matchesFound === 0 ? "w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90" : "w-full"}
           >
             <UserPlus className="w-4 h-4 mr-2" />
-            Invite Friends
+            {t('screens.contacts.inviteFriends')}
           </Button>
         )}
 
@@ -117,7 +116,7 @@ export function SyncSuccessScreen({
           onClick={onClose}
           className="w-full text-muted-foreground"
         >
-          Done
+          {t('screens.contacts.done')}
         </Button>
       </div>
     </motion.div>

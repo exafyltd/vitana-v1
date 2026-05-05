@@ -27,6 +27,7 @@ import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
+import { t } from '@/lib/i18n-toast';
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -77,7 +78,7 @@ export default function MyBusiness() {
 
   return (
     <AppLayout>
-      <SEO title="Business Hub | Community" description="Manage your wellness services, events, and clients" canonical={window.location.href} />
+      <SEO title={t('screens.community.businessHubCommunity')} description="Manage your wellness services, events, and clients" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -88,10 +89,10 @@ export default function MyBusiness() {
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Business Hub 💼
+                  {t('screens.community.businessHub')}
                 </h1>
                 <p className="text-muted-foreground">
-                  Grow your wellness business and manage clients effortlessly
+                  {t('screens.community.growYourWellnessBusinessManageClients')}
                 </p>
               </div>
             </div>
@@ -115,13 +116,13 @@ export default function MyBusiness() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -129,8 +130,7 @@ export default function MyBusiness() {
                     </div>
                   ))}
                   {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.community.value0MoreActions', { value0: pendingCount - 2 })}
                     </div>
                   )}
                 </div>
@@ -153,7 +153,7 @@ export default function MyBusiness() {
           {/* Action Buttons */}
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search Business…"
+              placeholder={t('screens.community.searchBusiness')}
               onSearch={(query) => console.log('Search Business:', query)}
             />
             <UniversalCalendarButton />
@@ -163,7 +163,7 @@ export default function MyBusiness() {
               onClick={() => setShowBusinessTypeSelector(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Business
+              {t('screens.community.business')}
             </Button>
           </UtilityActionButton>
 
@@ -171,21 +171,20 @@ export default function MyBusiness() {
           <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full mb-6">
             <SplitBarList>
               <SplitBarTrigger value="overview">
-                📊 Overview
+                {t('screens.community.overview')}
               </SplitBarTrigger>
               <SplitBarTrigger value="services">
-                💼 Services
+                {t('screens.community.services')}
               </SplitBarTrigger>
               <SplitBarTrigger value="clients">
-                👥 Clients
+                {t('screens.community.clients')}
               </SplitBarTrigger>
               {isReseller && (
-                <SplitBarTrigger value="sell-earn">
-                  🎫 Sell & Earn
+                <SplitBarTrigger value="sell-earn">{t('screens.community.sellEarn')}
                 </SplitBarTrigger>
               )}
               <SplitBarTrigger value="analytics">
-                📈 Analytics
+                {t('screens.community.analytics')}
               </SplitBarTrigger>
             </SplitBarList>
 

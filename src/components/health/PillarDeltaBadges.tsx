@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
   nutrition: "Nutrition",
@@ -37,7 +38,7 @@ export function PillarDeltaBadges({ vector, compact = false, className }: Props)
     <div
       className={cn("flex flex-wrap gap-1 items-center", className)}
       role="list"
-      aria-label="Vitana Index pillar impact"
+      aria-label={t('screens.health.vitanaIndexPillarImpact')}
     >
       {entries.map(([pillar, value]) => (
         <Badge

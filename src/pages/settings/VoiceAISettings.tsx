@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from '@/lib/i18n-toast';
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
@@ -264,7 +265,7 @@ export default function VoiceAISettings() {
   return (
     <AppLayout>
       <SEO 
-        title="Voice & AI Settings" 
+        title={t('screens.settings.voiceAiSettings')} 
         description="Configure your voice recognition and AI assistant preferences" 
         canonical={window.location.href} 
       />
@@ -273,7 +274,7 @@ export default function VoiceAISettings() {
       <div className="p-6 bg-gradient-subtle min-h-screen pb-32 md:pb-40">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Voice & AI Settings"
+            title={t('screens.settings.voiceAiSettings')}
             description="Customize your voice recognition and AI assistant experience"
             emoji="🎙️"
           />
@@ -281,9 +282,9 @@ export default function VoiceAISettings() {
           {/* Settings Tabs */}
           <Tabs defaultValue="voice" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="voice">Voice</TabsTrigger>
-              <TabsTrigger value="ai">AI Models</TabsTrigger>
-              <TabsTrigger value="privacy">Privacy</TabsTrigger>
+              <TabsTrigger value="voice">{t('screens.settings.voice')}</TabsTrigger>
+              <TabsTrigger value="ai">{t('screens.settings.aiModels')}</TabsTrigger>
+              <TabsTrigger value="privacy">{t('screens.settings.privacy')}</TabsTrigger>
             </TabsList>
 
             {/* Voice Settings Tab */}
@@ -293,13 +294,13 @@ export default function VoiceAISettings() {
                 {/* Left Card: TTS Voice Settings */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Voice Output Settings</CardTitle>
-                    <CardDescription>Configure how the AI speaks to you</CardDescription>
+                    <CardTitle>{t('screens.settings.voiceOutputSettings')}</CardTitle>
+                    <CardDescription>{t('screens.settings.configureHowAiSpeaksYou')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {/* Language */}
                     <div className="space-y-2">
-                      <Label>Language</Label>
+                      <Label>{t('screens.settings.language')}</Label>
                       <Select
                         value={preferences.stt_language}
                         onValueChange={handleLanguageChange}
@@ -309,15 +310,15 @@ export default function VoiceAISettings() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="en-US">English (US)</SelectItem>
-                          <SelectItem value="de-DE">German (DE)</SelectItem>
-                          <SelectItem value="sr-RS">Serbian (RS)</SelectItem>
-                          <SelectItem value="es-ES">Spanish (ES)</SelectItem>
-                          <SelectItem value="ar-XA">Arabic (XA)</SelectItem>
-                          <SelectItem value="ru-RU">Russian (RU)</SelectItem>
-                          <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
-                          <SelectItem value="fr-FR">French (FR)</SelectItem>
-                          <SelectItem value="pt-PT">Portuguese (PT)</SelectItem>
+                          <SelectItem value="en-US">{t('screens.settings.englishUs')}</SelectItem>
+                          <SelectItem value="de-DE">{t('screens.settings.germanDe')}</SelectItem>
+                          <SelectItem value="sr-RS">{t('screens.settings.serbianRs')}</SelectItem>
+                          <SelectItem value="es-ES">{t('screens.settings.spanishEs')}</SelectItem>
+                          <SelectItem value="ar-XA">{t('screens.settings.arabicXa')}</SelectItem>
+                          <SelectItem value="ru-RU">{t('screens.settings.russianRu')}</SelectItem>
+                          <SelectItem value="zh-CN">{t('screens.settings.chineseCn')}</SelectItem>
+                          <SelectItem value="fr-FR">{t('screens.settings.frenchFr')}</SelectItem>
+                          <SelectItem value="pt-PT">{t('screens.settings.portuguesePt')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -325,15 +326,14 @@ export default function VoiceAISettings() {
                     {/* Voice Selection */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Voice</Label>
+                        <Label>{t('screens.settings.voice')}</Label>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={loadVoices}
                           disabled={isUpdating}
                           className="h-7 text-xs"
-                        >
-                          Refresh Browser Voices
+                        >{t('screens.settings.refreshBrowserVoices')}
                         </Button>
                       </div>
                       <Select
@@ -342,14 +342,14 @@ export default function VoiceAISettings() {
                         disabled={isUpdating}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a voice" />
+                          <SelectValue placeholder={t('screens.settings.selectVoice')} />
                         </SelectTrigger>
                         <SelectContent>
                           {/* Google Cloud Voices */}
                           {currentCloudVoices.length > 0 && (
                             <>
                               <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                                Google Cloud Voices (High Quality)
+                                {t('screens.settings.googleCloudVoicesHighQuality')}
                               </div>
                               {currentCloudVoices.map((voice) => (
                                 <SelectItem key={voice.name} value={voice.name}>
@@ -364,7 +364,7 @@ export default function VoiceAISettings() {
                             <>
                               {currentCloudVoices.length > 0 && (
                                 <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
-                                  Browser Voices
+                                  {t('screens.settings.browserVoices')}
                                 </div>
                               )}
                               {filteredVoices.map((voice) => (
@@ -378,7 +378,7 @@ export default function VoiceAISettings() {
                           {/* No voices */}
                           {filteredVoices.length === 0 && currentCloudVoices.length === 0 && (
                             <SelectItem value="" disabled>
-                              No voices available
+                              {t('screens.settings.noVoicesAvailable')}
                             </SelectItem>
                           )}
                         </SelectContent>
@@ -396,7 +396,7 @@ export default function VoiceAISettings() {
                     {/* Speed */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Speed</Label>
+                        <Label>{t('screens.settings.speed')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_speed.toFixed(1)}x</span>
                       </div>
                       <Slider
@@ -412,7 +412,7 @@ export default function VoiceAISettings() {
                     {/* Pitch */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Pitch</Label>
+                        <Label>{t('screens.settings.pitch')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_pitch.toFixed(1)}</span>
                       </div>
                       <Slider
@@ -428,7 +428,7 @@ export default function VoiceAISettings() {
                     {/* Volume */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Volume</Label>
+                        <Label>{t('screens.settings.volume')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_volume}%</span>
                       </div>
                       <Slider
@@ -458,16 +458,16 @@ export default function VoiceAISettings() {
                 {/* Right Card: Proactive Speaking Settings */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Proactive Speaking</CardTitle>
-                    <CardDescription>Control when and how Vitana speaks to you</CardDescription>
+                    <CardTitle>{t('screens.settings.proactiveSpeaking')}</CardTitle>
+                    <CardDescription>{t('screens.settings.controlWhenHowVitanaSpeaksYou')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {/* Auto-Greeting */}
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Auto-Greeting</Label>
+                        <Label>{t('screens.settings.autogreeting')}</Label>
                         <p className="text-sm text-muted-foreground">
-                          Vitana will greet you automatically
+                          {t('screens.settings.vitanaWillGreetYouAutomatically')}
                         </p>
                       </div>
                       <Switch
@@ -483,7 +483,7 @@ export default function VoiceAISettings() {
                       <>
                         {/* Greeting Frequency */}
                         <div className="space-y-2">
-                          <Label>Greeting Frequency</Label>
+                          <Label>{t('screens.settings.greetingFrequency')}</Label>
                           <Select
                             value={preferences.greeting_frequency}
                             onValueChange={(value: 'session' | 'daily' | 'hourly' | 'off') =>
@@ -495,17 +495,17 @@ export default function VoiceAISettings() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="session">Once per session</SelectItem>
-                              <SelectItem value="daily">Once per day</SelectItem>
-                              <SelectItem value="hourly">Once per hour</SelectItem>
-                              <SelectItem value="off">Off</SelectItem>
+                              <SelectItem value="session">{t('screens.settings.oncePerSession')}</SelectItem>
+                              <SelectItem value="daily">{t('screens.settings.oncePerDay')}</SelectItem>
+                              <SelectItem value="hourly">{t('screens.settings.oncePerHour')}</SelectItem>
+                              <SelectItem value="off">{t('screens.settings.off')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
                         {/* Message Types */}
                         <div className="space-y-3">
-                          <Label>Message Types</Label>
+                          <Label>{t('screens.settings.messageTypes')}</Label>
                           <div className="space-y-3">
                             {[
                               { id: 'time_greeting', label: 'Time-based greetings (Good morning, etc.)' },
@@ -547,14 +547,14 @@ export default function VoiceAISettings() {
             <TabsContent value="ai" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>AI Model Preferences</CardTitle>
+                  <CardTitle>{t('screens.settings.aiModelPreferences')}</CardTitle>
                   <CardDescription>
-                    Choose your preferred AI model and behavior
+                    {t('screens.settings.chooseYourPreferredAiModelBehavior')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="ai-model">Preferred Model</Label>
+                    <Label htmlFor="ai-model">{t('screens.settings.preferredModel')}</Label>
                     <Select
                       value={preferences.ai_model}
                       onValueChange={(value) => updatePreferences({ ai_model: value })}
@@ -564,16 +564,16 @@ export default function VoiceAISettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="gpt-4">GPT-4</SelectItem>
-                        <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
-                        <SelectItem value="claude-3">Claude 3</SelectItem>
-                        <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
+                        <SelectItem value="gpt-4">{t('screens.settings.gpt4')}</SelectItem>
+                        <SelectItem value="gpt-4-turbo">{t('screens.settings.gpt4Turbo')}</SelectItem>
+                        <SelectItem value="claude-3">{t('screens.settings.claude3')}</SelectItem>
+                        <SelectItem value="gemini-pro">{t('screens.settings.geminiPro')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="ai-temperature">Creativity: {preferences.ai_temperature.toFixed(1)}</Label>
+                    <Label htmlFor="ai-temperature">{t('screens.settings.creativityValue0', { value0: preferences.ai_temperature.toFixed(1) })}</Label>
                     <Slider
                       id="ai-temperature"
                       min={0}
@@ -586,12 +586,12 @@ export default function VoiceAISettings() {
                       disabled={isUpdating}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Lower values are more focused, higher values are more creative
+                      {t('screens.settings.lowerValuesMoreFocusedHigherValues')}
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="response-length">Response Length</Label>
+                    <Label htmlFor="response-length">{t('screens.settings.responseLength')}</Label>
                     <Select
                       value={preferences.ai_response_length}
                       onValueChange={(value: any) => updatePreferences({ ai_response_length: value })}
@@ -601,9 +601,9 @@ export default function VoiceAISettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="short">Short & Concise</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="long">Detailed & Comprehensive</SelectItem>
+                        <SelectItem value="short">{t('screens.settings.shortConcise')}</SelectItem>
+                        <SelectItem value="medium">{t('screens.settings.medium')}</SelectItem>
+                        <SelectItem value="long">{t('screens.settings.detailedComprehensive')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -615,17 +615,17 @@ export default function VoiceAISettings() {
             <TabsContent value="privacy" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Privacy & Data Settings</CardTitle>
+                  <CardTitle>{t('screens.settings.privacyDataSettings')}</CardTitle>
                   <CardDescription>
-                    Control how your voice data is stored and used
+                    {t('screens.settings.controlHowYourVoiceDataStored')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label htmlFor="store-recordings">Store Voice Recordings</Label>
+                      <Label htmlFor="store-recordings">{t('screens.settings.storeVoiceRecordings')}</Label>
                       <p className="text-xs text-muted-foreground">
-                        Save recordings for quality improvement
+                        {t('screens.settings.saveRecordingsForQualityImprovement')}
                       </p>
                     </div>
                     <Switch
@@ -639,7 +639,7 @@ export default function VoiceAISettings() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="auto-delete">Auto-Delete Recordings After (Days)</Label>
+                    <Label htmlFor="auto-delete">{t('screens.settings.autodeleteRecordingsAfterDays')}</Label>
                     <Input
                       id="auto-delete"
                       type="number"

@@ -19,6 +19,7 @@ import {
   useToggleWave,
   type WaveDefinition,
 } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const WAVE_ICONS: Record<string, React.ElementType> = {
   rocket: Rocket,
@@ -42,14 +43,14 @@ function TimelineBar({ waves }: { waves: WaveDefinition[] }) {
   return (
     <Card className="mb-6">
       <CardContent className="p-4">
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">Journey Timeline</h3>
+        <h3 className="text-sm font-medium text-muted-foreground mb-3">{t('screens.admin.journeyTimeline')}</h3>
         {/* Day markers */}
         <div className="relative mb-2">
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Day 0</span>
-            <span>Day 30</span>
-            <span>Day 60</span>
-            <span>Day 90</span>
+            <span>{t('screens.admin.day0')}</span>
+            <span>{t('screens.admin.day30')}</span>
+            <span>{t('screens.admin.day60')}</span>
+            <span>{t('screens.admin.day90')}</span>
           </div>
           <div className="h-px bg-border mt-1" />
         </div>
@@ -94,27 +95,23 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-sm">Wave {wave.order}: {wave.name}</h3>
+              <h3 className="font-semibold text-sm">{t('screens.admin.waveOrderName', { order: wave.order, name: wave.name })}</h3>
               {wave.is_initiative && (
-                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">NEW</Badge>
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{t('screens.admin.new')}</Badge>
               )}
             </div>
             <p className="text-xs text-muted-foreground">{wave.description}</p>
           </div>
 
           {/* Timeline badge */}
-          <Badge variant="outline" className="text-xs flex-shrink-0">
-            Day {wave.timeline.start_day}–{wave.timeline.end_day}
-          </Badge>
+          <Badge variant="outline" className="text-xs flex-shrink-0">{t('screens.admin.dayStart_dayEnd_day', { start_day: wave.timeline.start_day, end_day: wave.timeline.end_day })}</Badge>
 
           {/* Stats */}
           <div className="flex gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="text-xs">
-              {wave.total_templates} tasks
+            <Badge variant="secondary" className="text-xs">{t('screens.admin.total_templatesTasks', { total_templates: wave.total_templates })}
             </Badge>
             {wave.total_automations > 0 && (
-              <Badge variant="secondary" className="text-xs">
-                {wave.enabled_automations}/{wave.total_automations} AP
+              <Badge variant="secondary" className="text-xs">{t('screens.admin.enabled_automationsTotal_automationsAp', { enabled_automations: wave.enabled_automations, total_automations: wave.total_automations })}
               </Badge>
             )}
           </div>
@@ -144,8 +141,7 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
           <div className="mt-4 pl-12 space-y-3">
             {/* Journey Tasks */}
             <div>
-              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                Journey Tasks ({wave.recommendation_templates.length})
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t('screens.admin.journeyTasksLength', { length: wave.recommendation_templates.length })}
               </h4>
               <div className="flex flex-wrap gap-1.5">
                 {wave.recommendation_templates.map((tpl) => (
@@ -159,8 +155,7 @@ function WaveCard({ wave, index }: { wave: WaveDefinition; index: number }) {
             {/* Automations */}
             {wave.automations.length > 0 && (
               <div>
-                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  Automations ({wave.automations.length})
+                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t('screens.admin.automationsLength', { length: wave.automations.length })}
                 </h4>
                 <div className="space-y-1">
                   {wave.automations.map((ap) => (
@@ -204,7 +199,7 @@ export default function AutopilotPlanning() {
       <AdminTabs sectionKey="autopilot" />
       <div className="p-6">
         <AdminHeader
-          title="Autopilot Planning"
+          title={t('screens.admin.autopilotPlanning')}
           description={`Configure autopilot waves — ${activeCount}/${waves.length} active, ${enabledAP}/${totalAP} automations enabled`}
         />
 
@@ -230,7 +225,7 @@ export default function AutopilotPlanning() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-px flex-1 bg-border" />
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    New Initiatives
+                    {t('screens.admin.newInitiatives')}
                   </span>
                   <div className="h-px flex-1 bg-border" />
                 </div>

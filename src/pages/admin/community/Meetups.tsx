@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { useCommunityMeetups, useDeleteEvent } from "@/hooks/useAdminCommunity";
+import { t } from '@/lib/i18n-toast';
 
 export default function Meetups() {
   const { data: meetups = [], isLoading, isError, error } = useCommunityMeetups();
@@ -94,12 +95,12 @@ export default function Meetups() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Event</TableHead>
-                <TableHead>Organizer</TableHead>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Capacity</TableHead>
-                <TableHead>Price</TableHead>
+                <TableHead>{t('screens.admin.event')}</TableHead>
+                <TableHead>{t('screens.admin.organizer')}</TableHead>
+                <TableHead>{t('screens.admin.dateTime')}</TableHead>
+                <TableHead>{t('screens.admin.location')}</TableHead>
+                <TableHead>{t('screens.admin.capacity')}</TableHead>
+                <TableHead>{t('screens.admin.price')}</TableHead>
                 <TableHead className="w-[60px]" />
               </TableRow>
             </TableHeader>
@@ -150,7 +151,7 @@ export default function Meetups() {
                       <a href={m.virtual_link} target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
                         <ExternalLink className="h-3.5 w-3.5" />
-                        Virtual
+                        {t('screens.admin.virtual')}
                       </a>
                     ) : (
                       <span className="text-xs text-muted-foreground">—</span>
@@ -190,7 +191,7 @@ export default function Meetups() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📅"
-          title="Events & Meetups"
+          title={t('screens.admin.eventsMeetups')}
           description={`${meetups.length} event${meetups.length !== 1 ? "s" : ""} — ${upcoming.length} upcoming, ${past.length} past`}
         />
 
@@ -201,16 +202,14 @@ export default function Meetups() {
           onReset={() => setSearch("")}
         />
 
-        {isLoading && <p className="text-sm text-muted-foreground text-center py-8">Loading events...</p>}
+        {isLoading && <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingEvents')}</p>}
 
         {isError && (
-          <p className="text-sm text-destructive text-center py-8">
-            Failed to load events: {(error as Error)?.message || "Unknown error"}
-          </p>
+          <p className="text-sm text-destructive text-center py-8">{t('screens.admin.failedLoadEventsValue0', { value0: (error as Error)?.message || "Unknown error" })}</p>
         )}
 
         {!isLoading && meetups.length === 0 && (
-          <AdminEmptyState title="No events found" description="No community events or meetups exist yet." />
+          <AdminEmptyState title={t('screens.admin.noEventsFound')} description="No community events or meetups exist yet." />
         )}
 
         {renderTable(upcoming, "Upcoming Events")}
@@ -221,14 +220,12 @@ export default function Meetups() {
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete the event "{deleteTarget?.title}". This action cannot be undone.
-              All attendees and ticket data associated with this event will also be affected.
+            <AlertDialogTitle>{t('screens.admin.youSure')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.admin.thisWillPermanentlyDeleteEventTitle', { title: deleteTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.admin.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

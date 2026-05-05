@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -75,13 +76,13 @@ export default function AuditSecurity() {
     <AppLayout>
       <SubNavigation items={adminAuditNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Security Audit" description="Dev access grants, bypass attempts, and security-related events" />
+        <AdminHeader title={t('screens.admin.securityAudit')} description="Dev access grants, bypass attempts, and security-related events" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Security Events" value={total} icon={Shield} loading={isLoading} />
-          <AdminStatsCard title="Errors" value={errorCount} icon={AlertTriangle} loading={isLoading} variant={errorCount > 0 ? "error" : "default"} />
-          <AdminStatsCard title="Bypass Attempts" value={bypassCount} icon={Lock} loading={isLoading} variant={bypassCount > 0 ? "warning" : "default"} />
-          <AdminStatsCard title="On Page" value={events.length} icon={Eye} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.securityEvents')} value={total} icon={Shield} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.errors')} value={errorCount} icon={AlertTriangle} loading={isLoading} variant={errorCount > 0 ? "error" : "default"} />
+          <AdminStatsCard title={t('screens.admin.bypassAttempts')} value={bypassCount} icon={Lock} loading={isLoading} variant={bypassCount > 0 ? "warning" : "default"} />
+          <AdminStatsCard title={t('screens.admin.page')} value={events.length} icon={Eye} loading={isLoading} />
         </div>
 
         <AdminTable

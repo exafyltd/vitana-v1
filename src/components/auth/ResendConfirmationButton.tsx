@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, MailCheck } from "lucide-react";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface ResendConfirmationButtonProps {
   email: string;
@@ -28,12 +29,12 @@ export function ResendConfirmationButton({ email, redirectUrl }: ResendConfirmat
         options: { emailRedirectTo: redirectUrl },
       });
       if (error) throw error;
-      toast.success("Confirmation email sent! Please check your inbox.");
+      notifySuccess('toasts.auth.confirmationEmailSentPleaseCheckYour');
       setCooldown(60);
     } catch (err: any) {
       const msg = err?.message || "";
       if (msg.includes("rate limit") || msg.includes("too many")) {
-        toast.error("Too many attempts. Please wait a few minutes.");
+        notifyError('toasts.auth.tooManyAttemptsPleaseWaitFew');
         setCooldown(120);
       } else {
         toast.error(msg || "Failed to resend email. Please try again.");
@@ -54,13 +55,11 @@ export function ResendConfirmationButton({ email, redirectUrl }: ResendConfirmat
     >
       {sending ? (
         <>
-          <Loader2 className="h-3 w-3 animate-spin" />
-          Sending…
+          <Loader2 className="h-3 w-3 animate-spin" />{t('screens.auth.sending')}
         </>
       ) : cooldown > 0 ? (
         <>
-          <MailCheck className="h-3 w-3" />
-          Resend available in {cooldown}s
+          <MailCheck className="h-3 w-3" />{t('screens.auth.resendAvailableCooldownS', { cooldown })}
         </>
       ) : (
         "Didn't receive the email? Resend"

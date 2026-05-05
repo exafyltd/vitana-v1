@@ -31,7 +31,7 @@ import {
   User
 } from "lucide-react";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { toast } from "sonner";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface ClientInfo {
   name?: string;
@@ -98,7 +98,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
 
   const handleExportCSV = () => {
     if (attendees.length === 0) {
-      toast.error("No attendees to export");
+      notifyError('toasts.business.noAttendeesExport');
       return;
     }
 
@@ -127,7 +127,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
     a.click();
     URL.revokeObjectURL(url);
 
-    toast.success("Attendee list exported!");
+    notifySuccess('toasts.business.attendeeListExported');
   };
 
   const handleOpenCheckIn = () => {
@@ -142,11 +142,11 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={handleOpenCheckIn}>
           <QrCode className="w-4 h-4 mr-2" />
-          Check-in Mode
+          {t('screens.business.checkinMode')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleExportCSV}>
           <Download className="w-4 h-4 mr-2" />
-          Export CSV
+          {t('screens.business.exportCsv')}
         </Button>
       </div>
 
@@ -156,7 +156,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <Building2 className="w-4 h-4 text-purple-600" />
-              Client Information
+              {t('screens.business.clientInformation')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -198,7 +198,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <Ticket className="w-4 h-4" />
-              Ticket Types
+              {t('screens.business.ticketTypes')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -224,20 +224,18 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Attendees ({attendees.length})
+              <Users className="w-4 h-4" />{t('screens.business.attendeesLength', { length: attendees.length })}
             </CardTitle>
             <Badge variant="outline" className="gap-1">
-              <CheckCircle2 className="w-3 h-3" />
-              {checkedInCount} checked in
+              <CheckCircle2 className="w-3 h-3" />{t('screens.business.checkedincountChecked', { checkedInCount })}
             </Badge>
           </div>
         </CardHeader>
         <CardContent>
           {loadingAttendees ? (
-            <p className="text-sm text-muted-foreground">Loading attendees...</p>
+            <p className="text-sm text-muted-foreground">{t('screens.business.loadingAttendees')}</p>
           ) : attendees.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No attendees yet</p>
+            <p className="text-sm text-muted-foreground">{t('screens.business.noAttendeesYet')}</p>
           ) : (
             <div className="space-y-2 max-h-[400px] overflow-y-auto">
               {attendees.map((attendee: any) => (
@@ -256,12 +254,12 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
                     {attendee.checked_in_at ? (
                       <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 gap-1">
                         <CheckCircle2 className="w-3 h-3" />
-                        Checked In
+                        {t('screens.business.checked')}
                       </Badge>
                     ) : (
                       <Badge variant="outline" className="gap-1">
                         <Clock className="w-3 h-3" />
-                        Pending
+                        {t('screens.business.pending')}
                       </Badge>
                     )}
                   </div>

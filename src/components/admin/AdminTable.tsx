@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from '@/lib/i18n-toast';
 
 interface Column<T> {
   key: string;
@@ -210,18 +211,16 @@ export function AdminTable<T extends Record<string, any>>({
               disabled={currentPage === 0}
             >
               <ChevronLeft className="mr-1 h-4 w-4" />
-              Previous
+              {t('screens.admin.previous')}
             </Button>
-            <span className="text-sm text-muted-foreground">
-              Page {currentPage + 1} of {totalPages}
-            </span>
+            <span className="text-sm text-muted-foreground">{t('screens.admin.pageValue0Totalpages', { value0: currentPage + 1, totalPages })}</span>
             <Button
               variant="outline"
               size="sm"
               onClick={handleNext}
               disabled={currentPage >= totalPages - 1}
             >
-              Next
+              {t('screens.admin.next')}
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           </div>

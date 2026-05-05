@@ -11,6 +11,7 @@ import AIModelSettingsPanel from "@/components/assistant/AIModelSettingsPanel";
 import ProactiveTalkingPanel from "@/components/assistant/ProactiveTalkingPanel";
 import AutopilotSettingsPanel from "@/components/assistant/AutopilotSettingsPanel";
 import { VaeaConfigPanel } from "@/components/business/vaea/VaeaConfigPanel";
+import { t } from '@/lib/i18n-toast';
 
 export default function AIAssistant() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +38,7 @@ export default function AIAssistant() {
   return (
     <AppLayout>
       <SEO
-        title="AI Assistant"
+        title={t('screens.assistant.aiAssistant')}
         description="Configure your AI assistant, voice settings, and automation preferences"
         canonical={window.location.href}
       />
@@ -45,7 +46,7 @@ export default function AIAssistant() {
       <div className="p-6 bg-gradient-subtle min-h-screen pb-32 md:pb-40">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="AI Assistant"
+            title={t('screens.assistant.aiAssistant')}
             description="Your personal AI assistant configuration hub"
             emoji="✨"
           />
@@ -54,19 +55,19 @@ export default function AIAssistant() {
             {/* Mobile: horizontal-scroll strip so long labels never overflow.
                 Desktop: even 5-col grid once there's room. */}
             <TabsList className="flex w-full gap-1 overflow-x-auto justify-start md:grid md:grid-cols-5">
-              <TabsTrigger value="voice" className="shrink-0">Voice</TabsTrigger>
+              <TabsTrigger value="voice" className="shrink-0">{t('screens.assistant.voice')}</TabsTrigger>
               <TabsTrigger value="ai" className="shrink-0">AI</TabsTrigger>
               <TabsTrigger value="autopilot" className="shrink-0">
-                <span className="md:hidden">Autopilot</span>
-                <span className="hidden md:inline">Autopilot &amp; Automation</span>
+                <span className="md:hidden">{t('screens.assistant.autopilot')}</span>
+                <span className="hidden md:inline">{t('screens.assistant.autopilotAmpAutomation')}</span>
               </TabsTrigger>
               <TabsTrigger value="proactive" className="shrink-0">
-                <span className="md:hidden">Proactive</span>
-                <span className="hidden md:inline">Proactive Talking</span>
+                <span className="md:hidden">{t('screens.assistant.proactive')}</span>
+                <span className="hidden md:inline">{t('screens.assistant.proactiveTalking')}</span>
               </TabsTrigger>
               <TabsTrigger value="referrals" className="shrink-0">
-                <span className="md:hidden">Referrals</span>
-                <span className="hidden md:inline">Referrals</span>
+                <span className="md:hidden">{t('screens.assistant.referrals')}</span>
+                <span className="hidden md:inline">{t('screens.assistant.referrals')}</span>
               </TabsTrigger>
             </TabsList>
 

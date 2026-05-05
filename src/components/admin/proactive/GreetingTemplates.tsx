@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function GreetingTemplates() {
   const { toast } = useToast();
@@ -56,17 +57,10 @@ export function GreetingTemplates() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-proactive-settings'] });
-      toast({
-        title: "Templates Updated",
-        description: "Greeting templates have been saved successfully.",
-      });
+      notify('toasts.admin.templatesUpdated', 'toasts.admin.greetingTemplatesHaveSavedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.updateFailed');
     }
   });
 
@@ -93,52 +87,51 @@ export function GreetingTemplates() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5" />
-          Greeting Templates
+          {t('screens.admin.greetingTemplates')}
         </CardTitle>
-        <CardDescription>
-          Customize base greeting templates for different user experience levels. The AI will use these as starting points and personalize them with user context.
+        <CardDescription>{t('screens.admin.customizeBaseGreetingTemplatesForDifferent')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="new-user">New User Template</Label>
+          <Label htmlFor="new-user">{t('screens.admin.newUserTemplate')}</Label>
           <Textarea
             id="new-user"
             value={newUser}
             onChange={(e) => setNewUser(e.target.value)}
-            placeholder="Welcome! I'm here to help you get started."
+            placeholder={t('screens.admin.welcomeIMHereHelpYou')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for users in their first week or with low engagement score
+            {t('screens.admin.usedForUsersTheirFirstWeek')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="returning-user">Returning User Template</Label>
+          <Label htmlFor="returning-user">{t('screens.admin.returningUserTemplate')}</Label>
           <Textarea
             id="returning-user"
             value={returningUser}
             onChange={(e) => setReturningUser(e.target.value)}
-            placeholder="Great to see you again!"
+            placeholder={t('screens.admin.greatSeeYouAgain')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for users with moderate engagement and familiarity
+            {t('screens.admin.usedForUsersWithModerateEngagement')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="experienced-user">Experienced User Template</Label>
+          <Label htmlFor="experienced-user">{t('screens.admin.experiencedUserTemplate')}</Label>
           <Textarea
             id="experienced-user"
             value={experiencedUser}
             onChange={(e) => setExperiencedUser(e.target.value)}
-            placeholder="Ready to explore more?"
+            placeholder={t('screens.admin.readyExploreMore')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for highly engaged users with deep platform knowledge
+            {t('screens.admin.usedForHighlyEngagedUsersWith')}
           </p>
         </div>
 
@@ -147,8 +140,7 @@ export function GreetingTemplates() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Greeting Templates
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.saveGreetingTemplates')}
         </Button>
       </CardContent>
     </Card>

@@ -16,6 +16,7 @@ import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { RecallMasterActionPopup } from "@/components/memory/RecallMasterActionPopup";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 // Mock search results data
 const searchResults = [
@@ -108,22 +109,22 @@ function Recall() {
 
   return (
     <AppLayout>
-      <SEO title="AI Memory Recall | VITANA Memory" description="Use AI-powered search to recall and analyze your wellness memories instantly." />
+      <SEO title={t('screens.memory.aiMemoryRecallVitanaMemory')} description="Use AI-powered search to recall and analyze your wellness memories instantly." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="AI Memory Recall"
+          title={t('screens.memory.aiMemoryRecall')}
           description="Use AI-powered search to recall and analyze your wellness memories instantly."
           emoji="🤖"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Ask AI about your wellness journey..." />
+          <ExpandableSearchButton placeholder={t('screens.memory.askAiAboutYourWellnessJourney')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Memory Actions
+            {t('screens.memory.memoryActions')}
           </Button>
         </UtilityActionButton>
 
@@ -132,28 +133,28 @@ function Recall() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5 text-blue-600" />
-              AI Memory Search
+              {t('screens.memory.aiMemorySearch')}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex gap-3">
             <Input
-              placeholder="Ask AI: 'What helped improve my sleep quality?' or 'Show my exercise progress...'"
+              placeholder={t('screens.memory.askAiWhatHelpedImproveMy')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1"
             />
             <Button>
               <Search className="h-4 w-4 mr-2" />
-              Search Memories
+              {t('screens.memory.searchMemories')}
             </Button>
           </CardContent>
         </Card>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="search">🔍 Search Results</SplitBarTrigger>
-            <SplitBarTrigger value="insights">🧠 AI Insights</SplitBarTrigger>
-            <SplitBarTrigger value="quick">⚡ Quick Recall</SplitBarTrigger>
+            <SplitBarTrigger value="search">{t('screens.memory.searchResults')}</SplitBarTrigger>
+            <SplitBarTrigger value="insights">{t('screens.memory.aiInsights')}</SplitBarTrigger>
+            <SplitBarTrigger value="quick">{t('screens.memory.quickRecall')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="search">

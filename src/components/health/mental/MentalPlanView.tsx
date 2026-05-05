@@ -8,6 +8,7 @@ import { MentalCoachWidget } from "./MentalCoachWidget";
 import { MentalEmptyState } from "./MentalEmptyState";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockMentalPlan } from "@/data/mockMental";
+import { t } from '@/lib/i18n-toast';
 
 export function MentalPlanView() {
   const [selectedDay, setSelectedDay] = useState<DailyMentalData | null>(null);
@@ -32,7 +33,7 @@ export function MentalPlanView() {
         />
         
         <div className="border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
-          <h3 className="text-xl font-semibold tracking-tight mb-4">Your Daily Mind Tracking</h3>
+          <h3 className="text-xl font-semibold tracking-tight mb-4">{t('screens.health.yourDailyMindTracking')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {planData.dailyStats.map(dayData => (
               <DailyMentalCard
@@ -45,8 +46,7 @@ export function MentalPlanView() {
           
           {/* Summary Strip */}
           <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Avg Mood: {planData.progress.avgMoodIndex} • 🎯 Focus: {planData.progress.focusStability} ({planData.progress.focusStabilityTrend}) • 💪 Stress Recovery: {planData.progress.stressRecovery} • 🔥 Streak: {planData.progress.mindfulnessStreak} days
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('screens.health.avgMoodAvgmoodindexFocusFocusstabilityFocusstabili', { avgMoodIndex: planData.progress.avgMoodIndex, focusStability: planData.progress.focusStability, focusStabilityTrend: planData.progress.focusStabilityTrend, stressRecovery: planData.progress.stressRecovery, mindfulnessStreak: planData.progress.mindfulnessStreak })}
             </p>
           </div>
         </div>

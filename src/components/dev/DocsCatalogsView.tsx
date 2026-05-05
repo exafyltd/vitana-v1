@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function DocsCatalogsView() {
   const catalogs = [
@@ -23,10 +24,10 @@ export function DocsCatalogsView() {
                 <Badge variant="secondary">{catalog.category}</Badge>
               </div>
               <CardTitle className="mt-4">{catalog.name}</CardTitle>
-              <CardDescription>{catalog.entries} entries</CardDescription>
+              <CardDescription>{t('screens.dev.entriesEntries', { entries: catalog.entries })}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">Updated {catalog.updated}</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.updatedUpdated', { updated: catalog.updated })}</p>
             </CardContent>
           </Card>
         </div>

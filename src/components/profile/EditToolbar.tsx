@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Save, X, Eye, Globe, Users } from "lucide-react";
 import { ViewAsMode } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 interface EditToolbarProps {
   viewAs: ViewAsMode;
@@ -43,10 +44,7 @@ export function EditToolbar({
               size="sm" 
               onClick={cycleViewAs}
               className="gap-2"
-            >
-              {getViewAsIcon(viewAs)}
-              View as {viewAs === "me" ? "Me" : viewAs === "public" ? "Public" : "Follower"}
-            </Button>
+            >{t('screens.profile.value0ViewAsValue1', { value0: getViewAsIcon(viewAs), value1: viewAs === "me" ? "Me" : viewAs === "public" ? "Public" : "Follower" })}</Button>
             
             <Badge variant={hasUnsavedChanges ? "destructive" : "secondary"}>
               {hasUnsavedChanges ? "Unsaved changes" : "All changes saved"}
@@ -56,11 +54,11 @@ export function EditToolbar({
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={onCancel}>
               <X className="w-4 h-4 mr-2" />
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button size="sm" onClick={onSave} disabled={!hasUnsavedChanges}>
               <Save className="w-4 h-4 mr-2" />
-              Save Changes
+              {t('screens.profile.saveChanges')}
             </Button>
           </div>
         </div>

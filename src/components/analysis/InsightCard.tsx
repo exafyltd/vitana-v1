@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Calendar, UserCheck, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DemoPerson, DemoGroup, DemoEvent } from "@/hooks/useDemoMatches";
+import { t } from '@/lib/i18n-toast';
 
 interface InsightCardProps {
   type: 'people' | 'groups' | 'events' | 'coaches';
@@ -26,8 +27,8 @@ export function InsightCard({ type, data }: InsightCardProps) {
             <Users className="w-5 h-5 text-pink-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold">Top Matches</h3>
-            <p className="text-xs text-muted-foreground">5 people with 70%+ compatibility</p>
+            <h3 className="text-sm font-semibold">{t('screens.analysis.topMatches')}</h3>
+            <p className="text-xs text-muted-foreground">{t('screens.analysis.text5PeopleWith70Compatibility')}</p>
           </div>
         </div>
         
@@ -52,7 +53,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=people')}
         >
-          View All →
+          {t('screens.analysis.viewAll')}
         </Button>
       </div>
     );
@@ -66,8 +67,8 @@ export function InsightCard({ type, data }: InsightCardProps) {
             <Users className="w-5 h-5 text-fuchsia-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold">Best Group Fit</h3>
-            <p className="text-xs text-muted-foreground">Community with highest match</p>
+            <h3 className="text-sm font-semibold">{t('screens.analysis.bestGroupFit')}</h3>
+            <p className="text-xs text-muted-foreground">{t('screens.analysis.communityWithHighestMatch')}</p>
           </div>
         </div>
         
@@ -95,7 +96,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate(`/comm/groups/${data.group.id}`)}
         >
-          Explore →
+          {t('screens.analysis.explore')}
         </Button>
       </div>
     );
@@ -109,8 +110,8 @@ export function InsightCard({ type, data }: InsightCardProps) {
             <Calendar className="w-5 h-5 text-amber-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold">Event Fit</h3>
-            <p className="text-xs text-muted-foreground">Next 3 events aligned to you</p>
+            <h3 className="text-sm font-semibold">{t('screens.analysis.eventFit')}</h3>
+            <p className="text-xs text-muted-foreground">{t('screens.analysis.next3EventsAlignedYou')}</p>
           </div>
         </div>
         
@@ -138,7 +139,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=events')}
         >
-          View Schedule →
+          {t('screens.analysis.viewSchedule')}
         </Button>
       </div>
     );
@@ -153,8 +154,8 @@ export function InsightCard({ type, data }: InsightCardProps) {
             <UserCheck className="w-5 h-5 text-teal-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-semibold">Coach Fit</h3>
-            <p className="text-xs text-muted-foreground">Recommended coach type</p>
+            <h3 className="text-sm font-semibold">{t('screens.analysis.coachFit')}</h3>
+            <p className="text-xs text-muted-foreground">{t('screens.analysis.recommendedCoachType')}</p>
           </div>
         </div>
         
@@ -165,7 +166,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           </div>
           <div>
             <p className="text-sm font-semibold">{coachType}</p>
-            <p className="text-xs text-muted-foreground">Based on your goals</p>
+            <p className="text-xs text-muted-foreground">{t('screens.analysis.basedYourGoals')}</p>
           </div>
         </div>
         
@@ -175,7 +176,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=coaches')}
         >
-          Find Coaches →
+          {t('screens.analysis.findCoaches')}
         </Button>
       </div>
     );

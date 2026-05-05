@@ -11,6 +11,7 @@ import { SchedulePane } from "@/components/dev/SchedulePane";
 import { CatalogPane } from "@/components/dev/CatalogPane";
 import { CompletedPane } from "@/components/dev/CompletedPane";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { t } from '@/lib/i18n-toast';
 
 export function TasksView() {
   // Initialize real-time streaming
@@ -23,8 +24,8 @@ export function TasksView() {
       {/* Header with connection status */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-bold">Task Board</h1>
-          <p className="text-sm text-muted-foreground">Real-time command cockpit</p>
+          <h1 className="text-2xl font-bold">{t('screens.dev.taskBoard')}</h1>
+          <p className="text-sm text-muted-foreground">{t('screens.dev.realtimeCommandCockpit')}</p>
         </div>
         <TaskConnectionStatus />
       </div>

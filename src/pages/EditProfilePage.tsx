@@ -43,6 +43,7 @@ import { ShareProfileSheet } from "@/components/profile/shared/ShareProfileSheet
 import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareScreen";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -403,7 +404,7 @@ export default function EditProfilePage() {
     return (
       <AppLayout>
         <SEO 
-          title="Edit Profile – VITANA" 
+          title={t('screens.editprofilepage.editProfileVitana')} 
           description="Edit your VITANA profile and customize your public presence" 
         />
         
@@ -590,7 +591,7 @@ export default function EditProfilePage() {
   return (
     <AppLayout>
       <SEO 
-        title="Edit Profile – VITANA" 
+        title={t('screens.editprofilepage.editProfileVitana')} 
         description="Edit your VITANA profile and customize your public presence" 
       />
       

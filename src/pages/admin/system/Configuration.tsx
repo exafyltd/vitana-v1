@@ -8,6 +8,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminSystemNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -70,13 +71,13 @@ export default function SystemConfiguration() {
     <AppLayout>
       <SubNavigation items={adminSystemNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="System Configuration" description="Governance controls and system toggles" />
+        <AdminHeader title={t('screens.admin.systemConfiguration')} description="Governance controls and system toggles" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Controls" value={controls.length} icon={Settings} loading={isLoading} />
-          <AdminStatsCard title="Enabled" value={enabledCount} icon={ToggleLeft} loading={isLoading} variant="success" />
-          <AdminStatsCard title="Disabled" value={disabledCount} icon={ShieldCheck} loading={isLoading} />
-          <AdminStatsCard title="With Expiry" value={expiringCount} icon={Clock} loading={isLoading} variant={expiringCount > 0 ? "warning" : "default"} />
+          <AdminStatsCard title={t('screens.admin.totalControls')} value={controls.length} icon={Settings} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.enabled')} value={enabledCount} icon={ToggleLeft} loading={isLoading} variant="success" />
+          <AdminStatsCard title={t('screens.admin.disabled')} value={disabledCount} icon={ShieldCheck} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.withExpiry')} value={expiringCount} icon={Clock} loading={isLoading} variant={expiringCount > 0 ? "warning" : "default"} />
         </div>
 
         <AdminTable

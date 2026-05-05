@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { MatchedContact, ImportedContact } from "@/components/contacts/DedupePreviewList";
+import { notify } from '@/lib/i18n-toast';
 
 export type ContactSource = "google" | "icloud" | "phonebook" | "whatsapp";
 
@@ -207,26 +208,17 @@ export function useContactSync() {
           
           case "google":
             // TODO: Implement Google OAuth flow
-            toast({
-              title: "Coming Soon",
-              description: "Google Contacts import will be available soon.",
-            });
+            notify('toasts.hooks.comingSoon', 'toasts.hooks.googleContactsImportWillAvailableSoon');
             break;
           
           case "icloud":
             // TODO: Implement iCloud integration
-            toast({
-              title: "Coming Soon",
-              description: "iCloud import will be available soon.",
-            });
+            notify('toasts.hooks.comingSoon', 'toasts.hooks.icloudImportWillAvailableSoon');
             break;
           
           case "whatsapp":
             // TODO: Implement WhatsApp export import
-            toast({
-              title: "Coming Soon",
-              description: "WhatsApp import will be available soon.",
-            });
+            notify('toasts.hooks.comingSoon', 'toasts.hooks.whatsappImportWillAvailableSoon');
             break;
         }
       }

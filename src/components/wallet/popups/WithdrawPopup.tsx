@@ -23,6 +23,7 @@ import { ArrowDown, CreditCard, Building2, Clock, DollarSign, Loader2 } from "lu
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface WithdrawPopupProps {
   open: boolean;
@@ -67,11 +68,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
   const handleWithdraw = async () => {
     if (!withdrawAmount || !selectedMethod) {
-      toast({
-        title: "Missing Information",
-        description: "Please enter an amount and select a withdrawal method.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseEnterAmountSelectWithdrawalMethod');
       return;
     }
 
@@ -80,20 +77,12 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
     const totalCost = amount + (method?.fee || 0);
     
     if (amount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid withdrawal amount.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidWithdrawalAmount');
       return;
     }
 
     if (totalCost > usdBalance) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You need $${totalCost.toFixed(2)} (including fees) but only have $${usdBalance.toFixed(2)}.`,
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 
@@ -106,21 +95,14 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
       // Update balance (subtract the total cost including fees)
       await updateBalance('USD', totalCost, 'subtract');
       
-      toast({
-        title: "Withdrawal Initiated",
-        description: `$${amount.toFixed(2)} withdrawal to ${method?.name} has been initiated. ${method?.processingTime}`,
-      });
+      notify('toasts.wallet.withdrawalInitiated2');
       
       // Reset form and close
       setWithdrawAmount("");
       setSelectedMethod("");
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: "Withdrawal Failed",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.wallet.withdrawalFailed', 'toasts.wallet.somethingWentWrongPleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }
@@ -136,10 +118,9 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ArrowDown className="h-5 w-5 text-blue-600" />
-            Withdraw Funds
+            {t('screens.wallet.withdrawFunds')}
           </DialogTitle>
-          <DialogDescription>
-            Transfer money from your VITANA wallet to your bank account or card
+          <DialogDescription>{t('screens.wallet.transferMoneyFromYourVitanaWallet')}
           </DialogDescription>
         </DialogHeader>
 
@@ -147,7 +128,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
           {/* Available Balance */}
           <div className="bg-muted/50 p-4 rounded-lg">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Available Balance</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.availableBalance')}</span>
               <div className="flex items-center gap-1">
                 <DollarSign className="h-4 w-4 text-green-600" />
                 <span className="font-semibold text-lg">${usdBalance.toFixed(2)}</span>
@@ -157,7 +138,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Quick Amount Buttons */}
           <div>
-            <Label className="text-sm font-medium">Quick Select</Label>
+            <Label className="text-sm font-medium">{t('screens.wallet.quickSelect')}</Label>
             <div className="grid grid-cols-4 gap-2 mt-2">
               {quickAmounts.map((amount) => (
                 <Button
@@ -176,7 +157,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Custom Amount */}
           <div>
-            <Label htmlFor="amount">Withdrawal Amount</Label>
+            <Label htmlFor="amount">{t('screens.wallet.withdrawalAmount')}</Label>
             <Input
               id="amount"
               type="number"
@@ -191,10 +172,10 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Withdrawal Method */}
           <div>
-            <Label>Withdrawal Method</Label>
+            <Label>{t('screens.wallet.withdrawalMethod')}</Label>
             <Select value={selectedMethod} onValueChange={setSelectedMethod}>
               <SelectTrigger>
-                <SelectValue placeholder="Select withdrawal method" />
+                <SelectValue placeholder={t('screens.wallet.selectWithdrawalMethod')} />
               </SelectTrigger>
               <SelectContent>
                 {withdrawalMethods.map((method) => {
@@ -205,8 +186,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
                         <Icon className="h-4 w-4" />
                         <span>{method.name}</span>
                         {method.fee > 0 && (
-                          <Badge variant="secondary" className="text-xs">
-                            ${method.fee} fee
+                          <Badge variant="secondary" className="text-xs">{t('screens.wallet.feeFee', { fee: method.fee })}
                           </Badge>
                         )}
                       </div>
@@ -219,7 +199,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
             {selectedMethodData && (
               <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
-                <span>Processing time: {selectedMethodData.processingTime}</span>
+                <span>{t('screens.wallet.processingTimeProcessingtime', { processingTime: selectedMethodData.processingTime })}</span>
               </div>
             )}
           </div>
@@ -230,17 +210,17 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
               <Separator />
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Withdrawal Amount</span>
+                  <span>{t('screens.wallet.withdrawalAmount')}</span>
                   <span>${withdrawAmountNum.toFixed(2)}</span>
                 </div>
                 {selectedMethodData.fee > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span>Processing Fee</span>
+                    <span>{t('screens.wallet.processingFee')}</span>
                     <span>${selectedMethodData.fee.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between font-medium border-t pt-2">
-                  <span>Total Deducted</span>
+                  <span>{t('screens.wallet.totalDeducted')}</span>
                   <span>${totalCost.toFixed(2)}</span>
                 </div>
               </div>
@@ -250,7 +230,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
         <DialogFooter className="gap-2 sm:gap-0">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleWithdraw}
@@ -258,14 +238,11 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
           >
             {isProcessing ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Processing...
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.wallet.processing')}
               </>
             ) : (
               <>
-                <ArrowDown className="h-4 w-4 mr-2" />
-                Withdraw ${withdrawAmountNum.toFixed(2)}
-              </>
+                <ArrowDown className="h-4 w-4 mr-2" />{t('screens.wallet.withdrawValue0', { value0: withdrawAmountNum.toFixed(2) })}</>
             )}
           </Button>
         </DialogFooter>

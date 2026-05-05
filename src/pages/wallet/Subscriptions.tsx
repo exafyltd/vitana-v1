@@ -17,6 +17,7 @@ import { PersonalizedSubscriptionRecommendationCard } from "@/components/wallet/
 import { SmartRecommendationsSplitScreen } from "@/components/wallet/intelligence/SmartRecommendationsSplitScreen";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 const subscriptionData = {
   active: [
@@ -92,7 +93,7 @@ function Subscriptions() {
   return (
     <AppLayout>
       <SEO 
-        title="Subscriptions - Vitana Wallet" 
+        title={t('screens.wallet.subscriptionsVitanaWallet')} 
         description="Manage your active subscriptions, view paused plans, and explore new subscription options."
       />
       <SubNavigation items={walletNavigation} />
@@ -100,25 +101,25 @@ function Subscriptions() {
       <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
         <StandardHeader 
-          title="Subscriptions 📋"
+          title={t('screens.wallet.subscriptions')}
           description="Manage your health and wellness subscription plans"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search subscriptions and plans..." />
+          <ExpandableSearchButton placeholder={t('screens.wallet.searchSubscriptionsPlans')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setAddSubscriptionOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Subscription
+            {t('screens.wallet.addSubscription')}
           </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="active">✅ Active</SplitBarTrigger>
-            <SplitBarTrigger value="paused">⏸️ Paused</SplitBarTrigger>
-            <SplitBarTrigger value="available">📦 Available</SplitBarTrigger>
-            <SplitBarTrigger value="recommendations">✨ Smart Recommendations</SplitBarTrigger>
+            <SplitBarTrigger value="active">{t('screens.wallet.active')}</SplitBarTrigger>
+            <SplitBarTrigger value="paused">{t('screens.wallet.paused')}</SplitBarTrigger>
+            <SplitBarTrigger value="available">{t('screens.wallet.available')}</SplitBarTrigger>
+            <SplitBarTrigger value="recommendations">{t('screens.wallet.smartRecommendations2')}</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="subscriptions" />
@@ -189,10 +190,10 @@ function Subscriptions() {
         <Dialog open={addSubscriptionOpen} onOpenChange={setAddSubscriptionOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Subscription</DialogTitle>
+              <DialogTitle>{t('screens.wallet.addNewSubscription')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-muted-foreground">Browse available subscription plans and add them to your account.</p>
+              <p className="text-muted-foreground">{t('screens.wallet.browseAvailableSubscriptionPlansAddThem')}</p>
               <div className="grid grid-cols-1 gap-4">
                 {subscriptionData.available.map((sub) => (
                   <div key={sub.id} className="p-4 border rounded-lg">
@@ -200,7 +201,7 @@ function Subscriptions() {
                     <p className="text-sm text-muted-foreground">{sub.description}</p>
                     <p className="text-sm font-medium mt-2">{sub.price}/{sub.billing}</p>
                     <Button size="sm" className="mt-2" onClick={() => console.log('Subscribe to:', sub.id)}>
-                      Subscribe
+                      {t('screens.wallet.subscribe')}
                     </Button>
                   </div>
                 ))}

@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { CreditCard, Coins, DollarSign, Users, Send } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PaymentRequestPopupProps {
   isOpen: boolean;
@@ -41,11 +42,7 @@ export default function PaymentRequestPopup({
 
   const handleSendRequest = async () => {
     if (!amount || !description) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAmountDescription');
       return;
     }
 
@@ -83,10 +80,7 @@ export default function PaymentRequestPopup({
         actionButtons
       );
 
-      toast({
-        title: "Payment Request Sent! 💸",
-        description: `Request for ${currency === 'credits' ? amount + ' credits' : '$' + amount} sent to ${recipient?.name || 'recipient'}`
-      });
+      notify('toasts.payment.paymentRequestSent');
 
       onClose();
       setAmount('');
@@ -94,11 +88,7 @@ export default function PaymentRequestPopup({
       setDueDate('');
     } catch (error) {
       console.error('Error sending payment request:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send payment request",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.error', 'toasts.payment.failedSendPaymentRequest');
     }
   };
 
@@ -117,7 +107,7 @@ export default function PaymentRequestPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-blue-600" />
-            Send Payment Request
+            {t('screens.payment.sendPaymentRequest')}
           </DialogTitle>
         </DialogHeader>
 
@@ -131,7 +121,7 @@ export default function PaymentRequestPopup({
               </Avatar>
               <div>
                 <p className="font-medium text-sm">{recipient.name}</p>
-                <p className="text-xs text-muted-foreground">Request recipient</p>
+                <p className="text-xs text-muted-foreground">{t('screens.payment.requestRecipient')}</p>
               </div>
             </div>
           )}
@@ -139,7 +129,7 @@ export default function PaymentRequestPopup({
           {/* Amount & Currency */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -149,7 +139,7 @@ export default function PaymentRequestPopup({
               />
             </div>
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -158,19 +148,19 @@ export default function PaymentRequestPopup({
                   <SelectItem value="CREDITS">
                     <div className="flex items-center gap-2">
                       <Coins className="w-4 h-4" />
-                      Credits
+                      {t('screens.payment.credits')}
                     </div>
                   </SelectItem>
                   <SelectItem value="USD">
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4" />
-                      USD
+                      {t('screens.payment.usd')}
                     </div>
                   </SelectItem>
                   <SelectItem value="VTNA">
                     <div className="flex items-center gap-2">
                       <CreditCard className="w-4 h-4" />
-                      VTNA
+                      {t('screens.payment.vtna')}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -180,10 +170,10 @@ export default function PaymentRequestPopup({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -192,7 +182,7 @@ export default function PaymentRequestPopup({
 
           {/* Due Date (Optional) */}
           <div>
-            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Label htmlFor="dueDate">{t('screens.payment.dueDateOptional')}</Label>
             <Input
               id="dueDate"
               type="date"
@@ -203,12 +193,10 @@ export default function PaymentRequestPopup({
 
           {/* Payment Type Badge */}
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="capitalize">
-              {paymentType} Payment
+            <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePayment', { paymentType })}
             </Badge>
             {currency.toUpperCase() === 'CREDITS' && (
-              <Badge variant="secondary">
-                Platform Credits
+              <Badge variant="secondary">{t('screens.payment.platformCredits')}
               </Badge>
             )}
           </div>
@@ -216,11 +204,11 @@ export default function PaymentRequestPopup({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button onClick={handleSendRequest} className="flex-1">
               <Send className="w-4 h-4 mr-2" />
-              Send Request
+              {t('screens.payment.sendRequest')}
             </Button>
           </div>
         </div>

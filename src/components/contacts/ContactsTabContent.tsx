@@ -7,6 +7,7 @@ import { useContacts } from "@/hooks/useContacts";
 import AddContactDialog from "./AddContactDialog";
 import ContactListItem from "./ContactListItem";
 import ImportContactsButton from "./ImportContactsButton";
+import { t } from '@/lib/i18n-toast';
 
 interface ContactsTabContentProps {
   onStartConversation: (userId: string) => void;
@@ -77,7 +78,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
       <div className="mb-4 mr-3 flex gap-2">
         <Button onClick={() => setShowAddContact(true)} className="flex-1">
           <Plus className="w-4 h-4 mr-2" />
-          Add Contact
+          {t('screens.contacts.addContact')}
         </Button>
         <ImportContactsButton onImport={handleImportContacts} />
       </div>
@@ -87,7 +88,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
         <div className="mb-4 mr-3">
           <ExpandableSearchButton
             onSearch={handleSearch}
-            placeholder="Search contacts by name or phone..."
+            placeholder={t('screens.contacts.searchContactsByNamePhone')}
           />
         </div>
       )}
@@ -98,13 +99,13 @@ export default function ContactsTabContent({ onStartConversation, messageContext
           // Empty State
           <div className="text-center py-12">
             <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Contacts Yet</h3>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.contacts.noContactsYet')}</h3>
             <p className="text-muted-foreground mb-4">
-              Add contacts to easily find and message them on VITANA
+              {t('screens.contacts.addContactsEasilyFindMessageThem')}
             </p>
             <Button onClick={() => setShowAddContact(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Your First Contact
+              {t('screens.contacts.addYourFirstContact')}
             </Button>
           </div>
         ) : (
@@ -112,8 +113,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             {/* Section 1: On VITANA */}
             {filteredPlatformContacts.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">
-                  On VITANA ({filteredPlatformContacts.length})
+                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.vitanaLength', { length: filteredPlatformContacts.length })}
                 </h3>
                 <div className="space-y-2 mr-3">
                   {filteredPlatformContacts.map((contact) => (
@@ -134,8 +134,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             {/* Section 2: Invite to VITANA */}
             {filteredNonPlatformContacts.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">
-                  Invite to VITANA ({filteredNonPlatformContacts.length})
+                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.inviteVitanaLength', { length: filteredNonPlatformContacts.length })}
                 </h3>
                 <div className="space-y-2 mr-3">
                   {filteredNonPlatformContacts.map((contact) => (
@@ -156,8 +155,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
              filteredPlatformContacts.length === 0 && 
              filteredNonPlatformContacts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No contacts found matching "{searchQuery}"
+                <p className="text-muted-foreground">{t('screens.contacts.noContactsFoundMatchingSearchquery', { searchQuery })}
                 </p>
               </div>
             )}

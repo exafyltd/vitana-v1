@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Trash2, ExternalLink, Plus } from "lucide-react";
 import { useVaeaCatalog, type VaeaCatalogItem } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const TIER_BADGE: Record<VaeaCatalogItem["tier"], string> = {
   own: "bg-emerald-100 text-emerald-800",
@@ -30,7 +31,7 @@ export function VaeaCatalogPanel() {
       <Card className="bg-destructive/10 border-destructive/20">
         <CardContent className="py-4 flex items-center justify-between gap-3">
           <p className="text-sm text-destructive">{error}</p>
-          <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+          <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
         </CardContent>
       </Card>
     );
@@ -40,8 +41,8 @@ export function VaeaCatalogPanel() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-medium text-sm">Your referral catalog</h3>
-          <p className="text-xs text-muted-foreground">Own products rank above vetted partners rank above affiliate networks.</p>
+          <h3 className="font-medium text-sm">{t('screens.business.yourReferralCatalog')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.business.ownProductsRankAboveVettedPartners')}</p>
         </div>
         <Button size="sm" onClick={() => setShowForm((v) => !v)}>
           <Plus className="h-4 w-4 mr-1" />
@@ -58,9 +59,9 @@ export function VaeaCatalogPanel() {
       {items.length === 0 && !showForm ? (
         <Card className="bg-white/50 backdrop-blur-sm border-white/20 border-dashed">
           <CardContent className="py-8 text-center space-y-1">
-            <div className="font-medium">Your catalog is empty</div>
+            <div className="font-medium">{t('screens.business.yourCatalogEmpty')}</div>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Add the products or services Autopilot can recommend on your behalf.
+              {t('screens.business.addProductsServicesAutopilotCanRecommend')}
             </p>
           </CardContent>
         </Card>
@@ -79,7 +80,7 @@ export function VaeaCatalogPanel() {
                   </div>
                   <div className="font-medium">{item.title}</div>
                   {item.personal_note && (
-                    <p className="text-xs text-muted-foreground mt-1 italic">&ldquo;{item.personal_note}&rdquo;</p>
+                    <p className="text-xs text-muted-foreground mt-1 italic">{t('screens.business.ldquoPersonal_noteRdquo', { personal_note: item.personal_note })}</p>
                   )}
                   <a
                     href={item.affiliate_url}
@@ -125,33 +126,33 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
       <CardContent className="pt-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-xs space-y-1">
-            <span className="text-muted-foreground">Tier</span>
+            <span className="text-muted-foreground">{t('screens.business.tier')}</span>
             <select
               className="w-full h-11 rounded-md border px-3 text-sm bg-background"
               value={tier}
               onChange={(e) => setTier(e.target.value as VaeaCatalogItem["tier"])}
             >
-              <option value="own">Own — my product/service</option>
-              <option value="vetted_partner">Vetted partner</option>
-              <option value="affiliate_network">Affiliate network</option>
+              <option value="own">{t('screens.business.ownMyProductservice')}</option>
+              <option value="vetted_partner">{t('screens.business.vettedPartner')}</option>
+              <option value="affiliate_network">{t('screens.business.affiliateNetwork')}</option>
             </select>
           </label>
           <label className="text-xs space-y-1">
-            <span className="text-muted-foreground">Category</span>
-            <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. supplement, coaching" />
+            <span className="text-muted-foreground">{t('screens.business.category')}</span>
+            <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder={t('screens.business.eGSupplementCoaching')} />
           </label>
         </div>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Title</span>
-          <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
+          <span className="text-muted-foreground">{t('screens.business.title')}</span>
+          <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('screens.business.whatYouReRecommending')} />
         </label>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Affiliate / product URL</span>
-          <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+          <span className="text-muted-foreground">{t('screens.business.affiliateProductUrl')}</span>
+          <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={t('screens.business.https')} />
         </label>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Personal note (optional)</span>
-          <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why you trust it" />
+          <span className="text-muted-foreground">{t('screens.business.personalNoteOptional')}</span>
+          <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('screens.business.whyYouTrustIt')} />
         </label>
         {err && <p className="text-xs text-destructive">{err}</p>}
         <div className="flex justify-end">
@@ -170,8 +171,7 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
               }
             }}
           >
-            {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-            Save
+            {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         </div>
       </CardContent>

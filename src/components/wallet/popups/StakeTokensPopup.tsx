@@ -14,6 +14,7 @@ import { Coins, TrendingUp, Shield, Loader2 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface StakeTokensPopupProps {
   open: boolean;
@@ -38,20 +39,12 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
 
   const handleStake = async (period: string, apy: string) => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid staking amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidStakingAmount');
       return;
     }
 
     if (parseFloat(stakeAmount) > vtnaBalance) {
-      toast({
-        title: '❌ Insufficient Balance',
-        description: 'You don\'t have enough VTNA tokens to stake',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance', 'toasts.wallet.youDonTHaveEnoughVtna');
       return;
     }
 
@@ -61,19 +54,12 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
       // Simulate staking by deducting from balance
       await updateBalance('VTNA', parseFloat(stakeAmount), 'subtract');
       
-      toast({
-        title: '✅ Tokens Staked Successfully!',
-        description: `Staked ${stakeAmount} VTNA for ${period} at ${apy} APY`,
-      });
+      notify('toasts.wallet.tokensStakedSuccessfully');
       
       onOpenChange(false);
       setStakeAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Staking Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.stakingFailed');
     } finally {
       setLoading(false);
     }
@@ -85,7 +71,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Stake VTNA Tokens
+            {t('screens.wallet.stakeVtnaTokens')}
           </DialogTitle>
         </DialogHeader>
         
@@ -93,18 +79,18 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Available VTNA Balance</span>
-              <span className="font-semibold text-purple-700">{vtnaBalance.toLocaleString()} VTNA</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.availableVtnaBalance')}</span>
+              <span className="font-semibold text-purple-700">{t('screens.wallet.value0Vtna', { value0: vtnaBalance.toLocaleString() })}</span>
             </div>
           </div>
 
           {/* Stake Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="stakeAmount">Amount to Stake</Label>
+            <Label htmlFor="stakeAmount">{t('screens.wallet.amountStake')}</Label>
             <Input
               id="stakeAmount"
               type="number"
-              placeholder="Enter VTNA amount"
+              placeholder={t('screens.wallet.enterVtnaAmount')}
               value={stakeAmount}
               onChange={(e) => setStakeAmount(e.target.value)}
               max={vtnaBalance}
@@ -136,7 +122,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
                 size="sm"
                 onClick={() => setStakeAmount(vtnaBalance.toString())}
               >
-                MAX
+                {t('screens.wallet.max')}
               </Button>
             </div>
           </div>
@@ -145,7 +131,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
 
           {/* Staking Options */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">Choose Staking Period</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.chooseStakingPeriod')}</h4>
             {stakingPeriods.map((option, index) => (
               <Button
                 key={index}
@@ -162,7 +148,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
                   )}
                   <div className="text-left">
                     <div className="font-medium">{option.period}</div>
-                    <div className="text-xs text-muted-foreground">Lock period</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.wallet.lockPeriod')}</div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -170,7 +156,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold text-green-600">{option.apy}</span>
                   </div>
-                  <div className="text-xs text-muted-foreground">APY</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.wallet.apy')}</div>
                 </div>
               </Button>
             ))}
@@ -180,12 +166,12 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">Staking Benefits</span>
+              <span className="text-sm font-medium text-blue-700">{t('screens.wallet.stakingBenefits')}</span>
             </div>
             <ul className="text-xs text-blue-600 space-y-1">
-              <li>• Earn passive rewards through staking</li>
-              <li>• Participate in governance voting</li>
-              <li>• Access exclusive community features</li>
+              <li>{t('screens.wallet.earnPassiveRewardsThroughStaking')}</li>
+              <li>{t('screens.wallet.participateGovernanceVoting')}</li>
+              <li>{t('screens.wallet.accessExclusiveCommunityFeatures')}</li>
             </ul>
           </div>
         </div>

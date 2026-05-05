@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { t } from '@/lib/i18n-toast';
 
 export function SSEConnectionMonitor() {
   const [activeCount, setActiveCount] = useState(0);
@@ -55,20 +56,19 @@ export function SSEConnectionMonitor() {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              SSE Connection Monitor
+              {t('screens.dev.sseConnectionMonitor')}
             </CardTitle>
             <CardDescription>
-              Active Server-Sent Events connections
+              {t('screens.dev.activeServersentEventsConnections')}
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={activeCount > 0 ? "default" : "secondary"}>
-              {activeCount} Active
+            <Badge variant={activeCount > 0 ? "default" : "secondary"}>{t('screens.dev.activecountActive', { activeCount })}
             </Badge>
             {activeCount > 5 && (
               <Badge variant="destructive" className="gap-1">
                 <AlertCircle className="w-3 h-3" />
-                High Load
+                {t('screens.dev.highLoad')}
               </Badge>
             )}
           </div>
@@ -78,8 +78,7 @@ export function SSEConnectionMonitor() {
         {activeCount > 0 ? (
           <>
             <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                {activeCount} connection{activeCount !== 1 ? 's' : ''} detected
+              <p className="text-sm text-muted-foreground">{t('screens.dev.activecountConnectionValue1Detected', { activeCount, value1: activeCount !== 1 ? 's' : '' })}
               </p>
               <Button 
                 size="sm" 
@@ -87,7 +86,7 @@ export function SSEConnectionMonitor() {
                 onClick={handleForceCloseAll}
               >
                 <XCircle className="w-4 h-4 mr-2" />
-                Force Close All
+                {t('screens.dev.forceCloseAll')}
               </Button>
             </div>
             
@@ -115,7 +114,7 @@ export function SSEConnectionMonitor() {
         ) : (
           <div className="text-center py-8 text-muted-foreground">
             <Activity className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No active SSE connections</p>
+            <p>{t('screens.dev.noActiveSseConnections')}</p>
           </div>
         )}
       </CardContent>

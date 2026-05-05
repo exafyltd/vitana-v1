@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CoachingSpecialty, Certification } from "@/types/profile";
 import { useState } from "react";
 import { Upload, Plus, X, Trophy, Award, Users, Star, Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CredentialUploadPopupProps {
   open: boolean;
@@ -111,7 +112,7 @@ export function CredentialUploadPopup({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Manage Professional Credentials</DialogTitle>
+          <DialogTitle>{t('screens.profile.manageProfessionalCredentials')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -120,31 +121,31 @@ export function CredentialUploadPopup({
             <CardContent className="p-4">
               <h4 className="font-semibold mb-4 flex items-center gap-2">
                 <Plus className="h-4 w-4" />
-                Add Coaching Specialty
+                {t('screens.profile.addCoachingSpecialty')}
               </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div>
-                    <Label>Specialty Title</Label>
+                    <Label>{t('screens.profile.specialtyTitle')}</Label>
                     <Input
                       value={newSpecialtyTitle}
                       onChange={(e) => setNewSpecialtyTitle(e.target.value)}
-                      placeholder="e.g., Fitness Coach, Mental Health Coach"
+                      placeholder={t('screens.profile.eGFitnessCoachMentalHealth')}
                     />
                   </div>
                   <div>
-                    <Label>Category</Label>
+                    <Label>{t('screens.profile.category')}</Label>
                     <Select value={newSpecialtyType} onValueChange={(value: CoachingSpecialty['type']) => setNewSpecialtyType(value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="fitness">Fitness</SelectItem>
-                        <SelectItem value="mental">Mental Health</SelectItem>
-                        <SelectItem value="nutrition">Nutrition</SelectItem>
-                        <SelectItem value="wellness">Wellness</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="fitness">{t('screens.profile.fitness')}</SelectItem>
+                        <SelectItem value="mental">{t('screens.profile.mentalHealth')}</SelectItem>
+                        <SelectItem value="nutrition">{t('screens.profile.nutrition')}</SelectItem>
+                        <SelectItem value="wellness">{t('screens.profile.wellness')}</SelectItem>
+                        <SelectItem value="other">{t('screens.profile.other')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -153,7 +154,7 @@ export function CredentialUploadPopup({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label>Sessions Held</Label>
+                      <Label>{t('screens.profile.sessionsHeld')}</Label>
                       <Input
                         type="number"
                         value={newSessions}
@@ -162,7 +163,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Participants</Label>
+                      <Label>{t('screens.profile.participants')}</Label>
                       <Input
                         type="number"
                         value={newParticipants}
@@ -173,7 +174,7 @@ export function CredentialUploadPopup({
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <Label>Rating</Label>
+                      <Label>{t('screens.profile.rating')}</Label>
                       <Input
                         type="number"
                         step="0.1"
@@ -185,7 +186,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Total Ratings</Label>
+                      <Label>{t('screens.profile.totalRatings')}</Label>
                       <Input
                         type="number"
                         value={newTotalRatings}
@@ -194,7 +195,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Subscribers</Label>
+                      <Label>{t('screens.profile.subscribers')}</Label>
                       <Input
                         type="number"
                         value={newSubscribers}
@@ -208,7 +209,7 @@ export function CredentialUploadPopup({
 
               <Button onClick={addNewSpecialty} className="mt-4" disabled={!newSpecialtyTitle}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Specialty
+                {t('screens.profile.addSpecialty')}
               </Button>
             </CardContent>
           </Card>
@@ -238,19 +239,19 @@ export function CredentialUploadPopup({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.sessionsHeld}</div>
-                    <div className="text-xs text-muted-foreground">Sessions</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.sessions')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.participantsHelped}</div>
-                    <div className="text-xs text-muted-foreground">Participants</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.participants')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.rating.toFixed(1)}</div>
-                    <div className="text-xs text-muted-foreground">Rating</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.rating')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.subscribers}</div>
-                    <div className="text-xs text-muted-foreground">Subscribers</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.subscribers')}</div>
                   </div>
                 </div>
 
@@ -258,7 +259,7 @@ export function CredentialUploadPopup({
                 <div>
                   <h5 className="font-medium mb-2 flex items-center gap-2">
                     <Award className="h-4 w-4" />
-                    Certifications
+                    {t('screens.profile.certifications')}
                   </h5>
                   
                   <div className="space-y-2 mb-3">
@@ -284,12 +285,12 @@ export function CredentialUploadPopup({
                     <Input
                       value={certTitle}
                       onChange={(e) => setCertTitle(e.target.value)}
-                      placeholder="Certification title"
+                      placeholder={t('screens.profile.certificationTitle')}
                     />
                     <Input
                       value={certIssuer}
                       onChange={(e) => setCertIssuer(e.target.value)}
-                      placeholder="Issuing organization"
+                      placeholder={t('screens.profile.issuingOrganization')}
                     />
                     <Input
                       type="date"
@@ -304,7 +305,7 @@ export function CredentialUploadPopup({
                     disabled={!certTitle || !certIssuer}
                   >
                     <Plus className="h-4 w-4 mr-1" />
-                    Add Certification
+                    {t('screens.profile.addCertification')}
                   </Button>
                 </div>
               </CardContent>
@@ -318,10 +319,10 @@ export function CredentialUploadPopup({
               className="flex-1"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button className="flex-1" onClick={handleSave}>
-              Save Credentials
+              {t('screens.profile.saveCredentials')}
             </Button>
           </div>
         </div>

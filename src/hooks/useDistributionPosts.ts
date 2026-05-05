@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type DistributionPost = Database["public"]["Tables"]["distribution_posts"]["Row"];
 export type DistributionPostInsert = Database["public"]["Tables"]["distribution_posts"]["Insert"];
@@ -41,7 +42,7 @@ export function useDistributionPosts(status?: Database["public"]["Enums"]["post_
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("Post created successfully");
+      notifySuccess('toasts.hooks.postCreatedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to create post: ${error.message}`);
@@ -68,7 +69,7 @@ export function useDistributionPosts(status?: Database["public"]["Enums"]["post_
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("Post updated successfully");
+      notifySuccess('toasts.hooks.postUpdatedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to update post: ${error.message}`);
@@ -86,7 +87,7 @@ export function useDistributionPosts(status?: Database["public"]["Enums"]["post_
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("Post deleted successfully");
+      notifySuccess('toasts.hooks.postDeletedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to delete post: ${error.message}`);
@@ -112,7 +113,7 @@ export function useDistributionPosts(status?: Database["public"]["Enums"]["post_
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("Blasting now!");
+      notifySuccess('toasts.hooks.blastingNow');
     },
     onError: (error: Error) => {
       toast.error(`Failed to blast: ${error.message}`);

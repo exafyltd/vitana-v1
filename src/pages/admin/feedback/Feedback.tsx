@@ -23,6 +23,7 @@ import { TicketActionDrawer } from "./TicketActionDrawer";
 // the global Gate A phrase lists + a test sandbox.
 import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
 import { Switch } from "@/components/ui/switch";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -205,27 +206,23 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
       });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     } catch (err) {
-      toast({
-        title: "Approve all failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.approveAllFailed');
     } finally {
       setApproving(s => ({ ...s, [g.customer_key]: false }));
     }
   };
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   }
   if (error) {
-    return <p className="text-sm text-destructive">Failed to load tickets.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.failedLoadTickets')}</p>;
   }
   if (tickets.length === 0) {
     return (
       <Card className="p-6 text-center text-sm text-muted-foreground">
         <Inbox className="mx-auto mb-2 h-8 w-8 opacity-50" />
-        No tickets yet. Your members' submissions via "Talk to Vitana" will land here.
+        {t('screens.admin.noTicketsYetYourMembersSubmissions')}
       </Card>
     );
   }
@@ -279,11 +276,11 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     )}
                     <span className="font-mono text-xs text-muted-foreground">{g.vitana_id ?? "(anonymous)"}</span>
                     {g.open > 0 && (
-                      <Badge variant="destructive" className="text-[10px]">{g.open} open</Badge>
+                      <Badge variant="destructive" className="text-[10px]">{t('screens.admin.openOpen', { open: g.open })}</Badge>
                     )}
-                    <Badge variant="outline" className="text-[10px]">{g.total} total</Badge>
+                    <Badge variant="outline" className="text-[10px]">{t('screens.admin.totalTotal', { total: g.total })}</Badge>
                     {g.actionable > 0 && (
-                      <Badge variant="secondary" className="text-[10px]">{g.actionable} ready</Badge>
+                      <Badge variant="secondary" className="text-[10px]">{t('screens.admin.actionableReady', { actionable: g.actionable })}</Badge>
                     )}
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
@@ -296,7 +293,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     </Badge>
                     <span>{g.latest.kind}</span>
                     {g.latest.resolver_agent && (
-                      <span>· handled by {g.latest.resolver_agent}</span>
+                      <span>{t('screens.admin.handledByResolver_agent', { resolver_agent: g.latest.resolver_agent })}</span>
                     )}
                     <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
                   </div>
@@ -482,11 +479,7 @@ function SpecialistEnableToggle({
       });
       onChanged();
     } catch (err) {
-      toast({
-        title: "Toggle failed",
-        description: err instanceof Error ? err.message : "Try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.toggleFailed');
     } finally {
       setPending(false);
     }
@@ -572,9 +565,9 @@ export default function AdminFeedback() {
 
   return (
     <AppLayout>
-      <SEO title="Feedback — Admin" description="Tenant feedback tickets and the AI specialist team" />
+      <SEO title={t('screens.admin.feedbackAdmin')} description="Tenant feedback tickets and the AI specialist team" />
       <StandardHeader
-        title="Feedback"
+        title={t('screens.admin.feedback')}
         description="Tickets your members submitted to Vitana. AI specialists handle them — humans approve before any action applies."
       />
 
@@ -603,9 +596,9 @@ export default function AdminFeedback() {
         {activeTab === "tickets" && (
           <>
             <div className="flex gap-2 text-xs items-center flex-wrap">
-              <Badge variant="outline">Total: {counts.total}</Badge>
-              <Badge variant="secondary">Open: {counts.open}</Badge>
-              <Badge variant="default">Resolved: {counts.resolved}</Badge>
+              <Badge variant="outline">{t('screens.admin.totalTotal2', { total: counts.total })}</Badge>
+              <Badge variant="secondary">{t('screens.admin.openOpen2', { open: counts.open })}</Badge>
+              <Badge variant="default">{t('screens.admin.resolvedResolved', { resolved: counts.resolved })}</Badge>
               {/* VTID-02660: Active / Archive filter. Default = active so
                   resolved/rejected tickets disappear from the supervisor's
                   view immediately after they're acted on. Switch to Archive
@@ -614,20 +607,17 @@ export default function AdminFeedback() {
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "active" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("active")}
-                >
-                  Active ({counts.open})
+                >{t('screens.admin.activeOpen', { open: counts.open })}
                 </button>
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "archive" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("archive")}
-                >
-                  Archive ({counts.total - counts.open})
+                >{t('screens.admin.archiveValue0', { value0: counts.total - counts.open })}
                 </button>
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "all" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("all")}
-                >
-                  All ({counts.total})
+                >{t('screens.admin.allTotal', { total: counts.total })}
                 </button>
               </div>
             </div>
@@ -667,11 +657,9 @@ export default function AdminFeedback() {
         {activeTab === "specialists" && (
           <>
             <p className="text-sm text-muted-foreground">
-              <strong>Vitana is your members' life companion.</strong> Almost every conversation stays with her. The
-              colleagues below take over only when a member explicitly asks to be connected for a corporate /
-              organizational issue (bug, refund, account, support escalation). Click any card to customize.
+              <strong>{t('screens.admin.vitanaYourMembersLifeCompanion')}</strong>{t('screens.admin.almostEveryConversationStaysWithHer')}
             </p>
-            {personasQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+            {personasQuery.isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>}
             <div className="grid gap-3 sm:grid-cols-2">
               {sortedPersonasWithVitanaFirst(personasQuery.data ?? []).map(p => {
                 const isVitana = p.key === "vitana";
@@ -689,8 +677,7 @@ export default function AdminFeedback() {
                         <div className="flex items-center gap-2">
                           <h3 className="text-base font-semibold">{p.display_name}</h3>
                           {isVitana && (
-                            <Badge variant="default" className="text-[9px]">
-                              receptionist
+                            <Badge variant="default" className="text-[9px]">{t('screens.admin.receptionist')}
                             </Badge>
                           )}
                         </div>
@@ -698,7 +685,7 @@ export default function AdminFeedback() {
                       </div>
                       {isVitana ? (
                         <span className="whitespace-nowrap rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                          Always on
+                          {t('screens.admin.always')}
                         </span>
                       ) : (
                         <SpecialistEnableToggle
@@ -709,13 +696,11 @@ export default function AdminFeedback() {
                       )}
                     </div>
                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                      <div>
-                        Handles: {isVitana
+                      <div>{t('screens.admin.handlesValue0', { value0: isVitana
                           ? "everything except customer-support handoffs"
-                          : (p.handles_kinds.join(", ") || "—")}
-                      </div>
-                      <div>Voice: {p.voice_id || "(not set)"}</div>
-                      <div>Version: v{p.version}</div>
+                          : (p.handles_kinds.join(", ") || "—") })}</div>
+                      <div>{t('screens.admin.voiceValue0', { value0: p.voice_id || "(not set)" })}</div>
+                      <div>{t('screens.admin.versionVVersion', { version: p.version })}</div>
                     </div>
                   </Card>
                 );

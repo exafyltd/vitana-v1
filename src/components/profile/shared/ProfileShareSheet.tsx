@@ -6,6 +6,7 @@ import {
   ResponsivePopoverContent,
   ResponsivePopoverTrigger,
 } from "@/components/ui/responsive-popover";
+import { t } from '@/lib/i18n-toast';
 
 interface ShareOption {
   icon: React.ReactNode;
@@ -100,7 +101,7 @@ export const ProfileShareSheet = ({
         {trigger}
       </ResponsivePopoverTrigger>
       <ResponsivePopoverContent 
-        title="Share Profile"
+        title={t('screens.profile.shareProfile')}
         className="w-64 p-2" 
         align="end"
         onKeyDown={(e) => {

@@ -5,6 +5,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { healthNavigation } from "@/config/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, FileText, Shield } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const conditionsItems = [
   {
@@ -24,12 +25,12 @@ const conditionsItems = [
 export default function ConditionsRisks() {
   return (
     <AppLayout>
-      <SEO title="Conditions & Risks | Health" description="Assess health risks and create preventive action plans" canonical={window.location.href} />
+      <SEO title={t('screens.health.conditionsRisksHealth')} description="Assess health risks and create preventive action plans" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
-            title="Take control of your health risks!"
+            title={t('screens.health.takeControlYourHealthRisks')}
             description="Assess your health risks and create preventive action plans to maintain optimal wellness."
             emoji="⚠️"
           />

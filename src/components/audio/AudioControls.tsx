@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Mic, MicOff, X, MonitorUp, MonitorX, Video, VideoOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface AudioControlsProps {
   micActive: boolean;
@@ -35,7 +36,7 @@ export function AudioControls({
           'flex items-center justify-center',
           'transition-colors duration-200'
         )}
-        aria-label="Exit audio mode"
+        aria-label={t('screens.audio.exitAudioMode')}
       >
         <X className="h-5 w-5 text-foreground" />
       </motion.button>

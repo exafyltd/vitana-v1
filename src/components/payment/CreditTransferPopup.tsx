@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { 
   Send, 
@@ -17,6 +17,7 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreditTransferPopupProps {
   isOpen: boolean;
@@ -49,11 +50,7 @@ export default function CreditTransferPopup({
 
   const handleTransfer = async () => {
     if (!canTransfer) {
-      toast({
-        title: "Invalid Transfer",
-        description: "Please enter a valid amount within your balance",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.invalidTransfer', 'toasts.payment.pleaseEnterValidAmountWithinYour');
       return;
     }
 
@@ -80,21 +77,14 @@ export default function CreditTransferPopup({
         transferData
       );
 
-      toast({
-        title: "Transfer Completed! ✨",
-        description: `${transferAmount} credits sent to ${recipient?.name || 'recipient'}`
-      });
+      notify('toasts.payment.transferCompleted');
 
       onClose();
       setAmount('');
       setNote('');
     } catch (error) {
       console.error('Transfer error:', error);
-      toast({
-        title: "Transfer Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.transferFailed', 'toasts.payment.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }
@@ -106,7 +96,7 @@ export default function CreditTransferPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-blue-600" />
-            Transfer Credits
+            {t('screens.payment.transferCredits')}
           </DialogTitle>
         </DialogHeader>
 
@@ -117,10 +107,9 @@ export default function CreditTransferPopup({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Coins className="w-5 h-5 text-orange-500" />
-                  <span className="font-medium">Your Balance</span>
+                  <span className="font-medium">{t('screens.payment.yourBalance')}</span>
                 </div>
-                <span className="text-lg font-bold text-orange-600">
-                  {currentBalance.toLocaleString()} credits
+                <span className="text-lg font-bold text-orange-600">{t('screens.payment.value0Credits', { value0: currentBalance.toLocaleString() })}
                 </span>
               </div>
             </CardContent>
@@ -135,7 +124,7 @@ export default function CreditTransferPopup({
               </Avatar>
               <div className="flex-1">
                 <p className="font-medium">{recipient.name}</p>
-                <p className="text-sm text-muted-foreground">Transfer recipient</p>
+                <p className="text-sm text-muted-foreground">{t('screens.payment.transferRecipient')}</p>
               </div>
               <Users className="w-4 h-4 text-muted-foreground" />
             </div>
@@ -143,7 +132,7 @@ export default function CreditTransferPopup({
 
           {/* Quick Amount Buttons */}
           <div>
-            <Label className="text-sm font-medium">Quick amounts</Label>
+            <Label className="text-sm font-medium">{t('screens.payment.quickAmounts')}</Label>
             <div className="grid grid-cols-4 gap-2 mt-2">
               {quickAmounts.map((quickAmount) => (
                 <Button
@@ -162,7 +151,7 @@ export default function CreditTransferPopup({
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Transfer Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.transferAmount')}</Label>
             <div className="relative">
               <Input
                 id="amount"
@@ -173,18 +162,17 @@ export default function CreditTransferPopup({
                 className="pr-16"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                credits
+                {t('screens.payment.credits2')}
               </div>
             </div>
             {transferAmount > 0 && (
               <div className="flex items-center justify-between mt-1 text-xs">
-                <span className="text-muted-foreground">
-                  Remaining: {remainingBalance.toLocaleString()} credits
+                <span className="text-muted-foreground">{t('screens.payment.remainingValue0Credits', { value0: remainingBalance.toLocaleString() })}
                 </span>
                 {!canTransfer && transferAmount > currentBalance && (
                   <span className="text-red-500 flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
-                    Insufficient balance
+                    {t('screens.payment.insufficientBalance')}
                   </span>
                 )}
               </div>
@@ -193,10 +181,10 @@ export default function CreditTransferPopup({
 
           {/* Note */}
           <div>
-            <Label htmlFor="note">Note (Optional)</Label>
+            <Label htmlFor="note">{t('screens.payment.noteOptional')}</Label>
             <Textarea
               id="note"
-              placeholder="Add a note for this transfer..."
+              placeholder={t('screens.payment.addNoteForThisTransfer')}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={2}
@@ -209,13 +197,13 @@ export default function CreditTransferPopup({
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm">
                   <div className="text-center">
-                    <p className="font-medium">You send</p>
-                    <p className="text-green-600 font-bold">{transferAmount} credits</p>
+                    <p className="font-medium">{t('screens.payment.youSend')}</p>
+                    <p className="text-green-600 font-bold">{t('screens.payment.transferamountCredits', { transferAmount })}</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-green-600" />
                   <div className="text-center">
                     <p className="font-medium">{recipient?.name || 'Recipient'}</p>
-                    <p className="text-green-600 font-bold">receives {transferAmount} credits</p>
+                    <p className="text-green-600 font-bold">{t('screens.payment.receivesTransferamountCredits', { transferAmount })}</p>
                   </div>
                 </div>
               </CardContent>
@@ -225,7 +213,7 @@ export default function CreditTransferPopup({
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleTransfer} 
@@ -234,13 +222,12 @@ export default function CreditTransferPopup({
             >
               {isProcessing ? (
                 <>
-                  <Coins className="w-4 h-4 mr-2 animate-spin" />
-                  Sending...
+                  <Coins className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.sending')}
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Credits
+                  {t('screens.payment.sendCredits')}
                 </>
               )}
             </Button>

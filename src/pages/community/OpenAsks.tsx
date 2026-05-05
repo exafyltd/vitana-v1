@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Loader2, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -126,14 +127,14 @@ export default function OpenAsks() {
     <div className="container max-w-3xl mx-auto px-4 py-6 space-y-4">
       <div className="flex items-center gap-3">
         <Sparkles className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-semibold">Open asks in the community</h1>
+        <h1 className="text-2xl font-semibold">{t('screens.community.openAsksCommunity')}</h1>
       </div>
 
       <p className="text-sm text-muted-foreground">{summary}</p>
 
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Kind</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.kind')}</span>
           {KIND_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -149,7 +150,7 @@ export default function OpenAsks() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Topic</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.topic')}</span>
           {DANCE_FILTERS.map((f) => (
             <button
               key={f.label}

@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { ShowcaseForm } from "../editor/ShowcaseForm";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface ShowcaseDrawerProps {
   open: boolean;
@@ -26,10 +27,10 @@ export function ShowcaseDrawer({ open, onOpenChange }: ShowcaseDrawerProps) {
               className="flex-1"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button className="flex-1">
-              Save Changes
+              {t('screens.profile.saveChanges')}
             </Button>
           </div>
         </div>

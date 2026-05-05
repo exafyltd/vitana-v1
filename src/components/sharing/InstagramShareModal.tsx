@@ -11,8 +11,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Copy, Check, Loader2, Smartphone, Square, Share2, ExternalLink } from "lucide-react";
 import { ShareableEventCard } from "./ShareableEventCard";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
-import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface InstagramShareModalProps {
   open: boolean;
@@ -70,7 +70,7 @@ export function InstagramShareModal({
   // Share directly using Web Share API (mobile only)
   const handleDirectShare = useCallback(async () => {
     if (!canUseWebShare()) {
-      toast.error("Direct sharing not supported on this device");
+      notifyError('toasts.sharing.directSharingNotSupportedThisDevice');
       return;
     }
 
@@ -78,7 +78,7 @@ export function InstagramShareModal({
     try {
       const blob = await generateImageBlob();
       if (!blob) {
-        toast.error("Failed to generate image");
+        notifyError('toasts.sharing.failedGenerateImage');
         return;
       }
 
@@ -97,7 +97,7 @@ export function InstagramShareModal({
       // Check if we can share files
       if (navigator.canShare(shareData)) {
         await navigator.share(shareData);
-        toast.success("Shared successfully!");
+        notifySuccess('toasts.sharing.sharedSuccessfully');
         onOpenChange(false);
       } else {
         // Fallback: share without file
@@ -106,13 +106,13 @@ export function InstagramShareModal({
           text: `Check out this event: ${event.title}`,
           url: shareUrl,
         });
-        toast.success("Link shared! Download the image to include it.");
+        notifySuccess('toasts.sharing.linkSharedDownloadImageIncludeIt');
       }
     } catch (error) {
       // User cancelled or error
       if ((error as Error).name !== "AbortError") {
         console.error("Share error:", error);
-        toast.error("Sharing failed. Try downloading instead.");
+        notifyError('toasts.sharing.sharingFailedTryDownloadingInstead');
       }
     } finally {
       setIsGenerating(false);
@@ -146,7 +146,7 @@ export function InstagramShareModal({
       }
     }, 1500);
     
-    toast.success("Link copied! Paste it in your Instagram post.");
+    notifySuccess('toasts.sharing.linkCopiedPasteItYourInstagram');
   }, [shareUrl]);
 
   const handleDownload = useCallback(async () => {
@@ -154,7 +154,7 @@ export function InstagramShareModal({
     try {
       const blob = await generateImageBlob();
       if (!blob) {
-        toast.error("Failed to generate image");
+        notifyError('toasts.sharing.failedGenerateImage');
         return;
       }
 
@@ -167,10 +167,10 @@ export function InstagramShareModal({
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      toast.success("Image downloaded! Ready to share on Instagram");
+      notifySuccess('toasts.sharing.imageDownloadedReadyShareInstagram');
     } catch (error) {
       console.error("Error generating image:", error);
-      toast.error("Failed to generate image");
+      notifyError('toasts.sharing.failedGenerateImage');
     } finally {
       setIsGenerating(false);
     }
@@ -180,10 +180,10 @@ export function InstagramShareModal({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setLinkCopied(true);
-      toast.success("Link copied for Link Sticker!");
+      notifySuccess('toasts.sharing.linkCopiedForLinkSticker');
       setTimeout(() => setLinkCopied(false), 2000);
     } catch {
-      toast.error("Failed to copy link");
+      notifyError('toasts.sharing.failedCopyLink');
     }
   }, [shareUrl]);
 
@@ -193,7 +193,7 @@ export function InstagramShareModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <InstagramIcon className="h-5 w-5" />
-            Share to Instagram
+            {t('screens.sharing.shareInstagram')}
           </DialogTitle>
         </DialogHeader>
 
@@ -203,11 +203,11 @@ export function InstagramShareModal({
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="story" className="gap-2">
                 <Smartphone className="h-4 w-4" />
-                Story (9:16)
+                {t('screens.sharing.story916')}
               </TabsTrigger>
               <TabsTrigger value="square" className="gap-2">
                 <Square className="h-4 w-4" />
-                Feed (1:1)
+                {t('screens.sharing.feed11')}
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -229,13 +229,12 @@ export function InstagramShareModal({
               >
                 {isGenerating ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Preparing...
+                    <Loader2 className="h-4 w-4 animate-spin" />{t('screens.sharing.preparing')}
                   </>
                 ) : (
                   <>
                     <Share2 className="h-4 w-4" />
-                    Share to Instagram
+                    {t('screens.sharing.shareInstagram')}
                   </>
                 )}
               </Button>
@@ -250,7 +249,7 @@ export function InstagramShareModal({
                 size="lg"
               >
                 <ExternalLink className="h-4 w-4" />
-                Open Instagram App
+                {t('screens.sharing.openInstagramApp')}
               </Button>
             )}
 
@@ -264,13 +263,12 @@ export function InstagramShareModal({
             >
               {isGenerating && !isMobile ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating...
+                  <Loader2 className="h-4 w-4 animate-spin" />{t('screens.sharing.generating')}
                 </>
               ) : (
                 <>
                   <Download className="h-4 w-4" />
-                  Download Image
+                  {t('screens.sharing.downloadImage')}
                 </>
               )}
             </Button>
@@ -283,13 +281,12 @@ export function InstagramShareModal({
             >
               {linkCopied ? (
                 <>
-                  <Check className="h-4 w-4 text-green-500" />
-                  Link Copied!
+                  <Check className="h-4 w-4 text-green-500" />{t('screens.sharing.linkCopied')}
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4" />
-                  Copy Link (for Link Sticker)
+                  {t('screens.sharing.copyLinkForLinkSticker')}
                 </>
               )}
             </Button>
@@ -303,18 +300,18 @@ export function InstagramShareModal({
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
               {isMobile ? (
                 <>
-                  <li>Tap "Share to Instagram" to open your share menu</li>
-                  <li>Select Instagram from the apps</li>
-                  <li>Add a Link Sticker with the copied link</li>
-                  <li>Share with your followers!</li>
+                  <li>{t('screens.sharing.tapShareInstagramOpenYourShare')}</li>
+                  <li>{t('screens.sharing.selectInstagramFromApps')}</li>
+                  <li>{t('screens.sharing.addLinkStickerWithCopiedLink')}</li>
+                  <li>{t('screens.sharing.shareWithYourFollowers')}</li>
                 </>
               ) : (
                 <>
-                  <li>Download the image above</li>
-                  <li>Open Instagram and create a Story or Post</li>
-                  <li>Select the downloaded image</li>
-                  <li>Add a Link Sticker with the copied link</li>
-                  <li>Share with your followers!</li>
+                  <li>{t('screens.sharing.downloadImageAbove')}</li>
+                  <li>{t('screens.sharing.openInstagramCreateStoryPost')}</li>
+                  <li>{t('screens.sharing.selectDownloadedImage')}</li>
+                  <li>{t('screens.sharing.addLinkStickerWithCopiedLink')}</li>
+                  <li>{t('screens.sharing.shareWithYourFollowers')}</li>
                 </>
               )}
             </ol>

@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Clock, Users, UserCheck, AlertCircle, CheckCircle2 } from "lucide-react";
 import { adminClinicalNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 const mockQueueData = {
   waitingRoom: [
@@ -25,13 +26,13 @@ const mockQueueData = {
 function Queue() {
   return (
     <AppLayout>
-      <SEO title="Queue & Check-In | Admin" description="Manage patient queue and check-in process" canonical={window.location.href} />
+      <SEO title={t('screens.admin.queueCheckinAdmin')} description="Manage patient queue and check-in process" canonical={window.location.href} />
       <SubNavigation items={adminClinicalNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Queue & Check-In Management"
+            title={t('screens.admin.queueCheckinManagement')}
             description="Monitor patient flow and manage the check-in process"
             emoji="🏥"
           />
@@ -44,7 +45,7 @@ function Queue() {
                   <Clock className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">8</p>
-                    <p className="text-sm text-muted-foreground">Avg Wait (min)</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.avgWaitMin')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -56,7 +57,7 @@ function Queue() {
                   <Users className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">23</p>
-                    <p className="text-sm text-muted-foreground">In Queue</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.queue')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -68,7 +69,7 @@ function Queue() {
                   <UserCheck className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">5</p>
-                    <p className="text-sm text-muted-foreground">In Progress</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.progress')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -80,7 +81,7 @@ function Queue() {
                   <CheckCircle2 className="w-8 h-8 text-purple-500" />
                   <div>
                     <p className="text-2xl font-bold">47</p>
-                    <p className="text-sm text-muted-foreground">Completed Today</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.completedToday')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -89,9 +90,9 @@ function Queue() {
 
           <Tabs defaultValue="queue" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="queue">Live Queue</TabsTrigger>
-              <TabsTrigger value="checkin">Check-In</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="queue">{t('screens.admin.liveQueue')}</TabsTrigger>
+              <TabsTrigger value="checkin">{t('screens.admin.checkin')}</TabsTrigger>
+              <TabsTrigger value="reports">{t('screens.admin.reports')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="queue" className="space-y-6">
@@ -99,8 +100,7 @@ function Queue() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-orange-500" />
-                      Waiting Room ({mockQueueData.waitingRoom.length})
+                      <Clock className="w-5 h-5 text-orange-500" />{t('screens.admin.waitingRoomLength', { length: mockQueueData.waitingRoom.length })}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -114,7 +114,7 @@ function Queue() {
                           <Badge variant={patient.status === 'ready' ? 'default' : 'secondary'}>
                             {patient.waitTime}
                           </Badge>
-                          <Button size="sm" variant="outline">Call In</Button>
+                          <Button size="sm" variant="outline">{t('screens.admin.call')}</Button>
                         </div>
                       </div>
                     ))}
@@ -124,8 +124,7 @@ function Queue() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <UserCheck className="w-5 h-5 text-green-500" />
-                      In Progress ({mockQueueData.inProgress.length})
+                      <UserCheck className="w-5 h-5 text-green-500" />{t('screens.admin.progressLength', { length: mockQueueData.inProgress.length })}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -136,8 +135,8 @@ function Queue() {
                           <p className="text-sm text-muted-foreground">{patient.provider} • {patient.room}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="default">Active</Badge>
-                          <Button size="sm" variant="outline">Complete</Button>
+                          <Badge variant="default">{t('screens.admin.active')}</Badge>
+                          <Button size="sm" variant="outline">{t('screens.admin.complete')}</Button>
                         </div>
                       </div>
                     ))}
@@ -149,10 +148,10 @@ function Queue() {
             <TabsContent value="checkin" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Self-Service Check-In</CardTitle>
+                  <CardTitle>{t('screens.admin.selfserviceCheckin')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Check-in kiosk management and patient self-service options.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.checkinKioskManagementPatientSelfserviceOptions')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -160,10 +159,10 @@ function Queue() {
             <TabsContent value="reports" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Queue Analytics</CardTitle>
+                  <CardTitle>{t('screens.admin.queueAnalytics')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Queue performance metrics and wait time analytics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.queuePerformanceMetricsWaitTimeAnalytics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

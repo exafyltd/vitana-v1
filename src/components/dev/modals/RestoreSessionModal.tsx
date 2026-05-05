@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Clock, Trash2 } from "lucide-react";
 import { useSessionRestore } from "@/hooks/dev/useSessionRestore";
-import { toast } from "sonner";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface RestoreSessionModalProps {
   open: boolean;
@@ -24,7 +24,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
     const session = sessions.find((s) => s.id === sessionId);
     
     if (!session) {
-      toast.error("Session not found");
+      notifyError('toasts.dev.sessionNotFound');
       return;
     }
 
@@ -35,15 +35,15 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
     onOpenChange(false);
     
     if (isAlreadyOnPath) {
-      toast.success("Session restored successfully");
+      notifySuccess('toasts.dev.sessionRestoredSuccessfully');
     } else {
-      toast.success("Restoring session...");
+      notifySuccess('toasts.dev.restoringSession');
     }
   };
 
   const handleClearAll = () => {
     clearAllSessions();
-    toast.success("All sessions cleared");
+    notifySuccess('toasts.dev.allSessionsCleared');
   };
 
   const formatDuration = (minutes: number) => {
@@ -59,10 +59,10 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Clock className="h-5 w-5" />
-            Restore Previous Session
+            {t('screens.dev.restorePreviousSession')}
           </DialogTitle>
           <DialogDescription>
-            Reopen your last working context or restore a previous workspace snapshot.
+            {t('screens.dev.reopenYourLastWorkingContextRestore')}
           </DialogDescription>
         </DialogHeader>
 
@@ -70,8 +70,8 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
           {sessions.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Clock className="h-12 w-12 mx-auto mb-4 opacity-30" />
-              <p>No saved sessions found</p>
-              <p className="text-sm mt-2">Your recent sessions will appear here</p>
+              <p>{t('screens.dev.noSavedSessionsFound')}</p>
+              <p className="text-sm mt-2">{t('screens.dev.yourRecentSessionsWillAppearHere')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -112,7 +112,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span>{formatDuration(session.duration)}</span>
                         <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400">
-                          Saved
+                          {t('screens.dev.saved')}
                         </span>
                       </div>
                     </div>
@@ -124,8 +124,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
                         handleRestore(session.id);
                       }}
                       className="shrink-0 opacity-80 group-hover:opacity-100 transition-opacity"
-                    >
-                      Restore
+                    >{t('screens.dev.restore')}
                     </Button>
                   </div>
                 </div>
@@ -143,7 +142,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Clear All Sessions
+              {t('screens.dev.clearAllSessions')}
             </Button>
           </div>
         )}

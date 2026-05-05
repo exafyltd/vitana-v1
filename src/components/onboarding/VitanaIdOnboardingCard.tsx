@@ -21,6 +21,7 @@ import { Loader2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
+import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -146,16 +147,12 @@ export function VitanaIdOnboardingCard() {
       }
       toast({
         title: `Vitana ID set: @${data.vitana_id}`,
-        description: "This is your speakable ID across Vitana. Permanent — pick wisely!",
+        description: lookup('toasts.onboarding.thisYourSpeakableIdAcrossVitana'),
       });
       setPickerOpen(false);
       refreshProfile();
     } catch (err: any) {
-      toast({
-        title: "Network error",
-        description: err?.message || "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.onboarding.networkError');
     } finally {
       setSubmitting(false);
     }
@@ -185,13 +182,11 @@ export function VitanaIdOnboardingCard() {
         data-vtid-onboarding-card
         className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 backdrop-blur-md shadow-lg"
         role="dialog"
-        aria-label="Pick your Vitana ID"
+        aria-label={t('screens.onboarding.pickYourVitanaId')}
       >
         <div className="max-w-xl mx-auto p-4 space-y-3">
           <div className="text-center space-y-1">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Your Vitana ID — Member #{seqDigits || "?"}
-            </p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.onboarding.yourVitanaIdMemberValue0', { value0: seqDigits || "?" })}</p>
             <div className="flex items-center justify-center gap-2">
               <p className="text-2xl font-semibold tracking-wide">
                 @{profile.vitanaId}
@@ -201,14 +196,12 @@ export function VitanaIdOnboardingCard() {
                 size="icon"
                 className="h-8 w-8"
                 onClick={handleCopy}
-                aria-label="Copy Vitana ID"
+                aria-label={t('screens.onboarding.copyVitanaId')}
               >
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Speakable. Language-neutral. The number is your registration rank — locked.
-              You can change the name part once.
+            <p className="text-xs text-muted-foreground">{t('screens.onboarding.speakableLanguageneutralNumberYourRegistrationRank')}
             </p>
           </div>
           <div className="flex gap-2">
@@ -226,7 +219,7 @@ export function VitanaIdOnboardingCard() {
               onClick={() => setPickerOpen(true)}
               disabled={submitting}
             >
-              Change the name
+              {t('screens.onboarding.changeName')}
             </Button>
           </div>
         </div>
@@ -235,10 +228,8 @@ export function VitanaIdOnboardingCard() {
       <Dialog open={pickerOpen} onOpenChange={(open) => !submitting && setPickerOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Pick the name part of your Vitana ID</DialogTitle>
-            <DialogDescription>
-              The number ({seqDigits}) is your registration rank — locked, can't be changed.
-              You can change the name. Once you confirm, your Vitana ID is permanent.
+            <DialogTitle>{t('screens.onboarding.pickNamePartYourVitanaId')}</DialogTitle>
+            <DialogDescription>{t('screens.onboarding.numberSeqdigitsYourRegistrationRankLocked', { seqDigits })}
             </DialogDescription>
           </DialogHeader>
 
@@ -246,7 +237,7 @@ export function VitanaIdOnboardingCard() {
             {baseAlternatives.length > 0 && (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  Suggestions
+                  {t('screens.onboarding.suggestions')}
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   {baseAlternatives.map((b) => (
@@ -272,8 +263,7 @@ export function VitanaIdOnboardingCard() {
             )}
 
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                Or type your own name
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.onboarding.typeYourOwnName')}
               </p>
               <div className="flex items-center gap-1">
                 <span className="text-lg font-medium text-muted-foreground">@</span>
@@ -283,7 +273,7 @@ export function VitanaIdOnboardingCard() {
                     setCustomBase(e.target.value);
                     if (e.target.value) setSelectedBase("");
                   }}
-                  placeholder="e.g. alex"
+                  placeholder={t('screens.onboarding.eGAlex')}
                   aria-invalid={Boolean(customValidationError)}
                   aria-describedby="vitana-id-help"
                   className="flex-1"
@@ -293,8 +283,7 @@ export function VitanaIdOnboardingCard() {
                 </span>
               </div>
               <p id="vitana-id-help" className="text-xs text-muted-foreground">
-                Name part: 2–8 characters · lowercase letters and digits · must start with a letter.
-                Final ID will be <span className="font-mono">@{candidatePreview || `(your name)${seqDigits}`}</span>.
+                {t('screens.onboarding.namePart28CharactersLowercase')} <span className="font-mono">@{candidatePreview || `(your name)${seqDigits}`}</span>.
                 {customValidationError && (
                   <span className="block text-destructive mt-1">{customValidationError}</span>
                 )}
@@ -308,7 +297,7 @@ export function VitanaIdOnboardingCard() {
               onClick={() => setPickerOpen(false)}
               disabled={submitting}
             >
-              Cancel
+              {t('screens.onboarding.cancel')}
             </Button>
             <Button
               variant="default"

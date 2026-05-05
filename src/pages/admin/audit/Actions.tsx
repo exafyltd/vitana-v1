@@ -10,6 +10,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAuditActions } from "@/hooks/useAdminAudit";
+import { t } from '@/lib/i18n-toast';
 
 const ACTION_TYPES = ["All", "create", "update", "delete", "invite", "grant", "revoke"] as const;
 
@@ -31,7 +32,7 @@ export default function AuditActions() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📝"
-          title="Admin Actions"
+          title={t('screens.admin.adminActions')}
           description="Audit trail of all administrative operations performed in your tenant"
         />
 
@@ -50,11 +51,11 @@ export default function AuditActions() {
         />
 
         {query.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading audit actions...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingAuditActions')}</p>
         )}
 
         {!query.isLoading && actions.length === 0 && (
-          <AdminEmptyState title="No audit actions" description="Admin actions will appear here as they occur." />
+          <AdminEmptyState title={t('screens.admin.noAuditActions')} description="Admin actions will appear here as they occur." />
         )}
 
         {actions.length > 0 && (
@@ -62,11 +63,11 @@ export default function AuditActions() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Actor</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Target</TableHead>
-                  <TableHead>Changes</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.actor')}</TableHead>
+                  <TableHead>{t('screens.admin.action')}</TableHead>
+                  <TableHead>{t('screens.admin.target')}</TableHead>
+                  <TableHead>{t('screens.admin.changes')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

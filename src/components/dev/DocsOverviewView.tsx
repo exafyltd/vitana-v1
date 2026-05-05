@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, BookOpen, Layout, Users, Database } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function DocsOverviewView() {
   const categories = [
@@ -43,7 +44,7 @@ export function DocsOverviewView() {
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-12">
-        <h3 className="text-lg font-semibold mb-4">Documentation Categories</h3>
+        <h3 className="text-lg font-semibold mb-4">{t('screens.dev.documentationCategories')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map((category) => {
             const Icon = category.icon;
@@ -66,8 +67,8 @@ export function DocsOverviewView() {
       <div className="col-span-12 mt-6">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Updates</CardTitle>
-            <CardDescription>Latest documentation changes and additions</CardDescription>
+            <CardTitle>{t('screens.dev.recentUpdates')}</CardTitle>
+            <CardDescription>{t('screens.dev.latestDocumentationChangesAdditions')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

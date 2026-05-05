@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { adminFetch } from "@/lib/admin-api";
+import { t } from '@/lib/i18n-toast';
 
 interface Message {
   role: "user" | "assistant";
@@ -57,7 +58,7 @@ export default function AssistantPlayground() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🧪"
-          title="Playground"
+          title={t('screens.admin.playground')}
           description="Test your assistant with the live tenant configuration. Messages use the same pipeline as production."
         />
 
@@ -68,8 +69,7 @@ export default function AssistantPlayground() {
               className="h-80 overflow-y-auto border rounded-lg p-4 mb-4 space-y-3 bg-muted/30"
             >
               {messages.length === 0 && (
-                <p className="text-sm text-muted-foreground text-center py-12">
-                  Send a message to start testing...
+                <p className="text-sm text-muted-foreground text-center py-12">{t('screens.admin.sendMessageStartTesting')}
                 </p>
               )}
               {messages.map((msg, i) => (
@@ -91,7 +91,7 @@ export default function AssistantPlayground() {
               {loading && (
                 <div className="flex justify-start">
                   <div className="bg-card border rounded-lg px-3 py-2 text-sm text-muted-foreground">
-                    Thinking...
+                    {t('screens.admin.thinking')}
                   </div>
                 </div>
               )}
@@ -102,19 +102,17 @@ export default function AssistantPlayground() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send()}
-                placeholder="Type a message..."
+                placeholder={t('screens.admin.typeMessage')}
                 disabled={loading}
               />
               <Button onClick={send} disabled={loading || !input.trim()}>
-                Send
+                {t('screens.admin.send')}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <p className="text-xs text-muted-foreground">
-          Messages are sent to the gateway conversation endpoint with your admin token.
-          Responses reflect the current tenant personality, tools, and routing config.
+        <p className="text-xs text-muted-foreground">{t('screens.admin.messagesSentGatewayConversationEndpointWith')}
         </p>
       </div>
     </AppLayout>

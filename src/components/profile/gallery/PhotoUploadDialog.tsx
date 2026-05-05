@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Upload, ImageIcon, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoUploadDialogProps {
   open: boolean;
@@ -114,7 +115,7 @@ export function PhotoUploadDialog({ open, onOpenChange, onUpload, isUploading }:
                 <p className="text-sm text-muted-foreground">
                   {translate('gallery.dropzoneMultiple', 'Select multiple photos')}
                 </p>
-                <p className="text-xs text-muted-foreground/60">JPEG, PNG, WebP</p>
+                <p className="text-xs text-muted-foreground/60">{t('screens.profile.jpegPngWebp')}</p>
               </div>
             )}
             <input

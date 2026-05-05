@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useContactSync } from "@/hooks/useContactSync";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 type SyncStep = "consent" | "sources" | "syncing" | "preview" | "invite" | "success" | "error";
 
@@ -158,10 +159,9 @@ export function ContactSyncModal({
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Choose contact sources
+                {t('screens.contacts.chooseContactSources')}
               </h3>
-              <p className="text-sm text-muted-foreground">
-                Select where to import your contacts from
+              <p className="text-sm text-muted-foreground">{t('screens.contacts.selectWhereImportYourContactsFrom')}
               </p>
             </div>
 
@@ -176,7 +176,7 @@ export function ContactSyncModal({
               className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
             >
               <Users className="w-4 h-4 mr-2" />
-              Find Friends
+              {t('screens.contacts.findFriends')}
             </Button>
           </div>
         );
@@ -194,10 +194,10 @@ export function ContactSyncModal({
 
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Finding your friends...
+                {t('screens.contacts.findingYourFriends')}
               </h3>
               <p className="text-sm text-muted-foreground">
-                Securely matching your contacts
+                {t('screens.contacts.securelyMatchingYourContacts')}
               </p>
             </div>
 
@@ -225,9 +225,7 @@ export function ContactSyncModal({
               <Button
                 onClick={handleInviteFriends}
                 className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
-              >
-                Invite {selectedForInvite.length} Friend{selectedForInvite.length !== 1 ? "s" : ""}
-              </Button>
+              >{t('screens.contacts.inviteLengthFriendValue1', { length: selectedForInvite.length, value1: selectedForInvite.length !== 1 ? "s" : "" })}</Button>
             )}
           </div>
         );
@@ -288,8 +286,7 @@ export function ContactSyncModal({
           <DialogTitle className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] flex items-center justify-center">
               <Users className="w-4 h-4 text-white" />
-            </div>
-            Find friends from your contacts
+            </div>{t('screens.contacts.findFriendsFromYourContacts')}
           </DialogTitle>
         </DialogHeader>
 

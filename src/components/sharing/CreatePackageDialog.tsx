@@ -36,7 +36,7 @@ import { useBusinessPackages, PackageItem, dollarsToCents, formatCents } from "@
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CreatePackageDialogProps {
   open: boolean;
@@ -151,7 +151,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
       if (uploadError) {
         // Show clear error - no fallback to avatars bucket
         console.error('Image upload failed:', uploadError);
-        toast.error("Failed to upload image. Please ensure the package-images storage bucket exists.");
+        notifyError('toasts.sharing.failedUploadImagePleaseEnsurePackageimages');
         return;
       }
 
@@ -159,10 +159,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         .from('package-images')
         .getPublicUrl(filePath);
       setImageUrl(publicUrl);
-      toast.success("Image uploaded");
+      notifySuccess('toasts.sharing.imageUploaded');
     } catch (error) {
       console.error('Image upload failed:', error);
-      toast.error("Failed to upload image");
+      notifyError('toasts.sharing.failedUploadImage');
     } finally {
       setUploadingImage(false);
     }
@@ -255,7 +255,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="w-5 h-5 text-primary" />
-            Create Package
+            {t('screens.sharing.createPackage')}
           </DialogTitle>
           <DialogDescription>
             {step === 1 && "Add basic details and cover image"}
@@ -299,10 +299,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
             {/* Cover Image Upload */}
             <div className="grid gap-2">
-              <Label>Cover Image (optional)</Label>
+              <Label>{t('screens.sharing.coverImageOptional2')}</Label>
               {imageUrl ? (
                 <div className="relative w-full h-40 rounded-lg overflow-hidden">
-                  <img src={imageUrl} alt="Package cover" className="w-full h-full object-cover" />
+                  <img src={imageUrl} alt={t('screens.sharing.packageCover')} className="w-full h-full object-cover" />
                   <Button
                     type="button"
                     variant="destructive"
@@ -335,20 +335,20 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="title">Package Name</Label>
+              <Label htmlFor="title">{t('screens.sharing.packageName')}</Label>
               <Input
                 id="title"
-                placeholder="e.g., 5-Session Wellness Bundle"
+                placeholder={t('screens.sharing.eG5sessionWellnessBundle')}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.sharing.description')}</Label>
               <Textarea
                 id="description"
-                placeholder="Describe what's included and the transformation clients can expect..."
+                placeholder={t('screens.sharing.describeWhatSIncludedTransformationClients')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
@@ -361,10 +361,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         {step === 2 && (
           <div className="space-y-4 py-4">
             <div className="flex items-center justify-between">
-              <Label>Included Items</Label>
+              <Label>{t('screens.sharing.includedItems')}</Label>
               <Button type="button" variant="outline" size="sm" onClick={addItem}>
                 <Plus className="w-4 h-4 mr-1" />
-                Add Item
+                {t('screens.sharing.addItem')}
               </Button>
             </div>
 
@@ -372,11 +372,11 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <Package className="w-10 h-10 mx-auto text-muted-foreground/50 mb-2" />
                 <p className="text-sm text-muted-foreground mb-3">
-                  Add sessions or events to your package
+                  {t('screens.sharing.addSessionsEventsYourPackage')}
                 </p>
                 <Button type="button" variant="outline" size="sm" onClick={addItem}>
                   <Plus className="w-4 h-4 mr-1" />
-                  Add First Item
+                  {t('screens.sharing.addFirstItem')}
                 </Button>
               </div>
             ) : (
@@ -425,7 +425,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                             onValueChange={(v) => handleEventSelect(index, v)}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Select an event" />
+                              <SelectValue placeholder={t('screens.sharing.selectEvent')} />
                             </SelectTrigger>
                             <SelectContent>
                               {eventOptions.map((event) => (
@@ -437,7 +437,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                           </Select>
                         ) : (
                           <div className="text-sm text-muted-foreground p-2 bg-muted rounded">
-                            No events found. Create an event first.
+                            {t('screens.sharing.noEventsFoundCreateEventFirst')}
                           </div>
                         )}
                       </div>
@@ -445,13 +445,13 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                       /* Service - manual entry in V1 */
                       <div className="space-y-2">
                         <Input
-                          placeholder="Session name (e.g., 60-min Coaching Session)"
+                          placeholder={t('screens.sharing.sessionNameEG60minCoaching')}
                           value={item.item_title || ''}
                           onChange={(e) => updateItem(index, { item_title: e.target.value })}
                         />
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <Label className="text-xs">Duration (min)</Label>
+                            <Label className="text-xs">{t('screens.sharing.durationMin')}</Label>
                             <Input
                               type="number"
                               value={item.item_duration_min || ''}
@@ -460,7 +460,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                             />
                           </div>
                           <div>
-                            <Label className="text-xs">Value ($)</Label>
+                            <Label className="text-xs">{t('screens.sharing.value')}</Label>
                             <Input
                               type="number"
                               step="0.01"
@@ -475,7 +475,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
                     {/* Quantity */}
                     <div className="flex items-center gap-2">
-                      <Label className="text-xs">Quantity:</Label>
+                      <Label className="text-xs">{t('screens.sharing.quantity')}</Label>
                       <Input
                         type="number"
                         min="1"
@@ -492,7 +492,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             {totalItemValueCents > 0 && (
               <div className="p-3 bg-muted rounded-lg">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Total individual value:</span>
+                  <span className="text-muted-foreground">{t('screens.sharing.totalIndividualValue')}</span>
                   <span className="font-medium">{formatCents(totalItemValueCents)}</span>
                 </div>
               </div>
@@ -506,7 +506,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             <div className="grid gap-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="price">Bundle Price ($)</Label>
+                  <Label htmlFor="price">{t('screens.sharing.bundlePrice')}</Label>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
@@ -521,7 +521,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="originalPrice">Original Value ($)</Label>
+                  <Label htmlFor="originalPrice">{t('screens.sharing.originalValue')}</Label>
                   <div className="relative">
                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
@@ -539,14 +539,13 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
               {calculateSavings() > 0 && (
                 <Badge variant="secondary" className="w-fit">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  {calculateSavings()}% Savings
+                  <Sparkles className="w-3 h-3 mr-1" />{t('screens.sharing.value0Savings', { value0: calculateSavings() })}
                 </Badge>
               )}
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="validity">Validity Period (days)</Label>
+              <Label htmlFor="validity">{t('screens.sharing.validityPeriodDays')}</Label>
               <div className="relative">
                 <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -558,15 +557,15 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                How long the buyer has to redeem all sessions
+                {t('screens.sharing.howLongBuyerHasRedeemAll')}
               </p>
             </div>
 
             <div className="flex items-center justify-between p-3 rounded-lg border">
               <div>
-                <Label htmlFor="publish">Publish immediately</Label>
+                <Label htmlFor="publish">{t('screens.sharing.publishImmediately')}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Make available for purchase right away
+                  {t('screens.sharing.makeAvailableForPurchaseRightAway')}
                 </p>
               </div>
               <Switch
@@ -578,19 +577,19 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
             {/* Summary */}
             <div className="p-4 bg-muted rounded-lg space-y-2">
-              <h4 className="font-medium">Package Summary</h4>
+              <h4 className="font-medium">{t('screens.sharing.packageSummary')}</h4>
               <div className="text-sm space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Items:</span>
+                  <span className="text-muted-foreground">{t('screens.sharing.items')}</span>
                   <span>{items.filter(i => i.item_title).length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Bundle price:</span>
+                  <span className="text-muted-foreground">{t('screens.sharing.bundlePrice2')}</span>
                   <span className="font-medium">{formatCents(dollarsToCents(parseFloat(price) || 0))}</span>
                 </div>
                 {parseFloat(originalPrice) > 0 && (
                   <div className="flex justify-between text-emerald-600">
-                    <span>Savings:</span>
+                    <span>{t('screens.sharing.savings')}</span>
                     <span>{formatCents(dollarsToCents(parseFloat(originalPrice) - parseFloat(price)))}</span>
                   </div>
                 )}
@@ -607,7 +606,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               onClick={() => setStep(step - 1)}
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
-              Back
+              {t('screens.sharing.back')}
             </Button>
           )}
           
@@ -617,7 +616,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
             >
-              Next
+              {t('screens.sharing.next')}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           ) : (

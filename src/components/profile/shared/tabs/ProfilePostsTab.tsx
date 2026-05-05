@@ -16,6 +16,7 @@ import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfilePostsTabProps {
   profile: UserProfile;
@@ -109,7 +110,7 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
 
       {/* Posts */}
       {isLoading ? (
-        <div className="py-12 text-center text-muted-foreground text-sm">Loading...</div>
+        <div className="py-12 text-center text-muted-foreground text-sm">{t('screens.profile.loading')}</div>
       ) : posts.length === 0 ? (
         <I18nEmptyState
           Icon={MessageSquare}
@@ -208,7 +209,7 @@ function PostCardWithInteractions({
                 <button
                   onClick={() => onDelete(post.id)}
                   className="ml-auto text-muted-foreground/50 hover:text-destructive transition-colors"
-                  aria-label="Delete post"
+                  aria-label={t('screens.profile.deletePost')}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -219,7 +220,7 @@ function PostCardWithInteractions({
             </p>
             {post.image_url && (
               <div className="mt-4 rounded-xl overflow-hidden shadow-md">
-                <img src={post.image_url} alt="Post image" className="w-full h-48 object-cover" />
+                <img src={post.image_url} alt={t('screens.profile.postImage')} className="w-full h-48 object-cover" />
               </div>
             )}
           </div>
@@ -234,7 +235,7 @@ function PostCardWithInteractions({
               "flex items-center gap-2 transition-all duration-200 group",
               isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500"
             )}
-            aria-label="Like post"
+            aria-label={t('screens.profile.likePost')}
           >
             <Heart className={cn("h-4 w-4 group-hover:scale-[1.05] transition-all", isLiked && "fill-current")} />
             <span className="text-sm font-medium">{post.likes_count}</span>
@@ -245,7 +246,7 @@ function PostCardWithInteractions({
               "flex items-center gap-2 transition-all duration-200 group",
               showComments ? "text-blue-500" : "text-muted-foreground hover:text-blue-500"
             )}
-            aria-label="Comment"
+            aria-label={t('screens.profile.comment')}
           >
             <MessageSquare className={cn("h-4 w-4 group-hover:scale-[1.05] transition-all", showComments && "fill-current")} />
             <span className="text-sm font-medium">{post.comments_count}</span>
@@ -253,7 +254,7 @@ function PostCardWithInteractions({
           <button
             onClick={handleShare}
             className="flex items-center gap-2 text-muted-foreground hover:text-violet-500 transition-all duration-200 group"
-            aria-label="Share"
+            aria-label={t('screens.profile.share')}
           >
             <Share className="h-4 w-4 group-hover:scale-[1.05] transition-all" />
             <span className="text-sm font-medium">{post.shares_count}</span>

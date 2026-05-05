@@ -7,6 +7,7 @@ import { Flame, Calendar, TrendingUp } from "lucide-react";
 import morningYogaFlowImg from "@/assets/ai-feed/morning-yoga-flow.jpg";
 import hydrationTrackingImg from "@/assets/ai-feed/hydration-tracking.jpg";
 import eveningWinddownImg from "@/assets/ai-feed/evening-winddown.jpg";
+import { t } from '@/lib/i18n-toast';
 
 interface Routine {
   id: string;
@@ -108,7 +109,7 @@ export function VisualRoutinesGrid({
                 {primaryRoutine.streak > 3 && (
                   <div className="flex items-center gap-1 bg-orange-500/20 backdrop-blur-sm px-2 py-1 rounded-full border border-orange-300/30">
                     <Flame className="w-4 h-4 text-orange-300" />
-                    <span className="text-sm font-semibold text-orange-100">{primaryRoutine.streak} day streak!</span>
+                    <span className="text-sm font-semibold text-orange-100">{t('screens.ai-feed.streakDayStreak', { streak: primaryRoutine.streak })}</span>
                   </div>
                 )}
               </div>
@@ -117,11 +118,11 @@ export function VisualRoutinesGrid({
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-1">
                   <TrendingUp className="w-4 h-4 text-green-300" />
-                  <span className="text-white/90">{primaryRoutine.successRate}% success</span>
+                  <span className="text-white/90">{t('screens.ai-feed.successrateSuccess', { successRate: primaryRoutine.successRate })}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="w-4 h-4 text-blue-300" />
-                  <span className="text-white/90">Last: {primaryRoutine.lastCompleted}</span>
+                  <span className="text-white/90">{t('screens.ai-feed.lastLastcompleted', { lastCompleted: primaryRoutine.lastCompleted })}</span>
                 </div>
               </div>
             </div>
@@ -162,7 +163,7 @@ export function VisualRoutinesGrid({
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex flex-col gap-0.5">
                       <span className="text-white/90 font-medium">{routine.successRate}% · {routine.frequency}</span>
-                      <span className="text-white/70 text-xs">Last: {routine.lastCompleted}</span>
+                      <span className="text-white/70 text-xs">{t('screens.ai-feed.lastLastcompleted', { lastCompleted: routine.lastCompleted })}</span>
                     </div>
                     {routine.streak > 0 && (
                       <div className="flex items-center gap-1 bg-orange-500/20 backdrop-blur-sm px-2 py-1 rounded-full">

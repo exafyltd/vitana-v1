@@ -17,6 +17,7 @@ import { isMockResellerSalesEnabled } from "@/lib/mocks/mockResellerSales";
 import { VaeaDraftsStrip } from "@/components/business/vaea/VaeaDraftsStrip";
 import { VaeaCatalogPanel } from "@/components/business/vaea/VaeaCatalogPanel";
 import { VaeaDetectedList } from "@/components/business/vaea/VaeaDetectedList";
+import { t } from '@/lib/i18n-toast';
 
 interface SellAndEarnSubTabsProps {
   searchQuery?: string;
@@ -45,9 +46,9 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
             <div className="mx-auto w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2">
               <Ticket className="h-6 w-6 text-accent" />
             </div>
-            <CardTitle>Start Selling Event Tickets</CardTitle>
+            <CardTitle>{t('screens.business.startSellingEventTickets')}</CardTitle>
             <CardDescription>
-              Become a reseller to earn commissions by promoting and selling tickets for events.
+              {t('screens.business.becomeResellerEarnCommissionsByPromoting')}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
@@ -58,8 +59,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
             >
               {isActivating ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Activating...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.business.activating')}
                 </>
               ) : (
                 "Activate Reseller Mode"
@@ -78,9 +78,9 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
 
       <SplitBar defaultValue="available" className="w-full">
         <SplitBarList>
-          <SplitBarTrigger value="available">📦 Inventory</SplitBarTrigger>
-          <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
-          <SplitBarTrigger value="referrals">🤝 Referrals</SplitBarTrigger>
+          <SplitBarTrigger value="available">{t('screens.business.inventory')}</SplitBarTrigger>
+          <SplitBarTrigger value="promotions">{t('screens.business.promotions')}</SplitBarTrigger>
+          <SplitBarTrigger value="referrals">{t('screens.business.referrals')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="available" className="pt-4">

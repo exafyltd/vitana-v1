@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle2, Clock, XCircle, ExternalLink, StickyNote, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Task {
   id: string;
@@ -112,17 +113,17 @@ export function MyTasksList() {
           <div className="flex items-center justify-center gap-8 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-blue-500" />
-              <span className="font-medium">In Progress:</span>
+              <span className="font-medium">{t('screens.dev.progress')}</span>
               <span className="text-muted-foreground">{inProgress}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gray-500" />
-              <span className="font-medium">Pending:</span>
+              <span className="font-medium">{t('screens.dev.pending')}</span>
               <span className="text-muted-foreground">{pending}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="font-medium">Completed:</span>
+              <span className="font-medium">{t('screens.dev.completed')}</span>
               <span className="text-muted-foreground">{completed}</span>
             </div>
           </div>
@@ -186,14 +187,14 @@ export function MyTasksList() {
                     <div className="pt-4 space-y-4 border-t animate-in fade-in slide-in-from-top-2 duration-300">
                       {task.fullDescription && (
                         <div>
-                          <h4 className="text-sm font-semibold mb-2">Full Description</h4>
+                          <h4 className="text-sm font-semibold mb-2">{t('screens.dev.fullDescription')}</h4>
                           <p className="text-sm text-muted-foreground">{task.fullDescription}</p>
                         </div>
                       )}
 
                       {task.logs && task.logs.length > 0 && (
                         <div>
-                          <h4 className="text-sm font-semibold mb-2">Logs</h4>
+                          <h4 className="text-sm font-semibold mb-2">{t('screens.dev.logs')}</h4>
                           <ul className="space-y-1">
                             {task.logs.map((log, idx) => (
                               <li key={idx} className="text-xs font-mono text-muted-foreground bg-muted/30 px-2 py-1 rounded">
@@ -206,7 +207,7 @@ export function MyTasksList() {
 
                       {task.relatedLinks && task.relatedLinks.length > 0 && (
                         <div>
-                          <h4 className="text-sm font-semibold mb-2">Related Links</h4>
+                          <h4 className="text-sm font-semibold mb-2">{t('screens.dev.relatedLinks')}</h4>
                           <div className="flex gap-2 flex-wrap">
                             {task.relatedLinks.map((link, idx) => (
                               <Button
@@ -238,7 +239,7 @@ export function MyTasksList() {
                           }}
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                          Complete
+                          {t('screens.dev.complete')}
                         </Button>
                         <Button
                           size="sm"
@@ -250,7 +251,7 @@ export function MyTasksList() {
                           }}
                         >
                           <Clock className="w-3.5 h-3.5 mr-1" />
-                          Postpone
+                          {t('screens.dev.postpone')}
                         </Button>
                         <Button
                           size="sm"
@@ -262,7 +263,7 @@ export function MyTasksList() {
                           }}
                         >
                           <XCircle className="w-3.5 h-3.5 mr-1" />
-                          Cancel
+                          {t('screens.dev.cancel')}
                         </Button>
                         <Button
                           size="sm"
@@ -274,7 +275,7 @@ export function MyTasksList() {
                           }}
                         >
                           <StickyNote className="w-3.5 h-3.5 mr-1" />
-                          Add Note
+                          {t('screens.dev.addNote')}
                         </Button>
                       </div>
                     </div>

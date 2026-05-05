@@ -1,7 +1,8 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface KnowledgeItem {
   id: string;
@@ -147,10 +148,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       // Refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
-      toast({
-        title: "Knowledge deleted",
-        description: "The item has been removed from your knowledge base.",
-      });
+      notify('toasts.hooks.knowledgeDeleted', 'toasts.hooks.itemHasRemovedFromYourKnowledge');
       // Log activity
       logActivity({
         activityType: 'memory.delete',
@@ -169,11 +167,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       if (context?.previousData) {
         queryClient.setQueryData(["knowledge-base", filter], context.previousData);
       }
-      toast({
-        title: "Error deleting knowledge",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.errorDeletingKnowledge');
     },
   });
 
@@ -209,10 +203,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
-      toast({
-        title: "Knowledge updated",
-        description: "Your changes have been saved.",
-      });
+      notify('toasts.hooks.knowledgeUpdated', 'toasts.hooks.yourChangesHaveSaved');
       // Log activity
       logActivity({
         activityType: 'memory.update',
@@ -228,11 +219,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       });
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error updating knowledge",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.errorUpdatingKnowledge');
     },
   });
 
@@ -291,10 +278,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       
       queryClient.invalidateQueries({ queryKey: ["knowledge-base"] });
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
-      toast({
-        title: "Knowledge created",
-        description: "New item added to your knowledge base.",
-      });
+      notify('toasts.hooks.knowledgeCreated', 'toasts.hooks.newItemAddedYourKnowledgeBase');
       // Log activity
       logActivity({
         activityType: 'memory.create',
@@ -311,22 +295,14 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       });
     },
     onError: (error: Error) => {
-      toast({
-        title: "Error creating knowledge",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.errorCreatingKnowledge');
     },
   });
 
   const knowledgeItems = data?.pages.flatMap((page) => page.items) || [];
 
   if (error) {
-    toast({
-      title: "Error loading knowledge base",
-      description: error.message,
-      variant: "destructive",
-    });
+    notifyError('toasts.hooks.errorLoadingKnowledgeBase');
   }
 
   return {

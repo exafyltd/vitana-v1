@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface Universal3CardHeaderProps {
   title: string;
@@ -73,13 +74,13 @@ export function Universal3CardHeader({
               <div>
                 <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
               </div>
-              <span className="text-sm font-medium text-red-400">Autopilot</span>
+              <span className="text-sm font-medium text-red-400">{t('screens.common.autopilot')}</span>
             </div>
             
             {/* Hover Preview */}
             {showPreview && pendingCount > 0 && (
               <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.common.latestActions')}</div>
                 {latestActions.map((action, index) => (
                   <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                     <span>{action.icon}</span>
@@ -87,8 +88,7 @@ export function Universal3CardHeader({
                   </div>
                 ))}
                 {pendingCount > 2 && (
-                  <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                    +{pendingCount - 2} more actions
+                  <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.common.value0MoreActions', { value0: pendingCount - 2 })}
                   </div>
                 )}
               </div>

@@ -11,6 +11,7 @@ import {
   VISIBILITY_META,
   useAccountVisibility,
 } from "../shared/useAccountVisibility";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileAccountCardProps {
   profile: UserProfile;
@@ -42,7 +43,7 @@ export function MobileAccountCard({
         {isOwner && editMode && onEdit && (
           <button
             onClick={onEdit}
-            aria-label="Edit account details"
+            aria-label={t('screens.profile.editAccountDetails')}
             className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10 flex items-center justify-center transition-colors"
           >
             <Pencil className="h-4 w-4" />
@@ -55,12 +56,12 @@ export function MobileAccountCard({
             <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-white/5 border border-white/10 mb-3">
               <ShieldCheck className="h-3.5 w-3.5 text-white/70 mr-1.5" />
               <span className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">
-                Account
+                {t('screens.profile.account')}
               </span>
             </div>
-            <h2 className="text-lg font-semibold text-white">Personal data vault</h2>
+            <h2 className="text-lg font-semibold text-white">{t('screens.profile.personalDataVault')}</h2>
             <p className="text-xs text-white/50 mt-1">
-              Each field has a value and a visibility rule.
+              {t('screens.profile.eachFieldHasValueVisibilityRule')}
             </p>
           </div>
 
@@ -84,7 +85,7 @@ export function MobileAccountCard({
                 <Lock className="h-5 w-5 text-white/40" />
               </div>
               <p className="text-sm text-white/50">
-                This user keeps account details private.
+                {t('screens.profile.thisUserKeepsAccountDetailsPrivate')}
               </p>
             </div>
           )}
@@ -98,10 +99,7 @@ export function MobileAccountCard({
           >
             <div className="flex gap-3">
               <Info className="h-4 w-4 text-white/60 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] leading-relaxed text-white/60">
-                Some personal information is used to personalize your experience,
-                improve trust, and support relevant services. You control what is
-                shared publicly.
+              <p className="text-[11px] leading-relaxed text-white/60">{t('screens.profile.somePersonalInformationUsedPersonalizeYour2')}
               </p>
             </div>
           </div>
@@ -223,7 +221,7 @@ function AccountRow({
         <div
           className="flex items-center gap-1 h-7 px-2 rounded-full"
           style={{ color: "hsl(0, 0%, 50%)" }}
-          title="Private"
+          title={t('screens.profile.private')}
         >
           <EyeOff className="h-3 w-3" />
         </div>

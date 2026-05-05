@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, Play, Copy, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface RunHistoryItem {
   id: string;
@@ -98,7 +99,7 @@ export function RunHistoryList() {
             {expandedRow === run.id && (
               <div className="border-t bg-muted/20 p-4 space-y-4">
                 <div>
-                  <h4 className="text-sm font-semibold mb-2">Execution Logs</h4>
+                  <h4 className="text-sm font-semibold mb-2">{t('screens.dev.executionLogs')}</h4>
                   <pre className="bg-background p-3 rounded-lg text-xs font-mono whitespace-pre-wrap border">
                     {run.logs}
                   </pre>
@@ -106,15 +107,15 @@ export function RunHistoryList() {
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline">
                     <FileText className="w-3 h-3 mr-2" />
-                    View Full Log
+                    {t('screens.dev.viewFullLog')}
                   </Button>
                   <Button size="sm" variant="outline">
                     <Play className="w-3 h-3 mr-2" />
-                    Re-run
+                    {t('screens.dev.rerun')}
                   </Button>
                   <Button size="sm" variant="outline">
                     <Copy className="w-3 h-3 mr-2" />
-                    Duplicate as Template
+                    {t('screens.dev.duplicateAsTemplate')}
                   </Button>
                 </div>
               </div>

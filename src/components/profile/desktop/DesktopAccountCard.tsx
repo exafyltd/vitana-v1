@@ -11,6 +11,7 @@ import {
   VISIBILITY_META,
   useAccountVisibility,
 } from "../shared/useAccountVisibility";
+import { t } from '@/lib/i18n-toast';
 
 interface DesktopAccountCardProps {
   profile: UserProfile;
@@ -35,7 +36,7 @@ export function DesktopAccountCard({
       {isOwner && editMode && onEdit && (
         <button
           onClick={onEdit}
-          aria-label="Edit account details"
+          aria-label={t('screens.profile.editAccountDetails')}
           className="absolute top-4 right-4 h-9 w-9 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground z-10 flex items-center justify-center transition-colors"
         >
           <Pencil className="h-4 w-4" />
@@ -50,9 +51,9 @@ export function DesktopAccountCard({
               <ShieldCheck className="h-4 w-4 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold tracking-tight">Personal data vault</h2>
+              <h2 className="text-xl font-semibold tracking-tight">{t('screens.profile.personalDataVault')}</h2>
               <p className="text-sm text-muted-foreground">
-                Each field has a value and a visibility rule.
+                {t('screens.profile.eachFieldHasValueVisibilityRule')}
               </p>
             </div>
           </div>
@@ -78,7 +79,7 @@ export function DesktopAccountCard({
               <Lock className="h-6 w-6 text-muted-foreground" />
             </div>
             <p className="text-sm text-muted-foreground">
-              This user keeps account details private.
+              {t('screens.profile.thisUserKeepsAccountDetailsPrivate')}
             </p>
           </div>
         )}
@@ -87,10 +88,7 @@ export function DesktopAccountCard({
         <div className="mt-8 rounded-xl p-4 border bg-muted/30">
           <div className="flex gap-3">
             <Info className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              Some personal information is used to personalize your experience,
-              improve trust, and support relevant services. You control what is
-              shared publicly.
+            <p className="text-xs leading-relaxed text-muted-foreground">{t('screens.profile.somePersonalInformationUsedPersonalizeYour')}
             </p>
           </div>
         </div>
@@ -202,7 +200,7 @@ function DesktopAccountRow({
       ) : visibility === "private" ? (
         <div
           className="flex items-center gap-1 h-8 px-2 rounded-full text-muted-foreground"
-          title="Private"
+          title={t('screens.profile.private')}
         >
           <EyeOff className="h-3.5 w-3.5" />
         </div>

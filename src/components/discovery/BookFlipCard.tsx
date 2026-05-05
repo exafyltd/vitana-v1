@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
+import { t } from '@/lib/i18n-toast';
 
 interface BookFlipCardProps {
   profile: {
@@ -161,8 +162,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             
             {/* Larger Badge */}
             <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-extrabold text-lg px-4 py-2 shadow-2xl border-0">
-              <span style={{ textShadow: '0 1px 6px rgba(0,0,0,0.35)' }}>
-                {profile.match_score}% Match 🌿
+              <span style={{ textShadow: '0 1px 6px rgba(0,0,0,0.35)' }}>{t('screens.discovery.match_scoreMatch', { match_score: profile.match_score })}
               </span>
             </Badge>
           </div>
@@ -220,12 +220,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             {profile.vitana_index && (
               <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
                 <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-sm px-3 py-1.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
-                  <Zap className="h-4 w-4 mr-1 text-emerald-400" />
-                  VI: {profile.vitana_index}
-                </Badge>
+                  <Zap className="h-4 w-4 mr-1 text-emerald-400" />{t('screens.discovery.viVitana_index', { vitana_index: profile.vitana_index })}</Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-xs px-2 py-0.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
-                    Top {profile.vitana_percentile}%
+                  <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-xs px-2 py-0.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>{t('screens.discovery.topVitana_percentile', { vitana_percentile: profile.vitana_percentile })}
                   </Badge>
                 )}
                 {profile.streak_days && profile.streak_days > 0 && (
@@ -249,7 +246,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                 <div className="flex items-center gap-1 mb-1.5">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
                   <span className="text-xs font-bold text-white uppercase tracking-wider drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
-                    Interests
+                    {t('screens.discovery.interests')}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">

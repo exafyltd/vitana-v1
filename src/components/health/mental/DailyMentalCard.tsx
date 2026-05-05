@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { DailyMentalData } from "@/types/mental";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface DailyMentalCardProps {
   data: DailyMentalData;
@@ -34,8 +35,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
       <div className="space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h4 className="text-base font-semibold text-rose-700 dark:text-rose-300">
-            Day {data.dayId.split('-')[1]} ({data.dayName})
+          <h4 className="text-base font-semibold text-rose-700 dark:text-rose-300">{t('screens.health.dayValue0Dayname', { value0: data.dayId.split('-')[1], dayName: data.dayName })}
           </h4>
           <span className="text-2xl animate-pulse" style={{ animationDuration: '3s' }}>
             {data.moodEmoji}
@@ -44,15 +44,14 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
 
         {/* Mood */}
         <div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Mood: <span className="font-semibold">{data.mood}</span>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('screens.health.mood')} <span className="font-semibold">{data.mood}</span>
           </p>
         </div>
 
         {/* Focus Score */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-600 dark:text-slate-400">Focus Score</span>
+            <span className="text-slate-600 dark:text-slate-400">{t('screens.health.focusScore')}</span>
             <span className="font-semibold">{data.focusScore} / 100</span>
           </div>
           <div className="h-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-full overflow-hidden">
@@ -66,7 +65,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
         {/* Stress Level */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-600 dark:text-slate-400">Stress Level</span>
+            <span className="text-slate-600 dark:text-slate-400">{t('screens.health.stressLevel')}</span>
             <span className="font-semibold">{data.stressLevel} / 100</span>
           </div>
           <div className="h-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-full overflow-hidden">
@@ -80,7 +79,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
         {/* Mindfulness */}
         <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
           <p className="text-xs text-slate-600 dark:text-slate-400">
-            🧘 Mindfulness: <span className="font-semibold">{data.mindfulnessDuration}</span>
+            {t('screens.health.mindfulness')} <span className="font-semibold">{data.mindfulnessDuration}</span>
           </p>
         </div>
 

@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Crown } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface GroupMember {
   user_id: string;
@@ -78,7 +79,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl px-0">
         <SheetHeader className="px-4 pb-3 border-b border-border">
-          <SheetTitle className="text-center">Members ({memberCount})</SheetTitle>
+          <SheetTitle className="text-center">{t('screens.community.membersMembercount', { memberCount })}</SheetTitle>
         </SheetHeader>
 
         <ScrollArea className="h-[calc(70vh-80px)]">
@@ -96,7 +97,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                 ))}
               </div>
             ) : members.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8 text-sm">No members yet</p>
+              <p className="text-center text-muted-foreground py-8 text-sm">{t('screens.community.noMembersYet')}</p>
             ) : (
               <div className="space-y-1">
                 {members.map(m => (
@@ -130,7 +131,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                     </div>
 
                     {m.role === 'admin' && (
-                      <Badge variant="secondary" className="text-[10px] h-5">Admin</Badge>
+                      <Badge variant="secondary" className="text-[10px] h-5">{t('screens.community.admin')}</Badge>
                     )}
                   </div>
                 ))}

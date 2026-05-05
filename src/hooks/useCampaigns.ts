@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type Campaign = Database["public"]["Tables"]["campaigns"]["Row"];
 export type CampaignInsert = Database["public"]["Tables"]["campaigns"]["Insert"];
@@ -35,7 +36,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign created successfully");
+      notifySuccess('toasts.hooks.campaignCreatedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to create campaign: ${error.message}`);
@@ -56,7 +57,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign updated");
+      notifySuccess('toasts.hooks.campaignUpdated');
     },
     onError: (error: Error) => {
       toast.error(`Failed to update campaign: ${error.message}`);
@@ -77,7 +78,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign activated");
+      notifySuccess('toasts.hooks.campaignActivated');
     },
     onError: (error: Error) => {
       toast.error(`Failed to activate campaign: ${error.message}`);
@@ -98,7 +99,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign paused");
+      notifySuccess('toasts.hooks.campaignPaused');
     },
     onError: (error: Error) => {
       toast.error(`Failed to pause campaign: ${error.message}`);
@@ -119,7 +120,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign completed successfully");
+      notifySuccess('toasts.hooks.campaignCompletedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to complete campaign: ${error.message}`);
@@ -160,7 +161,7 @@ export function useCampaigns() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign duplicated successfully — new draft created.");
+      notifySuccess('toasts.hooks.campaignDuplicatedSuccessfullyNewDraftCreated');
       return data;
     },
     onError: (error: Error) => {
@@ -179,7 +180,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign deleted.");
+      notifySuccess('toasts.hooks.campaignDeleted');
     },
     onError: (error: Error) => {
       toast.error(`Failed to delete campaign: ${error.message}`);
@@ -211,7 +212,7 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
-      toast.success('Campaign distribution started successfully');
+      notifySuccess('toasts.hooks.campaignDistributionStartedSuccessfully');
     },
     onError: (error: Error) => {
       console.error('Error starting campaign distribution:', error);

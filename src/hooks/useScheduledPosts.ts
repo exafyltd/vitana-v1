@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type ScheduledPost = Database["public"]["Tables"]["scheduled_posts"]["Row"];
 export type ScheduledPostInsert = Database["public"]["Tables"]["scheduled_posts"]["Insert"];
@@ -47,7 +48,7 @@ export function useScheduledPosts() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scheduled_posts"] });
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("Post scheduled successfully");
+      notifySuccess('toasts.hooks.postScheduledSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to schedule post: ${error.message}`);
@@ -65,7 +66,7 @@ export function useScheduledPosts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scheduled_posts"] });
-      toast.success("Scheduled post cancelled");
+      notifySuccess('toasts.hooks.scheduledPostCancelled');
     },
     onError: (error: Error) => {
       toast.error(`Failed to cancel: ${error.message}`);
@@ -83,7 +84,7 @@ export function useScheduledPosts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scheduled_posts"] });
-      toast.success("Scheduled post paused");
+      notifySuccess('toasts.hooks.scheduledPostPaused');
     },
     onError: (error: Error) => {
       toast.error(`Failed to pause: ${error.message}`);
@@ -101,7 +102,7 @@ export function useScheduledPosts() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scheduled_posts"] });
-      toast.success("Scheduled post resumed");
+      notifySuccess('toasts.hooks.scheduledPostResumed');
     },
     onError: (error: Error) => {
       toast.error(`Failed to resume: ${error.message}`);

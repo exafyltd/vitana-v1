@@ -18,6 +18,7 @@ import {
 import { useChannels } from "@/hooks/useChannels";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { t } from '@/lib/i18n-toast';
 
 const ALL_CHANNELS = [
   { type: "email" as const, name: "Email", icon: Mail, color: "text-gray-600" },
@@ -76,9 +77,9 @@ export function ChannelConnector() {
       {/* Core Distribution Channels */}
       <Card className="border-dashed">
         <CardHeader>
-          <CardTitle className="text-base">Distribution Channels</CardTitle>
+          <CardTitle className="text-base">{t('screens.sharing.distributionChannels')}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Connect messaging channels for direct distribution
+            {t('screens.sharing.connectMessagingChannelsForDirectDistribution')}
           </p>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
@@ -95,10 +96,10 @@ export function ChannelConnector() {
                   {isConnected ? (
                     <Badge variant="outline" className="mt-1 text-xs gap-1">
                       <CheckCircle className="w-3 h-3" />
-                      Connected
+                      {t('screens.sharing.connected')}
                     </Badge>
                   ) : (
-                    <p className="text-xs text-muted-foreground">Not connected</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.sharing.notConnected')}</p>
                   )}
                 </div>
                 {!isConnected && (
@@ -123,9 +124,9 @@ export function ChannelConnector() {
       {/* Social Media Channels */}
       <Card className="border-dashed">
         <CardHeader>
-          <CardTitle className="text-base">Social Media</CardTitle>
+          <CardTitle className="text-base">{t('screens.sharing.socialMedia')}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Social platforms require API integration (coming soon)
+            {t('screens.sharing.socialPlatformsRequireApiIntegrationComing')}
           </p>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
@@ -141,10 +142,10 @@ export function ChannelConnector() {
                   {isConnected ? (
                     <Badge variant="outline" className="mt-1 text-xs gap-1">
                       <CheckCircle className="w-3 h-3" />
-                      Connected
+                      {t('screens.sharing.connected')}
                     </Badge>
                   ) : (
-                    <p className="text-xs text-muted-foreground">Coming soon</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.sharing.comingSoon')}</p>
                   )}
                 </div>
               </div>

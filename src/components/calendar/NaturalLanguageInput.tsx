@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { parseCalendarNL } from "@/lib/parseCalendarNL";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
+import { t } from '@/lib/i18n-toast';
 
 interface NaturalLanguageInputProps {
   onEventCreate: (event: Partial<CalendarEvent>) => void;
@@ -42,7 +43,7 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
       <div className="flex gap-2">
         <div className="flex-1 relative">
           <Input
-            placeholder="e.g., Lunch with Ana tomorrow 1–2pm @ HQ, remind 30m, tag: Work"
+            placeholder={t('screens.calendar.eGLunchWithAnaTomorrow')}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -58,11 +59,11 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
         </div>
         {!parsedEvent ? (
           <Button onClick={handleParse} disabled={!input.trim()}>
-            Parse
+            {t('screens.calendar.parse')}
           </Button>
         ) : (
           <Button onClick={handleCancel} variant="outline">
-            Clear
+            {t('screens.calendar.clear')}
           </Button>
         )}
       </div>
@@ -72,26 +73,26 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Check className="h-4 w-4 text-green-600" />
-              Event Preview
+              {t('screens.calendar.eventPreview')}
             </h4>
           </div>
 
           <div className="space-y-2 text-sm">
             <div>
-              <span className="text-muted-foreground">Title: </span>
+              <span className="text-muted-foreground">{t('screens.calendar.title')} </span>
               <span className="font-medium">{parsedEvent.title}</span>
             </div>
 
             {parsedEvent.start_time && (
               <div>
-                <span className="text-muted-foreground">When: </span>
+                <span className="text-muted-foreground">{t('screens.calendar.when')} </span>
                 <span>{new Date(parsedEvent.start_time).toLocaleString()}</span>
               </div>
             )}
 
             {parsedEvent.location && (
               <div>
-                <span className="text-muted-foreground">Location: </span>
+                <span className="text-muted-foreground">{t('screens.calendar.location')} </span>
                 <span>{parsedEvent.location}</span>
               </div>
             )}
@@ -106,7 +107,7 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
           </div>
 
           <Button onClick={handleCreate} className="w-full">
-            Create Event
+            {t('screens.calendar.createEvent')}
           </Button>
         </Card>
       )}

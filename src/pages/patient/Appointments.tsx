@@ -2,20 +2,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Plus } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function PatientAppointments() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">My Appointments</h1>
+          <h1 className="text-3xl font-bold">{t('screens.patient.myAppointments')}</h1>
           <p className="text-muted-foreground">
-            Manage your upcoming and past appointments
+            {t('screens.patient.manageYourUpcomingPastAppointments')}
           </p>
         </div>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Schedule New
+          {t('screens.patient.scheduleNew')}
         </Button>
       </div>
 
@@ -26,26 +27,26 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. Sarah Miller - Annual Checkup
+                  {t('screens.patient.drSarahMillerAnnualCheckup')}
                 </CardTitle>
-                <CardDescription>General Medicine</CardDescription>
+                <CardDescription>{t('screens.patient.generalMedicine')}</CardDescription>
               </div>
-              <Badge>Upcoming</Badge>
+              <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Tomorrow, 2:00 PM - 2:30 PM</span>
+                <span className="text-sm">{t('screens.patient.tomorrow200Pm2')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Medical Center, Room 205</span>
+                <span className="text-sm">{t('screens.patient.medicalCenterRoom205')}</span>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">Reschedule</Button>
-                <Button size="sm" variant="outline">Cancel</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.reschedule')}</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
           </CardContent>
@@ -57,26 +58,26 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. James Davis - Follow-up
+                  {t('screens.patient.drJamesDavisFollowup')}
                 </CardTitle>
-                <CardDescription>Cardiology</CardDescription>
+                <CardDescription>{t('screens.patient.cardiology')}</CardDescription>
               </div>
-              <Badge>Upcoming</Badge>
+              <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Next Week, Friday 10:00 AM</span>
+                <span className="text-sm">{t('screens.patient.nextWeekFriday1000Am')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Cardiology Wing, Room 301</span>
+                <span className="text-sm">{t('screens.patient.cardiologyWingRoom301')}</span>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">Reschedule</Button>
-                <Button size="sm" variant="outline">Cancel</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.reschedule')}</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
           </CardContent>
@@ -88,26 +89,26 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. Lisa Chen - Consultation
+                  {t('screens.patient.drLisaChenConsultation')}
                 </CardTitle>
-                <CardDescription>Dermatology</CardDescription>
+                <CardDescription>{t('screens.patient.dermatology')}</CardDescription>
               </div>
-              <Badge variant="secondary">Completed</Badge>
+              <Badge variant="secondary">{t('screens.patient.completed')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Last Week, Monday 3:00 PM</span>
+                <span className="text-sm">{t('screens.patient.lastWeekMonday300Pm')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Dermatology Clinic</span>
+                <span className="text-sm">{t('screens.patient.dermatologyClinic')}</span>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">View Notes</Button>
-                <Button size="sm" variant="outline">Book Follow-up</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.viewNotes')}</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.bookFollowup')}</Button>
               </div>
             </div>
           </CardContent>

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Sparkles, ArrowRight, Clock, Target, TrendingUp } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface PredictiveAction {
   id: string;
@@ -111,10 +112,9 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            AI Predictions
+            {t('screens.wallet.aiPredictions')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">
-            {avgConfidence.toFixed(0)}% Confidence
+          <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">{t('screens.wallet.value0Confidence', { value0: avgConfidence.toFixed(0) })}
           </Badge>
         </div>
       </CardHeader>
@@ -123,8 +123,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         {/* Priority Actions */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-red-500" />
-            High Priority Actions ({highPriorityActions.length})
+            <Target className="h-4 w-4 text-red-500" />{t('screens.wallet.highPriorityActionsLength', { length: highPriorityActions.length })}
           </h4>
           
           {highPriorityActions.map((action) => {
@@ -148,11 +147,9 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className={priorityConfig.color}>
-                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} mr-1`} />
-                      {action.priority} priority
+                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} mr-1`} />{t('screens.wallet.priorityPriority', { priority: action.priority })}
                     </Badge>
-                    <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>
-                      +{action.expectedReturn} VTN
+                    <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>{t('screens.wallet.expectedreturnVtn', { expectedReturn: action.expectedReturn })}
                     </Badge>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -162,7 +159,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                 </div>
                 
                 <div className="text-xs text-muted-foreground bg-muted/30 rounded p-2">
-                  <span className="font-medium">AI Reasoning:</span> {action.reasoning}
+                  <span className="font-medium">{t('screens.wallet.aiReasoning')}</span> {action.reasoning}
                 </div>
               </div>
             );
@@ -174,19 +171,19 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-primary" />
-              Prediction Accuracy
+              {t('screens.wallet.predictionAccuracy')}
             </span>
             <span className="text-sm text-primary font-semibold">{avgConfidence.toFixed(0)}%</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Based on your behavior patterns and market analysis
+            {t('screens.wallet.basedYourBehaviorPatternsMarketAnalysis')}
           </p>
         </div>
 
         {/* Quick Action */}
         <Button className="w-full" variant="default">
           <Sparkles className="h-4 w-4 mr-2" />
-          Act on Top Recommendation
+          {t('screens.wallet.actTopRecommendation')}
         </Button>
       </CardContent>
     </Card>

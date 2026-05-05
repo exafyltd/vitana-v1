@@ -1,6 +1,7 @@
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface PillarData {
   nutrition: number;
@@ -77,7 +78,7 @@ export function MobileHealthSnapshot({
               <div className="text-4xl font-bold text-green-600 leading-none">
                 {vitanaIndex}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">of 999</div>
+              <div className="text-xs text-muted-foreground mt-1">{t('screens.health.text999')}</div>
             </div>
           </div>
 

@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Brain 
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface HydrationDashboardProps {
   progress: HydrationProgress;
@@ -25,7 +26,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
       
       <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-        Weekly Progress & Consistency
+        {t('screens.health.weeklyProgressConsistency')}
       </h3>
       
       {/* Metrics Grid */}
@@ -62,14 +63,14 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
               </span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">Consistency</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.consistency')}</p>
         </div>
         
         {/* Avg Daily Intake */}
         <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <Droplets className="w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
           <p className="text-2xl font-bold">{(progress.avgDailyIntake / 1000).toFixed(1)}L</p>
-          <p className="text-xs text-muted-foreground">Avg Intake</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.avgIntake')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
             <TrendingUp className="w-3 h-3 mr-1" />
             +{progress.weeklyTrend}%
@@ -80,14 +81,14 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
         <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.streakDays}</p>
-          <p className="text-xs text-muted-foreground">Day Streak</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.dayStreak')}</p>
         </div>
         
         {/* Missed Days */}
         <div className="text-center p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <CalendarX className="w-6 h-6 mx-auto mb-2 text-slate-600 dark:text-slate-400" />
           <p className="text-2xl font-bold">{progress.missedDays}</p>
-          <p className="text-xs text-muted-foreground">Missed Days</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.missedDays')}</p>
         </div>
       </div>
       
@@ -97,14 +98,14 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <span className="text-sm font-medium">Recovery Impact</span>
+            <span className="text-sm font-medium">{t('screens.health.recoveryImpact')}</span>
           </div>
           <Badge className="bg-green-500 hover:bg-green-600">
             {progress.recoveryImpact}
           </Badge>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Proper hydration is boosting your energy and recovery metrics
+          {t('screens.health.properHydrationBoostingYourEnergyRecovery')}
         </p>
       </div>
       

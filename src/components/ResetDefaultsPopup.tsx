@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RotateCcw, AlertTriangle, Settings, Bell, Palette, Globe } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ResetDefaultsPopupProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <RotateCcw className="w-5 h-5 text-orange-500" />
-            Reset to Defaults
+            {t('screens.common.resetDefaults')}
           </DialogTitle>
         </DialogHeader>
         
@@ -60,9 +61,9 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
           <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-lg">
             <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
             <div>
-              <h4 className="font-medium text-orange-900">Warning</h4>
+              <h4 className="font-medium text-orange-900">{t('screens.common.warning')}</h4>
               <p className="text-sm text-orange-800">
-                Resetting preferences will permanently remove your customizations. This action cannot be undone.
+                {t('screens.common.resettingPreferencesWillPermanentlyRemoveYour')}
               </p>
             </div>
           </div>
@@ -75,7 +76,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
                 onCheckedChange={() => handleToggle('all')}
               />
               <label htmlFor="all" className="text-sm font-medium cursor-pointer">
-                Reset all preferences to factory defaults
+                {t('screens.common.resetAllPreferencesFactoryDefaults')}
               </label>
             </div>
 
@@ -84,13 +85,13 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Bell className="w-4 h-4" />
-                    Notification Preferences
+                    {t('screens.common.notificationPreferences')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
-                      Reset notification settings, email preferences, and alert schedules
+                      {t('screens.common.resetNotificationSettingsEmailPreferencesAlert')}
                     </p>
                     <Checkbox
                       checked={resetOptions.notifications}
@@ -104,13 +105,13 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Palette className="w-4 h-4" />
-                    Appearance & Theme
+                    {t('screens.common.appearanceTheme')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
-                      Reset theme, colors, layout preferences, and accessibility settings
+                      {t('screens.common.resetThemeColorsLayoutPreferencesAccessibility')}
                     </p>
                     <Checkbox
                       checked={resetOptions.appearance}
@@ -124,13 +125,13 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Settings className="w-4 h-4" />
-                    Privacy Settings
+                    {t('screens.common.privacySettings')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
-                      Reset data sharing, visibility, and security preferences
+                      {t('screens.common.resetDataSharingVisibilitySecurityPreferences')}
                     </p>
                     <Checkbox
                       checked={resetOptions.privacy}
@@ -144,13 +145,13 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <Globe className="w-4 h-4" />
-                    Language & Region
+                    {t('screens.common.languageRegion')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
-                      Reset language, timezone, date format, and regional preferences
+                      {t('screens.common.resetLanguageTimezoneDateFormatRegional')}
                     </p>
                     <Checkbox
                       checked={resetOptions.language}
@@ -164,7 +165,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
 
           <div className="flex gap-3 pt-6">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button 
               variant="destructive" 
@@ -173,7 +174,7 @@ export function ResetDefaultsPopup({ isOpen, onClose }: ResetDefaultsPopupProps)
               disabled={!hasSelections}
             >
               <RotateCcw className="w-4 h-4 mr-2" />
-              Reset Selected
+              {t('screens.common.resetSelected')}
             </Button>
           </div>
         </div>

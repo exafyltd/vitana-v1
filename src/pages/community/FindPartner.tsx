@@ -43,6 +43,7 @@ import {
   type FindPartnerMatch,
   type UserIntent,
 } from '@/lib/intentApi';
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -179,21 +180,21 @@ export default function FindPartner() {
 
   return (
     <>
-      <SEO title="Find a Match — Vitana" description="Find a dance or fitness match in the Vitana community." />
+      <SEO title={t('screens.community.findMatchVitana')} description="Find a dance or fitness match in the Vitana community." />
 
       <AppLayout>
         {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto">
         <StandardHeader
-          title="Find a Match"
+          title={t('screens.community.findMatch')}
           description="Dance and fitness partners — matched by AI, ranked by fit."
         />
 
         <UtilityActionButton className="min-w-0" compact={isMobile}>
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder="Search posts and matches..."
+              placeholder={t('screens.community.searchPostsMatches')}
               onSearch={() => { /* search wiring is per-view; leave as no-op for v1 */ }}
               filterLabel={filterLabel}
               onFilterClick={() => setPickerOpen(true)}
@@ -205,7 +206,7 @@ export default function FindPartner() {
               className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
             >
               <Plus className="h-4 w-4" />
-              <span className="text-sm">New wish</span>
+              <span className="text-sm">{t('screens.community.newWish')}</span>
             </Button>
           </div>
         </UtilityActionButton>
@@ -230,7 +231,7 @@ export default function FindPartner() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
           )}
 
           {/* My Matches */}
@@ -238,7 +239,7 @@ export default function FindPartner() {
             matches.length === 0 ? (
               <EmptyState
                 icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
-                title="No matches yet"
+                title={t('screens.community.noMatchesYet')}
                 body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
                 cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
               />
@@ -265,7 +266,7 @@ export default function FindPartner() {
           {!loading && !error && view === 'board' && (
             boardIntents.length === 0 ? (
               <EmptyState
-                title="The board is quiet right now"
+                title={t('screens.community.boardQuietRightNow')}
                 body="Be the first to post a dance or fitness wish — others will see it here."
                 cta={{ label: 'Post yours', onClick: () => setComposerOpen(true) }}
               />
@@ -282,7 +283,7 @@ export default function FindPartner() {
           {!loading && !error && view === 'posts' && (
             myPosts.length === 0 ? (
               <EmptyState
-                title="You haven't posted yet"
+                title={t('screens.community.youHavenTPostedYet')}
                 body="Post your dance or fitness wish — Vitana will match you with people who fit."
                 cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
               />
@@ -299,13 +300,13 @@ export default function FindPartner() {
           {!loading && !error && view === 'members' && (
             !showMembersTab ? (
               <EmptyState
-                title="Browse the full members list"
+                title={t('screens.community.browseFullMembersList')}
                 body="The community is growing — see everyone in the dedicated members directory."
                 cta={{ label: 'Open Members', onClick: () => navigate('/comm/members') }}
               />
             ) : members.length === 0 ? (
               <EmptyState
-                title="No members yet"
+                title={t('screens.community.noMembersYet')}
                 body="Be the first — invite a friend to join Vitana."
               />
             ) : (
@@ -328,9 +329,7 @@ export default function FindPartner() {
                           <span className="text-sm text-muted-foreground">@{m.vitana_id}</span>
                         )}
                         {m.registration_seq != null && (
-                          <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">
-                            Member #{m.registration_seq}
-                          </span>
+                          <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">{t('screens.community.memberRegistration_seq', { registration_seq: m.registration_seq })}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
@@ -363,7 +362,7 @@ export default function FindPartner() {
       <Sheet open={pickerOpen} onOpenChange={setPickerOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
-            <SheetTitle>Choose a view</SheetTitle>
+            <SheetTitle>{t('screens.community.chooseView')}</SheetTitle>
           </SheetHeader>
           <div className="space-y-2 mt-4 pb-6">
             {visibleViewOptions.map((o) => (

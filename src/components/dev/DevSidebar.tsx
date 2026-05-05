@@ -28,6 +28,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { PlatformIconsRow } from "./PlatformIconsRow";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
+import { t } from '@/lib/i18n-toast';
 
 const DEV_NAV_ITEMS = [
   { title: "Home", url: "/dev/dashboard", icon: Home },
@@ -156,14 +157,14 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
             <SheetTitle className="text-left">
               <div className="space-y-3">
                 <div>
-                  <h2 className="text-lg font-bold">Vitana DEV</h2>
-                  <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
+                  <h2 className="text-lg font-bold">{t('screens.dev.vitanaDev')}</h2>
+                  <p className="text-xs text-sidebar-foreground/50 font-normal">{t('screens.dev.commandHub')}</p>
                 </div>
                 <PlatformIconsRow />
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
-                    placeholder="Search members, groups, or..."
+                    placeholder={t('screens.dev.searchMembersGroups')}
                     className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
                   />
                 </div>
@@ -197,14 +198,14 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
                 <SidebarTrigger className="ml-auto" />
               </div>
               <div>
-                <h2 className="text-lg font-bold">Vitana DEV</h2>
-                <p className="text-xs text-sidebar-foreground/50 font-normal">Command Hub</p>
+                <h2 className="text-lg font-bold">{t('screens.dev.vitanaDev')}</h2>
+                <p className="text-xs text-sidebar-foreground/50 font-normal">{t('screens.dev.commandHub')}</p>
               </div>
               <PlatformIconsRow />
               <div className="relative mt-3">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sidebar-foreground/60" />
                   <Input
-                    placeholder="Search members, groups, or..."
+                    placeholder={t('screens.dev.searchMembersGroups')}
                     className="pl-9 bg-sidebar-accent/20 border-sidebar-border placeholder:text-sidebar-foreground/70"
                   />
               </div>

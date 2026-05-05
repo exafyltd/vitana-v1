@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { t } from '@/lib/i18n-toast';
 
 export function VideoFeedCard() {
   return (
@@ -14,7 +15,7 @@ export function VideoFeedCard() {
       <Video className="absolute top-2 right-2 w-8 h-8 text-red-400/20" />
       
       <div className="absolute top-2 left-2 z-10">
-        <Badge className="bg-red-500 text-white text-xs">Video</Badge>
+        <Badge className="bg-red-500 text-white text-xs">{t('screens.crossover.video')}</Badge>
       </div>
       
       <CardContent className="p-4">
@@ -23,8 +24,8 @@ export function VideoFeedCard() {
             <Video className="w-5 h-5 text-red-500" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm text-foreground leading-tight">Morning Yoga Flow</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">Wellness Studio</p>
+            <h3 className="font-semibold text-sm text-foreground leading-tight">{t('screens.crossover.morningYogaFlow')}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{t('screens.crossover.wellnessStudio')}</p>
           </div>
         </div>
         

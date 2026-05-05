@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
+import { notify } from '@/lib/i18n-toast';
 
 interface NotificationEvent {
   type: 'booking_confirmed' | 'payment_received' | 'credit_transfer' | 'service_booked' | 'event_registered';
@@ -52,10 +53,7 @@ export const CrossSystemNotifier = () => {
   };
 
   const handleBookingConfirmed = async (data: any) => {
-    toast({
-      title: "Booking Confirmed! 🎉",
-      description: `Your booking for ${data.title} is confirmed`
-    });
+    notify('toasts.notifications.bookingConfirmed');
 
     // Send confirmation message to provider
     await sendMessage(
@@ -67,10 +65,7 @@ export const CrossSystemNotifier = () => {
   };
 
   const handlePaymentReceived = async (data: any) => {
-    toast({
-      title: "Payment Received! 💰",
-      description: `${data.amount} ${data.currency} received from ${data.from}`
-    });
+    notify('toasts.notifications.paymentReceived');
 
     // Update wallet balance notification
     await sendMessage(
@@ -82,17 +77,11 @@ export const CrossSystemNotifier = () => {
   };
 
   const handleCreditTransfer = async (data: any) => {
-    toast({
-      title: "Credits Transferred! ✨",
-      description: `${data.amount} credits sent to ${data.to}`
-    });
+    notify('toasts.notifications.creditsTransferred');
   };
 
   const handleServiceBooked = async (data: any) => {
-    toast({
-      title: "New Service Booking! 📅",
-      description: `${data.customerName} booked ${data.serviceName}`
-    });
+    notify('toasts.notifications.newServiceBooking');
 
     // Notify service provider
     await sendMessage(
@@ -104,10 +93,7 @@ export const CrossSystemNotifier = () => {
   };
 
   const handleEventRegistered = async (data: any) => {
-    toast({
-      title: "Event Registration! 🎊",
-      description: `Registered for ${data.eventTitle}`
-    });
+    notify('toasts.notifications.eventRegistration');
 
     // Send calendar invite
     await sendMessage(

@@ -31,12 +31,12 @@ import {
   Youtube,
   Video,
 } from "lucide-react";
-import { toast } from "sonner";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 // Static channel definitions - no database setup required
 const STATIC_CHANNELS = [
@@ -121,15 +121,15 @@ export function CreatePostDialog({
 
   const validateForm = () => {
     if (!userId) {
-      toast.error("Please log in to create posts.");
+      notifyError('toasts.sharing.pleaseLogCreatePosts');
       return false;
     }
     if (!title || !description) {
-      toast.error("Please fill in title and description.");
+      notifyError('toasts.sharing.pleaseFillTitleDescription');
       return false;
     }
     if (selectedChannels.size === 0) {
-      toast.error("Please select at least one channel.");
+      notifyError('toasts.sharing.pleaseSelectAtLeastOneChannel2');
       return false;
     }
     return true;
@@ -166,11 +166,11 @@ export function CreatePostDialog({
 
   const handleSaveDraft = async () => {
     if (!userId) {
-      toast.error("Please log in to save drafts.");
+      notifyError('toasts.sharing.pleaseLogSaveDrafts');
       return;
     }
     if (!title || !description) {
-      toast.error("Please fill in title and description.");
+      notifyError('toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
@@ -187,7 +187,7 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
-          toast.success("Post saved as draft");
+          notifySuccess('toasts.sharing.postSavedAsDraft');
           resetForm();
           onOpenChange(false);
           onPostCreated?.();
@@ -231,7 +231,7 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
-          toast.success("Post scheduled successfully");
+          notifySuccess('toasts.sharing.postScheduledSuccessfully');
           resetForm();
           setPendingPostId(null);
           setShowScheduleDialog(false);
@@ -249,45 +249,44 @@ export function CreatePostDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Send className="w-5 h-5" />
-              Create Post
+              {t('screens.sharing.createPost')}
             </DialogTitle>
-            <DialogDescription>
-              Create a new post for campaign: <span className="font-medium">{campaignName}</span>
+            <DialogDescription>{t('screens.sharing.createNewPostForCampaign')} <span className="font-medium">{campaignName}</span>
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             {/* Entity Type Selector */}
             <div className="space-y-2">
-              <Label>What are you sharing?</Label>
+              <Label>{t('screens.sharing.whatYouSharing')}</Label>
               <Select value={entityType} onValueChange={setEntityType}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="event">Event</SelectItem>
-                  <SelectItem value="meetup">Meetup</SelectItem>
-                  <SelectItem value="group">Group</SelectItem>
-                  <SelectItem value="live-room">Live Room</SelectItem>
-                  <SelectItem value="profile">Profile</SelectItem>
+                  <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+                  <SelectItem value="meetup">{t('screens.sharing.meetup')}</SelectItem>
+                  <SelectItem value="group">{t('screens.sharing.group')}</SelectItem>
+                  <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
+                  <SelectItem value="profile">{t('screens.sharing.profile')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Content Editor */}
             <div className="space-y-2">
-              <Label>Title</Label>
+              <Label>{t('screens.sharing.title')}</Label>
               <Input
-                placeholder="Enter a compelling title..."
+                placeholder={t('screens.sharing.enterCompellingTitle')}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Description</Label>
+              <Label>{t('screens.sharing.description')}</Label>
               <Textarea
-                placeholder="Write your message..."
+                placeholder={t('screens.sharing.writeYourMessage')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
@@ -296,7 +295,7 @@ export function CreatePostDialog({
 
             {/* Static Channel Selector */}
             <div className="space-y-2">
-              <Label>Select Channels</Label>
+              <Label>{t('screens.sharing.selectChannels')}</Label>
               <div className="grid grid-cols-3 gap-2">
                 {STATIC_CHANNELS.map((channel) => {
                   const isSelected = selectedChannels.has(channel.key);
@@ -338,8 +337,7 @@ export function CreatePostDialog({
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <Send className="w-4 h-4 mr-2" />
-              )}
-              Blast Now
+              )}{t('screens.sharing.blastNow')}
             </Button>
             <Button
               variant="outline"
@@ -350,15 +348,14 @@ export function CreatePostDialog({
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <CalendarIcon className="w-4 h-4 mr-2" />
-              )}
-              Schedule
+              )}{t('screens.sharing.schedule')}
             </Button>
             <Button
               variant="outline"
               size="icon"
               onClick={handleSaveDraft}
               disabled={createPost.isPending}
-              title="Save as draft"
+              title={t('screens.sharing.saveAsDraft')}
             >
               {createPost.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

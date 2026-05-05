@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface AuthGuardProps {
   children: ReactElement;
@@ -196,7 +197,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground text-sm animate-pulse">Signing you in…</p>
+        <p className="text-muted-foreground text-sm animate-pulse">{t('screens.common.signingYou')}</p>
       </div>
     );
   }
@@ -206,8 +207,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-6">
         <div className="text-center space-y-2">
-          <p className="text-foreground text-lg font-medium">Sign-in is taking longer than expected</p>
-          <p className="text-muted-foreground text-sm">This can happen on some devices. Please try again.</p>
+          <p className="text-foreground text-lg font-medium">{t('screens.common.signinTakingLongerThanExpected')}</p>
+          <p className="text-muted-foreground text-sm">{t('screens.common.thisCanHappenSomeDevicesPlease')}</p>
         </div>
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <Button
@@ -242,7 +243,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             variant="default"
           >
             <RefreshCw className="mr-2 h-4 w-4" />
-            Try Apple Sign-In again
+            {t('screens.common.tryAppleSigninAgain')}
           </Button>
           <Button
             onClick={() => {
@@ -255,7 +256,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             className="w-full"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to login
+            {t('screens.common.backLogin')}
           </Button>
         </div>
       </div>

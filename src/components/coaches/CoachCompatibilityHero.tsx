@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { TrendingUp, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface CoachCompatibilityHeroProps {
   overallScore: number;
@@ -79,7 +80,7 @@ export function CoachCompatibilityHero({
             </div>
           </div>
           <p className="text-center text-sm text-muted-foreground mt-3">
-            Overall Compatibility
+            {t('screens.coaches.overallCompatibility')}
           </p>
         </div>
         
@@ -90,7 +91,7 @@ export function CoachCompatibilityHero({
               <div className="p-2 rounded-lg bg-gradient-to-br from-pink-500/20 to-fuchsia-500/20">
                 <TrendingUp className="w-5 h-5 text-pink-600" />
               </div>
-              <h3 className="text-lg font-semibold">Top Match Factors</h3>
+              <h3 className="text-lg font-semibold">{t('screens.coaches.topMatchFactors')}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {topFactors.map((factor, index) => (
@@ -110,7 +111,7 @@ export function CoachCompatibilityHero({
               <div className="p-2 rounded-lg bg-gradient-to-br from-fuchsia-500/20 to-amber-500/20">
                 <Zap className="w-5 h-5 text-fuchsia-600" />
               </div>
-              <h3 className="text-lg font-semibold">Shared Interests</h3>
+              <h3 className="text-lg font-semibold">{t('screens.coaches.sharedInterests')}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {sharedInterests.map((interest, index) => (

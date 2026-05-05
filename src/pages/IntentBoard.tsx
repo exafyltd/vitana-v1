@@ -11,10 +11,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { getIntentBoard, type BoardResponse, type IntentKind } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const KIND_FILTERS: { value: IntentKind | "all" | "dance"; label: string }[] = [
   { value: "all", label: "All (compass-aware)" },
@@ -57,7 +58,7 @@ export default function IntentBoard() {
       const result = await getIntentBoard(params);
       setData(result);
     } catch (err: any) {
-      toast({ title: "Could not load board", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentboard.couldNotLoadBoard');
     } finally {
       setLoading(false);
     }
@@ -82,15 +83,14 @@ export default function IntentBoard() {
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">Community board</h1>
-          <p className="text-sm text-muted-foreground">
-            What others are looking for. {data?.compass && (
-              <>Surfaced for your <span className="font-medium">{data.compass}</span> focus.</>
+          <h1 className="text-2xl font-semibold">{t('screens.intentboard.communityBoard')}</h1>
+          <p className="text-sm text-muted-foreground">{t('screens.intentboard.whatOthersLookingFor')} {data?.compass && (
+              <>{t('screens.intentboard.surfacedForYour')} <span className="font-medium">{data.compass}</span> {t('screens.intentboard.focus')}</>
             )}
           </p>
         </div>
         <Button onClick={() => setComposerOpen(true)} size="sm">
-          <Plus className="h-4 w-4 mr-1" /> Post
+          <Plus className="h-4 w-4 mr-1" /> {t('screens.intentboard.post')}
         </Button>
       </div>
 
@@ -112,7 +112,7 @@ export default function IntentBoard() {
 
       {filter === "dance" && (
         <div className="flex flex-wrap gap-1.5">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground self-center mr-1">Style</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground self-center mr-1">{t('screens.intentboard.style')}</span>
           {DANCE_VARIETY_CHIPS.map((c) => (
             <button
               key={c.key ?? "any"}
@@ -156,7 +156,7 @@ export default function IntentBoard() {
       />
 
       <p className="text-xs text-muted-foreground text-center">
-        Looking for your own intents? <Link to="/intents/mine" className="underline">View My Intents</Link>
+        {t('screens.intentboard.lookingForYourOwnIntents')} <Link to="/intents/mine" className="underline">{t('screens.intentboard.viewMyIntents')}</Link>
       </p>
     </div>
   );

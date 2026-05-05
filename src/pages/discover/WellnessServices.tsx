@@ -22,6 +22,7 @@ import { useBookmarks } from "@/hooks/useBookmarks";
 import { Bookmark } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Clock, DollarSign, Star, MapPin } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function WellnessServices() {
   const navigate = useNavigate();
@@ -226,12 +227,12 @@ export default function WellnessServices() {
 
   return (
     <AppLayout>
-      <SEO title="Wellness Services | Discover" description="Browse wellness categories organized by health verticals" canonical={window.location.href} />
+      <SEO title={t('screens.discover.wellnessServicesDiscover')} description="Browse wellness categories organized by health verticals" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
       <div className="p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Wellness Services"
+            title={t('screens.discover.wellnessServices')}
             description="Explore wellness solutions organized by health verticals and longevity pillars"
             emoji="🧘"
           />
@@ -243,14 +244,14 @@ export default function WellnessServices() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search wellness services…"
+              placeholder={t('screens.discover.searchWellnessServices')}
             />
             <UniversalCalendarButton />
             <Button 
@@ -258,17 +259,15 @@ export default function WellnessServices() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="categories">📂 All Categories</SplitBarTrigger>
-              <SplitBarTrigger value="recommended">💡 Recommended</SplitBarTrigger>
-              <SplitBarTrigger value="bookmarked">
-                🔖 Bookmarked {getBookmarksByType('wellness_service').length > 0 && `(${getBookmarksByType('wellness_service').length})`}
-              </SplitBarTrigger>
+              <SplitBarTrigger value="categories">{t('screens.discover.allCategories')}</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">{t('screens.discover.recommended')}</SplitBarTrigger>
+              <SplitBarTrigger value="bookmarked">{t('screens.discover.bookmarkedValue0', { value0: getBookmarksByType('wellness_service').length > 0 && `(${getBookmarksByType('wellness_service').length})` })}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="categories" className="space-y-6">
@@ -308,7 +307,7 @@ export default function WellnessServices() {
                   </div>
                   
                   <div className="space-y-1 md:space-y-2 mb-4 flex-1">
-                    <div className="text-xs md:text-sm font-medium text-muted-foreground mb-1 md:mb-2">Featured Services:</div>
+                    <div className="text-xs md:text-sm font-medium text-muted-foreground mb-1 md:mb-2">{t('screens.discover.featuredServices')}</div>
                     {category.featured.map((service, index) => (
                       <div key={index} className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full"></div>
@@ -321,9 +320,7 @@ export default function WellnessServices() {
                     size="sm" 
                     className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto"
                     onClick={() => handleCategoryClick(category)}
-                  >
-                    Explore {category.name}
-                  </Button>
+                  >{t('screens.discover.exploreName', { name: category.name })}</Button>
                 </CardContent>
               </Card>
             ))}
@@ -335,9 +332,9 @@ export default function WellnessServices() {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Brain className="h-6 w-6 text-purple-500" />
-                    <h2 className="text-2xl font-semibold">AI-Recommended Services</h2>
+                    <h2 className="text-2xl font-semibold">{t('screens.discover.airecommendedServices')}</h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">Personalized wellness service recommendations based on your health pillars</p>
+                  <p className="text-muted-foreground mb-6">{t('screens.discover.personalizedWellnessServiceRecommendationsBasedYou')}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categories.slice(0, 6).map((category, index) => (
                       <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
@@ -359,15 +356,14 @@ export default function WellnessServices() {
                           <div className="bg-purple-50 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
                               <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">Based on your health goals</span>
+                              <span className="text-xs text-purple-700">{t('screens.discover.basedYourHealthGoals')}</span>
                             </div>
                           </div>
                           <Button 
                             size="sm" 
                             className="w-full text-xs"
                             onClick={() => handleCategoryClick(category)}
-                          >
-                            Explore Services
+                          >{t('screens.discover.exploreServices')}
                           </Button>
                         </CardContent>
                       </Card>
@@ -380,18 +376,18 @@ export default function WellnessServices() {
             <SplitBarContent value="bookmarked" className="space-y-6">
               {bookmarksLoading ? (
                 <div className="text-center py-12">
-                  <p className="text-muted-foreground">Loading bookmarks...</p>
+                  <p className="text-muted-foreground">{t('screens.discover.loadingBookmarks')}</p>
                 </div>
               ) : getBookmarksByType('wellness_service').length === 0 ? (
                 <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                   <CardContent className="p-12 text-center">
                     <Bookmark className="h-16 w-16 mx-auto mb-4 text-yellow-400" />
-                    <h3 className="text-xl font-semibold mb-2">No bookmarked services yet</h3>
+                    <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noBookmarkedServicesYet')}</h3>
                     <p className="text-muted-foreground mb-4">
-                      Browse wellness services and bookmark your favorites
+                      {t('screens.discover.browseWellnessServicesBookmarkYourFavorites')}
                     </p>
                     <Button onClick={() => setActiveTab('categories')}>
-                      Explore Services
+                      {t('screens.discover.exploreServices')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -421,9 +417,7 @@ export default function WellnessServices() {
                               handleCategoryClick(matchedCategory);
                             }
                           }}
-                        >
-                          Explore {bookmark.item_name}
-                        </Button>
+                        >{t('screens.discover.exploreItem_name', { item_name: bookmark.item_name })}</Button>
                       </CardContent>
                     </Card>
                   ))}
@@ -462,8 +456,8 @@ export default function WellnessServices() {
 
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg">Available Services</h3>
-                  <Badge variant="secondary">{categoryServicesData[selectedCategory.id]?.length || 0} Services</Badge>
+                  <h3 className="font-semibold text-lg">{t('screens.discover.availableServices')}</h3>
+                  <Badge variant="secondary">{t('screens.discover.value0Services', { value0: categoryServicesData[selectedCategory.id]?.length || 0 })}</Badge>
                 </div>
 
                 {categoryServicesData[selectedCategory.id]?.map((service) => (
@@ -493,22 +487,22 @@ export default function WellnessServices() {
                             </div>
                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                               <Star className="h-3.5 w-3.5" />
-                              <span>{service.rating} rating</span>
+                              <span>{t('screens.discover.ratingRating', { rating: service.rating })}</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-xs font-medium text-primary">
                               <Sparkles className="h-3.5 w-3.5" />
-                              <span>+{service.vitanaImpact} Vitana</span>
+                              <span>{t('screens.discover.vitanaimpactVitana', { vitanaImpact: service.vitanaImpact })}</span>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
                             <MapPin className="h-3.5 w-3.5" />
-                            <span>Provider: {service.provider}</span>
+                            <span>{t('screens.discover.providerProvider', { provider: service.provider })}</span>
                           </div>
 
                           <div className="flex gap-2">
                             <Button size="sm" className="flex-1">
-                              Book Now
+                              {t('screens.discover.bookNow')}
                             </Button>
                             <AddToCartButton
                               item={{

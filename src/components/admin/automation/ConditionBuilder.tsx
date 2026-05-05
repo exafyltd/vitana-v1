@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Condition {
   field: string;
@@ -51,16 +52,16 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
   return (
     <Card>
       <CardHeader>
-        <CardTitle>2. Add Conditions (Optional)</CardTitle>
-        <CardDescription>Define when this automation should run</CardDescription>
+        <CardTitle>{t('screens.admin.text2AddConditionsOptional')}</CardTitle>
+        <CardDescription>{t('screens.admin.defineWhenThisAutomationShouldRun')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {conditions.length === 0 ? (
           <div className="text-center py-8 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground mb-4">No conditions set - automation will always run</p>
+            <p className="text-muted-foreground mb-4">{t('screens.admin.noConditionsSetAutomationWill')}</p>
             <Button onClick={addCondition} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
-              Add First Condition
+              {t('screens.admin.addFirstCondition')}
             </Button>
           </div>
         ) : (
@@ -68,13 +69,13 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
             {conditions.map((condition, index) => (
               <div key={index} className="flex gap-2 items-end">
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Field</Label>
+                  <Label className="text-xs">{t('screens.admin.field')}</Label>
                   <Select 
                     value={condition.field} 
                     onValueChange={(value) => updateCondition(index, { field: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select field..." />
+                      <SelectValue placeholder={t('screens.admin.selectField')} />
                     </SelectTrigger>
                     <SelectContent>
                       {FIELD_OPTIONS.map(opt => (
@@ -85,13 +86,13 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Operator</Label>
+                  <Label className="text-xs">{t('screens.admin.operator')}</Label>
                   <Select 
                     value={condition.operator} 
                     onValueChange={(value) => updateCondition(index, { operator: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select operator..." />
+                      <SelectValue placeholder={t('screens.admin.selectOperator')} />
                     </SelectTrigger>
                     <SelectContent>
                       {OPERATOR_OPTIONS.map(opt => (
@@ -102,11 +103,11 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Value</Label>
+                  <Label className="text-xs">{t('screens.admin.value')}</Label>
                   <Input 
                     value={condition.value}
                     onChange={(e) => updateCondition(index, { value: e.target.value })}
-                    placeholder="Enter value..."
+                    placeholder={t('screens.admin.enterValue')}
                   />
                 </div>
 
@@ -122,7 +123,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
 
             <Button onClick={addCondition} variant="outline" size="sm" className="w-full">
               <Plus className="h-4 w-4 mr-2" />
-              Add Another Condition
+              {t('screens.admin.addAnotherCondition')}
             </Button>
           </div>
         )}

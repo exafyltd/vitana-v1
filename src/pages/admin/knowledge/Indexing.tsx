@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 import { useKBDocuments, useReindexKBDocument } from "@/hooks/useAdminKnowledge";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 const STATUS_ORDER = ["failed", "pending", "indexed"] as const;
 
@@ -32,7 +33,7 @@ export default function KnowledgeIndexing() {
   async function handleRetry(id: string) {
     try {
       await reindexMutation.mutateAsync(id);
-      toast.success("Reindex triggered");
+      notifySuccess('toasts.admin.reindexTriggered');
     } catch (err: any) {
       toast.error(err.message || "Reindex failed");
     }
@@ -50,16 +51,16 @@ export default function KnowledgeIndexing() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="⚙️"
-          title="Indexing Status"
+          title={t('screens.admin.indexingStatus')}
           description="Monitor the indexing pipeline. Retry failed documents or wait for pending ones to complete."
         />
 
         {docsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading documents...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingDocuments')}</p>
         )}
 
         {!docsQuery.isLoading && docs.length === 0 && (
-          <AdminEmptyState title="No documents" description="Add documents to the knowledge base to see indexing status." />
+          <AdminEmptyState title={t('screens.admin.noDocuments')} description="Add documents to the knowledge base to see indexing status." />
         )}
 
         {STATUS_ORDER.map((status) => {
@@ -77,9 +78,9 @@ export default function KnowledgeIndexing() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Source</TableHead>
-                      <TableHead>Updated</TableHead>
+                      <TableHead>{t('screens.admin.title')}</TableHead>
+                      <TableHead>{t('screens.admin.source')}</TableHead>
+                      <TableHead>{t('screens.admin.updated')}</TableHead>
                       {status === "failed" && <TableHead className="w-24"></TableHead>}
                     </TableRow>
                   </TableHeader>
@@ -101,7 +102,7 @@ export default function KnowledgeIndexing() {
                           <TableCell>
                             <Button size="sm" variant="outline" onClick={() => handleRetry(doc.id)}
                               disabled={reindexMutation.isPending} className="h-7 text-xs">
-                              Retry
+                              {t('screens.admin.retry')}
                             </Button>
                           </TableCell>
                         )}

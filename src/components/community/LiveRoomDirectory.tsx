@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Mic, Video, Users, Clock, Star, Heart, MessageSquare, Calendar, Play } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 // Remove react-i18next import - not available
 
 interface LiveRoom {
@@ -125,11 +126,10 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="live" className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            🔴 Live now
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>{t('screens.community.liveNow')}
           </SplitBarTrigger>
-          <SplitBarTrigger value="scheduled">📅 Scheduled</SplitBarTrigger>
-          <SplitBarTrigger value="all">📋 All rooms</SplitBarTrigger>
+          <SplitBarTrigger value="scheduled">{t('screens.community.scheduled')}</SplitBarTrigger>
+          <SplitBarTrigger value="all">{t('screens.community.allRooms')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="live" className="mt-6">
@@ -160,8 +160,8 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
       {filteredRooms.length === 0 && (
         <div className="text-center py-12">
           <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No rooms found</h3>
-          <p className="text-muted-foreground">Try adjusting your search or filters</p>
+          <h3 className="text-lg font-medium mb-2">{t('screens.community.noRoomsFound')}</h3>
+          <p className="text-muted-foreground">{t('screens.community.tryAdjustingYourSearchFilters')}</p>
         </div>
       )}
     </div>
@@ -212,14 +212,13 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
         >
           {room.isLive && (
             <Badge className="absolute top-2 left-2 bg-red-500 text-white animate-pulse">
-              <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
-              LIVE
+              <div className="w-2 h-2 bg-white rounded-full mr-1"></div>{t('screens.community.live')}
             </Badge>
           )}
           {room.premium && (
             <Badge className="absolute top-2 right-2 bg-yellow-500 text-white">
               <Star className="w-3 h-3 mr-1" />
-              Premium
+              {t('screens.community.premium')}
             </Badge>
           )}
           <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -303,13 +302,12 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
         >
           {room.isLive ? (
             <>
-              <Play className="w-4 h-4 mr-2" />
-              Join Room
+              <Play className="w-4 h-4 mr-2" />{t('screens.community.joinRoom')}
             </>
           ) : (
             <>
               <Calendar className="w-4 h-4 mr-2" />
-              Set Reminder
+              {t('screens.community.setReminder')}
             </>
           )}
         </Button>

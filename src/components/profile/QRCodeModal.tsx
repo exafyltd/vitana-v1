@@ -8,7 +8,8 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@/components/ui/button";
 import { Download, Share2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface QRCodeModalProps {
   isOpen: boolean;
@@ -36,10 +37,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
         document.body.removeChild(downloadLink);
         URL.revokeObjectURL(svgUrl);
         
-        toast({
-          title: "QR Code Downloaded",
-          description: "Your Vitana ID QR code has been saved.",
-        });
+        notify('toasts.profile.qrCodeDownloaded', 'toasts.profile.yourVitanaIdQrCodeHas');
       }
     }
   };
@@ -48,9 +46,8 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">Vitana ID QR Code</DialogTitle>
-          <DialogDescription className="text-center">
-            Scan this code to view {profileName}'s profile
+          <DialogTitle className="text-center">{t('screens.profile.vitanaIdQrCode')}</DialogTitle>
+          <DialogDescription className="text-center">{t('screens.profile.scanThisCodeViewProfilenameS', { profileName })}
           </DialogDescription>
         </DialogHeader>
         
@@ -76,7 +73,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
               onClick={handleDownload}
             >
               <Download className="h-4 w-4 mr-2" />
-              Download
+              {t('screens.profile.download')}
             </Button>
             <Button
               variant="default"
@@ -91,7 +88,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
               }}
             >
               <Share2 className="h-4 w-4 mr-2" />
-              Share
+              {t('screens.profile.share')}
             </Button>
           </div>
         </div>

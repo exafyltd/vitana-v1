@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles, Users, Target, Clock, Star, TrendingUp } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SubscriptionRecommendation {
   id: string;
@@ -109,10 +110,9 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            Smart Recommendations
+            {t('screens.wallet.smartRecommendations')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            {avgMatch}% Avg Match
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.avgmatchAvgMatch', { avgMatch })}
           </Badge>
         </div>
       </CardHeader>
@@ -122,9 +122,8 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Star className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium">Perfect Match</span>
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600">
-              {topRecommendation.match}% match
+            <span className="text-sm font-medium">{t('screens.wallet.perfectMatch')}</span>
+            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600">{t('screens.wallet.matchMatch', { match: topRecommendation.match })}
             </Badge>
           </div>
           <div className="flex items-start justify-between mb-2">
@@ -136,12 +135,11 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
               <div className="text-lg font-bold text-primary">
                 ${topRecommendation.price}
                 {topRecommendation.discount && (
-                  <span className="text-xs text-emerald-600 ml-1">
-                    ({topRecommendation.discount}% off)
+                  <span className="text-xs text-emerald-600 ml-1">{t('screens.wallet.discountOff', { discount: topRecommendation.discount })}
                   </span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground">/month</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.month')}</div>
             </div>
           </div>
           <div className="flex items-center justify-between mb-2">
@@ -160,7 +158,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
             </Badge>
           </div>
           <Button size="sm" className="w-full h-7 text-xs">
-            Start Free Trial
+            {t('screens.wallet.startFreeTrial')}
           </Button>
         </div>
 
@@ -168,7 +166,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-blue-500" />
-            More Recommendations
+            {t('screens.wallet.moreRecommendations')}
           </h4>
           
           {mockRecommendations.slice(1, 3).map((recommendation) => {
@@ -185,16 +183,15 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                     </div>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className="text-xs mb-1">
-                      {recommendation.match}% match
+                    <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.matchMatch', { match: recommendation.match })}
                     </Badge>
-                    <div className="text-sm font-bold">${recommendation.price}/mo</div>
+                    <div className="text-sm font-bold">{t('screens.wallet.pricemo', { price: recommendation.price })}</div>
                   </div>
                 </div>
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">Match Score</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.matchScore')}</span>
                     <span className="text-xs text-muted-foreground">{recommendation.match}%</span>
                   </div>
                   <Progress value={recommendation.match} className="h-1.5" />
@@ -211,7 +208,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                     </Badge>
                   </div>
                   <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                    Learn More
+                    {t('screens.wallet.learnMore')}
                   </Button>
                 </div>
               </div>
@@ -223,16 +220,16 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="p-3 rounded-lg border bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-200/50">
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-medium">Trending in Your Network</span>
+            <span className="text-sm font-medium">{t('screens.wallet.trendingYourNetwork')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            87% of users with similar health patterns chose "AI Wellness Coach"
+            {t('screens.wallet.text87UsersWithSimilarHealthPatterns')}
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-blue-600 font-medium">Limited time: 20% off first 3 months</span>
+            <span className="text-xs text-blue-600 font-medium">{t('screens.wallet.limitedTime20OffFirst3')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Clock className="h-3 w-3 mr-1" />
-              Claim Deal
+              {t('screens.wallet.claimDeal')}
             </Button>
           </div>
         </div>
@@ -240,7 +237,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Sparkles className="h-4 w-4 mr-2" />
-          View All Recommendations
+          {t('screens.wallet.viewAllRecommendations')}
         </Button>
       </CardContent>
     </Card>

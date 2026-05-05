@@ -9,6 +9,7 @@ import {
   Users,
   Sparkles
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ContextualCTAsProps {
   isOwnProfile?: boolean;
@@ -104,8 +105,7 @@ export function ContextualCTAs({
           <Badge 
             className="bg-gradient-to-r from-[hsl(var(--domain-community-accent))] to-[hsl(var(--pill-mental-accent))] text-white border-0"
           >
-            <Users className="h-3 w-3 mr-1" />
-            {compatibilityScore}% Compatible
+            <Users className="h-3 w-3 mr-1" />{t('screens.profile.compatibilityscoreCompatible', { compatibilityScore })}
           </Badge>
         </div>
       )}
@@ -143,7 +143,7 @@ export function ContextualCTAs({
       {compatibilityScore >= 60 && (
         <div className="text-center">
           <div className="text-xs text-muted-foreground mb-1">
-            People like you also connected with Sarah
+            {t('screens.profile.peopleLikeYouAlsoConnectedWith')}
           </div>
           <div className="flex justify-center -space-x-2">
             {[1, 2, 3].map((i) => (

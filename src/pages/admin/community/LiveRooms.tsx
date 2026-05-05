@@ -5,6 +5,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCommunityLiveRooms } from "@/hooks/useAdminCommunity";
+import { t } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
   const { data: rooms = [], isLoading } = useCommunityLiveRooms();
@@ -16,14 +17,14 @@ export default function LiveRooms() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="🎙️"
-          title="Live Rooms"
+          title={t('screens.admin.liveRooms')}
           description={`${rooms.length} live room${rooms.length !== 1 ? "s" : ""} found`}
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading live rooms...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingLiveRooms')}</p>
         ) : rooms.length === 0 ? (
-          <AdminEmptyState title="No live rooms found" description="There are no live rooms yet." />
+          <AdminEmptyState title={t('screens.admin.noLiveRoomsFound')} description="There are no live rooms yet." />
         ) : (
           <Card>
             <Table>

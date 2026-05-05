@@ -19,6 +19,7 @@ import { todayActions, memoryHighlights, contextPulse, inspiration, indexMovemen
 import { useNavigate } from "react-router-dom";
 import { aiNavigation } from "@/config/navigation";
 import StandardHeader from "@/components/StandardHeader";
+import { t } from '@/lib/i18n-toast';
 
 export default function AI() {
   const navigate = useNavigate();
@@ -56,13 +57,13 @@ export default function AI() {
 
   return (
     <AppLayout>
-      <SEO title="AI Intelligence" description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
+      <SEO title={t('screens.ai.aiIntelligence')} description="Access AI-powered insights, recommendations, and personalized assistance" canonical={window.location.href} />
       <SubNavigation items={aiNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="AI Intelligence Overview"
+            title={t('screens.ai.aiIntelligenceOverview')}
             description="Your personalized AI insights and recommendations for optimal wellness."
             emoji="✨"
           />
@@ -75,7 +76,7 @@ export default function AI() {
               <CrossoverCard
                 icon={CheckCircle}
                 category="ai"
-                title="Today's Priority Actions"
+                title={t('screens.ai.todaySPriorityActions')}
                 subtitle="AI-curated tasks for maximum wellness impact"
                 buttonText="View All Tasks"
                 onButtonClick={() => handleActionClick('view-all')}
@@ -102,7 +103,7 @@ export default function AI() {
               <CrossoverCard
                 icon={Zap}
                 category="autopilot"
-                title="Autopilot Status"
+                title={t('screens.ai.autopilotStatus')}
                 subtitle="AI is actively managing your wellness"
                 buttonText="View Autopilot Log"
                 onButtonClick={() => handleActionClick('autopilot-log')}
@@ -110,17 +111,17 @@ export default function AI() {
                   <div className="space-y-2">
                     <div className="p-2 bg-background/50 rounded-lg border">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground">Rescheduled meeting</span>
-                        <span className="text-xs text-muted-foreground">2h ago</span>
+                        <span className="text-xs font-medium text-foreground">{t('screens.ai.rescheduledMeeting')}</span>
+                        <span className="text-xs text-muted-foreground">{t('screens.ai.text2hAgo')}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">Protected focus time for wellness tasks</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.ai.protectedFocusTimeForWellnessTasks')}</p>
                     </div>
                     <div className="p-2 bg-background/50 rounded-lg border">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground">Hydration reminder sent</span>
-                        <span className="text-xs text-muted-foreground">45m ago</span>
+                        <span className="text-xs font-medium text-foreground">{t('screens.ai.hydrationReminderSent')}</span>
+                        <span className="text-xs text-muted-foreground">{t('screens.ai.text45mAgo')}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">Behind on daily water intake goal</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.ai.behindDailyWaterIntakeGoal')}</p>
                     </div>
                   </div>
                 }

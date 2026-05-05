@@ -9,11 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Globe, Lock, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreateGroupPopupProps {
   isOpen: boolean;
@@ -47,11 +48,11 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
   const handleSubmit = async () => {
     if (!formData.name.trim()) {
-      toast({ title: "Name required", description: "Please enter a group name.", variant: "destructive" });
+      notifyError('toasts.common.nameRequired', 'toasts.common.pleaseEnterGroupName');
       return;
     }
     if (!user?.id) {
-      toast({ title: "Not logged in", description: "Please log in to create a group.", variant: "destructive" });
+      notifyError('toasts.common.notLogged', 'toasts.common.pleaseLogCreateGroup');
       return;
     }
 
@@ -105,10 +106,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       // Refresh inbox so the new group chat thread appears
       queryClient.invalidateQueries({ queryKey: ['global-threads'] });
 
-      toast({
-        title: "Group Created! 🎉",
-        description: `${formData.name} has been created successfully.`
-      });
+      notify('toasts.common.groupCreated');
 
       onClose();
       setFormData({ name: "", description: "", category: "", privacy: "public", location: "", isVirtual: false, rules: "" });
@@ -116,7 +114,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       navigate(`/comm/groups/${newGroup.id}`);
     } catch (err: any) {
       console.error('[CreateGroup] error:', err);
-      toast({ title: "Error", description: err.message || "Could not create group.", variant: "destructive" });
+      notifyError('toasts.common.error');
     } finally {
       setIsSubmitting(false);
     }
@@ -128,58 +126,58 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-primary" />
-            Create New Group
+            {t('screens.common.createNewGroup')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Group Details</CardTitle>
+              <CardTitle className="text-lg">{t('screens.common.groupDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="name">Group Name *</Label>
+                <Label htmlFor="name">{t('screens.common.groupName')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="e.g., Morning Runners, Healthy Cooking Club"
+                  placeholder={t('screens.common.eGMorningRunnersHealthyCooking')}
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.common.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe your group's purpose and activities..."
+                  placeholder={t('screens.common.describeYourGroupSPurposeActivities')}
                   className="mt-1"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t('screens.common.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fitness">Fitness & Exercise</SelectItem>
-                      <SelectItem value="nutrition">Nutrition & Diet</SelectItem>
-                      <SelectItem value="mental-health">Mental Health</SelectItem>
-                      <SelectItem value="support">Support Groups</SelectItem>
-                      <SelectItem value="learning">Learning & Education</SelectItem>
-                      <SelectItem value="social">Social & Community</SelectItem>
+                      <SelectItem value="fitness">{t('screens.common.fitnessExercise')}</SelectItem>
+                      <SelectItem value="nutrition">{t('screens.common.nutritionDiet')}</SelectItem>
+                      <SelectItem value="mental-health">{t('screens.common.mentalHealth')}</SelectItem>
+                      <SelectItem value="support">{t('screens.common.supportGroups')}</SelectItem>
+                      <SelectItem value="learning">{t('screens.common.learningEducation')}</SelectItem>
+                      <SelectItem value="social">{t('screens.common.socialCommunity')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="privacy">Privacy</Label>
+                  <Label htmlFor="privacy">{t('screens.common.privacy')}</Label>
                   <Select value={formData.privacy} onValueChange={(value) => setFormData({...formData, privacy: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue />
@@ -188,13 +186,13 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                       <SelectItem value="public">
                         <div className="flex items-center gap-2">
                           <Globe className="w-4 h-4" />
-                          Public
+                          {t('screens.common.public')}
                         </div>
                       </SelectItem>
                       <SelectItem value="private">
                         <div className="flex items-center gap-2">
                           <Lock className="w-4 h-4" />
-                          Private
+                          {t('screens.common.private')}
                         </div>
                       </SelectItem>
                     </SelectContent>
@@ -203,7 +201,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
               </div>
 
               <div>
-                <Label>Tags</Label>
+                <Label>{t('screens.common.tags')}</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {availableTags.map((tag) => (
                     <Badge
@@ -223,13 +221,13 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Location & Settings</CardTitle>
+              <CardTitle className="text-lg">{t('screens.common.locationSettings')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Virtual Group</Label>
-                  <p className="text-sm text-muted-foreground">This group meets online</p>
+                  <Label>{t('screens.common.virtualGroup')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('screens.common.thisGroupMeetsOnline')}</p>
                 </div>
                 <Switch 
                   checked={formData.isVirtual}
@@ -239,24 +237,24 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
               {!formData.isVirtual && (
                 <div>
-                  <Label htmlFor="location">Location</Label>
+                  <Label htmlFor="location">{t('screens.common.location')}</Label>
                   <Input
                     id="location"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Downtown Area, Central Park"
+                    placeholder={t('screens.common.eGDowntownAreaCentralPark')}
                     className="mt-1"
                   />
                 </div>
               )}
 
               <div>
-                <Label htmlFor="rules">Group Rules (Optional)</Label>
+                <Label htmlFor="rules">{t('screens.common.groupRulesOptional')}</Label>
                 <Textarea
                   id="rules"
                   value={formData.rules}
                   onChange={(e) => setFormData({...formData, rules: e.target.value})}
-                  placeholder="Set guidelines for group members..."
+                  placeholder={t('screens.common.setGuidelinesForGroupMembers')}
                   className="mt-1"
                 />
               </div>
@@ -265,7 +263,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isSubmitting}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Group'}

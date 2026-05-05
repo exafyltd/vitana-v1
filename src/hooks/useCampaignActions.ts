@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export function useCampaignActions() {
   const queryClient = useQueryClient();
@@ -65,7 +66,7 @@ export function useCampaignActions() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success("All scheduled posts paused");
+      notifySuccess('toasts.hooks.allScheduledPostsPaused');
     },
     onError: (error: Error) => {
       toast.error(`Failed to pause posts: ${error.message}`);

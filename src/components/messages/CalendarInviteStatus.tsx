@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { InviteResponseSummary } from './InviteResponseSummary';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CalendarInviteStatusProps {
   messageId: string;
@@ -74,10 +75,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
         if (isMessageSender && payload.eventType === 'INSERT') {
           const newResponse = payload.new as any;
           if (newResponse.user_id !== user?.id) {
-            toast({
-              title: '🎉 New Response!',
-              description: `Someone ${newResponse.response} your calendar invite`,
-            });
+            notify('toasts.messages.newResponse');
           }
         }
         
@@ -102,21 +100,21 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
         return (
           <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Accepted
+            {t('screens.messages.accepted')}
           </Badge>
         );
       case 'declined':
         return (
           <Badge variant="secondary" className="bg-red-100 text-red-800 border-red-200">
             <X className="w-3 h-3 mr-1" />
-            Declined
+            {t('screens.messages.declined')}
           </Badge>
         );
       case 'maybe':
         return (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
             <Clock className="w-3 h-3 mr-1" />
-            Maybe
+            {t('screens.messages.maybe')}
           </Badge>
         );
       default:
@@ -135,7 +133,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
       return (
         <div className="mt-3">
           <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
-            Invitation sent
+            {t('screens.messages.invitationSent')}
           </Badge>
         </div>
       );

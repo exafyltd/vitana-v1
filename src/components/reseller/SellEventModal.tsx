@@ -20,10 +20,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, ExternalLink, Share2, Megaphone, Check } from "lucide-react";
-import { toast } from "sonner";
 import { getResellerShareUrl } from "@/lib/shareUrl";
 import { useNavigate } from "react-router-dom";
 import { siWhatsapp, siInstagram } from "simple-icons";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface SellEventModalProps {
   open: boolean;
@@ -54,10 +54,10 @@ export function SellEventModal({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      toast.success("Link copied to clipboard!");
+      notifySuccess('toasts.reseller.linkCopiedClipboard');
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      toast.error("Failed to copy. Please select and copy manually.");
+      notifyError('toasts.reseller.failedCopyPleaseSelectCopyManually');
     }
   };
 
@@ -71,9 +71,9 @@ export function SellEventModal({
   const handleInstagramShare = () => {
     // Instagram doesn't support direct URL sharing, so we copy and inform user
     navigator.clipboard.writeText(shareUrl).then(() => {
-      toast.success("Link copied! Paste it in your Instagram bio or story.");
+      notifySuccess('toasts.reseller.linkCopiedPasteItYourInstagram');
     }).catch(() => {
-      toast.error("Failed to copy link.");
+      notifyError('toasts.reseller.failedCopyLink');
     });
   };
 
@@ -88,10 +88,10 @@ export function SellEventModal({
         <DialogHeader>
           <DialogTitle className="text-xl flex items-center gap-2">
             <Share2 className="w-5 h-5 text-primary" />
-            Sell This Event
+            {t('screens.reseller.sellThisEvent')}
           </DialogTitle>
           <DialogDescription>
-            Share your unique reseller link to earn commission on every ticket sold.
+            {t('screens.reseller.shareYourUniqueResellerLinkEarn')}
           </DialogDescription>
         </DialogHeader>
 
@@ -112,14 +112,14 @@ export function SellEventModal({
             <div className="min-w-0 flex-1">
               <p className="font-semibold truncate">{event.title}</p>
               <p className="text-xs text-muted-foreground">
-                Your reseller code: <span className="font-mono font-medium text-primary">{resellerCode}</span>
+                {t('screens.reseller.yourResellerCode')} <span className="font-mono font-medium text-primary">{resellerCode}</span>
               </p>
             </div>
           </div>
 
           {/* Share Link Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Your Unique Reseller Link</label>
+            <label className="text-sm font-medium">{t('screens.reseller.yourUniqueResellerLink')}</label>
             <div className="flex gap-2">
               <Input
                 readOnly
@@ -144,7 +144,7 @@ export function SellEventModal({
 
           {/* Quick Share Buttons */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Quick Share</label>
+            <label className="text-sm font-medium">{t('screens.reseller.quickShare')}</label>
             <div className="grid grid-cols-2 gap-2">
               <Button 
                 variant="outline" 
@@ -159,7 +159,7 @@ export function SellEventModal({
                 >
                   <path d={siWhatsapp.path} />
                 </svg>
-                <span className="text-green-700 dark:text-green-300">WhatsApp</span>
+                <span className="text-green-700 dark:text-green-300">{t('screens.reseller.whatsapp')}</span>
               </Button>
               
               <Button 
@@ -175,7 +175,7 @@ export function SellEventModal({
                 >
                   <path d={siInstagram.path} />
                 </svg>
-                <span className="text-pink-700 dark:text-pink-300">Instagram</span>
+                <span className="text-pink-700 dark:text-pink-300">{t('screens.reseller.instagram')}</span>
               </Button>
             </div>
           </div>
@@ -187,10 +187,10 @@ export function SellEventModal({
               onClick={handleOpenCampaignBuilder}
             >
               <Megaphone className="h-5 w-5" />
-              Open Campaign Builder
+              {t('screens.reseller.openCampaignBuilder')}
             </Button>
             <p className="text-xs text-muted-foreground text-center mt-2">
-              Create a full marketing campaign with email, SMS & social media
+              {t('screens.reseller.createFullMarketingCampaignWithEmail')}
             </p>
           </div>
         </div>

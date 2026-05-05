@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Filter } from "lucide-react";
 import { adminTenantManagementNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 const mockTenantAuditLogs = [
   { id: 1, tenant: "Maxina", action: "Settings Updated", admin: "Admin User", timestamp: "2025-01-09 11:20 AM", status: "success" },
@@ -18,7 +19,7 @@ export default function TenantAudit() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - Tenant Audit Logs" 
+        title={t('screens.admin.adminTenantAuditLogs')} 
         description="Track tenant-level changes and configurations" 
         canonical={window.location.href} 
       />
@@ -27,7 +28,7 @@ export default function TenantAudit() {
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Tenant Audit Logs"
+            title={t('screens.admin.tenantAuditLogs')}
             description="Track tenant configuration changes, feature toggles, and administrative actions"
             emoji="📋"
           />
@@ -36,16 +37,16 @@ export default function TenantAudit() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Recent Tenant Changes
+                {t('screens.admin.recentTenantChanges')}
               </CardTitle>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm">
                   <Filter className="w-4 h-4 mr-2" />
-                  Filter
+                  {t('screens.admin.filter')}
                 </Button>
                 <Button variant="outline" size="sm">
                   <Download className="w-4 h-4 mr-2" />
-                  Export
+                  {t('screens.admin.export')}
                 </Button>
               </div>
             </CardHeader>
@@ -58,7 +59,7 @@ export default function TenantAudit() {
                         <p className="font-medium">{log.tenant}</p>
                         <Badge variant="outline">{log.action}</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground">By: {log.admin}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.byAdmin', { admin: log.admin })}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-muted-foreground">{log.timestamp}</p>

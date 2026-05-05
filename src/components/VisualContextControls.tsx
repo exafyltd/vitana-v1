@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { Monitor, Camera, Eye, EyeOff, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { t } from '@/lib/i18n-toast';
 
 export const VisualContextControls = () => {
   const { isCapturing, config, setConfig, startCapture, stopCapture } = useVisualContext();
@@ -20,7 +21,7 @@ export const VisualContextControls = () => {
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Eye className="h-5 w-5" />
-          Visual Context Awareness
+          {t('screens.common.visualContextAwareness')}
         </h3>
         <Button
           variant="ghost"
@@ -36,7 +37,7 @@ export const VisualContextControls = () => {
           <div className="flex items-center justify-between">
             <Label htmlFor="screen-share" className="flex items-center gap-2">
               <Monitor className="h-4 w-4" />
-              Screen Sharing
+              {t('screens.common.screenSharing')}
             </Label>
             <Switch
               id="screen-share"
@@ -49,7 +50,7 @@ export const VisualContextControls = () => {
           <div className="flex items-center justify-between">
             <Label htmlFor="camera" className="flex items-center gap-2">
               <Camera className="h-4 w-4" />
-              Camera
+              {t('screens.common.camera')}
             </Label>
             <Switch
               id="camera"
@@ -60,7 +61,7 @@ export const VisualContextControls = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="interval">Capture Interval</Label>
+            <Label htmlFor="interval">{t('screens.common.captureInterval')}</Label>
             <Select
               value={config.captureInterval.toString()}
               onValueChange={handleIntervalChange}
@@ -70,10 +71,10 @@ export const VisualContextControls = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="10000">10 seconds</SelectItem>
-                <SelectItem value="30000">30 seconds</SelectItem>
-                <SelectItem value="60000">1 minute</SelectItem>
-                <SelectItem value="300000">5 minutes</SelectItem>
+                <SelectItem value="10000">{t('screens.common.text10Seconds')}</SelectItem>
+                <SelectItem value="30000">{t('screens.common.text30Seconds')}</SelectItem>
+                <SelectItem value="60000">{t('screens.common.text1Minute')}</SelectItem>
+                <SelectItem value="300000">{t('screens.common.text5Minutes')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -88,12 +89,12 @@ export const VisualContextControls = () => {
             className="flex-1"
           >
             <Eye className="h-4 w-4 mr-2" />
-            Start Context Capture
+            {t('screens.common.startContextCapture')}
           </Button>
         ) : (
           <Button onClick={stopCapture} variant="destructive" className="flex-1">
             <EyeOff className="h-4 w-4 mr-2" />
-            Stop Context Capture
+            {t('screens.common.stopContextCapture')}
           </Button>
         )}
       </div>
@@ -101,12 +102,12 @@ export const VisualContextControls = () => {
       {isCapturing && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          Active - Analyzing your visual context
+          {t('screens.common.activeAnalyzingYourVisualContext')}
         </div>
       )}
 
       <p className="text-xs text-muted-foreground">
-        Visual context helps your AI assistant provide more relevant and timely suggestions based on what you're viewing.
+        {t('screens.common.visualContextHelpsYourAiAssistant')}
       </p>
     </Card>
   );

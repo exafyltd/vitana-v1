@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface TicketSale {
   id: string;
@@ -138,7 +139,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <DollarSign className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Revenue</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.revenue')}</p>
                 <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}</p>
               </div>
             </div>
@@ -152,7 +153,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <Ticket className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Tickets Sold</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.ticketsSold')}</p>
                 <p className="text-2xl font-bold">{totalTicketsSold}</p>
               </div>
             </div>
@@ -166,7 +167,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <Users className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Buyers</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.buyers')}</p>
                 <p className="text-2xl font-bold">{completedSales.length}</p>
               </div>
             </div>
@@ -180,7 +181,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <CheckCircle className="h-5 w-5 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Checked In</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.checked')}</p>
                 <p className="text-2xl font-bold">{checkedInCount}</p>
               </div>
             </div>
@@ -193,7 +194,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            Sales by Ticket Type
+            {t('screens.tickets.salesByTicketType')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -207,15 +208,13 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
               <div key={type.id} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">{type.name}</span>
-                  <span className="text-muted-foreground">
-                    {type.quantity_sold} / {type.quantity_available} sold
+                  <span className="text-muted-foreground">{t('screens.tickets.quantity_soldQuantity_availableSold', { quantity_sold: type.quantity_sold, quantity_available: type.quantity_available })}
                   </span>
                 </div>
                 <Progress value={soldPercent} className="h-2" />
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>${type.price.toFixed(2)} each</span>
-                  <span className="font-medium text-foreground">
-                    ${typeRevenue.toFixed(2)} revenue
+                  <span>{t('screens.tickets.value0Each', { value0: type.price.toFixed(2) })}</span>
+                  <span className="font-medium text-foreground">{t('screens.tickets.value0Revenue', { value0: typeRevenue.toFixed(2) })}
                   </span>
                 </div>
               </div>
@@ -223,8 +222,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
           })}
 
           {ticketTypes.length === 0 && (
-            <p className="text-center text-muted-foreground py-4">
-              No ticket types configured
+            <p className="text-center text-muted-foreground py-4">{t('screens.tickets.noTicketTypesConfigured')}
             </p>
           )}
         </CardContent>
@@ -235,12 +233,11 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Ticket Buyers ({completedSales.length})
+              <Users className="h-4 w-4" />{t('screens.tickets.ticketBuyersLength', { length: completedSales.length })}
             </CardTitle>
             <Button variant="outline" size="sm" onClick={exportToCSV}>
               <Download className="h-4 w-4 mr-2" />
-              Export CSV
+              {t('screens.tickets.exportCsv')}
             </Button>
           </div>
         </CardHeader>
@@ -258,7 +255,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                       {sale.checked_in_at && (
                         <Badge variant="secondary" className="text-xs bg-green-500/10 text-green-600">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          Checked In
+                          {t('screens.tickets.checked')}
                         </Badge>
                       )}
                     </div>
@@ -285,7 +282,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
               {completedSales.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground">
                   <Ticket className="h-12 w-12 mx-auto mb-2 opacity-30" />
-                  <p>No ticket sales yet</p>
+                  <p>{t('screens.tickets.noTicketSalesYet')}</p>
                 </div>
               )}
             </div>

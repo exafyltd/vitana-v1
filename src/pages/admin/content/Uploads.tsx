@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { useContentItems, useContentStats, useModerateContent } from "@/hooks/useAdminContent";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
@@ -51,7 +52,7 @@ export default function Uploads() {
     <AppLayout>
       <AdminTabs sectionKey="content" />
       <div className="p-6 space-y-6">
-        <AdminHeader emoji="📤" title="Uploads" description="Review and moderate all content submissions" />
+        <AdminHeader emoji="📤" title={t('screens.admin.uploads')} description="Review and moderate all content submissions" />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {statCards.map((s) => (
@@ -90,19 +91,19 @@ export default function Uploads() {
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading uploads...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingUploads')}</p>
         ) : filtered.length === 0 ? (
-          <AdminEmptyState title="No uploads found" description="No content matches the current filters." />
+          <AdminEmptyState title={t('screens.admin.noUploadsFound')} description="No content matches the current filters." />
         ) : (
           <Card>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.type')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.submitted')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -119,9 +120,9 @@ export default function Uploads() {
                       {new Date(item.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right space-x-1">
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>Approve</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "reject")}>Reject</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "flag")}>Flag</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>{t('screens.admin.approve')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "reject")}>{t('screens.admin.reject')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "flag")}>{t('screens.admin.flag')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 export interface CartItem {
   id: string;
@@ -89,10 +89,10 @@ export function useLocalCart() {
       }
 
       saveCart(updatedItems);
-      toast.success('Added to cart');
+      notifySuccess('toasts.hooks.addedCart');
     } catch (error) {
       console.error('Error adding to cart:', error);
-      toast.error('Failed to add to cart');
+      notifyError('toasts.hooks.failedAddCart');
     } finally {
       setIsLoading(false);
     }
@@ -114,7 +114,7 @@ export function useLocalCart() {
       saveCart(updatedItems);
     } catch (error) {
       console.error('Error updating quantity:', error);
-      toast.error('Failed to update quantity');
+      notifyError('toasts.hooks.failedUpdateQuantity');
     }
   };
 
@@ -123,10 +123,10 @@ export function useLocalCart() {
     try {
       const updatedItems = cartItems.filter(item => item.id !== cartItemId);
       saveCart(updatedItems);
-      toast.success('Removed from cart');
+      notifySuccess('toasts.hooks.removedFromCart');
     } catch (error) {
       console.error('Error removing from cart:', error);
-      toast.error('Failed to remove from cart');
+      notifyError('toasts.hooks.failedRemoveFromCart');
     }
   };
 
@@ -136,10 +136,10 @@ export function useLocalCart() {
       localStorage.removeItem(CART_STORAGE_KEY);
       setCartItems([]);
       setCartCount(0);
-      toast.success('Cart cleared');
+      notifySuccess('toasts.hooks.cartCleared');
     } catch (error) {
       console.error('Error clearing cart:', error);
-      toast.error('Failed to clear cart');
+      notifyError('toasts.hooks.failedClearCart');
     }
   };
 
@@ -152,7 +152,7 @@ export function useLocalCart() {
   // Checkout (mock for presentation)
   const checkout = async () => {
     if (cartItems.length === 0) {
-      toast.error('Your cart is empty');
+      notifyError('toasts.hooks.yourCartEmpty');
       return;
     }
 
@@ -161,7 +161,7 @@ export function useLocalCart() {
       // Simulate checkout delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      toast.success('Opening checkout...');
+      notifySuccess('toasts.hooks.openingCheckout');
       // For demo, just show a success message
       // In real implementation, this would call Stripe
       // SPA-safe navigation
@@ -169,7 +169,7 @@ export function useLocalCart() {
       window.dispatchEvent(new PopStateEvent('popstate'));
     } catch (error) {
       console.error('Error during checkout:', error);
-      toast.error('Failed to start checkout');
+      notifyError('toasts.hooks.failedStartCheckout');
     } finally {
       setIsLoading(false);
     }

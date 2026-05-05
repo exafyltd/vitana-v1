@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Send, Paperclip, Smile, Image, FileText, X, Plus } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 // Remove react-i18next import - not available
 
 interface MessageComposerProps {
@@ -79,7 +80,7 @@ export default function MessageComposer({
         {recipients.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">To:</span>
+              <span className="text-sm font-medium text-muted-foreground">{t('screens.messages.text')}</span>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -87,7 +88,7 @@ export default function MessageComposer({
                 className="h-6 px-2"
               >
                 <Plus className="w-3 h-3 mr-1" />
-                Add
+                {t('screens.messages.add')}
               </Button>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -122,7 +123,7 @@ export default function MessageComposer({
         {/* Attachments */}
         {attachments.length > 0 && (
           <div className="space-y-2">
-            <span className="text-sm font-medium text-muted-foreground">Attachments:</span>
+            <span className="text-sm font-medium text-muted-foreground">{t('screens.messages.attachments')}</span>
             <div className="flex flex-wrap gap-2">
               {attachments.map((file, index) => (
                 <Badge 
@@ -202,7 +203,7 @@ export default function MessageComposer({
                 className="h-8"
               >
                 <Send className="w-4 h-4 mr-1" />
-                Send
+                {t('screens.messages.send')}
               </Button>
             </div>
           </div>

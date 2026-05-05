@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export const useAppointmentNotifications = () => {
   const { toast } = useToast();
@@ -29,10 +30,7 @@ export const useAppointmentNotifications = () => {
           const appointment = payload.new as any;
           
           // Show toast notification
-          toast({
-            title: "✅ Appointment Confirmed",
-            description: `Your appointment with ${appointment.provider_name} on ${new Date(appointment.start_time).toLocaleDateString()} has been booked.`,
-          });
+          notify('toasts.hooks.appointmentConfirmed');
 
           // Send confirmation email via Edge Function
           try {
@@ -66,19 +64,12 @@ export const useAppointmentNotifications = () => {
             oldAppointment.status !== "confirmed" &&
             newAppointment.status === "confirmed"
           ) {
-            toast({
-              title: "✅ Appointment Confirmed",
-              description: `Your appointment with ${newAppointment.provider_name} has been confirmed.`,
-            });
+            notify('toasts.hooks.appointmentConfirmed');
           }
 
           // Status changed to cancelled
           if (newAppointment.status === "cancelled") {
-            toast({
-              title: "❌ Appointment Cancelled",
-              description: `Your appointment with ${newAppointment.provider_name} has been cancelled.`,
-              variant: "destructive",
-            });
+            notifyError('toasts.hooks.appointmentCancelled');
 
             // Send cancellation email
             try {
@@ -98,10 +89,7 @@ export const useAppointmentNotifications = () => {
 
           // Time changed (rescheduled)
           if (oldAppointment.start_time !== newAppointment.start_time) {
-            toast({
-              title: "📅 Appointment Rescheduled",
-              description: `Your appointment with ${newAppointment.provider_name} has been moved to ${new Date(newAppointment.start_time).toLocaleString()}.`,
-            });
+            notify('toasts.hooks.appointmentRescheduled');
 
             // Send reschedule email
             try {

@@ -5,6 +5,7 @@ import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoCarouselModalProps {
   open: boolean;
@@ -102,7 +103,7 @@ export function PhotoCarouselModal({
                 onClick={() => handleDownload(images[currentIndex])}
               >
                 <Download className="h-4 w-4 mr-2" />
-                Download
+                {t('screens.diary.download')}
               </Button>
             </div>
 

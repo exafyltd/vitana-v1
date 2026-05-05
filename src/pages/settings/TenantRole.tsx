@@ -12,8 +12,9 @@ import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function TenantRole() {
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
@@ -31,17 +32,10 @@ export default function TenantRole() {
     setSwitching(true);
     try {
       await setRole(selectedRole as any);
-      toast({
-        title: "Role switched",
-        description: `Successfully switched to ${selectedRole} role`,
-      });
+      notify('toasts.settings.roleSwitched');
       setSelectedRole("");
     } catch (error) {
-      toast({
-        title: "Error switching role",
-        description: "Failed to switch role. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
     } finally {
       setSwitching(false);
     }
@@ -53,17 +47,10 @@ export default function TenantRole() {
     setSwitching(true);
     try {
       await setActiveTenant(selectedTenant);
-      toast({
-        title: "Organization switched",
-        description: `Successfully switched to new organization`,
-      });
+      notify('toasts.settings.organizationSwitched');
       setSelectedTenant("");
     } catch (error) {
-      toast({
-        title: "Error switching organization",
-        description: "Failed to switch organization. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.errorSwitchingOrganization', 'toasts.settings.failedSwitchOrganizationPleaseTryAgain');
     } finally {
       setSwitching(false);
     }
@@ -134,12 +121,12 @@ export default function TenantRole() {
 
   return (
     <AppLayout>
-      <SEO title="Tenant & Role Switcher | Settings" description="Switch between roles and tenants" canonical={window.location.href} />
+      <SEO title={t('screens.settings.tenantRoleSwitcherSettings')} description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader 
-            title="Switch roles & tenants!"
+            title={t('screens.settings.switchRolesTenants')}
             description="Manage your context and permissions"
             emoji="🔄"
           />
@@ -148,8 +135,7 @@ export default function TenantRole() {
           {isExafyAdmin && (
             <Alert>
               <Crown className="h-4 w-4" />
-              <AlertDescription>
-                You are an Exafy super administrator. You can switch between organizations and manage all tenants.
+              <AlertDescription>{t('screens.settings.youExafySuperAdministratorYouCan')}
               </AlertDescription>
             </Alert>
           )}
@@ -159,7 +145,7 @@ export default function TenantRole() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5" />
-                Current Context
+                {t('screens.settings.currentContext')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -173,7 +159,7 @@ export default function TenantRole() {
                     <p className="text-sm text-muted-foreground">{tenant?.name || "No Organization"}</p>
                   </div>
                 </div>
-                <Badge className="bg-green-100 text-green-700">Active</Badge>
+                <Badge className="bg-green-100 text-green-700">{t('screens.settings.active')}</Badge>
               </div>
             </CardContent>
           </Card>
@@ -183,17 +169,17 @@ export default function TenantRole() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5" />
-                Switch Role
+                {t('screens.settings.switchRole')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {roles && roles.length > 0 ? (
                 <>
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Available Roles</label>
+                    <label className="text-sm font-medium mb-2 block">{t('screens.settings.availableRoles')}</label>
                     <Select value={selectedRole} onValueChange={setSelectedRole}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder={t('screens.settings.selectRole')} />
                       </SelectTrigger>
                       <SelectContent>
                         {roles.map((role) => (
@@ -248,7 +234,7 @@ export default function TenantRole() {
                 <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
-                    You don't have any role memberships yet. Contact an administrator to get access.
+                    {t('screens.settings.youDonTHaveAnyRole')}
                   </AlertDescription>
                 </Alert>
               )}
@@ -261,17 +247,17 @@ export default function TenantRole() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Building2 className="w-5 h-5" />
-                  Switch Organization (Admin Only)
+                  {t('screens.settings.switchOrganizationAdminOnly')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {memberships && memberships.length > 0 ? (
                   <>
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Available Organizations</label>
+                      <label className="text-sm font-medium mb-2 block">{t('screens.settings.availableOrganizations')}</label>
                       <Select value={selectedTenant} onValueChange={setSelectedTenant}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select an organization" />
+                          <SelectValue placeholder={t('screens.settings.selectOrganization')} />
                         </SelectTrigger>
                         <SelectContent>
                           {memberships.map((membership) => (
@@ -301,7 +287,7 @@ export default function TenantRole() {
                             </div>
                             <div>
                               <h4 className="font-medium">{membership.tenants.name}</h4>
-                              <p className="text-sm text-muted-foreground">Role: {getRoleDisplayName(membership.role)}</p>
+                              <p className="text-sm text-muted-foreground">{t('screens.settings.roleValue0', { value0: getRoleDisplayName(membership.role) })}</p>
                             </div>
                           </div>
                           <Badge className={
@@ -327,7 +313,7 @@ export default function TenantRole() {
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      No organization memberships found.
+                      {t('screens.settings.noOrganizationMembershipsFound')}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -338,7 +324,7 @@ export default function TenantRole() {
           {/* Role Permissions */}
           <Card>
             <CardHeader>
-              <CardTitle>Current Role Permissions</CardTitle>
+              <CardTitle>{t('screens.settings.currentRolePermissions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -351,12 +337,12 @@ export default function TenantRole() {
                         {status === "granted" ? (
                           <>
                             <CheckCircle2 className="w-4 h-4 text-green-600" />
-                            <Badge className="bg-green-100 text-green-700">Granted</Badge>
+                            <Badge className="bg-green-100 text-green-700">{t('screens.settings.granted')}</Badge>
                           </>
                         ) : (
                           <>
                             <XCircle className="w-4 h-4 text-gray-400" />
-                            <Badge className="bg-gray-100 text-gray-700">Not Available</Badge>
+                            <Badge className="bg-gray-100 text-gray-700">{t('screens.settings.notAvailable')}</Badge>
                           </>
                         )}
                       </div>

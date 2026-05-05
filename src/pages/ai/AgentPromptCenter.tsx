@@ -8,6 +8,7 @@ import { Bot, MessageSquare, Zap, Play, Save } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import StandardHeader from '@/components/StandardHeader';
+import { t } from '@/lib/i18n-toast';
 
 export default function AgentPromptCenter() {
   const [selectedPrompt, setSelectedPrompt] = useState('');
@@ -51,13 +52,13 @@ export default function AgentPromptCenter() {
   return (
     <AppLayout>
       <SEO 
-        title="Agent Prompt Center | VITANA" 
+        title={t('screens.ai.agentPromptCenterVitana')} 
         description="Customize your AI agent's behavior and focus areas"
         canonical={window.location.href}
       />
       <div className="p-6 space-y-6">
         <StandardHeader
-          title="Agent Prompt Center"
+          title={t('screens.ai.agentPromptCenter')}
           description="Customize how your AI agent thinks and responds to your needs"
           emoji="🤖"
         />
@@ -68,7 +69,7 @@ export default function AgentPromptCenter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-5 w-5" />
-                Agent Templates
+                {t('screens.ai.agentTemplates')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -105,28 +106,28 @@ export default function AgentPromptCenter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bot className="h-5 w-5" />
-                Custom Agent Prompt
+                {t('screens.ai.customAgentPrompt')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Agent Name</label>
-                <Input placeholder="My Wellness Assistant" />
+                <label className="text-sm font-medium">{t('screens.ai.agentName')}</label>
+                <Input placeholder={t('screens.ai.myWellnessAssistant')} />
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">System Prompt</label>
+                <label className="text-sm font-medium">{t('screens.ai.systemPrompt')}</label>
                 <Textarea 
                   value={customPrompt}
                   onChange={(e) => setCustomPrompt(e.target.value)}
-                  placeholder="Define how your AI agent should behave, what it should focus on, and how it should communicate with you..."
+                  placeholder={t('screens.ai.defineHowYourAiAgentShould')}
                   rows={8}
                   className="font-mono text-sm"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Focus Areas</label>
+                <label className="text-sm font-medium">{t('screens.ai.focusAreas')}</label>
                 <div className="flex flex-wrap gap-2">
                   {['Health', 'Social', 'Productivity', 'Longevity', 'Wellness', 'Community'].map((area) => (
                     <Badge key={area} variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
@@ -139,11 +140,11 @@ export default function AgentPromptCenter() {
               <div className="flex gap-2 pt-4">
                 <Button className="flex-1" disabled>
                   <Play className="h-4 w-4 mr-2" />
-                  Test Agent
+                  {t('screens.ai.testAgent')}
                 </Button>
                 <Button variant="outline" className="flex-1" disabled>
                   <Save className="h-4 w-4 mr-2" />
-                  Save Prompt
+                  {t('screens.ai.savePrompt')}
                 </Button>
               </div>
             </CardContent>
@@ -154,10 +155,8 @@ export default function AgentPromptCenter() {
         <Card className="max-w-6xl mx-auto border-dashed">
           <CardContent className="p-6 text-center">
             <Zap className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">Agent Prompt Center - Phase 5</h3>
-            <p className="text-muted-foreground">
-              This is a read-only placeholder for the Agent Prompt Center. 
-              Future phases will enable full AI agent customization and real-time testing.
+            <h3 className="text-lg font-medium mb-2">{t('screens.ai.agentPromptCenterPhase5')}</h3>
+            <p className="text-muted-foreground">{t('screens.ai.thisReadonlyPlaceholderForAgentPrompt')}
             </p>
           </CardContent>
         </Card>

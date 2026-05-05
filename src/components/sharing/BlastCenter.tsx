@@ -22,7 +22,7 @@ import {
   Coins,
   Loader2,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import { useChannels, type DistributionChannel } from "@/hooks/useChannels";
@@ -30,6 +30,7 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const CHANNEL_ICONS: Record<string, any> = {
   email: Mail,
@@ -68,11 +69,7 @@ export function BlastCenter() {
   const toggleChannel = (channelId: string) => {
     const channel = channels?.find((c) => c.id === channelId);
     if (!channel?.is_connected) {
-      toast({
-        title: "Channel not connected",
-        description: `Please connect this channel first.`,
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.channelNotConnected');
       return;
     }
 
@@ -89,29 +86,17 @@ export function BlastCenter() {
 
   const handleBlastNow = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to blast posts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogBlastPosts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
     if (selectedChannels.size === 0) {
-      toast({
-        title: "No channels selected",
-        description: "Please select at least one channel to distribute.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.noChannelsSelected', 'toasts.sharing.pleaseSelectAtLeastOneChannel');
       return;
     }
 
@@ -144,20 +129,12 @@ export function BlastCenter() {
 
   const handleSaveDraft = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to save drafts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogSaveDrafts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
@@ -179,29 +156,17 @@ export function BlastCenter() {
 
   const handleScheduleClick = async () => {
     if (!userId) {
-      toast({
-        title: "Not authenticated",
-        description: "Please log in to schedule posts.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.notAuthenticated', 'toasts.sharing.pleaseLogSchedulePosts');
       return;
     }
 
     if (!title || !description) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in title and description.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.missingFields', 'toasts.sharing.pleaseFillTitleDescription');
       return;
     }
 
     if (selectedChannels.size === 0) {
-      toast({
-        title: "No channels selected",
-        description: "Please select at least one channel.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.noChannelsSelected', 'toasts.sharing.pleaseSelectAtLeastOneChannel2');
       return;
     }
 
@@ -261,36 +226,36 @@ export function BlastCenter() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Send className="w-5 h-5" />
-          Blast Center
+          {t('screens.sharing.blastCenter')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Share your content across multiple channels instantly
+          {t('screens.sharing.shareYourContentAcrossMultipleChannels')}
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Entity Type Selector */}
         <div className="space-y-2">
-          <Label>What are you sharing?</Label>
+          <Label>{t('screens.sharing.whatYouSharing')}</Label>
           <Select value={entityType} onValueChange={setEntityType}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="event">Event</SelectItem>
-              <SelectItem value="meetup">Meetup</SelectItem>
-              <SelectItem value="group">Group</SelectItem>
-              <SelectItem value="live-room">Live Room</SelectItem>
-              <SelectItem value="profile">Profile</SelectItem>
+              <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+              <SelectItem value="meetup">{t('screens.sharing.meetup')}</SelectItem>
+              <SelectItem value="group">{t('screens.sharing.group')}</SelectItem>
+              <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
+              <SelectItem value="profile">{t('screens.sharing.profile')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         {/* Campaign Selector */}
         <div className="space-y-2">
-          <Label>Campaign (Optional)</Label>
+          <Label>{t('screens.sharing.campaignOptional')}</Label>
           <Select value={selectedCampaign || undefined} onValueChange={setSelectedCampaign}>
             <SelectTrigger>
-              <SelectValue placeholder="No campaign selected" />
+              <SelectValue placeholder={t('screens.sharing.noCampaignSelected')} />
             </SelectTrigger>
             <SelectContent>
               {campaigns?.map((campaign) => (
@@ -314,21 +279,17 @@ export function BlastCenter() {
             
             return (
               <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 space-y-2">
-                <p className="text-sm font-medium">📊 Campaign: {campaign.name}</p>
+                <p className="text-sm font-medium">{t('screens.sharing.campaignName', { name: campaign.name })}</p>
                 {distributionConfig?.frequency && (
-                  <p className="text-xs text-muted-foreground">
-                    Frequency: {distributionConfig.frequency}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.frequencyFrequency', { frequency: distributionConfig.frequency })}</p>
                 )}
                 {distributionConfig?.smart_scheduling_enabled && (
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <span>✨</span> Smart scheduling enabled
+                    <span>✨</span>{t('screens.sharing.smartSchedulingEnabled')}
                   </p>
                 )}
                 {selectedChannelKeys.length > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    Channels: {selectedChannelKeys.join(", ")}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.channelsValue0', { value0: selectedChannelKeys.join(", ") })}</p>
                 )}
               </div>
             );
@@ -338,18 +299,18 @@ export function BlastCenter() {
         {/* Content Editor */}
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>Title</Label>
+            <Label>{t('screens.sharing.title')}</Label>
             <Input
-              placeholder="Enter a compelling title..."
+              placeholder={t('screens.sharing.enterCompellingTitle')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label>{t('screens.sharing.description')}</Label>
             <Textarea
-              placeholder="Write your message..."
+              placeholder={t('screens.sharing.writeYourMessage')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
@@ -359,7 +320,7 @@ export function BlastCenter() {
 
         {/* Channel Selector */}
         <div className="space-y-3">
-          <Label>Select Channels</Label>
+          <Label>{t('screens.sharing.selectChannels')}</Label>
           {channelsLoading ? (
             <div className="flex justify-center py-8">
               <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
@@ -400,9 +361,9 @@ export function BlastCenter() {
           ) : (
             <div className="text-center py-8 border rounded-lg bg-muted/50">
               <MessageSquare className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">No channels connected yet</p>
+              <p className="text-sm text-muted-foreground">{t('screens.sharing.noChannelsConnectedYet')}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Go to Integrations to connect channels
+                {t('screens.sharing.goIntegrationsConnectChannels')}
               </p>
             </div>
           )}
@@ -412,7 +373,7 @@ export function BlastCenter() {
         <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
           <Coins className="w-4 h-4 text-green-600" />
           <span className="text-sm text-green-800 dark:text-green-200">
-            Post now, earn +5 credits
+            {t('screens.sharing.postNowEarn5Credits')}
           </span>
         </div>
 
@@ -428,8 +389,7 @@ export function BlastCenter() {
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <Send className="w-4 h-4 mr-2" />
-            )}
-            Blast Now
+            )}{t('screens.sharing.blastNow')}
           </Button>
           <Button 
             variant="outline" 
@@ -441,8 +401,7 @@ export function BlastCenter() {
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <CalendarIcon className="w-4 h-4 mr-2" />
-            )}
-            Schedule
+            )}{t('screens.sharing.schedule')}
           </Button>
           <Button 
             variant="outline" 

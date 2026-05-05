@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useRealtimeConnection } from "./useRealtimeConnection";
 import { measurePerformance } from "@/utils/performanceLogger";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { isValidUUID } from "@/lib/resolveProfileUserId";
 import { useEffect } from "react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface FollowCounts {
   followers_count: number;
@@ -132,10 +133,10 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
     onError: (_err, _vars, context) => {
       if (context?.prevCounts) queryClient.setQueryData(['follow-counts', validTarget], context.prevCounts);
       if (context?.prevStatus !== undefined) queryClient.setQueryData(['follow-status', validViewer, validTarget], context.prevStatus);
-      toast({ title: "Error", description: "Failed to follow user", variant: "destructive" });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedFollowUser');
     },
     onSuccess: () => {
-      toast({ title: "Success", description: "You are now following this user" });
+      notify('toasts.hooks.success', 'toasts.hooks.youNowFollowingThisUser');
       // Log follow activity
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logFollow } = useCommunityLogger();
@@ -170,10 +171,10 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
     onError: (_err, _vars, context) => {
       if (context?.prevCounts) queryClient.setQueryData(['follow-counts', validTarget], context.prevCounts);
       if (context?.prevStatus !== undefined) queryClient.setQueryData(['follow-status', validViewer, validTarget], context.prevStatus);
-      toast({ title: "Error", description: "Failed to unfollow user", variant: "destructive" });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedUnfollowUser');
     },
     onSuccess: () => {
-      toast({ title: "Success", description: "You have unfollowed this user" });
+      notify('toasts.hooks.success', 'toasts.hooks.youHaveUnfollowedThisUser');
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logUnfollow } = useCommunityLogger();
         logUnfollow(validTarget!, 'User');
@@ -187,11 +188,11 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
 
   const followUser = useCallback(async () => {
     if (!validViewer) {
-      toast({ title: "Authentication required", description: "Please sign in to follow users", variant: "destructive" });
+      notifyError('toasts.hooks.authenticationRequired2', 'toasts.hooks.pleaseSignFollowUsers');
       return;
     }
     if (validViewer === validTarget) {
-      toast({ title: "Invalid action", description: "You cannot follow yourself", variant: "destructive" });
+      notifyError('toasts.hooks.invalidAction', 'toasts.hooks.youCannotFollowYourself');
       return;
     }
     await followMutation.mutateAsync();
@@ -199,7 +200,7 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
 
   const unfollowUser = useCallback(async () => {
     if (!validViewer) {
-      toast({ title: "Authentication required", description: "Please sign in to unfollow users", variant: "destructive" });
+      notifyError('toasts.hooks.authenticationRequired2', 'toasts.hooks.pleaseSignUnfollowUsers');
       return;
     }
     await unfollowMutation.mutateAsync();

@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
+import { t } from '@/lib/i18n-toast';
 
 interface ServiceProvider {
   id: string;
@@ -148,7 +149,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           {/* Quick Info */}
           <Card>
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg">Service Details</CardTitle>
+              <CardTitle className="text-lg">{t('screens.health.serviceDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
@@ -156,28 +157,28 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                   <Clock className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.duration}</p>
-                    <p className="text-xs text-muted-foreground">Duration</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.price}</p>
-                    <p className="text-xs text-muted-foreground">Price</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.price')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.location}</p>
-                    <p className="text-xs text-muted-foreground">Location</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.location')}</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
                 <Calendar className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-700">Next available: {serviceDetail.nextAvailable}</span>
+                <span className="text-sm font-medium text-green-700">{t('screens.health.nextAvailableNextavailable', { nextAvailable: serviceDetail.nextAvailable })}</span>
               </div>
             </CardContent>
           </Card>
@@ -186,15 +187,15 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           <div className="flex gap-3">
             <Button className="flex-1" size="lg" onClick={() => setShowBookingFlow(true)}>
               <Calendar className="w-4 h-4 mr-2" />
-              Book Now
+              {t('screens.health.bookNow')}
             </Button>
             <Button variant="outline" className="flex-1" size="lg">
               <Bookmark className="w-4 h-4 mr-2" />
-              Add to Plan
+              {t('screens.health.addPlan')}
             </Button>
             <Button variant="outline" size="lg">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Ask AI
+              {t('screens.health.askAi')}
             </Button>
           </div>
 
@@ -203,7 +204,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                What's Included
+                {t('screens.health.whatSIncluded')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -223,7 +224,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Heart className="w-5 h-5 text-red-500" />
-                Health Benefits
+                {t('screens.health.healthBenefits')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -243,7 +244,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Users className="w-5 h-5 text-blue-600" />
-                Available Providers
+                {t('screens.health.availableProviders')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -283,7 +284,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Shield className="w-5 h-5 text-orange-600" />
-                  Requirements & Preparation
+                  {t('screens.health.requirementsPreparation')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -302,7 +303,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           {/* Tags */}
           {serviceDetail.tags.length > 0 && (
             <div>
-              <h4 className="font-medium mb-2">Tags</h4>
+              <h4 className="font-medium mb-2">{t('screens.health.tags')}</h4>
               <div className="flex gap-2 flex-wrap">
                 {serviceDetail.tags.map((tag, index) => (
                   <Badge key={index} variant="secondary" className="text-xs">

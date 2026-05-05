@@ -14,6 +14,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { adminFetch } from "@/lib/admin-api";
+import { t } from '@/lib/i18n-toast';
 
 interface Session {
   session_id: string;
@@ -55,17 +56,17 @@ export default function AssistantSessions() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📡"
-          title="Voice Sessions"
+          title={t('screens.admin.voiceSessions')}
           description="Recent ORB voice sessions for your tenant. View session details and diagnostics."
         />
 
         {sessionsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading sessions...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSessions')}</p>
         )}
 
         {!sessionsQuery.isLoading && sessions.length === 0 && (
           <AdminEmptyState
-            title="No sessions found"
+            title={t('screens.admin.noSessionsFound')}
             description="Voice sessions will appear here once users start using the ORB."
           />
         )}
@@ -76,11 +77,11 @@ export default function AssistantSessions() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Session ID</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Started</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('screens.admin.sessionId')}</TableHead>
+                    <TableHead>{t('screens.admin.user')}</TableHead>
+                    <TableHead>{t('screens.admin.started')}</TableHead>
+                    <TableHead>{t('screens.admin.duration')}</TableHead>
+                    <TableHead>{t('screens.admin.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

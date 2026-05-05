@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { t } from '@/lib/i18n-toast';
 
 interface FilterOption {
   value: string;
@@ -68,7 +69,7 @@ export default function AdminFilterBar({
       {hasActiveFilters && onReset && (
         <Button variant="ghost" size="sm" onClick={onReset} className="h-9 px-2">
           <X className="h-4 w-4 mr-1" />
-          Reset
+          {t('screens.admin.reset')}
         </Button>
       )}
 

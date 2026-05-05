@@ -13,6 +13,7 @@ import { CheckCircle, XCircle, Flag, Eye, Calendar, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -63,7 +64,7 @@ const EventsModeration = () => {
       setEvents(data || []);
     } catch (error) {
       console.error('Error fetching events:', error);
-      toast.error('Failed to load events');
+      notifyError('toasts.admin.failedLoadEvents');
     } finally {
       setLoading(false);
     }
@@ -85,7 +86,7 @@ const EventsModeration = () => {
       fetchEvents();
     } catch (error) {
       console.error('Error moderating event:', error);
-      toast.error('Failed to moderate event');
+      notifyError('toasts.admin.failedModerateEvent');
     }
   };
 
@@ -110,45 +111,45 @@ const EventsModeration = () => {
   return (
     <AdminGuard>
       <AppLayout>
-        <SEO title="Events Moderation - Admin" description="Review and moderate community events" />
+        <SEO title={t('screens.admin.eventsModerationAdmin')} description="Review and moderate community events" />
         
         <SubNavigation items={adminCommunityNavigation} />
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Events Moderation"
+              title={t('screens.admin.eventsModeration')}
               description="Review, approve, or reject community events and meetups"
             />
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="approved">Approved</TabsTrigger>
-                <TabsTrigger value="flagged">Flagged</TabsTrigger>
-                <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                <TabsTrigger value="all">{t('screens.admin.all')}</TabsTrigger>
+                <TabsTrigger value="pending">{t('screens.admin.pending')}</TabsTrigger>
+                <TabsTrigger value="approved">{t('screens.admin.approved')}</TabsTrigger>
+                <TabsTrigger value="flagged">{t('screens.admin.flagged')}</TabsTrigger>
+                <TabsTrigger value="rejected">{t('screens.admin.rejected')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="mt-6">
                 <Card>
                   {loading ? (
-                    <div className="p-12 text-center text-muted-foreground">Loading events...</div>
+                    <div className="p-12 text-center text-muted-foreground">{t('screens.admin.loadingEvents')}</div>
                   ) : filteredEvents.length === 0 ? (
                     <div className="p-12 text-center">
                       <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground">No events found</p>
+                      <p className="text-muted-foreground">{t('screens.admin.noEventsFound')}</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Event</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Participants</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{t('screens.admin.event')}</TableHead>
+                          <TableHead>{t('screens.admin.type')}</TableHead>
+                          <TableHead>{t('screens.admin.date')}</TableHead>
+                          <TableHead>{t('screens.admin.participants')}</TableHead>
+                          <TableHead>{t('screens.admin.status')}</TableHead>
+                          <TableHead>{t('screens.admin.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -185,7 +186,7 @@ const EventsModeration = () => {
                                       onClick={() => moderateEvent(event.id, 'approved')}
                                     >
                                       <CheckCircle className="h-4 w-4 mr-1" />
-                                      Approve
+                                      {t('screens.admin.approve')}
                                     </Button>
                                     <Button
                                       size="sm"
@@ -193,7 +194,7 @@ const EventsModeration = () => {
                                       onClick={() => moderateEvent(event.id, 'rejected', 'Does not meet community guidelines')}
                                     >
                                       <XCircle className="h-4 w-4 mr-1" />
-                                      Reject
+                                      {t('screens.admin.reject')}
                                     </Button>
                                   </>
                                 )}
@@ -204,7 +205,7 @@ const EventsModeration = () => {
                                     onClick={() => moderateEvent(event.id, 'flagged', 'Flagged for review')}
                                   >
                                     <Flag className="h-4 w-4 mr-1" />
-                                    Flag
+                                    {t('screens.admin.flag')}
                                   </Button>
                                 )}
                                 <Button size="sm" variant="ghost">

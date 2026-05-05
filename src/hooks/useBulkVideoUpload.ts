@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export interface VideoFileItem {
   id: string;
@@ -399,11 +400,7 @@ export const useBulkVideoUpload = () => {
     setActiveUploads(0);
 
     // Show summary toast
-    toast({
-      title: 'Upload complete',
-      description: `${successCount} uploaded successfully${failureCount > 0 ? `, ${failureCount} failed` : ''}`,
-      variant: failureCount > 0 ? 'destructive' : 'default',
-    });
+    notify('toasts.hooks.uploadComplete');
   }, [items, toast]);
 
   const retryItem = useCallback(async (id: string) => {

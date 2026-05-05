@@ -16,6 +16,7 @@ import {
   Zap,
   RotateCw
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const PLAN_ICONS: Record<string, any> = {
   nutrition: Apple,
@@ -104,7 +105,7 @@ export function PersonalizedPlanCard({
         className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2.5 py-1 text-[12px] font-medium"
         aria-label={`AI Optimized ${summary.lastUpdated}`}
       >
-        <span>AI Optimized</span>
+        <span>{t('screens.health.aiOptimized')}</span>
         <span className="text-slate-400 dark:text-slate-500">•</span>
         <span>{summary.lastUpdated}</span>
       </div>
@@ -129,7 +130,7 @@ export function PersonalizedPlanCard({
               "inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border",
               accentChip
             )}>
-              Active
+              {t('screens.health.active')}
             </span>
           </div>
         </div>
@@ -172,7 +173,7 @@ export function PersonalizedPlanCard({
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[12px] font-medium text-slate-600 dark:text-slate-400">
-                Progress
+                {t('screens.health.progress')}
               </span>
               <span className="text-[13px] font-semibold text-slate-900 dark:text-white">
                 {plan.adherence_score}%
@@ -201,13 +202,13 @@ export function PersonalizedPlanCard({
                 className="flex-1 inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
               >
                 <Zap className="w-3.5 h-3.5" />
-                View Plan
+                {t('screens.health.viewPlan')}
               </button>
               <button
                 onClick={handleRefreshPlan}
                 disabled={isRefreshing}
                 className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Refresh plan"
+                aria-label={t('screens.health.refreshPlan')}
               >
                 <RotateCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
               </button>

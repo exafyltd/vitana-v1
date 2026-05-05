@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { useVitanaIndexHistory } from "@/hooks/useVitanaIndexHistory";
 import { VITANA_INDEX_TIERS, getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 const JOURNEY_TOTAL_DAYS = 90;
 const GOAL_SCORE = 600;
@@ -89,9 +90,7 @@ export function VitanaIndexTrajectoryCard() {
   if (!index || points.length === 0) {
     return (
       <Card className="mb-6">
-        <CardContent className="p-4 text-sm text-muted-foreground">
-          Your Vitana Index trajectory will appear here once the baseline survey
-          is complete. Open Vitana Index &gt; Start baseline to begin.
+        <CardContent className="p-4 text-sm text-muted-foreground">{t('screens.health.yourVitanaIndexTrajectoryWillAppear')}
         </CardContent>
       </Card>
     );
@@ -127,10 +126,10 @@ export function VitanaIndexTrajectoryCard() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-calendar-primary" />
-            <h3 className="text-sm font-medium">Vitana Index trajectory</h3>
+            <h3 className="text-sm font-medium">{t('screens.health.vitanaIndexTrajectory')}</h3>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">Today: {index.total}</Badge>
+            <Badge variant="outline" className="text-xs">{t('screens.health.todayTotal', { total: index.total })}</Badge>
             <Badge variant="outline" className="text-xs">{index.tier.label}</Badge>
           </div>
         </div>
@@ -217,17 +216,14 @@ export function VitanaIndexTrajectoryCard() {
         </svg>
 
         <div className="flex flex-wrap items-center justify-between gap-2 mt-2 text-[10px] text-muted-foreground">
-          <span>Day 0</span>
-          <span>Day 30</span>
-          <span>Day 60</span>
-          <span>Day 90 — goal {GOAL_SCORE}+</span>
+          <span>{t('screens.health.day0')}</span>
+          <span>{t('screens.health.day30')}</span>
+          <span>{t('screens.health.day60')}</span>
+          <span>{t('screens.health.day90GoalGoal_score', { GOAL_SCORE })}</span>
         </div>
 
         {projectedEnd && projectedTier && (
-          <p className="text-xs text-muted-foreground mt-2">
-            At this pace you land around <strong>{projectedEnd.score}</strong> by Day {JOURNEY_TOTAL_DAYS}
-            {" "}— <span className="font-medium">{projectedTier}</span> tier. Balance across all five
-            pillars moves you fastest.
+          <p className="text-xs text-muted-foreground mt-2">{t('screens.health.atThisPaceYouLandAround')} <strong>{projectedEnd.score}</strong>{t('screens.health.byDayJourney_total_daysValue1', { JOURNEY_TOTAL_DAYS, value1: " " })} <span className="font-medium">{projectedTier}</span>{t('screens.health.tierBalanceAcrossAllFivePillars')}
           </p>
         )}
       </CardContent>

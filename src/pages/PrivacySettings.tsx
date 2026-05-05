@@ -29,6 +29,7 @@ import {
   DEFAULT_ACCOUNT_VISIBILITY,
   FieldVisibility,
 } from "@/types/profile";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const NEXT_TIER: Record<FieldVisibility, FieldVisibility> = {
   private: "connections",
@@ -172,7 +173,7 @@ export default function PrivacySettings() {
       await setFieldVisibility(key, next);
       toast({ title: `${key} → ${TIER_LABEL[next]}` });
     } catch (e: any) {
-      toast({ title: "Could not save", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.privacysettings.couldNotSave');
     }
   };
 
@@ -180,7 +181,7 @@ export default function PrivacySettings() {
     return (
       <AppLayout>
         <div className="container max-w-xl mx-auto px-4 py-10 text-center text-muted-foreground">
-          Please sign in to manage your privacy settings.
+          {t('screens.privacysettings.pleaseSignManageYourPrivacySettings')}
         </div>
       </AppLayout>
     );
@@ -188,18 +189,16 @@ export default function PrivacySettings() {
 
   return (
     <AppLayout>
-      <SEO title="Privacy & Visibility — Vitana" description="Control which parts of your profile are visible." />
+      <SEO title={t('screens.privacysettings.privacyVisibilityVitana')} description="Control which parts of your profile are visible." />
       <div className="container max-w-2xl mx-auto px-4 py-4 space-y-4">
         <header className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label="Back">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t('screens.privacysettings.back')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-semibold">Privacy & Visibility</h1>
+          <h1 className="text-xl font-semibold">{t('screens.privacysettings.privacyVisibility')}</h1>
         </header>
 
-        <p className="text-sm text-muted-foreground">
-          Tap any tier badge to cycle Private → Connections → Public.
-          Defaults err on the side of privacy — you decide what to share.
+        <p className="text-sm text-muted-foreground">{t('screens.privacysettings.tapAnyTierBadgeCyclePrivate')}
         </p>
 
         {SECTIONS.map((section) => (
@@ -244,7 +243,7 @@ export default function PrivacySettings() {
         ))}
 
         <p className="text-xs text-muted-foreground text-center pt-4">
-          Server enforces these tiers on every cross-user fetch — your toggle is binding, not advisory.
+          {t('screens.privacysettings.serverEnforcesTheseTiersEveryCrossuser')}
         </p>
       </div>
     </AppLayout>

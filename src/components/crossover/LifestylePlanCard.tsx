@@ -3,6 +3,7 @@ import { Apple, Droplets, Dumbbell, Moon, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { type HealthCategoryColor } from "./CrossoverCard";
+import { t } from '@/lib/i18n-toast';
 
 export type LifestylePlanType = "nutrition" | "hydration" | "exercise" | "sleep" | "mental";
 
@@ -81,7 +82,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       {/* Progress Bar */}
       <div className="space-y-2">
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Progress</span>
+          <span className="text-muted-foreground">{t('screens.crossover.progress')}</span>
           <span className={cn(
             "font-medium",
             isOnTrack ? "text-health-success" : "text-health-warning"
@@ -102,7 +103,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
 
       {/* Next Action */}
       <div className="text-xs">
-        <span className="text-muted-foreground">Next: </span>
+        <span className="text-muted-foreground">{t('screens.crossover.next')} </span>
         <span className="font-medium text-foreground">{config.nextAction}</span>
       </div>
     </div>

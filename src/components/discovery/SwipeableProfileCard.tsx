@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
+import { t } from '@/lib/i18n-toast';
 
 interface SwipeableProfileCardProps {
   profile: {
@@ -149,8 +150,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-lg opacity-30" />
             
             {/* Badge */}
-            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-bold text-base px-4 py-2 shadow-2xl border-0">
-              {profile.match_score}% Match 🌿
+            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-bold text-base px-4 py-2 shadow-2xl border-0">{t('screens.discovery.match_scoreMatch', { match_score: profile.match_score })}
             </Badge>
           </div>
         </div>
@@ -197,12 +197,9 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
           {profile.vitana_index && (
             <div className="flex items-center gap-2 mb-3">
               <Badge variant="secondary" className="bg-background/60 backdrop-blur text-sm px-3 py-1.5 font-semibold">
-                <Zap className="h-4 w-4 mr-1.5 text-accent" />
-                Vitana Index: {profile.vitana_index}
-              </Badge>
+                <Zap className="h-4 w-4 mr-1.5 text-accent" />{t('screens.discovery.vitanaIndexVitana_index', { vitana_index: profile.vitana_index })}</Badge>
               {profile.vitana_percentile && (
-                <Badge variant="secondary" className="bg-background/60 backdrop-blur text-xs px-2 py-1 font-medium">
-                  Top {profile.vitana_percentile}%
+                <Badge variant="secondary" className="bg-background/60 backdrop-blur text-xs px-2 py-1 font-medium">{t('screens.discovery.topVitana_percentile', { vitana_percentile: profile.vitana_percentile })}
                 </Badge>
               )}
             </div>
@@ -221,7 +218,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
               <div className="flex items-center gap-1.5 mb-2">
                 <Sparkles className="h-4 w-4 text-accent" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Interests
+                  {t('screens.discovery.interests')}
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">

@@ -93,6 +93,7 @@ import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -477,11 +478,7 @@ export function MeetupDetailsDrawer({
     
     try {
       if (!user) {
-        toast({
-          title: "Sign in required",
-          description: "Please sign in to join events",
-          variant: "destructive",
-        });
+        notifyError('toasts.meetups.signRequired', 'toasts.meetups.pleaseSignJoinEvents');
         setIsJoining(false);
         return;
       }
@@ -527,8 +524,8 @@ export function MeetupDetailsDrawer({
       invalidateEventsCache();
       
       toast({
-        title: "Added to Smart Calendar ✓",
-        description: "Event saved. We'll remind you before it starts.",
+        title: lookup('toasts.meetups.addedSmartCalendar'),
+        description: lookup('toasts.meetups.eventSavedWeLlRemindYou'),
         duration: 5000,
         action: addedEvent ? (
           <Button
@@ -545,24 +542,16 @@ export function MeetupDetailsDrawer({
               setIsJoined(false);
               setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
               invalidateEventsCache();
-              toast({
-                title: "Removed from calendar",
-                description: "You've left this meetup.",
-              });
+              notify('toasts.meetups.removedFromCalendar', 'toasts.meetups.youVeLeftThisMeetup');
             }}
-          >
-            Undo
+          >{t('screens.meetups.undo')}
           </Button>
         ) : undefined,
       });
     } catch (error) {
       console.error('Failed to add event to calendar:', error);
       setIsJoining(false);
-      toast({
-        title: "Failed to add event",
-        description: "Please try again or check your calendar permissions.",
-        variant: "destructive",
-      });
+      notifyError('toasts.meetups.failedAddEvent', 'toasts.meetups.pleaseTryAgainCheckYourCalendar');
     }
   };
 
@@ -636,22 +625,13 @@ export function MeetupDetailsDrawer({
     if (type === 'google') {
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
-      toast({
-        title: "Opening calendar",
-        description: `Add the event to ${calendarName}`,
-      });
+      notify('toasts.meetups.openingCalendar');
     } else if (type === 'outlook') {
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(event.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
-      toast({
-        title: "Opening calendar",
-        description: `Add the event to ${calendarName}`,
-      });
+      notify('toasts.meetups.openingCalendar');
     } else if (type === 'apple' || type === 'ics') {
-      toast({
-        title: "Calendar export",
-        description: "iCal file downloaded",
-      });
+      notify('toasts.meetups.calendarExport', 'toasts.meetups.icalFileDownloaded');
     }
   };
 
@@ -785,11 +765,7 @@ export function MeetupDetailsDrawer({
       });
     } catch (error) {
       console.error('Failed to send message:', error);
-      toast({
-        title: "Failed to send message",
-        description: "Please try again later",
-        variant: "destructive"
-      });
+      notifyError('toasts.meetups.failedSendMessage', 'toasts.meetups.pleaseTryAgainLater');
     } finally {
       setIsCreatingThread(false);
     }
@@ -913,7 +889,7 @@ export function MeetupDetailsDrawer({
             size="icon"
             className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
             onClick={() => onOpenChange(false)}
-            aria-label="Close event details"
+            aria-label={t('screens.meetups.closeEventDetails')}
             style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
           >
             <X className="h-5 w-5" />
@@ -1278,7 +1254,7 @@ export function MeetupDetailsDrawer({
               <div className="space-y-3 pt-5 border-t border-border/50">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Details & Program</h3>
+                  <h3 className="font-semibold text-[17px]">{t('screens.meetups.detailsProgram')}</h3>
                 </div>
                 <p className="text-[14px] text-muted-foreground leading-relaxed whitespace-pre-line">{event.metadata.detailed_description}</p>
               </div>
@@ -1758,7 +1734,7 @@ export function MeetupDetailsDrawer({
               e.preventDefault();
               onShareEvent?.(event);
             }}
-            aria-label="Share meetup"
+            aria-label={t('screens.meetups.shareMeetup')}
           >
             <Share2 className="h-4 w-4" />
           </Button>

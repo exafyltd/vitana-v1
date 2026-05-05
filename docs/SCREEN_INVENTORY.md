@@ -6,9 +6,9 @@
 ## Summary
 
 - **Pages scanned:** 325
-- **Distinct i18n keys consumed:** 304
-- **Namespaces in use:** 40
-- **Hardcoded string suspects (regex heuristic):** 390
+- **Distinct i18n keys consumed:** 5297
+- **Namespaces in use:** 41
+- **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
 
@@ -18,195 +18,189 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/AI.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/AuthPages.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/AutopilotDashboard.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search tasks...`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/BusinessHub.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 10, namespaces: 3
+**Status:** ✅ clean — keys consumed: 28, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `businessHub` — used: 8, total in shard: 17
 - `buttons` — used: 1, total in shard: 55
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search Business…`
-
-</details>
+- `screens` — used: 18, total in shard: 8825
 
 ### src/pages/BusinessListings.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Back to Business Hub`
-- `Back to Business Hub`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/BusinessOpportunities.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Back to Business Hub`
-- `Back to Business Hub`
-
-</details>
+- `screens` — used: 6, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/Calendar.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 21, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 21, total in shard: 8825
 
 ### src/pages/Cart.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 17, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 17, total in shard: 8825
 
 ### src/pages/CheckoutSuccess.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 16, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `What's Next?`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/Community.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 72, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Refresh page`
-- `[placeholder] Search Community…`
-
-</details>
+- `screens` — used: 69, total in shard: 8825
+- `toasts` — used: 3, total in shard: 1215
 
 ### src/pages/CreatorOnboarded.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 21, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `What's Next?`
-
-</details>
+- `screens` — used: 21, total in shard: 8825
 
 ### src/pages/Discover.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 5, namespaces: 2
+**Status:** ✅ clean — keys consumed: 22, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `discover` — used: 4, total in shard: 57
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading your personalized feed…`
-- `[title] Refresh page`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/EditProfilePage.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 12, namespaces: 2
+**Status:** ✅ clean — keys consumed: 13, namespaces: 3
 
 **i18n namespaces:**
 
 - `editProfile` — used: 11, total in shard: 17
 - `profile` — used: 1, total in shard: 9
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[title] Edit Profile – VITANA`
-- `[title] Edit Profile – VITANA`
-
-</details>
+- `screens` — used: 1, total in shard: 8825
 
 ### src/pages/Health.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 11, namespaces: 1
+**Status:** ✅ clean — keys consumed: 22, namespaces: 2
 
 **i18n namespaces:**
 
 - `health` — used: 11, total in shard: 55, **MISSING:** health.tabs.overview, health.tabs.medical, health.tabs.supplements, health.pillars.${key}, health.subtitle…
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search health services, articles, or community...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/HealthTracker.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 48, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 48, total in shard: 8825
 
 ### src/pages/Home.tsx
 
-**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading news…`
-- `Refresh`
-- `Loading more…`
-- `[title] Refresh news`
-
-</details>
+- `screens` — used: 12, total in shard: 8825
 
 ### src/pages/Index.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 19, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 18, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/IntentBoard.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 8, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/IntentMatchDetail.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Back to My Intents`
-- `Back to My Intents`
-- `Close intent`
-
-</details>
+- `screens` — used: 5, total in shard: 8825
+- `toasts` — used: 3, total in shard: 1215
 
 ### src/pages/IntroExperience.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/InviteFriends.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 27, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search contacts...`
-
-</details>
+- `screens` — used: 23, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/Login.tsx
 
@@ -214,31 +208,28 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Logout.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 1, total in shard: 8825
 
 ### src/pages/Memory.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search memories, insights, or timeline...`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/Messages.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 13, namespaces: 1
+**Status:** ✅ clean — keys consumed: 33, namespaces: 2
 
 **i18n namespaces:**
 
 - `inbox` — used: 13, total in shard: 86, **MISSING:** inbox.tabs.${filter}
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search conversations, people, or groups…`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
 
 ### src/pages/MobileDailyDiary.tsx
 
@@ -250,35 +241,30 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSettings.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 7, namespaces: 1
+**Status:** ✅ clean — keys consumed: 79, namespaces: 2
 
 **i18n namespaces:**
 
+- `screens` — used: 72, total in shard: 8825
 - `settings` — used: 7, total in shard: 29, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Profile Visibility`
-- `Delete account and all data`
-- `Regional Settings`
-- `Submit a Ticket`
-- `Submit Ticket`
-- `Delete Account`
-- `[placeholder] Search help articles...`
-
-</details>
 
 ### src/pages/MyIntents.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/MyTickets.tsx
 
-**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+**Status:** ✅ clean — keys consumed: 11, namespaces: 2
 
 **i18n namespaces:**
 
 - `event` — **MISSING SHARD** in src/i18n/de/
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/NewsArticleDetail.tsx
 
@@ -290,82 +276,79 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/NotAuthorized.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/NotFound.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/PackagePurchaseSuccess.tsx
-
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Verification Failed`
-- `[title] Purchase Error | VITANA`
-- `[title] Purchase Error | VITANA`
-
-</details>
-
-### src/pages/PrivacySettings.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[aria-label] Back`
-
-</details>
-
-### src/pages/Profile.tsx
-
-**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading profile...`
-- `User Profile - Vitana ID Card`
-- `[title] My Profile`
-- `[title] My Profile`
-
-</details>
-
-### src/pages/PublicCampaignLanding.tsx
 
 **Status:** ✅ clean — keys consumed: 2, namespaces: 1
 
 **i18n namespaces:**
 
+- `screens` — used: 2, total in shard: 8825
+
+### src/pages/PackagePurchaseSuccess.tsx
+
+**Status:** ✅ clean — keys consumed: 16, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 14, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
+
+### src/pages/PrivacySettings.tsx
+
+**Status:** ✅ clean — keys consumed: 7, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
+
+### src/pages/Profile.tsx
+
+**Status:** ✅ clean — keys consumed: 33, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 33, total in shard: 8825
+
+### src/pages/PublicCampaignLanding.tsx
+
+**Status:** ✅ clean — keys consumed: 16, namespaces: 2
+
+**i18n namespaces:**
+
 - `eventCta` — used: 2, total in shard: 20
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/PublicEventLanding.tsx
 
-**Status:** ✅ clean — keys consumed: 4, namespaces: 1
+**Status:** ✅ clean — keys consumed: 19, namespaces: 2
 
 **i18n namespaces:**
 
 - `eventCta` — used: 4, total in shard: 20
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/PublicProfilePage.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading profile...`
-
-</details>
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/RedeemVoucher.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading your gift voucher...`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/Register.tsx
 
@@ -373,49 +356,30 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Reminders.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading…`
-- `Loading…`
-- `Loading…`
-- `Delete this reminder?`
-- `Cancel`
-- `Cancel`
-- `[aria-label] Delete reminder`
-
-</details>
-
-### src/pages/Search.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `View Profile`
-- `[placeholder] Search members, groups, content…`
-
-</details>
-
-### src/pages/Settings.tsx
-
-**Status:** ⚠️ 6 hardcoded suspects — keys consumed: 1, namespaces: 1
+**Status:** ✅ clean — keys consumed: 32, namespaces: 2
 
 **i18n namespaces:**
 
+- `screens` — used: 26, total in shard: 8825
+- `toasts` — used: 6, total in shard: 1215
+
+### src/pages/Search.tsx
+
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 15, total in shard: 8825
+
+### src/pages/Settings.tsx
+
+**Status:** ✅ clean — keys consumed: 64, namespaces: 3
+
+**i18n namespaces:**
+
+- `screens` — used: 57, total in shard: 8825
 - `settings` — used: 1, total in shard: 29
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Settings configured`
-- `[title] Settings`
-- `[title] Settings Overview`
-- `[title] Settings Overview`
-- `[title] Active Settings`
-- `[title] Recent Settings Activity`
-
-</details>
+- `toasts` — used: 6, total in shard: 1215
 
 ### src/pages/ShareEntry.tsx
 
@@ -423,463 +387,518 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Sharing.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search sharing activities...`
-
-</details>
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/TicketDemo.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/TicketPurchaseSuccess.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/Wallet.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 19, namespaces: 2
+**Status:** ✅ clean — keys consumed: 33, namespaces: 3
 
 **i18n namespaces:**
 
 - `common` — used: 2, total in shard: 35
+- `screens` — used: 14, total in shard: 8825
 - `wallet` — used: 17, total in shard: 19
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search transactions, rewards, or benefits...`
-
-</details>
 
 ## admin/
 
 ### src/pages/admin/AIAssistant.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 24, total in shard: 8825
 
 ### src/pages/admin/APIMonitoring.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 53, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Failed`
-- `Loading integrations...`
-- `Loading logs...`
-
-</details>
+- `screens` — used: 42, total in shard: 8825
+- `toasts` — used: 11, total in shard: 1215
 
 ### src/pages/admin/AdminPlaceholder.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/Audit.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 23, total in shard: 8825
 
 ### src/pages/admin/Automation.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 21, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Success Rate`
-
-</details>
+- `screens` — used: 21, total in shard: 8825
 
 ### src/pages/admin/Bootstrap.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 33, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Confirm Admin Bootstrap`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
+- `toasts` — used: 13, total in shard: 1215
 
 ### src/pages/admin/CommunityRoomsAdmin.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 24, total in shard: 8825
 
 ### src/pages/admin/CommunitySupervision.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 20, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 20, total in shard: 8825
 
 ### src/pages/admin/Dashboard.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/InitEvents.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 13, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 11, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/LiveStreamOverview.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 27, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 27, total in shard: 8825
 
 ### src/pages/admin/MediaManagement.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 23, total in shard: 8825
 
 ### src/pages/admin/NotificationDashboard.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/PatientRecords.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 19, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Patient Search`
-- `Search Patient Records`
-- `[placeholder] Search by name, DOB, or patient ID...`
-
-</details>
+- `screens` — used: 19, total in shard: 8825
 
 ### src/pages/admin/Queue.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 18, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 18, total in shard: 8825
 
 ### src/pages/admin/Reports.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 30, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 30, total in shard: 8825
 
 ### src/pages/admin/Staff.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 18, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 18, total in shard: 8825
 
 ### src/pages/admin/StreamSettings.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 49, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Global Settings`
-- `Settings for Google Vertex AI streaming`
-- `Settings for healthcare video consultations`
-- `Global Stream Settings`
-- `Settings that apply to all streaming features`
-- `[title] Stream Settings | Admin | VITANA`
-- `[title] Stream Settings`
-
-</details>
+- `screens` — used: 47, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/StreamSupervision.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 20, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 20, total in shard: 8825
 
 ### src/pages/admin/SystemConfig.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 40, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Edit Tiers`
-
-</details>
+- `screens` — used: 40, total in shard: 8825
 
 ### src/pages/admin/SystemHealth.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/admin/SystemSecurity.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Edit`
-- `Edit`
-- `Edit`
-- `[title] Admin - Security Settings`
-- `[title] Security Settings`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/admin/TelemedicineSessions.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 27, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 27, total in shard: 8825
 
 ### src/pages/admin/TenantAudit.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/TenantConfig.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/TenantManagement.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 19, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading...`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/admin/UserAudit.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/UserManagement.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Search by Email`
-- `Cancel`
-
-</details>
+- `screens` — used: 19, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/admin/VertexTesting.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 32, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 29, total in shard: 8825
+- `toasts` — used: 3, total in shard: 1215
 
 ### src/pages/admin/ai-assistant/AISituationAnalyzer.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
+- `toasts` — used: 10, total in shard: 1215
 
 ### src/pages/admin/ai-assistant/Analytics.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 19, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Automation Success Rate`
-- `[title] Automation Success`
-
-</details>
+- `screens` — used: 19, total in shard: 8825
 
 ### src/pages/admin/ai-assistant/PatternDiscovery.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 23, total in shard: 8825
 
 ### src/pages/admin/ai-assistant/ProactiveSettings.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Proactive Assistant Settings`
-- `[title] Proactive Assistant Settings | AI Assistant | Admin | VITANA`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/assistant/Personality.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading surfaces...`
-- `Cancel`
-
-</details>
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/admin/assistant/Playground.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/assistant/Routing.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading routing config...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/admin/assistant/Sessions.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading sessions...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/assistant/Speeches.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading speeches...`
-
-</details>
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/admin/assistant/Tools.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading surfaces...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/admin/assistant/Voice.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading voice config...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/audit/Access.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading access log...`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/audit/Actions.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading audit actions...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/audit/ApiMonitor.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/audit/DataRights.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/audit/Events.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/audit/OasisEvents.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading events...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/audit/Policies.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/audit/Security.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/audit/UserActivity.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/automation/AutomationBuilder.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 25, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] e.g., Welcome New Users`
-
-</details>
+- `screens` — used: 12, total in shard: 8825
+- `toasts` — used: 13, total in shard: 1215
 
 ### src/pages/admin/autopilot/Automations.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading automations...`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/autopilot/Growth.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 17, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading stats...`
-- `Success Rate`
-- `Failed`
-
-</details>
+- `screens` — used: 17, total in shard: 8825
 
 ### src/pages/admin/autopilot/Guardrails.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 20, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading settings...`
-- `Settings saved successfully.`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
 
 ### src/pages/admin/autopilot/Planning.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/admin/autopilot/Recommendations.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading recommendations...`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/admin/autopilot/Runs.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading runs...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/admin/community/Creators.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading creators...`
-
-</details>
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/admin/community/Events.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 20, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading events...`
-
-</details>
+- `screens` — used: 18, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/community/Groups.tsx
 
-**Status:** ✅ clean — keys consumed: 15, namespaces: 5
+**Status:** ✅ clean — keys consumed: 22, namespaces: 7
 
 **i18n namespaces:**
 
@@ -887,704 +906,763 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `empty` — used: 1, total in shard: 14
 - `loading` — used: 1, total in shard: 7
 - `privacy` — used: 2, total in shard: 2
+- `screens` — used: 5, total in shard: 8825
 - `tableHeaders` — used: 6, total in shard: 11
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/community/GroupsNew.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading groups...`
-
-</details>
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/admin/community/LiveRooms.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading live rooms...`
-
-</details>
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/admin/community/Meetups.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading events...`
-- `Cancel`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/admin/community/ReportedContent.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 22, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading reports...`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/community/ReportedContentNew.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading reports...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/content/ContentAnalytics.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading analytics...`
-
-</details>
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/content/Music.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading music...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/content/Podcasts.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading podcasts...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/content/Uploads.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading uploads...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/content/Videos.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading videos...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/dashboard/ActivityFeed.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/dashboard/SystemHealth.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/admin/feedback/Feedback.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 24, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading…`
-- `Failed to load tickets.`
-- `Loading…`
-
-</details>
+- `screens` — used: 22, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/feedback/SpecialistConfigDrawer.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 38, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading specialist…`
-- `Retry`
-- `Close`
-- `Save knowledge`
-- `Save keywords`
-- `[aria-label] Close`
-- `[aria-label] Close`
-
-</details>
+- `screens` — used: 33, total in shard: 8825
+- `toasts` — used: 5, total in shard: 1215
 
 ### src/pages/admin/feedback/TicketActionDrawer.tsx
 
-**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 2, namespaces: 1
+**Status:** ✅ clean — keys consumed: 62, namespaces: 3
 
 **i18n namespaces:**
 
 - `intake_messages` — **MISSING SHARD** in src/i18n/de/
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading ticket…`
-- `Retry`
-- `Close`
-- `[aria-label] Close`
-
-</details>
+- `screens` — used: 53, total in shard: 8825
+- `toasts` — used: 7, total in shard: 1215
 
 ### src/pages/admin/feedback/VitanaConfigDrawer.tsx
 
-**Status:** ⚠️ 6 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 30, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading Vitana…`
-- `Retry`
-- `Close`
-- `[aria-label] Close`
-- `[aria-label] Close`
-- `[aria-label] Close`
-
-</details>
+- `screens` — used: 26, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/admin/insights/AssistantUsage.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/insights/AutopilotImpact.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/insights/Engagement.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading engagement data...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/insights/Growth.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading growth data...`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/insights/Reports.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/intelligence/Embeddings.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/admin/intelligence/Memory.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/intelligence/Relationships.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/intelligence/Signals.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/admin/knowledge/Documents.tsx
 
-**Status:** ⚠️ 8 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 39, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading tree…`
-- `Loading…`
-- `Edit a platform document?`
-- `,
-              including the Book of the Vitana Index if this doc is part of it`
-- `Loading…`
-- `Edit a baseline document?`
-- `. Saving applies
-              your changes immediately to every tenant that has`
-- `[placeholder] Search across all scopes (title, path, tags)…`
-
-</details>
+- `screens` — used: 34, total in shard: 8825
+- `toasts` — used: 5, total in shard: 1215
 
 ### src/pages/admin/knowledge/Governance.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/knowledge/Indexing.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading documents...`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/knowledge/SearchTest.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Search Test`
-
-</details>
+- `screens` — used: 4, total in shard: 8825
 
 ### src/pages/admin/knowledge/Topics.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading topics...`
-
-</details>
+- `screens` — used: 4, total in shard: 8825
 
 ### src/pages/admin/live/Attendance.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/live/Sessions.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/marketplace/Overview.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading marketplace overview…`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/marketplace/Products.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 26, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading…`
-- `[placeholder] Search title…`
-
-</details>
+- `screens` — used: 22, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/admin/media/Analytics.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/admin/media/Music.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search music...`
-
-</details>
+- `screens` — used: 18, total in shard: 8825
+- `toasts` — used: 5, total in shard: 1215
 
 ### src/pages/admin/media/Podcasts.tsx
 
-**Status:** ✅ clean — keys consumed: 15, namespaces: 3
+**Status:** ✅ clean — keys consumed: 24, namespaces: 4
 
 **i18n namespaces:**
 
 - `admin` — used: 13, total in shard: 19
 - `payment` — used: 1, total in shard: 19
-- `toasts` — used: 1, total in shard: 88, **MISSING:** toasts.success.generic
+- `screens` — used: 9, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215, **MISSING:** toasts.success.generic
 
 ### src/pages/admin/media/Videos.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search videos...`
-
-</details>
+- `screens` — used: 18, total in shard: 8825
+- `toasts` — used: 5, total in shard: 1215
 
 ### src/pages/admin/members/Audit.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/members/Directory.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading members...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/members/Invitations.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 17, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading invitations...`
-
-</details>
+- `screens` — used: 13, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/admin/members/RolesAccess.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading members...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/members/Segments.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/navigator/Catalog.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading catalog…`
-- `[placeholder] Search screens…`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/admin/navigator/Coverage.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading coverage report…`
-
-</details>
+- `screens` — used: 10, total in shard: 8825
 
 ### src/pages/admin/navigator/History.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading…`
-
-</details>
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/navigator/Telemetry.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading telemetry…`
-- `Failed utterances (low confidence)`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/admin/navigator/components/SimulatorPanel.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 18, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 18, total in shard: 8825
 
 ### src/pages/admin/navigator/components/TriggerEditor.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 29, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 29, total in shard: 8825
 
 ### src/pages/admin/notifications/Categories.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 30, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Cancel`
-- `[title] Edit category`
-- `[title] Delete category`
-
-</details>
+- `screens` — used: 24, total in shard: 8825
+- `toasts` — used: 6, total in shard: 1215
 
 ### src/pages/admin/notifications/Compose.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 1, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/admin/notifications/ComposeNew.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading recent notifications...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/notifications/Preferences.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 12, total in shard: 8825
 
 ### src/pages/admin/notifications/Providers.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/notifications/SentLog.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/notifications/SentNew.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading sent notifications...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/notifications/Subscriptions.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/notifications/Templates.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/overview/Activity.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading events...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/overview/Alerts.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading alerts...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/overview/Dashboard.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading dashboard...`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/admin/overview/Health.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/settings/Billing.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading billing info...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/settings/Branding.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading branding...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/settings/Domains.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/settings/FeatureFlags.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading feature flags...`
-
-</details>
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/admin/settings/Integrations.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/admin/settings/Profile.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 16, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading settings...`
-- `Tenant Profile`
-- `[title] Profile`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/admin/system/Configuration.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/admin/system/Creators.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/admin/users/AllUsers.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search by email or name...`
-
-</details>
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/users/Invitations.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/admin/users/RolesAccess.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/admin/users/SignupFunnel.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 8, total in shard: 8825
 
 ## ai/
 
 ### src/pages/ai/AIRecommendations.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/ai/AgentPromptCenter.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 13, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 13, total in shard: 8825
 
 ### src/pages/ai/Companion.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/ai/DailySummary.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/ai/Insights.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/ai/PersonalAITimeline.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ## assistant/
 
 ### src/pages/assistant/AIAssistant.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ## auth/
 
 ### src/pages/auth/EmailConfirmed.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Confirmation Error`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/auth/OAuthComplete.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/auth/ResetPassword.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 20, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Confirm password`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
 
 ## community/
 
 ### src/pages/community/AIInsights.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 28, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 28, total in shard: 8825
 
 ### src/pages/community/Challenges.tsx
 
-**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+**Status:** ✅ clean — keys consumed: 13, namespaces: 2
 
 **i18n namespaces:**
 
 - `challenges` — used: 1, total in shard: 1
+- `screens` — used: 12, total in shard: 8825
 
 ### src/pages/community/Events.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/community/EventsAndMeetups.tsx
 
-**Status:** ✅ clean — keys consumed: 18, namespaces: 3
+**Status:** ✅ clean — keys consumed: 25, namespaces: 5
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `buttons` — used: 1, total in shard: 55
 - `events` — used: 16, total in shard: 16, **MISSING:** events.titleShort, events.tabs.hot, events.filterTitle
+- `screens` — used: 5, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/community/Feed.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search feed...`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
 
 ### src/pages/community/FindPartner.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search posts and matches...`
-
-</details>
+- `screens` — used: 12, total in shard: 8825
 
 ### src/pages/community/GroupDetail.tsx
 
@@ -1596,136 +1674,117 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/community/Groups.tsx
 
-**Status:** ✅ clean — keys consumed: 2, namespaces: 2
+**Status:** ✅ clean — keys consumed: 13, namespaces: 3
 
 **i18n namespaces:**
 
 - `buttons` — used: 1, total in shard: 55
 - `groups` — used: 1, total in shard: 1
+- `screens` — used: 11, total in shard: 8825
 
 ### src/pages/community/LiveInteraction.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 34, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 34, total in shard: 8825
 
 ### src/pages/community/LiveRoomViewer.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 19, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
+- `toasts` — used: 8, total in shard: 1215
 
 ### src/pages/community/LiveRooms.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 9, namespaces: 2
+**Status:** ✅ clean — keys consumed: 34, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `liveRooms` — used: 8, total in shard: 106
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading live rooms...`
-- `Loading scheduled rooms...`
-- `Delete Live Room`
-- `Cancel`
-- `[placeholder] Search Live Rooms…`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
+- `toasts` — used: 11, total in shard: 1215
 
 ### src/pages/community/Matchmaking.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search matches...`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/community/MediaHub.tsx
 
-**Status:** ✅ clean — keys consumed: 60, namespaces: 2
+**Status:** ✅ clean — keys consumed: 61, namespaces: 3
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `mediaHub` — used: 59, total in shard: 116
+- `screens` — used: 1, total in shard: 8825
 
 ### src/pages/community/Meetups.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Edit Meetup`
-- `[aria-label] Edit meetup`
-- `[placeholder] Search Meetups…`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/community/Meetups2.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading meetups...`
-- `[placeholder] Search Meetups…`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ### src/pages/community/Members.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 7, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search by name or @vitana-id`
-- `[aria-label] Search members`
-
-</details>
+- `screens` — used: 7, total in shard: 8825
 
 ### src/pages/community/MyBusinessRenamed.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 13, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search Business…`
-
-</details>
+- `screens` — used: 13, total in shard: 8825
 
 ### src/pages/community/MyGroups.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 31, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search Groups…`
-
-</details>
+- `screens` — used: 31, total in shard: 8825
 
 ### src/pages/community/OpenAsks.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 3, total in shard: 8825
 
 ### src/pages/community/TalkToVitana.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 2, namespaces: 1
+**Status:** ✅ clean — keys consumed: 26, namespaces: 3
 
 **i18n namespaces:**
 
 - `resolver_agent` — **MISSING SHARD** in src/i18n/de/
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading…`
-
-</details>
+- `screens` — used: 14, total in shard: 8825
+- `toasts` — used: 10, total in shard: 1215
 
 ## dev/
 
@@ -1791,7 +1850,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/dev/DevLogin.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `toasts` — used: 1, total in shard: 1215
 
 ### src/pages/dev/DevOasis.tsx
 
@@ -2181,208 +2244,185 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/discover/AIPicksPage.tsx
 
-**Status:** ✅ clean — keys consumed: 16, namespaces: 1
+**Status:** ✅ clean — keys consumed: 17, namespaces: 2
 
 **i18n namespaces:**
 
 - `discover` — used: 16, total in shard: 57
+- `screens` — used: 1, total in shard: 8825
 
 ### src/pages/discover/DealsOffers.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 25, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Refresh page`
-- `[placeholder] Search deals and offers…`
-
-</details>
+- `screens` — used: 25, total in shard: 8825
 
 ### src/pages/discover/DoctorsCoaches.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 63, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Cancel`
-- `[title] Refresh page`
-- `[placeholder] Search doctors and coaches…`
-
-</details>
+- `screens` — used: 59, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/discover/IntentRouter.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 5, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 5, total in shard: 8825
 
 ### src/pages/discover/Marketplace.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search marketplace...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
 
 ### src/pages/discover/Orders.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 19, namespaces: 2
+**Status:** ✅ clean — keys consumed: 21, namespaces: 3
 
 **i18n namespaces:**
 
 - `event` — **MISSING SHARD** in src/i18n/de/
 - `orders` — used: 18, total in shard: 65, **MISSING:** orders.filters.${key}, orders.filters.${historyFilter}
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[title] Refresh page`
-
-</details>
+- `screens` — used: 2, total in shard: 8825
 
 ### src/pages/discover/ProductDetail.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 22, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 22, total in shard: 8825
 
 ### src/pages/discover/ProviderProfile.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 28, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Next Available`
-
-</details>
+- `screens` — used: 24, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/discover/Supplements.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Filter & Search`
-- `Loading supplements...`
-- `[title] Refresh page`
-- `[placeholder] Search supplements…`
-- `[placeholder] Search supplements...`
-
-</details>
+- `screens` — used: 24, total in shard: 8825
 
 ### src/pages/discover/WellnessServices.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading bookmarks...`
-- `[title] Refresh page`
-- `[placeholder] Search wellness services…`
-
-</details>
+- `screens` — used: 24, total in shard: 8825
 
 ## health/
 
 ### src/pages/health/BiomarkerResults.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[title] Loading lab results...`
-- `[placeholder] Search lab results, biomarkers, or test types...`
-
-</details>
-
-### src/pages/health/ConditionsRisks.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/health/EducationResources.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search articles, videos, podcasts, or topics...`
-
-</details>
-
-### src/pages/health/MyBiology.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Loading supplements...`
-- `[placeholder] Search biomarkers, tests, or supplements...`
-
-</details>
-
-### src/pages/health/PillarsOfHealth.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/health/Plans.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search plans...`
-
-</details>
-
-### src/pages/health/VitanaIndexDetail.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Refresh`
-
-</details>
-
-### src/pages/health/WellnessServices.tsx
-
-**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+**Status:** ✅ clean — keys consumed: 18, namespaces: 1
 
 **i18n namespaces:**
 
+- `screens` — used: 18, total in shard: 8825
+
+### src/pages/health/ConditionsRisks.tsx
+
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
+
+### src/pages/health/EducationResources.tsx
+
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
+
+### src/pages/health/MyBiology.tsx
+
+**Status:** ✅ clean — keys consumed: 30, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 28, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
+
+### src/pages/health/PillarsOfHealth.tsx
+
+**Status:** ✅ clean — keys consumed: 3, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 3, total in shard: 8825
+
+### src/pages/health/Plans.tsx
+
+**Status:** ✅ clean — keys consumed: 21, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 19, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
+
+### src/pages/health/VitanaIndexDetail.tsx
+
+**Status:** ✅ clean — keys consumed: 37, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 37, total in shard: 8825
+
+### src/pages/health/WellnessServices.tsx
+
+**Status:** ✅ clean — keys consumed: 17, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 16, total in shard: 8825
 - `wellnessServices` — used: 1, total in shard: 1
 
 ## home/
 
 ### src/pages/home/AIFeed.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 31, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Edit`
-- `[placeholder] Search feed, routines, ideas, or history…`
-
-</details>
+- `screens` — used: 27, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/home/Actions.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 21, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `❌ Failed`
-- `[title] Next Best Actions & Today's Plan`
-- `[placeholder] Search actions, categories, or autopilot tasks…`
-
-</details>
+- `screens` — used: 17, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/home/Context.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 12, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search context data, cards, or insights…`
-
-</details>
+- `screens` — used: 12, total in shard: 8825
 
 ### src/pages/home/Dashboard.tsx
 
@@ -2390,529 +2430,437 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/home/Matches.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search people, groups, coaches, events…`
-
-</details>
+- `screens` — used: 9, total in shard: 8825
 
 ## legal/
 
 ### src/pages/legal/DeleteAccount.tsx
 
-**Status:** ⚠️ 6 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 34, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Delete Account`
-- `Delete Account`
-- `Delete Your Account`
-- `Cancel`
-- `[title] Delete Your Account | Maxina`
-- `[title] Delete Your Account | Maxina`
-
-</details>
+- `screens` — used: 34, total in shard: 8825
 
 ### src/pages/legal/MaxinaSupport.tsx
-
-**Status:** ✅ clean — keys consumed: 14, namespaces: 1
-
-**i18n namespaces:**
-
-- `support` — used: 14, total in shard: 34, **MISSING:** support.maxina.categories.${category.id}, support.maxina.faq.${item}.question, support.maxina.faq.${item}.answer, support.maxina.usefulLinks.${link.id}
-
-### src/pages/legal/PrivacyPolicy.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Profile Information:`
-- `To power the in-app AI assistant and related AI features, certain personal data `
-
-</details>
-
-### src/pages/legal/TermsOfUse.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-## memory/
-
-### src/pages/memory/Diary.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search diary entries and reflections...`
-
-</details>
-
-### src/pages/memory/Permissions.tsx
-
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `🔐 Privacy Settings`
-- `Privacy Settings`
-- `[placeholder] Search privacy and security settings...`
-
-</details>
-
-### src/pages/memory/Recall.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `🔍 Search Results`
-
-</details>
-
-### src/pages/memory/Timeline.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 1, namespaces: 1
-
-**i18n namespaces:**
-
-- `timeline` — used: 1, total in shard: 1
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[title] Refresh timeline`
-
-</details>
-
-## messages/
-
-### src/pages/messages/Archived.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 1, namespaces: 1
-
-**i18n namespaces:**
-
-- `archives` — used: 1, total in shard: 1
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Auto-Archive Settings`
-- `[placeholder] Search archives...`
-
-</details>
-
-### src/pages/messages/Inspiration.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `[placeholder] Search message templates...`
-
-</details>
-
-## onboarding/
-
-### src/pages/onboarding/OnboardingWelcome.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-## patient/
-
-### src/pages/patient/Appointments.tsx
-
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Cancel`
-- `Next Week, Friday 10:00 AM`
-- `Cancel`
-
-</details>
-
-### src/pages/patient/Dashboard.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Next Appointment`
-
-</details>
-
-### src/pages/patient/Health.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-## portals/
-
-### src/pages/portals/AlkalmaConfirmed.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Confirmation Error`
-
-</details>
-
-### src/pages/portals/AlkalmaPortal.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Welcome Back`
-
-</details>
-
-### src/pages/portals/EarthlinksConfirmed.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Confirmation Error`
-- `[title] Welcome to Earthlinks! - Email Confirmed`
-
-</details>
-
-### src/pages/portals/EarthlinksPortal.tsx
-
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Welcome Back`
-
-</details>
-
-### src/pages/portals/ExafyAdminPortal.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/portals/MaxinaConfirmed.tsx
-
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 3, namespaces: 1
-
-**i18n namespaces:**
-
-- `discount` — used: 3, total in shard: 27
-
-<details><summary>Hardcoded suspects (top 10)</summary>
-
-- `Confirmation Error`
-- `[title] Welcome to Maxina! - Email Confirmed`
-
-</details>
-
-### src/pages/portals/MaxinaPortal.tsx
 
 **Status:** ✅ clean — keys consumed: 18, namespaces: 2
 
 **i18n namespaces:**
 
+- `screens` — used: 4, total in shard: 8825
+- `support` — used: 14, total in shard: 34, **MISSING:** support.maxina.categories.${category.id}, support.maxina.faq.${item}.question, support.maxina.faq.${item}.answer, support.maxina.usefulLinks.${link.id}
+
+### src/pages/legal/PrivacyPolicy.tsx
+
+**Status:** ✅ clean — keys consumed: 101, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 101, total in shard: 8825
+
+### src/pages/legal/TermsOfUse.tsx
+
+**Status:** ✅ clean — keys consumed: 88, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 88, total in shard: 8825
+
+## memory/
+
+### src/pages/memory/Diary.tsx
+
+**Status:** ✅ clean — keys consumed: 17, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 17, total in shard: 8825
+
+### src/pages/memory/Permissions.tsx
+
+**Status:** ✅ clean — keys consumed: 25, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 25, total in shard: 8825
+
+### src/pages/memory/Recall.tsx
+
+**Status:** ✅ clean — keys consumed: 10, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 10, total in shard: 8825
+
+### src/pages/memory/Timeline.tsx
+
+**Status:** ✅ clean — keys consumed: 16, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 15, total in shard: 8825
+- `timeline` — used: 1, total in shard: 1
+
+## messages/
+
+### src/pages/messages/Archived.tsx
+
+**Status:** ✅ clean — keys consumed: 32, namespaces: 2
+
+**i18n namespaces:**
+
+- `archives` — used: 1, total in shard: 1
+- `screens` — used: 31, total in shard: 8825
+
+### src/pages/messages/Inspiration.tsx
+
+**Status:** ✅ clean — keys consumed: 16, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 16, total in shard: 8825
+
+## onboarding/
+
+### src/pages/onboarding/OnboardingWelcome.tsx
+
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
+
+## patient/
+
+### src/pages/patient/Appointments.tsx
+
+**Status:** ✅ clean — keys consumed: 21, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 21, total in shard: 8825
+
+### src/pages/patient/Dashboard.tsx
+
+**Status:** ✅ clean — keys consumed: 24, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 24, total in shard: 8825
+
+### src/pages/patient/Health.tsx
+
+**Status:** ✅ clean — keys consumed: 26, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 26, total in shard: 8825
+
+## portals/
+
+### src/pages/portals/AlkalmaConfirmed.tsx
+
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 2, total in shard: 8825
+
+### src/pages/portals/AlkalmaPortal.tsx
+
+**Status:** ✅ clean — keys consumed: 30, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 30, total in shard: 8825
+
+### src/pages/portals/EarthlinksConfirmed.tsx
+
+**Status:** ✅ clean — keys consumed: 9, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 9, total in shard: 8825
+
+### src/pages/portals/EarthlinksPortal.tsx
+
+**Status:** ✅ clean — keys consumed: 30, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 30, total in shard: 8825
+
+### src/pages/portals/ExafyAdminPortal.tsx
+
+**Status:** ✅ clean — keys consumed: 14, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 14, total in shard: 8825
+
+### src/pages/portals/MaxinaConfirmed.tsx
+
+**Status:** ✅ clean — keys consumed: 12, namespaces: 2
+
+**i18n namespaces:**
+
+- `discount` — used: 3, total in shard: 27
+- `screens` — used: 9, total in shard: 8825
+
+### src/pages/portals/MaxinaPortal.tsx
+
+**Status:** ✅ clean — keys consumed: 34, namespaces: 3
+
+**i18n namespaces:**
+
 - `authPage` — used: 7, total in shard: 15
 - `portals` — used: 11, total in shard: 28
+- `screens` — used: 16, total in shard: 8825
 
 ## professional/
 
 ### src/pages/professional/Dashboard.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 26, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Next Appointment`
-
-</details>
+- `screens` — used: 26, total in shard: 8825
 
 ### src/pages/professional/Patients.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 26, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Next Appointment`
-- `Next Appointment`
-- `Next Appointment`
-- `Next Week`
-- `[placeholder] Search patients...`
-
-</details>
+- `screens` — used: 26, total in shard: 8825
 
 ## settings/
 
 ### src/pages/settings/AutopilotSettings.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 29, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Autopilot & Automation Settings`
-
-</details>
+- `screens` — used: 29, total in shard: 8825
 
 ### src/pages/settings/Billing.tsx
 
-**Status:** ⚠️ 6 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 94, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Next Billing`
-- `Cancel Subscription`
-- `Edit`
-- `To Next Credit`
-- `[title] Billing | Settings`
-- `[placeholder] Search billing...`
-
-</details>
+- `screens` — used: 94, total in shard: 8825
 
 ### src/pages/settings/ConnectedApps.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 68, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Next Automatic Sync`
-- `[title] Connected Apps | Settings`
-- `[placeholder] Search apps, integrations, fitness trackers...`
-
-</details>
+- `screens` — used: 64, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/settings/Limitations.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 48, namespaces: 2
+
+**i18n namespaces:**
+
+- `screens` — used: 44, total in shard: 8825
+- `toasts` — used: 4, total in shard: 1215
 
 ### src/pages/settings/Preferences.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 86, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Settings saved`
-- `[title] Preferences | Settings`
-- `[placeholder] Search preferences, themes, language settings...`
-- `[title] Theme Settings`
-- `[title] Advanced Appearance Settings`
-- `[title] Language & Region Settings`
-- `[title] Accessibility Settings`
-
-</details>
+- `screens` — used: 86, total in shard: 8825
 
 ### src/pages/settings/Privacy.tsx
 
-**Status:** ⚠️ 9 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 86, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `👁️ Profile Visibility`
-- `Public Profile`
-- `Delete account and all data`
-- `[title] Privacy | Settings`
-- `[title] Privacy Settings 🔒`
-- `[placeholder] Search privacy controls, data settings, security...`
-- `[title] Profile Visibility Controls`
-- `[title] Visible Settings`
-- `[title] Security Settings`
-
-</details>
+- `screens` — used: 86, total in shard: 8825
 
 ### src/pages/settings/SettingsNotifications.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 27, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Notifications | Settings`
-- `[title] Notifications | Settings`
-
-</details>
+- `screens` — used: 21, total in shard: 8825
+- `toasts` — used: 6, total in shard: 1215
 
 ### src/pages/settings/SocialConnect.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 6, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 6, total in shard: 8825
 
 ### src/pages/settings/Support.tsx
 
-**Status:** ⚠️ 7 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 78, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Call Back`
-- `Success rate`
-- `[title] Support | Settings`
-- `[placeholder] Search help articles, support topics, FAQs...`
-- `[title] Submit a Support Ticket`
-- `[title] Search Knowledge Base`
-- `[placeholder] Search help articles...`
-
-</details>
+- `screens` — used: 78, total in shard: 8825
 
 ### src/pages/settings/TenantRole.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 23, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[title] Tenant & Role Switcher | Settings`
-
-</details>
+- `screens` — used: 17, total in shard: 8825
+- `toasts` — used: 6, total in shard: 1215
 
 ### src/pages/settings/VoiceAISettings.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 52, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Voice Output Settings`
-- `Privacy & Data Settings`
-- `Auto-Delete Recordings After (Days)`
-- `[title] Voice & AI Settings`
-- `[title] Voice & AI Settings`
-
-</details>
+- `screens` — used: 52, total in shard: 8825
 
 ## sharing/
 
 ### src/pages/sharing/CampaignDetail.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 22, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading campaign...`
-
-</details>
+- `screens` — used: 20, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/sharing/Campaigns.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 10, namespaces: 2
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search campaigns...`
-
-</details>
+- `screens` — used: 8, total in shard: 8825
+- `toasts` — used: 2, total in shard: 1215
 
 ### src/pages/sharing/Consent.tsx
 
-**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+**Status:** ✅ clean — keys consumed: 34, namespaces: 2
 
 **i18n namespaces:**
 
 - `consent` — used: 1, total in shard: 1
+- `screens` — used: 33, total in shard: 8825
 
 ### src/pages/sharing/DataConsent.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 18, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Privacy Settings`
-- `[placeholder] Search permissions, packages...`
-
-</details>
+- `screens` — used: 18, total in shard: 8825
 
 ### src/pages/sharing/Distribution.tsx
 
-**Status:** ⚠️ 3 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 160, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `T-14 days: Save the date announcement`
-- `🔄 Distribution Settings`
-- `[placeholder] Search automation rules, templates...`
-
-</details>
+- `screens` — used: 160, total in shard: 8825
 
 ### src/pages/sharing/Logs.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 46, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 46, total in shard: 8825
 
 ### src/pages/sharing/Marketplace.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 71, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search integrations, research studies, healthcare platforms...`
-
-</details>
+- `screens` — used: 71, total in shard: 8825
 
 ### src/pages/sharing/Packages.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 22, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search packages, templates...`
-
-</details>
+- `screens` — used: 22, total in shard: 8825
 
 ### src/pages/sharing/SmartPackage.tsx
 
-**Status:** ⚠️ 2 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 58, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Success rate`
-- `[placeholder] Search AI recommendations, templates, data types...`
-
-</details>
+- `screens` — used: 58, total in shard: 8825
 
 ## staff/
 
 ### src/pages/staff/Dashboard.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 25, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 25, total in shard: 8825
 
 ### src/pages/staff/Queue.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 35, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 35, total in shard: 8825
 
 ## wallet/
 
 ### src/pages/wallet/Balance.tsx
 
-**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 34, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `Loading transactions...`
-- `Loading transactions...`
-- `Loading transactions...`
-- `[placeholder] Search balances, transactions, or benefits...`
-
-</details>
+- `screens` — used: 34, total in shard: 8825
 
 ### src/pages/wallet/Rewards.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 15, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search rewards, commissions, or achievements...`
-
-</details>
+- `screens` — used: 15, total in shard: 8825
 
 ### src/pages/wallet/Subscriptions.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
-<details><summary>Hardcoded suspects (top 10)</summary>
+**i18n namespaces:**
 
-- `[placeholder] Search subscriptions and plans...`
-
-</details>
+- `screens` — used: 11, total in shard: 8825
 
 ## Namespace usage across all pages
 
 | Namespace | Pages using it |
 |---|---|
+| `screens` | 275 |
+| `toasts` | 62 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
 | `discover` | 2 |
@@ -2936,7 +2884,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `intake_messages` | 1 |
 | `payment` | 1 |
 | `admin` | 1 |
-| `toasts` | 1 |
 | `challenges` | 1 |
 | `events` | 1 |
 | `groupDetail` | 1 |

@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { t } from '@/lib/i18n-toast';
 
 interface CommunityFiltersPopupProps {
   open: boolean;
@@ -98,16 +99,16 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Community Filters</DialogTitle>
+          <DialogTitle>{t('screens.common.communityFilters')}</DialogTitle>
           <DialogDescription>
-            Customize your community overview to show the content most relevant to you.
+            {t('screens.common.customizeYourCommunityOverviewShowContent')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Content Sections */}
           <div className="space-y-4">
-            <h4 className="text-sm font-medium">Show Sections</h4>
+            <h4 className="text-sm font-medium">{t('screens.common.showSections')}</h4>
             <div className="grid grid-cols-2 gap-3">
               {availableSections.map((section) => (
                 <div key={section.id} className="space-y-2">
@@ -128,7 +129,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
           {/* Health Pillars */}
           <div className="space-y-4">
-            <h4 className="text-sm font-medium">Focus Areas</h4>
+            <h4 className="text-sm font-medium">{t('screens.common.focusAreas')}</h4>
             <div className="flex flex-wrap gap-2">
               {availablePillars.map((pillar) => (
                 <Badge
@@ -147,7 +148,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
           {/* Activity Radius */}
           <div className="space-y-4">
-            <h4 className="text-sm font-medium">Activity Radius</h4>
+            <h4 className="text-sm font-medium">{t('screens.common.activityRadius')}</h4>
             <div className="px-3">
               <Slider
                 value={activityRadius}
@@ -158,9 +159,9 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                 className="w-full"
               />
               <div className="flex justify-between text-sm text-muted-foreground mt-1">
-                <span>1 mile</span>
-                <span className="font-medium">{activityRadius[0]} miles</span>
-                <span>50+ miles</span>
+                <span>{t('screens.common.text1Mile')}</span>
+                <span className="font-medium">{t('screens.common.value0Miles', { value0: activityRadius[0] })}</span>
+                <span>{t('screens.common.text50Miles')}</span>
               </div>
             </div>
           </div>
@@ -170,31 +171,31 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
           {/* Content Type and Timeframe */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Content Type</h4>
+              <h4 className="text-sm font-medium">{t('screens.common.contentType')}</h4>
               <Select value={contentType} onValueChange={setContentType}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Content</SelectItem>
-                  <SelectItem value="events">Events Only</SelectItem>
-                  <SelectItem value="groups">Groups Only</SelectItem>
-                  <SelectItem value="live">Live Sessions</SelectItem>
-                  <SelectItem value="educational">Educational</SelectItem>
+                  <SelectItem value="all">{t('screens.common.allContent')}</SelectItem>
+                  <SelectItem value="events">{t('screens.common.eventsOnly')}</SelectItem>
+                  <SelectItem value="groups">{t('screens.common.groupsOnly')}</SelectItem>
+                  <SelectItem value="live">{t('screens.common.liveSessions')}</SelectItem>
+                  <SelectItem value="educational">{t('screens.common.educational')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Timeframe</h4>
+              <h4 className="text-sm font-medium">{t('screens.common.timeframe')}</h4>
               <Select value={timeframe} onValueChange={setTimeframe}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="now">Right Now</SelectItem>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
+                  <SelectItem value="now">{t('screens.common.rightNow')}</SelectItem>
+                  <SelectItem value="today">{t('screens.common.today')}</SelectItem>
+                  <SelectItem value="week">{t('screens.common.thisWeek')}</SelectItem>
+                  <SelectItem value="month">{t('screens.common.thisMonth')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -204,7 +205,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
           {/* Advanced Settings */}
           <div className="space-y-4">
-            <h4 className="text-sm font-medium">Advanced Settings</h4>
+            <h4 className="text-sm font-medium">{t('screens.common.advancedSettings')}</h4>
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -215,7 +216,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="show-live" className="text-sm">
-                  Show live content only
+                  {t('screens.common.showLiveContentOnly')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -227,7 +228,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="prioritize-nearby" className="text-sm">
-                  Prioritize nearby activities
+                  {t('screens.common.prioritizeNearbyActivities')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -239,7 +240,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="hide-completed" className="text-sm">
-                  Hide completed events
+                  {t('screens.common.hideCompletedEvents')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -251,7 +252,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="premium-only" className="text-sm">
-                  Show premium content only
+                  {t('screens.common.showPremiumContentOnly')}
                 </label>
               </div>
             </div>
@@ -260,14 +261,14 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
         <div className="flex justify-between pt-6">
           <Button variant="outline" onClick={handleResetFilters}>
-            Reset
+            {t('screens.common.reset')}
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleApplyFilters}>
-              Apply Filters
+              {t('screens.common.applyFilters')}
             </Button>
           </div>
         </div>

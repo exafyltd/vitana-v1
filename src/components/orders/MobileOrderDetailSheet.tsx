@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import { useDownloadVoucherPdf, useSendVoucherEmail } from '@/hooks/useVouchers';
 import { UnifiedMobileOrder } from './MobileOrdersView';
 import { useTranslation } from '@/hooks/useTranslation';
+import { t } from '@/lib/i18n-toast';
 
 interface MobileOrderDetailSheetProps {
   order: UnifiedMobileOrder | null;
@@ -333,7 +334,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                     <Input
                       id="recipientEmail"
                       type="email"
-                      placeholder="friend@example.com"
+                      placeholder={t('screens.orders.friendExampleCom')}
                       value={recipientEmail}
                       onChange={(e) => setRecipientEmail(e.target.value)}
                       className="mt-1"
@@ -344,7 +345,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                     <Label htmlFor="recipientName" className="text-sm">{translate('orders.detailSheet.recipientName')}</Label>
                     <Input
                       id="recipientName"
-                      placeholder="Friend's name"
+                      placeholder={t('screens.orders.friendSName')}
                       value={recipientName}
                       onChange={(e) => setRecipientName(e.target.value)}
                       className="mt-1"

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TestTube, Heart, Activity, Brain, Droplets, Package, Share2, Shield, Clock, Users, CheckCircle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface BiomarkerCategory {
   id: string;
@@ -129,8 +130,8 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
   const renderSelectionStep = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Select Biomarkers to Share</h3>
-        <p className="text-sm text-muted-foreground">Choose which health data you'd like to include in your consent package.</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.common.selectBiomarkersShare')}</h3>
+        <p className="text-sm text-muted-foreground">{t('screens.common.chooseWhichHealthDataYouD')}</p>
       </div>
 
       <ScrollArea className="h-[400px] pr-4">
@@ -193,20 +194,20 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
     return (
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold mb-2">Review Consent Package</h3>
-          <p className="text-sm text-muted-foreground">Review your selected biomarkers and sharing preferences.</p>
+          <h3 className="text-lg font-semibold mb-2">{t('screens.common.reviewConsentPackage')}</h3>
+          <p className="text-sm text-muted-foreground">{t('screens.common.reviewYourSelectedBiomarkersSharingPreferences')}</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Package className="w-5 h-5" />
-              Package Summary
+              {t('screens.common.packageSummary')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <div className="text-sm font-medium mb-2">Selected Biomarkers ({selectedDetails.length})</div>
+              <div className="text-sm font-medium mb-2">{t('screens.common.selectedBiomarkersLength', { length: selectedDetails.length })}</div>
               <div className="grid grid-cols-2 gap-2">
                 {selectedDetails.map((marker) => (
                   <div key={marker.id} className="text-xs p-2 bg-secondary/20 rounded flex justify-between">
@@ -222,32 +223,32 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
             <Separator />
             
             <div className="space-y-3">
-              <h4 className="font-medium">Sharing Preferences</h4>
+              <h4 className="font-medium">{t('screens.common.sharingPreferences')}</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
-                  <span>Allow aggregated data sharing</span>
+                  <span>{t('screens.common.allowAggregatedDataSharing')}</span>
                   <Checkbox 
                     checked={shareSettings.allowAggregated}
                     onCheckedChange={(checked) => setShareSettings(prev => ({...prev, allowAggregated: !!checked}))}
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Allow research participation</span>
+                  <span>{t('screens.common.allowResearchParticipation')}</span>
                   <Checkbox 
                     checked={shareSettings.allowResearch}
                     onCheckedChange={(checked) => setShareSettings(prev => ({...prev, allowResearch: !!checked}))}
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Package expires in</span>
+                  <span>{t('screens.common.packageExpires')}</span>
                   <select 
                     value={shareSettings.expiryDays}
                     onChange={(e) => setShareSettings(prev => ({...prev, expiryDays: parseInt(e.target.value)}))}
                     className="px-2 py-1 border rounded text-sm"
                   >
-                    <option value={90}>3 months</option>
-                    <option value={180}>6 months</option>
-                    <option value={365}>1 year</option>
+                    <option value={90}>{t('screens.common.text3Months')}</option>
+                    <option value={180}>{t('screens.common.text6Months')}</option>
+                    <option value={365}>{t('screens.common.text1Year')}</option>
                   </select>
                 </div>
               </div>
@@ -261,8 +262,8 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
   const renderSharingStep = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Share Consent Package</h3>
-        <p className="text-sm text-muted-foreground">Choose how to share your consent package with healthcare providers or researchers.</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.common.shareConsentPackage')}</h3>
+        <p className="text-sm text-muted-foreground">{t('screens.common.chooseHowShareYourConsentPackage')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -270,12 +271,12 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Share2 className="w-5 h-5 text-blue-500" />
-              Generate Share Link
+              {t('screens.common.generateShareLink')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">Create a secure link that you can share directly with providers.</p>
-            <Button size="sm" className="w-full">Generate Link</Button>
+            <p className="text-sm text-muted-foreground mb-4">{t('screens.common.createSecureLinkThatYouCan')}</p>
+            <Button size="sm" className="w-full">{t('screens.common.generateLink')}</Button>
           </CardContent>
         </Card>
 
@@ -283,12 +284,12 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Users className="w-5 h-5 text-green-500" />
-              Send to Provider
+              {t('screens.common.sendProvider')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">Send directly to a healthcare provider or research team.</p>
-            <Button size="sm" variant="outline" className="w-full">Select Provider</Button>
+            <p className="text-sm text-muted-foreground mb-4">{t('screens.common.sendDirectlyHealthcareProviderResearchTeam')}</p>
+            <Button size="sm" variant="outline" className="w-full">{t('screens.common.selectProvider')}</Button>
           </CardContent>
         </Card>
       </div>
@@ -297,25 +298,25 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-amber-500" />
-            Data Protection & Privacy
+            {t('screens.common.dataProtectionPrivacy')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex items-start gap-2">
             <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>All data is encrypted in transit and at rest</span>
+            <span>{t('screens.common.allDataEncryptedTransitAtRest')}</span>
           </div>
           <div className="flex items-start gap-2">
             <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>You can revoke access at any time</span>
+            <span>{t('screens.common.youCanRevokeAccessAtAny')}</span>
           </div>
           <div className="flex items-start gap-2">
             <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>Recipients cannot share your data without additional consent</span>
+            <span>{t('screens.common.recipientsCannotShareYourDataWithout')}</span>
           </div>
           <div className="flex items-start gap-2">
             <Clock className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Package expires automatically after {shareSettings.expiryDays} days</span>
+            <span>{t('screens.common.packageExpiresAutomaticallyAfterExpirydaysDays', { expiryDays: shareSettings.expiryDays })}</span>
           </div>
         </CardContent>
       </Card>
@@ -329,23 +330,23 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
       </div>
       
       <div>
-        <h3 className="text-lg font-semibold mb-2">Consent Package Created Successfully!</h3>
-        <p className="text-sm text-muted-foreground">Your biomarker consent package has been created and is ready to share.</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.common.consentPackageCreatedSuccessfully')}</h3>
+        <p className="text-sm text-muted-foreground">{t('screens.common.yourBiomarkerConsentPackageHasCreated')}</p>
       </div>
 
       <Card>
         <CardContent className="pt-6">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="font-medium">Package ID:</span>
-              <span className="font-mono text-xs">CP-{Date.now().toString().slice(-8)}</span>
+              <span className="font-medium">{t('screens.common.packageId')}</span>
+              <span className="font-mono text-xs">{t('screens.common.cpValue0', { value0: Date.now().toString().slice(-8) })}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Biomarkers Included:</span>
-              <span>{selectedMarkers.length} markers</span>
+              <span className="font-medium">{t('screens.common.biomarkersIncluded')}</span>
+              <span>{t('screens.common.lengthMarkers', { length: selectedMarkers.length })}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Expires:</span>
+              <span className="font-medium">{t('screens.common.expires')}</span>
               <span>{new Date(Date.now() + shareSettings.expiryDays * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
             </div>
           </div>
@@ -353,8 +354,8 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
       </Card>
 
       <div className="space-y-3">
-        <Button className="w-full">View in Consent Dashboard</Button>
-        <Button variant="outline" className="w-full">Create Another Package</Button>
+        <Button className="w-full">{t('screens.common.viewConsentDashboard')}</Button>
+        <Button variant="outline" className="w-full">{t('screens.common.createAnotherPackage')}</Button>
       </div>
     </div>
   );
@@ -390,9 +391,9 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Create Consent Package</DialogTitle>
+          <DialogTitle>{t('screens.common.createConsentPackage')}</DialogTitle>
           <DialogDescription>
-            Create a secure package of your biomarker data to share with healthcare providers or researchers.
+            {t('screens.common.createSecurePackageYourBiomarkerData')}
           </DialogDescription>
         </DialogHeader>
 
@@ -408,14 +409,14 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
             <div>
               {step !== "selection" && (
                 <Button variant="outline" onClick={handleBack}>
-                  Back
+                  {t('screens.common.back')}
                 </Button>
               )}
             </div>
             
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('screens.common.cancel')}
               </Button>
               {step !== "sharing" ? (
                 <Button 
@@ -427,7 +428,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
                 </Button>
               ) : (
                 <Button onClick={handleNext}>
-                  Create Package
+                  {t('screens.common.createPackage')}
                 </Button>
               )}
             </div>
@@ -437,7 +438,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
         {step === "confirmation" && (
           <DialogFooter>
             <Button onClick={() => onOpenChange(false)} className="w-full">
-              Close
+              {t('screens.common.close')}
             </Button>
           </DialogFooter>
         )}

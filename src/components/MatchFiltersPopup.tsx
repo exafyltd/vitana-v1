@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Filter, Target, Users, Calendar, MapPin, Heart, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface MatchFiltersPopupProps {
   open: boolean;
@@ -86,7 +87,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Filter className="w-5 h-5" />
-            Match Filters & Settings
+            {t('screens.common.matchFiltersSettings')}
           </DialogTitle>
         </DialogHeader>
 
@@ -94,8 +95,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           {/* Age Range */}
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Age Range: {ageRange[0]} - {ageRange[1]} years
+              <Users className="w-4 h-4" />{t('screens.common.ageRangeValue0Value1Years', { value0: ageRange[0], value1: ageRange[1] })}
             </Label>
             <Slider
               value={ageRange}
@@ -110,8 +110,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           {/* Distance Range */}
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              Distance: Within {distanceRange[0]} miles
+              <MapPin className="w-4 h-4" />{t('screens.common.distanceWithinValue0Miles', { value0: distanceRange[0] })}
             </Label>
             <Slider
               value={distanceRange}
@@ -129,7 +128,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
               <Heart className="w-4 h-4" />
-              Interests & Activities
+              {t('screens.common.interestsActivities')}
             </Label>
             <div className="flex flex-wrap gap-2">
               {interests.map((interest) => (
@@ -149,7 +148,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
               <Target className="w-4 h-4" />
-              Wellness Goals
+              {t('screens.common.wellnessGoals')}
             </Label>
             <div className="flex flex-wrap gap-2">
               {goals.map((goal) => (
@@ -171,7 +170,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           <div className="space-y-4">
             <Label className="flex items-center gap-2">
               <Zap className="w-4 h-4" />
-              Advanced Match Settings
+              {t('screens.common.advancedMatchSettings')}
             </Label>
             
             <div className="space-y-3">
@@ -184,7 +183,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
                   }
                 />
                 <Label htmlFor="prioritizeCompatibility" className="text-sm">
-                  Prioritize high compatibility matches
+                  {t('screens.common.prioritizeHighCompatibilityMatches')}
                 </Label>
               </div>
 
@@ -197,7 +196,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
                   }
                 />
                 <Label htmlFor="showOnlineOnly" className="text-sm">
-                  Show only online members
+                  {t('screens.common.showOnlyOnlineMembers')}
                 </Label>
               </div>
 
@@ -210,7 +209,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
                   }
                 />
                 <Label htmlFor="hideViewedProfiles" className="text-sm">
-                  Hide already viewed profiles
+                  {t('screens.common.hideAlreadyViewedProfiles')}
                 </Label>
               </div>
 
@@ -223,7 +222,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
                   }
                 />
                 <Label htmlFor="enableAutoIntro" className="text-sm">
-                  Enable AI-powered auto introductions
+                  {t('screens.common.enableAipoweredAutoIntroductions')}
                 </Label>
               </div>
             </div>
@@ -232,13 +231,13 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button onClick={handleApplyFilters} className="flex-1">
-              Apply Filters
+              {t('screens.common.applyFilters')}
             </Button>
             <Button variant="outline" onClick={handleResetFilters}>
-              Reset
+              {t('screens.common.reset')}
             </Button>
             <Button variant="ghost" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
           </div>
         </div>

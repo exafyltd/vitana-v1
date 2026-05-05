@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar, RotateCcw, MapPin, MessageSquare, Clock, Bell, Star, CreditCard } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface DiscoverBookActionPopupProps {
   open: boolean;
@@ -12,10 +13,7 @@ export const DiscoverBookActionPopup = ({ open, onOpenChange }: DiscoverBookActi
   const { toast } = useToast();
 
   const handleAction = (action: string) => {
-    toast({
-      title: "Action Selected",
-      description: `${action} feature coming soon!`,
-    });
+    notify('toasts.discover.actionSelected');
     onOpenChange(false);
   };
 
@@ -34,7 +32,7 @@ export const DiscoverBookActionPopup = ({ open, onOpenChange }: DiscoverBookActi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Quick Book Actions</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('screens.discover.quickBookActions')}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4 mt-4">
           {actions.map((action) => {

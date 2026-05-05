@@ -68,6 +68,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
+import { t } from '@/lib/i18n-toast';
 // SubscribeButton component
   function SubscribeButton({ show }: { show: PopularShow }) {
     const { user } = useAuth();
@@ -579,7 +580,7 @@ export default function MediaHub() {
   
   return (
     <AppLayout>
-      <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
+      <SEO title={t('screens.community.mediaHubCommunity')} description="Discover videos, podcasts, and community content" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen")}>
         <div className="max-w-7xl mx-auto">

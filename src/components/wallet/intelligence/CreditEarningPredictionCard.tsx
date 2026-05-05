@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Calendar, Target, Clock, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningPrediction {
   id: string;
@@ -78,10 +79,9 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Credit Earning Forecast
+            {t('screens.wallet.creditEarningForecast')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            +{totalPredicted} Credits Expected
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.totalpredictedCreditsExpected', { totalPredicted })}
           </Badge>
         </div>
       </CardHeader>
@@ -90,12 +90,12 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         {/* Prediction Confidence */}
         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Prediction Confidence</span>
+            <span className="text-sm font-medium">{t('screens.wallet.predictionConfidence')}</span>
             <span className="text-sm text-muted-foreground">{averageConfidence}%</span>
           </div>
           <Progress value={averageConfidence} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            Based on your <span className="font-semibold text-primary">recent activity patterns</span>
+            {t('screens.wallet.basedYour')} <span className="font-semibold text-primary">{t('screens.wallet.recentActivityPatterns')}</span>
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-purple-500" />
-            Predicted Earnings
+            {t('screens.wallet.predictedEarnings')}
           </h4>
           
           {mockPredictions.slice(0, 2).map((prediction) => (
@@ -113,14 +113,11 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
                   <span className="text-lg">{getCategoryIcon(prediction.category)}</span>
                   <div>
                     <h5 className="text-sm font-medium">{prediction.source}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      {prediction.confidence}% confidence • {prediction.timeframe}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.confidenceConfidenceTimeframe', { confidence: prediction.confidence, timeframe: prediction.timeframe })}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <Badge variant="outline" className="text-xs mb-1">
-                    +{prediction.prediction} credits
+                  <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.predictionCredits', { prediction: prediction.prediction })}
                   </Badge>
                   <div className={`text-xs ${getTrendColor(prediction.trend)}`}>
                     {prediction.trend}
@@ -135,22 +132,22 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="p-3 rounded-lg border bg-gradient-to-r from-emerald-500/5 to-green-500/5 border-emerald-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-medium">Weekly Earning Goal</span>
+            <span className="text-sm font-medium">{t('screens.wallet.weeklyEarningGoal')}</span>
           </div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-muted-foreground">425 / 500 credits</span>
-            <span className="text-xs text-emerald-600">85% complete</span>
+            <span className="text-xs text-muted-foreground">{t('screens.wallet.text425500Credits')}</span>
+            <span className="text-xs text-emerald-600">{t('screens.wallet.text85Complete')}</span>
           </div>
           <Progress value={85} className="h-1.5 mb-2" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">75 credits</span> needed to reach goal
+            <span className="font-semibold text-emerald-600">{t('screens.wallet.text75Credits')}</span>{t('screens.wallet.neededReachGoal')}
           </p>
         </div>
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Zap className="h-4 w-4 mr-2" />
-          Optimize Earning Strategy
+          {t('screens.wallet.optimizeEarningStrategy')}
         </Button>
       </CardContent>
     </Card>

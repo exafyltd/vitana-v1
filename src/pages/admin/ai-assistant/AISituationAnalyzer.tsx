@@ -8,8 +8,9 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminAIAssistantNavigation } from "@/config/navigation";
 import SituationForm from "@/components/admin/automation/SituationForm";
 import AnalysisResults from "@/components/admin/automation/AnalysisResults";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAutomationRules } from "@/hooks/useAutomationRules";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function AISituationAnalyzer() {
   const navigate = useNavigate();
@@ -38,20 +39,12 @@ export default function AISituationAnalyzer() {
       if (error) {
         // Handle specific error types
         if (error.message?.includes('Rate limits exceeded')) {
-          toast({
-            title: "Rate Limit Reached",
-            description: "Too many requests. Please wait a moment and try again.",
-            variant: "destructive",
-          });
+          notifyError('toasts.admin.rateLimitReached', 'toasts.admin.tooManyRequestsPleaseWaitMoment');
           return;
         }
         
         if (error.message?.includes('Payment required')) {
-          toast({
-            title: "Credits Required",
-            description: "Please add credits to your Lovable AI workspace to continue.",
-            variant: "destructive",
-          });
+          notifyError('toasts.admin.creditsRequired', 'toasts.admin.pleaseAddCreditsYourLovableAi');
           return;
         }
         
@@ -59,17 +52,10 @@ export default function AISituationAnalyzer() {
       }
 
       setAnalysis(data.analysis);
-      toast({
-        title: "Analysis Complete",
-        description: "AI has generated automation suggestions for your situation",
-      });
+      notify('toasts.admin.analysisComplete', 'toasts.admin.aiHasGeneratedAutomationSuggestionsFor');
     } catch (error: any) {
       console.error('Analysis error:', error);
-      toast({
-        title: "Analysis Failed",
-        description: error.message || "Failed to analyze situation. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.analysisFailed');
     } finally {
       setIsAnalyzing(false);
     }
@@ -105,19 +91,12 @@ export default function AISituationAnalyzer() {
         .update({ status: 'deployed' })
         .eq('id', analysis.id);
 
-      toast({
-        title: "Automation Deployed",
-        description: "The automation has been created (disabled). You can enable it from the builder.",
-      });
+      notify('toasts.admin.automationDeployed', 'toasts.admin.automationHasCreatedDisabledYouCan');
 
       navigate('/admin/ai-assistant');
     } catch (error: any) {
       console.error('Deploy error:', error);
-      toast({
-        title: "Deployment Failed",
-        description: error.message || "Failed to deploy automation",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.deploymentFailed');
     } finally {
       setIsDeploying(false);
     }
@@ -126,7 +105,7 @@ export default function AISituationAnalyzer() {
   return (
     <AppLayout>
       <SEO 
-        title="AI Situation Analyzer | AI Assistant | Admin" 
+        title={t('screens.admin.aiSituationAnalyzerAiAssistantAdmin')} 
         description="Analyze situations and get automation suggestions" 
         canonical={window.location.href} 
       />
@@ -135,7 +114,7 @@ export default function AISituationAnalyzer() {
       <div className="p-6 pb-32 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           <AdminHeader
-            title="AI Situation Analyzer"
+            title={t('screens.admin.aiSituationAnalyzer')}
             description="Describe scenarios and get intelligent automation suggestions"
             emoji="🧠"
           />

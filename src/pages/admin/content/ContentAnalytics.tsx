@@ -4,6 +4,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useContentStats } from "@/hooks/useAdminContent";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-amber-100 text-amber-800",
@@ -21,19 +22,19 @@ export default function ContentAnalytics() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="📈"
-          title="Content Analytics"
+          title={t('screens.admin.contentAnalytics')}
           description="Overview of content submissions and moderation status"
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading analytics...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingAnalytics')}</p>
         ) : !stats ? (
-          <AdminEmptyState title="No analytics available" description="Content stats could not be loaded." />
+          <AdminEmptyState title={t('screens.admin.noAnalyticsAvailable')} description="Content stats could not be loaded." />
         ) : (
           <>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Items</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.admin.totalItems')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-bold">{stats.total}</p>
@@ -41,7 +42,7 @@ export default function ContentAnalytics() {
             </Card>
 
             <div>
-              <h3 className="text-sm font-semibold mb-3">By Status</h3>
+              <h3 className="text-sm font-semibold mb-3">{t('screens.admin.byStatus')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Object.entries(stats.by_status).map(([status, count]) => (
                   <Card key={status}>
@@ -59,7 +60,7 @@ export default function ContentAnalytics() {
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold mb-3">By Type</h3>
+              <h3 className="text-sm font-semibold mb-3">{t('screens.admin.byType')}</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Object.entries(stats.by_type).map(([type, count]) => (
                   <Card key={type}>

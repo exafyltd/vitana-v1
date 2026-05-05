@@ -6,6 +6,7 @@ import AppLayout from "@/components/AppLayout";
 import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { t } from '@/lib/i18n-toast';
 
 export default function SettingsIntegrations() {
   return (
@@ -14,12 +15,12 @@ export default function SettingsIntegrations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔗"
-          title="Integrations"
+          title={t('screens.admin.integrations')}
           description="Connect external services, manage webhooks, and configure API keys"
         />
 
         <AdminEmptyState
-          title="Integrations coming soon"
+          title={t('screens.admin.integrationsComingSoon')}
           description="Configure webhook endpoints, manage API keys for external services, and connect third-party tools like Slack, Zapier, and CRM systems. This feature is under development."
         />
       </div>

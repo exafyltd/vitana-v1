@@ -8,8 +8,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { Pause, Play, ChevronDown, ChevronRight } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from "date-fns";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface FeedEvent {
   ts: string;
@@ -197,11 +198,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           const mockData = await response.json();
           setEvents(mockData.events || []);
           setConnectionState("MOCK MODE");
-          toast({
-            title: "Connection Failed",
-            description: "Using mock data. Live feed unavailable.",
-            variant: "destructive",
-          });
+          notifyError('toasts.dev.connectionFailed', 'toasts.dev.usingMockDataLiveFeedUnavailable');
         } catch (err) {
           console.error("Failed to load mock data:", err);
           setConnectionState("MOCK MODE");
@@ -267,7 +264,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
         <div className="flex flex-col gap-2 px-3 py-2 border-b bg-card">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-sm tracking-wide">Live Console</h3>
+            <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.liveConsole')}</h3>
             {hasUnread && !isFocused && (
               <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
                 •
@@ -275,17 +272,17 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             )}
             {connectionState === "LIVE" && (
               <Badge variant="default" className="text-xs bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30">
-                LIVE
+                {t('screens.dev.live')}
               </Badge>
             )}
             {connectionState === "CONNECTING" && (
               <Badge variant="secondary" className="text-xs bg-amber-500/20 text-amber-700 dark:text-amber-400 border-amber-500/30">
-                CONNECTING...
+                {t('screens.dev.connecting')}
               </Badge>
             )}
             {connectionState === "MOCK MODE" && (
               <Badge variant="secondary" className="text-xs bg-muted text-muted-foreground border-border">
-                MOCK MODE
+                {t('screens.dev.mockMode')}
               </Badge>
             )}
           </div>
@@ -299,12 +296,12 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             {paused ? (
               <>
                 <Play className="h-3 w-3" />
-                <span className="text-xs">Resume</span>
+                <span className="text-xs">{t('screens.dev.resume')}</span>
               </>
             ) : (
               <>
                 <Pause className="h-3 w-3" />
-                <span className="text-xs">Pause</span>
+                <span className="text-xs">{t('screens.dev.pause')}</span>
               </>
             )}
           </Button>
@@ -321,8 +318,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                   ? "border-primary bg-primary/10 text-primary font-medium" 
                   : "border-border bg-background hover:bg-accent"
               )}
-            >
-              ALL
+            >{t('screens.dev.all')}
             </button>
             <button
               onClick={() => setScope(currentVTID)}
@@ -341,7 +337,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           <Input
             value={filterQuery}
             onChange={(e) => setFilterQuery(e.target.value)}
-            placeholder="Filter events..."
+            placeholder={t('screens.dev.filterEvents')}
             className="h-6 text-xs flex-1"
           />
         </div>
@@ -351,7 +347,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
         <div className="flex-1 overflow-auto feed-container" ref={scrollRef}>
           {shownItems.length === 0 ? (
             <div className="flex items-center justify-center h-24">
-              <p className="text-xs text-muted-foreground">No events yet...</p>
+              <p className="text-xs text-muted-foreground">{t('screens.dev.noEventsYet')}</p>
             </div>
           ) : (
             <div className="divide-y divide-border">
@@ -379,7 +375,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                                 />
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>Source: {getSourceLabel(group.events[0].source)}</p>
+                                <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(group.events[0].source) })}</p>
                               </TooltipContent>
                             </Tooltip>
                             <span className="font-bold text-[12px] leading-tight flex-1 text-left">
@@ -445,7 +441,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                             />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Source: {getSourceLabel(event.source)}</p>
+                            <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(event.source) })}</p>
                           </TooltipContent>
                         </Tooltip>
 
@@ -518,8 +514,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                 size="sm"
                 onClick={handleLoadMore}
                 className="text-xs"
-              >
-                Load more ({groupedEvents.length - visibleCount} remaining)
+              >{t('screens.dev.loadMoreValue0Remaining', { value0: groupedEvents.length - visibleCount })}
               </Button>
             </div>
           )}
@@ -527,11 +522,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
 
         {/* Footer Info */}
         <div className="px-3 py-1.5 border-t bg-muted/30">
-          <p className="text-[10px] text-muted-foreground">
-            {filteredEvents.length > 0 ? `${filteredEvents.length} events` : 'No events'}
-            {filterQuery && ` • Filtered`}
-            {paused && ` • Paused`}
-            {' • '}Click VTID to open details
+          <p className="text-[10px] text-muted-foreground">{t('screens.dev.value0Value1Value2Value3ClickVtid', { value0: filteredEvents.length > 0 ? `${filteredEvents.length} events` : 'No events', value1: filterQuery && ` • Filtered`, value2: paused && ` • Paused`, value3: ' • ' })}
           </p>
         </div>
       </div>

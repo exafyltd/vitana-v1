@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface PublicEventData {
   id: string;
@@ -240,9 +241,9 @@ export default function PublicEventLanding() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-foreground">Event Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('screens.publiceventlanding.eventNotFound')}</h1>
           <p className="text-muted-foreground">{error || "The event you're looking for doesn't exist."}</p>
-          <Button onClick={() => navigate("/")}>Go to Home</Button>
+          <Button onClick={() => navigate("/")}>{t('screens.publiceventlanding.goHome')}</Button>
         </div>
       </div>
     );
@@ -308,10 +309,8 @@ export default function PublicEventLanding() {
                   <div className="flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Date & Time</p>
-                      <p className="text-sm font-medium text-foreground">
-                        {eventDate} at {eventTime}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.dateTime')}</p>
+                      <p className="text-sm font-medium text-foreground">{t('screens.publiceventlanding.eventdateAtEventtime', { eventDate, eventTime })}</p>
                     </div>
                   </div>
                 )}
@@ -320,7 +319,7 @@ export default function PublicEventLanding() {
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Location</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.location')}</p>
                       <p className="text-sm font-medium text-foreground">{event.location}</p>
                     </div>
                   </div>
@@ -329,9 +328,8 @@ export default function PublicEventLanding() {
                 <div className="flex items-start gap-3">
                   <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Attending</p>
-                    <p className="text-sm font-medium text-foreground">
-                      {event.participant_count} {event.max_participants ? `/ ${event.max_participants}` : ''} people
+                    <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.attending')}</p>
+                    <p className="text-sm font-medium text-foreground">{t('screens.publiceventlanding.participant_countValue1People', { participant_count: event.participant_count, value1: event.max_participants ? `/ ${event.max_participants}` : '' })}
                     </p>
                   </div>
                 </div>
@@ -339,7 +337,7 @@ export default function PublicEventLanding() {
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Hosted by</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.hostedBy')}</p>
                     <p className="text-sm font-medium text-foreground">{event.organizer_name}</p>
                   </div>
                 </div>
@@ -391,9 +389,7 @@ export default function PublicEventLanding() {
                         {ctaConfig.label}
                       </Button>
                       {ctaConfig.priceLabel && !ctaConfig.disabled && (
-                        <p className="text-xs text-muted-foreground">
-                          From {ctaConfig.priceLabel}
-                        </p>
+                        <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.fromPricelabel', { priceLabel: ctaConfig.priceLabel })}</p>
                       )}
                     </div>
                     
@@ -401,7 +397,7 @@ export default function PublicEventLanding() {
                     <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
                     <div className="flex items-center justify-center gap-3 md:hidden">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
-                      <span className="text-xs text-muted-foreground font-medium">or</span>
+                      <span className="text-xs text-muted-foreground font-medium">{t('screens.publiceventlanding.text')}</span>
                       <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
                     </div>
                     
@@ -410,7 +406,7 @@ export default function PublicEventLanding() {
                       <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                          Discover more events and longevity communities.
+                          {t('screens.publiceventlanding.discoverMoreEventsLongevityCommunities')}
                         </span>
                       </div>
                       <Button
@@ -430,8 +426,7 @@ export default function PublicEventLanding() {
                         {user ? "Explore VITANA" : "Join in VITANA"}
                       </Button>
                       {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
-                          You'll sign in or create an account in the next step.
+                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">{t('screens.publiceventlanding.youLlSignCreateAccountNext')}
                         </p>
                       )}
                     </div>
@@ -447,7 +442,7 @@ export default function PublicEventLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
+              {t('screens.publiceventlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span>{t('screens.publiceventlanding.YourLongevityCommunity')}
             </p>
           </div>
         </div>
@@ -458,9 +453,7 @@ export default function PublicEventLanding() {
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Ticket className="h-5 w-5 text-primary" />
-              Get Tickets for {event.title}
-            </DialogTitle>
+              <Ticket className="h-5 w-5 text-primary" />{t('screens.publiceventlanding.getTicketsForTitle', { title: event.title })}</DialogTitle>
           </DialogHeader>
           <EventTicketSelector 
             eventId={event.id} 

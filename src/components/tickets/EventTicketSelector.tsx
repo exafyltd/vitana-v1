@@ -10,6 +10,7 @@ import DiscountCodeInput from "@/components/tickets/DiscountCodeInput";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 const CURRENCY_SYMBOLS: Record<string, string> = {
   USD: '$', EUR: '€', GBP: '£', JPY: '¥',
@@ -255,7 +256,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
                 <Label htmlFor="guest-name">{translate('discount.fullName', 'Full Name')}</Label>
                 <Input
                   id="guest-name"
-                  placeholder="John Doe"
+                  placeholder={t('screens.tickets.johnDoe')}
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                 />
@@ -265,7 +266,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
                 <Input
                   id="guest-email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder={t('screens.tickets.johnExampleCom')}
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
                 />

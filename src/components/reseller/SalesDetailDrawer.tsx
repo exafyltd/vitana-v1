@@ -8,6 +8,7 @@ import { mockTransactionsByEventId } from "@/lib/mocks/mockResellerSales";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface SalesDetailDrawerProps {
   open: boolean;
@@ -146,7 +147,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md overflow-y-auto">
         <SheetHeader className="pb-4 border-b border-border/40">
-          <SheetTitle className="text-left">Sales Details</SheetTitle>
+          <SheetTitle className="text-left">{t('screens.reseller.salesDetails')}</SheetTitle>
         </SheetHeader>
 
         <div className="py-6 space-y-6">
@@ -165,11 +166,10 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="bg-muted/50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Info className="h-4 w-4 text-muted-foreground" />
-              <span>Commission Logic</span>
+              <span>{t('screens.reseller.commissionLogic')}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              You earn <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
-              Commission is calculated on gross ticket price before platform fees.
+              {t('screens.reseller.youEarn')} <span className="font-medium text-foreground">{event.commissionRate}%</span>{t('screens.reseller.perTicketSoldViaYourReseller')}
             </p>
           </div>
 
@@ -177,13 +177,13 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="bg-muted/50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Wallet className="h-4 w-4 text-muted-foreground" />
-              <span>Payout Status</span>
+              <span>{t('screens.reseller.payoutStatus')}</span>
             </div>
             {payoutInfo.isPaid ? (
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Paid to Wallet
+                  {t('screens.reseller.paidWallet')}
                 </Badge>
                 {payoutInfo.paidAt && (
                   <span className="text-xs text-muted-foreground">
@@ -195,9 +195,9 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
                   <Clock className="h-3 w-3 mr-1" />
-                  Pending
+                  {t('screens.reseller.pending')}
                 </Badge>
-                <span className="text-xs text-muted-foreground">Included in next payout cycle</span>
+                <span className="text-xs text-muted-foreground">{t('screens.reseller.includedNextPayoutCycle')}</span>
               </div>
             )}
             <Button
@@ -205,8 +205,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               size="sm"
               className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
               onClick={() => navigate("/wallet?filter=reseller_commission")}
-            >
-              View in Wallet →
+            >{t('screens.reseller.viewWallet2')}
             </Button>
           </div>
 
@@ -214,7 +213,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Receipt className="h-4 w-4 text-muted-foreground" />
-              <span>Transactions</span>
+              <span>{t('screens.reseller.transactions')}</span>
             </div>
             
             {isLoading ? (
@@ -229,9 +228,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
                     className="flex items-center justify-between py-3 px-4 bg-card rounded-lg border border-border/40"
                   >
                     <div className="space-y-0.5">
-                      <p className="text-sm font-medium">
-                        {tx.ticketQuantity} ticket{tx.ticketQuantity > 1 ? "s" : ""} · {formatCurrency(tx.saleAmount)}
-                      </p>
+                      <p className="text-sm font-medium">{t('screens.reseller.ticketquantityTicketValue1Value2', { ticketQuantity: tx.ticketQuantity, value1: tx.ticketQuantity > 1 ? "s" : "", value2: formatCurrency(tx.saleAmount) })}</p>
                       <p className="text-xs text-muted-foreground">
                         {formatDistanceToNow(new Date(tx.createdAt), { addSuffix: true })}
                       </p>
@@ -246,21 +243,21 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               </div>
             ) : (
               <p className="text-sm text-muted-foreground py-4 text-center">
-                No transactions found
+                {t('screens.reseller.noTransactionsFound')}
               </p>
             )}
           </div>
 
           {/* Summary Footer */}
           <div className="bg-accent/10 rounded-xl p-4 space-y-3 border border-accent/20">
-            <h4 className="text-sm font-medium">Summary</h4>
+            <h4 className="text-sm font-medium">{t('screens.reseller.summary')}</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-muted-foreground">Total tickets</p>
+                <p className="text-xs text-muted-foreground">{t('screens.reseller.totalTickets')}</p>
                 <p className="text-lg font-semibold">{event.ticketsSold}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Total commission</p>
+                <p className="text-xs text-muted-foreground">{t('screens.reseller.totalCommission')}</p>
                 <p className="text-lg font-semibold text-accent">{formatCurrency(event.commissionAmount)}</p>
               </div>
             </div>
