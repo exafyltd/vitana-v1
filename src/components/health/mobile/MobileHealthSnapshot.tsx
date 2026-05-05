@@ -11,33 +11,13 @@ interface PillarData {
 }
 
 // Static so Tailwind's JIT compiler keeps each class — template literals get
-// purged for pillars not used elsewhere (hydration accent, sleep tint).
-const PILLAR_CLASSES: Record<string, { text: string; tint: string; bar: string }> = {
-  nutrition: {
-    text: "text-pill-nutrition-accent",
-    tint: "bg-pill-nutrition-tint",
-    bar: "bg-pill-nutrition-accent",
-  },
-  hydration: {
-    text: "text-pill-hydration-accent",
-    tint: "bg-pill-hydration-tint",
-    bar: "bg-pill-hydration-accent",
-  },
-  exercise: {
-    text: "text-pill-exercise-accent",
-    tint: "bg-pill-exercise-tint",
-    bar: "bg-pill-exercise-accent",
-  },
-  sleep: {
-    text: "text-pill-sleep-accent",
-    tint: "bg-pill-sleep-tint",
-    bar: "bg-pill-sleep-accent",
-  },
-  mental: {
-    text: "text-pill-mental-accent",
-    tint: "bg-pill-mental-tint",
-    bar: "bg-pill-mental-accent",
-  },
+// purged for pillars not used elsewhere (e.g. sleep-tint, hydration-accent).
+const PILLAR_CLASSES: Record<string, { text: string; tint: string }> = {
+  nutrition: { text: "text-pill-nutrition-accent", tint: "bg-pill-nutrition-tint" },
+  hydration: { text: "text-pill-hydration-accent", tint: "bg-pill-hydration-tint" },
+  exercise: { text: "text-pill-exercise-accent", tint: "bg-pill-exercise-tint" },
+  sleep: { text: "text-pill-sleep-accent", tint: "bg-pill-sleep-tint" },
+  mental: { text: "text-pill-mental-accent", tint: "bg-pill-mental-tint" },
 };
 
 interface MobileHealthSnapshotProps {
@@ -62,20 +42,14 @@ export function MobileHealthSnapshot({
     return translate(`vitanaIndex.${labelKey}`, tier.label);
   };
   
-  // Build pillar config with translated labels
+  // Tile order matches the Index drawer.
   const PILLAR_CONFIG = [
-    { key: 'nutrition', label: translate('health.pillars.nutrition'), emoji: '🥗' },
-    { key: 'exercise', label: translate('health.pillars.exercise'), emoji: '🏃' },
-    { key: 'sleep', label: translate('health.pillars.sleep'), emoji: '😴' },
-    { key: 'hydration', label: translate('health.pillars.hydration'), emoji: '💧' },
-    { key: 'mental', label: translate('health.pillars.mental'), emoji: '🧠' },
+    { key: 'nutrition', emoji: '🥗' },
+    { key: 'hydration', emoji: '💧' },
+    { key: 'exercise', emoji: '💪' },
+    { key: 'sleep', emoji: '😴' },
+    { key: 'mental', emoji: '🧠' },
   ] as const;
-  
-  // Find the weakest pillar
-  const pillarEntries = Object.entries(pillars).filter(([_, v]) => v !== undefined) as [string, number][];
-  const weakestPillar = pillarEntries.reduce((min, curr) => 
-    curr[1] < min[1] ? curr : min
-  , pillarEntries[0]);
 
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
   const trendLabel = trend === 'up' 
@@ -92,21 +66,23 @@ export function MobileHealthSnapshot({
           <span className="text-base text-muted-foreground">🧬 {translate('health.healthSnapshot')}</span>
         </div>
 
-        {/* Vitana Index - Dominant Visual */}
-        <div className="relative flex flex-col items-center mb-3">
-          {/* Soft pastel halo behind the score, mirroring the Index drawer's circle */}
+        {/* Vitana Index — circle, mirroring the Index drawer */}
+        <div className="flex flex-col items-center mb-3">
           <div
-            aria-hidden
-            className="absolute -top-2 w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 blur-xl pointer-events-none"
-          />
-
-          {/* Score */}
-          <span className="relative text-5xl font-extrabold tracking-tight text-green-600">
-            {vitanaIndex}
-          </span>
+            className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg"
+            role="img"
+            aria-label={`Vitana Index ${vitanaIndex} of 999`}
+          >
+            <div className="text-center">
+              <div className="text-4xl font-bold text-green-600 leading-none">
+                {vitanaIndex}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">of 999</div>
+            </div>
+          </div>
 
           {/* Status Text */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-3">
             <span className="text-muted-foreground text-sm">
               {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
             </span>
@@ -139,45 +115,22 @@ export function MobileHealthSnapshot({
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="h-px bg-border/60 my-3" />
-
-        {/* Pillar Micro-bars — each in its own pillar tint */}
-        <div className="space-y-2">
-          {PILLAR_CONFIG.map(({ key, label, emoji }) => {
+        {/* Pillar tiles — same shape as the Index drawer */}
+        <div className="grid grid-cols-5 gap-1.5 mt-2">
+          {PILLAR_CONFIG.map(({ key, emoji }) => {
             const value = pillars[key as keyof PillarData];
             if (value === undefined) return null;
 
-            const isWeakest = key === weakestPillar[0];
             const palette = PILLAR_CLASSES[key];
 
             return (
-              <div key={key} className="flex items-center gap-3">
-                <span className="text-sm w-5">{emoji}</span>
-                <span
-                  className={`text-sm w-20 ${
-                    isWeakest ? 'text-amber-600 font-medium' : palette.text
-                  }`}
-                >
-                  {label}
-                </span>
-                <div className={`flex-1 h-2 rounded-full overflow-hidden ${palette.tint}`}>
-                  <div
-                    className={`h-full rounded-full transition-all ${
-                      isWeakest
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-400'
-                        : palette.bar
-                    }`}
-                    style={{ width: `${value}%` }}
-                  />
-                </div>
-                <span
-                  className={`text-sm w-10 text-right ${
-                    isWeakest ? 'text-amber-600 font-medium' : 'text-muted-foreground'
-                  }`}
-                >
-                  {value}%
-                </span>
+              <div
+                key={key}
+                className={`${palette.tint} ${palette.text} rounded-xl px-1 py-2 flex flex-col items-center gap-0.5`}
+              >
+                <span className="text-base leading-none">{emoji}</span>
+                <span className="text-xs font-semibold">{value}</span>
+                <span className="text-[10px] opacity-70">/200</span>
               </div>
             );
           })}
