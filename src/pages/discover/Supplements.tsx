@@ -27,6 +27,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 interface Supplement {
   id: string;
@@ -136,7 +137,7 @@ function SupplementsInner() {
   return (
     <AppLayout>
       <SEO 
-        title="Supplements | Discover" 
+        title={t('screens.discover.supplementsDiscover')} 
         description="Premium longevity supplements and wellness products" 
         canonical={window.location.href} 
       />
@@ -145,7 +146,7 @@ function SupplementsInner() {
       <div className="p-6 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 pb-32">
           <StandardHeader
-            title="Supplements"
+            title={t('screens.discover.supplements')}
             description="Premium longevity supplements curated for your wellness journey"
             emoji="💊"
           />
@@ -164,7 +165,7 @@ function SupplementsInner() {
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search supplements…"
+              placeholder={t('screens.discover.searchSupplements')}
             />
             <UniversalCalendarButton />
             <Button 
@@ -178,9 +179,9 @@ function SupplementsInner() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="browse">📂 Browse All</SplitBarTrigger>
-              <SplitBarTrigger value="picks">⭐ Top Picks</SplitBarTrigger>
-              <SplitBarTrigger value="stack">💛 My Stack</SplitBarTrigger>
+              <SplitBarTrigger value="browse">{t('screens.discover.browseAll')}</SplitBarTrigger>
+              <SplitBarTrigger value="picks">{t('screens.discover.topPicks')}</SplitBarTrigger>
+              <SplitBarTrigger value="stack">{t('screens.discover.myStack')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="browse" className="space-y-6">
@@ -188,14 +189,14 @@ function SupplementsInner() {
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">Filter & Search</h3>
+              <h3 className="text-lg font-semibold">{t('screens.discover.filterSearch')}</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search supplements..."
+                  placeholder={t('screens.discover.searchSupplements2')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -204,7 +205,7 @@ function SupplementsInner() {
               
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder={t('screens.discover.category')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map(cat => (
@@ -217,13 +218,13 @@ function SupplementsInner() {
               
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t('screens.discover.sortBy')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="popular">Most Popular</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  <SelectItem value="popular">{t('screens.discover.mostPopular')}</SelectItem>
+                  <SelectItem value="rating">{t('screens.discover.highestRated')}</SelectItem>
+                  <SelectItem value="price-low">{t('screens.discover.priceLowHigh')}</SelectItem>
+                  <SelectItem value="price-high">{t('screens.discover.priceHighLow')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -232,11 +233,11 @@ function SupplementsInner() {
           {/* Products Grid */}
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">Loading supplements...</p>
+              <p className="text-muted-foreground">{t('screens.discover.loadingSupplements')}</p>
             </div>
           ) : supplements.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No supplements found matching your criteria</p>
+              <p className="text-muted-foreground">{t('screens.discover.noSupplementsFoundMatchingYourCriteria')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -272,7 +273,7 @@ function SupplementsInner() {
                       sizeClass="w-full h-48"
                     />
                     {!supplement.in_stock && (
-                      <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
+                      <Badge className="absolute top-2 right-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
                     )}
                   </div>
                   
@@ -349,9 +350,9 @@ function SupplementsInner() {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Brain className="h-6 w-6 text-purple-500" />
-                    <h2 className="text-2xl font-semibold">AI-Powered Top Picks</h2>
+                    <h2 className="text-2xl font-semibold">{t('screens.discover.aipoweredTopPicks')}</h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">Personalized supplement recommendations based on your health data</p>
+                  <p className="text-muted-foreground mb-6">{t('screens.discover.personalizedSupplementRecommendationsBasedYourHeal')}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {supplements.slice(0, 6).map((supplement, index) => (
                       <Card
@@ -380,7 +381,7 @@ function SupplementsInner() {
                           <div className="bg-purple-50 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
                               <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">Great for your health goals</span>
+                              <span className="text-xs text-purple-700">{t('screens.discover.greatForYourHealthGoals')}</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between">
@@ -420,7 +421,7 @@ function SupplementsInner() {
                     <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">💛</div>
-                        <h3 className="text-xl font-semibold mb-2">No saved supplements yet</h3>
+                        <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedSupplementsYet')}</h3>
                         <p className="text-muted-foreground">
                           Save your favorite supplements and track your supplement stack
                         </p>
@@ -457,7 +458,7 @@ function SupplementsInner() {
                             sizeClass="w-full h-48"
                           />
                           {!supplement.in_stock && (
-                            <Badge className="absolute top-2 right-2 bg-red-500">Out of Stock</Badge>
+                            <Badge className="absolute top-2 right-2 bg-red-500">{t('screens.discover.outStock')}</Badge>
                           )}
                         </div>
                         

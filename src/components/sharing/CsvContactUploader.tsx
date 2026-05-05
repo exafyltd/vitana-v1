@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import type { ExternalContact, CsvValidationResult } from "@/types/audience";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CsvContactUploaderProps {
   onContactsImported: (contacts: ExternalContact[]) => void;
@@ -138,7 +138,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
       {!hasImportedContacts ? (
         <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
           <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="font-semibold mb-2">Upload CSV File</h3>
+          <h3 className="font-semibold mb-2">{t('screens.sharing.uploadCsvFile')}</h3>
           <p className="text-sm text-muted-foreground mb-4">
             CSV should contain columns: name, email, phone, whatsapp_number
           </p>
@@ -159,7 +159,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               <div>
-                <h3 className="font-semibold">CSV Imported</h3>
+                <h3 className="font-semibold">{t('screens.sharing.csvImported')}</h3>
                 <p className="text-sm text-muted-foreground">
                   {currentContacts.length} contacts ready to send
                 </p>
@@ -217,12 +217,12 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
 
       {/* Instructions */}
       <div className="text-xs text-muted-foreground space-y-1">
-        <p className="font-medium">CSV Format Requirements:</p>
+        <p className="font-medium">{t('screens.sharing.csvFormatRequirements')}</p>
         <ul className="list-disc list-inside space-y-0.5 ml-2">
-          <li>First row must contain column headers</li>
-          <li>Required column: <code>name</code></li>
-          <li>Optional columns: <code>email</code>, <code>phone</code>, <code>whatsapp_number</code></li>
-          <li>At least one contact method (email, phone, or WhatsApp) is required</li>
+          <li>{t('screens.sharing.firstRowMustContainColumnHeaders')}</li>
+          <li>Required column: <code>{t('screens.sharing.name')}</code></li>
+          <li>Optional columns: <code>{t('screens.sharing.email')}</code>, <code>{t('screens.sharing.phone')}</code>, <code>{t('screens.sharing.whatsapp_number')}</code></li>
+          <li>{t('screens.sharing.atLeastOneContactMethodEmail')}</li>
         </ul>
       </div>
     </div>

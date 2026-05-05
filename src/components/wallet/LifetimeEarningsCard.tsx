@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Trophy, BarChart3 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function LifetimeEarningsCard() {
   return (
@@ -17,22 +18,22 @@ export function LifetimeEarningsCard() {
           <Trophy className="h-5 w-5 text-yellow-500" />
           Lifetime Earnings
         </CardTitle>
-        <CardDescription>Total earned since joining</CardDescription>
+        <CardDescription>{t('screens.wallet.totalEarnedSinceJoining')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="text-center py-2">
           <div className="text-3xl font-bold text-green-600 mb-1">$8,247.85</div>
-          <div className="text-sm text-muted-foreground">Since March 2023</div>
+          <div className="text-sm text-muted-foreground">{t('screens.wallet.sinceMarch2023')}</div>
         </div>
         
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="text-center p-2 bg-muted/50 rounded">
             <div className="font-semibold text-lg">15,847</div>
-            <div className="text-muted-foreground">Total VTNA</div>
+            <div className="text-muted-foreground">{t('screens.wallet.totalVtna')}</div>
           </div>
           <div className="text-center p-2 bg-muted/50 rounded">
             <div className="font-semibold text-lg">$1,247</div>
-            <div className="text-muted-foreground">Cash Out</div>
+            <div className="text-muted-foreground">{t('screens.wallet.cashOut')}</div>
           </div>
         </div>
         

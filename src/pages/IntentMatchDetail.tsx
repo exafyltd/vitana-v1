@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { getIntent, getIntentMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function IntentMatchDetail() {
   const { id } = useParams<{ id: string }>();
@@ -69,7 +69,7 @@ export default function IntentMatchDetail() {
         <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to My Intents
         </Link>
-        <p className="text-muted-foreground">Intent not found.</p>
+        <p className="text-muted-foreground">{t('screens.intentmatchdetail.intentNotFound')}</p>
       </div>
     );
   }

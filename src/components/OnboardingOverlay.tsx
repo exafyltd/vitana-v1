@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Instagram, Apple, Heart, Target, Users, CheckCircle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface OnboardingOverlayProps {
   open: boolean;
@@ -164,7 +165,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">Ready to begin your wellness journey?</p>
+              <p className="text-muted-foreground">{t('screens.common.readyBeginYourWellnessJourney')}</p>
             </div>
           )}
         </div>

@@ -5,7 +5,7 @@ import { Activity, AlertTriangle, CheckCircle, PlayCircle, ExternalLink } from "
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function CronHealthCard() {
   const [triggering, setTriggering] = useState(false);
@@ -43,7 +43,7 @@ export default function CronHealthCard() {
       <CardContent className="space-y-4">
         {/* Status Badge */}
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">Status:</span>
+          <span className="text-sm font-medium">{t('screens.admin.status')}</span>
           <Badge className="bg-green-500 text-white">
             <CheckCircle className="w-3 h-3 mr-1" />
             Running
@@ -53,12 +53,12 @@ export default function CronHealthCard() {
         {/* Schedule Info */}
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Schedule:</span>
-            <span className="font-medium">Every hour</span>
+            <span className="text-muted-foreground">{t('screens.admin.schedule')}</span>
+            <span className="font-medium">{t('screens.admin.everyHour')}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Function:</span>
-            <span className="font-mono text-xs">send-appointment-reminder</span>
+            <span className="text-muted-foreground">{t('screens.admin.function')}</span>
+            <span className="font-mono text-xs">{t('screens.admin.sendappointmentreminder')}</span>
           </div>
         </div>
 

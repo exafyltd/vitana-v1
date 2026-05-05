@@ -5,6 +5,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCommunityGroups } from "@/hooks/useAdminCommunity";
+import { t } from '@/lib/i18n-toast';
 
 export default function GroupsNew() {
   const { data: groups = [], isLoading } = useCommunityGroups();
@@ -16,14 +17,14 @@ export default function GroupsNew() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="👥"
-          title="Groups"
+          title={t('screens.admin.groups')}
           description={`${groups.length} group${groups.length !== 1 ? "s" : ""} found`}
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading groups...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingGroups')}</p>
         ) : groups.length === 0 ? (
-          <AdminEmptyState title="No groups found" description="There are no community groups yet." />
+          <AdminEmptyState title={t('screens.admin.noGroupsFound')} description="There are no community groups yet." />
         ) : (
           <Card>
             <Table>

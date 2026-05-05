@@ -55,7 +55,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import type { LiveRoom } from "./LiveRoomCard";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
@@ -346,7 +346,7 @@ export function LiveRoomDrawer({
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-semibold">{room.host.name}</span>
-                  <Badge variant="secondary" className="text-xs">Your Room</Badge>
+                  <Badge variant="secondary" className="text-xs">{t('screens.liverooms.yourRoom')}</Badge>
                 </div>
               </div>
             )}
@@ -370,7 +370,7 @@ export function LiveRoomDrawer({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5 text-muted-foreground" />
-              <span className="font-semibold">People listening</span>
+              <span className="font-semibold">{t('screens.liverooms.peopleListening')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
@@ -430,18 +430,18 @@ export function LiveRoomDrawer({
           {/* Description */}
           {room.description && (
             <div className="space-y-2">
-              <h3 className="font-semibold">About this room</h3>
+              <h3 className="font-semibold">{t('screens.liverooms.aboutThisRoom')}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{room.description}</p>
             </div>
           )}
 
           {/* Room Rules */}
           <div className="space-y-2">
-            <h3 className="font-semibold">Room rules</h3>
+            <h3 className="font-semibold">{t('screens.liverooms.roomRules')}</h3>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Be respectful to all participants</li>
-              <li>• Raise your hand to speak</li>
-              <li>• Mute when not speaking</li>
+              <li>{t('screens.liverooms.respectfulAllParticipants')}</li>
+              <li>{t('screens.liverooms.raiseYourHandSpeak')}</li>
+              <li>{t('screens.liverooms.muteWhenNotSpeaking')}</li>
             </ul>
           </div>
         </div>
@@ -536,7 +536,7 @@ export function LiveRoomDrawer({
         <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <ResponsiveConfirmDialogContent>
             <ResponsiveConfirmDialogHeader>
-              <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
+              <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
               <ResponsiveConfirmDialogDescription>
                 This will permanently delete "{room?.title}". This action cannot be undone.
               </ResponsiveConfirmDialogDescription>
@@ -571,7 +571,7 @@ export function LiveRoomDrawer({
       <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
               This will permanently delete "{room?.title}". This action cannot be undone.
             </ResponsiveConfirmDialogDescription>

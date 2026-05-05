@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles, Users, Target, Clock, Star, TrendingUp } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SubscriptionRecommendation {
   id: string;
@@ -122,7 +123,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Star className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium">Perfect Match</span>
+            <span className="text-sm font-medium">{t('screens.wallet.perfectMatch')}</span>
             <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600">
               {topRecommendation.match}% match
             </Badge>
@@ -141,7 +142,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                   </span>
                 )}
               </div>
-              <div className="text-xs text-muted-foreground">/month</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.month')}</div>
             </div>
           </div>
           <div className="flex items-center justify-between mb-2">
@@ -194,7 +195,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">Match Score</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.matchScore')}</span>
                     <span className="text-xs text-muted-foreground">{recommendation.match}%</span>
                   </div>
                   <Progress value={recommendation.match} className="h-1.5" />
@@ -223,13 +224,13 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="p-3 rounded-lg border bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-200/50">
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-medium">Trending in Your Network</span>
+            <span className="text-sm font-medium">{t('screens.wallet.trendingYourNetwork')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
             87% of users with similar health patterns chose "AI Wellness Coach"
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-blue-600 font-medium">Limited time: 20% off first 3 months</span>
+            <span className="text-xs text-blue-600 font-medium">{t('screens.wallet.limitedTime20OffFirst3')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Clock className="h-3 w-3 mr-1" />
               Claim Deal

@@ -27,6 +27,7 @@ import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
+import { t } from '@/lib/i18n-toast';
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -77,7 +78,7 @@ export default function MyBusiness() {
 
   return (
     <AppLayout>
-      <SEO title="Business Hub | Community" description="Manage your wellness services, events, and clients" canonical={window.location.href} />
+      <SEO title={t('screens.community.businessHubCommunity')} description="Manage your wellness services, events, and clients" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -121,7 +122,7 @@ export default function MyBusiness() {
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -153,7 +154,7 @@ export default function MyBusiness() {
           {/* Action Buttons */}
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search Business…"
+              placeholder={t('screens.community.searchBusiness')}
               onSearch={(query) => console.log('Search Business:', query)}
             />
             <UniversalCalendarButton />

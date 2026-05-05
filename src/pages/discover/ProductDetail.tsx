@@ -42,6 +42,7 @@ import {
   getRedirectUrl,
 } from "@/hooks/useMarketplace";
 import { getShareUrl } from "@/lib/shareUrl";
+import { t } from '@/lib/i18n-toast';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -69,17 +70,17 @@ export default function ProductDetail() {
   if (error || !data?.ok || !data.product) {
     return (
       <AppLayout>
-        <SEO title="Product not found | VITANA" description="This product is unavailable or has been removed." />
+        <SEO title={t('screens.discover.productNotFoundVitana')} description="This product is unavailable or has been removed." />
         <div className="p-6 min-h-screen flex items-center justify-center">
           <Card className="max-w-md text-center">
             <CardContent className="p-8 space-y-4">
-              <h1 className="text-xl font-semibold">Product not found</h1>
+              <h1 className="text-xl font-semibold">{t('screens.discover.productNotFound')}</h1>
               <p className="text-sm text-muted-foreground">
                 The product you&rsquo;re looking for is unavailable or has been removed.
               </p>
               <div className="flex gap-2 justify-center">
-                <Button variant="outline" onClick={() => navigate(-1)}>Go back</Button>
-                <Button asChild><Link to="/discover">Discover more</Link></Button>
+                <Button variant="outline" onClick={() => navigate(-1)}>{t('screens.discover.goBack')}</Button>
+                <Button asChild><Link to="/discover">{t('screens.discover.discoverMore')}</Link></Button>
               </div>
             </CardContent>
           </Card>
@@ -231,7 +232,7 @@ export default function ProductDetail() {
               {(p.description_long || p.description) && (
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="text-lg font-semibold">About this product</h2>
+                    <h2 className="text-lg font-semibold">{t('screens.discover.aboutThisProduct')}</h2>
                     <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
                       {p.description_long || p.description}
                     </p>
@@ -373,7 +374,7 @@ export default function ProductDetail() {
               {matchReasons.length > 0 && (
                 <Card className="bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200/60 dark:border-emerald-900/40">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">Why this for you</h2>
+                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">{t('screens.discover.whyThisForYou')}</h2>
                     <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
                       {matchReasons.map((r, i) => (
                         <li key={i} className="flex gap-2">

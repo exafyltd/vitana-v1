@@ -28,6 +28,7 @@ import { ContinueConnectingFeed } from "@/components/analysis/ContinueConnecting
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import { useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export default function Matches() {
   const navigate = useNavigate();
@@ -38,13 +39,13 @@ export default function Matches() {
 
   return (
     <AppLayout>
-      <SEO title="Matches | Dashboard" description="Matchmaking & Opportunities" canonical={window.location.href} />
+      <SEO title={t('screens.home.matchesDashboard')} description="Matchmaking & Opportunities" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Find Your People"
+            title={t('screens.home.findYourPeople')}
             description="AI-powered connections that feel natural and right for you."
             emoji="💫"
           />
@@ -52,7 +53,7 @@ export default function Matches() {
           {/* Action Buttons */}
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search people, groups, coaches, events…"
+              placeholder={t('screens.home.searchPeopleGroupsCoachesEvents')}
               onSearch={(query) => console.log("Search:", query)}
             />
             <UniversalCalendarButton />

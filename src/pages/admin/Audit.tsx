@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, FileText, AlertTriangle, CheckCircle, Download, Filter } from "lucide-react";
 import { adminMonitoringNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 const mockAuditLogs = [
   { id: "1", timestamp: "2024-12-15 14:32", user: "admin@vitana.com", action: "Patient Record Accessed", resource: "Patient ID: 12345", status: "success" },
@@ -19,13 +20,13 @@ const mockAuditLogs = [
 function Audit() {
   return (
     <AppLayout>
-      <SEO title="Audit Logs | Admin" description="View audit logs and compliance tracking" canonical={window.location.href} />
+      <SEO title={t('screens.admin.auditLogsAdmin')} description="View audit logs and compliance tracking" canonical={window.location.href} />
       <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Audit Logs & Compliance Tracking"
+            title={t('screens.admin.auditLogsComplianceTracking')}
             description="Monitor system access, track changes, and ensure regulatory compliance"
             emoji="🔒"
           />
@@ -38,7 +39,7 @@ function Audit() {
                   <Shield className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">100%</p>
-                    <p className="text-sm text-muted-foreground">HIPAA Compliant</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.hipaaCompliant')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -50,7 +51,7 @@ function Audit() {
                   <FileText className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">2,847</p>
-                    <p className="text-sm text-muted-foreground">Audit Events</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.auditEvents')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -62,7 +63,7 @@ function Audit() {
                   <CheckCircle className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">2,834</p>
-                    <p className="text-sm text-muted-foreground">Successful Actions</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.successfulActions')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ function Audit() {
                   <AlertTriangle className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">13</p>
-                    <p className="text-sm text-muted-foreground">Security Alerts</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.securityAlerts')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -83,15 +84,15 @@ function Audit() {
 
           <Tabs defaultValue="logs" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="logs">Audit Logs</TabsTrigger>
+              <TabsTrigger value="logs">{t('screens.admin.auditLogs')}</TabsTrigger>
               <TabsTrigger value="compliance">Compliance</TabsTrigger>
-              <TabsTrigger value="security">Security Events</TabsTrigger>
+              <TabsTrigger value="security">{t('screens.admin.securityEvents')}</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
             </TabsList>
 
             <TabsContent value="logs" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Recent Audit Events</h3>
+                <h3 className="text-lg font-semibold">{t('screens.admin.recentAuditEvents')}</h3>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm">
                     <Filter className="w-4 h-4 mr-2" />
@@ -133,23 +134,23 @@ function Audit() {
             <TabsContent value="compliance" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Compliance Dashboard</CardTitle>
+                  <CardTitle>{t('screens.admin.complianceDashboard')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="p-4 border rounded-lg">
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="font-medium">HIPAA Compliance</span>
+                        <span className="font-medium">{t('screens.admin.hipaaCompliance')}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">All patient data access is logged and compliant</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.allPatientDataAccessLoggedCompliant')}</p>
                     </div>
                     <div className="p-4 border rounded-lg">
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="font-medium">Data Encryption</span>
+                        <span className="font-medium">{t('screens.admin.dataEncryption')}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">All data encrypted at rest and in transit</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.allDataEncryptedAtRestTransit')}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -159,10 +160,10 @@ function Audit() {
             <TabsContent value="security" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Security Event Monitor</CardTitle>
+                  <CardTitle>{t('screens.admin.securityEventMonitor')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Real-time security alerts and threat detection.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.realtimeSecurityAlertsThreatDetection')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -170,10 +171,10 @@ function Audit() {
             <TabsContent value="reports" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Compliance Reports</CardTitle>
+                  <CardTitle>{t('screens.admin.complianceReports')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Generate compliance reports for regulatory audits.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.generateComplianceReportsForRegulatoryAudits')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

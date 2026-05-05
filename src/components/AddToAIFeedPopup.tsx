@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Zap, Lightbulb, Settings } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface AddToAIFeedPopupProps {
   open: boolean;
@@ -102,7 +103,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Add to AI Feed</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.common.addAiFeed')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
             Suggest a new routine, share an idea, or adjust what Autopilot tracks for you.
           </p>
@@ -128,10 +129,10 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
           <TabsContent value="routine" className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="routine-name">Routine Name</Label>
+                <Label htmlFor="routine-name">{t('screens.common.routineName')}</Label>
                 <Input
                   id="routine-name"
-                  placeholder="e.g., Morning Yoga, Sleep Wind-down"
+                  placeholder={t('screens.common.eGMorningYogaSleepWinddown')}
                   value={routineName}
                   onChange={(e) => setRoutineName(e.target.value)}
                 />
@@ -141,12 +142,12 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                 <Label htmlFor="trigger">Trigger</Label>
                 <Select value={trigger} onValueChange={setTrigger}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select trigger type" />
+                    <SelectValue placeholder={t('screens.common.selectTriggerType')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="time-based">Time-based</SelectItem>
-                    <SelectItem value="context-based">Context-based</SelectItem>
-                    <SelectItem value="event-based">Event-based</SelectItem>
+                    <SelectItem value="time-based">{t('screens.common.timebased')}</SelectItem>
+                    <SelectItem value="context-based">{t('screens.common.contextbased')}</SelectItem>
+                    <SelectItem value="event-based">{t('screens.common.eventbased')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -155,7 +156,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                 <Label htmlFor="goal">Goal</Label>
                 <Select value={goal} onValueChange={setGoal}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select goal" />
+                    <SelectValue placeholder={t('screens.common.selectGoal')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="energy">Energy</SelectItem>
@@ -170,7 +171,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                 <Label htmlFor="frequency">Frequency</Label>
                 <Select value={frequency} onValueChange={setFrequency}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select frequency" />
+                    <SelectValue placeholder={t('screens.common.selectFrequency')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="daily">Daily</SelectItem>
@@ -181,7 +182,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
               </div>
 
               <div className="space-y-2">
-                <Label>Tags (choose up to 3)</Label>
+                <Label>{t('screens.common.tagsChooseUp3')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {routineTags.map((tag) => (
                     <Badge
@@ -210,20 +211,20 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
           <TabsContent value="idea" className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="idea-title">Idea Title</Label>
+                <Label htmlFor="idea-title">{t('screens.common.ideaTitle')}</Label>
                 <Input
                   id="idea-title"
-                  placeholder="Brief title for your idea"
+                  placeholder={t('screens.common.briefTitleForYourIdea')}
                   value={ideaTitle}
                   onChange={(e) => setIdeaTitle(e.target.value)}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="idea-description">Description (optional)</Label>
+                <Label htmlFor="idea-description">{t('screens.common.descriptionOptional')}</Label>
                 <Textarea
                   id="idea-description"
-                  placeholder="Describe your idea in more detail..."
+                  placeholder={t('screens.common.describeYourIdeaMoreDetail')}
                   value={ideaDescription}
                   onChange={(e) => setIdeaDescription(e.target.value)}
                   rows={3}
@@ -234,7 +235,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                 <Label htmlFor="category">Category</Label>
                 <Select value={ideaCategory} onValueChange={setIdeaCategory}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder={t('screens.common.selectCategory')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="routines">Routines</SelectItem>
@@ -247,7 +248,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
               </div>
 
               <div className="space-y-2">
-                <Label>Impact Estimate</Label>
+                <Label>{t('screens.common.impactEstimate')}</Label>
                 <div className="space-y-3">
                   <Slider
                     value={impactEstimate}
@@ -258,9 +259,9 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>⚡ Small</span>
-                    <span>🔥 Medium</span>
-                    <span>💥 Big</span>
+                    <span>{t('screens.common.small')}</span>
+                    <span>{t('screens.common.medium')}</span>
+                    <span>{t('screens.common.big')}</span>
                   </div>
                   <div className="text-center">
                     <span className="text-2xl">{impactEmojis[impactEstimate[0]]}</span>
@@ -283,7 +284,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
           <TabsContent value="adjust" className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-3">
-                <Label>Select Source Types</Label>
+                <Label>{t('screens.common.selectSourceTypes')}</Label>
                 <div className="space-y-2">
                   {sourceTypes.map((source) => (
                     <div key={source} className="flex items-center space-x-2">
@@ -301,7 +302,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
               </div>
 
               <div className="space-y-3">
-                <Label>Relevance Slider</Label>
+                <Label>{t('screens.common.relevanceSlider')}</Label>
                 <div className="space-y-3">
                   <Slider
                     value={relevanceLevel}
@@ -312,8 +313,8 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>Less often</span>
-                    <span>More often</span>
+                    <span>{t('screens.common.lessOften')}</span>
+                    <span>{t('screens.common.moreOften')}</span>
                   </div>
                   <div className="text-center text-sm">
                     Current: {relevanceLevel[0]}%
@@ -322,7 +323,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
               </div>
 
               <div className="space-y-3">
-                <Label>Mute or Snooze Options</Label>
+                <Label>{t('screens.common.muteSnoozeOptions')}</Label>
                 <div className="grid grid-cols-2 gap-2">
                   <Button variant="outline" size="sm">
                     Mute Wellness (7 days)

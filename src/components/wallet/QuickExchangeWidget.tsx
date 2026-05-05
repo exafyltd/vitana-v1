@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface QuickExchangeWidgetProps {
   onExchange?: (fromAmount: number, fromCurrency: string, toCurrency: string, toAmount: number) => void;
@@ -98,7 +98,7 @@ export function QuickExchangeWidget({
       <CardContent className="space-y-4">
         {/* Quick Amount Buttons */}
         <div>
-          <Label className="text-sm text-muted-foreground mb-2 block">Quick amounts</Label>
+          <Label className="text-sm text-muted-foreground mb-2 block">{t('screens.wallet.quickAmounts')}</Label>
           <div className="grid grid-cols-4 gap-2">
             {quickAmounts.map(amount => (
               <Button
@@ -192,14 +192,14 @@ export function QuickExchangeWidget({
             <CardContent className="p-3">
               <div className="flex items-center justify-center gap-3 text-sm">
                 <div className="text-center">
-                  <p className="text-muted-foreground">You send</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.youSend')}</p>
                   <p className="font-bold text-blue-600">
                     {formatCurrency(calculation.fromAmount, fromCurrency)}
                   </p>
                 </div>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
                 <div className="text-center">
-                  <p className="text-muted-foreground">You receive</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.youReceive')}</p>
                   <p className="font-bold text-green-600">
                     {formatCurrency(calculation.total, toCurrency)}
                   </p>
@@ -208,7 +208,7 @@ export function QuickExchangeWidget({
               
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                 <span>Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency}</span>
-                <span>No fees - Free exchange</span>
+                <span>{t('screens.wallet.noFeesFreeExchange')}</span>
               </div>
             </CardContent>
           </Card>

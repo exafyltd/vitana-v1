@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
 import { useKBDocuments, useReindexKBDocument } from "@/hooks/useAdminKnowledge";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 const STATUS_ORDER = ["failed", "pending", "indexed"] as const;
 
@@ -51,16 +51,16 @@ export default function KnowledgeIndexing() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="⚙️"
-          title="Indexing Status"
+          title={t('screens.admin.indexingStatus')}
           description="Monitor the indexing pipeline. Retry failed documents or wait for pending ones to complete."
         />
 
         {docsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading documents...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingDocuments')}</p>
         )}
 
         {!docsQuery.isLoading && docs.length === 0 && (
-          <AdminEmptyState title="No documents" description="Add documents to the knowledge base to see indexing status." />
+          <AdminEmptyState title={t('screens.admin.noDocuments')} description="Add documents to the knowledge base to see indexing status." />
         )}
 
         {STATUS_ORDER.map((status) => {

@@ -35,7 +35,7 @@ import type { AudienceData } from "@/types/audience";
 import { AudienceSelector } from "./AudienceSelector";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CampaignDialogProps {
   open: boolean;
@@ -439,7 +439,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
               {step === 1 && (
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name">Campaign Name *</Label>
+                    <Label htmlFor="name">{t('screens.sharing.campaignName')}</Label>
                     <Input
                       id="name"
                       value={name}
@@ -462,23 +462,23 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     <div className="flex items-start gap-2 mt-2 p-3 bg-[hsl(var(--sys-ai-tint))] border border-[hsl(var(--sys-ai-accent))]/20 rounded-lg">
                       <Lightbulb className="w-4 h-4 text-[hsl(var(--sys-ai-accent))] shrink-0 mt-0.5" />
                       <p className="text-xs text-foreground">
-                        <strong>Tip:</strong> Describe your campaign in one sentence — who it's for and what success looks like.
+                        <strong>{t('screens.sharing.tip')}</strong> Describe your campaign in one sentence — who it's for and what success looks like.
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="goal">Campaign Goal (Optional)</Label>
+                    <Label htmlFor="goal">{t('screens.sharing.campaignGoalOptional')}</Label>
                     <Select value={goal} onValueChange={setGoal}>
                       <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select campaign goal..." />
+                        <SelectValue placeholder={t('screens.sharing.selectCampaignGoal')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="awareness">🎯 Awareness</SelectItem>
-                        <SelectItem value="engagement">💬 Engagement</SelectItem>
-                        <SelectItem value="event_promotion">📅 Event Promotion</SelectItem>
-                        <SelectItem value="community_growth">🌱 Community Growth</SelectItem>
-                        <SelectItem value="sales">💰 Sales</SelectItem>
+                        <SelectItem value="awareness">{t('screens.sharing.awareness')}</SelectItem>
+                        <SelectItem value="engagement">{t('screens.sharing.engagement')}</SelectItem>
+                        <SelectItem value="event_promotion">{t('screens.sharing.eventPromotion')}</SelectItem>
+                        <SelectItem value="community_growth">{t('screens.sharing.communityGrowth')}</SelectItem>
+                        <SelectItem value="sales">{t('screens.sharing.sales')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -488,13 +488,13 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
                   {/* Cover Image Upload */}
                   <div>
-                    <Label>Cover Image (Optional)</Label>
+                    <Label>{t('screens.sharing.coverImageOptional')}</Label>
                     <div className="mt-2">
                       {imagePreviewUrl ? (
                         <div className="relative">
                           <img 
                             src={imagePreviewUrl} 
-                            alt="Campaign cover preview" 
+                            alt={t('screens.sharing.campaignCoverPreview')} 
                             className="w-full h-48 object-cover rounded-lg border-2 border-border"
                           />
                           <Button
@@ -558,8 +558,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20">
                       <Share2 className="w-5 h-5 text-primary" />
                       <div className="flex-1">
-                        <h3 className="text-base font-semibold text-foreground">Social Media (Auto-Post)</h3>
-                        <p className="text-xs text-muted-foreground">Connect your accounts to auto-publish your campaign on social platforms</p>
+                        <h3 className="text-base font-semibold text-foreground">{t('screens.sharing.socialMediaAutopost')}</h3>
+                        <p className="text-xs text-muted-foreground">{t('screens.sharing.connectYourAccountsAutopublishYourCampaign')}</p>
                       </div>
                     </div>
                     <div className="grid gap-3 pl-4">
@@ -596,7 +596,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                 ) : (
                                   <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
                                     <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
+                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">{t('screens.sharing.notConnected')}</span>
                                   </div>
                                 )}
                               </div>
@@ -649,7 +649,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       >
                         <div className="flex items-center gap-2">
                           <Settings className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Advanced Broadcast Channels (Business API)</span>
+                          <span className="text-sm font-medium">{t('screens.sharing.advancedBroadcastChannelsBusinessApi')}</span>
                         </div>
                         <ChevronDown className={cn(
                           "w-4 h-4 text-muted-foreground transition-transform duration-200",
@@ -700,7 +700,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                   ) : (
                                     <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
                                       <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
-                                      <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
+                                      <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">{t('screens.sharing.notConnected')}</span>
                                     </div>
                                   )}
                                 </div>
@@ -728,7 +728,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       {(selectedChannels.email || selectedChannels.sms) && (
                         <Alert className="bg-[hsl(var(--sys-ai-tint))] border-[hsl(var(--sys-ai-accent))]/30">
                           <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
-                          <AlertTitle className="text-foreground">Consent Required</AlertTitle>
+                          <AlertTitle className="text-foreground">{t('screens.sharing.consentRequired')}</AlertTitle>
                           <AlertDescription className="text-muted-foreground text-sm">
                             Some audience members may not have given promotional consent for{" "}
                             {selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS"}.
@@ -760,8 +760,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     <div className="flex items-center gap-2 px-3 py-2 bg-muted/50 rounded-lg border border-border">
                       <MessageSquare className="w-5 h-5 text-muted-foreground" />
                       <div className="flex-1">
-                        <h3 className="text-base font-semibold text-foreground">Direct Messaging (Personal Share)</h3>
-                        <p className="text-xs text-muted-foreground">Available after you create the campaign via "Share with my contacts"</p>
+                        <h3 className="text-base font-semibold text-foreground">{t('screens.sharing.directMessagingPersonalShare')}</h3>
+                        <p className="text-xs text-muted-foreground">{t('screens.sharing.availableAfterYouCreateCampaignVia')}</p>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2 pl-4">
@@ -784,7 +784,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
               {/* Step 3: Template Selection */}
               {step === 3 && (
                 <div className="space-y-4">
-                  <Label className="text-lg font-semibold">Choose Your Campaign Template</Label>
+                  <Label className="text-lg font-semibold">{t('screens.sharing.chooseYourCampaignTemplate')}</Label>
                   <RadioGroup value={selectedTemplate} onValueChange={applyTemplate}>
                     {DISTRIBUTION_TEMPLATES.map((template) => (
                       <div
@@ -830,7 +830,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
-                  <Label>AI-Powered Smart Scheduling</Label>
+                  <Label>{t('screens.sharing.aipoweredSmartScheduling')}</Label>
                   <p className="text-sm text-muted-foreground mt-1">
                     Automatically suggest best posting times based on channel analytics
                   </p>
@@ -843,7 +843,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
               {smartSchedulingEnabled && (
                 <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
-                  <p className="text-sm font-medium">Suggested Best Times</p>
+                  <p className="text-sm font-medium">{t('screens.sharing.suggestedBestTimes')}</p>
                   {Object.entries(selectedChannels)
                     .filter(([_, selected]) => selected)
                     .map(([channelKey]) => {
@@ -866,12 +866,12 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                   <div className="flex items-start gap-2">
                     <Info className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
                     <div className="space-y-2 text-sm">
-                      <p className="font-medium">Posts will be saved as drafts</p>
+                      <p className="font-medium">{t('screens.sharing.postsWillSavedAsDrafts')}</p>
                       <p className="text-muted-foreground">
                         After creating the campaign, you can review and schedule each post individually from the Campaign Detail page.
                       </p>
                       <p className="text-xs text-muted-foreground/80">
-                        📍 Go to <span className="font-medium">Campaigns → [Your Campaign]</span> to manage posts
+                        📍 Go to <span className="font-medium">{t('screens.sharing.campaignsYourCampaign')}</span> to manage posts
                       </p>
                     </div>
                   </div>
@@ -880,7 +880,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
               <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <p className="text-sm">
-                  ✨ Posts will be created as <strong>drafts</strong> and require manual approval before publishing.
+                  ✨ Posts will be created as <strong>{t('screens.sharing.drafts')}</strong> and require manual approval before publishing.
                 </p>
               </div>
             </div>

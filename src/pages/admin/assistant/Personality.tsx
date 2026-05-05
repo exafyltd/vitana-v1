@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useAssistantSurfaces, useUpdateAssistantSurface, useDeleteAssistantOverride } from "@/hooks/useAdminAssistant";
 import CompanionFieldsSection from "@/components/admin/CompanionFieldsSection";
+import { t } from '@/lib/i18n-toast';
 
 const SURFACE_LABELS: Record<string, string> = {
   voice_live: "Voice Live (ORB)",
@@ -73,12 +74,12 @@ export default function AssistantPersonality() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="✨"
-          title="Assistant Personality"
+          title={t('screens.admin.assistantPersonality')}
           description="Customize how Vitana speaks and behaves for your tenant. Overrides are layered on top of the global defaults."
         />
 
         {surfacesQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading surfaces...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSurfaces')}</p>
         )}
 
         {surfaces.map((surface) => (
@@ -92,7 +93,7 @@ export default function AssistantPersonality() {
                   {surface.has_tenant_override ? (
                     <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
                   ) : (
-                    <AdminStatusBadge variant="inactive">Using global</AdminStatusBadge>
+                    <AdminStatusBadge variant="inactive">{t('screens.admin.usingGlobal')}</AdminStatusBadge>
                   )}
                 </div>
               </div>

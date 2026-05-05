@@ -15,6 +15,7 @@ import {
   ResponsiveConfirmDialogTitle,
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface ConversationCardProps {
   exchange: ConversationExchange;
@@ -62,7 +63,7 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
               <div className="pl-3 border-l-2 border-purple-500 dark:border-purple-400 bg-purple-50/50 dark:bg-purple-950/20 p-3 rounded-r-lg">
                 <div className="flex items-center gap-2 mb-1">
                   <Bot className="w-3 h-3 text-purple-600 dark:text-purple-400" />
-                  <span className="text-xs font-medium text-purple-700 dark:text-purple-300">AI Assistant</span>
+                  <span className="text-xs font-medium text-purple-700 dark:text-purple-300">{t('screens.memory.aiAssistant')}</span>
                 </div>
                 <p className="text-sm text-foreground/90 line-clamp-3">
                   {exchange.assistantMessage.content}
@@ -72,7 +73,7 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
               <div className="pl-3 border-l-2 border-muted bg-muted/20 p-3 rounded-r-lg">
                 <div className="flex items-center gap-2 mb-1">
                   <Bot className="w-3 h-3 text-muted-foreground" />
-                  <span className="text-xs font-medium text-muted-foreground">AI Assistant</span>
+                  <span className="text-xs font-medium text-muted-foreground">{t('screens.memory.aiAssistant')}</span>
                 </div>
                 <p className="text-sm text-muted-foreground italic">
                   Waiting for response...
@@ -114,7 +115,7 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
                     </ResponsiveConfirmDialogTrigger>
                     <ResponsiveConfirmDialogContent>
                       <ResponsiveConfirmDialogHeader>
-                        <ResponsiveConfirmDialogTitle>Delete Conversation</ResponsiveConfirmDialogTitle>
+                        <ResponsiveConfirmDialogTitle>{t('screens.memory.deleteConversation')}</ResponsiveConfirmDialogTitle>
                         <ResponsiveConfirmDialogDescription>
                           Are you sure you want to delete this conversation? This will remove both the user message and AI response. This action cannot be undone.
                         </ResponsiveConfirmDialogDescription>

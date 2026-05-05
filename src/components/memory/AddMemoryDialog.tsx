@@ -9,7 +9,7 @@ import { Mic, Type, Camera, X, Loader2 } from "lucide-react";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface AddMemoryDialogProps {
   open: boolean;
@@ -154,7 +154,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Add Memory</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('screens.memory.addMemory')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -197,7 +197,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
           {/* Category Selection */}
           <div className="space-y-2">
-            <Label>Category (Optional)</Label>
+            <Label>{t('screens.memory.categoryOptional')}</Label>
             <div className="flex flex-wrap gap-2">
               {MEMORY_CATEGORIES.map((cat) => (
                 <Badge
@@ -261,10 +261,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="voice-notes">Additional Notes (Optional)</Label>
+                <Label htmlFor="voice-notes">{t('screens.memory.additionalNotesOptional')}</Label>
                 <Textarea
                   id="voice-notes"
-                  placeholder="Add context or details about this recording..."
+                  placeholder={t('screens.memory.addContextDetailsAboutThisRecording')}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   rows={3}
@@ -299,7 +299,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                   <div className="relative">
                     <img
                       src={imagePreview}
-                      alt="Memory preview"
+                      alt={t('screens.memory.memoryPreview')}
                       className="w-full h-64 object-cover rounded-lg"
                     />
                     <Button
@@ -319,7 +319,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                     <Label htmlFor="photo-caption">Caption</Label>
                     <Textarea
                       id="photo-caption"
-                      placeholder="Describe this memory..."
+                      placeholder={t('screens.memory.describeThisMemory')}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       rows={3}
@@ -332,10 +332,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
           {inputMode === "text" && (
             <div className="space-y-2">
-              <Label htmlFor="text-content">Memory Content</Label>
+              <Label htmlFor="text-content">{t('screens.memory.memoryContent')}</Label>
               <Textarea
                 id="text-content"
-                placeholder="Write your memory, reflection, or insight here..."
+                placeholder={t('screens.memory.writeYourMemoryReflectionInsightHere')}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={8}

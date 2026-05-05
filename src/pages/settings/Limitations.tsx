@@ -24,7 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from '@/hooks/use-toast';
 import { settingsNavigation } from "@/config/navigation";
 import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility, Loader2 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -110,7 +110,7 @@ function TagEditor({
             {v} &nbsp;×
           </Badge>
         ))}
-        {values.length === 0 && <span className="text-xs text-muted-foreground">None added yet</span>}
+        {values.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.settings.noneAddedYet')}</span>}
       </div>
       <div className="flex gap-2">
         <Input
@@ -249,12 +249,12 @@ export default function Limitations() {
 
   return (
     <AppLayout>
-      <SEO title="Limitations | Vitana" description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.settings.limitationsVitana')} description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
-            title="Preferences & Limitations"
+            title={t('screens.settings.preferencesLimitations')}
             description="These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable."
           />
 
@@ -262,7 +262,7 @@ export default function Limitations() {
           <Card>
             <CardContent className="pt-6 flex items-center justify-between">
               <div>
-                <div className="text-sm text-muted-foreground">Currently filtered from your feed</div>
+                <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
                 <div className="text-2xl font-semibold">
                   {hiddenTotal.toLocaleString()}{" "}
                   <span className="text-sm font-normal text-muted-foreground">
@@ -280,7 +280,7 @@ export default function Limitations() {
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
                 Allergies
-                <span className="text-xs font-normal text-muted-foreground">• Never overridable</span>
+                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
               </CardTitle>
               <CardDescription>
                 We will never recommend products containing these, period. Last confirmed:{" "}
@@ -310,7 +310,7 @@ export default function Limitations() {
                 <Utensils className="w-5 h-5 text-orange-600" />
                 Dietary restrictions
               </CardTitle>
-              <CardDescription>Preferences we apply unless you explicitly override a single query.</CardDescription>
+              <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <DietaryPicker
@@ -329,7 +329,7 @@ export default function Limitations() {
               <CardTitle className="flex items-center gap-2">
                 <Pill className="w-5 h-5 text-indigo-600" />
                 Current medications
-                <span className="text-xs font-normal text-muted-foreground">• Interaction checks apply</span>
+                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
               </CardTitle>
               <CardDescription>
                 We use this to avoid recommending supplements that may interact with your prescriptions. Last confirmed:{" "}
@@ -357,7 +357,7 @@ export default function Limitations() {
                 <Baby className="w-5 h-5 text-pink-600" />
                 Pregnancy / Nursing
               </CardTitle>
-              <CardDescription>Some supplements are contraindicated during pregnancy or nursing.</CardDescription>
+              <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="max-w-sm space-y-2">
@@ -368,10 +368,10 @@ export default function Limitations() {
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="not_pregnant">Not pregnant</SelectItem>
+                    <SelectItem value="not_pregnant">{t('screens.settings.notPregnant')}</SelectItem>
                     <SelectItem value="pregnant">Pregnant</SelectItem>
                     <SelectItem value="nursing">Nursing</SelectItem>
-                    <SelectItem value="prefer_not_say">Prefer not to say</SelectItem>
+                    <SelectItem value="prefer_not_say">{t('screens.settings.preferNotSay')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -388,12 +388,12 @@ export default function Limitations() {
                 <Wallet className="w-5 h-5 text-emerald-600" />
                 Budget
               </CardTitle>
-              <CardDescription>Products above your per-product ceiling are hidden. Band influences ranking.</CardDescription>
+              <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Max per product (EUR)</Label>
+                  <Label>{t('screens.settings.maxPerProductEur')}</Label>
                   <Input
                     type="number"
                     min={0}
@@ -406,7 +406,7 @@ export default function Limitations() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Monthly cap (EUR, optional)</Label>
+                  <Label>{t('screens.settings.monthlyCapEurOptional')}</Label>
                   <Input
                     type="number"
                     min={0}
@@ -419,7 +419,7 @@ export default function Limitations() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Preferred price band</Label>
+                  <Label>{t('screens.settings.preferredPriceBand')}</Label>
                   <Select
                     value={state.budget_preferred_band ?? "any"}
                     onValueChange={(v) => setState((s) => ({ ...s, budget_preferred_band: v }))}
@@ -427,8 +427,8 @@ export default function Limitations() {
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="budget">Budget-friendly</SelectItem>
-                      <SelectItem value="mid">Mid-range</SelectItem>
+                      <SelectItem value="budget">{t('screens.settings.budgetfriendly')}</SelectItem>
+                      <SelectItem value="mid">{t('screens.settings.midrange')}</SelectItem>
                       <SelectItem value="premium">Premium</SelectItem>
                     </SelectContent>
                   </Select>
@@ -456,7 +456,7 @@ export default function Limitations() {
                 <Accessibility className="w-5 h-5 text-sky-600" />
                 Accessibility
               </CardTitle>
-              <CardDescription>Preferences for form factor and usability.</CardDescription>
+              <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
             </CardHeader>
             <CardContent>
               <TagEditor

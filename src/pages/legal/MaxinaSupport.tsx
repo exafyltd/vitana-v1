@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import SEO from "@/components/SEO";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 const MaxinaSupport = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const MaxinaSupport = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Maxina Support | Help & FAQ"
+        title={t('screens.legal.maxinaSupportHelpFaq')}
         description="Get help with your Maxina account. Find answers to common questions about events, payments, and your wellness journey."
         canonical="https://vitanaland.com/maxina_support"
       />

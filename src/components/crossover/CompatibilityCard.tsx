@@ -5,7 +5,7 @@ import { withCardId } from "@/lib/withCardId";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from "react";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CompatibilityCardProps {
   className?: string;
@@ -86,13 +86,13 @@ function CompatibilityCardBase({ className }: CompatibilityCardProps) {
             )}
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">Overall Compatibility</p>
+        <p className="text-xs text-muted-foreground mt-2">{t('screens.crossover.overallCompatibility')}</p>
       </div>
       
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs">
           <TrendingUp className="w-3 h-3 text-pink-600" />
-          <span className="font-medium">Top Match Factors:</span>
+          <span className="font-medium">{t('screens.crossover.topMatchFactors')}</span>
         </div>
         <div className="flex flex-wrap gap-1">
           {topFactors.map((factor, index) => (
@@ -109,7 +109,7 @@ function CompatibilityCardBase({ className }: CompatibilityCardProps) {
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs">
           <Zap className="w-3 h-3 text-fuchsia-600" />
-          <span className="font-medium">Shared Interests:</span>
+          <span className="font-medium">{t('screens.crossover.sharedInterests')}</span>
         </div>
         <div className="flex flex-wrap gap-1">
           {matchingInterests.map((interest, index) => (
@@ -136,7 +136,7 @@ function CompatibilityCardBase({ className }: CompatibilityCardProps) {
     <CrossoverCard
       icon={Target}
       category="mental"
-      title="Match Analysis 🎯"
+      title={t('screens.crossover.matchAnalysis')}
       subtitle="AI-powered compatibility insights"
       content={content}
       buttonText="View Details"

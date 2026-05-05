@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function GreetingTemplates() {
   const { toast } = useToast();
@@ -95,7 +95,7 @@ export function GreetingTemplates() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="new-user">New User Template</Label>
+          <Label htmlFor="new-user">{t('screens.admin.newUserTemplate')}</Label>
           <Textarea
             id="new-user"
             value={newUser}
@@ -109,7 +109,7 @@ export function GreetingTemplates() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="returning-user">Returning User Template</Label>
+          <Label htmlFor="returning-user">{t('screens.admin.returningUserTemplate')}</Label>
           <Textarea
             id="returning-user"
             value={returningUser}
@@ -123,7 +123,7 @@ export function GreetingTemplates() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="experienced-user">Experienced User Template</Label>
+          <Label htmlFor="experienced-user">{t('screens.admin.experiencedUserTemplate')}</Label>
           <Textarea
             id="experienced-user"
             value={experiencedUser}

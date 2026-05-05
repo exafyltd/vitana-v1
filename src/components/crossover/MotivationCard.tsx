@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Heart, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface MotivationCardProps {
   quote?: string;
@@ -28,7 +29,7 @@ function MotivationCardBase({
       {hasVideo && (
         <div className="flex items-center justify-center gap-1 text-xs text-blue-600">
           <Play className="w-3 h-3" />
-          <span>Video available</span>
+          <span>{t('screens.crossover.videoAvailable')}</span>
         </div>
       )}
     </div>
@@ -43,7 +44,7 @@ function MotivationCardBase({
     <CrossoverCard
       icon={Heart}
       category="mental"
-      title="Daily Motivation"
+      title={t('screens.crossover.dailyMotivation')}
       subtitle="Inspirational content to fuel your wellness journey"
       content={content}
       buttonText="Try Now"

@@ -16,6 +16,7 @@ import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { PermissionsMasterActionPopup } from "@/components/memory/PermissionsMasterActionPopup";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 // Mock data for privacy settings information
 const privacySettings = [
@@ -107,18 +108,18 @@ function Permissions() {
 
   return (
     <AppLayout>
-      <SEO title="Memory Permissions | VITANA Memory" description="Manage privacy, access, and security settings for your health memories and wellness data." />
+      <SEO title={t('screens.memory.memoryPermissionsVitanaMemory')} description="Manage privacy, access, and security settings for your health memories and wellness data." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Memory Permissions"
+          title={t('screens.memory.memoryPermissions')}
           description="Manage privacy, access, and security settings for your health memories."
           emoji="🔒"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search privacy and security settings..." />
+          <ExpandableSearchButton placeholder={t('screens.memory.searchPrivacySecuritySettings')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -128,9 +129,9 @@ function Permissions() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="privacy">🔐 Privacy Settings</SplitBarTrigger>
-            <SplitBarTrigger value="access">👥 Data Access</SplitBarTrigger>
-            <SplitBarTrigger value="security">🛡️ Security Features</SplitBarTrigger>
+            <SplitBarTrigger value="privacy">{t('screens.memory.privacySettings')}</SplitBarTrigger>
+            <SplitBarTrigger value="access">{t('screens.memory.dataAccess')}</SplitBarTrigger>
+            <SplitBarTrigger value="security">{t('screens.memory.securityFeatures')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="privacy">
@@ -139,8 +140,8 @@ function Permissions() {
               {/* Privacy Settings Card with toggles */}
               <Card className="bg-gradient-to-br from-white/65 to-[#f0f7fa]/40 dark:from-slate-900/65 dark:to-slate-800/40 border-border/30 mb-6 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardHeader className="pb-2 pt-3 px-5">
-                  <CardTitle className="text-base">Privacy Settings</CardTitle>
-                  <CardDescription className="text-xs">Control your data privacy and sharing preferences</CardDescription>
+                  <CardTitle className="text-base">{t('screens.memory.privacySettings2')}</CardTitle>
+                  <CardDescription className="text-xs">{t('screens.memory.controlYourDataPrivacySharingPreferences')}</CardDescription>
                 </CardHeader>
                 <CardContent className="px-5 pb-0">
                   {/* Two-column grid layout for toggles */}
@@ -149,33 +150,33 @@ function Permissions() {
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">🧠</span>
-                          <span className="text-sm font-medium">AI Analysis Enabled</span>
+                          <span className="text-sm font-medium">{t('screens.memory.aiAnalysisEnabled')}</span>
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">Personalized insights</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.personalizedInsights')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">🧪</span>
-                          <span className="text-sm font-medium">Research Participation</span>
+                          <span className="text-sm font-medium">{t('screens.memory.researchParticipation')}</span>
                         </div>
                         <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">Contribute to research</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.contributeResearch')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">🌐</span>
-                          <span className="text-sm font-medium">Community Sharing</span>
+                          <span className="text-sm font-medium">{t('screens.memory.communitySharing')}</span>
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">Share anonymously</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.shareAnonymously')}</span>
                     </div>
                   </div>
                   
@@ -241,8 +242,8 @@ function Permissions() {
               {/* Data Access Card with toggles */}
               <Card className="bg-gradient-to-br from-white/65 to-[#f0f7fa]/40 dark:from-slate-900/65 dark:to-slate-800/40 border-border/30 mb-6 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
                 <CardHeader className="pb-2 pt-3 px-5">
-                  <CardTitle className="text-base">Data Access</CardTitle>
-                  <CardDescription className="text-xs">Manage who can access your health memories</CardDescription>
+                  <CardTitle className="text-base">{t('screens.memory.dataAccess2')}</CardTitle>
+                  <CardDescription className="text-xs">{t('screens.memory.manageWhoCanAccessYourHealth')}</CardDescription>
                 </CardHeader>
                 <CardContent className="px-5 pb-0">
                   {/* Two-column grid layout for toggles */}
@@ -251,33 +252,33 @@ function Permissions() {
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">🏥</span>
-                          <span className="text-sm font-medium">Healthcare Providers</span>
+                          <span className="text-sm font-medium">{t('screens.memory.healthcareProviders')}</span>
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">Medical professionals only</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.medicalProfessionalsOnly')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">🚨</span>
-                          <span className="text-sm font-medium">Emergency Access</span>
+                          <span className="text-sm font-medium">{t('screens.memory.emergencyAccess')}</span>
                         </div>
                         <Switch defaultChecked className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">First responders access</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.firstRespondersAccess')}</span>
                     </div>
 
                     <div className="group transition-all duration-300 hover:translate-x-1">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">👨‍👩‍👧‍👦</span>
-                          <span className="text-sm font-medium">Family Members</span>
+                          <span className="text-sm font-medium">{t('screens.memory.familyMembers')}</span>
                         </div>
                         <Switch className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-primary data-[state=checked]:to-primary/80" />
                       </div>
-                      <span className="text-xs text-muted-foreground ml-8 block">Trusted family contacts</span>
+                      <span className="text-xs text-muted-foreground ml-8 block">{t('screens.memory.trustedFamilyContacts')}</span>
                     </div>
                   </div>
                   

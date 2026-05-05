@@ -16,6 +16,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   success: "default",
@@ -105,13 +106,13 @@ export default function AuditEvents() {
     <AppLayout>
       <SubNavigation items={adminAuditNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="OASIS Events" description="System-wide event log for state transitions and decisions" />
+        <AdminHeader title={t('screens.admin.oasisEvents')} description="System-wide event log for state transitions and decisions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Events" value={total} icon={Activity} loading={isLoading} />
-          <AdminStatsCard title="Errors" value={errorCount} icon={AlertTriangle} loading={isLoading} variant={errorCount > 0 ? "error" : "default"} />
-          <AdminStatsCard title="Warnings" value={warningCount} icon={AlertTriangle} loading={isLoading} variant={warningCount > 0 ? "warning" : "default"} />
-          <AdminStatsCard title="On Page" value={events.length} icon={Info} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalEvents')} value={total} icon={Activity} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.errors')} value={errorCount} icon={AlertTriangle} loading={isLoading} variant={errorCount > 0 ? "error" : "default"} />
+          <AdminStatsCard title={t('screens.admin.warnings')} value={warningCount} icon={AlertTriangle} loading={isLoading} variant={warningCount > 0 ? "warning" : "default"} />
+          <AdminStatsCard title={t('screens.admin.page')} value={events.length} icon={Info} loading={isLoading} />
         </div>
 
         <div className="flex items-center gap-3">

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Brain, Calendar, Clock, TrendingUp, Sparkles } from "lucide-react";
 import { NutritionPlanData } from "@/types/recipe";
+import { t } from '@/lib/i18n-toast';
 
 interface NutritionOverviewCardProps {
   planData: NutritionPlanData;
@@ -21,7 +22,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-xl font-bold">Your Nutrition Plan, Powered by Autopilot</h2>
+            <h2 className="text-xl font-bold">{t('screens.health.yourNutritionPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
             AI-optimized meal guidance tailored to your preferences, health score, and activity goals
@@ -39,7 +40,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-xs font-medium text-muted-foreground">Goal Focus</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus || 'Balanced Nutrition'}</p>
         </div>
@@ -95,7 +96,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
-            <p className="text-sm font-medium">AI Insight</p>
+            <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
             {planData.lastUpdated && (
               <span className="text-xs text-muted-foreground whitespace-nowrap">
                 Last updated {planData.lastUpdated}

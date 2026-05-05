@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface CompactVitanaIndexProps {
   score: number;
@@ -29,7 +30,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
   return (
     <Card className="h-full bg-card ring-1 ring-border/60 shadow-[0_2px_10px_rgba(0,0,0,0.06)]">
       <CardHeader>
-        <CardTitle className="text-lg">Vitana Index</CardTitle>
+        <CardTitle className="text-lg">{t('screens.health.vitanaIndex')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Circular Score Display */}
@@ -38,7 +39,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
               <div className="text-center">
                 <div className="text-4xl font-bold text-green-600">{score}</div>
-                <div className="text-xs text-muted-foreground">of 999</div>
+                <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
               </div>
             </div>
           </div>
@@ -70,7 +71,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
 
         {/* Mini Pillar Breakdown */}
         <div className="space-y-2 pt-2 border-t">
-          <div className="text-xs font-medium text-muted-foreground mb-2">Health Pillars</div>
+          <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.health.healthPillars')}</div>
           {Object.entries(pillarData).map(([name, value]) => (
             <div key={name} className="flex items-center justify-between text-sm">
               <span className="capitalize text-muted-foreground">{name}</span>

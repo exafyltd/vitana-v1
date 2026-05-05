@@ -25,6 +25,7 @@ import { generateGroupImage } from "@/lib/groupCardTransformers";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 function GroupCard({ group, onClick, actionSlot }: { 
   group: { id: string; name: string; description?: string | null; category?: string | null; cover_url?: string | null; member_count: number; is_public?: boolean };
@@ -107,12 +108,12 @@ export default function Groups() {
 
   return (
     <AppLayout>
-      <SEO title="Groups | Community" description="Join and manage community groups" canonical={window.location.href} />
+      <SEO title={t('screens.community.groupsCommunity')} description="Join and manage community groups" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
-            title="Find your wellness tribe!"
+            title={t('screens.community.findYourWellnessTribe')}
             description="Join groups with shared interests or create your own community groups."
             emoji="👥"
           />
@@ -144,8 +145,8 @@ export default function Groups() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="my-groups">👥 My Groups</SplitBarTrigger>
-              <SplitBarTrigger value="recommended">✨ Discover</SplitBarTrigger>
+              <SplitBarTrigger value="my-groups">{t('screens.community.myGroups2')}</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">{t('screens.community.discover')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="my-groups">
@@ -158,9 +159,9 @@ export default function Groups() {
               ) : myGroups.length === 0 ? (
                 <div className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">No groups yet</h3>
-                  <p className="text-muted-foreground mb-4">Join your first group to get started!</p>
-                  <Button onClick={() => setActiveTab("recommended")}>Discover Groups</Button>
+                  <h3 className="text-lg font-semibold mb-2">{t('screens.community.noGroupsYet')}</h3>
+                  <p className="text-muted-foreground mb-4">{t('screens.community.joinYourFirstGroupGetStarted')}</p>
+                  <Button onClick={() => setActiveTab("recommended")}>{t('screens.community.discoverGroups')}</Button>
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -185,8 +186,8 @@ export default function Groups() {
               ) : recommendedGroups.length === 0 ? (
                 <div className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">No groups to discover</h3>
-                  <p className="text-muted-foreground mb-4">Be the first to start a community!</p>
+                  <h3 className="text-lg font-semibold mb-2">{t('screens.community.noGroupsDiscover')}</h3>
+                  <p className="text-muted-foreground mb-4">{t('screens.community.firstStartCommunity')}</p>
                   <Button onClick={() => setCreateGroupOpen(true)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Create Group

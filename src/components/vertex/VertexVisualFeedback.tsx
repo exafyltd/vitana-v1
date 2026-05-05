@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Mic, Volume2, Wifi, WifiOff, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { t } from '@/lib/i18n-toast';
 
 interface VertexVisualFeedbackProps {
   connectionState: 'disconnected' | 'connecting' | 'connected' | 'error';
@@ -61,7 +62,7 @@ export function VertexVisualFeedback({
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm">Connection Status</CardTitle>
+            <CardTitle className="text-sm">{t('screens.vertex.connectionStatus')}</CardTitle>
             {getConnectionBadge()}
           </div>
         </CardHeader>
@@ -79,7 +80,7 @@ export function VertexVisualFeedback({
           <CardContent>
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Audio Level</span>
+                <span>{t('screens.vertex.audioLevel')}</span>
                 <span>{Math.round(audioLevel)}%</span>
               </div>
               <Progress value={audioLevel} className="h-2" />
@@ -103,7 +104,7 @@ export function VertexVisualFeedback({
       {/* Conversation Transcript */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm">Conversation Transcript</CardTitle>
+          <CardTitle className="text-sm">{t('screens.vertex.conversationTranscript')}</CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[300px] w-full rounded-md border p-4">

@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Download, Printer } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export interface InvoiceData {
   id: string;
@@ -69,7 +70,7 @@ export function InvoicePreviewDialog({
             <CardContent className="pt-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold mb-2">From:</h3>
+                  <h3 className="font-semibold mb-2">{t('screens.billing.from')}</h3>
                   <p className="text-sm text-muted-foreground">
                     Vitanaland Inc.<br />
                     123 Wellness Street<br />
@@ -77,7 +78,7 @@ export function InvoicePreviewDialog({
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Bill To:</h3>
+                  <h3 className="font-semibold mb-2">{t('screens.billing.bill')}</h3>
                   <p className="text-sm text-muted-foreground">
                     {invoiceData.billingAddress || "Account Holder\nEmail on file"}
                   </p>
@@ -94,7 +95,7 @@ export function InvoicePreviewDialog({
           {/* Line Items */}
           <Card>
             <CardContent className="pt-6">
-              <h3 className="font-semibold mb-4">Invoice Details</h3>
+              <h3 className="font-semibold mb-4">{t('screens.billing.invoiceDetails')}</h3>
               <div className="space-y-2">
                 <div className="grid grid-cols-12 gap-4 text-sm font-medium text-muted-foreground pb-2 border-b">
                   <div className="col-span-6">Description</div>

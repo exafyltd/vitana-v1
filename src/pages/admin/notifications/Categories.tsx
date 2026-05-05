@@ -37,7 +37,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 // BOOTSTRAP-NOTIF-CATEGORIES: Admin notification category management page.
 // Deploy timestamp: 2026-04-16T08:30Z (retry after billing/auth fix)
@@ -193,7 +193,7 @@ export default function Categories() {
       <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Notification Categories"
+          title={t('screens.admin.notificationCategories')}
           description="Manage notification categories grouped by Chat, Calendar, and Community. Users can toggle these on/off in their settings."
         />
 
@@ -254,7 +254,7 @@ export default function Categories() {
                               <Badge variant="outline" className="text-xs">Inactive</Badge>
                             )}
                             {!cat.default_enabled && (
-                              <Badge variant="secondary" className="text-xs">Opt-in</Badge>
+                              <Badge variant="secondary" className="text-xs">{t('screens.admin.optin')}</Badge>
                             )}
                           </div>
                           {cat.description && (
@@ -341,7 +341,7 @@ export default function Categories() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="icon">Icon (Lucide name)</Label>
+              <Label htmlFor="icon">{t('screens.admin.iconLucideName')}</Label>
               <Input
                 id="icon"
                 value={form.icon}
@@ -351,7 +351,7 @@ export default function Categories() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mapped_types">Mapped Notification Types</Label>
+              <Label htmlFor="mapped_types">{t('screens.admin.mappedNotificationTypes')}</Label>
               <Textarea
                 id="mapped_types"
                 value={form.mapped_types}
@@ -366,7 +366,7 @@ export default function Categories() {
 
             <div className="flex items-center justify-between">
               <div>
-                <Label>Default Enabled</Label>
+                <Label>{t('screens.admin.defaultEnabled')}</Label>
                 <p className="text-xs text-muted-foreground">
                   When on, new users have this category enabled by default.
                 </p>

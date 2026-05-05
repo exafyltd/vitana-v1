@@ -8,6 +8,7 @@ import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { TrendingUp, Users, Target, Brain, BarChart3 } from "lucide-react";
 import { lifestylePatterns, indexMovement, socialEngagement, productivity, correlations } from "@/mocks/ai";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -30,7 +31,7 @@ export default function Insights() {
 
   return (
     <AppLayout>
-      <SEO title="Insights | AI Intelligence" description="AI-powered health and wellness insights" canonical={window.location.href} />
+      <SEO title={t('screens.ai.insightsAiIntelligence')} description="AI-powered health and wellness insights" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -40,8 +41,8 @@ export default function Insights() {
             {/* Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">AI Insights & Patterns ✨</h1>
-                <p className="text-muted-foreground">Discover meaningful patterns and trends in your wellness journey.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.ai.aiInsightsPatterns')}</h1>
+                <p className="text-muted-foreground">{t('screens.ai.discoverMeaningfulPatternsTrendsYourWellness')}</p>
               </div>
             </div>
             
@@ -74,7 +75,7 @@ export default function Insights() {
             {/* Pattern Recognition - C-006 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-006">
               <StandardCard
-                title="Pattern Recognition"
+                title={t('screens.ai.patternRecognition')}
                 subtitle="AI identifies patterns in your wellness data"
                 content="Your energy levels peak at 10 AM and 3 PM consistently. Consider scheduling important tasks during these windows for optimal performance."
                 variant="default"
@@ -85,7 +86,7 @@ export default function Insights() {
             {/* Behavioral Trends - C-007 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-007">
               <StandardCard
-                title="Behavioral Trends"
+                title={t('screens.ai.behavioralTrends')}
                 subtitle="Weekly trends in your wellness habits"
                 content="Your hydration improves 40% on weekdays vs weekends. Weekend reminder system could help maintain consistency."
                 variant="default"
@@ -96,7 +97,7 @@ export default function Insights() {
             {/* Correlation Analysis - C-008 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-008">
               <StandardCard
-                title="Correlation Analysis"
+                title={t('screens.ai.correlationAnalysis')}
                 subtitle="How different factors affect your wellbeing"
                 content="Sleep quality directly correlates with next-day mood (85% accuracy). Earlier bedtime might improve overall wellness."
                 variant="default"
@@ -107,7 +108,7 @@ export default function Insights() {
             {/* Prediction Models - C-009 */}
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-009">
               <StandardCard
-                title="Prediction Models"
+                title={t('screens.ai.predictionModels')}
                 subtitle="AI forecasts based on your patterns"
                 content="Based on current trends, you're 78% likely to reach your monthly fitness goal. Increase by 2 sessions to guarantee success."
                 variant="default"

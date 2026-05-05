@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
 const BASE_OPERATOR = (import.meta.env.VITE_OPERATOR_BASE_URL || "https://oasis-operator-86804897789.us-central1.run.app/api/v1").trim();
@@ -153,19 +154,19 @@ export function BackendDiagnostic() {
       )}
       <div className="space-y-1.5 text-xs">
         <div className="flex items-center justify-between gap-2">
-          <span>Events API:</span>
+          <span>{t('screens.dev.eventsApi')}</span>
           {results.events.status === "testing" && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
           {results.events.status === "success" && <CheckCircle className="w-3 h-3 text-green-600" />}
           {results.events.status === "failed" && <XCircle className="w-3 h-3 text-destructive" />}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <span>Chat API:</span>
+          <span>{t('screens.dev.chatApi')}</span>
           {results.chat.status === "testing" && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
           {results.chat.status === "success" && <CheckCircle className="w-3 h-3 text-green-600" />}
           {results.chat.status === "failed" && <XCircle className="w-3 h-3 text-destructive" />}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <span>SSE Stream:</span>
+          <span>{t('screens.dev.sseStream')}</span>
           {results.sse.status === "testing" && <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />}
           {results.sse.status === "success" && <CheckCircle className="w-3 h-3 text-green-600" />}
           {results.sse.status === "failed" && <XCircle className="w-3 h-3 text-destructive" />}

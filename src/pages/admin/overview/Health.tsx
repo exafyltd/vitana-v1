@@ -8,6 +8,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useOverviewSummary } from "@/hooks/useAdminOverview";
+import { t } from '@/lib/i18n-toast';
 
 const HEALTH_CHECKS = [
   { key: "members", label: "Members", description: "User provisioning and tenant membership" },
@@ -27,7 +28,7 @@ export default function OverviewHealth() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="💚"
-          title="System Health"
+          title={t('screens.admin.systemHealth')}
           description="Health status of key subsystems for your tenant"
         />
 

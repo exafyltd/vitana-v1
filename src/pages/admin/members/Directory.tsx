@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMembers, useRolesSummary } from "@/hooks/useAdminMembers";
+import { t } from '@/lib/i18n-toast';
 
 const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   admin: "error",
@@ -56,7 +57,7 @@ export default function MembersDirectory() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="👥"
-          title="Members"
+          title={t('screens.admin.members')}
           description={`${members.length} member${members.length !== 1 ? "s" : ""} in this tenant`}
         />
 
@@ -94,7 +95,7 @@ export default function MembersDirectory() {
         />
 
         {membersQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading members...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingMembers')}</p>
         )}
 
         {membersQuery.isError && (
@@ -105,7 +106,7 @@ export default function MembersDirectory() {
 
         {!membersQuery.isLoading && members.length === 0 && (
           <AdminEmptyState
-            title="No members found"
+            title={t('screens.admin.noMembersFound')}
             description={search ? "Try a different search term or clear the filters." : "Invite your first member to get started."}
           />
         )}
@@ -118,7 +119,7 @@ export default function MembersDirectory() {
                   <TableHead className="w-[40px]" />
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Active Role</TableHead>
+                  <TableHead>{t('screens.admin.activeRole')}</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Joined</TableHead>
                 </TableRow>

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ActiveVTIDProvider } from "@/context/ActiveVTIDContext";
 import { useRole, UserRole } from "@/hooks/useRole";
+import { t } from '@/lib/i18n-toast';
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -80,8 +81,8 @@ export default function DevLayout({ children }: DevLayoutProps) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Dev Hub Disabled</h1>
-          <p className="text-muted-foreground">Dev Hub is currently disabled.</p>
+          <h1 className="text-2xl font-bold mb-2">{t('screens.common.devHubDisabled')}</h1>
+          <p className="text-muted-foreground">{t('screens.common.devHubCurrentlyDisabled')}</p>
         </div>
       </div>
     );

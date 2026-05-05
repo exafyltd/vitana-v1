@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Sparkles, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface DiscoverPick {
   title: string;
@@ -61,7 +62,7 @@ export function DiscoverPicksCard({
     <CrossoverCard
       icon={Sparkles}
       category="vitana"
-      title="Personalized Discoveries"
+      title={t('screens.crossover.personalizedDiscoveries')}
       subtitle="AI-curated recommendations perfect for your wellness journey"
       content={content}
       buttonText="Explore"

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface MiniFooterStatusProps {
   backendStatus: "ONLINE" | "OFFLINE" | "PARTIAL";
@@ -65,16 +66,16 @@ export function MiniFooterStatus({
       onClick={onOpenDetails}
     >
       <div className="flex items-center gap-3 text-[10px]">
-        <span className="text-muted-foreground">Status:</span>
+        <span className="text-muted-foreground">{t('screens.dev.status2')}</span>
         <span className={statusColor}>{backendStatus}</span>
         <span className="text-muted-foreground">•</span>
-        <span className="text-muted-foreground">Stream:</span>
+        <span className="text-muted-foreground">{t('screens.dev.stream')}</span>
         <span>{streamStatus}</span>
         <span className="text-muted-foreground">•</span>
-        <span className="text-muted-foreground">Last event:</span>
+        <span className="text-muted-foreground">{t('screens.dev.lastEvent')}</span>
         <span>{lastEventRelative}</span>
         <span className="text-muted-foreground">•</span>
-        <span className="text-muted-foreground">Latency:</span>
+        <span className="text-muted-foreground">{t('screens.dev.latency')}</span>
         <span>{latency !== undefined ? `${latency}ms` : "—"}</span>
       </div>
     </Button>

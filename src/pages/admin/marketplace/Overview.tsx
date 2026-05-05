@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -115,13 +115,13 @@ export default function MarketplaceOverview() {
 
   return (
     <AppLayout>
-      <SEO title="Marketplace Overview | Admin" description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.admin.marketplaceOverviewAdmin')} description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={adminMarketplaceCatalogNavigation} />
       <div className="p-6 min-h-screen">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-3">
             <StandardHeader
-              title="Marketplace Overview"
+              title={t('screens.admin.marketplaceOverview')}
               description="Live view of what the autonomous marketplace system has done. You tune the rules here — the system picks the products."
             />
             <Button variant="outline" size="sm" onClick={load}>
@@ -153,11 +153,11 @@ export default function MarketplaceOverview() {
           {/* Recent runs */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Recent ingestion runs</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.recentIngestionRuns')}</CardTitle>
             </CardHeader>
             <CardContent>
               {runs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No runs yet. Hand catalog scraping off to Claude Code — it calls <code>POST /api/v1/catalog/ingest/start</code> to begin.</p>
+                <p className="text-sm text-muted-foreground">No runs yet. Hand catalog scraping off to Claude Code — it calls <code>{t('screens.admin.postapiv1catalogingeststart')}</code> {t('screens.admin.begin')}</p>
               ) : (
                 <div className="space-y-2">
                   {runs.map((r) => (

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Mic, Video, Users, Clock, Star, Heart, MessageSquare, Calendar, Play } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 // Remove react-i18next import - not available
 
 interface LiveRoom {
@@ -128,8 +129,8 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
             🔴 Live now
           </SplitBarTrigger>
-          <SplitBarTrigger value="scheduled">📅 Scheduled</SplitBarTrigger>
-          <SplitBarTrigger value="all">📋 All rooms</SplitBarTrigger>
+          <SplitBarTrigger value="scheduled">{t('screens.community.scheduled')}</SplitBarTrigger>
+          <SplitBarTrigger value="all">{t('screens.community.allRooms')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="live" className="mt-6">
@@ -160,8 +161,8 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
       {filteredRooms.length === 0 && (
         <div className="text-center py-12">
           <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium mb-2">No rooms found</h3>
-          <p className="text-muted-foreground">Try adjusting your search or filters</p>
+          <h3 className="text-lg font-medium mb-2">{t('screens.community.noRoomsFound')}</h3>
+          <p className="text-muted-foreground">{t('screens.community.tryAdjustingYourSearchFilters')}</p>
         </div>
       )}
     </div>

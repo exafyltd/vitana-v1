@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { CreditCard, Coins, DollarSign, Users, Send } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PaymentRequestPopupProps {
   isOpen: boolean;
@@ -121,7 +121,7 @@ export default function PaymentRequestPopup({
               </Avatar>
               <div>
                 <p className="font-medium text-sm">{recipient.name}</p>
-                <p className="text-xs text-muted-foreground">Request recipient</p>
+                <p className="text-xs text-muted-foreground">{t('screens.payment.requestRecipient')}</p>
               </div>
             </div>
           )}
@@ -173,7 +173,7 @@ export default function PaymentRequestPopup({
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -182,7 +182,7 @@ export default function PaymentRequestPopup({
 
           {/* Due Date (Optional) */}
           <div>
-            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Label htmlFor="dueDate">{t('screens.payment.dueDateOptional')}</Label>
             <Input
               id="dueDate"
               type="date"

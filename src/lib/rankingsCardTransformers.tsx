@@ -4,6 +4,7 @@ import { Users, TrendingUp, Activity, Star, Calendar, Award, Trophy, Flame, BarC
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 // Position badge configurations
 const getPositionBadge = (position: number) => {
@@ -67,7 +68,7 @@ const OrganizerLink = ({ organizer }: { organizer: { name: string, id: string, a
         />
       )}
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-muted-foreground">Organized by</p>
+        <p className="text-xs text-muted-foreground">{t('screens.common.organizedBy')}</p>
         <p className="text-sm font-medium text-foreground truncate">{organizer.name}</p>
       </div>
       <Button 
@@ -350,7 +351,7 @@ export const transformMemberRankingToCard = (
     expandedContent: (
       <>
         <div className="mb-3">
-          <p className="text-xs text-muted-foreground mb-2">Pillar Breakdown</p>
+          <p className="text-xs text-muted-foreground mb-2">{t('screens.common.pillarBreakdown')}</p>
           <RankingStatsTable 
             stats={[
               { label: '💤 Sleep', value: member.pillar_scores.sleep, trend: 'up' },

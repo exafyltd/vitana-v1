@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Brain, TrendingUp, Clock, Users, Target, Zap } from "lucide-react";
 import { PersonalizedSubscriptionRecommendationCard } from "./PersonalizedSubscriptionRecommendationCard";
 import { SubscriptionROIAnalyticsCard } from "./SubscriptionROIAnalyticsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface TimingIntelligence {
   id: string;
@@ -156,7 +157,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           {/* Savings Summary */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-emerald-500/5 to-green-500/5 border border-emerald-200/50">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Potential Savings</span>
+              <span className="text-sm font-medium">{t('screens.wallet.potentialSavings')}</span>
               <span className="text-sm text-muted-foreground">{avgConfidence}% confidence</span>
             </div>
             <div className="text-2xl font-bold text-emerald-600 mb-1">${totalPotentialSavings}</div>
@@ -193,7 +194,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 
                 <div className="flex items-center justify-between">
                   <div className="text-xs">
-                    <span className="text-muted-foreground">Best time:</span>
+                    <span className="text-muted-foreground">{t('screens.wallet.bestTime')}</span>
                     <span className="font-semibold ml-1">{intel.bestTime}</span>
                   </div>
                   <div className="text-xs text-emerald-600 font-semibold">
@@ -217,15 +218,15 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
         <CardContent className="space-y-4">
           {/* Trending Summary */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-blue-500/5 to-purple-500/5 border border-blue-200/50">
-            <div className="text-sm font-medium mb-2">What's Popular</div>
+            <div className="text-sm font-medium mb-2">{t('screens.wallet.whatSPopular')}</div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-lg font-bold text-blue-600">89%</div>
-                <div className="text-xs text-muted-foreground">Adoption Rate</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.adoptionRate')}</div>
               </div>
               <div>
                 <div className="text-lg font-bold text-purple-600">4.8</div>
-                <div className="text-xs text-muted-foreground">Avg Rating</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgRating')}</div>
               </div>
             </div>
           </div>
@@ -261,7 +262,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold">{trend.satisfaction}</div>
-                    <div className="text-xs text-muted-foreground">satisfaction</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.wallet.satisfaction')}</div>
                   </div>
                 </div>
               </div>
@@ -272,7 +273,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Brain className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Community Insight</span>
+              <span className="text-sm font-medium">{t('screens.wallet.communityInsight')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
               Users similar to you are 3x more likely to stick with AI Wellness Coach

@@ -1,5 +1,6 @@
 import { Bell, Smartphone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { t } from '@/lib/i18n-toast';
 
 interface NotificationPreviewProps {
   title: string;
@@ -19,7 +20,7 @@ export function NotificationPreview({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-medium text-muted-foreground">Live Preview</h3>
+      <h3 className="text-sm font-medium text-muted-foreground">{t('screens.admin.livePreview')}</h3>
 
       {/* Push notification mockup */}
       {showPush && (
@@ -39,7 +40,7 @@ export function NotificationPreview({
                 <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                   Vitana
                 </span>
-                <span className="ml-auto text-xs text-muted-foreground">now</span>
+                <span className="ml-auto text-xs text-muted-foreground">{t('screens.admin.now')}</span>
               </div>
               <p className="text-sm font-semibold leading-tight">
                 {title || "Notification Title"}
@@ -74,7 +75,7 @@ export function NotificationPreview({
                   <p className="text-xs text-muted-foreground mt-0.5 line-clamp-3">
                     {body || "Notification body text will appear here..."}
                   </p>
-                  <p className="text-xs text-muted-foreground/60 mt-1">Just now</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">{t('screens.admin.justNow')}</p>
                 </div>
                 <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1" />
               </div>
@@ -103,7 +104,7 @@ export function NotificationPreview({
           <span className="font-medium text-foreground">{priority || "p1"}</span>
         </div>
         <div className="flex justify-between">
-          <span>DND Bypass</span>
+          <span>{t('screens.admin.dndBypass')}</span>
           <span className="font-medium text-foreground">
             {priority === "p0" ? "Yes (Critical)" : "No"}
           </span>

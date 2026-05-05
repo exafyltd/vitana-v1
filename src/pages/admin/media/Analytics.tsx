@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Eye, ThumbsUp, Play } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 export default function Analytics() {
   const { data: stats } = useQuery({
@@ -50,7 +51,7 @@ export default function Analytics() {
   return (
     <AppLayout>
       <SEO 
-        title="Analytics | Media Management" 
+        title={t('screens.admin.analyticsMediaManagement')} 
         description="Media performance analytics"
         canonical={window.location.href}
       />
@@ -58,15 +59,15 @@ export default function Analytics() {
       
       <div className="p-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Media Analytics</h1>
-          <p className="text-muted-foreground">Performance metrics and insights</p>
+          <h1 className="text-3xl font-bold mb-2">{t('screens.admin.mediaAnalytics')}</h1>
+          <p className="text-muted-foreground">{t('screens.admin.performanceMetricsInsights')}</p>
         </div>
 
         {/* Overview Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Views</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.totalViews')}</CardTitle>
               <Eye className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -76,7 +77,7 @@ export default function Analytics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Likes</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.totalLikes')}</CardTitle>
               <ThumbsUp className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -86,7 +87,7 @@ export default function Analytics() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Plays</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.totalPlays')}</CardTitle>
               <Play className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>

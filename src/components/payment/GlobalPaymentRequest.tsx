@@ -11,7 +11,7 @@ import { useTenant } from '@/hooks/useTenant';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Search, DollarSign, Users } from 'lucide-react';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface GlobalPaymentRequestProps {
   isOpen: boolean;
@@ -148,12 +148,12 @@ export default function GlobalPaymentRequest({
           {/* Recipient Selection */}
           {!selectedRecipient ? (
             <div>
-              <Label htmlFor="search">Search Users</Label>
+              <Label htmlFor="search">{t('screens.payment.searchUsers')}</Label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="search"
-                  placeholder="Search by name or email..."
+                  placeholder={t('screens.payment.searchByNameEmail')}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -203,7 +203,7 @@ export default function GlobalPaymentRequest({
             </div>
           ) : (
             <div>
-              <Label>Request From</Label>
+              <Label>{t('screens.payment.requestFrom')}</Label>
               <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
                 <Avatar className="w-8 h-8">
                   <AvatarImage src={selectedRecipient.avatar_url} />
@@ -234,7 +234,7 @@ export default function GlobalPaymentRequest({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="VTNA">VTNA Tokens</SelectItem>
+                <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
                 <SelectItem value="USD">USD</SelectItem>
                 <SelectItem value="CREDITS">Credits</SelectItem>
               </SelectContent>
@@ -257,10 +257,10 @@ export default function GlobalPaymentRequest({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description (Optional)</Label>
+            <Label htmlFor="description">{t('screens.payment.descriptionOptional')}</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}

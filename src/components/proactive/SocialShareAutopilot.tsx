@@ -7,7 +7,7 @@ import { Zap, TrendingUp, Calendar, Sparkles, Trophy } from "lucide-react";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ShareableMoment {
   id: string;
@@ -155,7 +155,7 @@ export function SocialShareAutopilot() {
           <div className="flex items-start gap-3">
             <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm font-semibold">Grow 8x Faster with Auto-Sharing</p>
+              <p className="text-sm font-semibold">{t('screens.proactive.grow8xFasterWithAutosharing')}</p>
               <p className="text-xs text-muted-foreground">
                 Members who auto-share their wellness wins inspire 5-10 friends to join each month, 
                 creating a powerful ripple effect in their network.
@@ -167,9 +167,9 @@ export function SocialShareAutopilot() {
         {/* Connected platforms status */}
         {connectedPlatforms.length === 0 && (
           <div className="p-4 rounded-lg border border-yellow-500/20 bg-yellow-500/5">
-            <p className="text-sm font-medium mb-2">⚠️ No platforms connected</p>
+            <p className="text-sm font-medium mb-2">{t('screens.proactive.noPlatformsConnected')}</p>
             <Button variant="outline" size="sm" asChild>
-              <Link to="/sharing">Connect Social Media</Link>
+              <Link to="/sharing">{t('screens.proactive.connectSocialMedia')}</Link>
             </Button>
           </div>
         )}
@@ -194,11 +194,11 @@ export function SocialShareAutopilot() {
         <div className="grid grid-cols-2 gap-4 pt-4 border-t">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">4.2x</div>
-            <div className="text-xs text-muted-foreground">Avg Engagement Boost</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.avgEngagementBoost')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary">15min</div>
-            <div className="text-xs text-muted-foreground">Time Saved Weekly</div>
+            <div className="text-2xl font-bold text-primary">{t('screens.proactive.text15min')}</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.timeSavedWeekly')}</div>
           </div>
         </div>
       </CardContent>

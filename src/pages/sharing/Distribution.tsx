@@ -28,6 +28,7 @@ import { BrandGuidelineDialog } from "@/components/sharing/BrandGuidelineDialog"
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Zap, BarChart3, Palette, Plus, ChevronDown, Rocket, Sparkles, Calendar, Clock, Share2, TrendingUp, MessageSquare, Image, BookOpen, FileText, Settings, Repeat } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 // Transform campaign templates to StandardHorizontalCard format
 const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
@@ -52,18 +53,18 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📋 Campaign Playbook</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.campaignPlaybook')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li>Week 1: Teaser posts (3x, short-form)</li>
-            <li>Launch Day: Hero announcement + email blast</li>
-            <li>Week 2: Social proof, testimonials, micro-FAQ</li>
-            <li>Week 3: Last-chance urgency posts</li>
+            <li>{t('screens.sharing.week1TeaserPosts3xShortform')}</li>
+            <li>{t('screens.sharing.launchDayHeroAnnouncementEmailBlast')}</li>
+            <li>{t('screens.sharing.week2SocialProofTestimonialsMicrofaq')}</li>
+            <li>{t('screens.sharing.week3LastchanceUrgencyPosts')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Channels:</strong> LinkedIn, X, Instagram, Email, Blog<br/>
-          <strong>Duration:</strong> 3 weeks<br/>
-          <strong>Est. Reach:</strong> 50K-100K impressions
+          <strong>{t('screens.sharing.channels')}</strong> LinkedIn, X, Instagram, Email, Blog<br/>
+          <strong>{t('screens.sharing.duration')}</strong> 3 weeks<br/>
+          <strong>{t('screens.sharing.estReach')}</strong> 50K-100K impressions
         </div>
       </div>
     )
@@ -86,17 +87,17 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📖 Educational Series</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.educationalSeries')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li>Phase 1: Foundation concepts (Weeks 1-2)</li>
-            <li>Phase 2: Practical applications (Weeks 3-4)</li>
-            <li>Phase 3: Advanced strategies (Weeks 5-6)</li>
-            <li>Phase 4: Case studies & results (Weeks 7-8)</li>
+            <li>{t('screens.sharing.phase1FoundationConceptsWeeks12')}</li>
+            <li>{t('screens.sharing.phase2PracticalApplicationsWeeks34')}</li>
+            <li>{t('screens.sharing.phase3AdvancedStrategiesWeeks56')}</li>
+            <li>{t('screens.sharing.phase4CaseStudiesResultsWeeks')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Format:</strong> Blog posts + Email digests<br/>
-          <strong>Goal:</strong> Build authority and trust over 8 weeks
+          <strong>{t('screens.sharing.format')}</strong> Blog posts + Email digests<br/>
+          <strong>{t('screens.sharing.goal')}</strong> Build authority and trust over 8 weeks
         </div>
       </div>
     )
@@ -119,17 +120,17 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">⏰ Countdown Timeline</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.countdownTimeline')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li>T-14 days: Save the date announcement</li>
-            <li>T-7 days: Speaker/agenda reveal</li>
-            <li>T-3 days: Last chance reminder</li>
-            <li>T-1 day: Final countdown + details</li>
-            <li>Event day: Live updates & engagement</li>
+            <li>{t('screens.sharing.t14DaysSaveDateAnnouncement')}</li>
+            <li>{t('screens.sharing.t7DaysSpeakeragendaReveal')}</li>
+            <li>{t('screens.sharing.t3DaysLastChanceReminder')}</li>
+            <li>{t('screens.sharing.t1DayFinalCountdownDetails')}</li>
+            <li>{t('screens.sharing.eventDayLiveUpdatesEngagement')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Best for:</strong> Webinars, launches, live events
+          <strong>{t('screens.sharing.bestFor')}</strong> Webinars, launches, live events
         </div>
       </div>
     )
@@ -152,17 +153,17 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">🚀 Launch Sequence</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.launchSequence')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li>Pre-launch: Waitlist building (2 weeks)</li>
-            <li>Launch week: Daily feature highlights</li>
-            <li>Week 2: Customer testimonials & social proof</li>
-            <li>Week 3: Limited-time offer push</li>
+            <li>{t('screens.sharing.prelaunchWaitlistBuilding2Weeks')}</li>
+            <li>{t('screens.sharing.launchWeekDailyFeatureHighlights')}</li>
+            <li>{t('screens.sharing.week2CustomerTestimonialsSocialProof')}</li>
+            <li>{t('screens.sharing.week3LimitedtimeOfferPush')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Channels:</strong> All platforms + paid ads<br/>
-          <strong>Duration:</strong> 4 weeks intensive campaign
+          <strong>{t('screens.sharing.channels')}</strong> All platforms + paid ads<br/>
+          <strong>{t('screens.sharing.duration')}</strong> 4 weeks intensive campaign
         </div>
       </div>
     )
@@ -185,16 +186,16 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">⚡ Urgency Tactics</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.urgencyTactics')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li>Hour 0: Flash announcement across all channels</li>
-            <li>Hour 3: "50% claimed" urgency update</li>
-            <li>Hour 6: "Last 3 hours" countdown</li>
-            <li>Final hour: Minute-by-minute updates</li>
+            <li>{t('screens.sharing.hour0FlashAnnouncementAcrossAll')}</li>
+            <li>{t('screens.sharing.hour350ClaimedUrgencyUpdate')}</li>
+            <li>{t('screens.sharing.hour6Last3HoursCountdown')}</li>
+            <li>{t('screens.sharing.finalHourMinutebyminuteUpdates')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Best for:</strong> Clearance, limited inventory, time-sensitive offers
+          <strong>{t('screens.sharing.bestFor')}</strong> Clearance, limited inventory, time-sensitive offers
         </div>
       </div>
     )
@@ -223,17 +224,17 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">⚙️ Rule Configuration</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.ruleConfiguration')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Trigger:</strong> New post created</div>
-            <div><strong>Action:</strong> Schedule for optimal time based on audience activity</div>
-            <div><strong>Channels:</strong> LinkedIn (9 AM), X (12 PM), Instagram (6 PM)</div>
-            <div><strong>Timezone:</strong> User's local timezone</div>
+            <div><strong>{t('screens.sharing.trigger')}</strong> {t('screens.sharing.newPostCreated')}</div>
+            <div><strong>{t('screens.sharing.action')}</strong> {t('screens.sharing.scheduleForOptimalTimeBasedAudience')}</div>
+            <div><strong>{t('screens.sharing.channels')}</strong> {t('screens.sharing.linkedin9AmX12Pm')}</div>
+            <div><strong>{t('screens.sharing.timezone')}</strong> {t('screens.sharing.userSLocalTimezone')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Last 7 days:</strong> 24 posts auto-scheduled<br/>
-          <strong>Avg. Engagement:</strong> +32% vs manual posts
+          <strong>{t('screens.sharing.last7Days')}</strong> 24 posts auto-scheduled<br/>
+          <strong>{t('screens.sharing.avgEngagement')}</strong> +32% vs manual posts
         </div>
       </div>
     )
@@ -258,16 +259,16 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">🔄 Distribution Settings</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.distributionSettings')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Trigger:</strong> New blog post published</div>
-            <div><strong>Action:</strong> Create tailored posts for each platform</div>
-            <div><strong>Active Channels:</strong> LinkedIn, X, Instagram, Facebook, Blog</div>
-            <div><strong>Customization:</strong> Auto-adapt format per channel</div>
+            <div><strong>{t('screens.sharing.trigger')}</strong> {t('screens.sharing.newBlogPostPublished')}</div>
+            <div><strong>{t('screens.sharing.action')}</strong> {t('screens.sharing.createTailoredPostsForEachPlatform')}</div>
+            <div><strong>{t('screens.sharing.activeChannels')}</strong> {t('screens.sharing.linkedinXInstagramFacebookBlog')}</div>
+            <div><strong>{t('screens.sharing.customization')}</strong> {t('screens.sharing.autoadaptFormatPerChannel')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Time saved:</strong> ~3 hours per blog post
+          <strong>{t('screens.sharing.timeSaved')}</strong> ~3 hours per blog post
         </div>
       </div>
     )
@@ -289,16 +290,16 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📈 Boost Strategy</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.boostStrategy')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Criteria:</strong> Posts with &gt;100 engagements</div>
-            <div><strong>Timing:</strong> Repost 7 days after original</div>
-            <div><strong>Updates:</strong> Add "In case you missed..." preface</div>
-            <div><strong>Frequency:</strong> Max 1 repost per week</div>
+            <div><strong>{t('screens.sharing.criteria')}</strong> {t('screens.sharing.postsWithGt100Engagements')}</div>
+            <div><strong>{t('screens.sharing.timing')}</strong> {t('screens.sharing.repost7DaysAfterOriginal')}</div>
+            <div><strong>{t('screens.sharing.updates')}</strong> {t('screens.sharing.addCaseYouMissedPreface')}</div>
+            <div><strong>{t('screens.sharing.frequency')}</strong> {t('screens.sharing.max1RepostPerWeek')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Avg. Boost:</strong> +45% additional reach per repost
+          <strong>{t('screens.sharing.avgBoost')}</strong> +45% additional reach per repost
         </div>
       </div>
     )
@@ -323,16 +324,16 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">♻️ Evergreen Rotation</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.evergreenRotation')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Content Pool:</strong> 12 evergreen posts tagged</div>
-            <div><strong>Schedule:</strong> 1 repost per month, rotating</div>
-            <div><strong>Optimization:</strong> Best time of day per platform</div>
-            <div><strong>Updates:</strong> Minor refreshes to headlines/CTAs</div>
+            <div><strong>{t('screens.sharing.contentPool')}</strong> {t('screens.sharing.text12EvergreenPostsTagged')}</div>
+            <div><strong>{t('screens.sharing.schedule')}</strong> {t('screens.sharing.text1RepostPerMonthRotating')}</div>
+            <div><strong>{t('screens.sharing.optimization')}</strong> {t('screens.sharing.bestTimeDayPerPlatform')}</div>
+            <div><strong>{t('screens.sharing.updates')}</strong> {t('screens.sharing.minorRefreshesHeadlinesctas')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Strategy:</strong> Keep valuable content in circulation
+          <strong>{t('screens.sharing.strategy')}</strong> Keep valuable content in circulation
         </div>
       </div>
     )
@@ -357,16 +358,16 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">🎯 Segment Rules</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.segmentRules')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Segment 1:</strong> Beginners → How-to guides</div>
-            <div><strong>Segment 2:</strong> Intermediate → Case studies</div>
-            <div><strong>Segment 3:</strong> Advanced → Thought leadership</div>
-            <div><strong>Logic:</strong> Based on engagement history & profile data</div>
+            <div><strong>{t('screens.sharing.segment1')}</strong> {t('screens.sharing.beginnersHowtoGuides')}</div>
+            <div><strong>{t('screens.sharing.segment2')}</strong> {t('screens.sharing.intermediateCaseStudies')}</div>
+            <div><strong>{t('screens.sharing.segment3')}</strong> {t('screens.sharing.advancedThoughtLeadership')}</div>
+            <div><strong>{t('screens.sharing.logic')}</strong> {t('screens.sharing.basedEngagementHistoryProfileData')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Result:</strong> +28% relevance score, -15% unsubscribes
+          <strong>{t('screens.sharing.result')}</strong> +28% relevance score, -15% unsubscribes
         </div>
       </div>
     )
@@ -392,16 +393,16 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📝 Voice Guidelines</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.voiceGuidelines')}</h4>
           <ul className="text-sm text-muted-foreground space-y-1.5 list-disc pl-5">
-            <li><strong>Professional:</strong> Science-backed, credible, expert</li>
-            <li><strong>Encouraging:</strong> Positive, supportive, empowering</li>
-            <li><strong>Accessible:</strong> Clear, jargon-free, relatable</li>
-            <li><strong>Authentic:</strong> Honest, transparent, human</li>
+            <li><strong>{t('screens.sharing.professional')}</strong> {t('screens.sharing.sciencebackedCredibleExpert')}</li>
+            <li><strong>{t('screens.sharing.encouraging')}</strong> {t('screens.sharing.positiveSupportiveEmpowering')}</li>
+            <li><strong>{t('screens.sharing.accessible')}</strong> {t('screens.sharing.clearJargonfreeRelatable')}</li>
+            <li><strong>{t('screens.sharing.authentic')}</strong> {t('screens.sharing.honestTransparentHuman')}</li>
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Example:</strong> "Your longevity journey starts with small, sustainable changes. We're here to guide you every step of the way."
+          <strong>{t('screens.sharing.example')}</strong> "Your longevity journey starts with small, sustainable changes. We're here to guide you every step of the way."
         </div>
       </div>
     )
@@ -423,16 +424,16 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">🎨 Asset Library</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.assetLibrary')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Logos:</strong> 8 variations (color, mono, wordmark)</div>
-            <div><strong>Templates:</strong> 12 social media post designs</div>
-            <div><strong>Images:</strong> 20 brand photography assets</div>
-            <div><strong>Icons:</strong> 8 custom icon sets</div>
+            <div><strong>{t('screens.sharing.logos')}</strong> {t('screens.sharing.text8VariationsColorMonoWordmark')}</div>
+            <div><strong>{t('screens.sharing.templates')}</strong> {t('screens.sharing.text12SocialMediaPostDesigns')}</div>
+            <div><strong>{t('screens.sharing.images')}</strong> {t('screens.sharing.text20BrandPhotographyAssets')}</div>
+            <div><strong>{t('screens.sharing.icons')}</strong> {t('screens.sharing.text8CustomIconSets')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Format:</strong> SVG, PNG, JPG • High-res & web-optimized
+          <strong>{t('screens.sharing.format')}</strong> SVG, PNG, JPG • High-res & web-optimized
         </div>
       </div>
     )
@@ -454,16 +455,16 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📱 Platform Specs</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.platformSpecs')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>LinkedIn:</strong> Thought leadership, 1200-1500 chars</div>
-            <div><strong>X:</strong> Quick insights, 240 chars + image</div>
-            <div><strong>Instagram:</strong> Visual stories, 125 chars + carousel</div>
-            <div><strong>Email:</strong> Deep dives, 500-800 words</div>
+            <div><strong>{t('screens.sharing.linkedin')}</strong> {t('screens.sharing.thoughtLeadership12001500Chars')}</div>
+            <div><strong>X:</strong> {t('screens.sharing.quickInsights240CharsImage')}</div>
+            <div><strong>{t('screens.sharing.instagram')}</strong> {t('screens.sharing.visualStories125CharsCarousel')}</div>
+            <div><strong>{t('screens.sharing.email2')}</strong> {t('screens.sharing.deepDives500800Words')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Includes:</strong> Image specs, hashtag strategy, posting times
+          <strong>{t('screens.sharing.includes')}</strong> Image specs, hashtag strategy, posting times
         </div>
       </div>
     )
@@ -485,16 +486,16 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">🎨 Template Collection</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.templateCollection')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Quote Cards:</strong> 6 designs</div>
-            <div><strong>Stat Graphics:</strong> 5 layouts</div>
-            <div><strong>Tips & How-Tos:</strong> 8 formats</div>
-            <div><strong>Announcements:</strong> 5 styles</div>
+            <div><strong>{t('screens.sharing.quoteCards')}</strong> {t('screens.sharing.text6Designs')}</div>
+            <div><strong>{t('screens.sharing.statGraphics')}</strong> {t('screens.sharing.text5Layouts')}</div>
+            <div><strong>{t('screens.sharing.tipsHowtos')}</strong> {t('screens.sharing.text8Formats')}</div>
+            <div><strong>{t('screens.sharing.announcements')}</strong> {t('screens.sharing.text5Styles')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Editable in:</strong> Canva, Figma, or directly in-app
+          <strong>{t('screens.sharing.editable')}</strong> Canva, Figma, or directly in-app
         </div>
       </div>
     )
@@ -516,16 +517,16 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     expandedContent: (
       <div className="p-4 space-y-3">
         <div>
-          <h4 className="font-semibold text-sm mb-2">📚 Approved Messaging</h4>
+          <h4 className="font-semibold text-sm mb-2">{t('screens.sharing.approvedMessaging')}</h4>
           <div className="text-sm text-muted-foreground space-y-1.5">
-            <div><strong>Headlines:</strong> 12 proven formulas</div>
-            <div><strong>CTAs:</strong> 8 high-converting phrases</div>
-            <div><strong>Intros:</strong> 10 hook templates</div>
-            <div><strong>Closings:</strong> 6 signature sign-offs</div>
+            <div><strong>{t('screens.sharing.headlines')}</strong> {t('screens.sharing.text12ProvenFormulas')}</div>
+            <div><strong>{t('screens.sharing.ctas')}</strong> {t('screens.sharing.text8HighconvertingPhrases')}</div>
+            <div><strong>{t('screens.sharing.intros')}</strong> {t('screens.sharing.text10HookTemplates')}</div>
+            <div><strong>{t('screens.sharing.closings')}</strong> {t('screens.sharing.text6SignatureSignoffs')}</div>
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>Usage:</strong> Copy-paste or customize for your needs
+          <strong>{t('screens.sharing.usage')}</strong> Copy-paste or customize for your needs
         </div>
       </div>
     )
@@ -540,7 +541,7 @@ export default withScreenId(function Distribution() {
   return (
     <AppLayout>
       <SEO
-        title="Distribution Tooling | VITANA"
+        title={t('screens.sharing.distributionToolingVitana')}
         description="Advanced distribution rules, templates, and analytics"
         canonical={window.location.href}
       />
@@ -549,13 +550,13 @@ export default withScreenId(function Distribution() {
       <div className="p-6 min-h-screen pb-24">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="🛠️ Distribution Tooling"
+            title={t('screens.sharing.distributionTooling')}
             description="Templates, automation rules, and brand guidelines"
           />
 
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search automation rules, templates..."
+              placeholder={t('screens.sharing.searchAutomationRulesTemplates')}
             />
             <UniversalCalendarButton />
             <DropdownMenu>
@@ -570,23 +571,23 @@ export default withScreenId(function Distribution() {
                 <DropdownMenuItem onClick={() => setTemplatePopupOpen(true)}>
                   <Palette className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Campaign Template</span>
-                    <span className="text-xs text-muted-foreground">Pre-built distribution pattern</span>
+                    <span className="font-medium">{t('screens.sharing.campaignTemplate')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.prebuiltDistributionPattern')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setRulePopupOpen(true)}>
                   <Zap className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Automation Rule</span>
-                    <span className="text-xs text-muted-foreground">If-then workflow logic</span>
+                    <span className="font-medium">{t('screens.sharing.automationRule')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.ifthenWorkflowLogic')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setGuidelinePopupOpen(true)}>
                   <BarChart3 className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Brand Guideline</span>
-                    <span className="text-xs text-muted-foreground">Channel-specific rules</span>
+                    <span className="font-medium">{t('screens.sharing.brandGuideline')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.channelspecificRules')}</span>
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>

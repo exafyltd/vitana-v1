@@ -15,7 +15,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet, Search, Users } from "lucide-react";
 import { getCurrencyIcon } from "@/lib/currencies";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface MakePaymentPopupProps {
   isOpen: boolean;
@@ -156,7 +156,7 @@ export default function MakePaymentPopup({
         <div className="space-y-4">
           {/* Recipient Selection */}
           <div>
-            <Label htmlFor="recipient">Send To</Label>
+            <Label htmlFor="recipient">{t('screens.payment.send')}</Label>
             {selectedRecipient ? (
               <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
                 <Avatar className="w-8 h-8">
@@ -165,7 +165,7 @@ export default function MakePaymentPopup({
                 </Avatar>
                 <div className="flex-1">
                   <p className="font-medium text-sm">{selectedRecipient.name}</p>
-                  <p className="text-xs text-muted-foreground">Payment recipient</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.payment.paymentRecipient')}</p>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -184,7 +184,7 @@ export default function MakePaymentPopup({
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
                     id="recipient"
-                    placeholder="Search for a community member..."
+                    placeholder={t('screens.payment.searchForCommunityMember')}
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     className="pl-10"
@@ -210,7 +210,7 @@ export default function MakePaymentPopup({
                           </Avatar>
                           <div>
                             <p className="font-medium text-sm">{getDisplayName(member)}</p>
-                            <p className="text-xs text-muted-foreground">Community member</p>
+                            <p className="text-xs text-muted-foreground">{t('screens.payment.communityMember')}</p>
                           </div>
                         </div>
                       ))
@@ -229,7 +229,7 @@ export default function MakePaymentPopup({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourBalance2')}</span>
                 <div className="flex items-center gap-4">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
@@ -289,7 +289,7 @@ export default function MakePaymentPopup({
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -314,12 +314,12 @@ export default function MakePaymentPopup({
                 {canAfford() ? (
                   <>
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-green-600">Sufficient balance</span>
+                    <span className="text-green-600">{t('screens.payment.sufficientBalance')}</span>
                   </>
                 ) : (
                   <>
                     <AlertCircle className="w-4 h-4 text-red-600" />
-                    <span className="text-red-600">Insufficient balance</span>
+                    <span className="text-red-600">{t('screens.payment.insufficientBalance2')}</span>
                   </>
                 )}
               </div>

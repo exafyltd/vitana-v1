@@ -16,7 +16,7 @@ import { projectDays, trend7d } from "@/lib/vitana-projection";
 import { nextTier, pointsToNextTier } from "@/lib/vitanaIndex";
 import { bucketFromWaveId } from "@/lib/horizonBuckets";
 import type { ContributionVector } from "@/types/autopilot";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
@@ -232,7 +232,7 @@ export function JourneyCheckpoints({
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Today
           </span>
-          <span className="text-xs text-muted-foreground">Next step</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.nextStep')}</span>
         </div>
         {todayPick ? (
           <>

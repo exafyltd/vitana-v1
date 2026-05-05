@@ -13,7 +13,7 @@ import { CheckCircle, XCircle, Flag, Eye, Calendar, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -111,14 +111,14 @@ const EventsModeration = () => {
   return (
     <AdminGuard>
       <AppLayout>
-        <SEO title="Events Moderation - Admin" description="Review and moderate community events" />
+        <SEO title={t('screens.admin.eventsModerationAdmin')} description="Review and moderate community events" />
         
         <SubNavigation items={adminCommunityNavigation} />
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Events Moderation"
+              title={t('screens.admin.eventsModeration')}
               description="Review, approve, or reject community events and meetups"
             />
 
@@ -134,11 +134,11 @@ const EventsModeration = () => {
               <TabsContent value={activeTab} className="mt-6">
                 <Card>
                   {loading ? (
-                    <div className="p-12 text-center text-muted-foreground">Loading events...</div>
+                    <div className="p-12 text-center text-muted-foreground">{t('screens.admin.loadingEvents')}</div>
                   ) : filteredEvents.length === 0 ? (
                     <div className="p-12 text-center">
                       <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground">No events found</p>
+                      <p className="text-muted-foreground">{t('screens.admin.noEventsFound')}</p>
                     </div>
                   ) : (
                     <Table>

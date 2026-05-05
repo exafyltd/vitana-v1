@@ -93,7 +93,7 @@ import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
-import { lookup, notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -1255,7 +1255,7 @@ export function MeetupDetailsDrawer({
               <div className="space-y-3 pt-5 border-t border-border/50">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Details & Program</h3>
+                  <h3 className="font-semibold text-[17px]">{t('screens.meetups.detailsProgram')}</h3>
                 </div>
                 <p className="text-[14px] text-muted-foreground leading-relaxed whitespace-pre-line">{event.metadata.detailed_description}</p>
               </div>

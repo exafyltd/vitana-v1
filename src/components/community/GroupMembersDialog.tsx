@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { Crown } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface GroupMember {
   user_id: string;
@@ -96,7 +97,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                 ))}
               </div>
             ) : members.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8 text-sm">No members yet</p>
+              <p className="text-center text-muted-foreground py-8 text-sm">{t('screens.community.noMembersYet')}</p>
             ) : (
               <div className="space-y-1">
                 {members.map(m => (

@@ -31,7 +31,7 @@ import {
   User
 } from "lucide-react";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface ClientInfo {
   name?: string;
@@ -235,9 +235,9 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
         </CardHeader>
         <CardContent>
           {loadingAttendees ? (
-            <p className="text-sm text-muted-foreground">Loading attendees...</p>
+            <p className="text-sm text-muted-foreground">{t('screens.business.loadingAttendees')}</p>
           ) : attendees.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No attendees yet</p>
+            <p className="text-sm text-muted-foreground">{t('screens.business.noAttendeesYet')}</p>
           ) : (
             <div className="space-y-2 max-h-[400px] overflow-y-auto">
               {attendees.map((attendee: any) => (

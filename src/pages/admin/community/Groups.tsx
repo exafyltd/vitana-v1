@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface CommunityGroup {
   id: string;
@@ -117,14 +117,14 @@ const GroupsModeration = () => {
   return (
     <AdminGuard>
       <AppLayout>
-        <SEO title="Groups Moderation - Admin" description="Review and moderate community groups" />
+        <SEO title={t('screens.admin.groupsModerationAdmin')} description="Review and moderate community groups" />
         
         <SubNavigation items={adminCommunityNavigation} />
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Groups Moderation"
+              title={t('screens.admin.groupsModeration')}
               description="Review, approve, or reject community groups"
             />
 

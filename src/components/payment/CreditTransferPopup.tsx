@@ -17,7 +17,7 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreditTransferPopupProps {
   isOpen: boolean;
@@ -107,7 +107,7 @@ export default function CreditTransferPopup({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Coins className="w-5 h-5 text-orange-500" />
-                  <span className="font-medium">Your Balance</span>
+                  <span className="font-medium">{t('screens.payment.yourBalance')}</span>
                 </div>
                 <span className="text-lg font-bold text-orange-600">
                   {currentBalance.toLocaleString()} credits
@@ -125,7 +125,7 @@ export default function CreditTransferPopup({
               </Avatar>
               <div className="flex-1">
                 <p className="font-medium">{recipient.name}</p>
-                <p className="text-sm text-muted-foreground">Transfer recipient</p>
+                <p className="text-sm text-muted-foreground">{t('screens.payment.transferRecipient')}</p>
               </div>
               <Users className="w-4 h-4 text-muted-foreground" />
             </div>
@@ -133,7 +133,7 @@ export default function CreditTransferPopup({
 
           {/* Quick Amount Buttons */}
           <div>
-            <Label className="text-sm font-medium">Quick amounts</Label>
+            <Label className="text-sm font-medium">{t('screens.payment.quickAmounts')}</Label>
             <div className="grid grid-cols-4 gap-2 mt-2">
               {quickAmounts.map((quickAmount) => (
                 <Button
@@ -152,7 +152,7 @@ export default function CreditTransferPopup({
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Transfer Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.transferAmount')}</Label>
             <div className="relative">
               <Input
                 id="amount"
@@ -183,10 +183,10 @@ export default function CreditTransferPopup({
 
           {/* Note */}
           <div>
-            <Label htmlFor="note">Note (Optional)</Label>
+            <Label htmlFor="note">{t('screens.payment.noteOptional')}</Label>
             <Textarea
               id="note"
-              placeholder="Add a note for this transfer..."
+              placeholder={t('screens.payment.addNoteForThisTransfer')}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               rows={2}
@@ -199,7 +199,7 @@ export default function CreditTransferPopup({
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm">
                   <div className="text-center">
-                    <p className="font-medium">You send</p>
+                    <p className="font-medium">{t('screens.payment.youSend')}</p>
                     <p className="text-green-600 font-bold">{transferAmount} credits</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-green-600" />

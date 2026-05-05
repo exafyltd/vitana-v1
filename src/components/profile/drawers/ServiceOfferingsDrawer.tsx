@@ -32,7 +32,7 @@ import {
   patchServiceOfferings,
   type ServiceOffering,
 } from "@/lib/profilePrefsApi";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ServiceOfferingsDrawerProps {
   open: boolean;
@@ -102,7 +102,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Service offerings</DialogTitle>
+          <DialogTitle>{t('screens.profile.serviceOfferings')}</DialogTitle>
         </DialogHeader>
 
         <p className="text-xs text-muted-foreground -mt-2">
@@ -138,7 +138,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     <Label htmlFor={`title-${idx}`} className="text-xs">Title</Label>
                     <Input
                       id={`title-${idx}`}
-                      placeholder="e.g. 1-on-1 salsa lesson"
+                      placeholder={t('screens.profile.eG1on1SalsaLesson')}
                       value={o.title}
                       onChange={(e) => updateOffer(idx, { title: e.target.value })}
                       maxLength={140}
@@ -148,7 +148,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     <Label htmlFor={`category-${idx}`} className="text-xs">Category</Label>
                     <Input
                       id={`category-${idx}`}
-                      placeholder="e.g. dance.teaching.salsa"
+                      placeholder={t('screens.profile.eGDanceTeachingSalsa')}
                       value={o.category}
                       onChange={(e) => updateOffer(idx, { category: e.target.value })}
                       maxLength={100}
@@ -158,7 +158,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     <Label htmlFor={`desc-${idx}`} className="text-xs">Description</Label>
                     <Textarea
                       id={`desc-${idx}`}
-                      placeholder="What's included, format, etc."
+                      placeholder={t('screens.profile.whatSIncludedFormatEtc')}
                       value={o.short_description ?? ""}
                       onChange={(e) => updateOffer(idx, { short_description: e.target.value })}
                       rows={2}
@@ -166,7 +166,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`pmin-${idx}`} className="text-xs">Price min (cents)</Label>
+                    <Label htmlFor={`pmin-${idx}`} className="text-xs">{t('screens.profile.priceMinCents')}</Label>
                     <Input
                       id={`pmin-${idx}`}
                       type="number"
@@ -177,7 +177,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`pmax-${idx}`} className="text-xs">Price max (cents)</Label>
+                    <Label htmlFor={`pmax-${idx}`} className="text-xs">{t('screens.profile.priceMaxCents')}</Label>
                     <Input
                       id={`pmax-${idx}`}
                       type="number"
@@ -197,7 +197,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-xs">Contact via</Label>
+                    <Label className="text-xs">{t('screens.profile.contactVia')}</Label>
                     <Select
                       value={o.contact_via ?? "message"}
                       onValueChange={(v) => updateOffer(idx, { contact_via: v as "message" | "profile" })}
@@ -206,8 +206,8 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="message">Direct message</SelectItem>
-                        <SelectItem value="profile">Profile link</SelectItem>
+                        <SelectItem value="message">{t('screens.profile.directMessage')}</SelectItem>
+                        <SelectItem value="profile">{t('screens.profile.profileLink')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

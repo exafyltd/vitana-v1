@@ -3,6 +3,7 @@ import { NewsCard } from '@/components/crossover/NewsCard';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { cn } from '@/lib/utils';
 import { Film, Trash2, Edit } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 interface VideoShort {
   id?: string;
@@ -90,8 +91,8 @@ export function MobileShortsCarousel({
         {emptyState || (
           <div className="text-center">
             <Film className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Shorts</h3>
-            <p className="text-muted-foreground">Check back soon for new shorts!</p>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.community.noShorts')}</h3>
+            <p className="text-muted-foreground">{t('screens.community.checkBackSoonForNewShorts')}</p>
           </div>
         )}
       </div>
@@ -102,7 +103,7 @@ export function MobileShortsCarousel({
     <div
       className="relative w-full"
       role="feed"
-      aria-label="Shorts feed"
+      aria-label={t('screens.community.shortsFeed')}
     >
       <div
         ref={containerRef}

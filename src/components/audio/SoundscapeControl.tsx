@@ -6,6 +6,7 @@ import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger }
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
 import { toast } from 'sonner';
+import { t } from '@/lib/i18n-toast';
 
 export function SoundscapeControl() {
   const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
@@ -83,7 +84,7 @@ export function SoundscapeControl() {
                 )}
               </Button>
             </ResponsivePopoverTrigger>
-            <ResponsivePopoverContent title="Volume" side="right" className="w-48 p-3">
+            <ResponsivePopoverContent title={t('screens.audio.volume')} side="right" className="w-48 p-3">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium">Volume</span>

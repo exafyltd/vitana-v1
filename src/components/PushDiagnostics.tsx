@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronRight, RefreshCw } from 'lucide-react';
 import { initializePushNotifications } from '@/lib/pushNotifications';
 import { toast } from 'sonner';
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 interface DiagnosticItem {
   label: string;
@@ -201,14 +201,14 @@ export default function PushDiagnostics() {
           onClick={() => setExpanded(!expanded)}
           className="w-full flex items-center justify-between text-left"
         >
-          <span className="text-xs font-medium text-muted-foreground">Push Notification Diagnostics</span>
+          <span className="text-xs font-medium text-muted-foreground">{t('screens.common.pushNotificationDiagnostics')}</span>
           {expanded ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
         </button>
 
         {expanded && (
           <div className="mt-3 space-y-2">
             {loading ? (
-              <p className="text-xs text-muted-foreground text-center py-4">Running diagnostics...</p>
+              <p className="text-xs text-muted-foreground text-center py-4">{t('screens.common.runningDiagnostics')}</p>
             ) : (
               <>
                 {items.map((item, i) => (

@@ -13,7 +13,7 @@ import {
   Droplets, Dna, FlaskConical, Bug, AlertTriangle, 
   Heart, Scan, ImageIcon, MoreHorizontal 
 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const REPORT_CATEGORIES = [
   { value: 'blood_panel', label: 'Blood Panel', icon: Droplets, color: 'bg-red-500/10 text-red-600 border-red-500/20' },
@@ -154,7 +154,7 @@ export function HealthReportUploadSheet({
         <div className="space-y-6">
           {/* Category Pills */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Report Type</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.reportType')}</label>
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
               {REPORT_CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
@@ -211,17 +211,17 @@ export function HealthReportUploadSheet({
                 className="w-full p-8 rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition-colors flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground"
               >
                 <Upload className="w-8 h-8" />
-                <span className="text-sm font-medium">Tap to select a file</span>
-                <span className="text-xs">PDF, JPEG, PNG, HEIC — max 20MB</span>
+                <span className="text-sm font-medium">{t('screens.health.tapSelectFile')}</span>
+                <span className="text-xs">{t('screens.health.pdfJpegPngHeicMax20mb')}</span>
               </button>
             )}
           </div>
 
           {/* Provider Name */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Provider / Lab (optional)</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.providerLabOptional')}</label>
             <Input
-              placeholder="e.g. Quest Diagnostics"
+              placeholder={t('screens.health.eGQuestDiagnostics')}
               value={providerName}
               onChange={(e) => setProviderName(e.target.value)}
             />
@@ -229,7 +229,7 @@ export function HealthReportUploadSheet({
 
           {/* Test Date */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Test Date</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.testDate')}</label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-start text-left font-normal">
@@ -258,9 +258,9 @@ export function HealthReportUploadSheet({
             onClick={handleUpload}
           >
             {isUploading ? (
-              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</>
+              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t('screens.health.uploading')}</>
             ) : (
-              <><CheckCircle className="w-4 h-4 mr-2" /> Upload Report</>
+              <><CheckCircle className="w-4 h-4 mr-2" /> {t('screens.health.uploadReport')}</>
             )}
           </Button>
         </div>

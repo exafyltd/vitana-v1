@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Cloud, Thermometer, Wind, Sun } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface EnvironmentalContextCardProps {
   weather?: string;
@@ -47,7 +48,7 @@ function EnvironmentalContextCardBase({
         <div className="flex items-center gap-2">
           <Wind className="w-3 h-3 text-gray-600" />
           <div>
-            <div className="font-medium">Air Quality</div>
+            <div className="font-medium">{t('screens.crossover.airQuality')}</div>
             <div className={`${airQuality === 'Good' ? 'text-green-600' : airQuality === 'Poor' ? 'text-red-600' : 'text-yellow-600'}`}>
               {airQuality}
             </div>
@@ -56,7 +57,7 @@ function EnvironmentalContextCardBase({
         <div className="flex items-center gap-2">
           <Sun className="w-3 h-3 text-yellow-600" />
           <div>
-            <div className="font-medium">UV Index</div>
+            <div className="font-medium">{t('screens.crossover.uvIndex')}</div>
             <div className="text-muted-foreground">{uvIndex}/10</div>
           </div>
         </div>
@@ -74,7 +75,7 @@ function EnvironmentalContextCardBase({
     <CrossoverCard
       icon={Cloud}
       category="health"
-      title="Environment Context 🌤️"
+      title={t('screens.crossover.environmentContext')}
       subtitle="Weather & air quality impact"
       content={content}
       buttonText="Outdoor Plans"

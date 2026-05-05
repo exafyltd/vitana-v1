@@ -3,7 +3,7 @@ import { MobileShortSlide } from './MobileShortSlide';
 import { Loader2 } from 'lucide-react';
 import { useToggleLike } from '@/hooks/useShorts';
 import { getShareUrl } from '@/lib/shareUrl';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface VideoShort {
   id?: string;
@@ -153,7 +153,7 @@ export function MobileShortsFeed({
       <div className="fixed inset-0 bg-black z-[60] flex items-center justify-center">
         <div className="text-center text-white">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p>Loading shorts...</p>
+          <p>{t('screens.community.loadingShorts')}</p>
         </div>
       </div>
     );

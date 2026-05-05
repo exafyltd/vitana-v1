@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { t } from '@/lib/i18n-toast';
 
 interface EditMemoryDialogProps {
   open: boolean;
@@ -78,7 +79,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit Memory</DialogTitle>
+          <DialogTitle>{t('screens.memory.editMemory')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">

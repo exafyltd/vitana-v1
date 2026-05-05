@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RecipientSelector, RecipientSelection } from "./RecipientSelector";
+import { t } from '@/lib/i18n-toast';
 
 const NOTIFICATION_TYPES = [
   { value: "welcome_to_vitana", label: "Welcome / System" },
@@ -114,7 +115,7 @@ export function NotificationComposer({
       <div className="space-y-1.5">
         <label className="text-sm font-medium">Title</label>
         <Input
-          placeholder="Notification title"
+          placeholder={t('screens.admin.notificationTitle')}
           value={formData.title}
           onChange={(e) => update({ title: e.target.value })}
           maxLength={100}
@@ -126,7 +127,7 @@ export function NotificationComposer({
       <div className="space-y-1.5">
         <label className="text-sm font-medium">Body</label>
         <Textarea
-          placeholder="Write the notification message..."
+          placeholder={t('screens.admin.writeNotificationMessage')}
           value={formData.body}
           onChange={(e) => update({ body: e.target.value })}
           rows={4}

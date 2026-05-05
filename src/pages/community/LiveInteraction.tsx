@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function LiveInteraction() {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function LiveInteraction() {
 
   return (
     <AppLayout>
-      <SEO title="Live Interaction | Community" description="Join real-time workshops, discussions, and social sessions" canonical={window.location.href} />
+      <SEO title={t('screens.community.liveInteractionCommunity')} description="Join real-time workshops, discussions, and social sessions" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -117,8 +118,8 @@ export default function LiveInteraction() {
             {/* Shortened Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">LIVE Hub ✨</h1>
-                <p className="text-muted-foreground">Connect live with your community through audio and video sessions.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.community.liveHub')}</h1>
+                <p className="text-muted-foreground">{t('screens.community.connectLiveWithYourCommunityThrough')}</p>
               </div>
             </div>
             
@@ -147,7 +148,7 @@ export default function LiveInteraction() {
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
                   {latestActions.map((action, index) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -177,7 +178,7 @@ export default function LiveInteraction() {
           </div>
         
         <div className="flex items-center justify-between">
-          <div className="text-lg font-bold">Live Interaction</div>
+          <div className="text-lg font-bold">{t('screens.community.liveInteraction')}</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
@@ -349,7 +350,7 @@ export default function LiveInteraction() {
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Related Groups</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.community.relatedGroups')}</h3>
                 <div className="space-y-3">
                   {relatedGroups.map((group, index) => (
                     <div key={index} className="p-3 border rounded-lg">
@@ -375,7 +376,7 @@ export default function LiveInteraction() {
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.community.quickActions')}</h3>
                 <div className="space-y-2">
                   <Button variant="outline" className="w-full justify-start">
                     <Radio className="w-4 h-4 mr-2" />

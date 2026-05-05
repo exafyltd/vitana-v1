@@ -6,6 +6,7 @@ import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, M
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMemoryReinforce } from "@/hooks/useMemoryReinforce";
+import { t } from '@/lib/i18n-toast';
 
 interface MemoryCardProps {
   id: string;
@@ -131,7 +132,7 @@ export function MemoryCard({
             )}
 
             {conversationId && (
-              <span className="text-xs text-muted-foreground">• Conversation</span>
+              <span className="text-xs text-muted-foreground">{t('screens.memory.conversation')}</span>
             )}
           </div>
 

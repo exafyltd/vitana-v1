@@ -16,6 +16,7 @@ import {
   XCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletTransactionCardProps {
   id: string;
@@ -268,7 +269,7 @@ export function WalletTransactionCard({
                         {transaction.fees > 0 ? (
                           <span className="text-orange-600">Fee: {transaction.fees}</span>
                         ) : (
-                          <span className="text-green-600">No fees! ✨</span>
+                          <span className="text-green-600">{t('screens.wallet.noFees')}</span>
                         )}
                       </div>
                     )}

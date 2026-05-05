@@ -53,7 +53,7 @@ import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 function DiscoverInner() {
   const { selectProduct } = useProductSelection();
@@ -217,7 +217,7 @@ function DiscoverInner() {
   return (
     <AppLayout>
       <SEO 
-        title="Discover Marketplace | VITANA" 
+        title={t('screens.discover.discoverMarketplaceVitana')} 
         description="AI-powered longevity marketplace with personalized recommendations, wellness services, supplements, and community shopping"
         canonical={window.location.href} 
       />
@@ -357,7 +357,7 @@ function DiscoverInner() {
                   </div>
 
                   {feedLoading ? (
-                    <div className="text-center py-12 text-muted-foreground">Loading your personalized feed…</div>
+                    <div className="text-center py-12 text-muted-foreground">{t('screens.discover.loadingYourPersonalizedFeed')}</div>
                   ) : (
                   <div className={cn(
                     "grid gap-4",
@@ -550,7 +550,7 @@ function DiscoverInner() {
                             {isMobile ? "Rank" : "Top Performer"}
                           </span>
                         </div>
-                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>Top 5%</p>
+                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>{t('screens.discover.top5')}</p>
                       </CardContent>
                     </Card>
                   </div>

@@ -16,6 +16,7 @@ import {
   Zap,
   RotateCw
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const PLAN_ICONS: Record<string, any> = {
   nutrition: Apple,
@@ -104,7 +105,7 @@ export function PersonalizedPlanCard({
         className="absolute right-3 top-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2.5 py-1 text-[12px] font-medium"
         aria-label={`AI Optimized ${summary.lastUpdated}`}
       >
-        <span>AI Optimized</span>
+        <span>{t('screens.health.aiOptimized')}</span>
         <span className="text-slate-400 dark:text-slate-500">•</span>
         <span>{summary.lastUpdated}</span>
       </div>

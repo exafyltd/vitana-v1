@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { X, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface EditShortVideoModalProps {
   isOpen: boolean;
@@ -191,13 +191,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Video Details</DialogTitle>
+          <DialogTitle>{t('screens.community.editVideoDetails')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Title *</Label>
+            <Label htmlFor="title">{t('screens.community.title')}</Label>
             <Input
               id="title"
               value={title}
@@ -222,7 +222,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
           {/* Tags */}
           <div className="space-y-2">
-            <Label htmlFor="tags">Tags (max 5)</Label>
+            <Label htmlFor="tags">{t('screens.community.tagsMax5')}</Label>
             <div className="flex gap-2">
               <Input
                 id="tags"
@@ -265,13 +265,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
           {/* Thumbnail Update */}
           <div className="space-y-3 pt-4 border-t">
-            <Label>Update Thumbnail</Label>
+            <Label>{t('screens.community.updateThumbnail')}</Label>
             
             {/* Current or preview thumbnail */}
             <div className="relative aspect-video w-full max-w-xs rounded-lg overflow-hidden bg-muted">
               <img
                 src={thumbnailPreview || video.thumbnail_url || ''}
-                alt="Thumbnail preview"
+                alt={t('screens.community.thumbnailPreview')}
                 className="w-full h-full object-contain"
               />
             </div>

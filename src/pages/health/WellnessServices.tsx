@@ -16,6 +16,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
 import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen, Plus } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const servicesData = {
   preventiveCare: [
@@ -258,13 +259,13 @@ export default function WellnessServices() {
 
   return (
     <AppLayout>
-      <SEO title="Services HUB | Health" description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
+      <SEO title={t('screens.health.servicesHubHealth')} description="Access comprehensive healthcare and wellness services" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Services HUB"
+            title={t('screens.health.servicesHub')}
             description="Book appointments, screenings, and wellness programs tailored to your needs."
             emoji="🏥"
           />
@@ -284,17 +285,17 @@ export default function WellnessServices() {
 
           <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="preventiveCare">🛡️ Preventive Care</SplitBarTrigger>
-              <SplitBarTrigger value="medicalServices">🏥 Medical Services</SplitBarTrigger>
-              <SplitBarTrigger value="wellnessPrograms">💪 Wellness Programs</SplitBarTrigger>
-              <SplitBarTrigger value="insuranceSupport">📋 Insurance Support</SplitBarTrigger>
-              <SplitBarTrigger value="myServices">⭐ My Services</SplitBarTrigger>
+              <SplitBarTrigger value="preventiveCare">{t('screens.health.preventiveCare')}</SplitBarTrigger>
+              <SplitBarTrigger value="medicalServices">{t('screens.health.medicalServices')}</SplitBarTrigger>
+              <SplitBarTrigger value="wellnessPrograms">{t('screens.health.wellnessPrograms')}</SplitBarTrigger>
+              <SplitBarTrigger value="insuranceSupport">{t('screens.health.insuranceSupport')}</SplitBarTrigger>
+              <SplitBarTrigger value="myServices">{t('screens.health.myServices')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="preventiveCare">
               <div className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-muted-foreground">Early detection and prevention services to maintain optimal health</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.health.earlyDetectionPreventionServicesMaintainOptimal')}</p>
                 </div>
                 {renderServiceCards(servicesData.preventiveCare)}
               </div>
@@ -303,7 +304,7 @@ export default function WellnessServices() {
             <SplitBarContent value="medicalServices">
               <div className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-muted-foreground">Professional medical services and consultations</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.health.professionalMedicalServicesConsultations')}</p>
                 </div>
                 {renderServiceCards(servicesData.medicalServices)}
               </div>
@@ -312,7 +313,7 @@ export default function WellnessServices() {
             <SplitBarContent value="wellnessPrograms">
               <div className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-muted-foreground">Personalized wellness programs for lasting lifestyle changes</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.health.personalizedWellnessProgramsForLastingLifestyle')}</p>
                 </div>
                 {renderServiceCards(servicesData.wellnessPrograms)}
               </div>
@@ -321,7 +322,7 @@ export default function WellnessServices() {
             <SplitBarContent value="insuranceSupport">
               <div className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-muted-foreground">Insurance and billing support services</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.health.insuranceBillingSupportServices')}</p>
                 </div>
                 {renderServiceCards(servicesData.insuranceSupport)}
               </div>
@@ -330,7 +331,7 @@ export default function WellnessServices() {
             <SplitBarContent value="myServices">
               <div className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-muted-foreground">Manage your personal services and appointments</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.health.manageYourPersonalServicesAppointments')}</p>
                 </div>
                 {renderServiceCards(servicesData.myServices)}
               </div>

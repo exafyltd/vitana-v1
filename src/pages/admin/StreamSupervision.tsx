@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Video, Users, AlertTriangle, Shield, Eye, Play } from "lucide-react";
 import { adminMonitoringNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 const mockStreams = [
   { id: "1", title: "Morning Yoga Flow", host: "Sarah K.", viewers: 45, status: "live", duration: "32 min" },
@@ -19,13 +20,13 @@ const mockStreams = [
 function StreamSupervision() {
   return (
     <AppLayout>
-      <SEO title="Stream Supervision | Admin" description="Monitor and moderate live streams and content" canonical={window.location.href} />
+      <SEO title={t('screens.admin.streamSupervisionAdmin')} description="Monitor and moderate live streams and content" canonical={window.location.href} />
       <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Stream Supervision & Moderation"
+            title={t('screens.admin.streamSupervisionModeration')}
             description="Monitor live streams, ensure content compliance, and manage community standards"
             emoji="📺"
           />
@@ -38,7 +39,7 @@ function StreamSupervision() {
                   <Video className="w-8 h-8 text-red-500" />
                   <div>
                     <p className="text-2xl font-bold">8</p>
-                    <p className="text-sm text-muted-foreground">Live Streams</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.liveStreams')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -50,7 +51,7 @@ function StreamSupervision() {
                   <Users className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">347</p>
-                    <p className="text-sm text-muted-foreground">Total Viewers</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.totalViewers')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -62,7 +63,7 @@ function StreamSupervision() {
                   <AlertTriangle className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">2</p>
-                    <p className="text-sm text-muted-foreground">Reports Pending</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.reportsPending')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ function StreamSupervision() {
                   <Shield className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">98.5%</p>
-                    <p className="text-sm text-muted-foreground">Compliance Rate</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.complianceRate')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -83,7 +84,7 @@ function StreamSupervision() {
 
           <Tabs defaultValue="live" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="live">Live Streams</TabsTrigger>
+              <TabsTrigger value="live">{t('screens.admin.liveStreams')}</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
               <TabsTrigger value="moderation">Moderation</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -115,7 +116,7 @@ function StreamSupervision() {
                       <div className="flex items-center gap-3">
                         <div className="text-center">
                           <p className="text-lg font-bold text-blue-600">{stream.viewers}</p>
-                          <p className="text-xs text-muted-foreground">viewers</p>
+                          <p className="text-xs text-muted-foreground">{t('screens.admin.viewers')}</p>
                         </div>
                         <Button size="sm" variant="outline">
                           <Eye className="w-4 h-4 mr-2" />
@@ -131,10 +132,10 @@ function StreamSupervision() {
             <TabsContent value="reports" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Content Reports</CardTitle>
+                  <CardTitle>{t('screens.admin.contentReports')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">User reports and content flagging system.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.userReportsContentFlaggingSystem')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -142,10 +143,10 @@ function StreamSupervision() {
             <TabsContent value="moderation" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Moderation Tools</CardTitle>
+                  <CardTitle>{t('screens.admin.moderationTools')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Content moderation controls and community guidelines enforcement.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.contentModerationControlsCommunityGuidelinesEnforc')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -153,10 +154,10 @@ function StreamSupervision() {
             <TabsContent value="analytics" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Stream Analytics</CardTitle>
+                  <CardTitle>{t('screens.admin.streamAnalytics')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Stream performance metrics and viewer engagement data.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.streamPerformanceMetricsViewerEngagementData')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

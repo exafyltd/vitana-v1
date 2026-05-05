@@ -31,7 +31,7 @@ import {
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
@@ -571,7 +571,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
         {/* Send/Mic button outside the pill */}
         {canSend ? (
-          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label="Send message">
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (

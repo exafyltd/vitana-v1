@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ExternalLink, X, ChevronDown, ChevronRight } from "lucide-react";
 import { useVaeaDrafts, type VaeaDraft } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const TIER_BADGE: Record<string, string> = {
   own: "bg-emerald-100 text-emerald-800",
@@ -34,7 +35,7 @@ export function VaeaDraftsStrip() {
         >
           <div className="text-left">
             <div className="font-medium text-sm">Autopilot has {drafts.length} referral draft{drafts.length === 1 ? "" : "s"} for you</div>
-            <p className="text-xs text-muted-foreground">Shadow drafts — review and dismiss. Posting arrives in a later phase.</p>
+            <p className="text-xs text-muted-foreground">{t('screens.business.shadowDraftsReviewDismissPostingArrives')}</p>
           </div>
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -107,7 +108,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
       )}
 
       <div className="rounded border border-primary/20 bg-primary/5 p-2">
-        <div className="text-xs font-medium mb-0.5 text-muted-foreground">Autopilot draft</div>
+        <div className="text-xs font-medium mb-0.5 text-muted-foreground">{t('screens.business.autopilotDraft')}</div>
         <p className="text-sm whitespace-pre-wrap">{draft.reply_body}</p>
       </div>
 

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Flame, TrendingUp, Target, Calendar, Trophy, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningStreak {
   id: string;
@@ -154,7 +155,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">{longestStreak}</div>
-              <div className="text-xs text-muted-foreground">Best Streak</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.bestStreak')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
@@ -249,7 +250,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Target className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Streak Recovery</span>
+              <span className="text-sm font-medium">{t('screens.wallet.streakRecovery')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
               Restart your Wellness Goals streak today to rebuild your {mockStreaks.find(s => s.status === "broken")?.bestStreak}-day record

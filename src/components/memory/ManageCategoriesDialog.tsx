@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { FolderOpen, Plus, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ManageCategoriesDialogProps {
   open: boolean;
@@ -80,19 +80,19 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
         <div className="space-y-6">
           {/* Add New Category */}
           <div className="p-4 border rounded-lg space-y-4">
-            <h3 className="font-semibold">Add New Category</h3>
+            <h3 className="font-semibold">{t('screens.memory.addNewCategory')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="category-name">Category Name</Label>
+                <Label htmlFor="category-name">{t('screens.memory.categoryName')}</Label>
                 <Input
                   id="category-name"
-                  placeholder="e.g., Work, Personal"
+                  placeholder={t('screens.memory.eGWorkPersonal')}
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category-emoji">Emoji (optional)</Label>
+                <Label htmlFor="category-emoji">{t('screens.memory.emojiOptional')}</Label>
                 <Input
                   id="category-emoji"
                   placeholder="📁"
@@ -110,7 +110,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
 
           {/* Existing Categories */}
           <div className="space-y-3">
-            <h3 className="font-semibold">Existing Categories</h3>
+            <h3 className="font-semibold">{t('screens.memory.existingCategories')}</h3>
             <div className="space-y-2">
               {categories.map((category) => (
                 <div
@@ -154,7 +154,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
           {/* Info */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> Categories with existing items cannot be deleted. You can edit them or merge them with other categories.
+              <strong>{t('screens.memory.note')}</strong> Categories with existing items cannot be deleted. You can edit them or merge them with other categories.
             </p>
           </div>
 

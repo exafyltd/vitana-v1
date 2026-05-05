@@ -13,7 +13,7 @@ import { VertexMediaPreview } from "@/components/vertex/VertexMediaPreview";
 import { VertexDebugConsole } from "@/components/vertex/VertexDebugConsole";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface LogEntry {
   timestamp: string;
@@ -487,7 +487,7 @@ export default function VertexTesting() {
   return (
     <AppLayout>
       <SEO 
-        title="Vertex AI Testing | Admin | VITANA" 
+        title={t('screens.admin.vertexAiTestingAdminVitana')} 
         description="Automated multimodal testing for Vertex AI with visual feedback" 
         canonical={window.location.href} 
       />
@@ -496,7 +496,7 @@ export default function VertexTesting() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Vertex AI Testing Wizard 🧪"
+            title={t('screens.admin.vertexAiTestingWizard')}
             description="Automated multimodal testing with one-click validation"
             emoji="🚀"
           />
@@ -507,7 +507,7 @@ export default function VertexTesting() {
               {/* Test Configuration */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Test Configuration</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.testConfiguration')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -620,8 +620,8 @@ export default function VertexTesting() {
               {/* Test Control */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Automated Test Wizard</CardTitle>
-                  <CardDescription>One-click multimodal validation</CardDescription>
+                  <CardTitle className="text-base">{t('screens.admin.automatedTestWizard')}</CardTitle>
+                  <CardDescription>{t('screens.admin.oneclickMultimodalValidation')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Big Start Button */}
@@ -705,7 +705,7 @@ export default function VertexTesting() {
                     <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200">
                       <div className="text-center space-y-2">
                         <div className="text-5xl">🎉</div>
-                        <h3 className="text-lg font-bold text-green-900">All Tests Passed!</h3>
+                        <h3 className="text-lg font-bold text-green-900">{t('screens.admin.allTestsPassed')}</h3>
                         <p className="text-sm text-green-700">
                           {testMode === 'full' ? 'All multimodal features' : 'Core features'} working perfectly
                         </p>
@@ -767,14 +767,14 @@ export default function VertexTesting() {
               {/* Tips */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Testing Tips</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.testingTips')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
-                  <p>✅ <strong>Quick Mode:</strong> Tests core features (~20s)</p>
-                  <p>✅ <strong>Full Mode:</strong> Tests all multimodal inputs (~45s)</p>
-                  <p>✅ <strong>Custom Mode:</strong> Select specific tests to run</p>
-                  <p>✅ <strong>Camera Test:</strong> Point at an object for AI to see</p>
-                  <p>✅ <strong>Screen Test:</strong> Open a document for AI to analyze</p>
+                  <p>✅ <strong>{t('screens.admin.quickMode')}</strong> {t('screens.admin.testsCoreFeatures20s')}</p>
+                  <p>✅ <strong>{t('screens.admin.fullMode')}</strong> {t('screens.admin.testsAllMultimodalInputs45s')}</p>
+                  <p>✅ <strong>{t('screens.admin.customMode')}</strong> {t('screens.admin.selectSpecificTestsRun')}</p>
+                  <p>✅ <strong>{t('screens.admin.cameraTest')}</strong> {t('screens.admin.pointAtObjectForAiSee')}</p>
+                  <p>✅ <strong>{t('screens.admin.screenTest')}</strong> {t('screens.admin.openDocumentForAiAnalyze')}</p>
                 </CardContent>
               </Card>
             </div>

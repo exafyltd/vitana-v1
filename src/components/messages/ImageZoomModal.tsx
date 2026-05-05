@@ -1,6 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, Download, ExternalLink } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ImageZoomModalProps {
   isOpen: boolean;
@@ -34,7 +35,7 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
               variant="ghost"
               size="sm"
               onClick={handleDownload}
-              aria-label="Download image"
+              aria-label={t('screens.messages.downloadImage')}
             >
               <Download className="w-4 h-4" />
             </Button>
@@ -42,7 +43,7 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
               variant="ghost"
               size="sm"
               onClick={handleOpenInNewTab}
-              aria-label="Open in new tab"
+              aria-label={t('screens.messages.openNewTab')}
             >
               <ExternalLink className="w-4 h-4" />
             </Button>
@@ -50,7 +51,7 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
               variant="ghost"
               size="sm"
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t('screens.messages.close')}
             >
               <X className="w-4 h-4" />
             </Button>

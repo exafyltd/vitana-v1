@@ -16,6 +16,7 @@ import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketType
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface CreateEventPopupProps {
   isOpen: boolean;
@@ -490,7 +491,7 @@ export function CreateEventPopup({
                     <div className="relative">
                       <img 
                         src={imagePreviewUrl} 
-                        alt="Event preview" 
+                        alt={t('screens.common.eventPreview')} 
                         className="w-full h-48 object-cover rounded-lg border-2 border-border"
                       />
                       <Button
@@ -817,8 +818,8 @@ export function CreateEventPopup({
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="USD">$ USD</SelectItem>
-                              <SelectItem value="EUR">€ EUR</SelectItem>
+                              <SelectItem value="USD">{t('screens.common.usd')}</SelectItem>
+                              <SelectItem value="EUR">{t('screens.common.eur')}</SelectItem>
                             </SelectContent>
                           </Select>
                           <Input

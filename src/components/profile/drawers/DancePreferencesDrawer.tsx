@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
-import { lookup, notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
 const VARIETIES = [
   { key: "salsa", label: "Salsa" },
@@ -180,7 +180,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>My dance preferences</DrawerTitle>
+          <DrawerTitle>{t('screens.profile.myDancePreferences')}</DrawerTitle>
           <DrawerDescription>{summaryLine}</DrawerDescription>
         </DrawerHeader>
 
@@ -193,7 +193,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
             <>
               {/* Varieties + level per variety */}
               <div className="space-y-3">
-                <Label>Styles I dance</Label>
+                <Label>{t('screens.profile.stylesIDance')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {VARIETIES.map((v) => (
                     <button
@@ -243,7 +243,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
 
               {/* Role */}
               <div className="space-y-2">
-                <Label>Role I dance</Label>
+                <Label>{t('screens.profile.roleIDance')}</Label>
                 <div className="flex gap-2">
                   {ROLES.map((r) => (
                     <button
@@ -264,7 +264,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
 
               {/* Looking for */}
               <div className="space-y-2">
-                <Label>Looking for</Label>
+                <Label>{t('screens.profile.lookingFor')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {LOOKING_FOR.map((l) => (
                     <button
@@ -285,7 +285,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
 
               {/* Travel willingness */}
               <div className="space-y-2">
-                <Label>Travel willingness</Label>
+                <Label>{t('screens.profile.travelWillingness')}</Label>
                 <div className="flex items-center gap-3">
                   <Slider
                     value={[radiusKm]}
@@ -301,7 +301,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
 
               {/* Venue prefs */}
               <div className="space-y-2">
-                <Label>Where I like to dance</Label>
+                <Label>{t('screens.profile.whereILikeDance')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {VENUES.map((v) => (
                     <button

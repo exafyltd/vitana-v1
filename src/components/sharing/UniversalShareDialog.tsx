@@ -30,7 +30,7 @@ import { getShareUrl } from "@/lib/shareUrl";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { PersonalShareButtons } from "./PersonalShareButtons";
 import type { ShareableContent } from "@/types/sharing";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -213,8 +213,8 @@ export function UniversalShareDialog({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-4 h-4 text-primary" />
-              <h3 className="text-sm font-semibold">Quick Share (Personal)</h3>
-              <Badge variant="secondary" className="text-[10px]">No setup needed</Badge>
+              <h3 className="text-sm font-semibold">{t('screens.sharing.quickSharePersonal2')}</h3>
+              <Badge variant="secondary" className="text-[10px]">{t('screens.sharing.noSetupNeeded')}</Badge>
             </div>
             <p className="text-xs text-muted-foreground">
               Opens your personal apps to share directly with friends and contacts
@@ -238,10 +238,10 @@ export function UniversalShareDialog({
 
           {/* Message */}
           <div className="space-y-2">
-            <Label htmlFor="message">Custom Message (Optional)</Label>
+            <Label htmlFor="message">{t('screens.sharing.customMessageOptional')}</Label>
             <Textarea
               id="message"
-              placeholder="Add a custom message to your share..."
+              placeholder={t('screens.sharing.addCustomMessageYourShare')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={2}
@@ -253,7 +253,7 @@ export function UniversalShareDialog({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Share2 className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-semibold">Social Media (Auto-Post)</h3>
+                <h3 className="text-sm font-semibold">{t('screens.sharing.socialMediaAutopost')}</h3>
               </div>
               <Badge variant="secondary" className="text-xs">
                 {selectedChannels.length} selected

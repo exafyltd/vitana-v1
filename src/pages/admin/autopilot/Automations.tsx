@@ -15,6 +15,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAutomationCatalog, useUpsertBinding } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const DOMAIN_VARIANT: Record<string, "active" | "warning" | "error" | "info" | "inactive"> = {
   "connect-people": "active",
@@ -102,7 +103,7 @@ export default function AutopilotAutomations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="⚡"
-          title="Active Automations"
+          title={t('screens.admin.activeAutomations')}
           description={`${enabledCount} of ${catalog.length} automations enabled`}
         />
 
@@ -143,7 +144,7 @@ export default function AutopilotAutomations() {
         />
 
         {catalogQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading automations...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingAutomations')}</p>
         )}
 
         {catalogQuery.isError && (
@@ -154,7 +155,7 @@ export default function AutopilotAutomations() {
 
         {!catalogQuery.isLoading && filtered.length === 0 && (
           <AdminEmptyState
-            title="No automations found"
+            title={t('screens.admin.noAutomationsFound')}
             description="Try a different search or filter."
           />
         )}

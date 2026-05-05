@@ -14,6 +14,7 @@ import { PillarDeltaBadges } from "./PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import { buildHorizonPoints, type ProjectedPoint } from "@/lib/vitana-projection";
 import type { ContributionVector } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 export const VITANA_INDEX_OPEN_EVENT = "vitana:open-index";
 
@@ -183,7 +184,7 @@ export function VitanaIndexSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="right" className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-xl font-semibold">Your Index</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t('screens.health.yourIndex')}</SheetTitle>
           {tierLabel && (
             <SheetDescription className="text-sm text-muted-foreground">
               {tierFraming ?? tierLabel}
@@ -215,7 +216,7 @@ export function VitanaIndexSheet() {
                   <div className="text-4xl font-bold text-green-600">
                     {isLoading || total === null ? "…" : total}
                   </div>
-                  <div className="text-xs text-muted-foreground">of 999</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
                 </div>
               </div>
             </div>

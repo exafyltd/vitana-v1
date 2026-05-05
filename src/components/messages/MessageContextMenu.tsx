@@ -21,6 +21,7 @@ import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@/lib/i18n-toast';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -132,7 +133,7 @@ export function MessageContextMenu({
               className="flex items-center gap-2 px-3 py-2 text-destructive focus:text-destructive"
             >
               <Trash2 className="w-4 h-4" />
-              <span>Delete for me</span>
+              <span>{t('screens.messages.deleteForMe')}</span>
             </ContextMenuItem>
           </>
         )}

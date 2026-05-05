@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Pattern } from "@/hooks/usePatternDiscovery";
+import { t } from '@/lib/i18n-toast';
 
 interface PatternDetailsProps {
   pattern: Pattern | null;
@@ -23,18 +24,18 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
         <div className="space-y-6">
           {/* Metrics */}
           <div>
-            <h3 className="font-semibold mb-3">Pattern Metrics</h3>
+            <h3 className="font-semibold mb-3">{t('screens.admin.patternMetrics')}</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="p-3 border rounded-lg">
-                <div className="text-sm text-muted-foreground">Confidence Level</div>
+                <div className="text-sm text-muted-foreground">{t('screens.admin.confidenceLevel')}</div>
                 <div className="text-2xl font-bold">{Math.round(pattern.confidence_level * 100)}%</div>
               </div>
               <div className="p-3 border rounded-lg">
-                <div className="text-sm text-muted-foreground">Sample Size</div>
+                <div className="text-sm text-muted-foreground">{t('screens.admin.sampleSize')}</div>
                 <div className="text-2xl font-bold">{pattern.sample_size}</div>
               </div>
               <div className="p-3 border rounded-lg">
-                <div className="text-sm text-muted-foreground">Occurrence Rate</div>
+                <div className="text-sm text-muted-foreground">{t('screens.admin.occurrenceRate')}</div>
                 <div className="text-2xl font-bold">{Math.round(pattern.occurrence_rate * 100)}%</div>
               </div>
               <div className="p-3 border rounded-lg">
@@ -49,7 +50,7 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
           {/* Triggers */}
           {pattern.triggers && pattern.triggers.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-3">Suggested Triggers</h3>
+              <h3 className="font-semibold mb-3">{t('screens.admin.suggestedTriggers')}</h3>
               <div className="flex flex-wrap gap-2">
                 {pattern.triggers.map((trigger, idx) => (
                   <Badge key={idx} variant="outline" className="text-sm">
@@ -63,7 +64,7 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
           {/* Conditions */}
           {pattern.conditions && pattern.conditions.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-3">Suggested Conditions</h3>
+              <h3 className="font-semibold mb-3">{t('screens.admin.suggestedConditions')}</h3>
               <div className="space-y-2">
                 {pattern.conditions.map((condition: any, idx: number) => (
                   <div key={idx} className="p-3 border rounded-lg bg-muted/50">
@@ -81,7 +82,7 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
           {/* Suggested Actions */}
           {pattern.suggested_actions && pattern.suggested_actions.length > 0 && (
             <div>
-              <h3 className="font-semibold mb-3">Suggested Actions</h3>
+              <h3 className="font-semibold mb-3">{t('screens.admin.suggestedActions')}</h3>
               <div className="space-y-3">
                 {pattern.suggested_actions.map((action: any, idx: number) => (
                   <div key={idx} className="p-4 border rounded-lg bg-muted/50">
@@ -106,7 +107,7 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
 
           {/* Expected Impact */}
           <div>
-            <h3 className="font-semibold mb-3">Expected Impact</h3>
+            <h3 className="font-semibold mb-3">{t('screens.admin.expectedImpact')}</h3>
             <p className="text-sm text-muted-foreground">{pattern.expected_impact}</p>
           </div>
 

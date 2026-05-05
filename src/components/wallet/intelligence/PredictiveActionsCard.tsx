@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Sparkles, ArrowRight, Clock, Target, TrendingUp } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface PredictiveAction {
   id: string;
@@ -162,7 +163,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                 </div>
                 
                 <div className="text-xs text-muted-foreground bg-muted/30 rounded p-2">
-                  <span className="font-medium">AI Reasoning:</span> {action.reasoning}
+                  <span className="font-medium">{t('screens.wallet.aiReasoning')}</span> {action.reasoning}
                 </div>
               </div>
             );

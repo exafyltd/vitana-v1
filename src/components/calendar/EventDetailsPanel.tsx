@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface EventDetailsPanelProps {
   open: boolean;
@@ -146,7 +147,7 @@ export function EventDetailsPanel({
                 <Users className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                 <div className="flex-1">
                   <p className="text-sm font-medium">{event.attendees_count} attendees</p>
-                  <p className="text-xs text-muted-foreground">Including you</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.calendar.includingYou')}</p>
                 </div>
               </div>
             )}
@@ -172,7 +173,7 @@ export function EventDetailsPanel({
                 Reminders
               </p>
               <div className="text-sm text-muted-foreground">
-                <p>• 15 minutes before</p>
+                <p>{t('screens.calendar.text15MinutesBefore')}</p>
               </div>
             </div>
 
@@ -196,7 +197,7 @@ export function EventDetailsPanel({
                 <Paperclip className="h-4 w-4" />
                 Attachments
               </p>
-              <p className="text-xs text-muted-foreground">No attachments</p>
+              <p className="text-xs text-muted-foreground">{t('screens.calendar.noAttachments')}</p>
             </div>
 
             <Separator />

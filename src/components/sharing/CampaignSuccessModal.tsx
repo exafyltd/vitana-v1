@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { ShareCampaignModal } from "./ShareCampaignModal";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface CampaignSuccessModalProps {
   open: boolean;
@@ -47,7 +48,7 @@ export function CampaignSuccessModal({
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold mb-2">Campaign Created! 🎉</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('screens.sharing.campaignCreated')}</h2>
             <p className="text-sm text-muted-foreground">
               {smartSchedulingEnabled 
                 ? "Now share it with your community"
@@ -59,7 +60,7 @@ export function CampaignSuccessModal({
           <Card className="border-2 text-left">
             <CardContent className="p-4 space-y-3">
               <div>
-                <p className="text-xs text-muted-foreground">Campaign Name</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignName2')}</p>
                 <p className="font-semibold">{campaign.name}</p>
               </div>
               <div>
@@ -77,7 +78,7 @@ export function CampaignSuccessModal({
                 <p className="text-sm font-medium">{campaign.template}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">First Scheduled Post</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.firstScheduledPost')}</p>
                 <p className="text-sm font-medium">
                   {format(campaign.firstPostDate, "PPP 'at' p")}
                 </p>

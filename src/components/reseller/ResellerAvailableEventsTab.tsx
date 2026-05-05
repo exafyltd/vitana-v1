@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { MobileInventoryCard } from "./MobileInventoryCard";
 import { SellEventModal } from "./SellEventModal";
-import { notifyInfo } from '@/lib/i18n-toast';
+import { notifyInfo, t } from '@/lib/i18n-toast';
 
 // Format currency for earnings display
 const formatEarning = (amount: number): string => {
@@ -211,7 +211,7 @@ export function ResellerAvailableEventsTab() {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Ticket className="h-12 w-12 text-muted-foreground/50 mb-4" />
-        <h3 className="text-lg font-semibold mb-2">No events in your inventory</h3>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.reseller.noEventsYourInventory')}</h3>
         <p className="text-sm text-muted-foreground max-w-md mb-6">
           Once you add events to your inventory, you'll be able to promote them, share reseller links, and earn from every ticket sold.
         </p>
@@ -249,7 +249,7 @@ export function ResellerAvailableEventsTab() {
       <div className="space-y-3">
         {filteredEvents.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-sm text-muted-foreground">No inventory items match this filter</p>
+            <p className="text-sm text-muted-foreground">{t('screens.reseller.noInventoryItemsMatchThisFilter')}</p>
           </div>
         ) : (
           filteredEvents.map((event) => {

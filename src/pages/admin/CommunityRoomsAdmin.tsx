@@ -7,12 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Plus, Users, Calendar, TrendingUp, Shield } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { t } from '@/lib/i18n-toast';
 
 export default function CommunityRoomsAdmin() {
   return (
     <AppLayout>
       <SEO 
-        title="Community Rooms | Admin | VITANA" 
+        title={t('screens.admin.communityRoomsAdminVitana')} 
         description="Manage community live rooms and sessions" 
         canonical={window.location.href} 
       />
@@ -21,7 +22,7 @@ export default function CommunityRoomsAdmin() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Community Rooms Management"
+            title={t('screens.admin.communityRoomsManagement')}
             description="Manage all community live rooms, schedules, and analytics"
             emoji="👥"
           />
@@ -31,26 +32,26 @@ export default function CommunityRoomsAdmin() {
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">Active Rooms</CardTitle>
+                  <CardTitle className="text-sm">{t('screens.admin.activeRooms')}</CardTitle>
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">Currently live</p>
+                <p className="text-xs text-muted-foreground">{t('screens.admin.currentlyLive')}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">Total Viewers</CardTitle>
+                  <CardTitle className="text-sm">{t('screens.admin.totalViewers')}</CardTitle>
                   <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">Across all rooms</p>
+                <p className="text-xs text-muted-foreground">{t('screens.admin.acrossAllRooms')}</p>
               </CardContent>
             </Card>
 
@@ -63,7 +64,7 @@ export default function CommunityRoomsAdmin() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">Upcoming sessions</p>
+                <p className="text-xs text-muted-foreground">{t('screens.admin.upcomingSessions')}</p>
               </CardContent>
             </Card>
 
@@ -76,7 +77,7 @@ export default function CommunityRoomsAdmin() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">Pending reports</p>
+                <p className="text-xs text-muted-foreground">{t('screens.admin.pendingReports')}</p>
               </CardContent>
             </Card>
           </div>
@@ -85,7 +86,7 @@ export default function CommunityRoomsAdmin() {
           <Tabs defaultValue="active" className="space-y-4">
             <div className="flex items-center justify-between">
               <TabsList>
-                <TabsTrigger value="active">Active Rooms</TabsTrigger>
+                <TabsTrigger value="active">{t('screens.admin.activeRooms')}</TabsTrigger>
                 <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
                 <TabsTrigger value="analytics">Analytics</TabsTrigger>
                 <TabsTrigger value="moderation">Moderation</TabsTrigger>
@@ -100,8 +101,8 @@ export default function CommunityRoomsAdmin() {
             <TabsContent value="active" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Active Live Rooms</CardTitle>
-                  <CardDescription>Rooms currently streaming</CardDescription>
+                  <CardTitle>{t('screens.admin.activeLiveRooms')}</CardTitle>
+                  <CardDescription>{t('screens.admin.roomsCurrentlyStreaming')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
@@ -114,8 +115,8 @@ export default function CommunityRoomsAdmin() {
             <TabsContent value="scheduled" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Scheduled Sessions</CardTitle>
-                  <CardDescription>Upcoming community live rooms</CardDescription>
+                  <CardTitle>{t('screens.admin.scheduledSessions')}</CardTitle>
+                  <CardDescription>{t('screens.admin.upcomingCommunityLiveRooms')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
@@ -128,8 +129,8 @@ export default function CommunityRoomsAdmin() {
             <TabsContent value="analytics" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Room Analytics</CardTitle>
-                  <CardDescription>Performance and engagement metrics</CardDescription>
+                  <CardTitle>{t('screens.admin.roomAnalytics')}</CardTitle>
+                  <CardDescription>{t('screens.admin.performanceEngagementMetrics')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
@@ -142,8 +143,8 @@ export default function CommunityRoomsAdmin() {
             <TabsContent value="moderation" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Moderation Tools</CardTitle>
-                  <CardDescription>Manage reports and enforce community guidelines</CardDescription>
+                  <CardTitle>{t('screens.admin.moderationTools')}</CardTitle>
+                  <CardDescription>{t('screens.admin.manageReportsEnforceCommunityGuidelines')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">

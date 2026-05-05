@@ -17,6 +17,7 @@
 import { Heart, MapPin, Users } from "lucide-react";
 import type { PartnerPreferences } from "@/lib/profilePrefsApi";
 import type { AccountVisibility, FieldVisibility } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 type ViewerRel = "self" | "connection" | "stranger";
 
@@ -119,7 +120,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
 
       {showMustHaves && (
         <div>
-          <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Must-haves</div>
+          <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">{t('screens.profile.musthaves')}</div>
           <div className="flex flex-wrap gap-1">
             {prefs.must_haves!.map((m, i) => (
               <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -133,7 +134,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
       {showDealBreakers && (
         <div>
           <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-            Deal-breakers <span className="opacity-70">(only you see this)</span>
+            Deal-breakers <span className="opacity-70">{t('screens.profile.onlyYouSeeThis')}</span>
           </div>
           <div className="flex flex-wrap gap-1">
             {prefs.deal_breakers!.map((m, i) => (

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface ResellerCampaignsTabProps {
   searchQuery: string;
@@ -125,7 +126,7 @@ export function ResellerCampaignsTab({ searchQuery }: ResellerCampaignsTabProps)
           <Megaphone className="h-6 w-6 text-accent" />
         </div>
         <div>
-          <p className="font-medium text-foreground">No campaigns yet</p>
+          <p className="font-medium text-foreground">{t('screens.reseller.noCampaignsYet')}</p>
           <p className="text-sm text-muted-foreground">
             Create a campaign to promote events and boost your ticket sales.
           </p>

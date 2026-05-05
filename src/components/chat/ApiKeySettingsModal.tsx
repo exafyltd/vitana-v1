@@ -13,7 +13,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ApiKeySettingsModalProps {
   open: boolean;
@@ -82,7 +82,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Google Cloud API Key</DialogTitle>
+          <DialogTitle>{t('screens.chat.googleCloudApiKey')}</DialogTitle>
           <DialogDescription>
             Enter your Google Cloud API key to enable voice AI features (Speech-to-Text and Text-to-Speech).
           </DialogDescription>
@@ -90,11 +90,11 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="apiKey">API Key</Label>
+            <Label htmlFor="apiKey">{t('screens.chat.apiKey')}</Label>
             <Input
               id="apiKey"
               type="password"
-              placeholder="Enter your Google Cloud API key"
+              placeholder={t('screens.chat.enterYourGoogleCloudApiKey')}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               disabled={isSaving}
@@ -105,12 +105,12 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
           </div>
 
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p className="font-medium">To get your Google Cloud API key:</p>
+            <p className="font-medium">{t('screens.chat.getYourGoogleCloudApiKey')}</p>
             <ol className="list-decimal list-inside space-y-1 ml-2">
-              <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Cloud Console</a></li>
-              <li>Enable Cloud Speech-to-Text API and Cloud Text-to-Speech API</li>
-              <li>Create an API key in Credentials</li>
-              <li>Paste it here</li>
+              <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t('screens.chat.googleCloudConsole')}</a></li>
+              <li>{t('screens.chat.enableCloudSpeechtotextApiCloudTexttospeech')}</li>
+              <li>{t('screens.chat.createApiKeyCredentials')}</li>
+              <li>{t('screens.chat.pasteItHere')}</li>
             </ol>
           </div>
         </div>

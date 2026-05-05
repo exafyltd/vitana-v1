@@ -18,7 +18,7 @@ import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -310,7 +310,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   className={`rounded-full ${themeConfig.buttons.secondary} backdrop-blur-md hover:-translate-y-1.5 hover:scale-105 transition-all duration-300 shadow-[0_6px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.15)] active:scale-100 ease-out`}
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
-                  <span className="font-medium">View Public Profile</span>
+                  <span className="font-medium">{t('screens.profile.viewPublicProfile')}</span>
                 </Button>
               </>
             ) : (

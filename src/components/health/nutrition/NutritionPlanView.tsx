@@ -8,6 +8,7 @@ import { NutritionEmptyState } from "./NutritionEmptyState";
 import { NutritionOverviewCard } from "./NutritionOverviewCard";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockNutritionPlan } from "@/data/mockRecipes";
+import { t } from '@/lib/i18n-toast';
 
 function sortMealsBySlot(meals: Recipe[]): Recipe[] {
   const order = { breakfast: 0, snack1: 1, lunch: 2, snack2: 3, dinner: 4 };
@@ -80,7 +81,7 @@ export function NutritionPlanView() {
           <TabsContent value={activeTab} className="mt-6">
             {mealsByDay.size === 0 ? (
               <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed">
-                <p className="text-muted-foreground">No recipes match your filters</p>
+                <p className="text-muted-foreground">{t('screens.health.noRecipesMatchYourFilters')}</p>
               </div>
             ) : (
               <div className="space-y-8">

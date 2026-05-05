@@ -19,6 +19,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useQueryClient } from '@tanstack/react-query';
+import { t } from '@/lib/i18n-toast';
 
 interface BulkVideoUploadModalProps {
   open: boolean;
@@ -103,7 +104,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
         <div className="relative w-full aspect-[9/16] rounded-lg overflow-hidden border-2 border-primary">
           <img 
             src={item.thumbnail.url} 
-            alt="Selected thumbnail" 
+            alt={t('screens.community.selectedThumbnail')} 
             className="w-full h-full object-cover"
           />
           <Badge className="absolute top-2 right-2 text-xs">
@@ -116,11 +117,11 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
       {isLoadingThumbs ? (
         <div className="flex items-center justify-center py-4">
           <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">Generating thumbnails...</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('screens.community.generatingThumbnails')}</span>
         </div>
       ) : autoThumbnails.length > 0 && (
         <div className="space-y-2">
-          <Label className="text-xs text-muted-foreground">Quick picks</Label>
+          <Label className="text-xs text-muted-foreground">{t('screens.community.quickPicks')}</Label>
           <div className="grid grid-cols-3 gap-2">
             {autoThumbnails.map((thumb, idx) => (
               <button
@@ -148,7 +149,7 @@ function ThumbnailPicker({ item, onUpdate }: { item: VideoFileItem; onUpdate: (u
 
       {/* Video scrubber for custom frame selection */}
       <div className="space-y-2">
-        <Label className="text-xs text-muted-foreground">Pick exact frame</Label>
+        <Label className="text-xs text-muted-foreground">{t('screens.community.pickExactFrame')}</Label>
         <div className="border rounded-lg p-2 space-y-2">
           <video
             ref={videoRef}
@@ -552,7 +553,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Bulk Video Upload</span>
+            <span>{t('screens.community.bulkVideoUpload')}</span>
             {items.length > 0 && (
               <div className="flex items-center gap-2 text-sm font-normal">
                 <Badge variant="outline">{queuedCount} queued</Badge>
@@ -604,7 +605,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
           {/* Shared Metadata */}
           {items.length > 0 && (
             <div className="border rounded-lg p-4 bg-muted/20 space-y-4">
-              <h3 className="font-semibold text-sm">Apply to all videos (optional)</h3>
+              <h3 className="font-semibold text-sm">{t('screens.community.applyAllVideosOptional')}</h3>
               <div className="space-y-2 bg-muted/50 p-4 rounded-lg border border-border">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="titlePattern" className="text-sm font-medium">
@@ -628,7 +629,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                   </p>
                   {titlePattern !== '{base}' && items.length > 0 && (
                     <div className="bg-background p-2 rounded text-xs border border-border">
-                      <strong className="text-muted-foreground">Preview:</strong> 
+                      <strong className="text-muted-foreground">{t('screens.community.preview')}</strong> 
                       <span className="ml-2 text-foreground">
                         {applyTitlePattern(items[0]?.title.replace(/download/i, 'Video') || 'Example', 0)}
                       </span>
@@ -650,7 +651,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 </select>
               </div>
               <Textarea
-                placeholder="Shared description"
+                placeholder={t('screens.community.sharedDescription')}
                 value={sharedDescription}
                 onChange={(e) => setSharedDescription(e.target.value)}
                 disabled={isUploading}

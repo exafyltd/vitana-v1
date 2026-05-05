@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { devConfig } from "@/config/dev-config";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface TriggerRunModalProps {
   open: boolean;
@@ -48,54 +48,54 @@ export function TriggerRunModal({ open, onOpenChange, onSuccess }: TriggerRunMod
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle>Trigger Autopilot Run</DialogTitle>
+          <DialogTitle>{t('screens.dev.triggerAutopilotRun')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="template">Template / Recipe *</Label>
+            <Label htmlFor="template">{t('screens.dev.templateRecipe')}</Label>
             <Select value={template} onValueChange={setTemplate}>
               <SelectTrigger id="template">
-                <SelectValue placeholder="Select template" />
+                <SelectValue placeholder={t('screens.dev.selectTemplate')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily-sync">Daily System Sync</SelectItem>
-                <SelectItem value="backup-routine">Backup Routine</SelectItem>
-                <SelectItem value="health-check">Health Check</SelectItem>
-                <SelectItem value="deploy-pipeline">Deploy Pipeline</SelectItem>
-                <SelectItem value="custom">Custom Recipe</SelectItem>
+                <SelectItem value="daily-sync">{t('screens.dev.dailySystemSync')}</SelectItem>
+                <SelectItem value="backup-routine">{t('screens.dev.backupRoutine')}</SelectItem>
+                <SelectItem value="health-check">{t('screens.dev.healthCheck')}</SelectItem>
+                <SelectItem value="deploy-pipeline">{t('screens.dev.deployPipeline')}</SelectItem>
+                <SelectItem value="custom">{t('screens.dev.customRecipe')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="run-name">Run Name *</Label>
+            <Label htmlFor="run-name">{t('screens.dev.runName')}</Label>
             <Input
               id="run-name"
-              placeholder="Enter a name for this run..."
+              placeholder={t('screens.dev.enterNameForThisRun')}
               value={runName}
               onChange={(e) => setRunName(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="trigger-mode">Trigger Mode *</Label>
+            <Label htmlFor="trigger-mode">{t('screens.dev.triggerMode')}</Label>
             <Select value={triggerMode} onValueChange={setTriggerMode}>
               <SelectTrigger id="trigger-mode">
-                <SelectValue placeholder="Select trigger mode" />
+                <SelectValue placeholder={t('screens.dev.selectTriggerMode')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="now">Run Now</SelectItem>
-                <SelectItem value="schedule">Schedule for Later</SelectItem>
+                <SelectItem value="now">{t('screens.dev.runNow')}</SelectItem>
+                <SelectItem value="schedule">{t('screens.dev.scheduleForLater2')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (optional)</Label>
+            <Label htmlFor="notes">{t('screens.dev.notesOptional')}</Label>
             <Textarea
               id="notes"
-              placeholder="Add any additional context or notes..."
+              placeholder={t('screens.dev.addAnyAdditionalContextNotes')}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}

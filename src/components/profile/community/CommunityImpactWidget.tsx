@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Users, TrendingUp, Heart, Star, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface CommunityImpactWidgetProps {
   vitanaIndex?: number;
@@ -37,7 +38,7 @@ export function CommunityImpactWidget({
           </div>
           Community Impact
         </CardTitle>
-        <CardDescription>Your influence in the Vitana community</CardDescription>
+        <CardDescription>{t('screens.profile.yourInfluenceVitanaCommunity')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -47,7 +48,7 @@ export function CommunityImpactWidget({
               <div className="icon-vitana rounded-full p-1">
                 <TrendingUp className="h-3 w-3" />
               </div>
-              <div className="text-xs text-muted-foreground">Vitana Index</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.vitanaIndex')}</div>
             </div>
             <div className="flex items-end gap-1">
               <span className="text-2xl font-bold text-foreground">{vitanaIndex}</span>
@@ -87,7 +88,7 @@ export function CommunityImpactWidget({
               <Heart className="h-3 w-3 text-[hsl(var(--domain-community-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.helpedUsers}</span>
             </div>
-            <div className="text-xs text-muted-foreground">People Helped</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.peopleHelped')}</div>
           </div>
           
           <div className="text-center">
@@ -95,7 +96,7 @@ export function CommunityImpactWidget({
               <Zap className="h-3 w-3 text-[hsl(var(--pill-sleep-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.featuredStories}</span>
             </div>
-            <div className="text-xs text-muted-foreground">Featured Stories</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.featuredStories')}</div>
           </div>
           
           <div className="text-center">
@@ -103,7 +104,7 @@ export function CommunityImpactWidget({
               <Users className="h-3 w-3 text-[hsl(var(--util-profile-accent))]" />
               <span className="text-lg font-bold text-foreground">{communityStats.posts}</span>
             </div>
-            <div className="text-xs text-muted-foreground">Posts Shared</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.postsShared')}</div>
           </div>
         </div>
 

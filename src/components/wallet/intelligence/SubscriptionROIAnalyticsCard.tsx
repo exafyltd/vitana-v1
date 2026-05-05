@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, AlertTriangle, Calendar, Target, DollarSign } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SubscriptionMetric {
   id: string;
@@ -115,15 +116,15 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-primary">${totalCost}</div>
-              <div className="text-xs text-muted-foreground">Monthly Cost</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.monthlyCost')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">${totalValue}</div>
-              <div className="text-xs text-muted-foreground">Monthly Value</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.monthlyValue')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{averageUsage}%</div>
-              <div className="text-xs text-muted-foreground">Avg Usage</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.avgUsage')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
@@ -164,7 +165,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">Usage Rate</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.usageRate')}</span>
                     <span className="text-xs text-muted-foreground">{subscription.usage}%</span>
                   </div>
                   <Progress value={subscription.usage} className="h-1.5" />
@@ -187,7 +188,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
 
         {/* Optimization Recommendations */}
         <div className="space-y-2">
-          <h4 className="text-sm font-medium">Smart Recommendations</h4>
+          <h4 className="text-sm font-medium">{t('screens.wallet.smartRecommendations')}</h4>
           {mockSubscriptions
             .filter(sub => sub.trend === "decreasing" || sub.usage < 70)
             .slice(0, 1)

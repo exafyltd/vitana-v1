@@ -2,6 +2,7 @@ import AppLayout from "@/components/AppLayout";
 import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
+import { t } from '@/lib/i18n-toast';
 
 export default function AutopilotImpact() {
   return (
@@ -10,11 +11,11 @@ export default function AutopilotImpact() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="✈️"
-          title="Autopilot Impact"
+          title={t('screens.admin.autopilotImpact')}
           description="Measure the impact of automated actions on community health"
         />
         <AdminEmptyState
-          title="Autopilot Impact Metrics"
+          title={t('screens.admin.autopilotImpactMetrics')}
           description="Autopilot impact metrics coming soon — actions delivered, acceptance rate, top automations."
         />
       </div>

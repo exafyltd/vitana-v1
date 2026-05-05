@@ -78,7 +78,7 @@ import { SessionExpiredBanner } from "@/components/settings/SessionExpiredBanner
 import { OAuthBouncePendingOverlay } from "@/components/settings/OAuthBouncePendingOverlay";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 function ConnectedApps() {
   const isMobile = useIsMobile();
@@ -168,7 +168,7 @@ function ConnectedApps() {
     return (
       <AppLayout>
         <SEO 
-          title="Connected Apps & Integrations"
+          title={t('screens.settings.connectedAppsIntegrations')}
           description="Manage your connected devices and services"
         />
         <MobileConnectedAppsView />
@@ -198,7 +198,7 @@ function ConnectedApps() {
         expandedContent: platform.connected ? (
           <div className="space-y-3 pt-2">
             <div className="text-sm">
-              <strong>Permissions:</strong> Post content, read analytics
+              <strong>{t('screens.settings.permissions')}</strong> Post content, read analytics
             </div>
             <div className="text-sm text-muted-foreground">
               Last sync: 5 minutes ago
@@ -265,7 +265,7 @@ function ConnectedApps() {
         expandedContent: isConnected ? (
           <div className="space-y-3 pt-2">
             <div className="text-sm">
-              <strong>Status:</strong> {p.last_verify_status || "unverified"}
+              <strong>{t('screens.settings.status')}</strong> {p.last_verify_status || "unverified"}
             </div>
             {p.last_verified_at && (
               <div className="text-sm text-muted-foreground">
@@ -375,13 +375,13 @@ function ConnectedApps() {
         expandedContent: app.connected ? (
           <div className="space-y-3 pt-2">
             <div className="text-sm">
-              <strong>Data syncing:</strong> {app.syncData}
+              <strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}
             </div>
             <div className="text-sm text-muted-foreground">
               Last sync: {app.lastSync}
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">Configure Sync</Button>
+              <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
               <Button variant="destructive" size="sm">Disconnect</Button>
             </div>
           </div>
@@ -441,10 +441,10 @@ function ConnectedApps() {
           : undefined,
       expandedContent: app.connected ? (
         <div className="space-y-3 pt-2">
-          <div className="text-sm"><strong>Data syncing:</strong> {app.syncData}</div>
+          <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
           <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">Configure Sync</Button>
+            <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
             <Button variant="destructive" size="sm">Disconnect</Button>
           </div>
         </div>
@@ -514,10 +514,10 @@ function ConnectedApps() {
           : undefined,
       expandedContent: app.connected ? (
         <div className="space-y-3 pt-2">
-          <div className="text-sm"><strong>Data syncing:</strong> {app.syncData}</div>
+          <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
           <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">Configure Sync</Button>
+            <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
             <Button variant="destructive" size="sm">Disconnect</Button>
           </div>
         </div>
@@ -1455,20 +1455,20 @@ function ConnectedApps() {
         <div className="space-y-3 pt-2">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-sm font-medium">Last Sync</div>
-              <div className="text-sm text-muted-foreground">15 minutes ago</div>
+              <div className="text-sm font-medium">{t('screens.settings.lastSync')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.text15MinutesAgo')}</div>
             </div>
             <div>
-              <div className="text-sm font-medium">Total Synced Apps</div>
-              <div className="text-sm text-muted-foreground">5 connected</div>
+              <div className="text-sm font-medium">{t('screens.settings.totalSyncedApps')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.text5Connected')}</div>
             </div>
             <div>
-              <div className="text-sm font-medium">Pending Syncs</div>
-              <div className="text-sm text-muted-foreground">1 in queue</div>
+              <div className="text-sm font-medium">{t('screens.settings.pendingSyncs')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.text1Queue')}</div>
             </div>
             <div>
-              <div className="text-sm font-medium">Next Automatic Sync</div>
-              <div className="text-sm text-muted-foreground">In 45 minutes</div>
+              <div className="text-sm font-medium">{t('screens.settings.nextAutomaticSync')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.text45Minutes')}</div>
             </div>
           </div>
         </div>
@@ -1546,15 +1546,15 @@ function ConnectedApps() {
       expandedContent: (
         <div className="space-y-3 pt-2">
           <div className="text-sm">
-            <strong>Data Synced:</strong> {app.newData}
+            <strong>{t('screens.settings.dataSynced')}</strong> {app.newData}
           </div>
           <div className="text-sm">
-            <strong>Last Sync:</strong> {app.lastSync}
+            <strong>{t('screens.settings.lastSync2')}</strong> {app.lastSync}
           </div>
           {app.connected && (
             <div className="flex gap-2 mt-3">
-              <Button variant="outline" size="sm">Configure Sync</Button>
-              <Button variant="outline" size="sm">View Details</Button>
+              <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
+              <Button variant="outline" size="sm">{t('screens.settings.viewDetails')}</Button>
             </div>
           )}
         </div>
@@ -1687,7 +1687,7 @@ function ConnectedApps() {
           {filteredEntries.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">No sync events for this filter yet.</p>
+              <p className="text-sm">{t('screens.settings.noSyncEventsForThisFilter')}</p>
             </div>
           ) : (
             filteredEntries.map((entry, index) => (
@@ -1718,12 +1718,12 @@ function ConnectedApps() {
 
   return (
     <AppLayout>
-      <SEO title="Connected Apps | Settings" description="Manage your connected apps and integrations" canonical={window.location.href} />
+      <SEO title={t('screens.settings.connectedAppsSettings')} description="Manage your connected apps and integrations" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Connected Apps 🔗"
+            title={t('screens.settings.connectedApps2')}
             description="Seamless integration, maximum benefit - manage your connected apps and integrations"
           />
 
@@ -1731,7 +1731,7 @@ function ConnectedApps() {
 
           <UtilityActionButton className="min-w-0">
             <div className="flex items-center gap-2 min-w-max">
-              <ExpandableSearchButton placeholder="Search apps, integrations, fitness trackers..." />
+              <ExpandableSearchButton placeholder={t('screens.settings.searchAppsIntegrationsFitnessTrackers')} />
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setActionPopupOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />

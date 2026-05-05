@@ -11,7 +11,7 @@ import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
 import { UnifiedEventCard, UnifiedGroupCard } from "@/types/community";
 import { GroupImageCard } from "@/components/groups/GroupImageCard";
 import { transformGroupRecommendationToCard } from "@/lib/groupCardTransformers";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface GroupMatchCardProps {
   className?: string;
@@ -167,7 +167,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
               <Users2 className="w-5 h-5" />
               Groups & Communities
             </h2>
-            <p className="text-sm text-muted-foreground">Communities that match your vibe</p>
+            <p className="text-sm text-muted-foreground">{t('screens.crossover.communitiesThatMatchYourVibe')}</p>
           </div>
           <Button 
             variant="outline" 
@@ -181,8 +181,8 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
         {groups.length === 0 ? (
           <div className="text-center py-12">
             <Users2 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No groups found</h3>
-            <p className="text-muted-foreground">Check back soon for community groups!</p>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.crossover.noGroupsFound')}</h3>
+            <p className="text-muted-foreground">{t('screens.crossover.checkBackSoonForCommunityGroups')}</p>
           </div>
         ) : (
           <>
@@ -200,7 +200,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-foreground">Perfect for your interests</span>
+                <span className="font-medium text-foreground">{t('screens.crossover.perfectForYourInterests')}</span>
                 <div className="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse" />
               </div>
               <Button 
@@ -225,7 +225,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
                 <Calendar className="w-5 h-5" />
                 Upcoming Events
               </h3>
-              <p className="text-sm text-muted-foreground">Events happening soon</p>
+              <p className="text-sm text-muted-foreground">{t('screens.crossover.eventsHappeningSoon')}</p>
             </div>
             <Button 
               variant="outline" 

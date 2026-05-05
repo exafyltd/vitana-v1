@@ -50,7 +50,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from "react-router-dom";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -253,7 +253,7 @@ export function ProfileLayout({
               >
                 <h3 className="text-sm font-semibold mb-2">About</h3>
                 <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
-                {effectiveEditMode && <p className="text-xs text-primary mt-2">Tap to edit</p>}
+                {effectiveEditMode && <p className="text-xs text-primary mt-2">{t('screens.profile.tapEdit')}</p>}
               </button>
 
               {/* Life Milestones */}

@@ -26,7 +26,7 @@ import {
   ArrowRight,
   DollarSign
 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BookingPaymentFlowProps {
   isOpen: boolean;
@@ -297,7 +297,7 @@ export default function BookingPaymentFlow({
               {/* Booking Details */}
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="col-span-2">
-                  <label className="text-xs text-muted-foreground mb-1 block">Select Date</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{t('screens.payment.selectDate')}</label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -321,12 +321,12 @@ export default function BookingPaymentFlow({
                   </Popover>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-xs text-muted-foreground mb-1 block">Select Time</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{t('screens.payment.selectTime')}</label>
                   <Select value={selectedTime} onValueChange={setSelectedTime}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center">
                         <Clock className="mr-2 h-4 w-4" />
-                        <SelectValue placeholder="Pick a time" />
+                        <SelectValue placeholder={t('screens.payment.pickTime')} />
                       </div>
                     </SelectTrigger>
                     <SelectContent>
@@ -353,7 +353,7 @@ export default function BookingPaymentFlow({
           {/* Payment Method Selection */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Payment Method</CardTitle>
+              <CardTitle className="text-lg">{t('screens.payment.paymentMethod')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {/* Credits Option */}
@@ -391,7 +391,7 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <Coins className="w-5 h-5 text-blue-500" />
                     <div>
-                      <p className="font-medium">VTNA Tokens</p>
+                      <p className="font-medium">{t('screens.payment.vtnaTokens')}</p>
                       <p className="text-sm text-muted-foreground">
                         Balance: {formatCurrency(userBalance?.vtna || 0, 'VTNA')}
                       </p>
@@ -415,7 +415,7 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <DollarSign className="w-5 h-5 text-green-500" />
                     <div>
-                      <p className="font-medium">USD Wallet</p>
+                      <p className="font-medium">{t('screens.payment.usdWallet')}</p>
                       <p className="text-sm text-muted-foreground">
                         Balance: {formatCurrency(userBalance?.usd || 0, 'USD')}
                       </p>
@@ -438,7 +438,7 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <CreditCard className="w-5 h-5 text-purple-500" />
                     <div>
-                      <p className="font-medium">Debit/Credit Card</p>
+                      <p className="font-medium">{t('screens.payment.debitcreditCard')}</p>
                       <p className="text-sm text-muted-foreground">
                         Pay with Stripe
                       </p>
@@ -458,7 +458,7 @@ export default function BookingPaymentFlow({
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 text-red-600">
                   <Shield className="w-4 h-4" />
-                  <span className="text-sm font-medium">Insufficient Balance</span>
+                  <span className="text-sm font-medium">{t('screens.payment.insufficientBalance')}</span>
                 </div>
                 <p className="text-sm text-red-600 mt-1">
                   Top up your wallet to complete this booking

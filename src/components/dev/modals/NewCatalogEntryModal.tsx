@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface NewCatalogEntryModalProps {
   open: boolean;
@@ -34,7 +34,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">New Catalog Entry</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.newCatalogEntry')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
@@ -42,19 +42,19 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
             <Label htmlFor="catalog">Catalog</Label>
             <Select value={catalog} onValueChange={setCatalog}>
               <SelectTrigger id="catalog">
-                <SelectValue placeholder="Select catalog" />
+                <SelectValue placeholder={t('screens.dev.selectCatalog')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="components">Components</SelectItem>
-                <SelectItem value="patterns">Design Patterns</SelectItem>
-                <SelectItem value="apis">API Endpoints</SelectItem>
-                <SelectItem value="schemas">Data Schemas</SelectItem>
+                <SelectItem value="patterns">{t('screens.dev.designPatterns')}</SelectItem>
+                <SelectItem value="apis">{t('screens.dev.apiEndpoints')}</SelectItem>
+                <SelectItem value="schemas">{t('screens.dev.dataSchemas')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="entry-name">Entry Name</Label>
+            <Label htmlFor="entry-name">{t('screens.dev.entryName')}</Label>
             <Input 
               id="entry-name" 
               value={entryName}

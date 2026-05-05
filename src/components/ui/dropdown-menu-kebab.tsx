@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { t } from '@/lib/i18n-toast';
 
 interface KebabMenuProps {
   children?: React.ReactNode;
@@ -26,7 +27,7 @@ const KebabMenu = React.forwardRef<
           variant="ghost"
           size="sm"
           className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
-          aria-label="More options menu"
+          aria-label={t('screens.ui.moreOptionsMenu')}
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => e.stopPropagation()}
           {...props}

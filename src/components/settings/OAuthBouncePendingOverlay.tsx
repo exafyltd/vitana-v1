@@ -34,6 +34,7 @@ import { Loader2, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useOAuthBounceStore, type OAuthBounceProvider } from "@/hooks/useOAuthBounceStore";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 const PROVIDER_LABEL: Record<OAuthBounceProvider, string> = {
   google: "Google",
@@ -87,7 +88,7 @@ export function OAuthBouncePendingOverlay() {
       <button
         type="button"
         onClick={reset}
-        aria-label="Dismiss"
+        aria-label={t('screens.settings.dismiss')}
         className="absolute right-2 top-2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <X className="h-4 w-4" />
@@ -120,7 +121,7 @@ export function OAuthBouncePendingOverlay() {
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
           <div className="space-y-1">
             <p className="font-medium leading-tight text-green-700">{label} connected</p>
-            <p className="text-sm text-green-700/80">You're all set.</p>
+            <p className="text-sm text-green-700/80">{t('screens.settings.youReAllSet')}</p>
           </div>
         </div>
       )}

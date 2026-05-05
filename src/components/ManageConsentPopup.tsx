@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Users, FileText, Settings } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ManageConsentPopupProps {
   isOpen: boolean;
@@ -36,7 +37,7 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Badge variant="outline" className="text-xs">3 pending requests</Badge>
+                <Badge variant="outline" className="text-xs">{t('screens.common.text3PendingRequests')}</Badge>
               </CardContent>
             </Card>
             

@@ -22,6 +22,7 @@ import { useCart } from '@/hooks/useCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -288,7 +289,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <Input
                     autoFocus
                     type="text"
-                    placeholder="Search members, groups, or..."
+                    placeholder={t('screens.mobile.searchMembersGroups')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
@@ -308,11 +309,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       {searching && (
                         <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Searching…</span>
+                          <span>{t('screens.mobile.searching')}</span>
                         </div>
                       )}
                       {!searching && results.length === 0 && (
-                        <div className="px-3 py-3 text-sm text-muted-foreground">No members found</div>
+                        <div className="px-3 py-3 text-sm text-muted-foreground">{t('screens.mobile.noMembersFound')}</div>
                       )}
                       {results.map((r) => {
                         const name = r.display_name || 'Unknown';

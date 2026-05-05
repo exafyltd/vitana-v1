@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, Brain, Target, Wand2, CheckCircle, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface SmartPackagePopupProps {
   isOpen: boolean;
@@ -82,7 +83,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Brain className="h-4 w-4 text-purple-600" />
-              <h3 className="text-lg font-semibold">AI Recommendations</h3>
+              <h3 className="text-lg font-semibold">{t('screens.common.aiRecommendations')}</h3>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -104,7 +105,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                   </CardHeader>
                   <CardContent className="space-y-3 pt-0">
                     <div>
-                      <div className="text-xs font-medium text-muted-foreground">Suggested Data Types</div>
+                      <div className="text-xs font-medium text-muted-foreground">{t('screens.common.suggestedDataTypes')}</div>
                       <div className="flex flex-wrap gap-1 mt-1">
                         {suggestion.dataTypes.slice(0, 3).map((type, index) => (
                           <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
@@ -129,14 +130,14 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Wand2 className="h-4 w-4 text-blue-600" />
-              <h3 className="text-lg font-semibold">Create Custom Package</h3>
+              <h3 className="text-lg font-semibold">{t('screens.common.createCustomPackage')}</h3>
             </div>
             
             <Card>
               <CardContent className="space-y-4 pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="packageName">Package Name</Label>
+                    <Label htmlFor="packageName">{t('screens.common.packageName2')}</Label>
                     <Input 
                       id="packageName"
                       value={packageName}
@@ -146,7 +147,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="purpose">Purpose/Recipient</Label>
+                    <Label htmlFor="purpose">{t('screens.common.purposerecipient')}</Label>
                     <Input 
                       id="purpose"
                       value={purpose}
@@ -157,10 +158,10 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="description">Description (Optional)</Label>
+                  <Label htmlFor="description">{t('screens.common.descriptionOptional2')}</Label>
                   <Textarea 
                     id="description"
-                    placeholder="Describe the specific use case or any special requirements..."
+                    placeholder={t('screens.common.describeSpecificUseCaseAnySpecial')}
                     rows={3}
                   />
                 </div>
@@ -177,7 +178,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-green-600" />
-              <h3 className="text-lg font-semibold">Manual Data Selection</h3>
+              <h3 className="text-lg font-semibold">{t('screens.common.manualDataSelection')}</h3>
             </div>
             
             <Card>
@@ -240,7 +241,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
               <Target className="h-4 w-4 mr-2" />
               Preview Package
             </Button>
-            <Button variant="outline" size="sm">Save as Draft</Button>
+            <Button variant="outline" size="sm">{t('screens.common.saveAsDraft')}</Button>
             <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
           </div>
         </div>

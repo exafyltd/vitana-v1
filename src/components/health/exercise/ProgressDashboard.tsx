@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Brain 
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ProgressDashboardProps {
   progress: ExerciseProgress;
@@ -37,13 +38,13 @@ export function ProgressDashboard({ progress, aiSummary }: ProgressDashboardProp
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
           <Clock className="w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
           <p className="text-2xl font-bold">{progress.avgWorkoutTime}</p>
-          <p className="text-xs text-muted-foreground">Avg Minutes</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.avgMinutes')}</p>
         </div>
         
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.totalCaloriesBurned}</p>
-          <p className="text-xs text-muted-foreground">Cal Burned</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.calBurned')}</p>
         </div>
         
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">

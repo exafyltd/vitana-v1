@@ -37,7 +37,7 @@ import {
   useCreateInvitation,
   useRevokeInvitation,
 } from "@/hooks/useAdminMembers";
-import { notifyError, notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 const AVAILABLE_ROLES = ["community", "patient", "professional", "staff", "admin"];
 
@@ -109,7 +109,7 @@ export default function MembersInvitations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="✉️"
-          title="Invitations"
+          title={t('screens.admin.invitations')}
           description="Invite new members to your tenant by email"
           rightAction={
             <Button onClick={() => setShowForm(!showForm)} size="sm">
@@ -123,7 +123,7 @@ export default function MembersInvitations() {
         {showForm && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">New Invitation</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.newInvitation')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -136,7 +136,7 @@ export default function MembersInvitations() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Roles to grant</Label>
+                <Label>{t('screens.admin.rolesGrant')}</Label>
                 <div className="flex flex-wrap gap-3">
                   {AVAILABLE_ROLES.map((role) => (
                     <label key={role} className="flex items-center gap-2 text-sm">
@@ -185,12 +185,12 @@ export default function MembersInvitations() {
         />
 
         {invitationsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading invitations...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingInvitations')}</p>
         )}
 
         {!invitationsQuery.isLoading && invitations.length === 0 && (
           <AdminEmptyState
-            title="No invitations yet"
+            title={t('screens.admin.noInvitationsYet')}
             description="Click 'Invite Member' above to send your first invitation."
             actionLabel="Invite Member"
             onAction={() => setShowForm(true)}

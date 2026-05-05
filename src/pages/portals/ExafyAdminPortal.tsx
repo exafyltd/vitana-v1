@@ -15,6 +15,7 @@ import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 const ExafyAdminPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -84,7 +85,7 @@ const ExafyAdminPortal = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <SEO 
-        title="Exafy Administration Portal - VITANA" 
+        title={t('screens.portals.exafyAdministrationPortalVitana')} 
         description="Secure access portal for Exafy administrators to manage tenant environments and system operations." 
         canonical={window.location.href} 
       />
@@ -96,7 +97,7 @@ const ExafyAdminPortal = () => {
             <div className="flex items-center justify-center mb-4">
               <Shield className="h-12 w-12 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-foreground">Exafy Administration</h1>
+            <h1 className="text-3xl font-bold text-foreground">{t('screens.portals.exafyAdministration')}</h1>
             <p className="text-muted-foreground mt-2">
               Secure access portal for system administrators
             </p>
@@ -105,7 +106,7 @@ const ExafyAdminPortal = () => {
           {/* Admin Login Form */}
           <Card>
             <CardHeader>
-              <CardTitle>Administrator Sign In</CardTitle>
+              <CardTitle>{t('screens.portals.administratorSign')}</CardTitle>
               <CardDescription>
                 Access the tenant management dashboard
               </CardDescription>
@@ -123,7 +124,7 @@ const ExafyAdminPortal = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@exafy.com"
+                    placeholder={t('screens.portals.adminExafyCom')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -188,7 +189,7 @@ const ExafyAdminPortal = () => {
                     <div className="w-full border-t border-border/50" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                    <span className="bg-card px-2 text-muted-foreground">{t('screens.portals.continueWith')}</span>
                   </div>
                 </div>
 

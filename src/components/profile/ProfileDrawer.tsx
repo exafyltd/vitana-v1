@@ -25,6 +25,7 @@ import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 
 import { useIsMobile } from "@/hooks/use-mobile";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -202,7 +203,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                   <Shield className="h-4 w-4" />
-                  Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">Admin Access</Badge>}
+                  Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
                 </label>
                 <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>

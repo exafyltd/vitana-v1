@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PackageItem {
   id: string;
@@ -87,12 +87,12 @@ const PackagePurchaseSuccess = () => {
   if (!purchaseId || !sessionId) {
     return (
       <AppLayout>
-        <SEO title="Purchase Error | VITANA" description="Package purchase error" />
+        <SEO title={t('screens.packagepurchasesuccess.purchaseErrorVitana')} description="Package purchase error" />
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
           <Card className="max-w-md w-full">
             <CardContent className="pt-6 text-center">
               <Package className="h-12 w-12 text-destructive mx-auto mb-4" />
-              <h1 className="text-xl font-semibold mb-2">Missing Purchase Information</h1>
+              <h1 className="text-xl font-semibold mb-2">{t('screens.packagepurchasesuccess.missingPurchaseInformation')}</h1>
               <p className="text-muted-foreground mb-4">
                 We couldn't find your purchase details. Please check your email for confirmation.
               </p>
@@ -109,10 +109,10 @@ const PackagePurchaseSuccess = () => {
   if (verifying) {
     return (
       <AppLayout>
-        <SEO title="Confirming Purchase | VITANA" description="Confirming your package purchase" />
+        <SEO title={t('screens.packagepurchasesuccess.confirmingPurchaseVitana')} description="Confirming your package purchase" />
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
           <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-          <p className="text-lg text-muted-foreground">Confirming your purchase...</p>
+          <p className="text-lg text-muted-foreground">{t('screens.packagepurchasesuccess.confirmingYourPurchase')}</p>
         </div>
       </AppLayout>
     );
@@ -121,12 +121,12 @@ const PackagePurchaseSuccess = () => {
   if (error || !purchase) {
     return (
       <AppLayout>
-        <SEO title="Purchase Error | VITANA" description="Package purchase error" />
+        <SEO title={t('screens.packagepurchasesuccess.purchaseErrorVitana')} description="Package purchase error" />
         <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
           <Card className="max-w-md w-full">
             <CardContent className="pt-6 text-center">
               <Package className="h-12 w-12 text-destructive mx-auto mb-4" />
-              <h1 className="text-xl font-semibold mb-2">Verification Failed</h1>
+              <h1 className="text-xl font-semibold mb-2">{t('screens.packagepurchasesuccess.verificationFailed')}</h1>
               <p className="text-muted-foreground mb-4">
                 {error || "Unable to verify your purchase. Please contact support."}
               </p>
@@ -146,7 +146,7 @@ const PackagePurchaseSuccess = () => {
   return (
     <AppLayout>
       <SEO 
-        title="Purchase Successful | VITANA" 
+        title={t('screens.packagepurchasesuccess.purchaseSuccessfulVitana')} 
         description="Your package purchase was successful" 
       />
       <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
@@ -156,7 +156,7 @@ const PackagePurchaseSuccess = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/10 mb-4">
               <CheckCircle className="h-10 w-10 text-emerald-500" />
             </div>
-            <h1 className="text-2xl font-bold mb-2">Payment Successful!</h1>
+            <h1 className="text-2xl font-bold mb-2">{t('screens.packagepurchasesuccess.paymentSuccessful')}</h1>
             <p className="text-muted-foreground">
               A confirmation has been sent to <span className="font-medium">{purchase.buyer_email}</span>
             </p>
@@ -184,7 +184,7 @@ const PackagePurchaseSuccess = () => {
               {/* Items Included */}
               {items.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Includes:</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('screens.packagepurchasesuccess.includes')}</p>
                   <ul className="space-y-1">
                     {items.map((item) => (
                       <li key={item.id} className="flex items-center gap-2 text-sm">
@@ -199,7 +199,7 @@ const PackagePurchaseSuccess = () => {
               {/* Price Summary */}
               <div className="pt-3 border-t">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Total Paid</span>
+                  <span className="text-muted-foreground">{t('screens.packagepurchasesuccess.totalPaid')}</span>
                   <span className="text-lg font-semibold">
                     {formatPrice(purchase.total_amount_cents, purchase.currency)}
                   </span>

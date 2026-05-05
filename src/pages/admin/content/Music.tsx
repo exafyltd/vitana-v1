@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { useContentItems, useModerateContent } from "@/hooks/useAdminContent";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
@@ -36,7 +37,7 @@ export default function Music() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="🎵"
-          title="Music"
+          title={t('screens.admin.music')}
           description={`${items.length} track${items.length !== 1 ? "s" : ""} in library`}
         />
         <AdminFilterBar
@@ -46,9 +47,9 @@ export default function Music() {
           onReset={() => setSearch("")}
         />
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading music...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingMusic')}</p>
         ) : filtered.length === 0 ? (
-          <AdminEmptyState title="No music found" description="No music content matches the current filter." />
+          <AdminEmptyState title={t('screens.admin.noMusicFound')} description="No music content matches the current filter." />
         ) : (
           <Card>
             <Table>

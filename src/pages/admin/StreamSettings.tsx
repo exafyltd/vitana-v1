@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export default function StreamSettings() {
   const { toast } = useToast();
@@ -30,7 +30,7 @@ export default function StreamSettings() {
   return (
     <AppLayout>
       <SEO 
-        title="Stream Settings | Admin | VITANA" 
+        title={t('screens.admin.streamSettingsAdminVitana')} 
         description="Configure global streaming settings" 
         canonical={window.location.href} 
       />
@@ -39,24 +39,24 @@ export default function StreamSettings() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Stream Settings"
+            title={t('screens.admin.streamSettings')}
             description="Configure global settings for all streaming features"
             emoji="⚙️"
           />
 
           <Tabs defaultValue="vertex" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="vertex">Vertex AI</TabsTrigger>
-              <TabsTrigger value="community">Community Rooms</TabsTrigger>
+              <TabsTrigger value="vertex">{t('screens.admin.vertexAi')}</TabsTrigger>
+              <TabsTrigger value="community">{t('screens.admin.communityRooms')}</TabsTrigger>
               <TabsTrigger value="telemedicine">Telemedicine</TabsTrigger>
-              <TabsTrigger value="global">Global Settings</TabsTrigger>
+              <TabsTrigger value="global">{t('screens.admin.globalSettings')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="vertex" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Vertex AI Configuration</CardTitle>
-                  <CardDescription>Settings for Google Vertex AI streaming</CardDescription>
+                  <CardTitle>{t('screens.admin.vertexAiConfiguration')}</CardTitle>
+                  <CardDescription>{t('screens.admin.settingsForGoogleVertexAiStreaming')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -66,8 +66,8 @@ export default function StreamSettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="gemini-2.0-flash">Gemini 2.0 Flash (Recommended)</SelectItem>
-                        <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
+                        <SelectItem value="gemini-2.0-flash">{t('screens.admin.gemini20FlashRecommended')}</SelectItem>
+                        <SelectItem value="gemini-pro">{t('screens.admin.geminiPro')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -89,10 +89,10 @@ export default function StreamSettings() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="system-prompt">System Prompt</Label>
+                    <Label htmlFor="system-prompt">{t('screens.admin.systemPrompt')}</Label>
                     <Textarea
                       id="system-prompt"
-                      placeholder="You are a helpful AI assistant..."
+                      placeholder={t('screens.admin.youHelpfulAiAssistant')}
                       className="min-h-[100px]"
                       defaultValue="You are VITANA's AI assistant. Be helpful, concise, and friendly."
                     />
@@ -100,8 +100,8 @@ export default function StreamSettings() {
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Voice Activity Detection</Label>
-                      <p className="text-sm text-muted-foreground">Automatically detect when user stops speaking</p>
+                      <Label>{t('screens.admin.voiceActivityDetection')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.automaticallyDetectWhenUserStopsSpeaking')}</p>
                     </div>
                     <Switch defaultChecked />
                   </div>
@@ -112,33 +112,33 @@ export default function StreamSettings() {
             <TabsContent value="community" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Community Room Defaults</CardTitle>
-                  <CardDescription>Default settings for new community live rooms</CardDescription>
+                  <CardTitle>{t('screens.admin.communityRoomDefaults')}</CardTitle>
+                  <CardDescription>{t('screens.admin.defaultSettingsForNewCommunityLive')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="max-participants">Max Participants</Label>
+                    <Label htmlFor="max-participants">{t('screens.admin.maxParticipants')}</Label>
                     <Input id="max-participants" type="number" defaultValue="50" />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Auto-Record Sessions</Label>
-                      <p className="text-sm text-muted-foreground">Automatically record all community rooms</p>
+                      <Label>{t('screens.admin.autorecordSessions')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.automaticallyRecordAllCommunityRooms')}</p>
                     </div>
                     <Switch />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Public by Default</Label>
-                      <p className="text-sm text-muted-foreground">New rooms are publicly visible</p>
+                      <Label>{t('screens.admin.publicByDefault')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.newRoomsPubliclyVisible')}</p>
                     </div>
                     <Switch defaultChecked />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="moderation-level">Moderation Level</Label>
+                    <Label htmlFor="moderation-level">{t('screens.admin.moderationLevel')}</Label>
                     <Select defaultValue="moderate">
                       <SelectTrigger id="moderation-level">
                         <SelectValue />
@@ -157,27 +157,27 @@ export default function StreamSettings() {
             <TabsContent value="telemedicine" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Telemedicine Defaults</CardTitle>
-                  <CardDescription>Settings for healthcare video consultations</CardDescription>
+                  <CardTitle>{t('screens.admin.telemedicineDefaults')}</CardTitle>
+                  <CardDescription>{t('screens.admin.settingsForHealthcareVideoConsultations')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="session-duration">Default Session Duration (minutes)</Label>
+                    <Label htmlFor="session-duration">{t('screens.admin.defaultSessionDurationMinutes')}</Label>
                     <Input id="session-duration" type="number" defaultValue="30" />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Require Recording Consent</Label>
-                      <p className="text-sm text-muted-foreground">Patients must consent to recording</p>
+                      <Label>{t('screens.admin.requireRecordingConsent')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.patientsMustConsentRecording')}</p>
                     </div>
                     <Switch defaultChecked />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Auto-End Inactive Sessions</Label>
-                      <p className="text-sm text-muted-foreground">End sessions after 10 minutes of inactivity</p>
+                      <Label>{t('screens.admin.autoendInactiveSessions')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.endSessionsAfter10MinutesInactivity')}</p>
                     </div>
                     <Switch defaultChecked />
                   </div>
@@ -188,30 +188,30 @@ export default function StreamSettings() {
             <TabsContent value="global" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Global Stream Settings</CardTitle>
-                  <CardDescription>Settings that apply to all streaming features</CardDescription>
+                  <CardTitle>{t('screens.admin.globalStreamSettings')}</CardTitle>
+                  <CardDescription>{t('screens.admin.settingsThatApplyAllStreamingFeatures')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="max-concurrent">Max Concurrent Streams</Label>
+                    <Label htmlFor="max-concurrent">{t('screens.admin.maxConcurrentStreams')}</Label>
                     <Input id="max-concurrent" type="number" defaultValue="100" />
-                    <p className="text-xs text-muted-foreground">Per tenant limit</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.admin.perTenantLimit')}</p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bandwidth-limit">Bandwidth Limit (Mbps)</Label>
+                    <Label htmlFor="bandwidth-limit">{t('screens.admin.bandwidthLimitMbps')}</Label>
                     <Input id="bandwidth-limit" type="number" defaultValue="1000" />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="analytics-retention">Analytics Retention (days)</Label>
+                    <Label htmlFor="analytics-retention">{t('screens.admin.analyticsRetentionDays')}</Label>
                     <Input id="analytics-retention" type="number" defaultValue="90" />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label>Enable CDN</Label>
-                      <p className="text-sm text-muted-foreground">Use content delivery network for streaming</p>
+                      <Label>{t('screens.admin.enableCdn')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.useContentDeliveryNetworkForStreaming')}</p>
                     </div>
                     <Switch defaultChecked />
                   </div>

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { DailyMentalData } from "@/types/mental";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface DailyMentalCardProps {
   data: DailyMentalData;
@@ -52,7 +53,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
         {/* Focus Score */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-600 dark:text-slate-400">Focus Score</span>
+            <span className="text-slate-600 dark:text-slate-400">{t('screens.health.focusScore')}</span>
             <span className="font-semibold">{data.focusScore} / 100</span>
           </div>
           <div className="h-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-full overflow-hidden">
@@ -66,7 +67,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
         {/* Stress Level */}
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-600 dark:text-slate-400">Stress Level</span>
+            <span className="text-slate-600 dark:text-slate-400">{t('screens.health.stressLevel')}</span>
             <span className="font-semibold">{data.stressLevel} / 100</span>
           </div>
           <div className="h-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-full overflow-hidden">

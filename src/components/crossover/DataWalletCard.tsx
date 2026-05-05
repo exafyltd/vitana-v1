@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Shield, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthReport {
   type: string;
@@ -64,7 +65,7 @@ function DataWalletCardBase({
     <CrossoverCard
       icon={Shield}
       category="data"
-      title="Health Data Wallet"
+      title={t('screens.crossover.healthDataWallet')}
       subtitle="Secure access to your health reports and analytics"
       content={content}
       buttonText="View Reports"

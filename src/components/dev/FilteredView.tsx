@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, Plus, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DEV_HUB_CONFIG } from "@/config/dev-config";
+import { t } from '@/lib/i18n-toast';
 
 interface SavedFilter {
   id: string;
@@ -74,7 +75,7 @@ export function FilteredView() {
       <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold mb-1">Saved Filters</h3>
+            <h3 className="text-sm font-semibold mb-1">{t('screens.dev.savedFilters')}</h3>
             <p className="text-xs text-muted-foreground">
               Quick access to pre-configured query filters
             </p>

@@ -23,7 +23,7 @@ import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelati
 import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
 import { toast } from "sonner";
-import { lookup } from '@/lib/i18n-toast';
+import { lookup, t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -76,7 +76,7 @@ export default withScreenId(function Plans() {
   return (
     <AppLayout>
       <SEO 
-        title="Personalized Health Plans | Vitana" 
+        title={t('screens.health.personalizedHealthPlansVitana')} 
         description="AI-powered nutrition, exercise, hydration, sleep, and wellness plans tailored to your unique health profile and goals"
         canonical={window.location.href}
       />
@@ -89,13 +89,13 @@ export default withScreenId(function Plans() {
         <div className="max-w-7xl mx-auto">
           
           <StandardHeader
-            title="Your Personalized Health Plans"
+            title={t('screens.health.yourPersonalizedHealthPlans')}
             description="AI-powered plans tailored to your unique health profile and goals"
             emoji="🎯"
           />
           
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search plans..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchPlans')} />
           <Button
             variant="default"
             size="sm"
@@ -112,12 +112,12 @@ export default withScreenId(function Plans() {
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="all" className="mb-6">
             <SplitBarList className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="all">📋 All Plans</SplitBarTrigger>
-              <SplitBarTrigger value="nutrition">🥗 Nutrition</SplitBarTrigger>
-              <SplitBarTrigger value="exercise">🏃 Exercise</SplitBarTrigger>
-              <SplitBarTrigger value="hydration">💧 Hydration</SplitBarTrigger>
-              <SplitBarTrigger value="sleep">😴 Sleep</SplitBarTrigger>
-              <SplitBarTrigger value="mental">🧠 Mental</SplitBarTrigger>
+              <SplitBarTrigger value="all">{t('screens.health.allPlans')}</SplitBarTrigger>
+              <SplitBarTrigger value="nutrition">{t('screens.health.nutrition')}</SplitBarTrigger>
+              <SplitBarTrigger value="exercise">{t('screens.health.exercise')}</SplitBarTrigger>
+              <SplitBarTrigger value="hydration">{t('screens.health.hydration')}</SplitBarTrigger>
+              <SplitBarTrigger value="sleep">{t('screens.health.sleep')}</SplitBarTrigger>
+              <SplitBarTrigger value="mental">{t('screens.health.mental')}</SplitBarTrigger>
             </SplitBarList>
             
             <SplitBarContent value="all">

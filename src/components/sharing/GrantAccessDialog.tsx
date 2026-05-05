@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface GrantAccessDialogProps {
   open: boolean;
@@ -46,7 +46,7 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className="sm:max-w-[500px]">
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Grant Data Access</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle>{t('screens.sharing.grantDataAccess')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             Allow an entity to access specific data with defined permissions
           </ResponsiveDialogDescription>
@@ -55,46 +55,46 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
           <ResponsiveDialogBody>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="entityEmail">Entity (Email or ID)</Label>
+                <Label htmlFor="entityEmail">{t('screens.sharing.entityEmailId')}</Label>
                 <Input
                   id="entityEmail"
                   type="email"
-                  placeholder="user@example.com or org-id-123"
+                  placeholder={t('screens.sharing.userExampleComOrgid123')}
                   value={entityEmail}
                   onChange={(e) => setEntityEmail(e.target.value)}
                   required
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="permissionLevel">Permission Level</Label>
+                <Label htmlFor="permissionLevel">{t('screens.sharing.permissionLevel')}</Label>
                 <Select value={permissionLevel} onValueChange={setPermissionLevel}>
                   <SelectTrigger id="permissionLevel">
-                    <SelectValue placeholder="Select permission level" />
+                    <SelectValue placeholder={t('screens.sharing.selectPermissionLevel')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="view">View Only</SelectItem>
-                    <SelectItem value="edit">View & Edit</SelectItem>
-                    <SelectItem value="manage">Full Management</SelectItem>
+                    <SelectItem value="view">{t('screens.sharing.viewOnly')}</SelectItem>
+                    <SelectItem value="edit">{t('screens.sharing.viewEdit')}</SelectItem>
+                    <SelectItem value="manage">{t('screens.sharing.fullManagement')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="dataScope">Data Scope</Label>
+                <Label htmlFor="dataScope">{t('screens.sharing.dataScope')}</Label>
                 <Select value={dataScope} onValueChange={setDataScope}>
                   <SelectTrigger id="dataScope">
-                    <SelectValue placeholder="What data to share" />
+                    <SelectValue placeholder={t('screens.sharing.whatDataShare')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="health">Health Records</SelectItem>
-                    <SelectItem value="calendar">Calendar Events</SelectItem>
+                    <SelectItem value="health">{t('screens.sharing.healthRecords')}</SelectItem>
+                    <SelectItem value="calendar">{t('screens.sharing.calendarEvents')}</SelectItem>
                     <SelectItem value="messages">Messages</SelectItem>
                     <SelectItem value="documents">Documents</SelectItem>
-                    <SelectItem value="all">All Data</SelectItem>
+                    <SelectItem value="all">{t('screens.sharing.allData')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="expirationDate">Expiration Date (Optional)</Label>
+                <Label htmlFor="expirationDate">{t('screens.sharing.expirationDateOptional')}</Label>
                 <Input
                   id="expirationDate"
                   type="date"
@@ -108,7 +108,7 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit">Grant Access</Button>
+            <Button type="submit">{t('screens.sharing.grantAccess')}</Button>
           </ResponsiveDialogFooter>
         </form>
       </ResponsiveDialogContent>

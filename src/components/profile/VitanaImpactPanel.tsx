@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Users, Heart, Share2, TrendingUp, Sparkles } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface VitanaImpactPanelProps {
   vitanaIndex: number;
@@ -43,8 +44,8 @@ export function VitanaImpactPanel({
               <Sparkles className="w-5 h-5 text-[hsl(var(--sys-vitana-accent))]" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-foreground">Vitana Impact</h3>
-              <p className="text-xs text-muted-foreground">Your wellness influence</p>
+              <h3 className="text-lg font-bold text-foreground">{t('screens.profile.vitanaImpact')}</h3>
+              <p className="text-xs text-muted-foreground">{t('screens.profile.yourWellnessInfluence')}</p>
             </div>
           </div>
         </div>
@@ -124,7 +125,7 @@ export function VitanaImpactPanel({
                       <TrendingUp className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Your Influence</div>
+                      <div className="text-sm text-muted-foreground">{t('screens.profile.yourInfluence')}</div>
                       <div className={`text-lg font-bold bg-gradient-to-r ${influence.gradient} bg-clip-text text-transparent`}>
                         {influence.label}
                       </div>
@@ -143,7 +144,7 @@ export function VitanaImpactPanel({
                     <Heart className="w-5 h-5 text-[hsl(var(--domain-community-accent))]" />
                   </div>
                   <div className="text-2xl font-bold text-foreground">{communityStats.helpedUsers}</div>
-                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">People Helped</div>
+                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">{t('screens.profile.peopleHelped')}</div>
                 </div>
               </div>
 
@@ -165,7 +166,7 @@ export function VitanaImpactPanel({
                     <Share2 className="w-5 h-5 text-[hsl(var(--util-profile-accent))]" />
                   </div>
                   <div className="text-2xl font-bold text-foreground">{communityStats.posts}</div>
-                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">Posts Shared</div>
+                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">{t('screens.profile.postsShared')}</div>
                 </div>
               </div>
             </div>

@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface ExportLogsModalProps {
   open: boolean;
@@ -45,15 +45,15 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle>Export Command History</DialogTitle>
+          <DialogTitle>{t('screens.dev.exportCommandHistory')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="export-format">Format *</Label>
+            <Label htmlFor="export-format">{t('screens.dev.format')}</Label>
             <Select value={format} onValueChange={setFormat}>
               <SelectTrigger id="export-format">
-                <SelectValue placeholder="Select format" />
+                <SelectValue placeholder={t('screens.dev.selectFormat')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="csv">CSV</SelectItem>
@@ -65,7 +65,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="date-from">From Date *</Label>
+              <Label htmlFor="date-from">{t('screens.dev.fromDate')}</Label>
               <Input
                 id="date-from"
                 type="date"
@@ -74,7 +74,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="date-to">To Date *</Label>
+              <Label htmlFor="date-to">{t('screens.dev.date')}</Label>
               <Input
                 id="date-to"
                 type="date"
@@ -85,21 +85,21 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="export-status">Status Filter *</Label>
+            <Label htmlFor="export-status">{t('screens.dev.statusFilter')}</Label>
             <Select value={status} onValueChange={setStatus}>
               <SelectTrigger id="export-status">
-                <SelectValue placeholder="Select status" />
+                <SelectValue placeholder={t('screens.dev.selectStatus')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All</SelectItem>
-                <SelectItem value="success">Success Only</SelectItem>
-                <SelectItem value="failed">Failed Only</SelectItem>
+                <SelectItem value="success">{t('screens.dev.successOnly')}</SelectItem>
+                <SelectItem value="failed">{t('screens.dev.failedOnly')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="raw-logs-toggle">Include raw logs</Label>
+            <Label htmlFor="raw-logs-toggle">{t('screens.dev.includeRawLogs')}</Label>
             <Switch
               id="raw-logs-toggle"
               checked={includeRawLogs}

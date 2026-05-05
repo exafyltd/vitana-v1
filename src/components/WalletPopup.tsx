@@ -38,7 +38,7 @@ import CreditTransferPopup from "@/components/payment/CreditTransferPopup";
 import ExchangeAndSendPopup from "@/components/payment/ExchangeAndSendPopup";
 import { ExchangeRateDisplay } from "@/components/wallet/ExchangeRateDisplay";
 import { QuickExchangeWidget } from "@/components/wallet/QuickExchangeWidget";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface Transaction {
   id: string;
@@ -142,7 +142,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400/20 to-emerald-500/20 flex items-center justify-center">
               <Wallet className="w-4 h-4 text-green-500" />
             </div>
-            <span>Digital Wallet</span>
+            <span>{t('screens.common.digitalWallet')}</span>
             <Badge variant="outline" className="ml-auto text-green-600 border-green-200">
               {loading ? '...' : currentBalance.toLocaleString()} VTNA
             </Badge>
@@ -164,7 +164,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                   <div className="text-lg font-bold text-green-600">
                     {loading ? '...' : currentBalance.toLocaleString()}
                   </div>
-                  <div className="text-xs text-muted-foreground">VTNA Balance</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.common.vtnaBalance')}</div>
                   <div className="flex items-center justify-center gap-1 mt-1">
                     <TrendingUp className="h-3 w-3 text-green-500" />
                     <span className="text-xs text-green-600">+{monthlyTrend}%</span>
@@ -227,7 +227,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             {/* Recent Transactions */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">Recent Transactions</p>
+                <p className="text-sm font-medium">{t('screens.common.recentTransactions')}</p>
                 <Badge variant="outline" className="text-xs">
                   Last {mockTransactions.length}
                 </Badge>
@@ -259,7 +259,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             {/* Health Data Monetization */}
             <Separator />
             <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground">Data Monetization</p>
+              <p className="text-xs font-medium text-muted-foreground">{t('screens.common.dataMonetization')}</p>
               <Card className="border-dashed">
                 <CardContent className="p-3 text-center">
                   <Database className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Star, Shield, Users, Heart, Brain, Activity, Zap, Filter } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface BrowseServicesPopupProps {
   isOpen: boolean;
@@ -74,7 +75,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input 
-                  placeholder="Search integrations..." 
+                  placeholder={t('screens.common.searchIntegrations')} 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -93,7 +94,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="featured">Featured</TabsTrigger>
               <TabsTrigger value="categories">Categories</TabsTrigger>
-              <TabsTrigger value="all">All Services</TabsTrigger>
+              <TabsTrigger value="all">{t('screens.common.allServices')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="featured" className="space-y-4">
@@ -137,7 +138,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
                         </div>
                         
                         <div>
-                          <div className="text-xs font-medium text-muted-foreground mb-1">Data Types</div>
+                          <div className="text-xs font-medium text-muted-foreground mb-1">{t('screens.common.dataTypes')}</div>
                           <div className="flex flex-wrap gap-1">
                             {service.dataTypes.slice(0, 2).map((type, index) => (
                               <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
@@ -148,7 +149,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
                           </div>
                         </div>
                         
-                        <Button size="sm" className="w-full">Connect Integration</Button>
+                        <Button size="sm" className="w-full">{t('screens.common.connectIntegration')}</Button>
                       </CardContent>
                     </Card>
                   );
@@ -175,8 +176,8 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
 
             <TabsContent value="all" className="space-y-4">
               <div className="text-center text-muted-foreground">
-                <p>Browse all available integrations and services</p>
-                <Button size="sm" className="mt-2">View All Integrations</Button>
+                <p>{t('screens.common.browseAllAvailableIntegrationsServices')}</p>
+                <Button size="sm" className="mt-2">{t('screens.common.viewAllIntegrations')}</Button>
               </div>
             </TabsContent>
           </Tabs>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Droplets, Apple, Dumbbell, Moon, Brain, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { healthNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 
 const pillars = [
@@ -46,7 +47,7 @@ export default function PillarsOfHealth() {
 
   return (
     <AppLayout>
-      <SEO title="Pillars of Health | Health" description="Explore the five pillars of health and wellness" canonical={window.location.href} />
+      <SEO title={t('screens.health.pillarsHealthHealth')} description="Explore the five pillars of health and wellness" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -55,8 +56,8 @@ export default function PillarsOfHealth() {
             {/* Shortened Header Bar - Welcome Message Only */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Build your foundation for wellness! 🏗️</h1>
-                <p className="text-muted-foreground">Explore the five fundamental pillars of health and discover resources to enhance each area of your wellness.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.health.buildYourFoundationForWellness')}</h1>
+                <p className="text-muted-foreground">{t('screens.health.exploreFiveFundamentalPillarsHealthDiscover')}</p>
               </div>
             </div>
             

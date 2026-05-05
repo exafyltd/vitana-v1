@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PhotoDiaryUploaderProps {
   onUploadComplete?: () => void;
@@ -188,7 +188,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           </div>
 
           <Textarea
-            placeholder="Add a caption (optional)..."
+            placeholder={t('screens.diary.addCaptionOptional')}
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             rows={3}

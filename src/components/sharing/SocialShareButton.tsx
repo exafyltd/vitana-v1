@@ -23,7 +23,7 @@ import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons"
 import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNativeShare } from "@/hooks/useNativeShare";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
@@ -247,7 +247,7 @@ export default function SocialShareButton({
             {/* Quick Share (Personal) - Using unified component */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">💬 Quick Share (Personal)</span>
+                <span className="text-sm font-medium">{t('screens.sharing.quickSharePersonal')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Opens your personal apps - no setup needed
@@ -272,7 +272,7 @@ export default function SocialShareButton({
             {/* Social Media (Auto-Post) */}
             <div className="space-y-2 pt-2 border-t">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">📣 Social Media (Auto-Post)</span>
+                <span className="text-sm font-medium">{t('screens.sharing.socialMediaAutopost2')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Select connected accounts to share automatically

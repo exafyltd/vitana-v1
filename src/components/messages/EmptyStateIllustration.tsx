@@ -1,5 +1,6 @@
 import { MessageSquare, Users, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface EmptyStateIllustrationProps {
   type: 'inbox' | 'conversation';
@@ -34,7 +35,7 @@ export default function EmptyStateIllustration({
             </div>
           </div>
           
-          <h3 className="text-lg font-semibold mb-2">No groups yet</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noGroupsYet')}</h3>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">
             Create your first group to collaborate with multiple people at once in your{' '}
             {context === 'global' ? 'global community' : 'professional network'}.
@@ -62,7 +63,7 @@ export default function EmptyStateIllustration({
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold mb-2">No conversations yet</h3>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noConversationsYet')}</h3>
         <p className="text-muted-foreground mb-6 max-w-md mx-auto">
           Start connecting with others in your{' '}
           {context === 'global' ? 'global community' : 'professional network'}.
@@ -87,7 +88,7 @@ export default function EmptyStateIllustration({
         </div>
       </div>
       
-      <h3 className="text-lg font-medium mb-2">No messages yet</h3>
+      <h3 className="text-lg font-medium mb-2">{t('screens.messages.noMessagesYet')}</h3>
       <p className="text-muted-foreground">
         Start the conversation! Send your first message below.
       </p>

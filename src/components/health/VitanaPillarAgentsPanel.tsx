@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -63,7 +64,7 @@ export function VitanaPillarAgentsPanel() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bot className="w-5 h-5 text-calendar-primary" />
-            <CardTitle className="text-base">Active agents</CardTitle>
+            <CardTitle className="text-base">{t('screens.health.activeAgents')}</CardTitle>
           </div>
           <Badge variant="outline" className="text-[10px]">
             {outputs.length}/5 ran today
@@ -71,7 +72,7 @@ export function VitanaPillarAgentsPanel() {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        {isLoading && <p className="text-sm text-muted-foreground">Checking agents…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">{t('screens.health.checkingAgents')}</p>}
         {!isLoading && outputs.length === 0 && (
           <p className="text-sm text-muted-foreground">
             No agent output today yet. The five pillar agents run on each Index recompute and when you mark a journey event complete.

@@ -30,7 +30,7 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const CHANNEL_ICONS: Record<string, any> = {
   email: Mail,
@@ -235,7 +235,7 @@ export function BlastCenter() {
       <CardContent className="space-y-6">
         {/* Entity Type Selector */}
         <div className="space-y-2">
-          <Label>What are you sharing?</Label>
+          <Label>{t('screens.sharing.whatYouSharing')}</Label>
           <Select value={entityType} onValueChange={setEntityType}>
             <SelectTrigger>
               <SelectValue />
@@ -244,7 +244,7 @@ export function BlastCenter() {
               <SelectItem value="event">Event</SelectItem>
               <SelectItem value="meetup">Meetup</SelectItem>
               <SelectItem value="group">Group</SelectItem>
-              <SelectItem value="live-room">Live Room</SelectItem>
+              <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
               <SelectItem value="profile">Profile</SelectItem>
             </SelectContent>
           </Select>
@@ -252,10 +252,10 @@ export function BlastCenter() {
 
         {/* Campaign Selector */}
         <div className="space-y-2">
-          <Label>Campaign (Optional)</Label>
+          <Label>{t('screens.sharing.campaignOptional')}</Label>
           <Select value={selectedCampaign || undefined} onValueChange={setSelectedCampaign}>
             <SelectTrigger>
-              <SelectValue placeholder="No campaign selected" />
+              <SelectValue placeholder={t('screens.sharing.noCampaignSelected')} />
             </SelectTrigger>
             <SelectContent>
               {campaigns?.map((campaign) => (
@@ -305,7 +305,7 @@ export function BlastCenter() {
           <div className="space-y-2">
             <Label>Title</Label>
             <Input
-              placeholder="Enter a compelling title..."
+              placeholder={t('screens.sharing.enterCompellingTitle')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -314,7 +314,7 @@ export function BlastCenter() {
           <div className="space-y-2">
             <Label>Description</Label>
             <Textarea
-              placeholder="Write your message..."
+              placeholder={t('screens.sharing.writeYourMessage')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
@@ -324,7 +324,7 @@ export function BlastCenter() {
 
         {/* Channel Selector */}
         <div className="space-y-3">
-          <Label>Select Channels</Label>
+          <Label>{t('screens.sharing.selectChannels')}</Label>
           {channelsLoading ? (
             <div className="flex justify-center py-8">
               <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
@@ -365,7 +365,7 @@ export function BlastCenter() {
           ) : (
             <div className="text-center py-8 border rounded-lg bg-muted/50">
               <MessageSquare className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">No channels connected yet</p>
+              <p className="text-sm text-muted-foreground">{t('screens.sharing.noChannelsConnectedYet')}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Go to Integrations to connect channels
               </p>

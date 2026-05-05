@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import type { ActivityHistoryItem } from "@/hooks/useActivityHistory";
+import { t } from '@/lib/i18n-toast';
 
 interface PromoteToKnowledgeDialogProps {
   activity: ActivityHistoryItem | null;
@@ -79,12 +80,12 @@ export function PromoteToKnowledgeDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Save as Knowledge</DialogTitle>
+          <DialogTitle>{t('screens.memory.saveAsKnowledge')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="content">Content *</Label>
+            <Label htmlFor="content">{t('screens.memory.content')}</Label>
             <Textarea
               id="content"
               value={content}
@@ -126,7 +127,7 @@ export function PromoteToKnowledgeDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="tags">Tags (comma-separated)</Label>
+            <Label htmlFor="tags">{t('screens.memory.tagsCommaseparated')}</Label>
             <Input
               id="tags"
               value={tags}

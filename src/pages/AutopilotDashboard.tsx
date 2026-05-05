@@ -36,6 +36,7 @@ import { JourneyCheckpoints, dayNumberFromCreated } from "@/components/health/Jo
 import { JourneyWaveMap } from "@/components/health/JourneyWaveMap";
 import { trend7d } from "@/lib/vitana-projection";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 interface Recommendation {
   id: string;
@@ -128,11 +129,11 @@ function NowCard() {
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0">
           <div className="text-center">
             <div className="text-3xl font-bold text-green-600">{total === null ? "…" : total}</div>
-            <div className="text-[10px] text-muted-foreground">of 999</div>
+            <div className="text-[10px] text-muted-foreground">{t('screens.autopilotdashboard.text999')}</div>
           </div>
         </div>
         <div className="space-y-1 min-w-0">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Your Index</p>
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('screens.autopilotdashboard.yourIndex')}</p>
           {tier && <p className="text-base font-semibold">{tier.label}</p>}
           {trendLabel && (
             <p className={`text-xs flex items-center gap-1 ${trendLabel.cls}`}>
@@ -167,7 +168,7 @@ function CompassCard({ alignedCount }: { alignedCount: number }) {
       <CardContent className="p-4 space-y-2">
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-primary" />
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Your compass</p>
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('screens.autopilotdashboard.yourCompass')}</p>
         </div>
         {compass?.primary_goal ? (
           <>
@@ -182,7 +183,7 @@ function CompassCard({ alignedCount }: { alignedCount: number }) {
           </>
         ) : (
           <>
-            <p className="text-base font-semibold leading-snug">Set your Life Compass</p>
+            <p className="text-base font-semibold leading-snug">{t('screens.autopilotdashboard.setYourLifeCompass')}</p>
             <p className="text-xs text-muted-foreground">
               Pick a direction so suggestions stay aligned with what matters to you.
             </p>
@@ -261,7 +262,7 @@ function PersonalPath({
 }) {
   return (
     <div className="space-y-2 mb-6">
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">By horizon</p>
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('screens.autopilotdashboard.byHorizon')}</p>
       <div className="overflow-x-auto flex gap-2 snap-x snap-mandatory pb-2 -mx-4 px-4 md:mx-0 md:px-0">
         {HORIZON_BUCKETS.map((bucket) => (
           <PathStopCard
@@ -331,11 +332,11 @@ export default function AutopilotDashboard() {
   if (isMobile) {
     return (
       <AppLayout>
-        <SEO title="My Journey" description="Your personalized autopilot journey" canonical={window.location.href} />
+        <SEO title={t('screens.autopilotdashboard.myJourney')} description="Your personalized autopilot journey" canonical={window.location.href} />
 
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-purple-50 via-blue-50 to-pink-50 pb-32">
           <div className="px-4 pt-2">
-            <StandardHeader title="My Journey" description="The path your Index walks" emoji="🚀" />
+            <StandardHeader title={t('screens.autopilotdashboard.myJourney')} description="The path your Index walks" emoji="🚀" />
           </div>
 
           <div className="px-4">
@@ -350,7 +351,7 @@ export default function AutopilotDashboard() {
               }
             >
               <div className="flex items-center gap-2 min-w-max">
-                <ExpandableSearchButton placeholder="Search tasks..." />
+                <ExpandableSearchButton placeholder={t('screens.autopilotdashboard.searchTasks')} />
                 <UniversalCalendarButton />
               </div>
             </UtilityActionButton>
@@ -406,10 +407,10 @@ export default function AutopilotDashboard() {
   // ── Desktop layout ─────────────────────────────────────────────────────
   return (
     <AppLayout>
-      <SEO title="My Journey" description="Your personalized autopilot journey" canonical={window.location.href} />
+      <SEO title={t('screens.autopilotdashboard.myJourney')} description="Your personalized autopilot journey" canonical={window.location.href} />
       <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader title="My Journey" description="The path your Index walks" emoji="🚀" />
+          <StandardHeader title={t('screens.autopilotdashboard.myJourney')} description="The path your Index walks" emoji="🚀" />
 
           {isLoading ? (
             <div className="flex justify-center py-12">
@@ -433,7 +434,7 @@ export default function AutopilotDashboard() {
               />
 
               <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">All your work</p>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('screens.autopilotdashboard.allYourWork')}</p>
                 <Button
                   variant="ghost"
                   size="sm"

@@ -13,6 +13,7 @@ import { CalendarIcon, Upload as UploadIcon, X, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
+import { t } from '@/lib/i18n-toast';
 
 interface MediaUploadPopupProps {
   open: boolean;
@@ -137,13 +138,13 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Upload Media</DialogTitle>
+          <DialogTitle>{t('screens.common.uploadMedia')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
           {/* Step 1: Basic Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Basic Information</h3>
+            <h3 className="text-lg font-semibold">{t('screens.common.basicInformation')}</h3>
             
             {/* Title */}
             <div>
@@ -182,10 +183,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* Type Selection */}
             <div>
-              <Label htmlFor="type">Media Type</Label>
+              <Label htmlFor="type">{t('screens.common.mediaType')}</Label>
               <Select value={mediaType} onValueChange={(value: "Podcast" | "Music" | "Video") => setMediaType(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select media type" />
+                  <SelectValue placeholder={t('screens.common.selectMediaType')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Podcast">Podcast</SelectItem>
@@ -197,7 +198,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* File Upload */}
             <div>
-              <Label htmlFor="file">Upload File *</Label>
+              <Label htmlFor="file">{t('screens.common.uploadFile')}</Label>
               <div className={cn(
                 "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
                 selectedFile ? "border-primary bg-primary/5" : "border-muted-foreground/25 hover:border-muted-foreground/50 cursor-pointer"
@@ -277,7 +278,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
             {/* Release Date and Language */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Release Date</Label>
+                <Label>{t('screens.common.releaseDate')}</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -304,10 +305,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               </div>
 
               <div>
-                <Label htmlFor="language">Language *</Label>
+                <Label htmlFor="language">{t('screens.common.language')}</Label>
                 <Select value={language || 'en-US'} onValueChange={setLanguage} required>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select language" />
+                    <SelectValue placeholder={t('screens.common.selectLanguage')} />
                   </SelectTrigger>
                   <SelectContent>
                     {languages.map((lang) => (
@@ -329,7 +330,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {mediaType === "Podcast" && (
                 <>
                   <div>
-                    <Label htmlFor="host-guest">Host / Guest Names (Optional)</Label>
+                    <Label htmlFor="host-guest">{t('screens.common.hostGuestNamesOptional')}</Label>
                     <Input
                       id="host-guest"
                       value={hostGuest}
@@ -355,7 +356,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     <Label htmlFor="genre">Genre</Label>
                     <Select value={genre} onValueChange={setGenre}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select genre" />
+                        <SelectValue placeholder={t('screens.common.selectGenre')} />
                       </SelectTrigger>
                       <SelectContent>
                         {musicGenres.map((g) => (
@@ -368,7 +369,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     <Label htmlFor="mood">Mood</Label>
                     <Select value={mood} onValueChange={setMood}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select mood" />
+                        <SelectValue placeholder={t('screens.common.selectMood')} />
                       </SelectTrigger>
                       <SelectContent>
                         {musicMoods.map((m) => (
@@ -383,10 +384,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {mediaType === "Video" && (
                 <>
                   <div>
-                    <Label htmlFor="topic">Video Topic</Label>
+                    <Label htmlFor="topic">{t('screens.common.videoTopic')}</Label>
                     <Select value={topic} onValueChange={setTopic}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select topic" />
+                        <SelectValue placeholder={t('screens.common.selectTopic')} />
                       </SelectTrigger>
                       <SelectContent>
                         {videoTopics.map((t) => (
@@ -396,7 +397,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="thumbnail">Thumbnail Upload (Optional)</Label>
+                    <Label htmlFor="thumbnail">{t('screens.common.thumbnailUploadOptional')}</Label>
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer">
                       <UploadIcon className="w-6 h-6 mx-auto mb-1 text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
@@ -420,7 +421,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
           {/* Step 3: Visibility & Attribution */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Visibility & Attribution</h3>
+            <h3 className="text-lg font-semibold">{t('screens.common.visibilityAttribution')}</h3>
             
             <div>
               <Label>Visibility</Label>
@@ -439,7 +440,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
             </div>
 
             <div>
-              <Label htmlFor="external-link">External Link (Optional)</Label>
+              <Label htmlFor="external-link">{t('screens.common.externalLinkOptional')}</Label>
               <Input
                 id="external-link"
                 value={externalLink}

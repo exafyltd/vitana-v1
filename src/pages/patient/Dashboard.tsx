@@ -2,12 +2,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Calendar, TestTube, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function PatientDashboard() {
   return (
     <div className="p-6 space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Patient Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('screens.patient.patientDashboard')}</h1>
         <p className="text-muted-foreground">
           Your personalized health management center
         </p>
@@ -16,7 +17,7 @@ export default function PatientDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Next Appointment</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.patient.nextAppointment')}</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -29,7 +30,7 @@ export default function PatientDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Health Score</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.patient.healthScore')}</CardTitle>
             <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -42,7 +43,7 @@ export default function PatientDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Results</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.patient.pendingResults')}</CardTitle>
             <TestTube className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -55,7 +56,7 @@ export default function PatientDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Goals Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.patient.goalsProgress')}</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -70,29 +71,29 @@ export default function PatientDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Your latest health activities</CardDescription>
+            <CardTitle>{t('screens.patient.recentActivity')}</CardTitle>
+            <CardDescription>{t('screens.patient.yourLatestHealthActivities')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Completed daily walk</p>
-                <p className="text-xs text-muted-foreground">2 hours ago</p>
+                <p className="text-sm font-medium">{t('screens.patient.completedDailyWalk')}</p>
+                <p className="text-xs text-muted-foreground">{t('screens.patient.text2HoursAgo')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Blood pressure recorded</p>
+                <p className="text-sm font-medium">{t('screens.patient.bloodPressureRecorded')}</p>
                 <p className="text-xs text-muted-foreground">Yesterday</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Medication reminder</p>
-                <p className="text-xs text-muted-foreground">3 days ago</p>
+                <p className="text-sm font-medium">{t('screens.patient.medicationReminder')}</p>
+                <p className="text-xs text-muted-foreground">{t('screens.patient.text3DaysAgo')}</p>
               </div>
             </div>
           </CardContent>
@@ -100,8 +101,8 @@ export default function PatientDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks and shortcuts</CardDescription>
+            <CardTitle>{t('screens.patient.quickActions')}</CardTitle>
+            <CardDescription>{t('screens.patient.commonTasksShortcuts')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">

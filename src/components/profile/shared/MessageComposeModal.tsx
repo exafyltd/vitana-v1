@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { UserProfile } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 interface MessageComposeModalProps {
   isOpen: boolean;
@@ -71,7 +72,7 @@ export function MessageComposeModal({
 
         <ResponsiveDialogBody className="p-4 sm:p-6 space-y-4">
           <Textarea
-            placeholder="Type your message..."
+            placeholder={t('screens.profile.typeYourMessage')}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}

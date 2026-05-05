@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAutomationRules } from "@/hooks/useAutomationRules";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface AutomationRuleDialogProps {
   open: boolean;
@@ -46,11 +47,11 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Automation Rule</DialogTitle>
+          <DialogTitle>{t('screens.sharing.createAutomationRule')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="rule-name">Rule Name</Label>
+            <Label htmlFor="rule-name">{t('screens.sharing.ruleName')}</Label>
             <Input
               id="rule-name"
               value={name}
@@ -70,7 +71,7 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
             />
           </div>
           <div>
-            <Label htmlFor="trigger">Trigger Type</Label>
+            <Label htmlFor="trigger">{t('screens.sharing.triggerType')}</Label>
             <Select value={triggerType} onValueChange={(v) => setTriggerType(v as any)}>
               <SelectTrigger id="trigger">
                 <SelectValue />
@@ -83,15 +84,15 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
             </Select>
           </div>
           <div>
-            <Label htmlFor="action">Action Type</Label>
+            <Label htmlFor="action">{t('screens.sharing.actionType')}</Label>
             <Select value={actionType} onValueChange={(v) => setActionType(v as any)}>
               <SelectTrigger id="action">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="publish">Publish Post</SelectItem>
-                <SelectItem value="notify">Send Notification</SelectItem>
-                <SelectItem value="update">Update Status</SelectItem>
+                <SelectItem value="publish">{t('screens.sharing.publishPost')}</SelectItem>
+                <SelectItem value="notify">{t('screens.sharing.sendNotification')}</SelectItem>
+                <SelectItem value="update">{t('screens.sharing.updateStatus')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

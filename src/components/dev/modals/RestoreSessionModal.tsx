@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Clock, Trash2 } from "lucide-react";
 import { useSessionRestore } from "@/hooks/dev/useSessionRestore";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface RestoreSessionModalProps {
   open: boolean;
@@ -70,8 +70,8 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
           {sessions.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Clock className="h-12 w-12 mx-auto mb-4 opacity-30" />
-              <p>No saved sessions found</p>
-              <p className="text-sm mt-2">Your recent sessions will appear here</p>
+              <p>{t('screens.dev.noSavedSessionsFound')}</p>
+              <p className="text-sm mt-2">{t('screens.dev.yourRecentSessionsWillAppearHere')}</p>
             </div>
           ) : (
             <div className="space-y-3">

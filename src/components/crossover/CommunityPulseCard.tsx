@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Users, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface CommunityPulseCardProps {
   activeUsers?: number;
@@ -33,7 +34,7 @@ function CommunityPulseCardBase({
           </div>
         )}
         {upcomingEvents > 0 && (
-          <p>Group event tonight</p>
+          <p>{t('screens.crossover.groupEventTonight')}</p>
         )}
       </div>
     </div>
@@ -48,7 +49,7 @@ function CommunityPulseCardBase({
     <CrossoverCard
       icon={Users}
       category="community"
-      title="Community Activity"
+      title={t('screens.crossover.communityActivity')}
       subtitle="Connect with friends and join wellness activities"
       content={content}
       buttonText="Join Activity"

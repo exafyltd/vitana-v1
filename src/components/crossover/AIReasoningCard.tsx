@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Brain, Lightbulb, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface AIReasoningCardProps {
   reasoning?: string;
@@ -35,7 +36,7 @@ function AIReasoningCardBase({
       </div>
 
       <div className="space-y-1">
-        <p className="text-xs font-medium text-muted-foreground">Key Factors:</p>
+        <p className="text-xs font-medium text-muted-foreground">{t('screens.crossover.keyFactors')}</p>
         <div className="flex flex-wrap gap-1">
           {factors.map((factor, index) => (
             <span 
@@ -54,7 +55,7 @@ function AIReasoningCardBase({
     <CrossoverCard
       icon={Brain}
       category="mental"
-      title="Why It Matters 🔍"
+      title={t('screens.crossover.whyItMatters')}
       subtitle="AI reasoning behind recommendations"
       content={content}
       buttonText="Makes Sense"

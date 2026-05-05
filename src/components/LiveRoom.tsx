@@ -5,7 +5,7 @@ import { useWebRTC } from '@/hooks/useWebRTC';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Monitor, Maximize, Minimize } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface LiveRoomProps {
   roomId: string;
@@ -111,7 +111,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
         {/* Empty slots */}
         {peers.length === 0 && (
           <Card className="aspect-video bg-muted flex items-center justify-center">
-            <p className="text-muted-foreground">Waiting for others to join...</p>
+            <p className="text-muted-foreground">{t('screens.common.waitingForOthersJoin')}</p>
           </Card>
         )}
       </div>

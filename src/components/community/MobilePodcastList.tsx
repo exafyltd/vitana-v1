@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { formatDistanceToNow } from 'date-fns';
+import { t } from '@/lib/i18n-toast';
 
 interface PodcastEpisode {
   id: string;
@@ -69,8 +70,8 @@ export function MobilePodcastList({ podcasts, currentUserId }: MobilePodcastList
         <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
           <User className="h-8 w-8 text-muted-foreground" />
         </div>
-        <p className="text-muted-foreground">No podcasts uploaded yet</p>
-        <p className="text-sm text-muted-foreground/70 mt-1">Be the first to share!</p>
+        <p className="text-muted-foreground">{t('screens.community.noPodcastsUploadedYet')}</p>
+        <p className="text-sm text-muted-foreground/70 mt-1">{t('screens.community.firstShare')}</p>
       </div>
     );
   }

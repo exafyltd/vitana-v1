@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventDetailDrawerProps {
   event: Event;
@@ -96,7 +97,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
           )}
 
           <div>
-            <h4 className="text-sm font-semibold mb-1">Event ID</h4>
+            <h4 className="text-sm font-semibold mb-1">{t('screens.dev.eventId')}</h4>
             <p className="text-xs font-mono text-muted-foreground">
               {event.id}
             </p>

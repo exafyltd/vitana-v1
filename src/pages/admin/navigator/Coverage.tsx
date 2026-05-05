@@ -19,6 +19,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavCoverage } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 export default function NavigatorCoverage() {
   const { data, isLoading, error } = useNavCoverage(null);
@@ -28,12 +29,12 @@ export default function NavigatorCoverage() {
       <div className="space-y-6 p-6">
         <AdminHeader
           emoji="📋"
-          title="Navigator Coverage"
+          title={t('screens.admin.navigatorCoverage')}
           description="Every SPA route that isn't covered by the catalog, every catalog entry that points at a non-existent route, and every trigger that hasn't fired in the last 30 days."
         />
         <SubNavigation items={adminNavigatorNavigation} />
 
-        {isLoading && <p className="text-sm text-muted-foreground">Loading coverage report…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loadingCoverageReport')}</p>}
         {error && (
           <p className="text-sm text-destructive">{(error as Error)?.message || "Failed to load"}</p>
         )}
@@ -94,7 +95,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.broken_catalog_routes.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">All catalog routes map to real SPA paths.</p>
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.allCatalogRoutesMapRealSpa')}</p>
                 ) : (
                   data.broken_catalog_routes.map((e) => (
                     <div key={e.screen_id} className="rounded border bg-destructive/5 px-2 py-1.5 text-sm">

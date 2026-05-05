@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Filter } from "lucide-react";
 import { adminUserManagementNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 const mockUserAuditLogs = [
   { id: 1, user: "John Smith", action: "Login", timestamp: "2025-01-09 10:45 AM", status: "success" },
@@ -18,7 +19,7 @@ export default function UserAudit() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - User Audit Logs" 
+        title={t('screens.admin.adminUserAuditLogs')} 
         description="Track user activities and changes" 
         canonical={window.location.href} 
       />
@@ -27,7 +28,7 @@ export default function UserAudit() {
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="User Audit Logs"
+            title={t('screens.admin.userAuditLogs')}
             description="Track user activities, authentication events, and profile changes"
             emoji="📋"
           />

@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { Sparkles, Copy, Send, RefreshCw } from "lucide-react";
 import { useProfile } from '@/context/ProfileProvider';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 const inviteTemplates = [
   {
@@ -61,13 +61,13 @@ export function AutoInviteGenerator() {
       <CardContent className="space-y-4">
         <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
           <p className="text-sm font-medium">
-            💡 <strong>Pro Tip:</strong> Personal invites get 3x more responses than generic messages. 
+            💡 <strong>{t('screens.proactive.proTip')}</strong> Personal invites get 3x more responses than generic messages. 
             Our AI crafts authentic invitations that reflect your wellness journey!
           </p>
         </div>
 
         <Textarea
-          placeholder="Click 'Generate' to create a personalized invite message..."
+          placeholder={t('screens.proactive.clickGenerateCreatePersonalizedInviteMessage')}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={6}
@@ -119,15 +119,15 @@ export function AutoInviteGenerator() {
         <div className="grid grid-cols-3 gap-4 pt-4 border-t">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">3x</div>
-            <div className="text-xs text-muted-foreground">Higher Response Rate</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.higherResponseRate')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">72%</div>
-            <div className="text-xs text-muted-foreground">Join Within 24hrs</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.joinWithin24hrs')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">5+</div>
-            <div className="text-xs text-muted-foreground">Avg Friend Referrals</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.avgFriendReferrals')}</div>
           </div>
         </div>
       </CardContent>

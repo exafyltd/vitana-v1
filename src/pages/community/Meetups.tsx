@@ -15,6 +15,7 @@ import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useAuth } from "@/context/AuthProvider";
+import { t } from '@/lib/i18n-toast';
 
 // Mock data for meetup events with different pillar categories
 const todayEvents = [
@@ -379,7 +380,7 @@ const EditButton = ({ onEdit }: { onEdit: () => void }) => (
         </Button>
       </TooltipTrigger>
       <TooltipContent side="left">
-        <p>Edit Meetup</p>
+        <p>{t('screens.community.editMeetup')}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>
@@ -515,18 +516,18 @@ export default function Meetups() {
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   return (
     <AppLayout>
-      <SEO title="Meetups | Community" description="Discover and join local meetups and events" canonical={window.location.href} />
+      <SEO title={t('screens.community.meetupsCommunity')} description="Discover and join local meetups and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6">
         <StandardHeader
-          title="Wellness Meetups"
+          title={t('screens.community.wellnessMeetups')}
           description="Join local wellness events focused on the five pillars of health"
           emoji="🤝"
         />
         
         <UtilityActionButton>
           <ExpandableSearchButton 
-            placeholder="Search Meetups…"
+            placeholder={t('screens.community.searchMeetups')}
             onSearch={(query) => console.log('Search Meetups:', query)}
           />
           <UniversalCalendarButton />

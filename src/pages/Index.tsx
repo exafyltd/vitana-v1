@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink } from "lucide-react";
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
-import { lookup } from '@/lib/i18n-toast';
+import { lookup, t } from '@/lib/i18n-toast';
 
 
 const Index = () => {
@@ -29,7 +29,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-      <SEO title="VITANA – Digital Solutions" description="Welcome to VITANA. Choose your health platform and experience innovation in wellness." canonical={window.location.href} />
+      <SEO title={t('screens.index.vitanaDigitalSolutions')} description="Welcome to VITANA. Choose your health platform and experience innovation in wellness." canonical={window.location.href} />
       
       <div className="flex flex-col items-center justify-center min-h-screen p-6">
         <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -51,7 +51,7 @@ const Index = () => {
                     <Heart className="h-12 w-12 text-[#FF7BAC] group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl">Maxina</CardTitle>
-                  <CardDescription>Comprehensive health & wellness platform</CardDescription>
+                  <CardDescription>{t('screens.index.comprehensiveHealthWellnessPlatform')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
@@ -69,7 +69,7 @@ const Index = () => {
                     <BookOpen className="h-12 w-12 text-[#3B82F6] group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl">AlKalma</CardTitle>
-                  <CardDescription>Culturally-aware health solutions</CardDescription>
+                  <CardDescription>{t('screens.index.culturallyawareHealthSolutions')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
@@ -87,7 +87,7 @@ const Index = () => {
                     <Leaf className="h-12 w-12 text-[#4ADE80] group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl">Earthlinks</CardTitle>
-                  <CardDescription>Sustainable & eco-friendly wellness</CardDescription>
+                  <CardDescription>{t('screens.index.sustainableEcofriendlyWellness')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
@@ -104,8 +104,8 @@ const Index = () => {
                   <div className="flex justify-center mb-4">
                     <Shield className="h-12 w-12 text-slate-600 group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl text-slate-700">Exafy Admin</CardTitle>
-                  <CardDescription>System administration portal</CardDescription>
+                  <CardTitle className="text-xl text-slate-700">{t('screens.index.exafyAdmin')}</CardTitle>
+                  <CardDescription>{t('screens.index.systemAdministrationPortal')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
@@ -137,7 +137,7 @@ const Index = () => {
                     Vitana DEV
                     <ExternalLink className="h-4 w-4 opacity-50" />
                   </CardTitle>
-                  <CardDescription>Developer & Command Hub</CardDescription>
+                  <CardDescription>{t('screens.index.developerCommandHub')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">

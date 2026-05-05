@@ -30,6 +30,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavTelemetry } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 export default function NavigatorTelemetry() {
   const [days, setDays] = useState(30);
@@ -40,7 +41,7 @@ export default function NavigatorTelemetry() {
       <div className="space-y-6 p-6">
         <AdminHeader
           emoji="📊"
-          title="Navigator Telemetry"
+          title={t('screens.admin.navigatorTelemetry')}
           description="What Vitana actually decided in real sessions. Use the failed utterances and near-misses lists to discover which triggers to tune."
           rightAction={
             <Select value={String(days)} onValueChange={(v) => setDays(parseInt(v))}>
@@ -48,16 +49,16 @@ export default function NavigatorTelemetry() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="7">Last 7 days</SelectItem>
-                <SelectItem value="30">Last 30 days</SelectItem>
-                <SelectItem value="90">Last 90 days</SelectItem>
+                <SelectItem value="7">{t('screens.admin.last7Days')}</SelectItem>
+                <SelectItem value="30">{t('screens.admin.last30Days')}</SelectItem>
+                <SelectItem value="90">{t('screens.admin.last90Days')}</SelectItem>
               </SelectContent>
             </Select>
           }
         />
         <SubNavigation items={adminNavigatorNavigation} />
 
-        {isLoading && <p className="text-sm text-muted-foreground">Loading telemetry…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loadingTelemetry')}</p>}
         {error && (
           <p className="text-sm text-destructive">{(error as Error)?.message || "Failed to load"}</p>
         )}
@@ -68,7 +69,7 @@ export default function NavigatorTelemetry() {
             <div className="grid gap-3 md:grid-cols-4">
               <Card>
                 <CardContent className="p-4">
-                  <div className="text-xs uppercase text-muted-foreground">Total events</div>
+                  <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.totalEvents2')}</div>
                   <div className="text-2xl font-bold">{data.event_count}</div>
                 </CardContent>
               </Card>
@@ -88,11 +89,11 @@ export default function NavigatorTelemetry() {
               {/* Top firing screens */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Top firing screens</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.topFiringScreens')}</CardTitle>
                 </CardHeader>
                 <CardContent className="max-h-[60vh] overflow-y-auto">
                   {data.top_screens.length === 0 ? (
-                    <p className="text-sm italic text-muted-foreground">No screen firings recorded.</p>
+                    <p className="text-sm italic text-muted-foreground">{t('screens.admin.noScreenFiringsRecorded')}</p>
                   ) : (
                     <div className="space-y-1">
                       {data.top_screens.map((s) => (
@@ -112,11 +113,11 @@ export default function NavigatorTelemetry() {
               {/* Near-misses */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Near-misses (δ ≤ 4)</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.nearmisses4')}</CardTitle>
                 </CardHeader>
                 <CardContent className="max-h-[60vh] overflow-y-auto">
                   {data.near_misses.length === 0 ? (
-                    <p className="text-sm italic text-muted-foreground">No close decisions in window.</p>
+                    <p className="text-sm italic text-muted-foreground">{t('screens.admin.noCloseDecisionsWindow')}</p>
                   ) : (
                     <div className="space-y-2">
                       {data.near_misses.map((nm, i) => {
@@ -152,7 +153,7 @@ export default function NavigatorTelemetry() {
             {/* Failed utterances */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Failed utterances (low confidence)</CardTitle>
+                <CardTitle className="text-base">{t('screens.admin.failedUtterancesLowConfidence')}</CardTitle>
               </CardHeader>
               <CardContent className="max-h-[60vh] overflow-y-auto">
                 {data.failed_utterances.length === 0 ? (

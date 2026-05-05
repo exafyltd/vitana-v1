@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface PublicEventData {
   id: string;
@@ -240,9 +241,9 @@ export default function PublicEventLanding() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold text-foreground">Event Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('screens.publiceventlanding.eventNotFound')}</h1>
           <p className="text-muted-foreground">{error || "The event you're looking for doesn't exist."}</p>
-          <Button onClick={() => navigate("/")}>Go to Home</Button>
+          <Button onClick={() => navigate("/")}>{t('screens.publiceventlanding.goHome')}</Button>
         </div>
       </div>
     );
@@ -308,7 +309,7 @@ export default function PublicEventLanding() {
                   <div className="flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Date & Time</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.dateTime')}</p>
                       <p className="text-sm font-medium text-foreground">
                         {eventDate} at {eventTime}
                       </p>
@@ -339,7 +340,7 @@ export default function PublicEventLanding() {
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Hosted by</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.hostedBy')}</p>
                     <p className="text-sm font-medium text-foreground">{event.organizer_name}</p>
                   </div>
                 </div>
@@ -401,7 +402,7 @@ export default function PublicEventLanding() {
                     <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
                     <div className="flex items-center justify-center gap-3 md:hidden">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
-                      <span className="text-xs text-muted-foreground font-medium">or</span>
+                      <span className="text-xs text-muted-foreground font-medium">{t('screens.publiceventlanding.text')}</span>
                       <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
                     </div>
                     

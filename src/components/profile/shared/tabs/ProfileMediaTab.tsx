@@ -7,6 +7,7 @@ import { Video, Headphones, Music, Play, Eye, Users, Sparkles } from "lucide-rea
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileMediaTabProps {
   profile: UserProfile;
@@ -195,7 +196,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
           
           <Select value={activeCategory} onValueChange={(value) => setActiveCategory(value as MediaCategory)}>
             <SelectTrigger className="w-full sm:w-[180px] bg-white/70 backdrop-blur-xl border-white/30 shadow-sm rounded-full">
-              <SelectValue placeholder="Filter media" />
+              <SelectValue placeholder={t('screens.profile.filterMedia')} />
             </SelectTrigger>
             <SelectContent className="bg-white/95 backdrop-blur-xl border-white/30">
               {categories.map((cat) => (
@@ -248,7 +249,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
         
         <Select value={activeCategory} onValueChange={(value) => setActiveCategory(value as MediaCategory)}>
           <SelectTrigger className="w-full sm:w-[180px] bg-white/70 backdrop-blur-xl border-white/30 shadow-sm rounded-full">
-            <SelectValue placeholder="Filter media" />
+            <SelectValue placeholder={t('screens.profile.filterMedia')} />
           </SelectTrigger>
           <SelectContent className="bg-white/95 backdrop-blur-xl border-white/30">
             {categories.map((cat) => (
@@ -362,8 +363,8 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
         <div className="max-w-5xl mx-auto h-full flex items-center justify-center">
           <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
             <Music className="h-4 w-4" />
-            <span className="font-medium">Now Playing Dock</span>
-            <span className="text-xs opacity-60">(Coming Soon)</span>
+            <span className="font-medium">{t('screens.profile.nowPlayingDock')}</span>
+            <span className="text-xs opacity-60">{t('screens.profile.comingSoon')}</span>
           </div>
         </div>
       </div>

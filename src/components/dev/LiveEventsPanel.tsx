@@ -5,6 +5,7 @@ import { SoftWarningBanner } from "./SoftWarningBanner";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface LiveEventsPanelProps {
   tenant?: string;
@@ -29,8 +30,8 @@ export function LiveEventsPanel({ tenant = 'system', status = 'all' }: LiveEvent
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Live Events Feed (OASIS)</CardTitle>
-            <CardDescription>Last 25 events • Auto-refresh 10s</CardDescription>
+            <CardTitle>{t('screens.dev.liveEventsFeedOasis')}</CardTitle>
+            <CardDescription>{t('screens.dev.last25EventsAutorefresh10s')}</CardDescription>
           </div>
           <Button
             variant="outline"
@@ -57,8 +58,8 @@ export function LiveEventsPanel({ tenant = 'system', status = 'all' }: LiveEvent
           </div>
         ) : events.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            <p>No events available</p>
-            <p className="text-sm mt-2">Events will appear here once the gateway is active</p>
+            <p>{t('screens.dev.noEventsAvailable')}</p>
+            <p className="text-sm mt-2">{t('screens.dev.eventsWillAppearHereOnceGateway')}</p>
           </div>
         ) : (
           <div className="space-y-2 max-h-96 overflow-y-auto">

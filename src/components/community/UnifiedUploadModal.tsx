@@ -18,6 +18,7 @@ import {
   autoMetadataErrorCopy,
 } from '@/hooks/useAutoShortMetadata';
 import { readVideoDuration } from '@/lib/videoKeyframes';
+import { t } from '@/lib/i18n-toast';
 
 interface UnifiedUploadModalProps {
   open: boolean;
@@ -334,7 +335,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 <div className="h-3 w-2/3 rounded bg-violet-200/60 animate-pulse" />
               </div>
               <div className="flex items-center justify-between pt-1">
-                <p className="text-xs text-muted-foreground">Usually 2–5 seconds</p>
+                <p className="text-xs text-muted-foreground">{t('screens.community.usually25Seconds')}</p>
                 <Button
                   type="button"
                   variant="ghost"
@@ -542,7 +543,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                     )}>
                       {thumbnailPreview ? (
                         <div className="space-y-2">
-                          <img src={thumbnailPreview} alt="Thumbnail preview" className="w-full h-32 object-cover rounded" />
+                          <img src={thumbnailPreview} alt={t('screens.community.thumbnailPreview')} className="w-full h-32 object-cover rounded" />
                           <Button
                             type="button"
                             variant="ghost"

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, TrendingUp, Users, MessageCircle, ThumbsUp } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { t } from '@/lib/i18n-toast';
 
 export function EngagementAnalytics() {
   const { data: analytics, isLoading } = useQuery({
@@ -63,7 +64,7 @@ export function EngagementAnalytics() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Engagements</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.admin.totalEngagements')}</CardTitle>
             <MessageCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -76,7 +77,7 @@ export function EngagementAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.admin.successRate')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -87,7 +88,7 @@ export function EngagementAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unique Users</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.admin.uniqueUsers')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -100,7 +101,7 @@ export function EngagementAnalytics() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Helpful Feedback</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.admin.helpfulFeedback')}</CardTitle>
             <ThumbsUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -114,8 +115,8 @@ export function EngagementAnalytics() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Engagement Types</CardTitle>
-          <CardDescription>Breakdown of proactive engagement interactions</CardDescription>
+          <CardTitle>{t('screens.admin.engagementTypes')}</CardTitle>
+          <CardDescription>{t('screens.admin.breakdownProactiveEngagementInteractions')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

@@ -37,6 +37,7 @@ import {
   useUpdateCatalogEntry,
   useDeleteCatalogEntry,
 } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 const CATEGORIES = [
   "public", "auth", "community", "business", "wallet", "health",
@@ -202,7 +203,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label htmlFor="screen_id">Screen ID</Label>
+          <Label htmlFor="screen_id">{t('screens.admin.screenId')}</Label>
           <Input
             id="screen_id"
             value={form.screen_id}
@@ -253,13 +254,13 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="public">public</SelectItem>
-              <SelectItem value="authenticated">authenticated</SelectItem>
+              <SelectItem value="public">{t('screens.admin.public')}</SelectItem>
+              <SelectItem value="authenticated">{t('screens.admin.authenticated')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="priority">Priority (0..10)</Label>
+          <Label htmlFor="priority">{t('screens.admin.priority010')}</Label>
           <Input
             id="priority"
             type="number"
@@ -280,13 +281,13 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           onChange={(e) => setForm((f) => ({ ...f, anonymous_safe: e.target.checked }))}
           className="rounded border-input"
         />
-        <span>Anonymous safe (can be recommended to unauthenticated sessions)</span>
+        <span>{t('screens.admin.anonymousSafeCanRecommendedUnauthenticatedSessions')}</span>
       </label>
 
       {/* ── i18n (the trigger text lives here) ───────────────────────────── */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label>Trigger phrases & localized copy</Label>
+          <Label>{t('screens.admin.triggerPhrasesLocalizedCopy')}</Label>
           <div className="flex gap-1">
             {["de", "es", "fr", "pt"].map((l) =>
               form.i18n[l] ? null : (
@@ -302,7 +303,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
             {Object.keys(form.i18n).map((lang) => (
               <TabsTrigger key={lang} value={lang}>
                 {lang.toUpperCase()}
-                {lang === "en" && <span className="ml-1 text-xs text-muted-foreground">(required)</span>}
+                {lang === "en" && <span className="ml-1 text-xs text-muted-foreground">{t('screens.admin.required')}</span>}
               </TabsTrigger>
             ))}
           </TabsList>
@@ -321,7 +322,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
               </div>
               <div className="space-y-1">
                 <Label>
-                  When to visit <span className="text-xs text-muted-foreground">(what the user says that should land here — the trigger text)</span>
+                  When to visit <span className="text-xs text-muted-foreground">{t('screens.admin.whatUserSaysThatShouldLand')}</span>
                 </Label>
                 <Textarea
                   rows={5}
@@ -338,7 +339,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
       <div className="space-y-2 rounded-md border bg-muted/20 p-3">
         <div className="flex items-center justify-between">
           <div>
-            <Label>Override triggers</Label>
+            <Label>{t('screens.admin.overrideTriggers')}</Label>
             <p className="text-xs text-muted-foreground">
               Exact-match phrases that force this screen to win, bypassing scoring.
             </p>
@@ -348,7 +349,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           </Button>
         </div>
         {form.override_triggers.length === 0 ? (
-          <p className="text-xs text-muted-foreground italic">No overrides defined.</p>
+          <p className="text-xs text-muted-foreground italic">{t('screens.admin.noOverridesDefined')}</p>
         ) : (
           <div className="space-y-2">
             {form.override_triggers.map((t, i) => (
@@ -358,8 +359,8 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="en">en</SelectItem>
-                    <SelectItem value="de">de</SelectItem>
+                    <SelectItem value="en">{t('screens.admin.en')}</SelectItem>
+                    <SelectItem value="de">{t('screens.admin.de')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input
@@ -418,7 +419,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           {entry.tenant_id ? (
             <Badge variant="secondary">tenant: {entry.tenant_id.slice(0, 8)}</Badge>
           ) : (
-            <Badge variant="secondary">shared</Badge>
+            <Badge variant="secondary">{t('screens.admin.shared')}</Badge>
           )}
         </div>
       )}

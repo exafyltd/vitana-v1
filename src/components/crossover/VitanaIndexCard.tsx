@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getVitanaIndexTier, getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface VitanaBreakdown {
   nutrition: number;
@@ -106,7 +107,7 @@ function VitanaIndexCardBase({
     <CrossoverCard
       icon={Activity}
       category="vitana"
-      title="Vitana Health Index"
+      title={t('screens.crossover.vitanaHealthIndex')}
       subtitle="The five pillars: Nutrition, Hydration, Exercise, Sleep, Mental."
       content={content}
       buttonText="View Full Report"

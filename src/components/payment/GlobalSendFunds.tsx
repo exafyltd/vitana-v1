@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Search, Send, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface GlobalSendFundsProps {
   isOpen: boolean;
@@ -158,12 +158,12 @@ export default function GlobalSendFunds({
             {/* Recipient Selection */}
             {!selectedRecipient ? (
               <div>
-                <Label htmlFor="search">Search Users</Label>
+                <Label htmlFor="search">{t('screens.payment.searchUsers')}</Label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="search"
-                    placeholder="Search by name or email..."
+                    placeholder={t('screens.payment.searchByNameEmail')}
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -244,7 +244,7 @@ export default function GlobalSendFunds({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="VTNA">VTNA Tokens</SelectItem>
+                  <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
                   <SelectItem value="USD">USD</SelectItem>
                   <SelectItem value="CREDITS">Credits</SelectItem>
                 </SelectContent>

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { ViewDetailsPopup } from "@/components/ViewDetailsPopup";
+import { t } from '@/lib/i18n-toast';
 
 function Logs() {
   const [activeTab, setActiveTab] = useState("activity");
@@ -33,14 +34,14 @@ function Logs() {
   return (
     <AppLayout>
       <SEO 
-        title="Logs & Revocation | Sharing" 
+        title={t('screens.sharing.logsRevocationSharing')} 
         description="Monitor all data sharing activities, view access logs, and manage revoked permissions with complete transparency."
       />
       <SubNavigation items={sharingNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
-            title="Logs & Revocation 📋" 
+            title={t('screens.sharing.logsRevocation')} 
             description="Complete transparency into your data sharing activities and access management"
           />
           
@@ -55,8 +56,8 @@ function Logs() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="activity">Activity Logs</SplitBarTrigger>
-              <SplitBarTrigger value="revoked">Revoked Access</SplitBarTrigger>
+              <SplitBarTrigger value="activity">{t('screens.sharing.activityLogs')}</SplitBarTrigger>
+              <SplitBarTrigger value="revoked">{t('screens.sharing.revokedAccess')}</SplitBarTrigger>
               <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
             </SplitBarList>
 
@@ -64,15 +65,15 @@ function Logs() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
                   <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                    <h3 className="text-lg font-semibold mb-4">Recent Data Sharing Activity</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('screens.sharing.recentDataSharingActivity')}</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                         <div>
-                          <h4 className="font-medium">Data Package Created</h4>
-                          <p className="text-sm text-muted-foreground">Mayo Clinic Research - Jan 20, 2:30 PM</p>
+                          <h4 className="font-medium">{t('screens.sharing.dataPackageCreated')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.sharing.mayoClinicResearchJan20')}</p>
                           <div className="flex gap-1 mt-1">
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Lab Results</span>
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Vital Signs</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.labResults')}</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.vitalSigns')}</span>
                           </div>
                         </div>
                         <div className="text-right">
@@ -82,11 +83,11 @@ function Logs() {
                       </div>
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                         <div>
-                          <h4 className="font-medium">Consent Granted</h4>
-                          <p className="text-sm text-muted-foreground">Stanford Medicine AI Lab - Jan 20, 9:15 AM</p>
+                          <h4 className="font-medium">{t('screens.sharing.consentGranted')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.sharing.stanfordMedicineAiLabJan')}</p>
                           <div className="flex gap-1 mt-1">
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Heart Rate</span>
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Blood Pressure</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.heartRate')}</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.bloodPressure')}</span>
                           </div>
                         </div>
                         <div className="text-right">
@@ -96,11 +97,11 @@ function Logs() {
                       </div>
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                         <div>
-                          <h4 className="font-medium">Data Access</h4>
-                          <p className="text-sm text-muted-foreground">Vitana Health Research - Jan 19, 4:45 PM</p>
+                          <h4 className="font-medium">{t('screens.sharing.dataAccess')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.sharing.vitanaHealthResearchJan19')}</p>
                           <div className="flex gap-1 mt-1">
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">ECG Data</span>
-                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">BP Trends</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.ecgData')}</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{t('screens.sharing.bpTrends')}</span>
                           </div>
                         </div>
                         <div className="text-right">
@@ -113,18 +114,18 @@ function Logs() {
                 </div>
                 <div className="md:col-span-4">
                   <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                    <h3 className="text-lg font-semibold mb-4">Activity Summary</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('screens.sharing.activitySummary')}</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Total Activities</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.totalActivities')}</span>
                         <span className="font-medium">47</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Data Packages Shared</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.dataPackagesShared')}</span>
                         <span className="font-medium">12</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">This Week</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.thisWeek')}</span>
                         <span className="font-medium">5</span>
                       </div>
                     </div>
@@ -137,29 +138,29 @@ function Logs() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-8">
                   <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                    <h3 className="text-lg font-semibold mb-4">Revoked Data Access</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('screens.sharing.revokedDataAccess')}</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
                         <div>
-                          <h4 className="font-medium">Diabetes Research Consortium</h4>
-                          <p className="text-sm text-muted-foreground">Revoked Jan 18 - Study completion</p>
+                          <h4 className="font-medium">{t('screens.sharing.diabetesResearchConsortium')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.sharing.revokedJan18StudyCompletion')}</p>
                           <div className="flex gap-1 mt-1">
-                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Glucose Data</span>
-                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Diet Tracking</span>
+                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{t('screens.sharing.glucoseData')}</span>
+                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{t('screens.sharing.dietTracking')}</span>
                           </div>
                         </div>
                         <div className="text-right">
                           <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Revoked</span>
-                          <Button size="sm" variant="outline" className="ml-2">View History</Button>
+                          <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.viewHistory')}</Button>
                         </div>
                       </div>
                       <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
                         <div>
-                          <h4 className="font-medium">Mental Health Analytics Inc.</h4>
-                          <p className="text-sm text-muted-foreground">Revoked Jan 10 - Privacy concerns</p>
+                          <h4 className="font-medium">{t('screens.sharing.mentalHealthAnalyticsInc')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.sharing.revokedJan10PrivacyConcerns')}</p>
                           <div className="flex gap-1 mt-1">
-                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Sleep Data</span>
-                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Stress Levels</span>
+                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{t('screens.sharing.sleepData')}</span>
+                            <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{t('screens.sharing.stressLevels')}</span>
                           </div>
                         </div>
                         <div className="text-right">
@@ -172,18 +173,18 @@ function Logs() {
                 </div>
                 <div className="md:col-span-4">
                   <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                    <h3 className="text-lg font-semibold mb-4">Revocation Stats</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('screens.sharing.revocationStats')}</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Total Revoked</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.totalRevoked')}</span>
                         <span className="font-medium">3</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Can Restore</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.canRestore')}</span>
                         <span className="font-medium">1</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Permanently Revoked</span>
+                        <span className="text-muted-foreground">{t('screens.sharing.permanentlyRevoked')}</span>
                         <span className="font-medium">2</span>
                       </div>
                     </div>
@@ -196,26 +197,26 @@ function Logs() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-12">
                   <div className="bg-card/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-white/20 relative z-10">
-                    <h3 className="text-lg font-semibold mb-4">Data Sharing Analytics</h3>
+                    <h3 className="text-lg font-semibold mb-4">{t('screens.sharing.dataSharingAnalytics')}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">47</div>
-                        <div className="text-sm text-muted-foreground">Total Activities</div>
+                        <div className="text-sm text-muted-foreground">{t('screens.sharing.totalActivities')}</div>
                       </div>
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">12</div>
-                        <div className="text-sm text-muted-foreground">Packages Shared</div>
+                        <div className="text-sm text-muted-foreground">{t('screens.sharing.packagesShared')}</div>
                       </div>
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">8</div>
-                        <div className="text-sm text-muted-foreground">Active Consents</div>
+                        <div className="text-sm text-muted-foreground">{t('screens.sharing.activeConsents')}</div>
                       </div>
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">3</div>
-                        <div className="text-sm text-muted-foreground">Revoked Access</div>
+                        <div className="text-sm text-muted-foreground">{t('screens.sharing.revokedAccess')}</div>
                       </div>
                     </div>
-                    <p className="text-muted-foreground text-center">Detailed analytics and trends coming soon...</p>
+                    <p className="text-muted-foreground text-center">{t('screens.sharing.detailedAnalyticsTrendsComingSoon')}</p>
                   </div>
                 </div>
               </div>

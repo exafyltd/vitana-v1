@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { X, Reply } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface ReplyPreviewProps {
   message: any;
@@ -47,7 +48,7 @@ export const ReplyPreview: React.FC<ReplyPreviewProps> = ({
         size="sm"
         className="h-7 w-7 p-0 flex-shrink-0"
         onClick={onCancel}
-        aria-label="Cancel reply"
+        aria-label={t('screens.messages.cancelReply')}
       >
         <X className="w-4 h-4" />
       </Button>

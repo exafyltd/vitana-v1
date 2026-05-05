@@ -20,6 +20,7 @@ import { OrderManagementTable } from "./OrderManagementTable";
 import { OrderDetailView } from "./OrderDetailView";
 import { OperationsPanel } from "./OperationsPanel";
 import { TicketOrder } from "@/hooks/useOrderManagement";
+import { t } from '@/lib/i18n-toast';
 
 interface OrganizerEventSalesSheetProps {
   event: OrganizerEvent | null;
@@ -137,7 +138,7 @@ export function OrganizerEventSalesSheet({
                   <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-4 border border-blue-200/50 dark:border-blue-800/50">
                     <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
                       <Ticket className="w-4 h-4" />
-                      <span className="text-xs font-medium">Tickets Sold</span>
+                      <span className="text-xs font-medium">{t('screens.business.ticketsSold')}</span>
                     </div>
                     <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
                       {event.ticketsSold ?? 0}
@@ -162,7 +163,7 @@ export function OrganizerEventSalesSheet({
                   <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/50">
                     <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
                       <UserCheck className="w-4 h-4" />
-                      <span className="text-xs font-medium">Checked In</span>
+                      <span className="text-xs font-medium">{t('screens.business.checked')}</span>
                     </div>
                     <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">
                       {event.checkedInCount ?? 0}

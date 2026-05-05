@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle, X, Clock, Users, TrendingUp, Send } from "lucide-react";
 import { Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventResponseDashboardProps {
   eventId: string;
@@ -190,7 +191,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               ))}
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold">Overall Response Rate</p>
+                  <p className="font-semibold">{t('screens.events.overallResponseRate')}</p>
                   <Badge className="bg-green-600 text-white">{responseRate}%</Badge>
                 </div>
               </div>

@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DevAutopilotPopupProps {
   open: boolean;
@@ -149,7 +149,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
             </div>
-            <span>Dev Autopilot Actions</span>
+            <span>{t('screens.dev.devAutopilotActions')}</span>
             <Badge variant="outline" className="ml-2">
               {selectedActions.length} of {pendingActions.length} selected
             </Badge>
@@ -165,8 +165,8 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
                 <Plane className="w-6 h-6 text-red-500 animate-pulse" />
               </div>
-              <h3 className="font-medium mb-2">Executing Dev Actions...</h3>
-              <p className="text-sm text-muted-foreground">Please wait while AI handles your dev operations</p>
+              <h3 className="font-medium mb-2">{t('screens.dev.executingDevActions')}</h3>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.pleaseWaitWhileAiHandlesYour')}</p>
             </div>
             <Progress value={executionProgress} className="w-full" />
             <div className="text-center mt-2">

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
 import { adminNotificationsNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function SentNew() {
   const { data, isLoading } = useSentNotifications({ days: 30 });
@@ -18,15 +19,15 @@ export default function SentNew() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="📨"
-          title="Sent Notifications"
+          title={t('screens.admin.sentNotifications')}
           description="View all sent notifications and their delivery status"
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading sent notifications...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingSentNotifications')}</p>
         ) : notifications.length === 0 ? (
           <AdminEmptyState
-            title="No Sent Notifications"
+            title={t('screens.admin.noSentNotifications')}
             description="No notifications have been sent in the last 30 days."
           />
         ) : (

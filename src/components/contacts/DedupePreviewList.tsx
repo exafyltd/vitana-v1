@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 export interface MatchedContact {
   localContact: {
@@ -233,7 +234,7 @@ export function DedupePreviewList({
       {/* Empty state */}
       {matches.length === 0 && nonMatches.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-sm text-muted-foreground">No contacts found</p>
+          <p className="text-sm text-muted-foreground">{t('screens.contacts.noContactsFound')}</p>
         </div>
       )}
     </div>

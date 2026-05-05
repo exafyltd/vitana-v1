@@ -28,7 +28,7 @@ import { ExchangeAndSendStep } from './steps/ExchangeAndSendStep';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface WalletMasterActionPopupProps {
   open: boolean;
@@ -127,7 +127,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
         {/* Buy & Add Section — hidden on iOS (prototype features) */}
         {!restricted && (
         <div>
-          <h4 className="text-sm font-medium text-muted-foreground mb-3">Purchase & Add Funds</h4>
+          <h4 className="text-sm font-medium text-muted-foreground mb-3">{t('screens.wallet.purchaseAddFunds')}</h4>
           <div className="grid gap-2">
             <Button 
               variant="outline" 
@@ -141,8 +141,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <CreditCard className="h-4 w-4" />
               )}
               <div className="text-left">
-                <div className="font-medium">Buy Credits</div>
-                <div className="text-xs text-muted-foreground">Add 100 credits to your account</div>
+                <div className="font-medium">{t('screens.wallet.buyCredits')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.add100CreditsYourAccount')}</div>
               </div>
               <Badge variant="secondary" className="ml-auto">Popular</Badge>
             </Button>
@@ -159,8 +159,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <Coins className="h-4 w-4" />
               )}
             <div className="text-left">
-              <div className="font-medium">Buy Tokens</div>
-              <div className="text-xs text-muted-foreground">Add 50 VTNA tokens</div>
+              <div className="font-medium">{t('screens.wallet.buyTokens')}</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.add50VtnaTokens')}</div>
             </div>
             </Button>
           </div>
@@ -172,7 +172,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
         {/* Transfer & Convert Section — hidden on iOS (prototype features) */}
         {!restricted && (
         <div>
-          <h4 className="text-sm font-medium text-muted-foreground mb-3">Transfer & Convert</h4>
+          <h4 className="text-sm font-medium text-muted-foreground mb-3">{t('screens.wallet.transferConvert')}</h4>
           <div className="grid gap-2">            
             <Button 
               variant="outline" 
@@ -181,8 +181,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             >
               <Send className="h-4 w-4" />
               <div className="text-left">
-                <div className="font-medium">Send Funds</div>
-                <div className="text-xs text-muted-foreground">Send to community members</div>
+                <div className="font-medium">{t('screens.wallet.sendFunds')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.sendCommunityMembers')}</div>
               </div>
             </Button>
             
@@ -193,8 +193,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             >
               <ArrowUpDown className="h-4 w-4" />
               <div className="text-left">
-                <div className="font-medium">Exchange Currency</div>
-                <div className="text-xs text-muted-foreground">Convert between Credits, VTNA, USD</div>
+                <div className="font-medium">{t('screens.wallet.exchangeCurrency')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.convertBetweenCreditsVtnaUsd')}</div>
               </div>
             </Button>
             
@@ -205,8 +205,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             >
               <Zap className="h-4 w-4 text-purple-600" />
               <div className="text-left">
-                <div className="font-medium text-purple-700">Exchange & Send</div>
-                <div className="text-xs text-muted-foreground">Convert currency and send in one step</div>
+                <div className="font-medium text-purple-700">{t('screens.wallet.exchangeSend')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.convertCurrencySendOneStep')}</div>
               </div>
               <Badge variant="secondary" className="ml-auto bg-purple-100 text-purple-700">Quick</Badge>
             </Button>
@@ -219,7 +219,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
         {/* Withdraw & Manage Section — hidden on iOS (prototype features) */}
         {!restricted && (
         <div>
-          <h4 className="text-sm font-medium text-muted-foreground mb-3">Withdraw & Manage</h4>
+          <h4 className="text-sm font-medium text-muted-foreground mb-3">{t('screens.wallet.withdrawManage')}</h4>
           <div className="grid gap-2">
             <Button 
               variant="outline" 
@@ -233,8 +233,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <Banknote className="h-4 w-4" />
               )}
               <div className="text-left">
-                <div className="font-medium">Withdraw / Cash Out</div>
-                <div className="text-xs text-muted-foreground">Transfer $50 to bank account</div>
+                <div className="font-medium">{t('screens.wallet.withdrawCashOut')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.transfer50BankAccount')}</div>
               </div>
             </Button>
             
@@ -250,8 +250,8 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <Gift className="h-4 w-4" />
               )}
               <div className="text-left">
-                <div className="font-medium">Claim Rewards</div>
-                <div className="text-xs text-muted-foreground">Claim 25 VTNA pending rewards</div>
+                <div className="font-medium">{t('screens.wallet.claimRewards')}</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.claim25VtnaPendingRewards')}</div>
               </div>
               <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">Ready</Badge>
             </Button>

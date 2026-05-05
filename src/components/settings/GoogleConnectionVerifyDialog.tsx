@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, CheckCircle2, XCircle, Music } from "lucide-react";
 import { useVerifyGoogleConnection, useInvokeCapability, handleInsufficientScope, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
 import { useEffect, useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   open: boolean;
@@ -124,7 +125,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100vw-2rem)] max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Google connection — live check</DialogTitle>
+          <DialogTitle>{t('screens.settings.googleConnectionLiveCheck')}</DialogTitle>
           <DialogDescription>
             Calls Gmail, Calendar, Contacts and YouTube with your stored OAuth token and reports what came back.
           </DialogDescription>
@@ -178,7 +179,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
               <Music className="h-4 w-4" /> Play a song (music.play capability)
             </div>
             <div className="text-xs text-muted-foreground">
-              Calls <code>POST /api/v1/capabilities/music.play</code>. Gateway searches YouTube with your token and returns a <code>music.youtube.com</code> URL — opens in YouTube Music on Android or the web player on desktop.
+              Calls <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>. Gateway searches YouTube with your token and returns a <code>{t('screens.settings.musicYoutubeCom')}</code> URL — opens in YouTube Music on Android or the web player on desktop.
             </div>
             <div className="flex gap-2">
               <Input

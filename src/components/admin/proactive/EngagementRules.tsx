@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Clock, Moon } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function EngagementRules() {
   const { toast } = useToast();
@@ -89,7 +89,7 @@ export function EngagementRules() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Engagement Rules</CardTitle>
+        <CardTitle>{t('screens.admin.engagementRules')}</CardTitle>
         <CardDescription>
           Configure when and how often the proactive assistant can reach out to users
         </CardDescription>

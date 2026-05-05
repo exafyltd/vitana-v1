@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon, Users, MessageSquare, Video, Heart, Clock, Play, BookOpen } from "lucide-react";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
+import { t } from '@/lib/i18n-toast';
 
 interface SearchResult {
   id: string;
@@ -199,7 +200,7 @@ export default function Search() {
                   <p className="text-sm text-muted-foreground mb-2">{result.subtitle}</p>
                   <p className="text-sm text-foreground/80">{result.description}</p>
                   <div className="flex gap-2 mt-3">
-                    <Button size="sm" variant="outline" onClick={() => navigate(`/u/${result.id}`)}>View Profile</Button>
+                    <Button size="sm" variant="outline" onClick={() => navigate(`/u/${result.id}`)}>{t('screens.search.viewProfile')}</Button>
                     <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${result.id}`, { state: { openMessage: true } })}>Message</Button>
                   </div>
                 </div>
@@ -228,7 +229,7 @@ export default function Search() {
                       <Users className="h-4 w-4" />
                       <span>{result.members?.toLocaleString()} members</span>
                     </div>
-                    <Button size="sm" variant="outline">Join Group</Button>
+                    <Button size="sm" variant="outline">{t('screens.search.joinGroup')}</Button>
                   </div>
                 </div>
               </div>
@@ -330,7 +331,7 @@ export default function Search() {
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search members, groups, content…"
+                placeholder={t('screens.search.searchMembersGroupsContent')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="pl-10"
@@ -391,7 +392,7 @@ export default function Search() {
                 <Card>
                   <CardContent className="p-8 text-center">
                     <SearchIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="font-semibold text-lg mb-2">No results found</h3>
+                    <h3 className="font-semibold text-lg mb-2">{t('screens.search.noResultsFound')}</h3>
                     <p className="text-muted-foreground">
                       Try adjusting your search terms or browse different categories.
                     </p>

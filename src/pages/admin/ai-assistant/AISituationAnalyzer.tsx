@@ -10,7 +10,7 @@ import SituationForm from "@/components/admin/automation/SituationForm";
 import AnalysisResults from "@/components/admin/automation/AnalysisResults";
 import { useToast } from '@/hooks/use-toast';
 import { useAutomationRules } from "@/hooks/useAutomationRules";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function AISituationAnalyzer() {
   const navigate = useNavigate();
@@ -105,7 +105,7 @@ export default function AISituationAnalyzer() {
   return (
     <AppLayout>
       <SEO 
-        title="AI Situation Analyzer | AI Assistant | Admin" 
+        title={t('screens.admin.aiSituationAnalyzerAiAssistantAdmin')} 
         description="Analyze situations and get automation suggestions" 
         canonical={window.location.href} 
       />
@@ -114,7 +114,7 @@ export default function AISituationAnalyzer() {
       <div className="p-6 pb-32 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           <AdminHeader
-            title="AI Situation Analyzer"
+            title={t('screens.admin.aiSituationAnalyzer')}
             description="Describe scenarios and get intelligent automation suggestions"
             emoji="🧠"
           />

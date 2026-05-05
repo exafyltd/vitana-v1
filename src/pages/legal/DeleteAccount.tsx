@@ -17,6 +17,7 @@ import {
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 type Step = "info" | "confirm" | "deleting" | "done" | "error";
 
@@ -67,7 +68,7 @@ const DeleteAccount = () => {
     return (
       <div className="min-h-screen bg-background">
         <SEO
-          title="Delete Your Account | Maxina"
+          title={t('screens.legal.deleteYourAccountMaxina')}
           description="Delete your Maxina account and associated personal data."
           canonical="https://vitanaland.com/delete-account"
         />
@@ -76,12 +77,12 @@ const DeleteAccount = () => {
             <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label="Go back">
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-lg font-semibold">Delete Account</h1>
+            <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
           </div>
         </header>
         <main className="max-w-lg mx-auto px-4 py-16 text-center">
           <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-foreground mb-2">Sign in required</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-2">{t('screens.legal.signRequired')}</h2>
           <p className="text-muted-foreground mb-6">
             You need to sign in to your account before you can request deletion.
           </p>
@@ -96,7 +97,7 @@ const DeleteAccount = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Delete Your Account | Maxina"
+        title={t('screens.legal.deleteYourAccountMaxina')}
         description="Delete your Maxina account and associated personal data."
         canonical="https://vitanaland.com/delete-account"
       />
@@ -106,7 +107,7 @@ const DeleteAccount = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label="Go back">
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-lg font-semibold">Delete Account</h1>
+          <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
         </div>
       </header>
 
@@ -118,20 +119,20 @@ const DeleteAccount = () => {
               <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
                 <Trash2 className="h-7 w-7 text-destructive" />
               </div>
-              <CardTitle className="text-xl">Delete Your Account</CardTitle>
+              <CardTitle className="text-xl">{t('screens.legal.deleteYourAccount')}</CardTitle>
               <CardDescription className="text-sm">
                 This action is permanent and cannot be undone.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="rounded-lg bg-destructive/5 p-4 space-y-2 text-sm text-foreground/80">
-                <p className="font-medium text-foreground">When you delete your account, we permanently remove:</p>
+                <p className="font-medium text-foreground">{t('screens.legal.whenYouDeleteYourAccountWe')}</p>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Your profile, preferences, and personal data</li>
-                  <li>Chat messages, AI conversations, and diary entries</li>
-                  <li>Uploaded photos, videos, and files</li>
-                  <li>Event RSVPs, memberships, and community activity</li>
-                  <li>Bookmarks, supplements, and health data</li>
+                  <li>{t('screens.legal.yourProfilePreferencesPersonalData')}</li>
+                  <li>{t('screens.legal.chatMessagesAiConversationsDiaryEntries')}</li>
+                  <li>{t('screens.legal.uploadedPhotosVideosFiles')}</li>
+                  <li>{t('screens.legal.eventRsvpsMembershipsCommunityActivity')}</li>
+                  <li>{t('screens.legal.bookmarksSupplementsHealthData')}</li>
                 </ul>
               </div>
 
@@ -160,7 +161,7 @@ const DeleteAccount = () => {
               <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
                 <AlertTriangle className="h-7 w-7 text-destructive" />
               </div>
-              <CardTitle className="text-xl">Are you sure?</CardTitle>
+              <CardTitle className="text-xl">{t('screens.legal.youSure')}</CardTitle>
               <CardDescription className="text-sm">
                 Type <span className="font-mono font-bold text-destructive">DELETE</span> below to confirm account deletion.
               </CardDescription>
@@ -202,8 +203,8 @@ const DeleteAccount = () => {
         {step === "deleting" && (
           <div className="text-center py-16 space-y-4">
             <Loader2 className="h-10 w-10 animate-spin text-destructive mx-auto" />
-            <p className="text-foreground font-medium">Deleting your account...</p>
-            <p className="text-sm text-muted-foreground">Please do not close this page.</p>
+            <p className="text-foreground font-medium">{t('screens.legal.deletingYourAccount')}</p>
+            <p className="text-sm text-muted-foreground">{t('screens.legal.pleaseDoNotCloseThisPage')}</p>
           </div>
         )}
 
@@ -212,7 +213,7 @@ const DeleteAccount = () => {
           <Card>
             <CardContent className="text-center py-10 space-y-4">
               <CheckCircle2 className="h-12 w-12 text-primary mx-auto" />
-              <h2 className="text-xl font-semibold text-foreground">Account Deleted</h2>
+              <h2 className="text-xl font-semibold text-foreground">{t('screens.legal.accountDeleted')}</h2>
               <p className="text-muted-foreground text-sm">
                 Your account and associated data have been permanently deleted.
               </p>
@@ -228,7 +229,7 @@ const DeleteAccount = () => {
           <Card className="border-destructive/20">
             <CardContent className="text-center py-10 space-y-4">
               <AlertTriangle className="h-12 w-12 text-destructive mx-auto" />
-              <h2 className="text-xl font-semibold text-foreground">Something went wrong</h2>
+              <h2 className="text-xl font-semibold text-foreground">{t('screens.legal.somethingWentWrong')}</h2>
               <p className="text-muted-foreground text-sm">{errorMsg}</p>
               <div className="flex gap-3 justify-center">
                 <Button variant="outline" onClick={() => setStep("info")}>
@@ -247,7 +248,7 @@ const DeleteAccount = () => {
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Final Confirmation</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.legal.finalConfirmation')}</AlertDialogTitle>
             <AlertDialogDescription>
               This will permanently delete your account and all associated data. This action cannot be undone.
             </AlertDialogDescription>

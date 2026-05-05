@@ -36,6 +36,8 @@ const T_DOT_RX = /\bt\.(?!toString|valueOf|hasOwnProperty)([a-zA-Z_$][\w$]*(?:\.
 const NOTIFY_CALL_RX = /\bnotify(?:Error|Success|Info|Warning)?\s*\(\s*['"`]([^'"`)]+)['"`](?:\s*,\s*['"`]([^'"`)]+)['"`])?/g;
 // Wave 2.x: lookup('toasts.x.y') for rich toasts (sonner with action/duration)
 const LOOKUP_CALL_RX = /\blookup\s*\(\s*['"`]([^'"`)]+)['"`]/g;
+// Wave 3: t('screens.x.y') singleton from i18n-toast (alias of lookup)
+const T_FN_RX = /\bt\s*\(\s*['"`](screens\.[^'"`)]+)['"`]/g;
 // notify.error(...), notify.success(...) from useI18nNotify (existing pattern)
 const NOTIFY_DOT_RX = /\bnotify\.(?:error|success|info|warning)\s*\(\s*['"`]([^'"`)]+)['"`](?:\s*,\s*['"`]([^'"`)]+)['"`])?/g;
 
@@ -97,6 +99,7 @@ for (const file of files) {
     if (m[2]) keysUsed.add(m[2]);
   }
   for (const m of src.matchAll(LOOKUP_CALL_RX)) keysUsed.add(m[1]);
+  for (const m of src.matchAll(T_FN_RX)) keysUsed.add(m[1]);
 
   const namespacesUsed = new Set([...keysUsed].map(extractNamespacesFromKey));
 

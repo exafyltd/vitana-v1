@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Gift, Sparkles, Calendar, Users, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
+import { t } from '@/lib/i18n-toast';
 
 interface RedemptionLandingProps {
   voucherData: VoucherLookupData;
@@ -203,7 +204,7 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
 
       {/* Footer */}
       <footer className="text-center py-6 text-xs text-muted-foreground">
-        <p>Powered by MAXINA</p>
+        <p>{t('screens.voucher.poweredByMaxina')}</p>
       </footer>
     </div>
   );

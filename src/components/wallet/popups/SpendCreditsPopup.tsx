@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface SpendCreditsPopupProps {
   open: boolean;
@@ -135,7 +135,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
           <div className="space-y-6">
             {/* Quick Spend Options */}
             <div>
-              <Label className="text-base font-semibold mb-3 block">Quick Spend</Label>
+              <Label className="text-base font-semibold mb-3 block">{t('screens.wallet.quickSpend')}</Label>
               <div className="grid grid-cols-4 gap-3">
                 {quickSpendAmounts.map((amount) => (
                   <Button
@@ -159,7 +159,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
               <Input
                 id="custom-amount"
                 type="number"
-                placeholder="Enter credits amount..."
+                placeholder={t('screens.wallet.enterCreditsAmount')}
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
                 className="w-full"
@@ -168,7 +168,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
 
             {/* Spending Categories */}
             <div>
-              <Label className="text-base font-semibold mb-3 block">Available Purchases</Label>
+              <Label className="text-base font-semibold mb-3 block">{t('screens.wallet.availablePurchases')}</Label>
               <div className="grid gap-4">
                 {spendingCategories.map((category) => (
                   <Card key={category.id} className="border-2 hover:border-primary/50 transition-colors">
@@ -223,7 +223,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Star className="w-5 h-5 text-primary" />
-                    <span>Purchase Summary</span>
+                    <span>{t('screens.wallet.purchaseSummary')}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -234,7 +234,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                     </div>
                     <p className="text-sm text-muted-foreground">{selectedItem.description}</p>
                     <div className="flex justify-between items-center pt-2 border-t">
-                      <span className="font-semibold">Total Cost:</span>
+                      <span className="font-semibold">{t('screens.wallet.totalCost')}</span>
                       <span className="font-bold text-lg">{selectedItem.cost} Credits</span>
                     </div>
                   </div>

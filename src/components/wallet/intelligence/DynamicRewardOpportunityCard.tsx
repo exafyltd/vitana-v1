@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Gift, Clock, Users, Zap, Timer } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface RewardOpportunity {
   id: string;
@@ -167,7 +168,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
               {opportunity.participants && opportunity.maxParticipants && (
                 <div className="mb-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium">Community Progress</span>
+                    <span className="text-xs font-medium">{t('screens.wallet.communityProgress')}</span>
                     <span className="text-xs text-muted-foreground">
                       {opportunity.participants}/{opportunity.maxParticipants}
                     </span>
@@ -178,7 +179,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
 
               {/* Requirements */}
               <div className="mb-3">
-                <span className="text-xs font-medium mb-1 block">Requirements:</span>
+                <span className="text-xs font-medium mb-1 block">{t('screens.wallet.requirements')}</span>
                 <div className="flex flex-wrap gap-1">
                   {opportunity.requirements.slice(0, 2).map((req, index) => (
                     <Badge key={index} variant="outline" className="text-xs h-5 px-2">
@@ -219,7 +220,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
-            <div className="text-xs text-muted-foreground">Total VTN</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.totalVtn')}</div>
           </div>
         </div>
 

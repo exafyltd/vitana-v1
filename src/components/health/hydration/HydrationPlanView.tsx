@@ -7,6 +7,7 @@ import { HydrationDashboard } from "./HydrationDashboard";
 import { HydrationEmptyState } from "./HydrationEmptyState";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
 import { mockHydrationPlan } from "@/data/mockHydration";
+import { t } from '@/lib/i18n-toast';
 
 export function HydrationPlanView() {
   const [selectedDay, setSelectedDay] = useState<DailyHydrationData | null>(null);
@@ -35,7 +36,7 @@ export function HydrationPlanView() {
         />
         
         <div className="border-t border-slate-200/60 dark:border-slate-800/60 pt-6">
-          <h3 className="text-xl font-semibold tracking-tight mb-4">Your Daily Hydration Tracking</h3>
+          <h3 className="text-xl font-semibold tracking-tight mb-4">{t('screens.health.yourDailyHydrationTracking')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {planData.dailyStats.map(dayData => (
               <DailyHydrationCard

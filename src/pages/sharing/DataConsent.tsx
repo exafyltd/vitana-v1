@@ -21,6 +21,7 @@ import { PrivacySettingsDialog } from "@/components/sharing/PrivacySettingsDialo
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Shield, AlertCircle, Database, Package, Plus, ChevronDown } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default withScreenId(function DataConsent() {
   const [grantAccessOpen, setGrantAccessOpen] = React.useState(false);
@@ -30,7 +31,7 @@ export default withScreenId(function DataConsent() {
   return (
     <AppLayout>
       <SEO
-        title="Data & Consent Management | VITANA"
+        title={t('screens.sharing.dataConsentManagementVitana')}
         description="Manage permissions, privacy settings, and data packages"
         canonical={window.location.href}
       />
@@ -39,13 +40,13 @@ export default withScreenId(function DataConsent() {
       <div className="p-6 min-h-screen pb-24">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Data & Consent 🔐"
+            title={t('screens.sharing.dataConsent')}
             description="Control who has access to your data and manage permissions"
           />
 
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search permissions, packages..."
+              placeholder={t('screens.sharing.searchPermissionsPackages')}
             />
             <UniversalCalendarButton />
             <DropdownMenu>
@@ -60,23 +61,23 @@ export default withScreenId(function DataConsent() {
                 <DropdownMenuItem onClick={() => setGrantAccessOpen(true)}>
                   <Shield className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Grant Permission</span>
-                    <span className="text-xs text-muted-foreground">Allow data access to entity</span>
+                    <span className="font-medium">{t('screens.sharing.grantPermission')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.allowDataAccessEntity')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setCreatePackageOpen(true)}>
                   <Package className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Create Data Package</span>
-                    <span className="text-xs text-muted-foreground">Bundle data for sharing</span>
+                    <span className="font-medium">{t('screens.sharing.createDataPackage')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.bundleDataForSharing')}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setPrivacySettingsOpen(true)}>
                   <Database className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="font-medium">Privacy Settings</span>
-                    <span className="text-xs text-muted-foreground">Configure global controls</span>
+                    <span className="font-medium">{t('screens.sharing.privacySettings')}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.sharing.configureGlobalControls')}</span>
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>

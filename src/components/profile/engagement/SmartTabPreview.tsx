@@ -9,6 +9,7 @@ import {
   Play,
   Calendar
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface TabPreview {
   type: 'posts' | 'media' | 'groups' | 'health' | 'services';
@@ -139,7 +140,7 @@ export function SmartTabPreview({
         {/* Highlights */}
         {data.highlights && data.highlights.length > 0 && (
           <div className="space-y-2">
-            <div className="text-xs text-muted-foreground">Recent highlights:</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.recentHighlights')}</div>
             <div className="flex flex-wrap gap-1">
               {data.highlights.slice(0, 3).map((highlight, index) => (
                 <Badge key={index} variant="secondary" className="text-xs">

@@ -26,6 +26,7 @@ import {
   type SpeechDto,
   type SpeechJourneyStage,
 } from "@/hooks/useAdminAssistantSpeeches";
+import { t } from '@/lib/i18n-toast';
 
 const STAGE_ORDER: SpeechJourneyStage[] = ["pre_login", "onboarding", "proactive"];
 
@@ -175,12 +176,12 @@ export default function AssistantSpeeches() {
       <AdminTabs sectionKey="assistant" />
       <div className="p-6 space-y-4">
         <AdminHeader
-          title="Assistant Speeches"
+          title={t('screens.admin.assistantSpeeches')}
           description="Manage what Vitana says at each phase of the user journey. Overrides layer on top of global defaults."
         />
 
         {speechesQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading speeches...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSpeeches')}</p>
         )}
 
         {speechesQuery.isError && !speechesQuery.isLoading && (
@@ -190,7 +191,7 @@ export default function AssistantSpeeches() {
         )}
 
         {!speechesQuery.isLoading && !speechesQuery.isError && speeches.length === 0 && (
-          <p className="text-sm text-muted-foreground py-8 text-center">No speeches configured.</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.noSpeechesConfigured')}</p>
         )}
 
         {STAGE_ORDER.map((stage) => {

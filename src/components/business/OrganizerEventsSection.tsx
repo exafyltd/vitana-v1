@@ -5,6 +5,7 @@ import { useOrganizerEvents, OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { VisualHorizontalCard } from "@/components/ui/visual-horizontal-card";
 import { OrganizerEventSalesSheet } from "./OrganizerEventSalesSheet";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from '@/lib/i18n-toast';
 
 export function OrganizerEventsSection() {
   const { events, loading, error } = useOrganizerEvents();
@@ -38,7 +39,7 @@ export function OrganizerEventsSection() {
     return (
       <div className="text-center py-12">
         <Ticket className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-        <h3 className="text-lg font-semibold text-foreground mb-2">No Ticketed Events Yet</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noTicketedEventsYet')}</h3>
         <p className="text-muted-foreground">
           Create an event with ticket sales to see your sales dashboard here.
         </p>

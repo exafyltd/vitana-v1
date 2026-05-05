@@ -24,6 +24,7 @@ import { EventMatchCard } from "@/components/crossover/EventMatchCard";
 import { CompatibilityCard } from "@/components/crossover/CompatibilityCard";
 
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Matchmaking() {
   const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
@@ -34,13 +35,13 @@ export default function Matchmaking() {
 
   return (
     <AppLayout>
-      <SEO title="Matchmaking | Community" description="Find compatible community members" canonical={window.location.href} />
+      <SEO title={t('screens.community.matchmakingCommunity')} description="Find compatible community members" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
             <StandardHeader 
-              title="Perfect matches for your journey!"
+              title={t('screens.community.perfectMatchesForYourJourney')}
               description="Discover compatible community members based on your interests and wellness goals."
               emoji="💫"
             />
@@ -51,7 +52,7 @@ export default function Matchmaking() {
           <UtilityActionButton className="min-w-0">
             <div className="flex items-center gap-2.5 min-w-max">
               <ExpandableSearchButton 
-                placeholder="Search matches..."
+                placeholder={t('screens.community.searchMatches')}
                 onSearch={(query) => console.log('Search Matches:', query)}
               />
               <UniversalCalendarButton />
@@ -82,11 +83,11 @@ export default function Matchmaking() {
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="people">👤 People</SplitBarTrigger>
-              <SplitBarTrigger value="groups">👥 Groups</SplitBarTrigger>
-              <SplitBarTrigger value="coaches">🏃 Coaches</SplitBarTrigger>
-              <SplitBarTrigger value="events">📅 Events</SplitBarTrigger>
-              <SplitBarTrigger value="analysis">📊 Analysis</SplitBarTrigger>
+              <SplitBarTrigger value="people">{t('screens.community.people')}</SplitBarTrigger>
+              <SplitBarTrigger value="groups">{t('screens.community.groups')}</SplitBarTrigger>
+              <SplitBarTrigger value="coaches">{t('screens.community.coaches')}</SplitBarTrigger>
+              <SplitBarTrigger value="events">{t('screens.community.events')}</SplitBarTrigger>
+              <SplitBarTrigger value="analysis">{t('screens.community.analysis')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="people" className="mt-6">

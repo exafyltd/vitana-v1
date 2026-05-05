@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function AIInsights() {
   const navigate = useNavigate();
@@ -125,7 +126,7 @@ export default function AIInsights() {
 
   return (
     <AppLayout>
-      <SEO title="AI Insights | Community" description="Personalized recommendations and intelligent community connections" canonical={window.location.href} />
+      <SEO title={t('screens.community.aiInsightsCommunity')} description="Personalized recommendations and intelligent community connections" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -134,8 +135,8 @@ export default function AIInsights() {
             {/* Shortened Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">AI Insights ✨</h1>
-                <p className="text-muted-foreground">Get personalized insights and recommendations from our AI community assistant.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.community.aiInsights')}</h1>
+                <p className="text-muted-foreground">{t('screens.community.getPersonalizedInsightsRecommendationsFromOur')}</p>
               </div>
             </div>
             
@@ -164,7 +165,7 @@ export default function AIInsights() {
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
                   {latestActions.map((action, index) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -348,15 +349,15 @@ export default function AIInsights() {
                       </div>
                       <div className="space-y-2 text-xs text-muted-foreground mb-3">
                         <div className="flex items-center justify-between">
-                          <span>Potential Impact:</span>
+                          <span>{t('screens.community.potentialImpact')}</span>
                           <span className="font-medium text-green-600">{suggestion.impact}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span>Participants:</span>
+                          <span>{t('screens.community.participants')}</span>
                           <span>{suggestion.participants}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span>Difficulty:</span>
+                          <span>{t('screens.community.difficulty')}</span>
                           <Badge variant="outline" className="text-xs">{suggestion.difficulty}</Badge>
                         </div>
                       </div>
@@ -371,18 +372,18 @@ export default function AIInsights() {
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">AI Preferences</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.community.aiPreferences')}</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <span className="text-sm">Connection suggestions</span>
+                    <span className="text-sm">{t('screens.community.connectionSuggestions')}</span>
                     <Badge variant="secondary">On</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <span className="text-sm">Content recommendations</span>
+                    <span className="text-sm">{t('screens.community.contentRecommendations')}</span>
                     <Badge variant="secondary">On</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <span className="text-sm">Weekly digest</span>
+                    <span className="text-sm">{t('screens.community.weeklyDigest')}</span>
                     <Badge variant="secondary">On</Badge>
                   </div>
                   <Button variant="outline" className="w-full mt-3">

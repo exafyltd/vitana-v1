@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Key, Eye, EyeOff, Shield, Plus, Trash2, Check } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface Credential {
   id: string;
@@ -160,7 +160,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
             </ResponsiveDialogTrigger>
             <ResponsiveDialogContent>
               <ResponsiveDialogHeader>
-                <ResponsiveDialogTitle>Add New Credential</ResponsiveDialogTitle>
+                <ResponsiveDialogTitle>{t('screens.admin.addNewCredential')}</ResponsiveDialogTitle>
                 <ResponsiveDialogDescription>
                   Store authentication credentials securely using encryption
                 </ResponsiveDialogDescription>
@@ -168,9 +168,9 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
               <ResponsiveDialogBody>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Credential Name</Label>
+                    <Label>{t('screens.admin.credentialName')}</Label>
                     <Input
-                      placeholder="e.g., Production API Key"
+                      placeholder={t('screens.admin.eGProductionApiKey')}
                       value={newCredential.name}
                       onChange={(e) => setNewCredential({ ...newCredential, name: e.target.value })}
                     />
@@ -186,19 +186,19 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="api_key">API Key</SelectItem>
-                        <SelectItem value="bearer_token">Bearer Token</SelectItem>
-                        <SelectItem value="oauth">OAuth Token</SelectItem>
-                        <SelectItem value="basic_auth">Basic Auth</SelectItem>
+                        <SelectItem value="api_key">{t('screens.admin.apiKey')}</SelectItem>
+                        <SelectItem value="bearer_token">{t('screens.admin.bearerToken')}</SelectItem>
+                        <SelectItem value="oauth">{t('screens.admin.oauthToken')}</SelectItem>
+                        <SelectItem value="basic_auth">{t('screens.admin.basicAuth')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Credential Value</Label>
+                    <Label>{t('screens.admin.credentialValue')}</Label>
                     <Input
                       type="password"
-                      placeholder="Enter the credential value"
+                      placeholder={t('screens.admin.enterCredentialValue')}
                       value={newCredential.value}
                       onChange={(e) => setNewCredential({ ...newCredential, value: e.target.value })}
                     />
@@ -222,7 +222,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
         {credentials.length === 0 ? (
           <div className="text-center py-12">
             <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground mb-4">No credentials stored yet</p>
+            <p className="text-muted-foreground mb-4">{t('screens.admin.noCredentialsStoredYet')}</p>
             <p className="text-sm text-muted-foreground">
               Add API keys, tokens, or OAuth credentials to authenticate your integrations
             </p>

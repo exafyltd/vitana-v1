@@ -43,6 +43,7 @@ import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
+import { t } from '@/lib/i18n-toast';
 
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
@@ -760,7 +761,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           <Card className="max-w-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary">Service Booking</Badge>
+                <Badge variant="secondary">{t('screens.messages.serviceBooking')}</Badge>
               </div>
               <h4 className="font-semibold mb-1">
                 {message.content_data?.service_name || 'Service Request'}
@@ -1113,7 +1114,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             {/* Inline delete confirmation */}
             {showDeleteConfirm && (
               <div className="border-t border-border pt-3 mt-2 space-y-3">
-                <p className="text-sm text-center text-foreground font-medium">Delete this message?</p>
+                <p className="text-sm text-center text-foreground font-medium">{t('screens.messages.deleteThisMessage')}</p>
                 <div className="flex gap-2">
                   <Button
                     variant="outline"

@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Workout } from "@/types/exercise";
 import { Clock, Flame, Dumbbell, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WorkoutCardProps {
   workout: Workout;
@@ -41,7 +42,7 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
           <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full 
             bg-blue-500/90 backdrop-blur-sm animate-pulse">
             <Brain className="w-3.5 h-3.5 text-white" />
-            <span className="text-xs font-medium text-white">AI Updated</span>
+            <span className="text-xs font-medium text-white">{t('screens.health.aiUpdated')}</span>
           </div>
         )}
         

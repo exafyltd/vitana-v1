@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { TicketOrder } from "@/hooks/useOrderManagement";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface OrderDetailViewProps {
   order: TicketOrder;
@@ -96,7 +96,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
         {/* Order Details Card */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Order Details</CardTitle>
+            <CardTitle className="text-base">{t('screens.business.orderDetails')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between">
@@ -115,7 +115,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Order Total</span>
+              <span className="text-sm text-muted-foreground">{t('screens.business.orderTotal')}</span>
               <span className="text-lg font-bold">${order.total_amount.toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between">
@@ -153,11 +153,11 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             <table className="w-full">
               <thead>
                 <tr className="bg-muted/50 text-sm">
-                  <th className="text-left px-4 py-2 font-semibold">Ticket #</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.ticket')}</th>
                   <th className="text-left px-4 py-2 font-semibold">Name</th>
                   <th className="text-left px-4 py-2 font-semibold">Type</th>
                   <th className="text-right px-4 py-2 font-semibold">Price</th>
-                  <th className="text-center px-4 py-2 font-semibold">Check-in</th>
+                  <th className="text-center px-4 py-2 font-semibold">{t('screens.business.checkin')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -180,7 +180,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                           Checked In
                         </Badge>
                       ) : (
-                        <Badge variant="secondary">Not Yet</Badge>
+                        <Badge variant="secondary">{t('screens.business.notYet')}</Badge>
                       )}
                     </td>
                   </tr>
@@ -193,7 +193,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
           <div className="mt-4 p-3 bg-muted/30 rounded-lg flex items-center gap-3">
             <QrCode className="w-8 h-8 text-muted-foreground" />
             <div className="flex-1">
-              <p className="text-sm font-medium">QR Code Token</p>
+              <p className="text-sm font-medium">{t('screens.business.qrCodeToken')}</p>
               <p className="text-xs text-muted-foreground font-mono">
                 {order.qr_code_token}
               </p>

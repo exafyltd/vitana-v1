@@ -53,7 +53,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
@@ -128,7 +128,7 @@ export default function KnowledgeDocuments() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📚"
-          title="Knowledge Base Documents"
+          title={t('screens.admin.knowledgeBaseDocuments')}
           description="All Vitana knowledge in one place: system docs that ground the Assistant, baseline library shared across tenants, and your own tenant docs."
           rightAction={
             <Button size="sm" onClick={() => setShowUpload((v) => !v)}>
@@ -161,7 +161,7 @@ export default function KnowledgeDocuments() {
           <Card className="lg:col-span-1">
             <CardContent className="pt-6">
               {treeQuery.isLoading && (
-                <p className="text-sm text-muted-foreground">Loading tree…</p>
+                <p className="text-sm text-muted-foreground">{t('screens.admin.loadingTree')}</p>
               )}
               {treeQuery.isError && (
                 <p className="text-sm text-destructive">
@@ -193,7 +193,7 @@ export default function KnowledgeDocuments() {
             <CardContent className="pt-6">
               {!selected && (
                 <AdminEmptyState
-                  title="Pick a document"
+                  title={t('screens.admin.pickDocument')}
                   description="Select a document from the tree on the left to read its content and manage it."
                 />
               )}
@@ -360,9 +360,9 @@ function SystemDocViewer({ id }: { id: string }) {
     setConfirmOpen(false);
   }, [id]);
 
-  if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (query.isLoading) return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   if (!query.data)
-    return <p className="text-sm text-destructive">Document not found.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.documentNotFound')}</p>;
   const doc = query.data;
   const gatewayBase = (import.meta.env.VITE_GATEWAY_BASE as string) || "";
   const commandHubUrl = gatewayBase
@@ -400,12 +400,12 @@ function SystemDocViewer({ id }: { id: string }) {
     <div className="space-y-4">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Badge variant="secondary" className="text-[10px]">platform</Badge>
+          <Badge variant="secondary" className="text-[10px]">{t('screens.admin.platform')}</Badge>
           {!editing && !isExafyAdmin && (
-            <span className="text-xs text-muted-foreground">read-only</span>
+            <span className="text-xs text-muted-foreground">{t('screens.admin.readonly')}</span>
           )}
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">editing</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
           )}
           <div className="ml-auto flex items-center gap-2">
             {commandHubUrl && !editing && (
@@ -498,11 +498,11 @@ function SystemDocViewer({ id }: { id: string }) {
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit a platform document?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.admin.editPlatformDocument')}</AlertDialogTitle>
             <AlertDialogDescription>
               This document is part of the Vitana system knowledge base
               (retrieval-router priority 100). Saving applies your changes
-              immediately to the Assistant's grounding for <b>every tenant</b>,
+              immediately to the Assistant's grounding for <b>{t('screens.admin.everyTenant')}</b>,
               including the Book of the Vitana Index if this doc is part of it.
               Continue?
             </AlertDialogDescription>
@@ -556,9 +556,9 @@ function KbDocViewer({
     setConfirmOpen(false);
   }, [id]);
 
-  if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (query.isLoading) return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   if (!query.data)
-    return <p className="text-sm text-destructive">Document not found.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.documentNotFound')}</p>;
 
   const doc = query.data;
 
@@ -633,7 +633,7 @@ function KbDocViewer({
           </Badge>
           <AdminStatusBadge variant={statusVariant as any}>{doc.status}</AdminStatusBadge>
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">editing</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
           )}
           {canEditBaseline && !editing && (
             <Button
@@ -753,9 +753,9 @@ function KbDocViewer({
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit a baseline document?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.admin.editBaselineDocument')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This document is shared across <b>all tenants</b>. Saving applies
+              This document is shared across <b>{t('screens.admin.allTenants')}</b>. Saving applies
               your changes immediately to every tenant that hasn't opted out —
               their Assistant will reflect the new content on the next retrieval.
               Continue?
@@ -811,7 +811,7 @@ function UploadCard({ onDone }: { onDone: () => void }) {
     <Card>
       <CardContent className="pt-6 space-y-3">
         <p className="text-xs text-muted-foreground">
-          Upload goes to <span className="font-medium">Your Tenant Docs</span>.
+          Upload goes to <span className="font-medium">{t('screens.admin.yourTenantDocs')}</span>.
         </p>
         <Input
           value={title}

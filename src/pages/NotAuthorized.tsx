@@ -4,12 +4,13 @@ import { Shield, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
+import { t } from '@/lib/i18n-toast';
 
 export default function NotAuthorized() {
   return (
     <AppLayout>
       <SEO 
-        title="Access Denied - VITANA"
+        title={t('screens.notauthorized.accessDeniedVitana')}
         description="You don't have permission to access this resource."
       />
       <div className="min-h-screen flex items-center justify-center p-6">
@@ -20,7 +21,7 @@ export default function NotAuthorized() {
                 <Shield className="h-8 w-8 text-destructive" />
               </div>
             </div>
-            <CardTitle className="text-2xl">Access Denied</CardTitle>
+            <CardTitle className="text-2xl">{t('screens.notauthorized.accessDenied')}</CardTitle>
             <CardDescription>
               You don't have permission to access this resource. This area is restricted to authorized personnel only.
             </CardDescription>

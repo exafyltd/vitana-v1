@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check, Loader2, MessageCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthProvider";
 import { communityFetch } from "@/lib/community-gateway";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 export const REFERRAL_OPEN_EVENT = "referral:open";
 
@@ -95,7 +95,7 @@ export function InviteSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="right" className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-xl font-semibold">Bring a friend along</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t('screens.common.bringFriendAlong')}</SheetTitle>
           <SheetDescription className="text-sm text-muted-foreground">
             The journey is better together. Share your invite link — they get a
             head start, you get the company.
@@ -113,11 +113,11 @@ export function InviteSheet() {
               <span className="text-sm text-destructive">{error}</span>
             ) : link?.url ? (
               <div className="w-full">
-                <p className="text-xs text-muted-foreground mb-1">Your invite link</p>
+                <p className="text-xs text-muted-foreground mb-1">{t('screens.common.yourInviteLink')}</p>
                 <p className="text-sm font-mono break-all">{link.url}</p>
               </div>
             ) : (
-              <span className="text-sm text-muted-foreground">No link yet.</span>
+              <span className="text-sm text-muted-foreground">{t('screens.common.noLinkYet')}</span>
             )}
           </div>
 

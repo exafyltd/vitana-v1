@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Eye, MousePointer, Share2, DollarSign } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface KPI {
   label: string;
@@ -25,7 +26,7 @@ export function GrowthKPIs() {
           <TrendingUp className="w-5 h-5" />
           Growth KPIs
         </CardTitle>
-        <p className="text-sm text-muted-foreground">Last 7 days performance</p>
+        <p className="text-sm text-muted-foreground">{t('screens.sharing.last7DaysPerformance')}</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">

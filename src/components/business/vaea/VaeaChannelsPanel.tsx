@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useVaeaChannels, type VaeaChannel } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const PLATFORMS: VaeaChannel["platform"][] = ["maxina", "slack", "discord", "telegram", "reddit", "custom"];
 
@@ -28,7 +29,7 @@ export function VaeaChannelsPanel() {
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <CardTitle>Autopilot channels</CardTitle>
+            <CardTitle>{t('screens.business.autopilotChannels')}</CardTitle>
             <CardDescription>
               Channels Autopilot listens to for referral opportunities. Each channel can be paused, set to dry-run, or removed.
             </CardDescription>
@@ -62,8 +63,8 @@ export function VaeaChannelsPanel() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className="capitalize">{channel.platform}</Badge>
                   <span className="font-medium text-sm">{channel.display_name || channel.channel_key}</span>
-                  {channel.dry_run && <Badge variant="secondary" className="text-xs">dry-run</Badge>}
-                  {!channel.active && <Badge variant="destructive" className="text-xs">paused</Badge>}
+                  {channel.dry_run && <Badge variant="secondary" className="text-xs">{t('screens.business.dryrun')}</Badge>}
+                  {!channel.active && <Badge variant="destructive" className="text-xs">{t('screens.business.paused')}</Badge>}
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
@@ -119,12 +120,12 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
           </select>
         </label>
         <label className="text-xs space-y-1">
-          <span className="text-muted-foreground">Channel key / ID</span>
+          <span className="text-muted-foreground">{t('screens.business.channelKeyId')}</span>
           <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder="Platform-specific identifier" />
         </label>
       </div>
       <label className="text-xs space-y-1 block">
-        <span className="text-muted-foreground">Display name (optional)</span>
+        <span className="text-muted-foreground">{t('screens.business.displayNameOptional')}</span>
         <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Friendly label" />
       </label>
       {err && <p className="text-xs text-destructive">{err}</p>}

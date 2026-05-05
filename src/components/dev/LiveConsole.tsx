@@ -17,7 +17,7 @@ import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw, Activity } from "lucide-react";
 import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
@@ -343,7 +343,7 @@ export default function LiveConsole() {
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b">
         <div className="flex items-center gap-2">
-          <span className="font-semibold">Live Console</span>
+          <span className="font-semibold">{t('screens.dev.liveConsole')}</span>
           <Badge variant={streaming ? "success" : "secondary"}>
             {streaming ? "LIVE" : "RECONNECTING"}
           </Badge>
@@ -410,10 +410,10 @@ export default function LiveConsole() {
       <div className="flex gap-2 p-2 border-b bg-muted/50">
         <Select value={filters.layer || "ALL"} onValueChange={(v) => setFilters({ layer: v as Layer | "ALL" })}>
           <SelectTrigger className="w-[140px] h-8">
-            <SelectValue placeholder="Layer" />
+            <SelectValue placeholder={t('screens.dev.layer')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All Layers</SelectItem>
+            <SelectItem value="ALL">{t('screens.dev.allLayers')}</SelectItem>
             <SelectItem value="CICDL">CICDL</SelectItem>
             <SelectItem value="AICOR">AICOR</SelectItem>
             <SelectItem value="AGENT">AGENT</SelectItem>
@@ -424,10 +424,10 @@ export default function LiveConsole() {
 
         <Select value={filters.status || "ALL"} onValueChange={(v) => setFilters({ status: v as Status | "ALL" })}>
           <SelectTrigger className="w-[140px] h-8">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder={t('screens.dev.status')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All Status</SelectItem>
+            <SelectItem value="ALL">{t('screens.dev.allStatus')}</SelectItem>
             <SelectItem value="info">Info</SelectItem>
             <SelectItem value="success">Success</SelectItem>
             <SelectItem value="warn">Warning</SelectItem>
@@ -460,7 +460,7 @@ export default function LiveConsole() {
                 </span>
               )}
               {useFallback && (
-                <span className="text-muted-foreground">5s refresh</span>
+                <span className="text-muted-foreground">{t('screens.dev.text5sRefresh')}</span>
               )}
             </div>
             <div className="text-muted-foreground">

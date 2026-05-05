@@ -18,7 +18,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface HydrationModalProps {
   data: DailyHydrationData | null;
@@ -155,7 +155,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               dark:from-green-500/20 dark:to-emerald-500/20 border border-green-200/30 dark:border-green-700/30">
               <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Goal Achieved! 🎉</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.goalAchieved')}</p>
                 <p className="text-sm text-muted-foreground">
                   You're perfectly hydrated today. Great consistency!
                 </p>
@@ -167,7 +167,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
                 dark:from-cyan-500/20 dark:to-blue-500/20 border border-cyan-200/30 dark:border-cyan-700/30">
                 <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium mb-1">AI Insight</p>
+                  <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
                   <p className="text-sm text-muted-foreground italic">
                     {data.aiNote}
                   </p>
@@ -180,7 +180,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           <div className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Next Reminder</span>
+              <span className="text-sm font-medium">{t('screens.health.nextReminder')}</span>
             </div>
             <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
               {data.nextReminder}

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PeopleMatch {
   user_id: string;
@@ -148,7 +148,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
       <CrossoverCard
         icon={Users}
         category="mental"
-        title="Top People 👋"
+        title={t('screens.crossover.topPeople')}
         subtitle="Finding your perfect matches..."
         content={
           <div className="flex items-center justify-center py-8">
@@ -208,7 +208,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
           
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center gap-2 text-xs">
-              <span className="font-medium text-foreground">Ready for meaningful connections</span>
+              <span className="font-medium text-foreground">{t('screens.crossover.readyForMeaningfulConnections')}</span>
               <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.5)]" />
             </div>
             <Button 
@@ -229,7 +229,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
     <CrossoverCard
       icon={Users}
       category="mental"
-      title="Top People 👋"
+      title={t('screens.crossover.topPeople')}
       subtitle="High compatibility matches"
       content={content}
       buttonText="💬 Start Chat"

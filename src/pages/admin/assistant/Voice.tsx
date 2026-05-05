@@ -16,7 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useAssistantSurface, useUpdateAssistantSurface } from "@/hooks/useAdminAssistant";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 const LANGUAGES = [
   { value: "de-DE", label: "Deutsch" },
@@ -65,23 +65,23 @@ export default function AssistantVoice() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🎙️"
-          title="Voice Configuration"
+          title={t('screens.admin.voiceConfiguration')}
           description="Configure voice settings for the ORB live assistant surface."
         />
 
         {surfaceQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading voice config...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingVoiceConfig')}</p>
         )}
 
         {surface && (
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base">Voice Live (ORB)</CardTitle>
+                <CardTitle className="text-base">{t('screens.admin.voiceLiveOrb')}</CardTitle>
                 {surface.has_tenant_override ? (
                   <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
                 ) : (
-                  <AdminStatusBadge variant="inactive">Using global</AdminStatusBadge>
+                  <AdminStatusBadge variant="inactive">{t('screens.admin.usingGlobal')}</AdminStatusBadge>
                 )}
               </div>
             </CardHeader>
@@ -98,7 +98,7 @@ export default function AssistantVoice() {
 
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-medium mb-1 block">Voice ID</label>
+                    <label className="text-xs font-medium mb-1 block">{t('screens.admin.voiceId')}</label>
                     <Input
                       value={voiceId}
                       onChange={(e) => { setVoiceId(e.target.value); setDirty(true); }}

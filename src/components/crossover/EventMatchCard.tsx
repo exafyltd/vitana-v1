@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
 import { UnifiedEventCard } from "@/types/community";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 
 interface EventMatchCardProps {
@@ -93,8 +93,8 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
     return (
       <div className="text-center py-12">
         <Calendar className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-        <h3 className="text-lg font-semibold mb-2">No events found</h3>
-        <p className="text-muted-foreground">Check back soon for upcoming community events!</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.crossover.noEventsFound')}</h3>
+        <p className="text-muted-foreground">{t('screens.crossover.checkBackSoonForUpcomingCommunity')}</p>
       </div>
     );
   }
@@ -104,8 +104,8 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold">Relevant Events 📅</h2>
-          <p className="text-sm text-muted-foreground">Curated for your interests</p>
+          <h2 className="text-xl font-bold">{t('screens.crossover.relevantEvents')}</h2>
+          <p className="text-sm text-muted-foreground">{t('screens.crossover.curatedForYourInterests')}</p>
         </div>
         <Button 
           variant="outline" 
@@ -132,7 +132,7 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
       {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t">
         <div className="flex items-center gap-2 text-sm">
-          <span className="font-medium text-foreground">Perfect timing for you</span>
+          <span className="font-medium text-foreground">{t('screens.crossover.perfectTimingForYou')}</span>
           <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
         </div>
         <Button 

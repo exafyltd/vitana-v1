@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Upload, X, Video } from 'lucide-react';
 import { useVideoUpload } from '@/hooks/useVideoUpload';
 import { Badge } from '@/components/ui/badge';
+import { t } from '@/lib/i18n-toast';
 
 interface UploadVideoModalProps {
   open: boolean;
@@ -131,7 +132,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* File Upload */}
           <div className="space-y-2">
-            <Label>Video File</Label>
+            <Label>{t('screens.community.videoFile')}</Label>
             {!file ? (
               <div
                 onClick={() => fileInputRef.current?.click()}
@@ -179,7 +180,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
 
           {/* Custom Thumbnail (Optional) */}
           <div className="space-y-2">
-            <Label>Custom Thumbnail (optional)</Label>
+            <Label>{t('screens.community.customThumbnailOptional')}</Label>
             <p className="text-xs text-muted-foreground mb-2">
               JPG, PNG, WebP (auto-generated if not provided)
             </p>
@@ -189,7 +190,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
                 className="border-2 border-dashed border-muted-foreground/25 rounded-2xl p-8 text-center cursor-pointer hover:border-sky-500 hover:bg-sky-50/50 transition-all duration-200"
               >
                 <Upload className="w-10 h-10 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">Upload thumbnail</p>
+                <p className="text-sm text-muted-foreground">{t('screens.community.uploadThumbnail')}</p>
                 <input
                   ref={thumbnailInputRef}
                   type="file"
@@ -203,7 +204,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
                 {thumbnailPreviewUrl && (
                   <img
                     src={thumbnailPreviewUrl}
-                    alt="Thumbnail preview"
+                    alt={t('screens.community.thumbnailPreview')}
                     className="w-full h-40 object-cover"
                   />
                 )}
@@ -225,7 +226,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
 
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Title *</Label>
+            <Label htmlFor="title">{t('screens.community.title')}</Label>
             <Input
               id="title"
               value={title}
@@ -317,7 +318,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
           {isUploading && (
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Uploading...</span>
+                <span className="text-muted-foreground">{t('screens.community.uploading')}</span>
                 <span className="font-semibold text-violet-600">{progress}%</span>
               </div>
               <Progress value={progress} className="h-2" />

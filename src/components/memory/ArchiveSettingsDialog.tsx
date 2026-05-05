@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Archive } from "lucide-react";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ArchiveSettingsDialogProps {
   open: boolean;
@@ -54,7 +54,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
 
           {/* Archive Threshold */}
           <div className="space-y-2">
-            <Label htmlFor="threshold">Archive After</Label>
+            <Label htmlFor="threshold">{t('screens.memory.archiveAfter')}</Label>
             <Select 
               value={archiveThreshold} 
               onValueChange={setArchiveThreshold}
@@ -64,11 +64,11 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="30">30 days</SelectItem>
-                <SelectItem value="60">60 days</SelectItem>
-                <SelectItem value="90">90 days</SelectItem>
-                <SelectItem value="180">180 days</SelectItem>
-                <SelectItem value="365">1 year</SelectItem>
+                <SelectItem value="30">{t('screens.memory.text30Days')}</SelectItem>
+                <SelectItem value="60">{t('screens.memory.text60Days')}</SelectItem>
+                <SelectItem value="90">{t('screens.memory.text90Days')}</SelectItem>
+                <SelectItem value="180">{t('screens.memory.text180Days')}</SelectItem>
+                <SelectItem value="365">{t('screens.memory.text1Year')}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
@@ -96,7 +96,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           {/* Info Box */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> Archived items are hidden from regular views but can be restored at any time. They are not deleted and remain searchable.
+              <strong>{t('screens.memory.note')}</strong> Archived items are hidden from regular views but can be restored at any time. They are not deleted and remain searchable.
             </p>
           </div>
 

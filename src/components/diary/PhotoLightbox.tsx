@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect, useRef } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoLightboxProps {
   open: boolean;
@@ -182,7 +183,7 @@ export function PhotoLightbox({
         {/* Chrome Bar - Semi-transparent with gradient fade */}
         <div className="absolute top-0 left-0 right-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
           <div className="flex items-center gap-3">
-            <span className="text-[13px] text-white/80">Timeline / Diary entry</span>
+            <span className="text-[13px] text-white/80">{t('screens.diary.timelineDiaryEntry')}</span>
             {createdAt && (
               <>
                 <span className="text-white/60">·</span>

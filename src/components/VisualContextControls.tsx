@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { Monitor, Camera, Eye, EyeOff, Settings } from 'lucide-react';
 import { useState } from 'react';
+import { t } from '@/lib/i18n-toast';
 
 export const VisualContextControls = () => {
   const { isCapturing, config, setConfig, startCapture, stopCapture } = useVisualContext();
@@ -60,7 +61,7 @@ export const VisualContextControls = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="interval">Capture Interval</Label>
+            <Label htmlFor="interval">{t('screens.common.captureInterval')}</Label>
             <Select
               value={config.captureInterval.toString()}
               onValueChange={handleIntervalChange}
@@ -70,10 +71,10 @@ export const VisualContextControls = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="10000">10 seconds</SelectItem>
-                <SelectItem value="30000">30 seconds</SelectItem>
-                <SelectItem value="60000">1 minute</SelectItem>
-                <SelectItem value="300000">5 minutes</SelectItem>
+                <SelectItem value="10000">{t('screens.common.text10Seconds')}</SelectItem>
+                <SelectItem value="30000">{t('screens.common.text30Seconds')}</SelectItem>
+                <SelectItem value="60000">{t('screens.common.text1Minute')}</SelectItem>
+                <SelectItem value="300000">{t('screens.common.text5Minutes')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

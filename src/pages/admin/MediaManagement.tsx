@@ -9,6 +9,7 @@ import { Video, Music, Podcast, TrendingUp, Clock, AlertTriangle, CheckCircle, H
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 export default function MediaManagement() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function MediaManagement() {
   return (
     <AppLayout>
       <SEO 
-        title="Media Management | Admin" 
+        title={t('screens.admin.mediaManagementAdmin')} 
         description="Manage platform media content"
         canonical={window.location.href}
       />
@@ -59,7 +60,7 @@ export default function MediaManagement() {
       
       <div className="p-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Media Management</h1>
+          <h1 className="text-3xl font-bold mb-2">{t('screens.admin.mediaManagement')}</h1>
           <p className="text-muted-foreground">
             Manage and moderate all platform media content
           </p>
@@ -74,7 +75,7 @@ export default function MediaManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.totalByType.video || 0}</div>
-              <p className="text-xs text-muted-foreground">Total uploaded</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.totalUploaded')}</p>
             </CardContent>
           </Card>
 
@@ -85,7 +86,7 @@ export default function MediaManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.totalByType.podcast || 0}</div>
-              <p className="text-xs text-muted-foreground">Total uploaded</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.totalUploaded')}</p>
             </CardContent>
           </Card>
 
@@ -96,18 +97,18 @@ export default function MediaManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.totalByType.music || 0}</div>
-              <p className="text-xs text-muted-foreground">Total uploaded</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.totalUploaded')}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Storage Used</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.storageUsed')}</CardTitle>
               <HardDrive className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.totalStorage || 0} GB</div>
-              <p className="text-xs text-muted-foreground">Total storage</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.totalStorage')}</p>
             </CardContent>
           </Card>
         </div>
@@ -116,12 +117,12 @@ export default function MediaManagement() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/media/videos?status=pending')}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Pending Moderation</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.pendingModeration')}</CardTitle>
               <Clock className="w-4 h-4 text-yellow-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.pending || 0}</div>
-              <p className="text-xs text-muted-foreground">Awaiting review</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.awaitingReview')}</p>
               <Button size="sm" className="w-full mt-3" variant="outline">
                 Review Now
               </Button>
@@ -130,12 +131,12 @@ export default function MediaManagement() {
 
           <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin/media/videos?status=flagged')}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Flagged Content</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.flaggedContent')}</CardTitle>
               <AlertTriangle className="w-4 h-4 text-destructive" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.flagged || 0}</div>
-              <p className="text-xs text-muted-foreground">Needs attention</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.needsAttention')}</p>
               <Button size="sm" className="w-full mt-3" variant="destructive">
                 Review Flags
               </Button>
@@ -149,7 +150,7 @@ export default function MediaManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.approved || 0}</div>
-              <p className="text-xs text-muted-foreground">Live on platform</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.livePlatform')}</p>
             </CardContent>
           </Card>
         </div>
@@ -175,19 +176,19 @@ export default function MediaManagement() {
           <Button onClick={() => navigate('/admin/media/videos')} variant="outline" className="h-20">
             <div className="text-center">
               <Video className="w-6 h-6 mx-auto mb-2" />
-              <span>Manage Videos</span>
+              <span>{t('screens.admin.manageVideos')}</span>
             </div>
           </Button>
           <Button onClick={() => navigate('/admin/media/podcasts')} variant="outline" className="h-20">
             <div className="text-center">
               <Podcast className="w-6 h-6 mx-auto mb-2" />
-              <span>Manage Podcasts</span>
+              <span>{t('screens.admin.managePodcasts')}</span>
             </div>
           </Button>
           <Button onClick={() => navigate('/admin/media/music')} variant="outline" className="h-20">
             <div className="text-center">
               <Music className="w-6 h-6 mx-auto mb-2" />
-              <span>Manage Music</span>
+              <span>{t('screens.admin.manageMusic')}</span>
             </div>
           </Button>
         </div>

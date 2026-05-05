@@ -7,6 +7,7 @@ import { useContacts } from "@/hooks/useContacts";
 import AddContactDialog from "./AddContactDialog";
 import ContactListItem from "./ContactListItem";
 import ImportContactsButton from "./ImportContactsButton";
+import { t } from '@/lib/i18n-toast';
 
 interface ContactsTabContentProps {
   onStartConversation: (userId: string) => void;
@@ -87,7 +88,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
         <div className="mb-4 mr-3">
           <ExpandableSearchButton
             onSearch={handleSearch}
-            placeholder="Search contacts by name or phone..."
+            placeholder={t('screens.contacts.searchContactsByNamePhone')}
           />
         </div>
       )}
@@ -98,7 +99,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
           // Empty State
           <div className="text-center py-12">
             <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Contacts Yet</h3>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.contacts.noContactsYet')}</h3>
             <p className="text-muted-foreground mb-4">
               Add contacts to easily find and message them on VITANA
             </p>

@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Rocket, Calendar as CalendarIcon, CheckCircle, Clock } from "lucide-react";
 import { format, addDays, setHours, setMinutes } from "date-fns";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface ActivateCampaignDialogProps {
   open: boolean;
@@ -70,7 +71,7 @@ export function ActivateCampaignDialog({
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Activate Campaign</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle>{t('screens.sharing.activateCampaign')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             {postsCount > 0 
               ? "Choose how you want to activate this campaign and distribute all posts."
@@ -84,22 +85,22 @@ export function ActivateCampaignDialog({
               {postsCount > 0 ? (
                 <>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Total Posts</span>
+                    <span className="text-sm text-muted-foreground">{t('screens.sharing.totalPosts')}</span>
                     <span className="font-semibold">{postsCount}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Draft Posts</span>
+                    <span className="text-sm text-muted-foreground">{t('screens.sharing.draftPosts')}</span>
                     <span className="font-semibold text-yellow-600">{draftCount}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Ready to Publish</span>
+                    <span className="text-sm text-muted-foreground">{t('screens.sharing.readyPublish')}</span>
                     <span className="font-semibold text-green-600">{draftCount}</span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Selected Channels</span>
+                    <span className="text-sm text-muted-foreground">{t('screens.sharing.selectedChannels')}</span>
                     <span className="font-semibold">{channelCount}</span>
                   </div>
                   {selectedChannelNames.length > 0 && (
@@ -117,7 +118,7 @@ export function ActivateCampaignDialog({
                 <Label htmlFor="instant" className="flex-1 cursor-pointer">
                   <div className="flex items-center gap-2">
                     <Rocket className="w-4 h-4" />
-                    <span className="font-medium">Activate Now</span>
+                    <span className="font-medium">{t('screens.sharing.activateNow')}</span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
                     {postsCount > 0 
@@ -132,7 +133,7 @@ export function ActivateCampaignDialog({
                 <Label htmlFor="scheduled" className="flex-1 cursor-pointer">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    <span className="font-medium">Schedule for Later</span>
+                    <span className="font-medium">{t('screens.sharing.scheduleForLater')}</span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
                     Pick a specific date and time to activate the campaign
@@ -144,7 +145,7 @@ export function ActivateCampaignDialog({
             {/* Date/Time Picker - shown when "scheduled" is selected */}
             {mode === "scheduled" && (
               <div className="p-4 border rounded-lg bg-muted/30 space-y-3">
-                <Label className="text-sm font-medium">Schedule Date & Time</Label>
+                <Label className="text-sm font-medium">{t('screens.sharing.scheduleDateTime')}</Label>
                 <div className="flex gap-2">
                   <Popover>
                     <PopoverTrigger asChild>

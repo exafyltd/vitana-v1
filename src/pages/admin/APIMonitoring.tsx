@@ -27,7 +27,7 @@ import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from "date-fns";
 import { useRealtimeAPIMonitoring } from "@/hooks/useRealtimeAPIMonitoring";
 import { RecentActivityFeed } from "@/components/admin/api-monitoring/RecentActivityFeed";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function APIMonitoring() {
   const { toast } = useToast();
@@ -175,7 +175,7 @@ export default function APIMonitoring() {
   return (
     <AppLayout>
       <SEO 
-        title="API & MCP Monitoring | Admin"
+        title={t('screens.admin.apiMcpMonitoringAdmin')}
         description="Monitor API integrations, edge functions, and MCP protocols"
         canonical={window.location.href}
       />
@@ -185,7 +185,7 @@ export default function APIMonitoring() {
           
           <div className="space-y-6 mt-6">
             <AdminHeader
-              title="API & MCP Monitoring"
+              title={t('screens.admin.apiMcpMonitoring')}
               description="Monitor and manage all API integrations, edge functions, and MCP protocols"
               emoji="🔌"
             />
@@ -194,7 +194,7 @@ export default function APIMonitoring() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Integrations</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.admin.totalIntegrations')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{stats.total}</div>
@@ -204,33 +204,33 @@ export default function APIMonitoring() {
 
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Edge Functions</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.admin.edgeFunctions')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-2">
                     <Zap className="w-6 h-6 text-purple-500" />
                     <div className="text-3xl font-bold">{stats.edgeFunctions}</div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Supabase functions</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.supabaseFunctions')}</p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">External APIs</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.admin.externalApis')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-2">
                     <Globe className="w-6 h-6 text-blue-500" />
                     <div className="text-3xl font-bold">{stats.externalAPIs}</div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Third-party services</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.thirdpartyServices')}</p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Health Status</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.admin.healthStatus')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-2">
@@ -242,11 +242,11 @@ export default function APIMonitoring() {
                     ) : (
                       <>
                         <CheckCircle2 className="w-6 h-6 text-green-500" />
-                        <div className="text-3xl font-bold text-green-500">All OK</div>
+                        <div className="text-3xl font-bold text-green-500">{t('screens.admin.allOk')}</div>
                       </>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Recent tests</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.recentTests')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -256,7 +256,7 @@ export default function APIMonitoring() {
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="integrations">Integrations</TabsTrigger>
-                <TabsTrigger value="logs">Test Logs</TabsTrigger>
+                <TabsTrigger value="logs">{t('screens.admin.testLogs')}</TabsTrigger>
                 <TabsTrigger value="alerts">Alerts</TabsTrigger>
               </TabsList>
 
@@ -271,8 +271,8 @@ export default function APIMonitoring() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle>API Integrations Registry</CardTitle>
-                        <CardDescription>Manage all registered APIs and edge functions</CardDescription>
+                        <CardTitle>{t('screens.admin.apiIntegrationsRegistry')}</CardTitle>
+                        <CardDescription>{t('screens.admin.manageAllRegisteredApisEdgeFunctions')}</CardDescription>
                       </div>
                       <div className="flex gap-2">
                         <Button onClick={handleDiscoverIntegrations} variant="default" size="sm">
@@ -288,7 +288,7 @@ export default function APIMonitoring() {
                   </CardHeader>
                   <CardContent>
                     {integrationsLoading ? (
-                      <div className="text-center py-8 text-muted-foreground">Loading integrations...</div>
+                      <div className="text-center py-8 text-muted-foreground">{t('screens.admin.loadingIntegrations')}</div>
                     ) : integrations && integrations.length > 0 ? (
                       <div className="space-y-3">
                         {integrations.map((integration) => (
@@ -355,7 +355,7 @@ export default function APIMonitoring() {
                     ) : (
                       <div className="text-center py-12">
                         <Server className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-muted-foreground mb-4">No integrations registered yet</p>
+                        <p className="text-muted-foreground mb-4">{t('screens.admin.noIntegrationsRegisteredYet')}</p>
                         <Button variant="outline">
                           Add First Integration
                         </Button>
@@ -369,12 +369,12 @@ export default function APIMonitoring() {
               <TabsContent value="logs" className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Test Execution History</CardTitle>
-                    <CardDescription>Detailed logs of all API health checks and tests</CardDescription>
+                    <CardTitle>{t('screens.admin.testExecutionHistory')}</CardTitle>
+                    <CardDescription>{t('screens.admin.detailedLogsAllApiHealthChecks')}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     {logsLoading ? (
-                      <div className="text-center py-8 text-muted-foreground">Loading logs...</div>
+                      <div className="text-center py-8 text-muted-foreground">{t('screens.admin.loadingLogs')}</div>
                     ) : testLogs && testLogs.length > 0 ? (
                       <div className="space-y-2">
                         {testLogs.map((log) => (
@@ -402,7 +402,7 @@ export default function APIMonitoring() {
                         ))}
                       </div>
                     ) : (
-                      <div className="text-center py-8 text-muted-foreground">No test logs available</div>
+                      <div className="text-center py-8 text-muted-foreground">{t('screens.admin.noTestLogsAvailable')}</div>
                     )}
                   </CardContent>
                 </Card>
@@ -416,7 +416,7 @@ export default function APIMonitoring() {
                       <AlertTriangle className="w-5 h-5" />
                       Alert Notifications
                     </CardTitle>
-                    <CardDescription>Recent alerts and notifications from API monitoring</CardDescription>
+                    <CardDescription>{t('screens.admin.recentAlertsNotificationsFromApiMonitoring')}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     {notifications && notifications.length > 0 ? (
@@ -443,7 +443,7 @@ export default function APIMonitoring() {
                     ) : (
                       <div className="text-center py-8">
                         <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
-                        <p className="text-muted-foreground">No alerts - all systems operational</p>
+                        <p className="text-muted-foreground">{t('screens.admin.noAlertsAllSystemsOperational')}</p>
                       </div>
                     )}
                   </CardContent>

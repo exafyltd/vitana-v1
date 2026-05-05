@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 import { CheckCircle, StopCircle, Zap } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export function CommandConsolePanel() {
   const [command, setCommand] = useState('');
@@ -13,7 +14,7 @@ export function CommandConsolePanel() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Command Console</CardTitle>
+        <CardTitle>{t('screens.dev.commandConsole')}</CardTitle>
         <CardDescription>
           {readonly 
             ? "Commands disabled in read-only mode" 
@@ -41,7 +42,7 @@ export function CommandConsolePanel() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -55,7 +56,7 @@ export function CommandConsolePanel() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -69,7 +70,7 @@ export function CommandConsolePanel() {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

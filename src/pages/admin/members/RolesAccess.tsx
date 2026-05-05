@@ -33,7 +33,7 @@ import {
 import { toast } from "sonner";
 import { useTenant } from "@/hooks/useTenant";
 import { useMembers, useGrantRole, useRevokeRole } from "@/hooks/useAdminMembers";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const TENANT_ADMIN_ROLES = ["community", "patient", "professional", "staff", "admin"];
 const SUPER_ADMIN_ROLES = [...TENANT_ADMIN_ROLES, "developer", "infra"];
@@ -93,7 +93,7 @@ export default function MembersRolesAccess() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔐"
-          title="Roles & Access"
+          title={t('screens.admin.rolesAccess')}
           description="Grant and revoke roles for tenant members. Each member sees only their granted roles in the role switcher."
         />
 
@@ -105,11 +105,11 @@ export default function MembersRolesAccess() {
         />
 
         {membersQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading members...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingMembers')}</p>
         )}
 
         {!membersQuery.isLoading && members.length === 0 && (
-          <AdminEmptyState title="No members found" />
+          <AdminEmptyState title={t('screens.admin.noMembersFound')} />
         )}
 
         {members.length > 0 && (
@@ -119,9 +119,9 @@ export default function MembersRolesAccess() {
                 <TableRow>
                   <TableHead className="w-[40px]" />
                   <TableHead>Member</TableHead>
-                  <TableHead>Active Role</TableHead>
-                  <TableHead>Granted Roles</TableHead>
-                  <TableHead className="w-[200px]">Grant Role</TableHead>
+                  <TableHead>{t('screens.admin.activeRole')}</TableHead>
+                  <TableHead>{t('screens.admin.grantedRoles')}</TableHead>
+                  <TableHead className="w-[200px]">{t('screens.admin.grantRole')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -179,7 +179,7 @@ export default function MembersRolesAccess() {
                           <div className="flex gap-1">
                             <Select value={grantRole} onValueChange={setGrantRole}>
                               <SelectTrigger className="h-7 text-xs w-[120px]">
-                                <SelectValue placeholder="Pick role" />
+                                <SelectValue placeholder={t('screens.admin.pickRole')} />
                               </SelectTrigger>
                               <SelectContent>
                                 {availableRoles

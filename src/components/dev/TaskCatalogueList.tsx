@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle2, Clock, XCircle, ExternalLink, StickyNote, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Task {
   id: string;
@@ -180,7 +181,7 @@ export function TaskCatalogueList() {
                   <div className="pt-4 space-y-4 border-t animate-in fade-in slide-in-from-top-2 duration-300">
                     {task.fullDescription && (
                       <div>
-                        <h4 className="text-sm font-semibold mb-2">Full Description</h4>
+                        <h4 className="text-sm font-semibold mb-2">{t('screens.dev.fullDescription')}</h4>
                         <p className="text-sm text-muted-foreground">{task.fullDescription}</p>
                       </div>
                     )}
@@ -200,7 +201,7 @@ export function TaskCatalogueList() {
 
                     {task.relatedLinks && task.relatedLinks.length > 0 && (
                       <div>
-                        <h4 className="text-sm font-semibold mb-2">Related Links</h4>
+                        <h4 className="text-sm font-semibold mb-2">{t('screens.dev.relatedLinks')}</h4>
                         <div className="flex gap-2 flex-wrap">
                           {task.relatedLinks.map((link, idx) => (
                             <Button

@@ -1,4 +1,5 @@
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface MotivationBannerCardProps {
   userName?: string;
@@ -13,7 +14,7 @@ export function MotivationBannerCard({
 }: MotivationBannerCardProps) {
   return (
     <NewsCard
-      title="Daily Motivation"
+      title={t('screens.context.dailyMotivation')}
       description={`${userName}, ${message}`}
       imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
       pillar="Mental"

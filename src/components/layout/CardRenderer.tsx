@@ -16,6 +16,7 @@ import { PodcastCard } from '@/components/crossover/PodcastCard';
 import { MusicCard } from '@/components/crossover/MusicCard';
 import { VideoFeedCard } from '@/components/crossover/VideoFeedCard';
 import { SmartCalendarCard } from '@/components/crossover/SmartCalendarCard';
+import { t } from '@/lib/i18n-toast';
 
 interface CardRendererProps {
   /** Card envelope with content and metadata */
@@ -228,7 +229,7 @@ function ConsentShell({ envelope, displayCols, displayRows }: CardRendererProps)
           <span className="text-lg">🔒</span>
         </div>
         <div className="space-y-1">
-          <h3 className="font-medium text-sm">Content Requires Consent</h3>
+          <h3 className="font-medium text-sm">{t('screens.layout.contentRequiresConsent')}</h3>
           <p className="text-xs text-muted-foreground">
             Tap to review privacy settings for this content type
           </p>
@@ -256,7 +257,7 @@ function DefaultCard({ envelope, ...props }: { envelope: CardEnvelope; [key: str
       )}
     >
       <div className="space-y-2">
-        <h3 className="font-medium text-sm">Unknown Content Type</h3>
+        <h3 className="font-medium text-sm">{t('screens.layout.unknownContentType')}</h3>
         <p className="text-xs text-muted-foreground">
           Kind: {envelope.content_ref.kind}
         </p>

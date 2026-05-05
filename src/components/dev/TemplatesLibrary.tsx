@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Play, Edit, Copy, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Template {
   id: string;
@@ -102,7 +103,7 @@ export function TemplatesLibrary() {
         <div className="relative flex-1 min-w-[250px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search templates..."
+            placeholder={t('screens.dev.searchTemplates')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -160,7 +161,7 @@ export function TemplatesLibrary() {
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No templates found matching your criteria</p>
+          <p className="text-muted-foreground">{t('screens.dev.noTemplatesFoundMatchingYourCriteria')}</p>
         </div>
       )}
     </div>

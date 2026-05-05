@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Brain, Calendar, Clock, Droplets, Sparkles } from "lucide-react";
 import { HydrationPlanData } from "@/types/hydration";
+import { t } from '@/lib/i18n-toast';
 
 interface HydrationOverviewCardProps {
   planData: HydrationPlanData;
@@ -23,7 +24,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-            <h2 className="text-xl font-bold">Your Hydration Plan, Powered by Autopilot</h2>
+            <h2 className="text-xl font-bold">{t('screens.health.yourHydrationPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
             Smart hydration guidance tailored to your lifestyle, activity, and environment
@@ -41,7 +42,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
             <Droplets className="w-4 h-4 text-cyan-600 dark:text-cyan-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Goal Focus</span>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus}</p>
         </div>
@@ -101,7 +102,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5 animate-pulse" />
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
-            <p className="text-sm font-medium">AI Insight</p>
+            <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
             <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
               Last updated {planData.lastUpdated}
             </span>

@@ -9,6 +9,7 @@
 import { useNavigate } from 'react-router-dom';
 import { X, ArrowRight, Heart, AlertCircle, Target, Lightbulb } from 'lucide-react';
 import { useWelcomeBanner, WelcomeVariant } from '@/hooks/useProactivePresence';
+import { t } from '@/lib/i18n-toast';
 
 const VARIANT_VISUAL: Record<WelcomeVariant, { icon: any; bg: string }> = {
   urgent: { icon: AlertCircle, bg: 'from-red-500/10 via-orange-500/10 to-red-500/10' },
@@ -40,7 +41,7 @@ export function WelcomeBackBanner() {
       <button
         onClick={dismiss}
         className="absolute top-2 right-2 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-        aria-label="Dismiss welcome banner"
+        aria-label={t('screens.home.dismissWelcomeBanner')}
       >
         <X className="w-4 h-4" />
       </button>

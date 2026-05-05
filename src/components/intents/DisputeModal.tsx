@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { raiseDispute, type DisputeReasonCategory } from "@/lib/intentApi";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DisputeModalProps {
   open: boolean;
@@ -66,7 +66,7 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Report an issue</DialogTitle>
+          <DialogTitle>{t('screens.intents.reportIssue')}</DialogTitle>
           <DialogDescription>
             Raise a dispute on this match. Vitana support will review and follow up. Both parties' identities are recorded for the audit trail.
           </DialogDescription>

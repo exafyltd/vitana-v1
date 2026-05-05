@@ -16,7 +16,7 @@ import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle
 import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { toast } from "sonner";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
@@ -119,7 +119,7 @@ function CampaignDetail() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="p-6 text-center">Loading campaign...</div>
+        <div className="p-6 text-center">{t('screens.sharing.loadingCampaign')}</div>
       </AppLayout>
     );
   }
@@ -128,7 +128,7 @@ function CampaignDetail() {
     return (
       <AppLayout>
         <div className="p-6 text-center">
-          <h2 className="text-xl font-semibold mb-2">Campaign not found</h2>
+          <h2 className="text-xl font-semibold mb-2">{t('screens.sharing.campaignNotFound')}</h2>
           <Button onClick={() => navigate('/sharing/campaigns')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Campaigns
@@ -236,7 +236,7 @@ function CampaignDetail() {
           <div className="grid gap-4 md:grid-cols-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Posts</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.totalPosts')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{campaignPosts.length}</div>
@@ -278,7 +278,7 @@ function CampaignDetail() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Campaign Posts</CardTitle>
+                <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
                 <Button onClick={() => setShowCreatePostDialog(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Create Post
@@ -341,7 +341,7 @@ function CampaignDetail() {
               ) : (
                 <div className="text-center py-12">
                   <Send className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No posts yet</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noPostsYet')}</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Create posts and assign them to this campaign
                   </p>

@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { getCurrentExchangeRates, formatCurrency } from '@/lib/exchangeRates';
 import { cn } from '@/lib/utils';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 interface ExchangeRateDisplayProps {
   compact?: boolean;
@@ -55,7 +56,7 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
     <Card className={cn("border-dashed bg-gradient-to-r from-blue-50/50 to-purple-50/50", className)}>
       <CardContent className="p-3">
         <div className="flex items-center justify-between mb-2">
-          <h4 className="text-sm font-medium text-muted-foreground">Live Exchange Rates</h4>
+          <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.liveExchangeRates')}</h4>
           <Badge variant="outline" className="text-xs bg-white">
             Updated now
           </Badge>

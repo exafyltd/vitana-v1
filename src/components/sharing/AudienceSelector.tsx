@@ -8,6 +8,7 @@ import { CsvContactUploader } from "./CsvContactUploader";
 import { ManualContactEntry } from "./ManualContactEntry";
 import { ChannelEligibilityBadges } from "./ChannelEligibilityBadges";
 import type { AudienceData, ExternalContact } from "@/types/audience";
+import { t } from '@/lib/i18n-toast';
 
 interface AudienceSelectorProps {
   audienceData?: AudienceData;
@@ -181,7 +182,7 @@ export function AudienceSelector({
       )}
       
       <div>
-        <h3 className="font-semibold mb-2">Select Your Audience</h3>
+        <h3 className="font-semibold mb-2">{t('screens.sharing.selectYourAudience')}</h3>
         <p className="text-sm text-muted-foreground mb-4">
           Choose one or more audience sources. You can combine multiple sources.
         </p>
@@ -196,14 +197,14 @@ export function AudienceSelector({
             />
             <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">Vitana Contacts</div>
+              <div className="font-medium">{t('screens.sharing.vitanaContacts')}</div>
               <div className="text-sm text-muted-foreground">
                 Choose from your saved contacts
               </div>
               {vitanaContactsEnabled && (
                 <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
                   {contacts.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No contacts available</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.sharing.noContactsAvailable')}</p>
                   ) : (
                     contacts.map(contact => (
                       <div
@@ -239,7 +240,7 @@ export function AudienceSelector({
             />
             <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">External Contacts (CSV)</div>
+              <div className="font-medium">{t('screens.sharing.externalContactsCsv')}</div>
               <div className="text-sm text-muted-foreground mb-3">
                 Import contacts from a CSV file
               </div>
@@ -263,7 +264,7 @@ export function AudienceSelector({
             />
             <PenLine className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">Manual Entry</div>
+              <div className="font-medium">{t('screens.sharing.manualEntry')}</div>
               <div className="text-sm text-muted-foreground mb-3">
                 Add contacts manually (up to 10)
               </div>
@@ -283,8 +284,8 @@ export function AudienceSelector({
             <Checkbox disabled />
             <Target className="h-5 w-5 text-muted-foreground" />
             <div className="flex-1">
-              <div className="font-medium">Community Segments</div>
-              <div className="text-sm text-muted-foreground">Coming soon</div>
+              <div className="font-medium">{t('screens.sharing.communitySegments')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.sharing.comingSoon')}</div>
             </div>
           </div>
         </div>

@@ -15,7 +15,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BuyTokensPopupProps {
   open: boolean;
@@ -113,18 +113,18 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg border border-purple-100">
-              <div className="text-xs text-muted-foreground">Current VTNA</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.currentVtna')}</div>
               <div className="font-semibold text-purple-700">{currentTokens.toLocaleString()}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
-              <div className="text-xs text-muted-foreground">USD Balance</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
               <div className="font-semibold text-green-700">${usdBalance.toLocaleString()}</div>
             </div>
           </div>
 
           {/* Token Packages */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">VTNA Token Packages</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.vtnaTokenPackages')}</h4>
             {tokenPackages.map((pkg, index) => (
               <Button
                 key={index}
@@ -171,11 +171,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
           {/* Custom Amount */}
           <div className="space-y-2">
-            <Label htmlFor="tokenAmount">Custom Amount</Label>
+            <Label htmlFor="tokenAmount">{t('screens.wallet.customAmount')}</Label>
             <Input
               id="tokenAmount"
               type="number"
-              placeholder="Enter number of VTNA tokens"
+              placeholder={t('screens.wallet.enterNumberVtnaTokens')}
               value={tokenAmount}
               onChange={(e) => setTokenAmount(e.target.value)}
               min="1"
@@ -206,13 +206,13 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
             <div className="flex items-center gap-2 mb-2">
               <Coins className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">VTNA Token Benefits</span>
+              <span className="text-sm font-medium text-purple-700">{t('screens.wallet.vtnaTokenBenefits')}</span>
             </div>
             <ul className="text-xs text-purple-600 space-y-1">
-              <li>• Stake for passive income rewards</li>
-              <li>• Governance voting rights on platform decisions</li>
-              <li>• Access to exclusive VTNA holder features</li>
-              <li>• Potential value appreciation over time</li>
+              <li>{t('screens.wallet.stakeForPassiveIncomeRewards')}</li>
+              <li>{t('screens.wallet.governanceVotingRightsPlatformDecisions')}</li>
+              <li>{t('screens.wallet.accessExclusiveVtnaHolderFeatures')}</li>
+              <li>{t('screens.wallet.potentialValueAppreciationOverTime')}</li>
             </ul>
           </div>
         </div>

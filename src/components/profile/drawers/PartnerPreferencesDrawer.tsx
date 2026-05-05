@@ -38,7 +38,7 @@ import {
   type GenderPref,
   type RelationshipIntent,
 } from "@/lib/profilePrefsApi";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PartnerPreferencesDrawerProps {
   open: boolean;
@@ -116,7 +116,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Partner preferences</DialogTitle>
+          <DialogTitle>{t('screens.profile.partnerPreferences')}</DialogTitle>
         </DialogHeader>
 
         <p className="text-xs text-muted-foreground flex items-center gap-1.5 -mt-2">
@@ -131,10 +131,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
         ) : (
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label>I'm looking for</Label>
+              <Label>{t('screens.profile.iMLookingFor')}</Label>
               <Select value={genderPref} onValueChange={(v) => setGenderPref(v as GenderPref)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose..." />
+                  <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="female">Women</SelectItem>
@@ -172,7 +172,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
               <Label htmlFor="location">Where</Label>
               <Input
                 id="location"
-                placeholder="e.g. Vienna, Austria"
+                placeholder={t('screens.profile.eGViennaAustria')}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 maxLength={200}
@@ -180,14 +180,14 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label>What I'm looking for</Label>
+              <Label>{t('screens.profile.whatIMLookingFor')}</Label>
               <Select value={intent} onValueChange={(v) => setIntent(v as RelationshipIntent)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose..." />
+                  <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="dating">Dating</SelectItem>
-                  <SelectItem value="life_partner">Life partner</SelectItem>
+                  <SelectItem value="life_partner">{t('screens.profile.lifePartner')}</SelectItem>
                   <SelectItem value="companionship">Companionship</SelectItem>
                   <SelectItem value="open">Open</SelectItem>
                 </SelectContent>
@@ -195,10 +195,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="must-haves">Must-haves (comma-separated, up to 10)</Label>
+              <Label htmlFor="must-haves">{t('screens.profile.musthavesCommaseparatedUp10')}</Label>
               <Textarea
                 id="must-haves"
-                placeholder="kind, curious, active outdoors"
+                placeholder={t('screens.profile.kindCuriousActiveOutdoors')}
                 value={mustHavesText}
                 onChange={(e) => setMustHavesText(e.target.value)}
                 rows={2}
@@ -206,10 +206,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="deal-breakers">Deal-breakers (comma-separated, up to 10)</Label>
+              <Label htmlFor="deal-breakers">{t('screens.profile.dealbreakersCommaseparatedUp10')}</Label>
               <Textarea
                 id="deal-breakers"
-                placeholder="smoker, long-distance only"
+                placeholder={t('screens.profile.smokerLongdistanceOnly')}
                 value={dealBreakersText}
                 onChange={(e) => setDealBreakersText(e.target.value)}
                 rows={2}

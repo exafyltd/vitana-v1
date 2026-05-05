@@ -27,7 +27,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { Copy, Check, Share2, MessageCircle, Mail, Loader2 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -203,14 +203,14 @@ export function IntentShareSheet({
               Direct invite to Vitana friends
             </p>
             <Textarea
-              placeholder="@dragan1 @maria3 @daniel4 (paste or type up to 20)"
+              placeholder={t('screens.intents.dragan1Maria3Daniel4PasteTypeUp')}
               value={recipientText}
               onChange={(e) => setRecipientText(e.target.value)}
               className="min-h-[60px] font-mono text-sm"
               aria-label="Recipient vitana_ids"
             />
             <Input
-              placeholder="Add a short note (optional)"
+              placeholder={t('screens.intents.addShortNoteOptional')}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               maxLength={280}
@@ -240,7 +240,7 @@ export function IntentShareSheet({
             </p>
             <div className="flex gap-2">
               <Input value={publicLink} readOnly className="flex-1 font-mono text-xs" />
-              <Button variant="outline" size="icon" onClick={handleCopyLink} aria-label="Copy link">
+              <Button variant="outline" size="icon" onClick={handleCopyLink} aria-label={t('screens.intents.copyLink')}>
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
@@ -266,7 +266,7 @@ export function IntentShareSheet({
               {nativeShareAvailable && (
                 <Button variant="outline" onClick={handleNativeShare} className="flex-col h-auto py-3">
                   <Share2 className="h-4 w-4 mb-1" />
-                  <span className="text-xs">More…</span>
+                  <span className="text-xs">{t('screens.intents.more')}</span>
                 </Button>
               )}
             </div>

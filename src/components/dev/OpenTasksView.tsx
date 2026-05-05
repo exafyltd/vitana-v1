@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, AlertCircle, CheckCircle2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Task {
   id: string;
@@ -87,7 +88,7 @@ export function OpenTasksView({ onTaskClick }: OpenTasksViewProps) {
       <div className="flex-1 overflow-y-auto space-y-3 p-4">
         {tasks.length === 0 ? (
           <div className="flex items-center justify-center h-full text-muted-foreground">
-            <p>No open tasks</p>
+            <p>{t('screens.dev.noOpenTasks')}</p>
           </div>
         ) : (
           tasks.map((task) => (
