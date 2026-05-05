@@ -102,8 +102,11 @@ export function deriveIntentLine(
       ? 'fitness'
       : null;
 
-  // dance.salsa -> "salsa", fitness.gym -> "gym", etc.
-  const sub = category?.includes('.') ? category.split('.').slice(1).join(' ') : null;
+  // dance.salsa -> "salsa", fitness.gym -> "gym",
+  // dance.social_partner -> "social partner" (underscores cleaned).
+  const subRaw = category?.includes('.') ? category.split('.').slice(1).join(' ') : null;
+  const sub = subRaw ? subRaw.replace(/_/g, ' ').trim().toLowerCase() : null;
+  const subHasPartnerWord = !!sub && /\b(partner|buddy|mate)\b/.test(sub);
   const kindA = (kindPairing ?? '').split('::')[0];
 
   if (kindA === 'partner_seek') {
@@ -115,13 +118,21 @@ export function deriveIntentLine(
   }
 
   if (kindA === 'social_seek') {
-    if (v === 'dance') return sub ? `Open to ${sub} hangouts` : 'Open to dance hangouts';
+    if (v === 'dance') return sub && !subHasPartnerWord ? `Open to ${sub} hangouts` : 'Open to dance hangouts';
     if (v === 'fitness') return 'Open to fitness buddy sessions';
     return 'Open to meet-ups';
   }
 
   // activity_seek (default) and friends.
-  if (v === 'dance') return sub ? `Looking for a ${sub} practice partner` : 'Looking for a dance partner';
-  if (v === 'fitness') return sub ? `Wants a ${sub} buddy` : 'Looking for a fitness buddy';
+  if (v === 'dance') {
+    if (!sub) return 'Looking for a dance partner';
+    if (subHasPartnerWord) return `Looking for a ${sub}`;
+    return `Looking for a ${sub} practice partner`;
+  }
+  if (v === 'fitness') {
+    if (!sub) return 'Looking for a fitness buddy';
+    if (subHasPartnerWord) return `Looking for a ${sub}`;
+    return `Wants a ${sub} buddy`;
+  }
   return 'Open to new connections';
 }
