@@ -256,15 +256,19 @@ export function VitanaIndexSheet() {
     }
 
     // Defer a tick so the sheet's own enter animation isn't competing for
-    // paint with the confetti canvas creation.
+    // paint with the confetti canvas creation. Both growth and first-open
+    // celebrations get a full burst — the banner copy carries the nuance,
+    // the confetti just says "today matters".
     const timer = window.setTimeout(() => {
       confettiManager.fire({
-        particleCount: hasGrowth ? 120 : 70,
-        spread: hasGrowth ? 90 : 70,
-        startVelocity: 38,
-        colors: ["#10B981", "#22D3EE", "#3B82F6", "#A78BFA", "#F59E0B"],
+        particleCount: 130,
+        spread: 100,
+        startVelocity: 40,
+        colors: hasGrowth
+          ? ["#10B981", "#22D3EE", "#3B82F6", "#A78BFA", "#F59E0B"]
+          : ["#3B82F6", "#A78BFA", "#22D3EE", "#F472B6", "#F59E0B"],
         shapes: ["circle", "square"],
-        scalar: hasGrowth ? 1.1 : 0.9,
+        scalar: 1.1,
       });
     }, 180);
 
