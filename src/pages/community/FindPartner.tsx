@@ -33,7 +33,7 @@ import { Loader2, MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
-import { IntentMatchCard } from '@/components/intents/IntentMatchCard';
+import { FindPartnerMatchCard } from '@/components/intents/FindPartnerMatchCard';
 import { IntentComposer } from '@/components/intents/IntentComposer';
 import {
   listMyIntents,
@@ -66,13 +66,6 @@ function viewMeta(v: View) {
 function isFindPartnerCategory(cat: string | null | undefined): boolean {
   if (!cat) return false;
   return cat.startsWith('dance.') || cat.startsWith('fitness.');
-}
-
-function verticalChip(category: string | null) {
-  if (!category) return null;
-  if (category.startsWith('dance.')) return { icon: '💃', label: 'Dance', tone: 'bg-pink-100 text-pink-700 border-pink-200' };
-  if (category.startsWith('fitness.')) return { icon: '💪', label: 'Fitness', tone: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
-  return null;
 }
 
 interface MemberRow {
@@ -250,25 +243,20 @@ export default function FindPartner() {
                 cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
               />
             ) : (
-              <div className="space-y-3">
-                {matches.map((m) => {
-                  const chip = verticalChip(m.source_category);
-                  const scorePct = Math.round((m.score ?? 0) * 100);
-                  return (
-                    <div key={m.match_id} className="rounded-lg border border-border bg-card">
-                      <div className="flex items-center justify-between px-4 pt-3 text-xs">
-                        {chip && (
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border ${chip.tone}`}>
-                            <span>{chip.icon}</span>
-                            <span>{chip.label}</span>
-                          </span>
-                        )}
-                        <span className="font-medium text-primary">{scorePct}% match</span>
-                      </div>
-                      <IntentMatchCard match={m} perspective="outgoing" onAction={() => void refresh()} />
-                    </div>
-                  );
-                })}
+              // Bottom padding leaves ~ a card height of clear space so the
+              // primary CTA on the last card stays above the fixed mobile
+              // bottom nav and the central Orb FAB.
+              <div className="space-y-5 pb-32 sm:pb-8 max-w-md mx-auto sm:max-w-none">
+                {matches.map((m) => (
+                  <FindPartnerMatchCard
+                    key={m.match_id}
+                    match={m}
+                    vertical={m.vertical}
+                    sourceCategory={m.source_category}
+                    perspective="outgoing"
+                    onAction={() => void refresh()}
+                  />
+                ))}
               </div>
             )
           )}
