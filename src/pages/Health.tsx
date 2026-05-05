@@ -251,12 +251,13 @@ export default withScreenId(function Health() {
                   modes={healthModes}
                   activeMode={mobileTab}
                   onModeChange={(v) => setMobileTab(v as any)}
+                  variant="pastel"
                 />
                 <UniversalCalendarButton />
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  className="h-9 px-3 rounded-full bg-gradient-to-r from-green-400/80 to-blue-500/80 text-white hover:from-green-500 hover:to-blue-500 gap-1.5 shrink-0"
                   onClick={() => setUploadSheetOpen(true)}
                 >
                   <Plus className="h-4 w-4" />

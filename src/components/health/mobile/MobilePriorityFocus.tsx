@@ -28,32 +28,26 @@ export function MobilePriorityFocus({
       </div>
 
       {/* Focus Card */}
-      <div 
-        className="rounded-xl p-4"
-        style={{
-          background: 'linear-gradient(135deg, hsl(216, 53%, 10%) 0%, hsl(222, 47%, 13%) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.05)'
-        }}
-      >
+      <div className="rounded-xl p-4 bg-card border border-border/60 shadow-sm">
         {/* Pillar Header */}
         <div className="flex items-center gap-3 mb-3">
           <span className="text-2xl">{pillarEmoji}</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-semibold text-white">{pillarName}</span>
-            <span className="text-amber-400 font-medium">{pillarScore}%</span>
+            <span className="text-lg font-semibold text-foreground">{pillarName}</span>
+            <span className="text-amber-600 font-medium">{pillarScore}%</span>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="h-2 bg-white/10 rounded-full overflow-hidden mb-3">
-          <div 
+        <div className="h-2 bg-muted rounded-full overflow-hidden mb-3">
+          <div
             className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all"
             style={{ width: `${pillarScore}%` }}
           />
         </div>
 
         {/* Explanation */}
-        <p className="text-sm text-white/60 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {displayExplanation}
         </p>
       </div>
