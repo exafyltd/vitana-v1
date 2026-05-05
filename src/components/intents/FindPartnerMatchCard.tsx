@@ -267,7 +267,7 @@ export function FindPartnerMatchCard({
         )}
 
         {/* Bottom identity strip — name + handle ONLY (no avatar pill, no intent line) */}
-        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white">
+        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left text-white">
           {isRedacted ? (
             <h3 className="text-lg font-semibold leading-tight">{t('screens.intents.anonymousMatch')}</h3>
           ) : (
