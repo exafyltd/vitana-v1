@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       "/api/v1": {
-        target: "https://gateway-q74ibpv6ia-uc.a.run.app",
+        target: "https://gateway.vitanaland.com",
         changeOrigin: true,
         secure: true,
       },
