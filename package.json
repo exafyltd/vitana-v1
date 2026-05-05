@@ -13,7 +13,8 @@
     "i18n:split": "node scripts/split-i18n.mjs",
     "i18n:audit": "node scripts/i18n-audit.mjs",
     "i18n:audit:strict": "node scripts/i18n-audit.mjs --strict",
-    "i18n:inventory": "node scripts/generate-screen-inventory.mjs"
+    "i18n:inventory": "node scripts/generate-screen-inventory.mjs",
+    "nav:draft": "node scripts/nav-draft.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",
