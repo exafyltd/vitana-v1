@@ -44,10 +44,11 @@ function pickKeepGoingMessage(delta: number, streak: number): string {
 }
 
 const DAILY_ENCOURAGEMENT_MESSAGES = [
-  "Welcome back. One small action today moves your Index.",
-  "Good to see you. Pick one thing — your future self will thank you.",
-  "Hey, you're here. That's already step one — let's make today count.",
-  "Showing up is the work. Let's keep building.",
+  "Fresh day, fresh chance — let's grow your Index together.",
+  "You're here, that's the first move. Let's nudge your Index up today.",
+  "One small action and your Index starts climbing. Let's go.",
+  "Today is a great day to improve. I've got your back — let's grow it.",
+  "Let's make today count. Pick one thing and watch your Index lift.",
 ];
 
 function pickDailyEncouragement(): string {
