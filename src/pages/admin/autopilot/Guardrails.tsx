@@ -190,8 +190,7 @@ export default function AutopilotGuardrails() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm">{t('screens.admin.autoactivation')}</CardTitle>
-                <CardDescription className="text-xs">
-                  Recommendations above this confidence threshold auto-execute without manual approval. Leave empty to require manual approval for all.
+                <CardDescription className="text-xs">{t('screens.admin.recommendationsAboveThisConfidenceThresholdAutoexe')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -207,7 +206,7 @@ export default function AutopilotGuardrails() {
                       const v = e.target.value === "" ? null : parseFloat(e.target.value);
                       updateField("auto_activate_threshold", v as any);
                     }}
-                    placeholder="Disabled (manual only)"
+                    placeholder={t('screens.admin.disabledManualOnly')}
                     className="mt-1"
                   />
                 </div>
@@ -245,8 +244,7 @@ export default function AutopilotGuardrails() {
                   setDirty(false);
                 }
               }}
-            >
-              Cancel
+            >{t('screens.admin.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={updateSettings.isPending}>
               {updateSettings.isPending ? "Saving..." : "Save Changes"}

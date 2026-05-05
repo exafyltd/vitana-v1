@@ -23,9 +23,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
       <DialogContent className="max-w-lg bg-gradient-to-br from-[#FDE2E4]/95 via-[#FAD4C0]/95 to-[#CDEDF6]/95 dark:from-[#1A1013]/95 dark:via-[#1E1C1B]/95 dark:to-[#122025]/95 backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
-            <span className="text-3xl">{data.moodEmoji}</span>
-            Day {data.dayId.split('-')[1]} - {data.dayName}
-          </DialogTitle>
+            <span className="text-3xl">{data.moodEmoji}</span>{t('screens.health.dayValue0Dayname2', { value0: data.dayId.split('-')[1], dayName: data.dayName })}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 mt-4">

@@ -68,9 +68,7 @@ export function AutopilotSuggestions({ suggestions, onAccept, onDismiss }: Autop
             <p className="text-sm text-muted-foreground">{suggestion.description}</p>
             
             {suggestion.suggestedTime && (
-              <p className="text-xs font-medium">
-                Suggested: {suggestion.suggestedTime.toLocaleString()}
-              </p>
+              <p className="text-xs font-medium">{t('screens.calendar.suggestedValue0', { value0: suggestion.suggestedTime.toLocaleString() })}</p>
             )}
 
             <div className="flex gap-2">

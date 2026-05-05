@@ -963,7 +963,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   size="sm"
                   variant="ghost"
                   onClick={() => setShowCreateGroup(true)}
-                  title="Create Group"
+                  title={t('screens.messages.createGroup')}
                 >
                   <UserPlus className="w-4 h-4" />
                 </Button>

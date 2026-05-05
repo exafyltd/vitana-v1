@@ -244,9 +244,7 @@ export default function WalletIntegratedExchangeAndSend({
                   </div>
                 </div>
                 
-                <div className="text-xs text-center text-muted-foreground">
-                  Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency} • Fee: {formatCurrency(calculation.fees, fromCurrency)}
-                </div>
+                <div className="text-xs text-center text-muted-foreground">{t('screens.payment.rate1FromcurrencyValue1TocurrencyFee', { fromCurrency, value1: calculation.rate.toFixed(3), toCurrency, value3: formatCurrency(calculation.fees, fromCurrency) })}</div>
                 
                 {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
@@ -281,8 +279,7 @@ export default function WalletIntegratedExchangeAndSend({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Sending...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.sending')}
                 </>
               ) : (
                 <>

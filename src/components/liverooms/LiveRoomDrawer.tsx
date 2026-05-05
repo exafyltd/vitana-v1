@@ -247,7 +247,7 @@ export function LiveRoomDrawer({
               )}
               onClick={onNavigatePrev}
               disabled={!hasPrev}
-              aria-label="Previous room"
+              aria-label={t('screens.liverooms.previousRoom')}
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -260,7 +260,7 @@ export function LiveRoomDrawer({
                     variant="outline"
                     size="icon"
                     className="rounded-full bg-background/70 backdrop-blur-md shadow-md pointer-events-auto opacity-75 hover:opacity-100"
-                    aria-label="Stream options"
+                    aria-label={t('screens.liverooms.streamOptions')}
                   >
                     <MoreVertical className="h-5 w-5" />
                   </Button>
@@ -292,7 +292,7 @@ export function LiveRoomDrawer({
               )}
               onClick={onNavigateNext}
               disabled={!hasNext}
-              aria-label="Next room"
+              aria-label={t('screens.liverooms.nextRoom')}
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
@@ -381,7 +381,7 @@ export function LiveRoomDrawer({
                 ))}
               </div>
               {room.participants > 5 && (
-                <span className="text-sm text-muted-foreground">+{room.participants - 5} more</span>
+                <span className="text-sm text-muted-foreground">{t('screens.liverooms.value0More', { value0: room.participants - 5 })}</span>
               )}
             </div>
           </div>
@@ -418,9 +418,7 @@ export function LiveRoomDrawer({
                       : format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
                   </p>
                   {showCountdown && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Starts in {formatDistanceToNow(new Date(room.scheduledTime!))}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</p>
                   )}
                 </div>
               ) : null}
@@ -537,8 +535,7 @@ export function LiveRoomDrawer({
           <ResponsiveConfirmDialogContent>
             <ResponsiveConfirmDialogHeader>
               <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
-              <ResponsiveConfirmDialogDescription>
-                This will permanently delete "{room?.title}". This action cannot be undone.
+              <ResponsiveConfirmDialogDescription>{t('screens.liverooms.thisWillPermanentlyDeleteTitleThis', { title: room?.title })}
               </ResponsiveConfirmDialogDescription>
             </ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogFooter>
@@ -549,8 +546,7 @@ export function LiveRoomDrawer({
                   onDelete?.();
                 }}
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                Delete
+              >{t('screens.liverooms.delete')}
               </ResponsiveConfirmDialogAction>
             </ResponsiveConfirmDialogFooter>
           </ResponsiveConfirmDialogContent>
@@ -572,8 +568,7 @@ export function LiveRoomDrawer({
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
-            <ResponsiveConfirmDialogDescription>
-              This will permanently delete "{room?.title}". This action cannot be undone.
+            <ResponsiveConfirmDialogDescription>{t('screens.liverooms.thisWillPermanentlyDeleteTitleThis', { title: room?.title })}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
@@ -584,8 +579,7 @@ export function LiveRoomDrawer({
                 onDelete?.();
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
+            >{t('screens.liverooms.delete')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>

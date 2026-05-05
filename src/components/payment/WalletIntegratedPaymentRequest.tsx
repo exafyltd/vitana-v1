@@ -192,12 +192,10 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Payment Type Badge */}
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="capitalize">
-              {paymentType} Payment Request
+            <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePaymentRequest', { paymentType })}
             </Badge>
             {currency === 'CREDITS' && (
-              <Badge variant="secondary">
-                Platform Credits
+              <Badge variant="secondary">{t('screens.payment.platformCredits')}
               </Badge>
             )}
           </div>

@@ -273,14 +273,12 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
             <TabsTrigger 
               value="created"
               className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
-            >
-              Created ({createdEvents.length})
+            >{t('screens.profile.createdLength', { length: createdEvents.length })}
             </TabsTrigger>
             <TabsTrigger 
               value="joined"
               className="relative bg-transparent px-0 pb-3 pt-0 font-medium text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-foreground data-[state=active]:shadow-none after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-gradient-to-r after:from-violet-400 after:to-sky-400 after:rounded-full after:opacity-0 data-[state=active]:after:opacity-100 after:transition-opacity"
-            >
-              Joined ({joinedEvents.length})
+            >{t('screens.profile.joinedLength', { length: joinedEvents.length })}
             </TabsTrigger>
           </TabsList>
         </div>
@@ -340,8 +338,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                             e.stopPropagation();
                             navigate('/community/meetups');
                           }}
-                        >
-                          Join Event
+                        >{t('screens.profile.joinEvent')}
                         </Button>
                       ) : isOwnProfile && isUpcoming ? (
                         <Button
@@ -351,7 +348,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                             e.stopPropagation();
                             navigate('/community/meetups');
                           }}
-                          aria-label="Edit event"
+                          aria-label={t('screens.profile.editEvent')}
                         >
                           <Edit className="w-3 h-3" />
                         </Button>
@@ -432,8 +429,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                             e.stopPropagation();
                             navigate('/community/meetups');
                           }}
-                        >
-                          Join Event
+                        >{t('screens.profile.joinEvent')}
                         </Button>
                       ) : undefined
                     }

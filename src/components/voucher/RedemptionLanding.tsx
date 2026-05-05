@@ -79,9 +79,7 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
             {t('screens.voucher.youVeReceivedGift')}
           </h1>
           {voucherData.order?.buyer_name && (
-            <p className="text-muted-foreground">
-              From {voucherData.order.buyer_name}
-            </p>
+            <p className="text-muted-foreground">{t('screens.voucher.fromBuyer_name', { buyer_name: voucherData.order.buyer_name })}</p>
           )}
         </motion.div>
 
@@ -166,8 +164,7 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
           <button
             onClick={handleRegister}
             className="w-full py-4 bg-secondary text-secondary-foreground rounded-2xl font-semibold text-lg hover:bg-secondary/80 transition-colors"
-          >
-            Create Account
+          >{t('screens.voucher.createAccount')}
           </button>
           <p className="text-center text-xs text-muted-foreground pt-2">
             {t('screens.voucher.signCreateAccountClaimYourWellness')}

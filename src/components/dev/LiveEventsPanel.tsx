@@ -81,7 +81,7 @@ export function LiveEventsPanel({ tenant = 'system', status = 'all' }: LiveEvent
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">{event.event}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-muted-foreground">RID: {event.rid.slice(0, 8)}</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.dev.ridValue0', { value0: event.rid.slice(0, 8) })}</span>
                     <span className="text-xs text-muted-foreground">•</span>
                     <span className="text-xs text-muted-foreground">
                       {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}

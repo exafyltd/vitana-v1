@@ -73,9 +73,7 @@ export function ActiveRunsList() {
               <p className="text-sm font-medium">{run.currentStep}</p>
             </div>
 
-            <div className="text-xs text-muted-foreground">
-              Started {run.startedAt}
-            </div>
+            <div className="text-xs text-muted-foreground">{t('screens.dev.startedStartedat', { startedAt: run.startedAt })}</div>
 
             <div className="flex gap-2 pt-2">
               <Button size="sm" variant="outline" className="flex-1">

@@ -76,9 +76,7 @@ export default function ContactListItem({
             <p className="text-sm text-muted-foreground truncate">{contactInfo}</p>
           )}
           {contact.invite_sent_at && !contact.is_on_platform && (
-            <p className="text-xs text-muted-foreground mt-1">
-              Invited {new Date(contact.invite_sent_at).toLocaleDateString()}
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.contacts.invitedValue0', { value0: new Date(contact.invite_sent_at).toLocaleDateString() })}</p>
           )}
         </div>
 
@@ -121,8 +119,7 @@ export default function ContactListItem({
               <ResponsiveConfirmDialogContent>
                 <ResponsiveConfirmDialogHeader>
                   <ResponsiveConfirmDialogTitle>{t('screens.contacts.deleteContact')}</ResponsiveConfirmDialogTitle>
-                  <ResponsiveConfirmDialogDescription>
-                    Are you sure you want to delete {displayName}? This action cannot be undone.
+                  <ResponsiveConfirmDialogDescription>{t('screens.contacts.youSureYouWantDeleteDisplayname', { displayName })}
                   </ResponsiveConfirmDialogDescription>
                 </ResponsiveConfirmDialogHeader>
                 <ResponsiveConfirmDialogFooter>
@@ -130,8 +127,7 @@ export default function ContactListItem({
                   <ResponsiveConfirmDialogAction
                     onClick={() => onDelete(contact.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    Delete
+                  >{t('screens.contacts.delete')}
                   </ResponsiveConfirmDialogAction>
                 </ResponsiveConfirmDialogFooter>
               </ResponsiveConfirmDialogContent>

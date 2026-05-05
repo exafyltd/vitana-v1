@@ -236,8 +236,7 @@ export default function PushDiagnostics() {
                     disabled={refreshing}
                     className="text-xs flex-1"
                   >
-                    {refreshing ? <RefreshCw className="w-3 h-3 animate-spin mr-1" /> : <RefreshCw className="w-3 h-3 mr-1" />}
-                    Force Re-register
+                    {refreshing ? <RefreshCw className="w-3 h-3 animate-spin mr-1" /> : <RefreshCw className="w-3 h-3 mr-1" />}{t('screens.common.forceReregister')}
                   </Button>
                 </div>
               </>

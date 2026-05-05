@@ -330,8 +330,7 @@ function CampaignDetail() {
                           </>
                         )}
                         {post.status !== 'draft' && (
-                          <Button variant="outline" size="sm">
-                            View
+                          <Button variant="outline" size="sm">{t('screens.sharing.view')}
                           </Button>
                         )}
                       </div>

@@ -131,7 +131,7 @@ export function CredentialUploadPopup({
                     <Input
                       value={newSpecialtyTitle}
                       onChange={(e) => setNewSpecialtyTitle(e.target.value)}
-                      placeholder="e.g., Fitness Coach, Mental Health Coach"
+                      placeholder={t('screens.profile.eGFitnessCoachMentalHealth')}
                     />
                   </div>
                   <div>
@@ -285,12 +285,12 @@ export function CredentialUploadPopup({
                     <Input
                       value={certTitle}
                       onChange={(e) => setCertTitle(e.target.value)}
-                      placeholder="Certification title"
+                      placeholder={t('screens.profile.certificationTitle')}
                     />
                     <Input
                       value={certIssuer}
                       onChange={(e) => setCertIssuer(e.target.value)}
-                      placeholder="Issuing organization"
+                      placeholder={t('screens.profile.issuingOrganization')}
                     />
                     <Input
                       type="date"

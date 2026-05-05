@@ -80,8 +80,7 @@ const OrganizerLink = ({ organizer }: { organizer: { name: string, id: string, a
           // Navigate to organizer profile
           console.log('View organizer:', organizer.id);
         }}
-      >
-        View
+      >{t('screens.common.view')}
       </Button>
     </div>
   </div>
@@ -276,9 +275,7 @@ export const transformCreatorRankingToCard = (
           ]}
         />
         {creator.organizedBy && (
-          <div className="mt-2 pt-2 border-t border-border/20 text-xs text-muted-foreground">
-            Organized by {creator.organizedBy}
-          </div>
+          <div className="mt-2 pt-2 border-t border-border/20 text-xs text-muted-foreground">{t('screens.common.organizedByOrganizedby', { organizedBy: creator.organizedBy })}</div>
         )}
         <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
@@ -289,8 +286,7 @@ export const transformCreatorRankingToCard = (
               window.history.pushState({}, '', `/u/${creator.id}`);
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-          >
-            View Full Profile
+          >{t('screens.common.viewFullProfile')}
           </Button>
         </div>
       </>
@@ -379,8 +375,7 @@ export const transformMemberRankingToCard = (
               window.history.pushState({}, '', `/u/${member.user_id}`);
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-          >
-            View Full Profile
+          >{t('screens.common.viewFullProfile')}
           </Button>
         </div>
       </>

@@ -193,12 +193,10 @@ export default function PaymentRequestPopup({
 
           {/* Payment Type Badge */}
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="capitalize">
-              {paymentType} Payment
+            <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePayment', { paymentType })}
             </Badge>
             {currency.toUpperCase() === 'CREDITS' && (
-              <Badge variant="secondary">
-                Platform Credits
+              <Badge variant="secondary">{t('screens.payment.platformCredits')}
               </Badge>
             )}
           </div>

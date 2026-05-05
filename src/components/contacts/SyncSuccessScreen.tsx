@@ -41,8 +41,7 @@ export function SyncSuccessScreen({
         <h3 className="text-xl font-semibold text-foreground">
           {t('screens.contacts.contactsSynced')}
         </h3>
-        <p className="text-sm text-muted-foreground">
-          We found {totalImported} contacts and matched them with VITANA
+        <p className="text-sm text-muted-foreground">{t('screens.contacts.weFoundTotalimportedContactsMatchedThem', { totalImported })}
         </p>
       </div>
 
@@ -85,8 +84,7 @@ export function SyncSuccessScreen({
 
       {/* Message */}
       {matchesFound > 0 && (
-        <p className="text-sm text-foreground bg-[hsl(var(--contact-success)/0.1)] rounded-lg p-3">
-          🎉 {matchesFound} of your friends are already on VITANA!
+        <p className="text-sm text-foreground bg-[hsl(var(--contact-success)/0.1)] rounded-lg p-3">{t('screens.contacts.matchesfoundYourFriendsAlreadyVitana', { matchesFound })}
         </p>
       )}
 

@@ -325,8 +325,7 @@ export default function AddContactDialog({
                     type="button"
                     onClick={() => setManualMode(true)}
                     className="w-full"
-                  >
-                    Can't find them? Add manually
+                  >{t('screens.contacts.canTFindThemAddManually')}
                   </Button>
                 )}
               </>
@@ -336,8 +335,7 @@ export default function AddContactDialog({
             {manualMode && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="name">
-                    Name <span className="text-destructive">*</span>
+                  <Label htmlFor="name">{t('screens.contacts.name')} <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="name"
@@ -377,8 +375,7 @@ export default function AddContactDialog({
                   type="button"
                   onClick={() => setManualMode(false)}
                   className="w-full"
-                >
-                  Search users instead
+                >{t('screens.contacts.searchUsersInstead')}
                 </Button>
               </>
             )}
@@ -399,8 +396,7 @@ export default function AddContactDialog({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Adding...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.contacts.adding')}
                 </>
               ) : (
                 "Add Contact"

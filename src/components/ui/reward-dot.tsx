@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 export interface RewardDotProps {
   points?: number;
@@ -72,8 +73,7 @@ export function RewardDot({
         <TooltipContent>
           <div className="text-center">
             {points && (
-              <div className="font-semibold text-purple-600">
-                +{points} credits
+              <div className="font-semibold text-purple-600">{t('screens.ui.pointsCredits', { points })}
               </div>
             )}
             <div className="text-xs text-muted-foreground">

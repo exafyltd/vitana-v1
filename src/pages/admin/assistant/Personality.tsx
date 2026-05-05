@@ -91,7 +91,7 @@ export default function AssistantPersonality() {
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {surface.has_tenant_override ? (
-                    <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
+                    <AdminStatusBadge variant="active">{t('screens.admin.customized')}</AdminStatusBadge>
                   ) : (
                     <AdminStatusBadge variant="inactive">{t('screens.admin.usingGlobal')}</AdminStatusBadge>
                   )}
@@ -119,7 +119,7 @@ export default function AssistantPersonality() {
                       onChange={(e) => setPromptDraft(e.target.value)}
                       rows={6}
                       className="font-mono text-xs"
-                      placeholder="Enter your tenant-specific system prompt..."
+                      placeholder={t('screens.admin.enterYourTenantspecificSystemPrompt')}
                     />
                   </div>
                   <div className="flex gap-2">

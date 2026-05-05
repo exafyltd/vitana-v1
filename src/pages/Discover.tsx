@@ -278,7 +278,7 @@ function DiscoverInner() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -341,8 +341,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Based on your Vitana Index, biomarkers, sleep scores, stress levels, and health goals
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.basedYourVitanaIndexBiomarkersSleep')}
                     </p>
                   )}
                   
@@ -427,8 +426,7 @@ function DiscoverInner() {
                               size="sm" 
                               className="flex-1"
                               onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
-                            >
-                              View
+                            >{t('screens.discover.view')}
                             </Button>
                           </div>
                         </CardContent>
@@ -455,8 +453,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Explore supplements, wellness services, lab tests, devices, and experiences
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.exploreSupplementsWellnessServicesLabTests')}
                     </p>
                   )}
                   
@@ -510,8 +507,7 @@ function DiscoverInner() {
                     </h2>
                   </div>
                   {!isMobile && (
-                    <p className="text-muted-foreground mb-6">
-                      Curated product bundles you can share to earn credits and commissions
+                    <p className="text-muted-foreground mb-6">{t('screens.discover.curatedProductBundlesYouCanShare')}
                     </p>
                   )}
 
@@ -568,9 +564,7 @@ function DiscoverInner() {
                             alt={item.title}
                             className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
-                          <Badge className="absolute top-2 left-2 bg-green-500 text-white">
-                            Earn {item.commission}
-                          </Badge>
+                          <Badge className="absolute top-2 left-2 bg-green-500 text-white">{t('screens.discover.earnCommission', { commission: item.commission })}</Badge>
                         </div>
                         <CardContent className={cn("p-4", isMobile && "p-3")}>
                           <h3 className={cn("font-semibold mb-2 group-hover:text-primary transition-colors", isMobile && "text-sm")}>
@@ -584,8 +578,7 @@ function DiscoverInner() {
                           <div className="flex items-center justify-between mb-3">
                             <span className={cn("font-bold", isMobile ? "text-base" : "text-lg")}>{item.price}</span>
                             <div className="text-xs text-muted-foreground">
-                              <Users className="h-3 w-3 inline mr-1" />
-                              {item.shares} shares
+                              <Users className="h-3 w-3 inline mr-1" />{t('screens.discover.sharesShares', { shares: item.shares })}
                             </div>
                           </div>
                           <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">

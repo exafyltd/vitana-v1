@@ -174,7 +174,7 @@ export default function MarketplaceProducts() {
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search title…"
+                  placeholder={t('screens.admin.searchTitle')}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") load();
                   }}
@@ -184,8 +184,7 @@ export default function MarketplaceProducts() {
                 size="sm"
                 variant={reviewOnly ? "default" : "outline"}
                 onClick={() => setFilter("requires_admin_review", reviewOnly ? null : "true")}
-              >
-                Needs review
+              >{t('screens.admin.needsReview')}
               </Button>
               <Button
                 size="sm"
@@ -197,7 +196,7 @@ export default function MarketplaceProducts() {
               <Button size="sm" variant="outline" onClick={load}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
-              <span className="text-xs text-muted-foreground ml-auto">{total.toLocaleString()} total</span>
+              <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.value0Total', { value0: total.toLocaleString() })}</span>
             </CardContent>
           </Card>
 
@@ -228,7 +227,7 @@ export default function MarketplaceProducts() {
           ) : items.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center text-muted-foreground">
-                <p className="font-medium">No products {reviewOnly ? "in the review queue" : "yet"}</p>
+                <p className="font-medium">{t('screens.admin.noProductsValue0', { value0: reviewOnly ? "in the review queue" : "yet" })}</p>
                 <p className="text-sm mt-1">
                   {reviewOnly
                     ? "All clear — nothing flagged for review right now."
@@ -248,12 +247,12 @@ export default function MarketplaceProducts() {
                           onCheckedChange={toggleAll}
                         />
                       </th>
-                      <th className="p-3 text-left font-medium">Product</th>
-                      <th className="p-3 text-left font-medium">Brand</th>
-                      <th className="p-3 text-left font-medium">Category</th>
-                      <th className="p-3 text-right font-medium">Price</th>
-                      <th className="p-3 text-left font-medium">Origin</th>
-                      <th className="p-3 text-left font-medium">Status</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.product')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.brand')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.category')}</th>
+                      <th className="p-3 text-right font-medium">{t('screens.admin.price')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.origin')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.status')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -273,7 +272,7 @@ export default function MarketplaceProducts() {
                           <div className="text-xs text-muted-foreground mt-0.5">
                             {p.source_network} · {p.source_product_id}
                             {p.analyzer_confidence !== null && (
-                              <> · confidence {(p.analyzer_confidence * 100).toFixed(0)}%</>
+                              <>{t('screens.admin.confidenceValue02', { value0: (p.analyzer_confidence * 100).toFixed(0) })}</>
                             )}
                           </div>
                           {p.requires_admin_review && p.admin_review_reason && (
@@ -291,9 +290,9 @@ export default function MarketplaceProducts() {
                           {p.origin_region && <span className="text-muted-foreground"> · {p.origin_region}</span>}
                         </td>
                         <td className="p-3">
-                          {!p.is_active && <Badge variant="secondary">Inactive</Badge>}
-                          {p.is_active && p.requires_admin_review && <Badge className="bg-amber-500">Review</Badge>}
-                          {p.is_active && !p.requires_admin_review && <Badge variant="outline">Live</Badge>}
+                          {!p.is_active && <Badge variant="secondary">{t('screens.admin.inactive')}</Badge>}
+                          {p.is_active && p.requires_admin_review && <Badge className="bg-amber-500">{t('screens.admin.review')}</Badge>}
+                          {p.is_active && !p.requires_admin_review && <Badge variant="outline">{t('screens.admin.live')}</Badge>}
                         </td>
                       </tr>
                     ))}

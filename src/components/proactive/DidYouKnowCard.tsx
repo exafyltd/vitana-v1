@@ -72,7 +72,7 @@ export function DidYouKnowCard() {
         <button
           onClick={() => decline('tip')}
           className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-          aria-label="Dismiss tip"
+          aria-label={t('screens.proactive.dismissTip')}
         >
           <X className="w-4 h-4" />
         </button>

@@ -135,8 +135,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
           <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
             <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
             <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
-            <p className="text-xs text-muted-foreground">
-              Examples:
+            <p className="text-xs text-muted-foreground">{t('screens.intents.examples')}
               <br />
               <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
               <br />
@@ -172,7 +171,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
                 id="intent-title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Short headline"
+                placeholder={t('screens.intents.shortHeadline')}
                 maxLength={140}
               />
             </div>
@@ -185,7 +184,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
                 id="intent-scope"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                placeholder="Describe what you need / what you're offering"
+                placeholder={t('screens.intents.describeWhatYouNeedWhat')}
                 rows={3}
                 maxLength={1500}
               />
@@ -212,7 +211,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               <Label className="text-xs uppercase tracking-wider text-muted-foreground">
                 {t('screens.intents.locationOptional')}
               </Label>
-              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Vienna" />
+              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
             </div>
           </div>
         )}

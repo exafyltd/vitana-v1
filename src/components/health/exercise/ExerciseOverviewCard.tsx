@@ -47,11 +47,9 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
             <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
-          <p className="text-lg font-bold">
-            {planData.sessionsPerWeek} sessions / week
+          <p className="text-lg font-bold">{t('screens.health.sessionsperweekSessionsWeek', { sessionsPerWeek: planData.sessionsPerWeek })}
           </p>
-          <p className="text-xs text-muted-foreground">
-            Avg duration {planData.avgDuration} min
+          <p className="text-xs text-muted-foreground">{t('screens.health.avgDurationAvgdurationMin', { avgDuration: planData.avgDuration })}
           </p>
         </div>
         
@@ -60,18 +58,15 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
             <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
-          <p className="text-lg font-bold">
-            Week {planData.currentWeek} of {planData.totalWeeks}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {planData.completionPercentage}% complete
+          <p className="text-lg font-bold">{t('screens.health.weekCurrentweekTotalweeks', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.completionpercentageComplete', { completionPercentage: planData.completionPercentage })}
           </p>
         </div>
       </div>
       
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium">Week {planData.currentWeek} of {planData.totalWeeks}-Week Program</span>
+          <span className="text-sm font-medium">{t('screens.health.weekCurrentweekTotalweeksweekProgram', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</span>
           <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
             {planData.completionPercentage}%
           </span>

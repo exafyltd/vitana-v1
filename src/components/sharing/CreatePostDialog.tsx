@@ -251,8 +251,7 @@ export function CreatePostDialog({
               <Send className="w-5 h-5" />
               {t('screens.sharing.createPost')}
             </DialogTitle>
-            <DialogDescription>
-              Create a new post for campaign: <span className="font-medium">{campaignName}</span>
+            <DialogDescription>{t('screens.sharing.createNewPostForCampaign')} <span className="font-medium">{campaignName}</span>
             </DialogDescription>
           </DialogHeader>
 
@@ -338,8 +337,7 @@ export function CreatePostDialog({
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <Send className="w-4 h-4 mr-2" />
-              )}
-              Blast Now
+              )}{t('screens.sharing.blastNow')}
             </Button>
             <Button
               variant="outline"
@@ -350,8 +348,7 @@ export function CreatePostDialog({
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <CalendarIcon className="w-4 h-4 mr-2" />
-              )}
-              Schedule
+              )}{t('screens.sharing.schedule')}
             </Button>
             <Button
               variant="outline"

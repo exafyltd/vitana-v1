@@ -21,13 +21,13 @@ import {
   formatPrice,
   getRedirectUrl,
 } from "@/hooks/useMarketplace";
+import { t } from '@/lib/i18n-toast';
 
 function RewardBadge({ reward_preview }: { reward_preview: MarketplaceProduct["reward_preview"] }) {
   if (!reward_preview?.points_estimate) return null;
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-full px-1.5 py-0.5">
-      <Gift className="w-3 h-3" />
-      +{reward_preview.points_estimate} pts
+      <Gift className="w-3 h-3" />{t('screens.discover.points_estimatePts', { points_estimate: reward_preview.points_estimate })}
     </span>
   );
 }
@@ -116,8 +116,7 @@ export function MarketplaceProductCard({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                >
-                  Buy <ExternalLink className="w-3.5 h-3.5" />
+                >{t('screens.discover.buy')} <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -228,8 +227,7 @@ export function MarketplaceProductCard({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline flex-shrink-0"
-          >
-            Buy <ExternalLink className="w-3 h-3" />
+          >{t('screens.discover.buy')} <ExternalLink className="w-3 h-3" />
           </a>
         </div>
       </CardContent>

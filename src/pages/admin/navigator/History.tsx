@@ -77,7 +77,7 @@ export default function NavigatorHistory() {
               <Input
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                placeholder="Filter by screen_id or title…"
+                placeholder={t('screens.admin.filterByScreen_idTitle')}
                 className="max-w-sm"
               />
             </div>

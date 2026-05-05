@@ -2,6 +2,7 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import { DemoCoach } from "@/hooks/useDemoMatches";
+import { t } from '@/lib/i18n-toast';
 
 interface CoachCardProps {
   coach: DemoCoach;
@@ -56,15 +57,12 @@ export function CoachCard({ coach, onBook }: CoachCardProps) {
         </p>
         
         <div className="pt-3 border-t border-border/50 space-y-2">
-          <p className="text-sm font-medium text-primary">
-            from €{coach.sessions_from}
-          </p>
+          <p className="text-sm font-medium text-primary">{t('screens.coaches.fromSessions_from', { sessions_from: coach.sessions_from })}</p>
           <Button 
             size="sm" 
             className="w-full bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600 shadow-md hover:shadow-lg transition-all"
             onClick={() => onBook(coach.id, coach.name)}
-          >
-            Book Session
+          >{t('screens.coaches.bookSession')}
           </Button>
         </div>
       </div>

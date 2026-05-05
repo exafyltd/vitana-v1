@@ -199,9 +199,7 @@ export default function OAuthComplete() {
           <>
             <CheckCircle2 className="h-12 w-12 mx-auto text-green-500" />
             <h1 className="text-xl font-semibold">{message}</h1>
-            <p className="text-muted-foreground">
-              If you aren't sent back automatically, tap below — or just switch to the Vitana app and it'll
-              catch up within a few seconds.
+            <p className="text-muted-foreground">{t('screens.auth.ifYouArenTSentBack')}
             </p>
             <Button size="lg" className="w-full" onClick={() => (window.location.href = deepLinkHref)}>
               {t('screens.auth.returnVitana')}

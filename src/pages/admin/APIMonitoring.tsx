@@ -143,7 +143,7 @@ export default function APIMonitoring() {
   const getStatusBadge = (status: string | null) => {
     switch (status) {
       case 'success':
-        return <Badge className="bg-green-500"><CheckCircle2 className="w-3 h-3 mr-1" />Healthy</Badge>;
+        return <Badge className="bg-green-500"><CheckCircle2 className="w-3 h-3 mr-1" />{t('screens.admin.healthy')}</Badge>;
       case 'failed':
         return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />{t('screens.admin.failed')}</Badge>;
       case 'warning':
@@ -312,13 +312,9 @@ export default function APIMonitoring() {
                                   </div>
                                   <p className="text-sm text-muted-foreground mt-1">{integration.base_url}</p>
                                   <div className="flex items-center gap-4 mt-2">
-                                    <span className="text-xs text-muted-foreground">
-                                      Type: {integration.integration_type}
-                                    </span>
+                                    <span className="text-xs text-muted-foreground">{t('screens.admin.typeIntegration_type', { integration_type: integration.integration_type })}</span>
                                     {integration.last_test_status && (
-                                      <span className="text-xs">
-                                        Last test: {getStatusBadge(integration.last_test_status)}
-                                      </span>
+                                      <span className="text-xs">{t('screens.admin.lastTestValue0', { value0: getStatusBadge(integration.last_test_status) })}</span>
                                     )}
                                     {integration.last_test_timestamp && (
                                       <span className="text-xs text-muted-foreground">
@@ -392,8 +388,8 @@ export default function APIMonitoring() {
                               </div>
                             </div>
                             <div className="text-sm text-muted-foreground space-y-1">
-                              <p>Test type: {log.test_type || 'automated'}</p>
-                              <p>Time: {log.timestamp && new Date(log.timestamp).toLocaleString()}</p>
+                              <p>{t('screens.admin.testTypeValue0', { value0: log.test_type || 'automated' })}</p>
+                              <p>{t('screens.admin.timeValue0', { value0: log.timestamp && new Date(log.timestamp).toLocaleString() })}</p>
                               {log.error_log && (
                                 <p className="text-red-500 mt-2">{t('screens.admin.errorError_log', { error_log: log.error_log })}</p>
                               )}

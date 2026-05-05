@@ -126,8 +126,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
                   <p className="text-yellow-700 dark:text-yellow-400 text-xs mt-1">
                     <Link to="/settings/billing" className="underline" onClick={() => setIsOpen(false)}>
                       {t('screens.common.enablePayments')}
-                    </Link>{' '}
-                    in Settings to create paid rooms.
+                    </Link>{t('screens.common.value0SettingsCreatePaidRooms', { value0: ' ' })}
                   </p>
                 </div>
               </div>
@@ -146,8 +145,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
                   onChange={(e) => setPrice(e.target.value)}
                 />
                 {price && parseFloat(price) >= 1 && (
-                  <p className="text-xs text-muted-foreground">
-                    You'll receive ${(parseFloat(price) * 0.9).toFixed(2)} (90%)
+                  <p className="text-xs text-muted-foreground">{t('screens.common.youLlReceiveValue090', { value0: (parseFloat(price) * 0.9).toFixed(2) })}
                   </p>
                 )}
               </div>

@@ -99,8 +99,7 @@ export function GrowthNudge() {
                     <Button
                       variant="outline"
                       onClick={() => dismissAction(topAction.id)}
-                    >
-                      See Next ({actions.length - 1} more)
+                    >{t('screens.proactive.seeNextValue0More', { value0: actions.length - 1 })}
                     </Button>
                   )}
                 </div>

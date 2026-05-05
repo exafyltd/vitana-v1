@@ -155,8 +155,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
                     {getItemIcon(item)}
                     <span className="flex-1 text-left">{item}</span>
                     {isSelected && (
-                      <Badge variant="secondary" className="text-xs">
-                        Selected
+                      <Badge variant="secondary" className="text-xs">{t('screens.common.selected')}
                       </Badge>
                     )}
                   </Button>

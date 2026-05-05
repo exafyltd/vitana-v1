@@ -47,8 +47,7 @@ export function ManualContactEntry({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-semibold">{t('screens.sharing.manualEntry')}</h3>
-          <p className="text-sm text-muted-foreground">
-            Add up to {maxContacts} contacts manually
+          <p className="text-sm text-muted-foreground">{t('screens.sharing.addUpMaxcontactsContactsManually', { maxContacts })}
           </p>
         </div>
         <Button 
@@ -73,7 +72,7 @@ export function ManualContactEntry({
           {contacts.map((contact, idx) => (
             <Card key={idx} className="p-4">
               <div className="flex items-start justify-between mb-3">
-                <span className="text-sm font-medium">Contact {idx + 1}</span>
+                <span className="text-sm font-medium">{t('screens.sharing.contactValue0', { value0: idx + 1 })}</span>
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -143,8 +142,7 @@ export function ManualContactEntry({
                 </div>
 
                 {!isContactValid(contact) && contact.name && (
-                  <p className="text-xs text-destructive">
-                    ⚠️ Please provide at least one contact method (email, phone, or WhatsApp)
+                  <p className="text-xs text-destructive">{t('screens.sharing.pleaseProvideAtLeastOneContact')}
                   </p>
                 )}
               </div>
@@ -153,10 +151,7 @@ export function ManualContactEntry({
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground">
-        {contacts.length} / {maxContacts} contacts added
-        {contacts.length > 0 && ` • ${contacts.filter(isContactValid).length} valid`}
-      </p>
+      <p className="text-xs text-muted-foreground">{t('screens.sharing.lengthMaxcontactsContactsAddedValue2', { length: contacts.length, maxContacts, value2: contacts.length > 0 && ` • ${contacts.filter(isContactValid).length} valid` })}</p>
     </div>
   );
 }

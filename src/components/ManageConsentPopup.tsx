@@ -32,8 +32,7 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
                   <Users className="h-4 w-4" />
                   {t('screens.common.grantNewAccess')}
                 </CardTitle>
-                <CardDescription className="text-sm">
-                  Allow new organizations to access your health data
+                <CardDescription className="text-sm">{t('screens.common.allowNewOrganizationsAccessYourHealth')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">

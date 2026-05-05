@@ -110,9 +110,7 @@ export default function PersonalAITimeline() {
             <CardContent className="p-6 text-center">
               <Bot className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium mb-2">{t('screens.ai.aiIntelligenceHubPhase5')}</h3>
-              <p className="text-muted-foreground">
-                This is a read-only placeholder for the Personal AI Timeline. 
-                Future phases will connect to real AI activity data and provide interactive insights.
+              <p className="text-muted-foreground">{t('screens.ai.thisReadonlyPlaceholderForPersonalAi')}
               </p>
             </CardContent>
           </Card>

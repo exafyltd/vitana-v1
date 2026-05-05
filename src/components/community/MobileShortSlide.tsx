@@ -355,8 +355,7 @@ export function MobileShortSlide({
             {t('screens.community.shorts')}
           </Badge>
           {video.isLive && (
-            <Badge variant="destructive" className="animate-pulse">
-              LIVE
+            <Badge variant="destructive" className="animate-pulse">{t('screens.community.live')}
             </Badge>
           )}
         </div>

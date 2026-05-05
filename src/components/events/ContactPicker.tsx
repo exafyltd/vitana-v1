@@ -148,8 +148,7 @@ export function ContactPicker({
 
           {/* Selected Count */}
           {selectedContacts.size > 0 && (
-            <Badge variant="secondary">
-              {selectedContacts.size} selected
+            <Badge variant="secondary">{t('screens.events.sizeSelected', { size: selectedContacts.size })}
             </Badge>
           )}
 
@@ -201,9 +200,7 @@ export function ContactPicker({
             <Button variant="outline" onClick={onClose}>
               {t('screens.events.cancel')}
             </Button>
-            <Button onClick={handleConfirm} disabled={selectedContacts.size === 0}>
-              Invite {selectedContacts.size} {selectedContacts.size === 1 ? "Person" : "People"}
-            </Button>
+            <Button onClick={handleConfirm} disabled={selectedContacts.size === 0}>{t('screens.events.inviteSizeValue1', { size: selectedContacts.size, value1: selectedContacts.size === 1 ? "Person" : "People" })}</Button>
           </div>
         </div>
       </DialogContent>

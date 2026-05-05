@@ -410,7 +410,7 @@ export function EventTicket({
             {/* Main footer row */}
             <div className="flex items-center justify-between text-[10px] text-white/60 font-mono">
               <span>{ticketNumber}</span>
-              <span>SEQ {String(sequence).padStart(4, "0")}</span>
+              <span>{t('screens.tickets.seqValue0', { value0: String(sequence).padStart(4, "0") })}</span>
             </div>
             
             {/* Decorative barcode + tenant serial row */}

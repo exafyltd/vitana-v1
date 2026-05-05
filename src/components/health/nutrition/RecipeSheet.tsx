@@ -226,9 +226,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 <Alert className="border-amber-500/20 bg-amber-500/5">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
                   <AlertTitle>{t('screens.health.allergens')}</AlertTitle>
-                  <AlertDescription>
-                    Contains: {recipe.allergens.join(', ')}
-                  </AlertDescription>
+                  <AlertDescription>{t('screens.health.containsValue0', { value0: recipe.allergens.join(', ') })}</AlertDescription>
                 </Alert>
               )}
           
@@ -262,7 +260,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                           <strong>{scaleQuantity(ing.qty, scaleFactor)}</strong> {ing.item}
                         </span>
                         {ing.optional && (
-                          <Badge variant="outline" className="ml-2 text-xs">Optional</Badge>
+                          <Badge variant="outline" className="ml-2 text-xs">{t('screens.health.optional')}</Badge>
                         )}
                         {ing.notes && (
                           <p className="text-xs text-muted-foreground mt-1">{ing.notes}</p>
@@ -328,15 +326,13 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                               <p className="text-xs text-muted-foreground mt-1">
                                 {Object.entries(swap.replace).map(([from, to]) => (
                                   <span key={from}>
-                                    {t('screens.health.replace')} <strong>{from}</strong> with <strong>{to}</strong>
+                                    {t('screens.health.replace')} <strong>{from}</strong>{t('screens.health.with')} <strong>{to}</strong>
                                   </span>
                                 ))}
                               </p>
                             )}
                             {swap.remove && (
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Remove: {swap.remove.join(', ')}
-                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">{t('screens.health.removeValue0', { value0: swap.remove.join(', ') })}</p>
                             )}
                           </div>
                           

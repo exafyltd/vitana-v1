@@ -339,7 +339,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="font-medium">{t('screens.common.packageId')}</span>
-              <span className="font-mono text-xs">CP-{Date.now().toString().slice(-8)}</span>
+              <span className="font-mono text-xs">{t('screens.common.cpValue0', { value0: Date.now().toString().slice(-8) })}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">{t('screens.common.biomarkersIncluded')}</span>

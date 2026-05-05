@@ -1,8 +1,10 @@
 name: i18n check
 
-# Wave 1: warn-only. Reports leaks and catalog drift but does NOT block PRs.
-# Wave 2 graduates the toast-args lint to error.
-# Wave 6 graduates the audit and lint to fully blocking.
+# Wave 6: BLOCKING. ESLint i18n rules (no-raw-jsx-text + no-raw-toast-arg)
+# fail PRs that introduce hardcoded user-visible strings. Inventory drift
+# also fails the PR — run `npm run i18n:inventory` and commit the result.
+# Catalog audit still runs in --report-only mode for the 9 pre-existing
+# DE→EN drifts; flip to --strict once those are backfilled.
 
 on:
   pull_request:
@@ -36,8 +38,10 @@ jobs:
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
 
-      - name: ESLint i18n rule (no-raw-jsx-text, warn-level in Wave 1)
-        run: npm run lint -- --quiet || echo "lint warnings noted; not blocking in Wave 1"
+      - name: ESLint i18n rules (no-raw-jsx-text + no-raw-toast-arg, error-level)
+        run: |
+          # Run only the i18n rules; other lint findings are out of scope.
+          npx eslint . --rule 'i18n/no-raw-jsx-text: error' --rule 'i18n/no-raw-toast-arg: error' --no-warn-ignored
 
       - name: Regenerate screen inventory
         run: node scripts/generate-screen-inventory.mjs
@@ -45,5 +49,6 @@ jobs:
       - name: Inventory drift check
         run: |
           if ! git diff --exit-code docs/SCREEN_INVENTORY.md; then
-            echo "::warning::docs/SCREEN_INVENTORY.md is out of date. Run 'npm run i18n:inventory' and commit the result."
+            echo "::error::docs/SCREEN_INVENTORY.md is out of date. Run 'npm run i18n:inventory' and commit the result."
+            exit 1
           fi

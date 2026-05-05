@@ -15,8 +15,7 @@ export function EnablePaymentsButton() {
   if (isLoading) {
     return (
       <Button disabled variant="outline">
-        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-        Checking status...
+        <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.creator.checkingStatus')}
       </Button>
     );
   }

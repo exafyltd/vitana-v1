@@ -213,9 +213,7 @@ export default function SocialShareButton({
         <DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:right-4 [&>button]:top-4">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Share2 className="w-5 h-5 text-primary" />
-              Share {type.charAt(0).toUpperCase() + type.slice(1)}
-            </DialogTitle>
+              <Share2 className="w-5 h-5 text-primary" />{t('screens.sharing.shareValue0', { value0: type.charAt(0).toUpperCase() + type.slice(1) })}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -236,9 +234,7 @@ export default function SocialShareButton({
                     </div>
                   )}
                   {data.referralCode && (
-                    <div className="text-xs text-muted-foreground">
-                      Code: {data.referralCode}
-                    </div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.codeReferralcode', { referralCode: data.referralCode })}</div>
                   )}
                 </div>
               </CardContent>
@@ -309,8 +305,7 @@ export default function SocialShareButton({
                             {option.name}
                           </span>
                           {isConnected ? (
-                            <Badge variant="secondary" className="text-[9px] px-1 py-0">
-                              Connected
+                            <Badge variant="secondary" className="text-[9px] px-1 py-0">{t('screens.sharing.connected')}
                             </Badge>
                           ) : (
                             <Badge variant="outline" className="text-[9px] px-1 py-0">

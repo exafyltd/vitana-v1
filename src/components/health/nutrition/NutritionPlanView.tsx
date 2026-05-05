@@ -88,9 +88,7 @@ export function NutritionPlanView() {
                 {Array.from(mealsByDay.entries()).map(([day, meals]) => (
                   <div key={day}>
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-primary" />
-                      Day {day}
-                    </h3>
+                      <Calendar className="w-5 h-5 text-primary" />{t('screens.health.dayDay', { day })}</h3>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                       {sortMealsBySlot(meals).map(recipe => (

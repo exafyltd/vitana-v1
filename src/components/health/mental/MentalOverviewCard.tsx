@@ -54,7 +54,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
               <TrendingUp className="w-4 h-4 text-teal-500" />
               <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.programProgress')}</span>
             </div>
-            <p className="text-base font-semibold">{planData.progressText} · {planData.completion}% complete</p>
+            <p className="text-base font-semibold">{t('screens.health.progresstextCompletionComplete', { progressText: planData.progressText, completion: planData.completion })}</p>
           </div>
         </div>
 
@@ -77,9 +77,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
               <p className="text-sm font-medium italic text-slate-600/90 dark:text-slate-300/80">
                 {planData.aiInsight}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                Last updated {planData.lastUpdated}
-              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</p>
             </div>
           </div>
         </div>

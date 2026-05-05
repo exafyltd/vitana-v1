@@ -32,7 +32,7 @@ export function AchievementsBanner() {
         <div>
           <h3 className="text-sm font-bold text-foreground">{t('screens.profile.achievements')}</h3>
           <p className="text-xs text-muted-foreground">
-            {achievements.filter(a => a.unlocked).length} of {achievements.length} unlocked
+            {achievements.filter(a => a.unlocked).length}{t('screens.profile.lengthUnlocked', { length: achievements.length })}
           </p>
         </div>
       </div>

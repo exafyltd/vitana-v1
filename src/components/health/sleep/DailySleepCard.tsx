@@ -71,8 +71,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
         <div className="mb-3">
           <div className="flex items-center justify-between text-sm mb-1.5">
             <span className="font-medium">{data.duration}</span>
-            <span className="font-bold">
-              Score {data.sleepScore}/100
+            <span className="font-bold">{t('screens.health.scoreSleepscore100', { sleepScore: data.sleepScore })}
             </span>
           </div>
           <Progress 
@@ -90,7 +89,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
         {/* Bedtime */}
         <div className="flex items-center gap-2 mb-3 text-xs">
           <Clock className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
-          <span className="text-slate-600 dark:text-slate-400">Bedtime {data.bedtime} • Wake {data.wakeTime}</span>
+          <span className="text-slate-600 dark:text-slate-400">{t('screens.health.bedtimeBedtimeWakeWaketime', { bedtime: data.bedtime, wakeTime: data.wakeTime })}</span>
         </div>
         
         {/* Tags */}

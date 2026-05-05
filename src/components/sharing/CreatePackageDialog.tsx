@@ -345,7 +345,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.sharing.description')}</Label>
               <Textarea
                 id="description"
                 placeholder={t('screens.sharing.describeWhatSIncludedTransformationClients')}
@@ -539,8 +539,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
 
               {calculateSavings() > 0 && (
                 <Badge variant="secondary" className="w-fit">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  {calculateSavings()}% Savings
+                  <Sparkles className="w-3 h-3 mr-1" />{t('screens.sharing.value0Savings', { value0: calculateSavings() })}
                 </Badge>
               )}
             </div>

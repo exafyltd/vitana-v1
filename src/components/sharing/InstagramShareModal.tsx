@@ -229,8 +229,7 @@ export function InstagramShareModal({
               >
                 {isGenerating ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Preparing...
+                    <Loader2 className="h-4 w-4 animate-spin" />{t('screens.sharing.preparing')}
                   </>
                 ) : (
                   <>
@@ -264,8 +263,7 @@ export function InstagramShareModal({
             >
               {isGenerating && !isMobile ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating...
+                  <Loader2 className="h-4 w-4 animate-spin" />{t('screens.sharing.generating')}
                 </>
               ) : (
                 <>
@@ -283,8 +281,7 @@ export function InstagramShareModal({
             >
               {linkCopied ? (
                 <>
-                  <Check className="h-4 w-4 text-green-500" />
-                  Link Copied!
+                  <Check className="h-4 w-4 text-green-500" />{t('screens.sharing.linkCopied')}
                 </>
               ) : (
                 <>

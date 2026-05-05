@@ -126,8 +126,7 @@ export default function LiveRoomDirectory({ onJoinRoom }: LiveRoomDirectoryProps
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="live" className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            🔴 Live now
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>{t('screens.community.liveNow')}
           </SplitBarTrigger>
           <SplitBarTrigger value="scheduled">{t('screens.community.scheduled')}</SplitBarTrigger>
           <SplitBarTrigger value="all">{t('screens.community.allRooms')}</SplitBarTrigger>
@@ -213,8 +212,7 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
         >
           {room.isLive && (
             <Badge className="absolute top-2 left-2 bg-red-500 text-white animate-pulse">
-              <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
-              LIVE
+              <div className="w-2 h-2 bg-white rounded-full mr-1"></div>{t('screens.community.live')}
             </Badge>
           )}
           {room.premium && (
@@ -304,8 +302,7 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
         >
           {room.isLive ? (
             <>
-              <Play className="w-4 h-4 mr-2" />
-              Join Room
+              <Play className="w-4 h-4 mr-2" />{t('screens.community.joinRoom')}
             </>
           ) : (
             <>

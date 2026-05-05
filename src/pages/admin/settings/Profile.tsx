@@ -59,7 +59,7 @@ export default function SettingsProfile() {
 
         {settingsQuery.isError && (
           <div className="text-sm text-destructive py-8 text-center space-y-2">
-            <p>Failed to load settings: {(settingsQuery.error as Error)?.message || "Unknown error"}</p>
+            <p>{t('screens.admin.failedLoadSettingsValue0', { value0: (settingsQuery.error as Error)?.message || "Unknown error" })}</p>
             <p className="text-xs text-muted-foreground">{t('screens.admin.checkBrowserConsoleForDetails')}</p>
           </div>
         )}
@@ -76,19 +76,19 @@ export default function SettingsProfile() {
             <CardContent className="space-y-4">
               <div>
                 <label className="text-sm font-medium">{t('screens.admin.tenantName')}</label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="My Organization" />
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('screens.admin.myOrganization')} />
               </div>
               <div>
                 <label className="text-sm font-medium">{t('screens.admin.description')}</label>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Short description of your organization" rows={3} />
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t('screens.admin.shortDescriptionYourOrganization')} rows={3} />
               </div>
               <div>
                 <label className="text-sm font-medium">{t('screens.admin.supportEmail')}</label>
-                <Input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} placeholder="support@example.com" />
+                <Input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} placeholder={t('screens.admin.supportExampleCom')} />
               </div>
               <div>
                 <label className="text-sm font-medium">{t('screens.admin.logoUrl')}</label>
-                <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." />
+                <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder={t('screens.admin.https')} />
                 {logoUrl && (
                   <img src={logoUrl} alt={t('screens.admin.logoPreview')} className="mt-2 h-12 object-contain rounded" />
                 )}

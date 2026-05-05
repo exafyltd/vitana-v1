@@ -58,7 +58,7 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
               id="source" 
               value={source}
               onChange={(e) => setSource(e.target.value)}
-              placeholder="e.g., Figma export, Design system"
+              placeholder={t('screens.dev.eGFigmaExportDesignSystem')}
             />
           </div>
 
@@ -77,7 +77,7 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
               id="notes" 
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Any notes about this import (optional)"
+              placeholder={t('screens.dev.anyNotesAboutThisImportOptional')}
               rows={3}
             />
           </div>

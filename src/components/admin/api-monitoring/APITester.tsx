@@ -186,8 +186,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
 
           {/* Base URL Display */}
           {baseUrl && (
-            <div className="text-sm text-muted-foreground">
-              Full URL: <code className="bg-muted px-2 py-1 rounded">{baseUrl}{endpoint}</code>
+            <div className="text-sm text-muted-foreground">{t('screens.admin.fullUrl')} <code className="bg-muted px-2 py-1 rounded">{baseUrl}{endpoint}</code>
             </div>
           )}
 
@@ -227,8 +226,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
                 value={queryParams}
                 onChange={(e) => setQueryParams(e.target.value)}
               />
-              <p className="text-xs text-muted-foreground">
-                Enter parameters in URL format (key=value&key2=value2)
+              <p className="text-xs text-muted-foreground">{t('screens.admin.enterParametersUrlFormatKeyValue')}
               </p>
             </TabsContent>
           </Tabs>

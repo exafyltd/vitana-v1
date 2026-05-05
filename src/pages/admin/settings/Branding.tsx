@@ -80,7 +80,7 @@ export default function SettingsBranding() {
                 <ColorField label="Foreground Color" value={fg} onChange={setFg} />
                 <div>
                   <label className="text-sm font-medium">{t('screens.admin.logoUrl')}</label>
-                  <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." className="mt-1" />
+                  <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder={t('screens.admin.https')} className="mt-1" />
                 </div>
               </CardContent>
             </Card>

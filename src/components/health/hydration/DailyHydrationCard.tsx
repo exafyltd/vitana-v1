@@ -94,8 +94,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
             />
           </div>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
-              {data.completionPercentage}% complete
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: data.completionPercentage })}
             </span>
             <span className="text-[11px] text-slate-500 dark:text-slate-400">
               {!isComplete && !isBelowHalf && getStatusText()}

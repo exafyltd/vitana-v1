@@ -75,8 +75,7 @@ export default function RolesAccess() {
                   <div>
                     <CardTitle>{t('screens.admin.devAccess')}</CardTitle>
                     <CardDescription>
-                      {t('screens.admin.usersWith')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.exafy_adminTrue')}</code>.
-                      Data sourced from <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.apiv1devaccessusers')}</code>.
+                      {t('screens.admin.usersWith')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.exafy_adminTrue')}</code>{t('screens.admin.dataSourcedFrom')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.apiv1devaccessusers')}</code>.
                     </CardDescription>
                   </div>
                 </div>
@@ -142,8 +141,7 @@ export default function RolesAccess() {
                   <Shield className="h-5 w-5 text-violet-600" />
                   <div>
                     <CardTitle>{t('screens.admin.roleDistribution')}</CardTitle>
-                    <CardDescription>
-                      Breakdown of user roles across the platform ({totalUsers} total users).
+                    <CardDescription>{t('screens.admin.breakdownUserRolesAcrossPlatformTotalusers', { totalUsers })}
                     </CardDescription>
                   </div>
                 </div>

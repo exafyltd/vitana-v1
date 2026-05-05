@@ -138,8 +138,7 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
             <TrendingUp className="h-5 w-5 text-primary" />
             {t('screens.wallet.commissionForecasting')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            +{projectedGrowth}% Growth
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.projectedgrowthGrowth', { projectedGrowth })}
           </Badge>
         </div>
       </CardHeader>
@@ -162,7 +161,7 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            {t('screens.wallet.projected')} <span className="font-semibold text-emerald-600">${totalPredicted - totalCurrent} increase</span> this month
+            {t('screens.wallet.projected')} <span className="font-semibold text-emerald-600">{t('screens.wallet.value0Increase', { value0: totalPredicted - totalCurrent })}</span>{t('screens.wallet.thisMonth')}
           </p>
         </div>
 
@@ -185,25 +184,21 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
                       {forecast.source}
                       <TrendIcon className={`h-3 w-3 ${trendConfig.color}`} />
                     </h5>
-                    <p className="text-xs text-muted-foreground">
-                      ${forecast.currentMonth} → ${forecast.predicted} predicted
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentmonthPredictedPredicted', { currentMonth: forecast.currentMonth, predicted: forecast.predicted })}
                     </p>
                   </div>
                   <div className="text-right">
                     <Badge variant="outline" className={getTierColor(forecast.tier)}>
                       {forecast.tier}
                     </Badge>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {forecast.confidence}% confidence
+                    <div className="text-xs text-muted-foreground mt-1">{t('screens.wallet.confidenceConfidence', { confidence: forecast.confidence })}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
-                    Payout: {forecast.nextPayout}
-                  </div>
+                    <Calendar className="h-3 w-3" />{t('screens.wallet.payoutNextpayout', { nextPayout: forecast.nextPayout })}</div>
                   <div className={`text-xs font-semibold ${trendConfig.color}`}>
                     {forecast.trend}
                   </div>
@@ -227,15 +222,13 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
                   <h5 className="text-sm font-medium">{timing.action}</h5>
                   <p className="text-xs text-muted-foreground">{timing.reason}</p>
                 </div>
-                <Badge variant="outline" className={getUrgencyColor(timing.urgency)}>
-                  {timing.urgency} priority
+                <Badge variant="outline" className={getUrgencyColor(timing.urgency)}>{t('screens.wallet.urgencyPriority', { urgency: timing.urgency })}
                 </Badge>
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-purple-600 font-semibold">
-                    +${timing.impact} impact
+                  <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.impactImpact', { impact: timing.impact })}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {timing.timing}

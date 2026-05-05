@@ -157,8 +157,7 @@ export default function NavigatorTelemetry() {
               </CardHeader>
               <CardContent className="max-h-[60vh] overflow-y-auto">
                 {data.failed_utterances.length === 0 ? (
-                  <p className="text-sm italic text-muted-foreground">
-                    No low-confidence consults in window.
+                  <p className="text-sm italic text-muted-foreground">{t('screens.admin.noLowconfidenceConsultsWindow')}
                   </p>
                 ) : (
                   <div className="space-y-1">

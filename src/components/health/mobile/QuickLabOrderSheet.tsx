@@ -79,8 +79,7 @@ export function QuickLabOrderSheet({ open, onOpenChange }: QuickLabOrderSheetPro
           <button
             onClick={() => { onOpenChange(false); navigate('/health/services-hub'); }}
             className="w-full flex items-center justify-center gap-2 py-3 text-sm font-medium text-primary hover:underline"
-          >
-            Browse All Tests <ArrowRight className="w-4 h-4" />
+          >{t('screens.health.browseAllTests')} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </SheetContent>

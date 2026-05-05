@@ -81,8 +81,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
             <TrendingUp className="h-5 w-5 text-primary" />
             {t('screens.wallet.creditEarningForecast')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            +{totalPredicted} Credits Expected
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.totalpredictedCreditsExpected', { totalPredicted })}
           </Badge>
         </div>
       </CardHeader>
@@ -114,14 +113,11 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
                   <span className="text-lg">{getCategoryIcon(prediction.category)}</span>
                   <div>
                     <h5 className="text-sm font-medium">{prediction.source}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      {prediction.confidence}% confidence • {prediction.timeframe}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.confidenceConfidenceTimeframe', { confidence: prediction.confidence, timeframe: prediction.timeframe })}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <Badge variant="outline" className="text-xs mb-1">
-                    +{prediction.prediction} credits
+                  <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.predictionCredits', { prediction: prediction.prediction })}
                   </Badge>
                   <div className={`text-xs ${getTrendColor(prediction.trend)}`}>
                     {prediction.trend}
@@ -144,7 +140,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
           </div>
           <Progress value={85} className="h-1.5 mb-2" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">{t('screens.wallet.text75Credits')}</span> needed to reach goal
+            <span className="font-semibold text-emerald-600">{t('screens.wallet.text75Credits')}</span>{t('screens.wallet.neededReachGoal')}
           </p>
         </div>
 

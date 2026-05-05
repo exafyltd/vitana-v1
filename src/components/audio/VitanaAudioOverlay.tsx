@@ -268,7 +268,7 @@ export function VitanaAudioOverlay() {
         transition={{ duration: 0.3 }}
         className="fixed inset-0 z-[100] bg-background/10 backdrop-blur-xl"
         role="dialog"
-        aria-label="VITANA Audio Mode"
+        aria-label={t('screens.audio.vitanaAudioMode')}
         style={{ pointerEvents: 'auto' }}
       >
         {/* Subtle radial gradient */}
@@ -319,7 +319,7 @@ export function VitanaAudioOverlay() {
                   <Textarea
                     value={textInputValue}
                     onChange={(e) => setTextInputValue(e.target.value)}
-                    placeholder="Type your message..."
+                    placeholder={t('screens.audio.typeYourMessage')}
                     className="min-h-[80px] resize-none bg-transparent border-0 focus-visible:ring-0"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
@@ -334,8 +334,7 @@ export function VitanaAudioOverlay() {
                       size="sm"
                       onClick={() => setTextInputVisible(false)}
                       className="text-xs text-muted-foreground"
-                    >
-                      Return to voice
+                    >{t('screens.audio.returnVoice')}
                     </Button>
                     <Button
                       size="sm"

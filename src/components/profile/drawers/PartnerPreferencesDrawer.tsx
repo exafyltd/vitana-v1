@@ -145,7 +145,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label>Age range — {ageRange[0]} to {ageRange[1]}</Label>
+              <Label>{t('screens.profile.ageRangeValue0Value1', { value0: ageRange[0], value1: ageRange[1] })}</Label>
               <Slider
                 min={18}
                 max={90}
@@ -221,8 +221,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
                 {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Save
+                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

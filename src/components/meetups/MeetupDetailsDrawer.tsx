@@ -544,8 +544,7 @@ export function MeetupDetailsDrawer({
               invalidateEventsCache();
               notify('toasts.meetups.removedFromCalendar', 'toasts.meetups.youVeLeftThisMeetup');
             }}
-          >
-            Undo
+          >{t('screens.meetups.undo')}
           </Button>
         ) : undefined,
       });
@@ -890,7 +889,7 @@ export function MeetupDetailsDrawer({
             size="icon"
             className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
             onClick={() => onOpenChange(false)}
-            aria-label="Close event details"
+            aria-label={t('screens.meetups.closeEventDetails')}
             style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
           >
             <X className="h-5 w-5" />
@@ -1735,7 +1734,7 @@ export function MeetupDetailsDrawer({
               e.preventDefault();
               onShareEvent?.(event);
             }}
-            aria-label="Share meetup"
+            aria-label={t('screens.meetups.shareMeetup')}
           >
             <Share2 className="h-4 w-4" />
           </Button>

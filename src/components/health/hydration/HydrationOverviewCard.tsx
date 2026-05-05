@@ -56,8 +56,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
           <p className="text-lg font-bold">
             {planData.schedule}
           </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">
-            {(planData.dailyTargetMl / 1000).toFixed(1)}L daily target
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.value0LDailyTarget', { value0: (planData.dailyTargetMl / 1000).toFixed(1) })}
           </p>
         </div>
         
@@ -67,11 +66,8 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
             <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-900" />
             <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.progress')}</span>
           </div>
-          <p className="text-lg font-bold">
-            Week {planData.currentWeek} of {planData.totalWeeks}
-          </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">
-            {planData.completionPercentage}% complete
+          <p className="text-lg font-bold">{t('screens.health.weekCurrentweekTotalweeks', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: planData.completionPercentage })}
           </p>
         </div>
       </div>
@@ -103,9 +99,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
-            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
-              Last updated {planData.lastUpdated}
-            </span>
+            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
           </div>
           <p className="text-sm font-medium italic text-slate-700/90 dark:text-slate-300/90">
             "{planData.aiInsight}"

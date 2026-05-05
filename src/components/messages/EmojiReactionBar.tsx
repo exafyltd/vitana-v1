@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Reply } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface EmojiReactionBarProps {
   onEmojiSelect: (emoji: string) => void;
@@ -50,7 +51,7 @@ export function EmojiReactionBar({
             onReply();
             onClose();
           }}
-          aria-label="Reply to message"
+          aria-label={t('screens.messages.replyMessage')}
         >
           <Reply className="w-4 h-4" />
         </Button>

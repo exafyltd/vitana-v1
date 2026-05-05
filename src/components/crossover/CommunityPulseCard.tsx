@@ -30,7 +30,7 @@ function CommunityPulseCardBase({
         {newInvites > 0 && (
           <div className="flex items-center justify-center gap-1">
             <MessageCircle className="w-3 h-3" />
-            <span>{newInvites} new invite{newInvites !== 1 ? 's' : ''}</span>
+            <span>{t('screens.crossover.newinvitesNewInviteValue1', { newInvites, value1: newInvites !== 1 ? 's' : '' })}</span>
           </div>
         )}
         {upcomingEvents > 0 && (

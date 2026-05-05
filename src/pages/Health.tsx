@@ -280,7 +280,7 @@ export default withScreenId(function Health() {
                     handleOpenIndexSheet();
                   }
                 }}
-                aria-label="Open Vitana Index forecast"
+                aria-label={t('screens.health.openVitanaIndexForecast')}
                 className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
               >
                 <MobileHealthSnapshot
@@ -319,8 +319,7 @@ export default withScreenId(function Health() {
                   size="sm"
                   onClick={() => navigate('/autopilot')}
                   className="text-sm w-full justify-center"
-                >
-                  View My Journey
+                >{t('screens.health.viewMyJourney')}
                   <ChevronRight className="w-4 h-4 ml-0.5" />
                 </Button>
               </div>
@@ -403,7 +402,7 @@ export default withScreenId(function Health() {
                 handleOpenIndexSheet();
               }
             }}
-            aria-label="Open Vitana Index forecast"
+            aria-label={t('screens.health.openVitanaIndexForecast')}
             className="mb-4 cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <CompactVitanaIndex

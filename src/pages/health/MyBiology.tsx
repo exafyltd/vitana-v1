@@ -262,8 +262,7 @@ export default function MyBiology() {
                       <TestTube className="w-5 h-5" />
                       {t('screens.health.medicalBiomarkers')}
                     </CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Clinical lab results from blood tests, devices, and wearables
+                    <p className="text-sm text-muted-foreground">{t('screens.health.clinicalLabResultsFromBloodTests')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -396,8 +395,7 @@ export default function MyBiology() {
                           <SelectValue placeholder={t('screens.health.filterByCategory')} />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
-                          <SelectItem value="all">
-                            All Categories ({supplements.length})
+                          <SelectItem value="all">{t('screens.health.allCategoriesLength', { length: supplements.length })}
                           </SelectItem>
                           {allCategories.map((category) => (
                             <SelectItem key={category} value={category}>

@@ -125,9 +125,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.events.deleteEvent')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete "{event.title}"? This action cannot be undone.
-              All participants, tickets, and associated data will be permanently removed.
+            <AlertDialogDescription>{t('screens.events.youSureYouWantDeleteTitle', { title: event.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

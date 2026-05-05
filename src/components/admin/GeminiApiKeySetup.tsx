@@ -98,8 +98,7 @@ export function GeminiApiKeySetup() {
               <Button onClick={testConnection} disabled={isTesting || !apiKey.trim()}>
                 {isTesting ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Testing...
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.admin.testing')}
                   </>
                 ) : (
                   "Test"
@@ -175,17 +174,14 @@ export function GeminiApiKeySetup() {
             </div>
             <h3 className="font-semibold">{t('screens.admin.testIntegration')}</h3>
           </div>
-          <p className="text-sm text-muted-foreground ml-8">
-            Once you've added the secret, click the "Start Stream" button in the sidebar to test the
-            Gemini Live API connection
+          <p className="text-sm text-muted-foreground ml-8">{t('screens.admin.onceYouVeAddedSecretClick')}
           </p>
         </div>
 
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>{t('screens.admin.important')}</strong> Never commit API keys to your code repository. Always use
-            environment variables or secure secret management.
+            <strong>{t('screens.admin.important')}</strong>{t('screens.admin.neverCommitApiKeysYourCode')}
           </AlertDescription>
         </Alert>
       </CardContent>

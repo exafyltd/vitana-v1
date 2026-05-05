@@ -189,9 +189,7 @@ export default function AdminDashboard() {
                 <div className="flex flex-col items-center justify-center h-[360px] text-muted-foreground">
                   <TrendingUp className="h-12 w-12 mb-4 opacity-30" />
                   <p className="text-sm">{t('screens.admin.recentOasisEventsWillAppearHere')}</p>
-                  <p className="text-xs mt-1">
-                    View the full log in{" "}
-                    <button
+                  <p className="text-xs mt-1">{t('screens.admin.viewFullLogValue0', { value0: " " })}<button
                       onClick={() => navigate("/admin/dashboard/activity")}
                       className="text-primary underline hover:no-underline"
                     >

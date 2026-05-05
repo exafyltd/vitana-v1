@@ -319,8 +319,7 @@ export function ResellerSalesTab() {
             size="sm"
             className="text-xs text-muted-foreground hover:text-foreground gap-1 h-auto p-0"
             onClick={() => navigate("/wallet?filter=reseller_commission")}
-          >
-            View in Wallet
+          >{t('screens.reseller.viewWallet')}
             <ChevronRight className="h-3 w-3" />
           </Button>
         </div>
@@ -360,8 +359,7 @@ export function ResellerSalesTab() {
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
                 <Wallet className="h-3.5 w-3.5" />
-              )}
-              Transfer to Wallet
+              )}{t('screens.reseller.transferWallet')}
             </Button>
           )}
 
@@ -433,19 +431,16 @@ export function ResellerSalesTab() {
                           </div>
 
                           {/* Stats Line */}
-                          <p className="text-xs text-muted-foreground">
-                            {event.ticketsSold} tickets · {formatCurrency(event.saleAmount)} sales · {event.commissionRate}% commission
+                          <p className="text-xs text-muted-foreground">{t('screens.reseller.ticketssoldTicketsValue1SalesCommissionrateCommiss', { ticketsSold: event.ticketsSold, value1: formatCurrency(event.saleAmount), commissionRate: event.commissionRate })}
                           </p>
 
                           {/* Earned + Last Sale Line */}
                           <div className="flex items-center gap-3 mt-1.5 text-xs">
                             <span className="inline-flex items-center gap-1 text-accent font-medium">
-                              <Award className="h-3 w-3" />
-                              {formatCurrency(event.commissionAmount)} earned
+                              <Award className="h-3 w-3" />{t('screens.reseller.value0Earned', { value0: formatCurrency(event.commissionAmount) })}
                             </span>
                             <span className="inline-flex items-center gap-1 text-muted-foreground">
-                              <Clock className="h-3 w-3" />
-                              Last sale {formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: false })} ago
+                              <Clock className="h-3 w-3" />{t('screens.reseller.lastSaleValue0Ago', { value0: formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: false }) })}
                             </span>
                           </div>
                         </div>
@@ -477,8 +472,7 @@ export function ResellerSalesTab() {
                             size="sm" 
                             className="h-8 px-3 rounded-full text-xs gap-1"
                             onClick={() => setSelectedEvent(event)}
-                          >
-                            View details
+                          >{t('screens.reseller.viewDetails')}
                             <ChevronRight className="h-3 w-3" />
                           </Button>
                         </div>

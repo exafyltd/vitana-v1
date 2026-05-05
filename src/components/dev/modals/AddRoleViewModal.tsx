@@ -59,7 +59,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
               id="view-name" 
               value={viewName}
               onChange={(e) => setViewName(e.target.value)}
-              placeholder="e.g., Dashboard Layout, Settings Access"
+              placeholder={t('screens.dev.eGDashboardLayoutSettingsAccess')}
             />
           </div>
 
@@ -69,7 +69,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
               id="permissions" 
               value={permissions}
               onChange={(e) => setPermissions(e.target.value)}
-              placeholder="e.g., read, write, admin"
+              placeholder={t('screens.dev.eGReadWriteAdmin')}
             />
           </div>
 
@@ -79,7 +79,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
               id="description" 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe this role view configuration and its purpose"
+              placeholder={t('screens.dev.describeThisRoleViewConfigurationIts')}
               rows={4}
             />
           </div>

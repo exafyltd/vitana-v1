@@ -33,9 +33,7 @@ export const ReplyPreview: React.FC<ReplyPreviewProps> = ({
       
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-medium text-primary">
-            Replying to {senderName}
-          </span>
+          <span className="text-sm font-medium text-primary">{t('screens.messages.replyingSendername', { senderName })}</span>
         </div>
         <p className="text-sm text-muted-foreground truncate">
           {truncatedContent}

@@ -307,8 +307,7 @@ export default function BiomarkerResults() {
           </UtilityActionButton>
           
           <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">
-              {results.length} test{results.length !== 1 ? 's' : ''} available
+            <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">{t('screens.health.lengthTestValue1Available', { length: results.length, value1: results.length !== 1 ? 's' : '' })}
             </div>
           </div>
 
@@ -365,12 +364,10 @@ export default function BiomarkerResults() {
                             className="flex items-center gap-2 min-w-[100px]"
                           >
                             {isExpanded ? (
-                              <>
-                                Hide <ChevronUp className="h-4 w-4" />
+                              <>{t('screens.health.hide')} <ChevronUp className="h-4 w-4" />
                               </>
                             ) : (
-                              <>
-                                View More <ChevronDown className="h-4 w-4" />
+                              <>{t('screens.health.viewMore')} <ChevronDown className="h-4 w-4" />
                               </>
                             )}
                           </Button>
@@ -434,7 +431,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>
@@ -494,12 +491,10 @@ export default function BiomarkerResults() {
                             className="flex items-center gap-2 min-w-[100px]"
                           >
                             {isExpanded ? (
-                              <>
-                                Hide <ChevronUp className="h-4 w-4" />
+                              <>{t('screens.health.hide')} <ChevronUp className="h-4 w-4" />
                               </>
                             ) : (
-                              <>
-                                View More <ChevronDown className="h-4 w-4" />
+                              <>{t('screens.health.viewMore')} <ChevronDown className="h-4 w-4" />
                               </>
                             )}
                           </Button>
@@ -555,7 +550,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>

@@ -155,8 +155,7 @@ export default function RedeemVoucher() {
             <Gift className="w-8 h-8 text-muted-foreground" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherExpired')}</h1>
-          <p className="text-muted-foreground mb-6">
-            This voucher has expired and can no longer be redeemed. Contact support if you need assistance.
+          <p className="text-muted-foreground mb-6">{t('screens.redeemvoucher.thisVoucherHasExpiredCanNo')}
           </p>
           <button
             onClick={() => navigate("/maxina")}
@@ -182,22 +181,18 @@ export default function RedeemVoucher() {
             <CheckCircle className="w-10 h-10 text-emerald-500" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherClaimed')}</h1>
-          <p className="text-muted-foreground mb-6">
-            Your {voucherData.order?.tierName || "wellness"} voucher has been added to your account. 
-            Explore events and experiences to use your benefits.
+          <p className="text-muted-foreground mb-6">{t('screens.redeemvoucher.yourValue0VoucherHasAddedYour', { value0: voucherData.order?.tierName || "wellness" })}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => navigate("/wallet")}
               className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
-            >
-              View Wallet
+            >{t('screens.redeemvoucher.viewWallet')}
             </button>
             <button
               onClick={() => navigate("/comm/events-meetups")}
               className="px-6 py-3 bg-secondary text-secondary-foreground rounded-full font-medium hover:bg-secondary/80 transition-colors"
-            >
-              Browse Events
+            >{t('screens.redeemvoucher.browseEvents')}
             </button>
           </div>
         </motion.div>

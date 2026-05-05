@@ -228,9 +228,7 @@ export default withScreenId(function Packages() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="text-sm text-muted-foreground">
-                        Create a custom data package by selecting specific health metrics, date ranges, and data types 
-                        tailored to your healthcare provider's needs or research participation requirements.
+                      <div className="text-sm text-muted-foreground">{t('screens.sharing.createCustomDataPackageBySelecting')}
                       </div>
                       
                       <div className="flex gap-4">

@@ -144,7 +144,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
                               <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
                             ))}
                             {service.dataTypes.length > 2 && (
-                              <Badge variant="secondary" className="text-xs">+{service.dataTypes.length - 2} more</Badge>
+                              <Badge variant="secondary" className="text-xs">{t('screens.common.value0More', { value0: service.dataTypes.length - 2 })}</Badge>
                             )}
                           </div>
                         </div>

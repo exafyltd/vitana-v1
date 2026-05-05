@@ -297,7 +297,7 @@ const generateImageUrl = (title: string, description: string) => {
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="e.g., Weekend Hiking Adventure, Meditation Circle"
+                  placeholder={t('screens.common.eGWeekendHikingAdventureMeditation')}
                   className={`mt-1 ${errors.title ? 'border-destructive' : ''}`}
                 />
                 {errors.title && (
@@ -314,7 +314,7 @@ const generateImageUrl = (title: string, description: string) => {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe your meetup, what participants can expect..."
+                  placeholder={t('screens.common.describeYourMeetupWhatParticipantsCan')}
                   className="mt-1"
                 />
               </div>
@@ -406,14 +406,12 @@ const generateImageUrl = (title: string, description: string) => {
                       onClick={() => document.getElementById('image-upload')?.click()}
                       className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Upload Custom Image
+                      <Plus className="w-4 h-4 mr-2" />{t('screens.common.uploadCustomImage')}
                     </Button>
                   </div>
                   
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      💡 Meetup image will be automatically generated based on your title and description
+                    <p className="text-sm text-muted-foreground">{t('screens.common.meetupImageWillAutomaticallyGeneratedBased')}
                     </p>
                   </div>
 
@@ -435,8 +433,7 @@ const generateImageUrl = (title: string, description: string) => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Schedule & Location
+                <Calendar className="w-5 h-5" />{t('screens.common.scheduleLocation')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -492,7 +489,7 @@ const generateImageUrl = (title: string, description: string) => {
                         setFormData({...formData, time: e.target.value});
                       }}
                       className={`mt-2 ${errors.time ? 'border-destructive' : ''}`}
-                      placeholder="HH:MM"
+                      placeholder={t('screens.common.hhMm')}
                     />
                   )}
                   {errors.time && (
@@ -522,7 +519,7 @@ const generateImageUrl = (title: string, description: string) => {
                     id="location"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Central Park, Community Center, Local Gym"
+                    placeholder={t('screens.common.eGCentralParkCommunityCenter')}
                     className={`mt-1 ${errors.location ? 'border-destructive' : ''}`}
                   />
                   {errors.location && (
@@ -542,7 +539,7 @@ const generateImageUrl = (title: string, description: string) => {
                     type="number"
                     value={formData.capacity}
                     onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                    placeholder="Leave empty for unlimited"
+                    placeholder={t('screens.common.leaveEmptyForUnlimited')}
                     className="mt-1"
                   />
                 </div>
@@ -560,15 +557,15 @@ const generateImageUrl = (title: string, description: string) => {
                   </div>
                   {formData.isRecurring && (
                     <div>
-                      <Label htmlFor="recurringType">Frequency</Label>
+                      <Label htmlFor="recurringType">{t('screens.common.frequency')}</Label>
                       <Select value={formData.recurringType} onValueChange={(value) => setFormData({...formData, recurringType: value})}>
                         <SelectTrigger className="mt-1">
                           <SelectValue placeholder={t('screens.common.selectFrequency')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="daily">Daily</SelectItem>
-                          <SelectItem value="weekly">Weekly</SelectItem>
-                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="daily">{t('screens.common.daily')}</SelectItem>
+                          <SelectItem value="weekly">{t('screens.common.weekly')}</SelectItem>
+                          <SelectItem value="monthly">{t('screens.common.monthly')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -582,7 +579,7 @@ const generateImageUrl = (title: string, description: string) => {
                   id="requirements"
                   value={formData.requirements}
                   onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                  placeholder="Any equipment, preparation, or prerequisites needed..."
+                  placeholder={t('screens.common.anyEquipmentPreparationPrerequisitesNeeded')}
                   className="mt-1"
                 />
               </div>
@@ -590,8 +587,7 @@ const generateImageUrl = (title: string, description: string) => {
           </Card>
 
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+            <Button variant="outline" onClick={onClose} className="flex-1">{t('screens.common.cancel')}
             </Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={loading}>
               {loading ? "Creating..." : "Create Meetup"}

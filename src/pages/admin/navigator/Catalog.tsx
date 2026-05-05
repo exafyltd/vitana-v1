@@ -178,7 +178,7 @@ export default function NavigatorCatalog() {
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search screens…"
+                    placeholder={t('screens.admin.searchScreens')}
                     className="pl-8"
                   />
                 </div>
@@ -267,8 +267,7 @@ export default function NavigatorCatalog() {
                   }}
                 />
               ) : (
-                <p className="py-12 text-center text-sm text-muted-foreground">
-                  Pick a screen from the list or click <strong>{t('screens.admin.newScreen')}</strong> to create one.
+                <p className="py-12 text-center text-sm text-muted-foreground">{t('screens.admin.pickScreenFromListClick')} <strong>{t('screens.admin.newScreen')}</strong>{t('screens.admin.createOne')}
                 </p>
               )}
             </CardContent>

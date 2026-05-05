@@ -96,9 +96,7 @@ export function SuccessStoryCarousel({ className }: SuccessStoryCarouselProps) {
             <div className="space-y-3">
               <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 {t('screens.profile.successStory')}
-                <Badge variant="outline" className="text-xs">
-                  {currentStoryIndex + 1} of {mockStories.length}
-                </Badge>
+                <Badge variant="outline" className="text-xs">{t('screens.profile.value0Length', { value0: currentStoryIndex + 1, length: mockStories.length })}</Badge>
               </h3>
               
               <blockquote className="text-foreground leading-relaxed italic">

@@ -110,7 +110,7 @@ export default function AutopilotAutomations() {
         <div className="flex flex-wrap gap-2">
           <AdminStatusBadge variant="active">{t('screens.admin.enabledEnabledcount', { enabledCount })}</AdminStatusBadge>
           <AdminStatusBadge variant="info">{t('screens.admin.executableImplementedcount', { implementedCount })}</AdminStatusBadge>
-          <AdminStatusBadge variant="inactive">Planned: {catalog.length - implementedCount}</AdminStatusBadge>
+          <AdminStatusBadge variant="inactive">{t('screens.admin.plannedValue0', { value0: catalog.length - implementedCount })}</AdminStatusBadge>
           <AdminStatusBadge variant="warning">{t('screens.admin.totalLength', { length: catalog.length })}</AdminStatusBadge>
         </div>
 

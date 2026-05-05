@@ -77,8 +77,7 @@ export function CommandConsolePanel() {
         </div>
 
         {readonly && (
-          <p className="text-xs text-muted-foreground">
-            Phase 1 read-only mode active. Set DEV_HUB_READONLY=false to enable commands.
+          <p className="text-xs text-muted-foreground">{t('screens.dev.phase1ReadonlyModeActiveSet')}
           </p>
         )}
       </CardContent>

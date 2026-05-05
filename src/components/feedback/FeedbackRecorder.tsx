@@ -386,7 +386,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         <button
           onClick={() => fileInputRef.current?.click()}
           className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
-          aria-label="Attach screenshots"
+          aria-label={t('screens.feedback.attachScreenshots')}
         >
           <Plus className="h-5 w-5" />
         </button>
@@ -438,9 +438,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
                 {isRecording ? "Live Transcription" : "Your Feedback"}
               </span>
               {!isRecording && recordingDuration > 0 && (
-                <Badge variant="outline">
-                  Duration: {formatDuration(recordingDuration)}
-                </Badge>
+                <Badge variant="outline">{t('screens.feedback.durationValue0', { value0: formatDuration(recordingDuration) })}</Badge>
               )}
             </div>
             <Textarea
@@ -451,8 +449,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
               disabled={isRecording}
             />
             {interimText && isRecording && (
-              <p className="text-xs text-muted-foreground italic">
-                Interim text appears in gray until finalized...
+              <p className="text-xs text-muted-foreground italic">{t('screens.feedback.interimTextAppearsGrayUntilFinalized')}
               </p>
             )}
           </CardContent>

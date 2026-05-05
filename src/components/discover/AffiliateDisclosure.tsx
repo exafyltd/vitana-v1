@@ -9,6 +9,7 @@
  */
 
 import { Info } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   compact?: boolean;
@@ -18,20 +19,14 @@ interface Props {
 export function AffiliateDisclosure({ compact = false, className = "" }: Props) {
   if (compact) {
     return (
-      <p className={`text-[10px] text-muted-foreground leading-relaxed ${className}`}>
-        Vitana may earn a commission from purchases made via these links. Our recommendations
-        are personalized; partner status does not change how we rank products.
+      <p className={`text-[10px] text-muted-foreground leading-relaxed ${className}`}>{t('screens.discover.vitanaMayEarnCommissionFromPurchases')}
       </p>
     );
   }
   return (
     <div className={`flex gap-2 items-start text-xs text-muted-foreground border-t pt-3 ${className}`}>
       <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
-      <p className="leading-relaxed">
-        Vitana may earn a commission from purchases made via product links on this page. Our
-        recommendations are personalized to your goals and limitations — partner status does
-        not change how we rank products. Prices and availability come from the merchant and
-        can change without notice.
+      <p className="leading-relaxed">{t('screens.discover.vitanaMayEarnCommissionFromPurchases2')}
       </p>
     </div>
   );

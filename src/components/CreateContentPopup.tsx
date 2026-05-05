@@ -89,7 +89,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                     id="content"
                     value={formData.content}
                     onChange={(e) => setFormData({...formData, content: e.target.value})}
-                    placeholder="Share your thoughts, progress, tips, or ask a question..."
+                    placeholder={t('screens.common.shareYourThoughtsProgressTipsAsk')}
                     className="mt-1 min-h-[120px]"
                   />
                 </div>
@@ -159,7 +159,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                     id="title"
                     value={formData.title}
                     onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    placeholder="e.g., 5 Tips for Better Sleep, My Fitness Journey"
+                    placeholder={t('screens.common.eG5TipsForBetter')}
                     className="mt-1"
                   />
                 </div>
@@ -170,7 +170,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                     id="content"
                     value={formData.content}
                     onChange={(e) => setFormData({...formData, content: e.target.value})}
-                    placeholder="Write your article content here..."
+                    placeholder={t('screens.common.writeYourArticleContentHere')}
                     className="mt-1 min-h-[200px]"
                   />
                 </div>
@@ -216,7 +216,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                     id="title"
                     value={formData.title}
                     onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    placeholder="Add a caption to your media..."
+                    placeholder={t('screens.common.addCaptionYourMedia')}
                     className="mt-1"
                   />
                 </div>

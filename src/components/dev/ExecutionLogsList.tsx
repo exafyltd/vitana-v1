@@ -222,9 +222,7 @@ export function ExecutionLogsList() {
 
                         {log.vtid && (
                           <div>
-                            <span className="text-sm text-muted-foreground">
-                              VTID:{" "}
-                            </span>
+                            <span className="text-sm text-muted-foreground">{t('screens.dev.vtidValue0', { value0: " " })}</span>
                             <code className="text-sm font-mono bg-background/50 px-2 py-1 rounded">
                               {log.vtid}
                             </code>

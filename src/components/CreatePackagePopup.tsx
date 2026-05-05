@@ -121,7 +121,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="e.g., Comprehensive Health Profile"
+                    placeholder={t('screens.common.eGComprehensiveHealthProfile')}
                     className="mt-1"
                   />
                 </div>
@@ -132,7 +132,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Describe the purpose and contents of this package..."
+                    placeholder={t('screens.common.describePurposeContentsThisPackage')}
                     className="mt-1 min-h-[100px]"
                   />
                 </div>
@@ -144,8 +144,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                       <div key={template.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <div className="font-medium">{template.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            Includes: {template.types.map(t => dataTypes.find(dt => dt.id === t)?.label).join(", ")}
+                          <div className="text-sm text-muted-foreground">{t('screens.common.includes')} {template.types.map(t => dataTypes.find(dt => dt.id === t)?.label).join(", ")}
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleTemplateSelect(template.id)}>
@@ -288,7 +287,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                     id="recipient"
                     value={formData.recipient}
                     onChange={(e) => setFormData({...formData, recipient: e.target.value})}
-                    placeholder="Healthcare provider, researcher, or organization name"
+                    placeholder={t('screens.common.healthcareProviderResearcherOrganizationName')}
                     className="mt-1"
                   />
                 </div>
@@ -310,9 +309,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
 
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2">{t('screens.common.privacyNotice')}</h4>
-                  <p className="text-sm text-blue-800">
-                    Your health data will be encrypted and shared only with the specified recipient. 
-                    You can revoke access at any time through your sharing dashboard.
+                  <p className="text-sm text-blue-800">{t('screens.common.yourHealthDataWillEncryptedShared')}
                   </p>
                 </div>
               </CardContent>

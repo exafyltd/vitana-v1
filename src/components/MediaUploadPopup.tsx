@@ -154,7 +154,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value.slice(0, 25))}
-                  placeholder="Enter media title"
+                  placeholder={t('screens.common.enterMediaTitle')}
                   maxLength={25}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
@@ -171,7 +171,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value.slice(0, 250))}
-                  placeholder="Describe your content"
+                  placeholder={t('screens.common.describeYourContent')}
                   rows={3}
                   maxLength={250}
                 />
@@ -234,8 +234,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   <div className="flex items-center justify-between">
                     <div className="text-left flex-1">
                       <p className="text-sm font-medium truncate">{selectedFile.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                      <p className="text-xs text-muted-foreground">{t('screens.common.value0Mb', { value0: (selectedFile.size / 1024 / 1024).toFixed(2) })}
                       </p>
                     </div>
                     <Button
@@ -323,8 +322,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
           {/* Step 2: Conditional Fields */}
           {mediaType && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">
-                {mediaType} Details
+              <h3 className="text-lg font-semibold">{t('screens.common.mediatypeDetails', { mediaType })}
               </h3>
 
               {mediaType === "Podcast" && (
@@ -335,7 +333,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                       id="host-guest"
                       value={hostGuest}
                       onChange={(e) => setHostGuest(e.target.value)}
-                      placeholder="Enter host and guest names"
+                      placeholder={t('screens.common.enterHostGuestNames')}
                     />
                   </div>
                   <div>
@@ -445,7 +443,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                 id="external-link"
                 value={externalLink}
                 onChange={(e) => setExternalLink(e.target.value)}
-                placeholder="Spotify, Apple Music, YouTube link"
+                placeholder={t('screens.common.spotifyAppleMusicYoutubeLink')}
               />
             </div>
           </div>

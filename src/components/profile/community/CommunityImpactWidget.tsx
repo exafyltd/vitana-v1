@@ -35,8 +35,7 @@ export function CommunityImpactWidget({
         <CardTitle className="flex items-center gap-2 bg-gradient-to-r from-violet-600 via-purple-600 to-sky-600 bg-clip-text text-transparent">
           <div className="bg-gradient-to-br from-violet-400 to-sky-400 rounded-full p-2">
             <Users className="h-4 w-4 text-white" />
-          </div>
-          Community Impact
+          </div>{t('screens.profile.communityImpact')}
         </CardTitle>
         <CardDescription>{t('screens.profile.yourInfluenceVitanaCommunity')}</CardDescription>
       </CardHeader>
@@ -55,8 +54,7 @@ export function CommunityImpactWidget({
               <Badge 
                 variant="outline" 
                 className="text-xs bg-[hsl(var(--sys-vitana-accent)/0.1)] border-[hsl(var(--sys-vitana-accent)/0.2)] text-[hsl(var(--sys-vitana-accent))]"
-              >
-                ↗ +3 this week
+              >{t('screens.profile.text3ThisWeek')}
               </Badge>
             </div>
           </div>
@@ -112,8 +110,7 @@ export function CommunityImpactWidget({
         <Button 
           size="sm" 
           className="w-full bg-gradient-to-r from-[hsl(var(--pill-mental-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--pill-mental-accent)/0.9)] hover:to-[hsl(var(--pill-nutrition-accent)/0.9)] text-white border-0"
-        >
-          Share Your Success Story
+        >{t('screens.profile.shareYourSuccessStory')}
         </Button>
       </CardContent>
     </Card>

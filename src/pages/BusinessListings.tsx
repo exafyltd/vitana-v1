@@ -73,7 +73,7 @@ export default function BusinessListings() {
         </div>
       ) : listings.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          {t('screens.businesslistings.noListingsYetClick')} <span className="font-medium">{t('screens.businesslistings.newListing')}</span> to add one — or open ORB and just say <em>{t('screens.businesslistings.iMOfferingX')}</em>.
+          {t('screens.businesslistings.noListingsYetClick')} <span className="font-medium">{t('screens.businesslistings.newListing')}</span>{t('screens.businesslistings.addOneOpenOrbJustSay')} <em>{t('screens.businesslistings.iMOfferingX')}</em>.
         </div>
       ) : (
         <div className="space-y-3">

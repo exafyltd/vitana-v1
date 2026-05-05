@@ -30,12 +30,10 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
                 <CheckCircle className="h-5 w-5 text-primary" />
                 {t('screens.admin.aiAnalysisComplete')}
               </CardTitle>
-              <CardDescription>
-                Analysis took {analysis.analysis_duration_ms}ms
+              <CardDescription>{t('screens.admin.analysisTookAnalysis_duration_msMs', { analysis_duration_ms: analysis.analysis_duration_ms })}
               </CardDescription>
             </div>
-            <Badge variant={priorityColors[result.priority as keyof typeof priorityColors]}>
-              {result.priority} priority
+            <Badge variant={priorityColors[result.priority as keyof typeof priorityColors]}>{t('screens.admin.priorityPriority', { priority: result.priority })}
             </Badge>
           </div>
         </CardHeader>

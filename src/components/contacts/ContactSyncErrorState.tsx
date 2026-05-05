@@ -92,8 +92,7 @@ export function ContactSyncErrorState({
 
       {/* Rate limit countdown */}
       {errorType === "rate_limited" && retryAfter && (
-        <div className="text-sm font-medium text-muted-foreground">
-          Retry in {retryAfter}s
+        <div className="text-sm font-medium text-muted-foreground">{t('screens.contacts.retryRetryafterS', { retryAfter })}
         </div>
       )}
 

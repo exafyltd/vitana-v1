@@ -52,7 +52,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
             </div>
             {event.module && (
               <div>
-                <h4 className="text-sm font-semibold mb-1">Module</h4>
+                <h4 className="text-sm font-semibold mb-1">{t('screens.dev.module')}</h4>
                 <p className="text-sm">{event.module}</p>
               </div>
             )}
@@ -60,7 +60,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           {event.vtid && (
             <div>
-              <h4 className="text-sm font-semibold mb-1">VTID</h4>
+              <h4 className="text-sm font-semibold mb-1">{t('screens.dev.vtid')}</h4>
               <p className="text-sm font-mono text-xs bg-muted px-2 py-1 rounded">
                 {event.vtid}
               </p>
@@ -78,7 +78,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           {event.links && event.links.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Links</h4>
+              <h4 className="text-sm font-semibold mb-2">{t('screens.dev.links')}</h4>
               <div className="space-y-2">
                 {event.links.map((link, idx) => (
                   <a

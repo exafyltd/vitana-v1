@@ -42,8 +42,7 @@ export default function Growth() {
                 <CardContent className="p-4">
                   <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.newSignups7d')}</div>
                   <div className="text-3xl font-bold mt-1">{kpi.new_signups_7d}</div>
-                  <span className={`text-xs ${kpi.new_signups_delta_pct >= 0 ? "text-green-600" : "text-red-600"}`}>
-                    {kpi.new_signups_delta_pct >= 0 ? "+" : ""}{kpi.new_signups_delta_pct}% vs prior week
+                  <span className={`text-xs ${kpi.new_signups_delta_pct >= 0 ? "text-green-600" : "text-red-600"}`}>{t('screens.admin.value0New_signups_delta_pctVsPriorWeek', { value0: kpi.new_signups_delta_pct >= 0 ? "+" : "", new_signups_delta_pct: kpi.new_signups_delta_pct })}
                   </span>
                 </CardContent>
               </Card>

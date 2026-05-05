@@ -627,7 +627,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 e.stopPropagation();
                 handleDownload(attachment);
               }}
-              aria-label="Download image"
+              aria-label={t('screens.messages.downloadImage')}
             >
               <Download className="w-3 h-3" />
             </Button>
@@ -639,7 +639,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 e.stopPropagation();
                 handleFileClick(attachment);
               }}
-              aria-label="Open in new tab"
+              aria-label={t('screens.messages.openNewTab')}
             >
               <ExternalLink className="w-3 h-3" />
             </Button>
@@ -672,7 +672,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               e.stopPropagation();
               handleDownload(attachment);
             }}
-            aria-label="Download file"
+            aria-label={t('screens.messages.downloadFile')}
           >
             <Download className="w-3 h-3" />
           </Button>
@@ -704,8 +704,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   {t('screens.messages.calendarInvite')}
                 </Badge>
                 {message.content_data?.priority === 'high' && (
-                  <Badge variant="destructive" className="text-xs">
-                    High Priority
+                  <Badge variant="destructive" className="text-xs">{t('screens.messages.highPriority')}
                   </Badge>
                 )}
               </div>
@@ -1121,8 +1120,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     className="flex-1"
                     onClick={() => setShowDeleteConfirm(false)}
                     disabled={isDeletePending}
-                  >
-                    Cancel
+                  >{t('screens.messages.cancel')}
                   </Button>
                   <Button
                     variant="destructive"
@@ -1130,8 +1128,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     onClick={handleDeleteConfirmed}
                     disabled={isDeletePending}
                   >
-                    {isDeletePending ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Trash2 className="w-4 h-4 mr-1" />}
-                    Delete
+                    {isDeletePending ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Trash2 className="w-4 h-4 mr-1" />}{t('screens.messages.delete')}
                   </Button>
                 </div>
               </div>

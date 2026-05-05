@@ -160,8 +160,7 @@ export default function NotificationPreferences() {
                   <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <BellOff className="h-3 w-3" />
-                      <span>
-                        {stats?.push_disabled || 0} user(s) have push notifications disabled globally.
+                      <span>{t('screens.admin.value0UserSHavePushNotifications', { value0: stats?.push_disabled || 0 })}
                       </span>
                     </div>
                   </div>

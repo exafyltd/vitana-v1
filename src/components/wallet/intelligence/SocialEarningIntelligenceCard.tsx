@@ -133,9 +133,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
             <Network className="h-5 w-5 text-primary" />
             {t('screens.wallet.socialEarningIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            Rank #{avgRank}
-          </Badge>
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.rankAvgrank', { avgRank })}</Badge>
         </div>
       </CardHeader>
       
@@ -173,9 +171,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <h5 className="text-sm font-medium">{analysis.metric}</h5>
-                  <p className="text-xs text-muted-foreground">
-                    Current: {analysis.value} • Rank: #{analysis.rank}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.wallet.currentValueRankRank', { value: analysis.value, rank: analysis.rank })}</p>
                 </div>
                 <div className="text-right">
                   <Badge variant="outline" className={analysis.change >= 0 ? 
@@ -221,17 +217,14 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               </div>
               
               <div className="flex items-center justify-between mb-2">
-                <div className="text-xs text-muted-foreground">
-                  {opportunity.network} • {opportunity.participants} participants
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.networkParticipantsParticipants', { network: opportunity.network, participants: opportunity.participants })}
                 </div>
-                <div className="text-xs text-purple-600 font-semibold">
-                  {opportunity.multiplier}x multiplier
+                <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.multiplierXMultiplier', { multiplier: opportunity.multiplier })}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="text-sm font-bold text-emerald-600">
-                  +{opportunity.reward} VTN
+                <div className="text-sm font-bold text-emerald-600">{t('screens.wallet.rewardVtn', { reward: opportunity.reward })}
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
                   {t('screens.wallet.joinNow')}

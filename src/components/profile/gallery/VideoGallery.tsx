@@ -19,6 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface VideoGalleryProps {
   userId?: string;
@@ -157,7 +158,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
       )}
 
       {compact && videos.length > 6 && (
-        <p className="text-xs text-muted-foreground text-center">+{videos.length - 6} more videos</p>
+        <p className="text-xs text-muted-foreground text-center">{t('screens.profile.value0MoreVideos', { value0: videos.length - 6 })}</p>
       )}
 
       <VideoUploadDialog

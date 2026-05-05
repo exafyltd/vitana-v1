@@ -121,8 +121,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
                     <span className="text-2xl">{category.emoji}</span>
                     <div className="flex-1">
                       <div className="font-medium">{category.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {category.count} items
+                      <div className="text-sm text-muted-foreground">{t('screens.memory.countItems', { count: category.count })}
                       </div>
                     </div>
                     <Badge variant="outline">{category.color}</Badge>
@@ -154,7 +153,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
           {/* Info */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.memory.note')}</strong> Categories with existing items cannot be deleted. You can edit them or merge them with other categories.
+              <strong>{t('screens.memory.note')}</strong>{t('screens.memory.categoriesWithExistingItemsCannotDeleted')}
             </p>
           </div>
 

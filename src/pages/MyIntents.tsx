@@ -60,14 +60,12 @@ export default function MyIntents() {
           <p className="text-sm text-muted-foreground">{t('screens.myintents.yourOpenRequestsListingsPartnerSearches')}</p>
           {!loading && (
             tab === "all" ? (
-              <p className="text-xs text-muted-foreground mt-1">
-                {intents.length} open · up to {PER_KIND_SLOT_CAP} per category
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.myintents.lengthOpenUpPer_kind_slot_capPerCategory', { length: intents.length, PER_KIND_SLOT_CAP })}
               </p>
             ) : (
-              <p className="text-xs text-muted-foreground mt-1">
-                {intents.length} of {PER_KIND_SLOT_CAP} slots used
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.myintents.lengthPer_kind_slot_capSlotsUsed', { length: intents.length, PER_KIND_SLOT_CAP })}
                 {intents.length >= PER_KIND_SLOT_CAP && (
-                  <span className="ml-2 text-amber-700">— cap reached, close one to post a new {KIND_TABS.find(k => k.value === tab)?.label.toLowerCase()}</span>
+                  <span className="ml-2 text-amber-700">{t('screens.myintents.capReachedCloseOnePostNew')} {KIND_TABS.find(k => k.value === tab)?.label.toLowerCase()}</span>
                 )}
               </p>
             )

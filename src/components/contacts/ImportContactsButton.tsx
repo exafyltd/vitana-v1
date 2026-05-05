@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Loader2, Sparkles } from "lucide-react";
 import { ContactSyncModal } from "./ContactSyncModal";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface ImportContactsButtonProps {
   variant?: "primary" | "ghost" | "outline";
@@ -57,13 +58,11 @@ export default function ImportContactsButton({
       >
         {isLoading ? (
           <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            Finding...
+            <Loader2 className="w-4 h-4 animate-spin" />{t('screens.contacts.finding')}
           </>
         ) : (
           <>
-            <Users className="w-4 h-4" />
-            Find friends
+            <Users className="w-4 h-4" />{t('screens.contacts.findFriends')}
             {variant === "primary" && (
               <Sparkles className="w-3 h-3 ml-1 opacity-70" />
             )}

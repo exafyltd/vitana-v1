@@ -197,8 +197,7 @@ export default function LiveRoomViewer() {
           <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
             <Card className="p-8 text-center max-w-md">
               <h2 className="text-2xl font-bold mb-4">{t('screens.community.thisRoomHasEnded')}</h2>
-              <p className="text-muted-foreground mb-6">
-                The session "{streamTitle}" has concluded.
+              <p className="text-muted-foreground mb-6">{t('screens.community.sessionStreamtitleHasConcluded', { streamTitle })}
               </p>
               {recordingData && (
                 <div className="mb-6">
@@ -246,8 +245,7 @@ export default function LiveRoomViewer() {
                 <h1 className="text-xl font-semibold">{streamTitle}</h1>
                 <div className="flex items-center gap-2 mt-1">
                   {isLive && (
-                    <Badge variant="destructive" className="animate-pulse">
-                      LIVE
+                    <Badge variant="destructive" className="animate-pulse">{t('screens.community.live')}
                     </Badge>
                   )}
                 </div>

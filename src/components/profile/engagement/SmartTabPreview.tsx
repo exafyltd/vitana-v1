@@ -155,12 +155,10 @@ export function SmartTabPreview({
         {data.engagement && (
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
-              <Heart className="h-3 w-3" style={{ color: getTabColor() }} />
-              {data.engagement.likes} likes
+              <Heart className="h-3 w-3" style={{ color: getTabColor() }} />{t('screens.profile.likesLikes', { likes: data.engagement.likes })}
             </div>
             <div className="flex items-center gap-1">
-              <MessageSquare className="h-3 w-3" />
-              {data.engagement.comments} comments
+              <MessageSquare className="h-3 w-3" />{t('screens.profile.commentsComments', { comments: data.engagement.comments })}
             </div>
           </div>
         )}

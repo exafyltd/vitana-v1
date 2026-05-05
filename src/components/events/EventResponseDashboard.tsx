@@ -177,8 +177,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
                     <Send className="w-4 h-4 text-muted-foreground" />
                     <div>
                       <p className="font-medium capitalize">{item.channel}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.sent_count} sent • {item.response_count} responded
+                      <p className="text-sm text-muted-foreground">{t('screens.events.sent_countSentResponse_countResponded', { sent_count: item.sent_count, response_count: item.response_count })}
                       </p>
                     </div>
                   </div>
@@ -205,15 +204,13 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
-              <Users className="w-5 h-5" />
-              Attendees ({stats.total})
+              <Users className="w-5 h-5" />{t('screens.events.attendeesTotal', { total: stats.total })}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           {attendees.length === 0 ? (
-            <p className="text-center text-muted-foreground py-8">
-              No invitations sent yet. Start inviting people to see responses here.
+            <p className="text-center text-muted-foreground py-8">{t('screens.events.noInvitationsSentYetStartInviting')}
             </p>
           ) : (
             <div className="space-y-3">

@@ -113,8 +113,7 @@ export function AnalyticsDashboard() {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-green-600">{deliveryRate}%</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {metrics.totalDelivered} of {metrics.totalSent} sent
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totaldeliveredTotalsentSent', { totalDelivered: metrics.totalDelivered, totalSent: metrics.totalSent })}
             </p>
           </CardContent>
         </Card>
@@ -125,8 +124,7 @@ export function AnalyticsDashboard() {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-purple-600">{openRate}%</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {metrics.totalOpened} of {metrics.totalDelivered} delivered
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totalopenedTotaldeliveredDelivered', { totalOpened: metrics.totalOpened, totalDelivered: metrics.totalDelivered })}
             </p>
           </CardContent>
         </Card>
@@ -137,8 +135,7 @@ export function AnalyticsDashboard() {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-orange-600">{clickRate}%</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {metrics.totalClicked} of {metrics.totalOpened} opened
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.totalclickedTotalopenedOpened', { totalClicked: metrics.totalClicked, totalOpened: metrics.totalOpened })}
             </p>
           </CardContent>
         </Card>

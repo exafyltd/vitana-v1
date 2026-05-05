@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
 import { usePopupCoordination } from '@/hooks/usePopupCoordination';
+import { t } from '@/lib/i18n-toast';
 
 interface PopupCoordinationWrapperProps {
   children: React.ReactNode;
@@ -35,14 +36,10 @@ export function PopupCoordinationWrapper({
               <Info className="h-4 w-4" />
               <AlertDescription>
                 {isIntegratedActive && recipientName ? (
-                  <>
-                    A conversation-specific payment action with <strong>{recipientName}</strong> is already active. 
-                    Please complete or close that action first.
+                  <>{t('screens.payment.conversationspecificPaymentActionWith')} <strong>{recipientName}</strong>{t('screens.payment.alreadyActivePleaseCompleteCloseThat')}
                   </>
                 ) : (
-                  <>
-                    Another wallet action is currently in progress. 
-                    Please complete or close that action first.
+                  <>{t('screens.payment.anotherWalletActionCurrentlyProgressPlease')}
                   </>
                 )}
               </AlertDescription>

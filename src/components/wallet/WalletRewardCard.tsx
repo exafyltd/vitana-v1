@@ -225,9 +225,7 @@ export function WalletRewardCard({
 
           {/* Due Date */}
           {dueDate && (
-            <div className="text-sm text-muted-foreground">
-              Due: {dueDate}
-            </div>
+            <div className="text-sm text-muted-foreground">{t('screens.wallet.dueDuedate', { dueDate })}</div>
           )}
 
           {/* Action Buttons */}

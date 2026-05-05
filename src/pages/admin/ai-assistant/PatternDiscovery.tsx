@@ -85,8 +85,7 @@ export default function PatternDiscovery() {
                 {runAnalysis.isPending ? "Analyzing..." : "Analyze for Patterns"}
               </Button>
               {patterns && patterns.length > 0 && (
-                <p className="text-sm text-muted-foreground mt-4">
-                  Last analysis discovered {patterns.length} patterns
+                <p className="text-sm text-muted-foreground mt-4">{t('screens.admin.lastAnalysisDiscoveredLengthPatterns', { length: patterns.length })}
                 </p>
               )}
             </CardContent>
@@ -98,8 +97,7 @@ export default function PatternDiscovery() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>{t('screens.admin.discoveredPatterns')}</CardTitle>
-                  <CardDescription>
-                    {patterns?.length || 0} patterns discovered
+                  <CardDescription>{t('screens.admin.value0PatternsDiscovered', { value0: patterns?.length || 0 })}
                   </CardDescription>
                 </div>
                 <Filter className="h-5 w-5 text-muted-foreground" />

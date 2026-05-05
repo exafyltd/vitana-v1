@@ -282,8 +282,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                       {getMediaIcon()}
                     </div>
                     <p className="font-medium">{file.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    <p className="text-sm text-muted-foreground">{t('screens.community.value0Mb', { value0: (file.size / 1024 / 1024).toFixed(2) })}
                     </p>
                     <Button
                       type="button"
@@ -342,8 +341,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                   size="sm"
                   onClick={handleCancelAuto}
                   disabled={isUploading}
-                >
-                  Skip & fill manually
+                >{t('screens.community.skipFillManually')}
                 </Button>
               </div>
             </div>
@@ -376,8 +374,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
-                    <Sparkles className="w-4 h-4" />
-                    Smart-filled from your video
+                    <Sparkles className="w-4 h-4" />{t('screens.community.smartfilledFromYourVideo')}
                   </div>
                   <Button
                     type="button"
@@ -432,8 +429,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                   onClick={() => setDetailsExpanded(true)}
                   disabled={isUploading}
                   className="w-full"
-                >
-                  Edit details
+                >{t('screens.community.editDetails')}
                 </Button>
               </div>
             )}

@@ -393,7 +393,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                     className={cn(
                       "h-8 w-8 p-0"
                     )}
-                    aria-label="More actions"
+                    aria-label={t('screens.ui.moreActions')}
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>

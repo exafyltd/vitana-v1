@@ -90,9 +90,7 @@ export function VitanaIndexTrajectoryCard() {
   if (!index || points.length === 0) {
     return (
       <Card className="mb-6">
-        <CardContent className="p-4 text-sm text-muted-foreground">
-          Your Vitana Index trajectory will appear here once the baseline survey
-          is complete. Open Vitana Index &gt; Start baseline to begin.
+        <CardContent className="p-4 text-sm text-muted-foreground">{t('screens.health.yourVitanaIndexTrajectoryWillAppear')}
         </CardContent>
       </Card>
     );
@@ -225,10 +223,7 @@ export function VitanaIndexTrajectoryCard() {
         </div>
 
         {projectedEnd && projectedTier && (
-          <p className="text-xs text-muted-foreground mt-2">
-            At this pace you land around <strong>{projectedEnd.score}</strong> by Day {JOURNEY_TOTAL_DAYS}
-            {" "}— <span className="font-medium">{projectedTier}</span> tier. Balance across all five
-            pillars moves you fastest.
+          <p className="text-xs text-muted-foreground mt-2">{t('screens.health.atThisPaceYouLandAround')} <strong>{projectedEnd.score}</strong>{t('screens.health.byDayJourney_total_daysValue1', { JOURNEY_TOTAL_DAYS, value1: " " })} <span className="font-medium">{projectedTier}</span>{t('screens.health.tierBalanceAcrossAllFivePillars')}
           </p>
         )}
       </CardContent>

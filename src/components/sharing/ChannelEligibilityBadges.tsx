@@ -66,8 +66,7 @@ export function ChannelEligibilityBadges({
                 <Icon className="h-4 w-4" />
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-medium">{channel.label}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {channel.count.toLocaleString()} eligible
+                  <div className="text-xs text-muted-foreground">{t('screens.sharing.value0Eligible', { value0: channel.count.toLocaleString() })}
                   </div>
                 </div>
                 {hasZeroEligible && (

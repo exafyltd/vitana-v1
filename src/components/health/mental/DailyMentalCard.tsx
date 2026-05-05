@@ -35,8 +35,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
       <div className="space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h4 className="text-base font-semibold text-rose-700 dark:text-rose-300">
-            Day {data.dayId.split('-')[1]} ({data.dayName})
+          <h4 className="text-base font-semibold text-rose-700 dark:text-rose-300">{t('screens.health.dayValue0Dayname', { value0: data.dayId.split('-')[1], dayName: data.dayName })}
           </h4>
           <span className="text-2xl animate-pulse" style={{ animationDuration: '3s' }}>
             {data.moodEmoji}
@@ -45,8 +44,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
 
         {/* Mood */}
         <div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Mood: <span className="font-semibold">{data.mood}</span>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('screens.health.mood')} <span className="font-semibold">{data.mood}</span>
           </p>
         </div>
 

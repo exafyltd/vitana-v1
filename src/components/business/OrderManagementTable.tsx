@@ -166,9 +166,7 @@ export function OrderManagementTable({
 
       {/* Results count */}
       {orders.length > 0 && (
-        <p className="text-sm text-muted-foreground">
-          Showing {orders.length} order{orders.length !== 1 ? "s" : ""}
-        </p>
+        <p className="text-sm text-muted-foreground">{t('screens.business.showingLengthOrderValue1', { length: orders.length, value1: orders.length !== 1 ? "s" : "" })}</p>
       )}
     </div>
   );

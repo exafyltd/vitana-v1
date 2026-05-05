@@ -110,8 +110,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
 
           {/* Sender Info */}
           {voucherData.order?.buyer_name && (
-            <div className="text-center text-sm text-muted-foreground mb-4">
-              Gift from <span className="font-medium text-foreground">{voucherData.order.buyer_name}</span>
+            <div className="text-center text-sm text-muted-foreground mb-4">{t('screens.voucher.giftFrom')} <span className="font-medium text-foreground">{voucherData.order.buyer_name}</span>
             </div>
           )}
 
@@ -166,8 +165,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Claiming...
+                <Loader2 className="w-5 h-5 animate-spin" />{t('screens.voucher.claiming')}
               </>
             ) : (
               <>

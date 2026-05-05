@@ -156,9 +156,7 @@ export function SocialShareAutopilot() {
             <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
             <div className="space-y-1">
               <p className="text-sm font-semibold">{t('screens.proactive.grow8xFasterWithAutosharing')}</p>
-              <p className="text-xs text-muted-foreground">
-                Members who auto-share their wellness wins inspire 5-10 friends to join each month, 
-                creating a powerful ripple effect in their network.
+              <p className="text-xs text-muted-foreground">{t('screens.proactive.membersWhoAutoshareTheirWellnessWins')}
               </p>
             </div>
           </div>

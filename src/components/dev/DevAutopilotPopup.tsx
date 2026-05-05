@@ -150,12 +150,10 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
               <Plane className="w-4 h-4 text-red-500" />
             </div>
             <span>{t('screens.dev.devAutopilotActions')}</span>
-            <Badge variant="outline" className="ml-2">
-              {selectedActions.length} of {pendingActions.length} selected
+            <Badge variant="outline" className="ml-2">{t('screens.dev.lengthLength2Selected', { length: selectedActions.length, length2: pendingActions.length })}
             </Badge>
           </DialogTitle>
-          <DialogDescription>
-            Ready to execute {selectedActions.length} dev action{selectedActions.length !== 1 ? 's' : ''} prepared by your AI assistant.
+          <DialogDescription>{t('screens.dev.readyExecuteLengthDevActionValue1', { length: selectedActions.length, value1: selectedActions.length !== 1 ? 's' : '' })}
           </DialogDescription>
         </DialogHeader>
 
@@ -193,8 +191,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       variant="ghost" 
                       size="sm"
                       onClick={() => setShowOptions(true)}
-                    >
-                      +{selectedActions.length - 6} more actions
+                    >{t('screens.dev.value0MoreActions', { value0: selectedActions.length - 6 })}
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   </div>
@@ -212,8 +209,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                     disabled={selectedActions.length === 0}
                     className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                   >
-                    <Zap className="w-4 h-4 mr-2" />
-                    GO ({selectedActions.length})
+                    <Zap className="w-4 h-4 mr-2" />{t('screens.dev.goLength', { length: selectedActions.length })}
                   </Button>
                   <Button variant="outline" onClick={handleNotNow}>
                     {t('screens.dev.notNow')}

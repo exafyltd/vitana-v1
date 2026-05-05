@@ -104,8 +104,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{t('screens.common.addAiFeed')}</DialogTitle>
-          <p className="text-sm text-muted-foreground">
-            Suggest a new routine, share an idea, or adjust what Autopilot tracks for you.
+          <p className="text-sm text-muted-foreground">{t('screens.common.suggestNewRoutineShareIdeaAdjust')}
           </p>
         </DialogHeader>
 
@@ -265,7 +264,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                   </div>
                   <div className="text-center">
                     <span className="text-2xl">{impactEmojis[impactEstimate[0]]}</span>
-                    <span className="ml-2 text-sm">{impactLabels[impactEstimate[0]]} Impact</span>
+                    <span className="ml-2 text-sm">{t('screens.common.value0Impact', { value0: impactLabels[impactEstimate[0]] })}</span>
                   </div>
                 </div>
               </div>
@@ -316,8 +315,7 @@ export function AddToAIFeedPopup({ open, onOpenChange }: AddToAIFeedPopupProps) 
                     <span>{t('screens.common.lessOften')}</span>
                     <span>{t('screens.common.moreOften')}</span>
                   </div>
-                  <div className="text-center text-sm">
-                    Current: {relevanceLevel[0]}%
+                  <div className="text-center text-sm">{t('screens.common.currentValue0', { value0: relevanceLevel[0] })}
                   </div>
                 </div>
               </div>

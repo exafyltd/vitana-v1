@@ -79,7 +79,7 @@ export default function AssistantVoice() {
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">{t('screens.admin.voiceLiveOrb')}</CardTitle>
                 {surface.has_tenant_override ? (
-                  <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
+                  <AdminStatusBadge variant="active">{t('screens.admin.customized')}</AdminStatusBadge>
                 ) : (
                   <AdminStatusBadge variant="inactive">{t('screens.admin.usingGlobal')}</AdminStatusBadge>
                 )}
@@ -102,7 +102,7 @@ export default function AssistantVoice() {
                     <Input
                       value={voiceId}
                       onChange={(e) => { setVoiceId(e.target.value); setDirty(true); }}
-                      placeholder="e.g. Aoede, Charon, Puck..."
+                      placeholder={t('screens.admin.eGAoedeCharonPuck')}
                       className="text-sm"
                     />
                   </div>

@@ -245,8 +245,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                 className="flex-1"
                 onClick={() => setCurrentExercise(Math.max(0, currentExercise - 1))}
                 disabled={currentExercise === 0}
-              >
-                Previous
+              >{t('screens.health.previous')}
               </Button>
               
               {currentExercise === workout.exercises.length - 1 ? (

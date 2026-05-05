@@ -49,8 +49,7 @@ export function HydrationPlanView() {
           
           {/* Summary Strip */}
           <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              You've met your hydration goal {daysCompleted} of {totalDays} days this week — energy and recovery up {energyImpact}.
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('screens.health.youVeMetYourHydrationGoal', { daysCompleted, totalDays, energyImpact })}
             </p>
           </div>
         </div>

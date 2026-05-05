@@ -142,9 +142,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
               <Server className="w-5 h-5" />
               {t('screens.admin.mcpTools')}
             </CardTitle>
-            <CardDescription>
-              {tools.length} tool{tools.length !== 1 ? 's' : ''} available on {serverUrl}
-            </CardDescription>
+            <CardDescription>{t('screens.admin.lengthToolValue1AvailableServerurl', { length: tools.length, value1: tools.length !== 1 ? 's' : '', serverUrl })}</CardDescription>
           </div>
           <Badge variant="outline" className="gap-1">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />

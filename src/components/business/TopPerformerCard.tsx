@@ -96,8 +96,7 @@ export function TopPerformerCard({
               </span>
               {ticketsSold !== undefined && (
                 <span className="flex items-center gap-1">
-                  <Ticket className="h-3 w-3" />
-                  {ticketsSold} tickets
+                  <Ticket className="h-3 w-3" />{t('screens.business.ticketssoldTickets', { ticketsSold })}
                 </span>
               )}
             </div>

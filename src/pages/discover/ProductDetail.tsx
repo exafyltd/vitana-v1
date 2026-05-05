@@ -150,7 +150,7 @@ export default function ProductDetail() {
                         <span className="flex items-center gap-1">
                           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                           <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
-                          {p.review_count ? <span>({p.review_count.toLocaleString()} reviews)</span> : null}
+                          {p.review_count ? <span>{t('screens.discover.value0Reviews', { value0: p.review_count.toLocaleString() })}</span> : null}
                         </span>
                       )}
                       {p.origin_country && (
@@ -166,16 +166,14 @@ export default function ProductDetail() {
                       {hasDiscount && (
                         <>
                           <span className="text-base text-muted-foreground line-through">{compareAtText}</span>
-                          <Badge variant="destructive" className="ml-1">
-                            Save {Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100)}%
+                          <Badge variant="destructive" className="ml-1">{t('screens.discover.saveValue02', { value0: Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100) })}
                           </Badge>
                         </>
                       )}
                     </div>
                     {p.reward_preview?.points_estimate ? (
                       <div className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-300">
-                        <Gift className="w-4 h-4" />
-                        Earn +{p.reward_preview.points_estimate} points on purchase
+                        <Gift className="w-4 h-4" />{t('screens.discover.earnPoints_estimatePointsPurchase', { points_estimate: p.reward_preview.points_estimate })}
                       </div>
                     ) : null}
                   </div>
@@ -391,10 +389,7 @@ export default function ProductDetail() {
 
           <Separator />
           <div className="max-w-2xl space-y-2">
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              This product card is informational. Always consult a qualified practitioner before
-              starting a new supplement, especially if you are pregnant, nursing, or taking
-              medication.
+            <p className="text-xs text-muted-foreground leading-relaxed">{t('screens.discover.thisProductCardInformationalAlwaysConsult2')}
             </p>
             <AffiliateDisclosure />
           </div>

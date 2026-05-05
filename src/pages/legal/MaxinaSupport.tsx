@@ -88,7 +88,7 @@ const MaxinaSupport = () => {
             variant="ghost" 
             size="icon"
             onClick={() => navigate(-1)}
-            aria-label="Go back"
+            aria-label={t('screens.legal.goBack')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -226,9 +226,7 @@ const MaxinaSupport = () => {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-border text-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Maxina by EXAFY. {translate("support.maxina.footer")}
-          </p>
+          <p className="text-sm text-muted-foreground">{t('screens.legal.value0MaxinaByExafyValue1', { value0: new Date().getFullYear(), value1: translate("support.maxina.footer") })}</p>
         </footer>
       </main>
     </div>

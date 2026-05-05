@@ -67,8 +67,7 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{t('screens.intents.reportIssue')}</DialogTitle>
-          <DialogDescription>
-            Raise a dispute on this match. Vitana support will review and follow up. Both parties' identities are recorded for the audit trail.
+          <DialogDescription>{t('screens.intents.raiseDisputeThisMatchVitanaSupport')}
           </DialogDescription>
         </DialogHeader>
 
@@ -90,14 +89,13 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
           </div>
 
           <div>
-            <Label htmlFor="dispute-detail" className="text-xs uppercase tracking-wider text-muted-foreground">
-              What happened? (10–2000 chars)
+            <Label htmlFor="dispute-detail" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.whatHappened102000Chars')}
             </Label>
             <Textarea
               id="dispute-detail"
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
-              placeholder="Describe the issue clearly. Include dates, amounts, and any context that helps support investigate."
+              placeholder={t('screens.intents.describeIssueClearlyIncludeDatesAmounts')}
               rows={5}
               maxLength={2000}
             />

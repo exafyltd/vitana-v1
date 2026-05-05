@@ -368,9 +368,7 @@ export default function BookingPaymentFlow({
                     <Coins className="w-5 h-5 text-orange-500" />
                     <div>
                       <p className="font-medium">{t('screens.payment.credits')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.credits || 0, 'CREDITS')}
-                      </p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.credits || 0, 'CREDITS') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -392,9 +390,7 @@ export default function BookingPaymentFlow({
                     <Coins className="w-5 h-5 text-blue-500" />
                     <div>
                       <p className="font-medium">{t('screens.payment.vtnaTokens')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.vtna || 0, 'VTNA')}
-                      </p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.vtna || 0, 'VTNA') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -416,9 +412,7 @@ export default function BookingPaymentFlow({
                     <DollarSign className="w-5 h-5 text-green-500" />
                     <div>
                       <p className="font-medium">{t('screens.payment.usdWallet')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Balance: {formatCurrency(userBalance?.usd || 0, 'USD')}
-                      </p>
+                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.usd || 0, 'USD') })}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -483,8 +477,7 @@ export default function BookingPaymentFlow({
                 </span>
               </div>
               {paymentMethod !== 'cash' && paymentMethod !== 'usd' && (
-                <p className="text-sm text-muted-foreground text-right mt-1">
-                  Converts to ${booking.price.toFixed(2)} USD
+                <p className="text-sm text-muted-foreground text-right mt-1">{t('screens.payment.convertsValue0Usd', { value0: booking.price.toFixed(2) })}
                 </p>
               )}
             </CardContent>
@@ -502,8 +495,7 @@ export default function BookingPaymentFlow({
             >
               {isProcessing ? (
                 <>
-                  <Clock className="w-4 h-4 mr-2 animate-spin" />
-                  Processing...
+                  <Clock className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.processing')}
                 </>
               ) : (
                 <>

@@ -170,7 +170,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               <button
                 onClick={handleProfileClick}
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
-                aria-label="Open my profile"
+                aria-label={t('screens.mobile.openMyProfile')}
               >
                 <Avatar className="h-9 w-9 ring-1 ring-white/40 shrink-0">
                   <AvatarImage
@@ -197,7 +197,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   onClose();
                 }}
                 className="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-white/10 transition-colors shrink-0"
-                aria-label="Close drawer"
+                aria-label={t('screens.mobile.closeDrawer')}
               >
                 <X className="h-[18px] w-[18px]" />
               </button>
@@ -208,7 +208,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               <div className="flex items-stretch gap-1 px-3 pt-3 pb-1.5 border-b border-border/50">
                 <button
                   onClick={() => setSearchActive(true)}
-                  aria-label="Open search"
+                  aria-label={t('screens.mobile.openSearch')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
@@ -219,7 +219,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
                 <button
                   onClick={() => openPopup(setCalendarOpen)}
-                  aria-label="Open calendar"
+                  aria-label={t('screens.mobile.openCalendar')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
@@ -246,7 +246,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
                 <button
                   onClick={() => openPopup(setAutopilotOpen)}
-                  aria-label="Open autopilot"
+                  aria-label={t('screens.mobile.openAutopilot')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
@@ -298,7 +298,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                     type="button"
                     onClick={closeSearch}
                     className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
-                    aria-label="Close search"
+                    aria-label={t('screens.mobile.closeSearch')}
                   >
                     <X className="h-4 w-4" />
                   </button>

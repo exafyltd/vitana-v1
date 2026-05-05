@@ -1,3 +1,4 @@
+import { t } from '@/lib/i18n-toast';
 interface AdminHeaderProps {
   title: string;
   description: string;
@@ -25,9 +26,7 @@ export default function AdminHeader({
             {description}
           </p>
           {syncTimestamp && (
-            <p className="text-xs text-muted-foreground mt-2">
-              Last synced: {syncTimestamp}
-            </p>
+            <p className="text-xs text-muted-foreground mt-2">{t('screens.admin.lastSyncedSynctimestamp', { syncTimestamp })}</p>
           )}
         </div>
         {rightAction && (

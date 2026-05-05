@@ -196,16 +196,14 @@ export default function MembersRolesAccess() {
                               className="h-7 text-xs"
                               disabled={!grantRole || grantMutation.isPending}
                               onClick={() => handleGrant(m.user_id, grantRole)}
-                            >
-                              Grant
+                            >{t('screens.admin.grant')}
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="h-7 text-xs"
                               onClick={() => { setGrantUserId(null); setGrantRole(""); }}
-                            >
-                              Cancel
+                            >{t('screens.admin.cancel')}
                             </Button>
                           </div>
                         ) : (
@@ -214,8 +212,7 @@ export default function MembersRolesAccess() {
                             size="sm"
                             className="h-7 text-xs"
                             onClick={() => { setGrantUserId(m.user_id); setGrantRole(""); }}
-                          >
-                            + Grant
+                          >{t('screens.admin.grant2')}
                           </Button>
                         )}
                       </TableCell>

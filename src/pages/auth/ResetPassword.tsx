@@ -117,8 +117,7 @@ function RequestResetView() {
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Sending…
+                <Loader2 className="h-4 w-4 animate-spin" />{t('screens.auth.sending')}
               </>
             ) : (
               "Send reset link"
@@ -247,8 +246,7 @@ function UpdatePasswordView() {
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Updating…
+                <Loader2 className="h-4 w-4 animate-spin" />{t('screens.auth.updating')}
               </>
             ) : (
               "Update password"

@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface ErrorNotification {
   id: string;
@@ -25,7 +26,7 @@ const ErrorNotification = ({ id, title, description, onDismiss }: ErrorNotificat
         onDismiss(id);
       }}
       className="absolute top-2 right-2 h-8 w-8 hover:bg-destructive/20"
-      aria-label="Close error notification"
+      aria-label={t('screens.common.closeErrorNotification')}
     >
       <X className="h-4 w-4 text-destructive" />
     </Button>

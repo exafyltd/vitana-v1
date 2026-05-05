@@ -378,7 +378,7 @@ function DealsOffersInner() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -444,8 +444,7 @@ function DealsOffersInner() {
                         sizeClass="w-full h-48"
                         className="rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                        {deal.discount}% OFF
+                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
                       </div>
                       {deal.timeLeft && (
                         <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
@@ -484,7 +483,7 @@ function DealsOffersInner() {
                       {deal.claimed != null && deal.total != null && deal.total > 0 && (
                         <div className="bg-gray-100 rounded-lg p-2">
                           <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                            <span>{deal.claimed}/{deal.total} claimed</span>
+                            <span>{t('screens.discover.claimedTotalClaimed', { claimed: deal.claimed, total: deal.total })}</span>
                             <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
                           </div>
                           <div className="w-full bg-gray-300 rounded-full h-2">
@@ -501,9 +500,7 @@ function DealsOffersInner() {
                         <span className="text-muted-foreground line-through text-sm">
                           ${deal.originalPrice}
                         </span>
-                        <span className="text-green-600 font-semibold text-sm ml-auto">
-                          Save ${deal.originalPrice - deal.price}
-                        </span>
+                        <span className="text-green-600 font-semibold text-sm ml-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2" onClick={(e) => e.stopPropagation()}>
@@ -662,8 +659,7 @@ function DealsOffersInner() {
                         alt={match.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                        {match.match}% Match
+                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
                       </div>
                     </div>
                     
@@ -800,13 +796,11 @@ function DealsOffersInner() {
                           </span>
                         </div>
                         {product.priceChange < 0 && (
-                          <div className="text-green-600 font-semibold">
-                            Price dropped ${Math.abs(product.priceChange).toFixed(2)}!
+                          <div className="text-green-600 font-semibold">{t('screens.discover.priceDroppedValue0', { value0: Math.abs(product.priceChange).toFixed(2) })}
                           </div>
                         )}
                         {product.priceChange === 0 && (
-                          <div className="text-muted-foreground">
-                            Same price
+                          <div className="text-muted-foreground">{t('screens.discover.samePrice')}
                           </div>
                         )}
                       </div>

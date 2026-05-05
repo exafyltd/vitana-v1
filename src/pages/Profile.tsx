@@ -161,32 +161,27 @@ export default function Profile() {
                 <TabsTrigger 
                   value="overview" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--sys-vitana-accent))] data-[state=active]:to-[hsl(var(--pill-nutrition-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Posts
+                >{t('screens.profile.posts')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="highlights" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-mental-accent))] data-[state=active]:to-[hsl(var(--pill-sleep-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Media
+                >{t('screens.profile.media')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="connections" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--domain-community-accent))] data-[state=active]:to-[hsl(var(--pill-mental-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Groups
+                >{t('screens.profile.groups')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="activity" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-hydration-accent))] data-[state=active]:to-[hsl(var(--pill-exercise-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Events
+                >{t('screens.profile.events')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="health" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-nutrition-accent))] data-[state=active]:to-[hsl(var(--pill-hydration-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Health
+                >{t('screens.profile.health')}
                 </TabsTrigger>
               </TabsList>
 

@@ -131,7 +131,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                     </div>
 
                     {m.role === 'admin' && (
-                      <Badge variant="secondary" className="text-[10px] h-5">Admin</Badge>
+                      <Badge variant="secondary" className="text-[10px] h-5">{t('screens.community.admin')}</Badge>
                     )}
                   </div>
                 ))}

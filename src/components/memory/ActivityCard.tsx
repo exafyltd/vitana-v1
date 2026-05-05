@@ -93,8 +93,7 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                         <ResponsiveConfirmDialogAction
                           onClick={() => onDelete(activity.id, 'activity')}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
-                          Delete
+                        >{t('screens.memory.delete')}
                         </ResponsiveConfirmDialogAction>
                       </ResponsiveConfirmDialogFooter>
                     </ResponsiveConfirmDialogContent>

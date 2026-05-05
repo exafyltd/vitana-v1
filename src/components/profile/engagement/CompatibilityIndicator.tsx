@@ -87,16 +87,14 @@ export function CompatibilityIndicator({
               <div className="font-semibold text-sm" style={{ color: getCompatibilityColor(topMatch.percentage) }}>
                 {topMatch.percentage}% {getCompatibilityLabel(topMatch.percentage)}
               </div>
-              <div className="text-xs text-muted-foreground capitalize">
-                {topMatch.type} alignment
+              <div className="text-xs text-muted-foreground capitalize">{t('screens.profile.typeAlignment', { type: topMatch.type })}
               </div>
             </div>
           </div>
           
           {mutualConnections > 0 && (
             <Badge variant="outline" className="text-xs">
-              <Users className="h-3 w-3 mr-1" />
-              {mutualConnections} mutual
+              <Users className="h-3 w-3 mr-1" />{t('screens.profile.mutualconnectionsMutual', { mutualConnections })}
             </Badge>
           )}
         </div>
@@ -114,8 +112,7 @@ export function CompatibilityIndicator({
               </Badge>
             ))}
             {topMatch.sharedItems.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{topMatch.sharedItems.length - 3} more
+              <Badge variant="outline" className="text-xs">{t('screens.profile.value0More', { value0: topMatch.sharedItems.length - 3 })}
               </Badge>
             )}
           </div>

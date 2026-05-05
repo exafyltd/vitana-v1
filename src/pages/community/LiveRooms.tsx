@@ -754,8 +754,7 @@ export default function LiveRooms() {
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
             <div className="text-center py-6">
               <p className="text-muted-foreground">{t('screens.community.pastSessionsWillAppearHereOnce')}</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                View summaries, highlights, and recordings from completed sessions.
+              <p className="text-sm text-muted-foreground mt-2">{t('screens.community.viewSummariesHighlightsRecordingsFromCompleted')}
               </p>
             </div>
           </SplitBarContent>
@@ -813,8 +812,7 @@ export default function LiveRooms() {
             <ResponsiveConfirmDialogAction
               onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
+            >{t('screens.community.delete')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>

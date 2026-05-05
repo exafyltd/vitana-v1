@@ -172,7 +172,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
               {/* Reference */}
               {selectedEvent.ref && (
                 <div>
-                  <h4 className="text-sm font-semibold mb-1">Reference</h4>
+                  <h4 className="text-sm font-semibold mb-1">{t('screens.dev.reference')}</h4>
                   <code className="text-xs bg-muted px-2 py-1 rounded block overflow-x-auto">
                     {selectedEvent.ref}
                   </code>
@@ -209,7 +209,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                                 />
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>Source: {getSourceLabel(evt.source)}</p>
+                                <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(evt.source) })}</p>
                               </TooltipContent>
                             </Tooltip>
 

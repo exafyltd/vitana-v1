@@ -166,8 +166,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
                 ? "border-primary bg-primary/10 text-primary font-medium" 
                 : "border-border bg-background hover:bg-accent"
             )}
-          >
-            ALL
+          >{t('screens.dev.all')}
           </button>
           <button
             onClick={() => setScope(currentVTID)}
@@ -229,8 +228,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
 
       {/* Footer Info */}
       <div className="px-4 py-2 border-t bg-muted/30">
-        <p className="text-xs text-muted-foreground">
-          {events.length > 0 ? `${events.length} events • ` : ''}Auto-scroll • Click VTID to focus
+        <p className="text-xs text-muted-foreground">{t('screens.dev.value0AutoscrollClickVtidFocus', { value0: events.length > 0 ? `${events.length} events • ` : '' })}
         </p>
       </div>
     </div>

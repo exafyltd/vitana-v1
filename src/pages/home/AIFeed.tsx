@@ -272,8 +272,7 @@ export default function AIFeed() {
                       gap="sm"
                       className="pb-4"
                       emptyState={
-                        <div className="text-center py-8 text-muted-foreground">
-                          No routines yet. Create your first routine to get started!
+                        <div className="text-center py-8 text-muted-foreground">{t('screens.home.noRoutinesYetCreateYourFirst')}
                         </div>
                       }
                     />
@@ -307,8 +306,7 @@ export default function AIFeed() {
                       </div>
                     </div>
                     <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
-                      <Lightbulb className="w-3 h-3 mr-1" />
-                      4 new ideas
+                      <Lightbulb className="w-3 h-3 mr-1" />{t('screens.home.text4NewIdeas')}
                     </Badge>
                   </div>
 

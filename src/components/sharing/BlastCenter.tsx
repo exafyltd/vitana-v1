@@ -281,19 +281,15 @@ export function BlastCenter() {
               <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 space-y-2">
                 <p className="text-sm font-medium">{t('screens.sharing.campaignName', { name: campaign.name })}</p>
                 {distributionConfig?.frequency && (
-                  <p className="text-xs text-muted-foreground">
-                    Frequency: {distributionConfig.frequency}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.frequencyFrequency', { frequency: distributionConfig.frequency })}</p>
                 )}
                 {distributionConfig?.smart_scheduling_enabled && (
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <span>✨</span> Smart scheduling enabled
+                    <span>✨</span>{t('screens.sharing.smartSchedulingEnabled')}
                   </p>
                 )}
                 {selectedChannelKeys.length > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    Channels: {selectedChannelKeys.join(", ")}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.channelsValue0', { value0: selectedChannelKeys.join(", ") })}</p>
                 )}
               </div>
             );
@@ -393,8 +389,7 @@ export function BlastCenter() {
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <Send className="w-4 h-4 mr-2" />
-            )}
-            Blast Now
+            )}{t('screens.sharing.blastNow')}
           </Button>
           <Button 
             variant="outline" 
@@ -406,8 +401,7 @@ export function BlastCenter() {
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <CalendarIcon className="w-4 h-4 mr-2" />
-            )}
-            Schedule
+            )}{t('screens.sharing.schedule')}
           </Button>
           <Button 
             variant="outline" 

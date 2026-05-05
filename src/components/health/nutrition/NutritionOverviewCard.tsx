@@ -65,11 +65,8 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
             <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
-          <p className="text-lg font-bold">
-            Week {planData.currentWeek || 1} of {planData.totalWeeks || 4}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {planData.completionPercentage || 0}% complete
+          <p className="text-lg font-bold">{t('screens.health.weekValue0Value1', { value0: planData.currentWeek || 1, value1: planData.totalWeeks || 4 })}</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.value0Complete2', { value0: planData.completionPercentage || 0 })}
           </p>
         </div>
       </div>
@@ -98,9 +95,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
             {planData.lastUpdated && (
-              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                Last updated {planData.lastUpdated}
-              </span>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
             )}
           </div>
           <p className="text-sm text-muted-foreground italic">

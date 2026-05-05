@@ -58,7 +58,7 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
               id="title" 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Document title"
+              placeholder={t('screens.dev.documentTitle')}
             />
           </div>
 
@@ -77,7 +77,7 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
               id="description" 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Brief description of the document"
+              placeholder={t('screens.dev.briefDescriptionDocument')}
               rows={3}
             />
           </div>

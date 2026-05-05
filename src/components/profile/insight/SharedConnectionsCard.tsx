@@ -41,8 +41,7 @@ export function SharedConnectionsCard({
       <CardContent className="space-y-4">
         {/* Mutual Connections */}
         <div>
-          <p className="text-xs text-muted-foreground mb-2">
-            {mutualConnections} mutual connections
+          <p className="text-xs text-muted-foreground mb-2">{t('screens.profile.mutualconnectionsMutualConnections', { mutualConnections })}
           </p>
           <div className="flex -space-x-2">
             {mutualAvatars.map((avatar) => (

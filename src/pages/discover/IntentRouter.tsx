@@ -131,9 +131,7 @@ function IntentRouterBase() {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                >
-                  Explore {chip.title}
-                </Button>
+                >{t('screens.discover.exploreTitle', { title: chip.title })}</Button>
               </CardContent>
             </Card>
           );

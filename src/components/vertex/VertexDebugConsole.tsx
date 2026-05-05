@@ -23,7 +23,7 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
   const getLevelBadge = (level: LogEntry['level']) => {
     switch (level) {
       case 'error':
-        return <Badge variant="destructive" className="text-xs">ERROR</Badge>;
+        return <Badge variant="destructive" className="text-xs">{t('screens.vertex.error')}</Badge>;
       case 'warn':
         return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs">{t('screens.vertex.warn')}</Badge>;
       default:

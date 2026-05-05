@@ -155,8 +155,8 @@ export function NotificationsPanel({
               size="icon"
               onClick={() => setConfirmOpen(true)}
               className="h-8 w-8 hover:text-destructive"
-              title="Clear all"
-              aria-label="Clear all notifications"
+              title={t('screens.notifications.clearAll')}
+              aria-label={t('screens.notifications.clearAllNotifications')}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -354,8 +354,8 @@ function NotificationRow({
           e.stopPropagation();
           onDelete();
         }}
-        aria-label="Delete this notification"
-        title="Delete"
+        aria-label={t('screens.notifications.deleteThisNotification')}
+        title={t('screens.notifications.delete')}
         className="
           shrink-0 self-center
           h-9 w-9 flex items-center justify-center rounded-full

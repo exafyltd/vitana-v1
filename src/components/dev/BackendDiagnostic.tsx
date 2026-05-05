@@ -141,16 +141,13 @@ export function BackendDiagnostic() {
   
   return (
     <div className="fixed top-4 right-4 z-50 bg-background/95 backdrop-blur border rounded-lg p-3 shadow-lg min-w-[200px]">
-      <div className="font-semibold text-sm mb-2 flex items-center gap-2">
-        Backend Status
+      <div className="font-semibold text-sm mb-2 flex items-center gap-2">{t('screens.dev.backendStatus')}
         {anyTesting && <Loader2 className="w-3 h-3 animate-spin" />}
-        {!anyTesting && liveStatus && allSuccess && <Badge variant="success">LIVE</Badge>}
-        {!anyTesting && (!liveStatus || !allSuccess) && <Badge variant="destructive">OFFLINE</Badge>}
+        {!anyTesting && liveStatus && allSuccess && <Badge variant="success">{t('screens.dev.live')}</Badge>}
+        {!anyTesting && (!liveStatus || !allSuccess) && <Badge variant="destructive">{t('screens.dev.offline')}</Badge>}
       </div>
       {allowOrigin && (
-        <div className="text-[10px] text-muted-foreground mb-1">
-          Origin: {allowOrigin}
-        </div>
+        <div className="text-[10px] text-muted-foreground mb-1">{t('screens.dev.originAlloworigin', { allowOrigin })}</div>
       )}
       <div className="space-y-1.5 text-xs">
         <div className="flex items-center justify-between gap-2">

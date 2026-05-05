@@ -131,14 +131,12 @@ export default function IntelligenceRelationships() {
           <button
             onClick={() => { setTab("nodes"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "nodes" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Nodes ({nodesQuery.data?.total ?? "..."})
+          >{t('screens.admin.nodesValue0', { value0: nodesQuery.data?.total ?? "..." })}
           </button>
           <button
             onClick={() => { setTab("edges"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "edges" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Edges ({edgesQuery.data?.total ?? "..."})
+          >{t('screens.admin.edgesValue0', { value0: edgesQuery.data?.total ?? "..." })}
           </button>
         </div>
 

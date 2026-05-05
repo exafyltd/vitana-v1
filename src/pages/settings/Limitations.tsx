@@ -106,8 +106,7 @@ function TagEditor({
       </div>
       <div className="flex flex-wrap gap-2">
         {values.map((v) => (
-          <Badge key={v} variant="secondary" className="cursor-pointer" onClick={() => remove(v)}>
-            {v} &nbsp;×
+          <Badge key={v} variant="secondary" className="cursor-pointer" onClick={() => remove(v)}>{t('screens.settings.vNbsp', { v })}
           </Badge>
         ))}
         {values.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.settings.noneAddedYet')}</span>}
@@ -265,8 +264,7 @@ export default function Limitations() {
                 <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
                 <div className="text-2xl font-semibold">
                   {hiddenTotal.toLocaleString()}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">
-                    of {totalProducts.toLocaleString()} active products
+                  <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: totalProducts.toLocaleString() })}
                   </span>
                 </div>
               </div>
@@ -282,9 +280,7 @@ export default function Limitations() {
                 {t('screens.settings.allergies')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
               </CardTitle>
-              <CardDescription>
-                We will never recommend products containing these, period. Last confirmed:{" "}
-                {lastVerified.allergies ? new Date(lastVerified.allergies).toLocaleDateString() : "never"}.
+              <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? new Date(lastVerified.allergies).toLocaleDateString() : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -295,7 +291,7 @@ export default function Limitations() {
                 onChange={(next) => {
                   setState((s) => ({ ...s, allergies: next }));
                 }}
-                placeholder="e.g. peanuts, shellfish, latex"
+                placeholder={t('screens.settings.eGPeanutsShellfishLatex')}
               />
               <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
                 {t('screens.settings.saveAllergies')}
@@ -331,9 +327,7 @@ export default function Limitations() {
                 {t('screens.settings.currentMedications')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
               </CardTitle>
-              <CardDescription>
-                We use this to avoid recommending supplements that may interact with your prescriptions. Last confirmed:{" "}
-                {lastVerified.current_medications ? new Date(lastVerified.current_medications).toLocaleDateString() : "never"}.
+              <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? new Date(lastVerified.current_medications).toLocaleDateString() : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -342,7 +336,7 @@ export default function Limitations() {
                 icon={Pill}
                 values={state.current_medications}
                 onChange={(next) => setState((s) => ({ ...s, current_medications: next }))}
-                placeholder="e.g. ssri, blood-thinner, statin"
+                placeholder={t('screens.settings.eGSsriBloodthinnerStatin')}
               />
               <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
                 {t('screens.settings.saveMedications')}
@@ -443,8 +437,7 @@ export default function Limitations() {
                   })
                 }
                 disabled={saving}
-              >
-                Save budget
+              >{t('screens.settings.saveBudget')}
               </Button>
             </CardContent>
           </Card>
@@ -464,7 +457,7 @@ export default function Limitations() {
                 icon={Accessibility}
                 values={state.physical_accessibility_needs}
                 onChange={(next) => setState((s) => ({ ...s, physical_accessibility_needs: next }))}
-                placeholder="e.g. liquid-form, large-label"
+                placeholder={t('screens.settings.eGLiquidformLargelabel')}
               />
               <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
                 {t('screens.settings.saveAccessibility')}
@@ -472,8 +465,7 @@ export default function Limitations() {
             </CardContent>
           </Card>
 
-          <p className="text-xs text-muted-foreground text-center pt-4">
-            Safety-critical fields (allergies, medications, pregnancy) are re-confirmed every 90 days. These rules apply to every product recommendation you see, including those spoken by the Vitana Assistant.
+          <p className="text-xs text-muted-foreground text-center pt-4">{t('screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR')}
           </p>
         </div>
       </div>

@@ -86,7 +86,7 @@ export function MiniAudioPlayer() {
           onClick={() => setDrawerOpen(true)}
           className="fixed right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-primary hover:bg-primary/90 active:scale-95 transition-transform"
           style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px) + 12px)' }}
-          aria-label="Open audio player"
+          aria-label={t('screens.common.openAudioPlayer')}
         >
           {/* Pulse ring when playing */}
           {isPlaying && (

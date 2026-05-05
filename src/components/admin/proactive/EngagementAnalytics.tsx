@@ -69,8 +69,7 @@ export function EngagementAnalytics() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.total || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              {analytics?.last7Days || 0} in the last 7 days
+            <p className="text-xs text-muted-foreground">{t('screens.admin.value0Last7Days', { value0: analytics?.last7Days || 0 })}
             </p>
           </CardContent>
         </Card>
@@ -106,8 +105,7 @@ export function EngagementAnalytics() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.helpful || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              {analytics?.notHelpful || 0} not helpful, {analytics?.noFeedback || 0} no feedback
+            <p className="text-xs text-muted-foreground">{t('screens.admin.value0NotHelpfulValue1NoFeedback', { value0: analytics?.notHelpful || 0, value1: analytics?.noFeedback || 0 })}
             </p>
           </CardContent>
         </Card>

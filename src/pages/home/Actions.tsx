@@ -247,9 +247,7 @@ export default function Actions() {
                                   variant="outline"
                                   onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
                                 >
-                                  <Zap className="w-4 h-4 mr-2" />
-                                  Execute All {category.label.split(' ')[0]}
-                                </Button>
+                                  <Zap className="w-4 h-4 mr-2" />{t('screens.home.executeAllValue0', { value0: category.label.split(' ')[0] })}</Button>
                                 <Button variant="ghost" size="sm">
                                   {t('screens.home.configureCategory')}
                                 </Button>
@@ -260,7 +258,7 @@ export default function Actions() {
                               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                                 {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
                               </div>
-                              <p>No {category.label.toLowerCase()} actions available</p>
+                              <p>{t('screens.home.noValue0ActionsAvailable', { value0: category.label.toLowerCase() })}</p>
                             </div>
                           )}
                         </TabsContent>

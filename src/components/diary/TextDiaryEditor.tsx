@@ -82,8 +82,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
           rows={6}
           className="resize-none"
         />
-        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
-          {text.length} characters
+        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">{t('screens.diary.lengthCharacters', { length: text.length })}
         </div>
       </div>
 

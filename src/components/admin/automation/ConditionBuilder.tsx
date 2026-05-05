@@ -107,7 +107,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                   <Input 
                     value={condition.value}
                     onChange={(e) => updateCondition(index, { value: e.target.value })}
-                    placeholder="Enter value..."
+                    placeholder={t('screens.admin.enterValue')}
                   />
                 </div>
 

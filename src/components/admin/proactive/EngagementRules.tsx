@@ -170,8 +170,7 @@ export function EngagementRules() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Engagement Rules
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.saveEngagementRules')}
         </Button>
       </CardContent>
     </Card>

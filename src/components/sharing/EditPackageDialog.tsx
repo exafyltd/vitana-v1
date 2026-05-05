@@ -541,8 +541,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
 
               {calculateSavings() > 0 && (
                 <Badge variant="secondary" className="w-fit">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  {calculateSavings()}% Savings
+                  <Sparkles className="w-3 h-3 mr-1" />{t('screens.sharing.value0Savings', { value0: calculateSavings() })}
                 </Badge>
               )}
             </div>

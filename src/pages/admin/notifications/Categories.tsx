@@ -236,8 +236,7 @@ export default function Categories() {
               {isExpanded && (
                 <CardContent className="space-y-3">
                   {items.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No categories yet. Click "Add" to create one.
+                    <p className="text-sm text-muted-foreground text-center py-4">{t('screens.admin.noCategoriesYetClickAddCreate')}
                     </p>
                   ) : (
                     items.map((cat) => (
@@ -251,7 +250,7 @@ export default function Categories() {
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium text-sm">{cat.display_name}</h4>
                             {!cat.is_active && (
-                              <Badge variant="outline" className="text-xs">Inactive</Badge>
+                              <Badge variant="outline" className="text-xs">{t('screens.admin.inactive')}</Badge>
                             )}
                             {!cat.default_enabled && (
                               <Badge variant="secondary" className="text-xs">{t('screens.admin.optin')}</Badge>
@@ -262,8 +261,7 @@ export default function Categories() {
                               {cat.description}
                             </p>
                           )}
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {(cat.mapped_types || []).length} notification type(s) mapped
+                          <p className="text-xs text-muted-foreground mt-0.5">{t('screens.admin.value0NotificationTypeSMapped', { value0: (cat.mapped_types || []).length })}
                           </p>
                         </div>
 
@@ -277,7 +275,7 @@ export default function Categories() {
                             variant="ghost"
                             onClick={() => handleSendTest(cat)}
                             disabled={testMutation.isPending || !cat.is_active}
-                            title="Send test notification"
+                            title={t('screens.admin.sendTestNotification')}
                           >
                             <Send className="w-4 h-4" />
                           </Button>
@@ -285,7 +283,7 @@ export default function Categories() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openEditDialog(cat)}
-                            title="Edit category"
+                            title={t('screens.admin.editCategory')}
                           >
                             <Pencil className="w-4 h-4" />
                           </Button>
@@ -293,7 +291,7 @@ export default function Categories() {
                             size="sm"
                             variant="ghost"
                             onClick={() => setDeleteTarget(cat)}
-                            title="Delete category"
+                            title={t('screens.admin.deleteCategory')}
                             className="text-destructive hover:text-destructive"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -325,7 +323,7 @@ export default function Categories() {
                 id="display_name"
                 value={form.display_name}
                 onChange={(e) => setForm((f) => ({ ...f, display_name: e.target.value }))}
-                placeholder="e.g. Direct Messages"
+                placeholder={t('screens.admin.eGDirectMessages')}
               />
             </div>
 
@@ -335,7 +333,7 @@ export default function Categories() {
                 id="description"
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                placeholder="Brief explanation shown in user settings"
+                placeholder={t('screens.admin.briefExplanationShownUserSettings')}
                 rows={2}
               />
             </div>
@@ -346,7 +344,7 @@ export default function Categories() {
                 id="icon"
                 value={form.icon}
                 onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
-                placeholder="e.g. MessageSquare"
+                placeholder={t('screens.admin.eGMessagesquare')}
               />
             </div>
 
@@ -356,19 +354,17 @@ export default function Categories() {
                 id="mapped_types"
                 value={form.mapped_types}
                 onChange={(e) => setForm((f) => ({ ...f, mapped_types: e.target.value }))}
-                placeholder="Comma-separated TYPE_META keys, e.g. new_chat_message, orb_suggestion"
+                placeholder={t('screens.admin.commaseparatedType_metaKeysEGNew_chat_message')}
                 rows={2}
               />
-              <p className="text-xs text-muted-foreground">
-                These are the internal notification type keys that this category controls.
+              <p className="text-xs text-muted-foreground">{t('screens.admin.theseInternalNotificationTypeKeysThat')}
               </p>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
                 <Label>{t('screens.admin.defaultEnabled')}</Label>
-                <p className="text-xs text-muted-foreground">
-                  When on, new users have this category enabled by default.
+                <p className="text-xs text-muted-foreground">{t('screens.admin.whenNewUsersHaveThisCategory')}
                 </p>
               </div>
               <Switch
@@ -399,10 +395,8 @@ export default function Categories() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Deactivate "{deleteTarget?.display_name}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will deactivate the category. Users will no longer see it in their notification settings.
-              Existing user preferences for this category will be preserved.
+            <AlertDialogTitle>{t('screens.admin.deactivateDisplay_name', { display_name: deleteTarget?.display_name })}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.admin.thisWillDeactivateCategoryUsersWill')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -23,8 +23,7 @@ export function CatalogPane({ tasks, onTaskClick }: CatalogPaneProps) {
       <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
         <Library className="h-5 w-5 text-sys-ai-accent" />
         <h2 className="text-lg font-semibold">{t('screens.dev.catalog')}</h2>
-        <span className="ml-auto text-sm text-muted-foreground">
-          {catalogTasks.length} tasks
+        <span className="ml-auto text-sm text-muted-foreground">{t('screens.dev.lengthTasks', { length: catalogTasks.length })}
         </span>
       </div>
       

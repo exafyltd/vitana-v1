@@ -67,8 +67,7 @@ export function WhatVitanaKnows() {
         <CardTitle className="flex items-center gap-2 text-base font-semibold">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-primary" />
-          </div>
-          What Vitana remembers about you
+          </div>{t('screens.memory.whatVitanaRemembersAboutYou')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

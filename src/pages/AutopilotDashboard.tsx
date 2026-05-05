@@ -172,9 +172,7 @@ function CompassCard({ alignedCount }: { alignedCount: number }) {
         </div>
         {compass?.primary_goal ? (
           <>
-            <p className="text-base font-semibold leading-snug line-clamp-2">
-              Heading toward: {compass.primary_goal}
-            </p>
+            <p className="text-base font-semibold leading-snug line-clamp-2">{t('screens.autopilotdashboard.headingTowardPrimary_goal', { primary_goal: compass.primary_goal })}</p>
             <p className="text-xs text-muted-foreground">
               {alignedCount > 0
                 ? `${alignedCount} action${alignedCount === 1 ? "" : "s"} pending`
@@ -230,9 +228,7 @@ function PathStopCard({
         </div>
         <div className="text-xl font-bold">
           {recommendations.length}
-          <span className="text-xs font-normal text-muted-foreground ml-1">
-            action{recommendations.length === 1 ? "" : "s"}
-          </span>
+          <span className="text-xs font-normal text-muted-foreground ml-1">{t('screens.autopilotdashboard.actionValue0', { value0: recommendations.length === 1 ? "" : "s" })}</span>
         </div>
         {total > 0 ? (
           <PillarDeltaBadges vector={vector} compact />

@@ -53,8 +53,7 @@ export function VaeaChannelsPanel() {
         )}
 
         {channels.length === 0 && !showForm ? (
-          <p className="text-sm text-muted-foreground text-center py-6">
-            No channels yet. Autopilot won't hear anything until you add at least one.
+          <p className="text-sm text-muted-foreground text-center py-6">{t('screens.business.noChannelsYetAutopilotWonT')}
           </p>
         ) : (
           channels.map((channel) => (
@@ -121,12 +120,12 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
         </label>
         <label className="text-xs space-y-1">
           <span className="text-muted-foreground">{t('screens.business.channelKeyId')}</span>
-          <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder="Platform-specific identifier" />
+          <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder={t('screens.business.platformspecificIdentifier')} />
         </label>
       </div>
       <label className="text-xs space-y-1 block">
         <span className="text-muted-foreground">{t('screens.business.displayNameOptional')}</span>
-        <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Friendly label" />
+        <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={t('screens.business.friendlyLabel')} />
       </label>
       {err && <p className="text-xs text-destructive">{err}</p>}
       <div className="flex justify-end">
@@ -145,8 +144,7 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
             }
           }}
         >
-          {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-          Add channel
+          {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.addChannel')}
         </Button>
       </div>
     </div>

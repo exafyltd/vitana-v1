@@ -242,8 +242,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                   <Mic className="w-5 h-5 text-primary" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{audioFile.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(audioFile.size / 1024).toFixed(0)} KB
+                    <p className="text-xs text-muted-foreground">{t('screens.memory.value0Kb', { value0: (audioFile.size / 1024).toFixed(0) })}
                     </p>
                   </div>
                   <Button
@@ -286,12 +285,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               {!imagePreview ? (
                 <div className="text-center py-8 border-2 border-dashed rounded-lg">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Click below to upload a photo memory
+                  <p className="text-sm text-muted-foreground mb-4">{t('screens.memory.clickBelowUploadPhotoMemory')}
                   </p>
                   <Button onClick={() => document.getElementById('image-upload')?.click()}>
-                    <Camera className="w-4 h-4 mr-2" />
-                    Choose Photo
+                    <Camera className="w-4 h-4 mr-2" />{t('screens.memory.choosePhoto')}
                   </Button>
                 </div>
               ) : (
@@ -316,7 +313,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                     </Button>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="photo-caption">Caption</Label>
+                    <Label htmlFor="photo-caption">{t('screens.memory.caption')}</Label>
                     <Textarea
                       id="photo-caption"
                       placeholder={t('screens.memory.describeThisMemory')}
@@ -361,8 +358,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
             >
               {isCreating ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.memory.saving')}
                 </>
               ) : (
                 "Save Memory"

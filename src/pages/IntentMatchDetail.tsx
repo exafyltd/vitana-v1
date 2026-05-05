@@ -91,8 +91,7 @@ export default function IntentMatchDetail() {
       )}
 
       <div>
-        <h2 className="text-lg font-semibold mb-3">
-          Matches ({matches.length})
+        <h2 className="text-lg font-semibold mb-3">{t('screens.intentmatchdetail.matchesLength', { length: matches.length })}
         </h2>
         {matches.length === 0 ? (
           <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">

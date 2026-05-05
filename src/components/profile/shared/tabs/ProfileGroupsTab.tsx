@@ -108,8 +108,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                       {group.name}
                     </h3>
                     <p className="text-sm text-white/90 flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      {group.member_count.toLocaleString()} members
+                      <Users className="w-4 h-4" />{t('screens.profile.value0Members', { value0: group.member_count.toLocaleString() })}
                     </p>
                   </div>
                   
@@ -132,8 +131,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                         e.stopPropagation();
                         navigate(`/comm/groups/${group.id}`);
                       }}
-                    >
-                      View
+                    >{t('screens.profile.view')}
                     </Button>
                   </div>
                 </div>

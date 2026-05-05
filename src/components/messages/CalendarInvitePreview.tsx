@@ -118,8 +118,7 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
         </div>
         
         {status === 'failed' && (
-          <div className="text-xs text-destructive mt-2">
-            Failed to send invite
+          <div className="text-xs text-destructive mt-2">{t('screens.messages.failedSendInvite')}
           </div>
         )}
       </CardContent>

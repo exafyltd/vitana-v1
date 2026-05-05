@@ -30,8 +30,7 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
     <ResponsivePopover>
       <ResponsivePopoverTrigger asChild>
         <Button variant="outline" className="gap-2 min-h-[44px]">
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
+          <SlidersHorizontal className="w-4 h-4" />{t('screens.health.filters')}
           {activeCount > 0 && (
             <Badge variant="secondary" className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center">
               {activeCount}
@@ -66,8 +65,7 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
           
           {/* Calorie Range */}
           <div>
-            <Label className="mb-2 block">
-              Calorie Range: {filters.calorieRange[0]}-{filters.calorieRange[1]} cal
+            <Label className="mb-2 block">{t('screens.health.calorieRangeValue0Value1Cal', { value0: filters.calorieRange[0], value1: filters.calorieRange[1] })}
             </Label>
             <Slider
               value={filters.calorieRange}
@@ -83,8 +81,7 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
           
           {/* Min Protein */}
           <div>
-            <Label className="mb-2 block">
-              Minimum Protein: {filters.minProtein}g
+            <Label className="mb-2 block">{t('screens.health.minimumProteinMinproteinG', { minProtein: filters.minProtein })}
             </Label>
             <Slider
               value={[filters.minProtein]}
@@ -107,8 +104,7 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
               onClick={() =>
                 onFiltersChange({ dietType: [], calorieRange: [0, 1000], minProtein: 0 })
               }
-            >
-              Clear All Filters
+            >{t('screens.health.clearAllFilters')}
             </Button>
           )}
         </div>

@@ -158,36 +158,27 @@ export default function AIAssistantAnalytics() {
                     <CheckCircle className="h-5 w-5 text-success mt-0.5" />
                     <div>
                       <p className="font-medium">{t('screens.admin.automationSuccessRate')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {metrics?.automations_success_rate || 0}% of automations execute successfully. 
-                        {(metrics?.automations_success_rate || 0) >= 90 
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.value0AutomationsExecuteSuccessfullyValue1', { value0: metrics?.automations_success_rate || 0, value1: (metrics?.automations_success_rate || 0) >= 90 
                           ? " Excellent performance!" 
-                          : " Consider reviewing failed executions."}
-                      </p>
+                          : " Consider reviewing failed executions." })}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
                     <Target className="h-5 w-5 text-primary mt-0.5" />
                     <div>
                       <p className="font-medium">{t('screens.admin.patternImplementation')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {metrics?.patterns_implemented || 0} out of {metrics?.total_patterns_discovered || 0} discovered patterns have been implemented.
-                        {(metrics?.total_patterns_discovered || 0) > (metrics?.patterns_implemented || 0) 
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.value0OutValue1DiscoveredPatternsHave', { value0: metrics?.patterns_implemented || 0, value1: metrics?.total_patterns_discovered || 0, value2: (metrics?.total_patterns_discovered || 0) > (metrics?.patterns_implemented || 0) 
                           ? " Review pending patterns for potential improvements." 
-                          : " All patterns addressed!"}
-                      </p>
+                          : " All patterns addressed!" })}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
                     <Zap className="h-5 w-5 text-warning mt-0.5" />
                     <div>
                       <p className="font-medium">{t('screens.admin.analysisPerformance')}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Average analysis completes in {Math.round((metrics?.avg_analysis_duration_ms || 0) / 1000)}s.
-                        {(metrics?.avg_analysis_duration_ms || 0) < 5000 
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.averageAnalysisCompletesValue0SValue1', { value0: Math.round((metrics?.avg_analysis_duration_ms || 0) / 1000), value1: (metrics?.avg_analysis_duration_ms || 0) < 5000 
                           ? " Fast response times!" 
-                          : " Consider optimizing analysis logic."}
-                      </p>
+                          : " Consider optimizing analysis logic." })}</p>
                     </div>
                   </div>
                 </>

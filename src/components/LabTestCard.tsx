@@ -55,8 +55,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
             <div className="text-2xl font-bold text-primary">
               ${labTest.price.toFixed(0)}
             </div>
-            <div className="text-sm text-muted-foreground">
-              ${(labTest.price / labTest.biomarkers.length).toFixed(0)}/marker
+            <div className="text-sm text-muted-foreground">{t('screens.common.value0marker', { value0: (labTest.price / labTest.biomarkers.length).toFixed(0) })}
             </div>
           </div>
         </div>
@@ -88,8 +87,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
         </div>
 
         <div>
-          <div className="text-sm font-medium mb-2">
-            Biomarkers ({labTest.biomarkers.length}):
+          <div className="text-sm font-medium mb-2">{t('screens.common.biomarkersLength', { length: labTest.biomarkers.length })}
           </div>
           <div className="flex flex-wrap gap-1">
             {labTest.biomarkers.slice(0, 4).map((biomarker, index) => (
@@ -98,8 +96,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
               </Badge>
             ))}
             {labTest.biomarkers.length > 4 && (
-              <Badge variant="outline" className="text-xs">
-                +{labTest.biomarkers.length - 4} more
+              <Badge variant="outline" className="text-xs">{t('screens.common.value0More', { value0: labTest.biomarkers.length - 4 })}
               </Badge>
             )}
           </div>

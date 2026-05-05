@@ -51,8 +51,7 @@ export function CreatorPaymentsSection() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-medium">{t('screens.creator.paymentStatus')}</h3>
-            <p className="text-sm text-muted-foreground">
-              Receive 90% of revenue from paid Live Rooms
+            <p className="text-sm text-muted-foreground">{t('screens.creator.receive90RevenueFromPaidLive')}
             </p>
           </div>
           {isFullyOnboarded && (
@@ -69,8 +68,7 @@ export function CreatorPaymentsSection() {
           )}
           {notOnboarded && (
             <Badge variant="outline">
-              <AlertCircle className="w-3 h-3 mr-1" />
-              Not Enabled
+              <AlertCircle className="w-3 h-3 mr-1" />{t('screens.creator.notEnabled')}
             </Badge>
           )}
         </div>
@@ -112,8 +110,7 @@ export function CreatorPaymentsSection() {
               <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div className="flex-1">
                 <h4 className="font-medium text-yellow-900">{t('screens.creator.setupIncomplete')}</h4>
-                <p className="text-sm text-yellow-700 mt-1">
-                  Complete your payment setup to start receiving earnings from paid Live Rooms.
+                <p className="text-sm text-yellow-700 mt-1">{t('screens.creator.completeYourPaymentSetupStartReceiving')}
                 </p>
               </div>
             </div>
@@ -127,8 +124,7 @@ export function CreatorPaymentsSection() {
               <DollarSign className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="flex-1">
                 <h4 className="font-medium text-blue-900">{t('screens.creator.earnFromYourLiveRooms')}</h4>
-                <p className="text-sm text-blue-700 mt-1">
-                  Enable payments to create paid Live Rooms and receive 90% of the revenue. Quick 2-minute setup with Stripe Connect.
+                <p className="text-sm text-blue-700 mt-1">{t('screens.creator.enablePaymentsCreatePaidLiveRooms')}
                 </p>
               </div>
             </div>

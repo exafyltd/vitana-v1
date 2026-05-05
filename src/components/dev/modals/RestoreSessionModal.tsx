@@ -124,8 +124,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
                         handleRestore(session.id);
                       }}
                       className="shrink-0 opacity-80 group-hover:opacity-100 transition-opacity"
-                    >
-                      Restore
+                    >{t('screens.dev.restore')}
                     </Button>
                   </div>
                 </div>

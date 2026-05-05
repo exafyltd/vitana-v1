@@ -502,9 +502,7 @@ export function PaymentMessageHandler({
             <div className="text-sm">
               <div className="flex items-center gap-2 mb-1">
                 <span className="font-medium">{t('screens.payment.exchangeSend')}</span>
-                <Badge variant="secondary" className="text-xs">
-                  Rate: {exchangeRate.toFixed(3)}
-                </Badge>
+                <Badge variant="secondary" className="text-xs">{t('screens.payment.rateValue0', { value0: exchangeRate.toFixed(3) })}</Badge>
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span>{formatCurrency(originalAmount, originalCurrency)}</span>

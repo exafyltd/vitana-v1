@@ -323,7 +323,7 @@ export default function IntroExperience() {
       {/* Keyboard Hints - Desktop only */}
       <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
         <p className="text-white/40 text-xs">
-          {t('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{t('screens.introexperience.space')}</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{t('screens.introexperience.esc')}</kbd> to skip
+          {t('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{t('screens.introexperience.space')}</kbd>{t('screens.introexperience.play')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{t('screens.introexperience.esc')}</kbd>{t('screens.introexperience.skip')}
         </p>
       </div>
 

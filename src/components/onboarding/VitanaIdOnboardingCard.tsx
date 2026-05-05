@@ -186,9 +186,7 @@ export function VitanaIdOnboardingCard() {
       >
         <div className="max-w-xl mx-auto p-4 space-y-3">
           <div className="text-center space-y-1">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Your Vitana ID — Member #{seqDigits || "?"}
-            </p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.onboarding.yourVitanaIdMemberValue0', { value0: seqDigits || "?" })}</p>
             <div className="flex items-center justify-center gap-2">
               <p className="text-2xl font-semibold tracking-wide">
                 @{profile.vitanaId}
@@ -203,9 +201,7 @@ export function VitanaIdOnboardingCard() {
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Speakable. Language-neutral. The number is your registration rank — locked.
-              You can change the name part once.
+            <p className="text-xs text-muted-foreground">{t('screens.onboarding.speakableLanguageneutralNumberYourRegistrationRank')}
             </p>
           </div>
           <div className="flex gap-2">
@@ -233,9 +229,7 @@ export function VitanaIdOnboardingCard() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('screens.onboarding.pickNamePartYourVitanaId')}</DialogTitle>
-            <DialogDescription>
-              The number ({seqDigits}) is your registration rank — locked, can't be changed.
-              You can change the name. Once you confirm, your Vitana ID is permanent.
+            <DialogDescription>{t('screens.onboarding.numberSeqdigitsYourRegistrationRankLocked', { seqDigits })}
             </DialogDescription>
           </DialogHeader>
 
@@ -269,8 +263,7 @@ export function VitanaIdOnboardingCard() {
             )}
 
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                Or type your own name
+              <p className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.onboarding.typeYourOwnName')}
               </p>
               <div className="flex items-center gap-1">
                 <span className="text-lg font-medium text-muted-foreground">@</span>
@@ -280,7 +273,7 @@ export function VitanaIdOnboardingCard() {
                     setCustomBase(e.target.value);
                     if (e.target.value) setSelectedBase("");
                   }}
-                  placeholder="e.g. alex"
+                  placeholder={t('screens.onboarding.eGAlex')}
                   aria-invalid={Boolean(customValidationError)}
                   aria-describedby="vitana-id-help"
                   className="flex-1"

@@ -112,9 +112,7 @@ export function CrossPlanRelationshipWidget({
           ))}
         </div>
         
-        <p className="text-xs text-muted-foreground mt-4">
-          Last synced: {lastSynced}
-        </p>
+        <p className="text-xs text-muted-foreground mt-4">{t('screens.health.lastSyncedLastsynced', { lastSynced })}</p>
       </div>
     </TooltipProvider>
   );

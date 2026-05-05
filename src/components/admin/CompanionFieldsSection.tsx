@@ -98,8 +98,7 @@ export default function CompanionFieldsSection({
     <Card className="mt-4 border-dashed">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm flex items-center gap-2">
-            Companion Fields (Phase B)
+          <CardTitle className="text-sm flex items-center gap-2">{t('screens.admin.companionFieldsPhaseB')}
             {hasTenantOverride && (effectiveConfig as any)?._has_extra_override ? (
               <Badge variant="default" className="text-xs">{t('screens.admin.overridden')}</Badge>
             ) : (
@@ -130,15 +129,14 @@ export default function CompanionFieldsSection({
         {jsonOpen && (
           <div className="border-t pt-4 mt-4 space-y-2">
             <label className="text-xs font-medium text-muted-foreground block">
-              {t('screens.admin.tenant')} <code>{t('screens.admin.extra_config')}</code> override (JSON object). Keys listed above will
-              override the defaults; unlisted keys fall back to global defaults.
+              {t('screens.admin.tenant')} <code>{t('screens.admin.extra_config')}</code>{t('screens.admin.overrideJsonObjectKeysListedAbove')}
             </label>
             <Textarea
               value={jsonDraft}
               onChange={(e) => setJsonDraft(e.target.value)}
               rows={14}
               className="font-mono text-xs"
-              placeholder='{\n  "forbidden_openings": ["What can I do for you?"]\n}'
+              placeholder={t('screens.admin.nForbidden_openingsWhatCanIDo')}
             />
             {jsonError && (
               <p className="text-xs text-destructive">{jsonError}</p>
@@ -154,8 +152,7 @@ export default function CompanionFieldsSection({
                   setJsonDraft(JSON.stringify(existingExtra, null, 2));
                   setJsonError(null);
                 }}
-              >
-                Reset
+              >{t('screens.admin.reset')}
               </Button>
             </div>
           </div>

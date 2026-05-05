@@ -127,8 +127,7 @@ export function AnalyticsSubTabs() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center py-8 space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Growth analytics will show new clients over time and traffic sources.
+            <p className="text-sm text-muted-foreground">{t('screens.business.growthAnalyticsWillShowNewClients')}
             </p>
             <Button 
               variant="outline" 

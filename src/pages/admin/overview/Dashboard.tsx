@@ -65,15 +65,12 @@ export default function OverviewDashboard() {
               <div className="flex flex-wrap gap-2">
                 {inbox.pending_invitations > 0 && (
                   <Link to="/admin/members/invitations">
-                    <AdminStatusBadge variant="warning">
-                      {inbox.pending_invitations} pending invitation{inbox.pending_invitations !== 1 ? "s" : ""}
-                    </AdminStatusBadge>
+                    <AdminStatusBadge variant="warning">{t('screens.admin.pending_invitationsPendingInvitationValue1', { pending_invitations: inbox.pending_invitations, value1: inbox.pending_invitations !== 1 ? "s" : "" })}</AdminStatusBadge>
                   </Link>
                 )}
                 {alerts.length > 0 && (
                   <Link to="/admin/alerts">
-                    <AdminStatusBadge variant="error">
-                      {alerts.length} alert{alerts.length !== 1 ? "s" : ""} (24h)
+                    <AdminStatusBadge variant="error">{t('screens.admin.lengthAlertValue124h', { length: alerts.length, value1: alerts.length !== 1 ? "s" : "" })}
                     </AdminStatusBadge>
                   </Link>
                 )}
@@ -175,9 +172,7 @@ export default function OverviewDashboard() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base">{t('screens.admin.atriskMembers')}</CardTitle>
-                    <AdminStatusBadge variant={atRisk.length > 0 ? "warning" : "active"}>
-                      {atRisk.length} member{atRisk.length !== 1 ? "s" : ""}
-                    </AdminStatusBadge>
+                    <AdminStatusBadge variant={atRisk.length > 0 ? "warning" : "active"}>{t('screens.admin.lengthMemberValue1', { length: atRisk.length, value1: atRisk.length !== 1 ? "s" : "" })}</AdminStatusBadge>
                   </div>
                   <p className="text-xs text-muted-foreground">{t('screens.admin.noActivity14Days')}</p>
                 </CardHeader>

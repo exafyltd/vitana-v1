@@ -132,7 +132,7 @@ export default withScreenId(function Consent() {
                         </div>
                         <div>
                           <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.accessPeriod')}</div>
-                          <div className="text-sm">{consent.grantedDate} to {consent.expiryDate}</div>
+                          <div className="text-sm">{t('screens.sharing.granteddateExpirydate', { grantedDate: consent.grantedDate, expiryDate: consent.expiryDate })}</div>
                         </div>
                       </div>
                       
@@ -197,14 +197,12 @@ export default withScreenId(function Consent() {
                         </div>
                         <div>
                           <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.proposedAccessPeriod')}</div>
-                          <div className="text-sm">{request.requestedDate} to {request.expiryDate}</div>
+                          <div className="text-sm">{t('screens.sharing.requesteddateExpirydate', { requestedDate: request.requestedDate, expiryDate: request.expiryDate })}</div>
                         </div>
                       </div>
                       
                       <div className="flex items-center justify-between pt-2">
-                        <div className="text-sm text-muted-foreground">
-                          Requested on {request.requestedDate}
-                        </div>
+                        <div className="text-sm text-muted-foreground">{t('screens.sharing.requestedRequesteddate', { requestedDate: request.requestedDate })}</div>
                         
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm">

@@ -223,8 +223,7 @@ export function VisualActionCard({
               size="sm"
               onClick={() => onDismiss(action.id)}
               className="flex-1 text-xs h-8 bg-transparent backdrop-blur-sm border-border/60 hover:bg-muted/50 hover:border-border transition-all duration-300 font-medium"
-            >
-              Later
+            >{t('screens.actions.later')}
             </Button>
           </div>
           

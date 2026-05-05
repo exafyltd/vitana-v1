@@ -206,16 +206,12 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
           <footer className="mt-4 text-center text-sm text-muted-foreground">
             {isRegister ? (
-              <span>
-                Already have an account? {" "}
-                <Link className="text-primary underline-offset-4 hover:underline" to="/login">
+              <span>{t('screens.authpages.alreadyHaveAccountValue0', { value0: " " })}<Link className="text-primary underline-offset-4 hover:underline" to="/login">
                   {t('screens.authpages.login')}
                 </Link>
               </span>
             ) : (
-              <span>
-                Don&apos;t have an account? {" "}
-                <Link className="text-primary underline-offset-4 hover:underline" to="/register">
+              <span>{t('screens.authpages.donAposTHaveAccountValue0', { value0: " " })}<Link className="text-primary underline-offset-4 hover:underline" to="/register">
                   {t('screens.authpages.signUp')}
                 </Link>
               </span>

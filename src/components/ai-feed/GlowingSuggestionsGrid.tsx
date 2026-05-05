@@ -134,8 +134,7 @@ export function GlowingSuggestionsGrid({
 
                 {/* Confidence badge */}
                 <div className="absolute bottom-3 left-3">
-                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white shadow-lg">
-                    {suggestion.confidence}% confident
+                  <Badge variant="secondary" className="text-xs bg-white/20 backdrop-blur-sm border-white/30 text-white shadow-lg">{t('screens.ai-feed.confidenceConfident', { confidence: suggestion.confidence })}
                   </Badge>
                 </div>
               </div>
@@ -180,8 +179,7 @@ export function GlowingSuggestionsGrid({
                     variant="ghost"
                     onClick={() => onDismissSuggestion?.(suggestion.id)}
                     className="h-9 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-300"
-                  >
-                    Later
+                  >{t('screens.ai-feed.later')}
                   </Button>
                 </div>
               </div>

@@ -43,8 +43,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
     <div className="w-full max-w-3xl mx-auto space-y-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold mb-2">{t('screens.profile.professionalServices')}</h2>
-        <p className="text-muted-foreground">
-          Book a session with {profile.name} to get personalized guidance
+        <p className="text-muted-foreground">{t('screens.profile.bookSessionWithNameGetPersonalized', { name: profile.name })}
         </p>
       </div>
 
@@ -57,8 +56,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                   <CardTitle className="text-xl mb-2">{offering.title}</CardTitle>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {offering.durationMin} minutes
+                      <Clock className="h-4 w-4" />{t('screens.profile.durationminMinutes', { durationMin: offering.durationMin })}
                     </div>
                     <div className="flex items-center gap-1">
                       <DollarSign className="h-4 w-4" />
@@ -104,8 +102,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
         {!editMode && (
           <>
             <Button className="flex-1">
-              <Calendar className="h-4 w-4 mr-2" />
-              Book Session
+              <Calendar className="h-4 w-4 mr-2" />{t('screens.profile.bookSession')}
             </Button>
             <Button variant="outline">
               {t('screens.profile.learnMore')}
@@ -130,8 +127,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                 <div>
                   <h3 className="font-semibold">{t('screens.profile.verifiedProfessional')}</h3>
                   {profile.compliance.licenseVerified && (
-                    <p className="text-sm text-muted-foreground">
-                      Licensed and verified healthcare provider
+                    <p className="text-sm text-muted-foreground">{t('screens.profile.licensedVerifiedHealthcareProvider')}
                     </p>
                   )}
                 </div>

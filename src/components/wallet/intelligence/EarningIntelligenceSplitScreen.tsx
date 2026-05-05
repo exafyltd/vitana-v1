@@ -164,7 +164,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
               </div>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              <span className="font-semibold text-primary">{t('screens.wallet.crossplatformStrategies')}</span> unlock highest earning potential
+              <span className="font-semibold text-primary">{t('screens.wallet.crossplatformStrategies')}</span>{t('screens.wallet.unlockHighestEarningPotential')}
             </p>
           </div>
 
@@ -188,8 +188,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                       <p className="text-xs text-muted-foreground">{opportunity.opportunity}</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-purple-500/10 text-purple-600">
-                    {opportunity.synergy}% synergy
+                  <Badge variant="outline" className="bg-purple-500/10 text-purple-600">{t('screens.wallet.synergySynergy', { synergy: opportunity.synergy })}
                   </Badge>
                 </div>
                 
@@ -235,8 +234,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                     <h5 className="text-sm font-medium">{insight.title}</h5>
                     <p className="text-xs text-muted-foreground">{insight.description}</p>
                   </div>
-                  <Badge variant="outline" className="bg-blue-500/10 text-blue-600">
-                    {insight.confidence}% confidence
+                  <Badge variant="outline" className="bg-blue-500/10 text-blue-600">{t('screens.wallet.confidenceConfidence', { confidence: insight.confidence })}
                   </Badge>
                 </div>
                 
@@ -248,14 +246,12 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                       </Badge>
                     ))}
                   </div>
-                  <div className="text-xs text-emerald-600 font-semibold">
-                    +{insight.impact}% impact
+                  <div className="text-xs text-emerald-600 font-semibold">{t('screens.wallet.impactImpact2', { impact: insight.impact })}
                   </div>
                 </div>
 
                 {insight.actionable && (
-                  <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
-                    Apply Strategy
+                  <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">{t('screens.wallet.applyStrategy')}
                   </Button>
                 )}
               </div>

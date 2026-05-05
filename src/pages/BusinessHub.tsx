@@ -453,8 +453,7 @@ export default function BusinessHub() {
                     </div>
                   ))}
                   {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.businesshub.value0MoreActions', { value0: pendingCount - 2 })}
                     </div>
                   )}
                 </div>

@@ -352,8 +352,7 @@ export default function Bootstrap() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>{t('screens.admin.securityNotice')}</strong> Super administrators have full access to all tenant data and administrative functions. 
-            Only elevate trusted team members to this role. All bootstrap actions are logged for security auditing.
+            <strong>{t('screens.admin.securityNotice')}</strong>{t('screens.admin.superAdministratorsHaveFullAccessAll')}
           </AlertDescription>
         </Alert>
       </div>
@@ -363,9 +362,7 @@ export default function Bootstrap() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t('screens.admin.confirmAdminBootstrap')}</DialogTitle>
-            <DialogDescription>
-              You are about to elevate {adminEmails.length} user(s) to Exafy super administrator status.
-              This action cannot be undone through this interface.
+            <DialogDescription>{t('screens.admin.youAboutElevateLengthUserS', { length: adminEmails.length })}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">

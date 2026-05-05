@@ -178,13 +178,10 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{intel.service}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      Current: ${intel.currentPrice} → Predicted: ${intel.predictedPrice}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentCurrentpricePredictedPredictedprice', { currentPrice: intel.currentPrice, predictedPrice: intel.predictedPrice })}</p>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className="text-xs mb-1">
-                      {intel.confidence}% confidence
+                    <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.confidenceConfidence', { confidence: intel.confidence })}
                     </Badge>
                     <div className={`text-xs flex items-center gap-1 ${getTrendColor(intel.trend)}`}>
                       {getTrendIcon(intel.trend)} {intel.trend}
@@ -197,9 +194,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                     <span className="text-muted-foreground">{t('screens.wallet.bestTime')}</span>
                     <span className="font-semibold ml-1">{intel.bestTime}</span>
                   </div>
-                  <div className="text-xs text-emerald-600 font-semibold">
-                    Save ${intel.savings}
-                  </div>
+                  <div className="text-xs text-emerald-600 font-semibold">{t('screens.wallet.saveSavings', { savings: intel.savings })}</div>
                 </div>
               </div>
             ))}
@@ -243,9 +238,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{trend.service}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      {trend.userCount.toLocaleString()} users • {trend.category}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.value0UsersCategory', { value0: trend.userCount.toLocaleString(), category: trend.category })}</p>
                   </div>
                   <Badge variant="outline" className={`text-xs ${getTrendColor(trend.popularityTrend)}`}>
                     {getTrendIcon(trend.popularityTrend)} {trend.popularityTrend}

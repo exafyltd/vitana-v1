@@ -79,8 +79,7 @@ export default function NotificationMonitor() {
       <CardContent>
         <ScrollArea className="h-[500px]">
           {loading ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Loading notification logs...
+            <div className="text-center py-8 text-muted-foreground">{t('screens.admin.loadingNotificationLogs')}
             </div>
           ) : logs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
@@ -97,8 +96,7 @@ export default function NotificationMonitor() {
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">
-                        User: {log.user_id.substring(0, 8)}...
+                      <span className="text-sm font-medium">{t('screens.admin.userValue0', { value0: log.user_id.substring(0, 8) })}
                       </span>
                       <Badge variant="outline" className="text-xs">
                         {log.action}

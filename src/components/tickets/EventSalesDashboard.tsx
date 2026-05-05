@@ -208,15 +208,13 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
               <div key={type.id} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">{type.name}</span>
-                  <span className="text-muted-foreground">
-                    {type.quantity_sold} / {type.quantity_available} sold
+                  <span className="text-muted-foreground">{t('screens.tickets.quantity_soldQuantity_availableSold', { quantity_sold: type.quantity_sold, quantity_available: type.quantity_available })}
                   </span>
                 </div>
                 <Progress value={soldPercent} className="h-2" />
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>${type.price.toFixed(2)} each</span>
-                  <span className="font-medium text-foreground">
-                    ${typeRevenue.toFixed(2)} revenue
+                  <span>{t('screens.tickets.value0Each', { value0: type.price.toFixed(2) })}</span>
+                  <span className="font-medium text-foreground">{t('screens.tickets.value0Revenue', { value0: typeRevenue.toFixed(2) })}
                   </span>
                 </div>
               </div>
@@ -224,8 +222,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
           })}
 
           {ticketTypes.length === 0 && (
-            <p className="text-center text-muted-foreground py-4">
-              No ticket types configured
+            <p className="text-center text-muted-foreground py-4">{t('screens.tickets.noTicketTypesConfigured')}
             </p>
           )}
         </CardContent>
@@ -236,8 +233,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Ticket Buyers ({completedSales.length})
+              <Users className="h-4 w-4" />{t('screens.tickets.ticketBuyersLength', { length: completedSales.length })}
             </CardTitle>
             <Button variant="outline" size="sm" onClick={exportToCSV}>
               <Download className="h-4 w-4 mr-2" />

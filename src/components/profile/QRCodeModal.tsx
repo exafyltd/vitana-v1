@@ -47,8 +47,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center">{t('screens.profile.vitanaIdQrCode')}</DialogTitle>
-          <DialogDescription className="text-center">
-            Scan this code to view {profileName}'s profile
+          <DialogDescription className="text-center">{t('screens.profile.scanThisCodeViewProfilenameS', { profileName })}
           </DialogDescription>
         </DialogHeader>
         

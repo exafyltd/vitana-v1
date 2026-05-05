@@ -470,9 +470,7 @@ export default function UserManagement() {
                           {user.full_name && (
                             <p className="text-sm text-muted-foreground">{user.full_name}</p>
                           )}
-                          <p className="text-xs text-muted-foreground">
-                            Joined: {new Date(user.created_at).toLocaleDateString()}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{t('screens.admin.joinedValue0', { value0: new Date(user.created_at).toLocaleDateString() })}</p>
                         </div>
                       </div>
                       
@@ -526,9 +524,7 @@ export default function UserManagement() {
                                       <ResponsiveConfirmDialogContent>
                                         <ResponsiveConfirmDialogHeader>
                                           <ResponsiveConfirmDialogTitle>{t('screens.admin.revokeRole')}</ResponsiveConfirmDialogTitle>
-                                          <ResponsiveConfirmDialogDescription>
-                                            Are you sure you want to revoke the {membership.role} role from {user.email} 
-                                            at {membership.tenant.name}? This action cannot be undone.
+                                          <ResponsiveConfirmDialogDescription>{t('screens.admin.youSureYouWantRevokeRole', { role: membership.role, email: user.email, name: membership.tenant.name })}
                                           </ResponsiveConfirmDialogDescription>
                                         </ResponsiveConfirmDialogHeader>
                                         <ResponsiveConfirmDialogFooter>
@@ -536,8 +532,7 @@ export default function UserManagement() {
                                           <ResponsiveConfirmDialogAction 
                                             onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
                                             className="bg-destructive text-destructive-foreground"
-                                          >
-                                            Revoke Role
+                                          >{t('screens.admin.revokeRole')}
                                           </ResponsiveConfirmDialogAction>
                                         </ResponsiveConfirmDialogFooter>
                                       </ResponsiveConfirmDialogContent>

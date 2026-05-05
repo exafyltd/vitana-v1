@@ -90,8 +90,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             <Calculator className="h-5 w-5 text-primary" />
             {t('screens.wallet.membershipRoiAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {totalROI}% Average ROI
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.totalroiAverageRoi', { totalROI })}
           </Badge>
         </div>
       </CardHeader>
@@ -114,7 +113,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            {t('screens.wallet.yourMembership')} <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span> based on usage
+            {t('screens.wallet.yourMembership')} <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span>{t('screens.wallet.basedUsage')}
           </p>
         </div>
 
@@ -130,12 +129,9 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <h5 className="text-sm font-medium">{metric.category}</h5>
-                  <p className="text-xs text-muted-foreground">
-                    Spent ${metric.spent} • Saved ${metric.saved}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.wallet.spentSpentSavedSaved', { spent: metric.spent, saved: metric.saved })}</p>
                 </div>
-                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600">
-                  {metric.roi}% ROI
+                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.roiRoi', { roi: metric.roi })}
                 </Badge>
               </div>
               
@@ -155,14 +151,12 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="flex items-center gap-2 mb-2">
             <Crown className="h-4 w-4 text-purple-600" />
             <span className="text-sm font-medium">{t('screens.wallet.upgradeAnalysis')}</span>
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ml-auto">
-              {upgradeRecommendation.confidence}% confidence
+            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ml-auto">{t('screens.wallet.confidenceConfidence', { confidence: upgradeRecommendation.confidence })}
             </Badge>
           </div>
           
           <div className="mb-3">
-            <div className="text-sm font-medium mb-1">
-              {upgradeRecommendation.tier} Tier Recommendation
+            <div className="text-sm font-medium mb-1">{t('screens.wallet.tierTierRecommendation', { tier: upgradeRecommendation.tier })}
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>

@@ -64,11 +64,8 @@ export function CookModeFullScreen({
         {/* Step Progress */}
         <div className="px-6 py-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-white/70">
-              Step {currentStep + 1} of {steps.length}
-            </span>
-            <span className="text-sm text-white/70">
-              {Math.round(((currentStep + 1) / steps.length) * 100)}% Complete
+            <span className="text-sm text-white/70">{t('screens.health.stepValue0Length', { value0: currentStep + 1, length: steps.length })}</span>
+            <span className="text-sm text-white/70">{t('screens.health.value0Complete', { value0: Math.round(((currentStep + 1) / steps.length) * 100) })}
             </span>
           </div>
           <Progress 
@@ -110,8 +107,7 @@ export function CookModeFullScreen({
               size="lg"
               className="flex-1 bg-white text-black hover:bg-white/90 border-0"
               onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-            >
-              Next
+            >{t('screens.health.next')}
               <ChevronRight className="w-5 h-5 ml-2" />
             </Button>
           )}

@@ -93,8 +93,7 @@ export function DancePublicSection({ userId, isOwn = false }: Props) {
         )}
 
         {typeof prefs.radius_km === "number" && (
-          <div className="text-sm text-muted-foreground">
-            Travel willingness: <span className="text-foreground">{t('screens.profile.radius_kmKm', { radius_km: prefs.radius_km })}</span>
+          <div className="text-sm text-muted-foreground">{t('screens.profile.travelWillingness')} <span className="text-foreground">{t('screens.profile.radius_kmKm', { radius_km: prefs.radius_km })}</span>
           </div>
         )}
 

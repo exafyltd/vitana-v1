@@ -90,7 +90,7 @@ export function PromoteToKnowledgeDialog({
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter the knowledge to save..."
+              placeholder={t('screens.memory.enterKnowledgeSave')}
               rows={6}
               className="resize-none"
             />
@@ -113,7 +113,7 @@ export function PromoteToKnowledgeDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confidence">Confidence: {(confidenceScore * 100).toFixed(0)}%</Label>
+              <Label htmlFor="confidence">{t('screens.memory.confidenceValue0', { value0: (confidenceScore * 100).toFixed(0) })}</Label>
               <Input
                 id="confidence"
                 type="range"
@@ -132,7 +132,7 @@ export function PromoteToKnowledgeDialog({
               id="tags"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              placeholder="e.g., birthday, family, important"
+              placeholder={t('screens.memory.eGBirthdayFamilyImportant')}
             />
           </div>
         </div>
@@ -142,8 +142,7 @@ export function PromoteToKnowledgeDialog({
             {t('screens.memory.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isCreating || !content.trim()}>
-            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save to Knowledge Base
+            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.memory.saveKnowledgeBase')}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -224,12 +224,10 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Attendees ({attendees.length})
+              <Users className="w-4 h-4" />{t('screens.business.attendeesLength', { length: attendees.length })}
             </CardTitle>
             <Badge variant="outline" className="gap-1">
-              <CheckCircle2 className="w-3 h-3" />
-              {checkedInCount} checked in
+              <CheckCircle2 className="w-3 h-3" />{t('screens.business.checkedincountChecked', { checkedInCount })}
             </Badge>
           </div>
         </CardHeader>

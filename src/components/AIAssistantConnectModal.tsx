@@ -121,9 +121,9 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
           <Alert variant="default" className="border-emerald-500/40 bg-emerald-500/10">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
             <AlertDescription className="text-sm">
-              <strong>{meta.display_name}</strong> connected and verified.
+              <strong>{meta.display_name}</strong>{t('screens.common.connectedVerified')}
               <div className="mt-1 text-xs text-muted-foreground">
-                {t('screens.common.key')} <code>{meta.prefix}•••{verifyResult.last4}</code> — verified in {verifyResult.latency_ms}ms.
+                {t('screens.common.key')} <code>{meta.prefix}•••{verifyResult.last4}</code>{t('screens.common.verifiedLatency_msMs', { latency_ms: verifyResult.latency_ms })}
               </div>
             </AlertDescription>
           </Alert>
@@ -132,9 +132,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
       ) : (
         <>
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              Paste a {meta.display_name} API key. We store it encrypted (AES-256-GCM) and
-              never expose it again — only the last 4 characters are visible after verification.
+            <p className="text-sm text-muted-foreground">{t('screens.common.pasteDisplay_nameApiKeyWeStore', { display_name: meta.display_name })}
             </p>
             <a
               href={meta.key_url}
@@ -142,9 +140,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
             >
-              <ExternalLink className="h-3 w-3" />
-              Get your API key at {meta.key_url_label}
-            </a>
+              <ExternalLink className="h-3 w-3" />{t('screens.common.getYourApiKeyAtKey_url_label', { key_url_label: meta.key_url_label })}</a>
           </div>
 
           <div className="space-y-1">

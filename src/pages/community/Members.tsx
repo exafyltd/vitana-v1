@@ -140,7 +140,7 @@ export default function Members() {
           placeholder={t('screens.community.searchByNameVitanaid')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          aria-label="Search members"
+          aria-label={t('screens.community.searchMembers')}
         />
 
         <div className="flex flex-wrap gap-2 items-center">
@@ -205,9 +205,7 @@ export default function Members() {
                   <span className="text-sm text-muted-foreground">@{m.vitana_id}</span>
                 )}
                 {m.registration_seq != null && (
-                  <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">
-                    Member #{m.registration_seq}
-                  </span>
+                  <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">{t('screens.community.memberRegistration_seq', { registration_seq: m.registration_seq })}</span>
                 )}
               </div>
               <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">

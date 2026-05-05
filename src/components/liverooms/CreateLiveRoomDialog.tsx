@@ -68,7 +68,7 @@ export function CreateLiveRoomDialog() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="My Live Session"
+              placeholder={t('screens.liverooms.myLiveSession')}
             />
           </div>
 
@@ -78,7 +78,7 @@ export function CreateLiveRoomDialog() {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's this session about?"
+              placeholder={t('screens.liverooms.whatSThisSessionAbout')}
               rows={3}
             />
           </div>

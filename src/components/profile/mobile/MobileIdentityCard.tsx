@@ -215,8 +215,7 @@ export function MobileIdentityCard({
                 backgroundColor: `${tier.color}20`,
                 color: tier.color
               }}
-            >
-              {tier.label} · Top {vitanaPercentile}%
+            >{t('screens.profile.labelTopVitanapercentile', { label: tier.label, vitanaPercentile })}
             </div>
 
             {/* Explanation */}

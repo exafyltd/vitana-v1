@@ -113,12 +113,12 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
 
           {/* Timestamps */}
           <div className="text-xs text-muted-foreground space-y-1 pt-4 border-t">
-            <div>Discovered: {new Date(pattern.created_at).toLocaleString()}</div>
+            <div>{t('screens.admin.discoveredValue0', { value0: new Date(pattern.created_at).toLocaleString() })}</div>
             {pattern.reviewed_at && (
-              <div>Reviewed: {new Date(pattern.reviewed_at).toLocaleString()}</div>
+              <div>{t('screens.admin.reviewedValue0', { value0: new Date(pattern.reviewed_at).toLocaleString() })}</div>
             )}
             {pattern.implemented_at && (
-              <div>Implemented: {new Date(pattern.implemented_at).toLocaleString()}</div>
+              <div>{t('screens.admin.implementedValue0', { value0: new Date(pattern.implemented_at).toLocaleString() })}</div>
             )}
           </div>
         </div>

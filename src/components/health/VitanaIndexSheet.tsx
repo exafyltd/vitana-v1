@@ -127,7 +127,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
         )}
       </svg>
       <p className="text-xs text-muted-foreground">
-        {t('screens.health.atThisPaceYouLandAround')} <strong>{projectedScore}</strong> in 30 days.
+        {t('screens.health.atThisPaceYouLandAround')} <strong>{projectedScore}</strong>{t('screens.health.text30Days')}
       </p>
     </div>
   );
@@ -228,19 +228,15 @@ export function VitanaIndexSheet() {
                 </Badge>
               )}
               {sevenDayDelta !== null && sevenDayDelta !== 0 && (
-                <Badge variant="outline" className="text-xs">
-                  {sevenDayDelta > 0 ? "+" : ""}
-                  {sevenDayDelta} this week
+                <Badge variant="outline" className="text-xs">{t('screens.health.value0SevendaydeltaThisWeek', { value0: sevenDayDelta > 0 ? "+" : "", sevenDayDelta })}
                 </Badge>
               )}
               {balanceFactor !== null && (
-                <Badge variant="outline" className="text-xs">
-                  Balance {Math.round(balanceFactor * 100)}%
+                <Badge variant="outline" className="text-xs">{t('screens.health.balanceValue0', { value0: Math.round(balanceFactor * 100) })}
                 </Badge>
               )}
               {streakDays > 0 && (
-                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">
-                  🔥 {streakDays}-day streak
+                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">{t('screens.health.streakdaysdayStreak', { streakDays })}
                 </Badge>
               )}
             </div>
@@ -277,8 +273,7 @@ export function VitanaIndexSheet() {
               <p className="text-sm text-muted-foreground">{EMPTY_COPY.indexSheetNextDays}</p>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm">
-                  Complete the {pendingActions.length} action{pendingActions.length === 1 ? "" : "s"} Autopilot suggests
+                <p className="text-sm">{t('screens.health.completeLengthActionValue1AutopilotSuggests2', { length: pendingActions.length, value1: pendingActions.length === 1 ? "" : "s" })}
                   {nextDaysTotal > 0 ? (
                     <>
                       {" "}→ <strong className="text-green-600">+{nextDaysTotal}</strong>

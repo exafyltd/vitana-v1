@@ -282,8 +282,7 @@ const Reminders: React.FC = () => {
               type="button"
               onClick={() => setConfirmDeleteAll(true)}
               className="text-xs text-muted-foreground hover:text-destructive underline"
-            >
-              Delete all {upcoming.length} reminders
+            >{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}
             </button>
           ) : (
             <span />
@@ -365,7 +364,7 @@ const Reminders: React.FC = () => {
           {recent.length > 0 ? (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Recent</CardTitle>
+                <CardTitle className="text-lg">{t('screens.reminders.recent')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {recent.map((r) => (
@@ -391,7 +390,7 @@ const Reminders: React.FC = () => {
                 id="reminder-action"
                 value={actionText}
                 onChange={(e) => setActionText(e.target.value)}
-                placeholder="Take magnesium"
+                placeholder={t('screens.reminders.takeMagnesium')}
                 autoFocus
               />
             </div>
@@ -410,7 +409,7 @@ const Reminders: React.FC = () => {
                 id="reminder-spoken"
                 value={spokenMessage}
                 onChange={(e) => setSpokenMessage(e.target.value)}
-                placeholder="Time to take your magnesium pills"
+                placeholder={t('screens.reminders.timeTakeYourMagnesiumPills')}
               />
             </div>
             <div>
@@ -454,8 +453,7 @@ const Reminders: React.FC = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}</AlertDialogTitle>
-            <AlertDialogDescription>
-              They will be removed from your list. This can't be easily undone.
+            <AlertDialogDescription>{t('screens.reminders.theyWillRemovedFromYourList')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -227,7 +227,7 @@ export default function Search() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="h-4 w-4" />
-                      <span>{result.members?.toLocaleString()} members</span>
+                      <span>{t('screens.search.value0Members', { value0: result.members?.toLocaleString() })}</span>
                     </div>
                     <Button size="sm" variant="outline">{t('screens.search.joinGroup')}</Button>
                   </div>
@@ -343,8 +343,7 @@ export default function Search() {
           </form>
           
           {query && (
-            <p className="text-sm text-muted-foreground">
-              Showing results for "<span className="font-medium">{query}</span>"
+            <p className="text-sm text-muted-foreground">{t('screens.search.showingResultsFor')}<span className="font-medium">{query}</span>"
             </p>
           )}
         </div>

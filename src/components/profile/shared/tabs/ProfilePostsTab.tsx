@@ -209,7 +209,7 @@ function PostCardWithInteractions({
                 <button
                   onClick={() => onDelete(post.id)}
                   className="ml-auto text-muted-foreground/50 hover:text-destructive transition-colors"
-                  aria-label="Delete post"
+                  aria-label={t('screens.profile.deletePost')}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -235,7 +235,7 @@ function PostCardWithInteractions({
               "flex items-center gap-2 transition-all duration-200 group",
               isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500"
             )}
-            aria-label="Like post"
+            aria-label={t('screens.profile.likePost')}
           >
             <Heart className={cn("h-4 w-4 group-hover:scale-[1.05] transition-all", isLiked && "fill-current")} />
             <span className="text-sm font-medium">{post.likes_count}</span>
@@ -246,7 +246,7 @@ function PostCardWithInteractions({
               "flex items-center gap-2 transition-all duration-200 group",
               showComments ? "text-blue-500" : "text-muted-foreground hover:text-blue-500"
             )}
-            aria-label="Comment"
+            aria-label={t('screens.profile.comment')}
           >
             <MessageSquare className={cn("h-4 w-4 group-hover:scale-[1.05] transition-all", showComments && "fill-current")} />
             <span className="text-sm font-medium">{post.comments_count}</span>

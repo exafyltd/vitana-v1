@@ -202,7 +202,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           <div className="flex-1 min-w-0">
             <div className="font-semibold">{t('screens.admin.dispatchedDevAutopilot')}</div>
             <div className="text-xs text-muted-foreground">
-              {t('screens.admin.recommendation')} <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
+              {t('screens.admin.recommendation')} <code className="text-[10px]">{findingId.slice(0, 8)}</code>{t('screens.admin.waitingForExecutorTickClaimRun')}
             </div>
           </div>
         </div>
@@ -290,10 +290,10 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           <div className="text-xs text-muted-foreground">
             {t('screens.admin.execution')} <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
             {execution.pr_url && (
-              <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">PR #{execution.pr_number ?? "?"}</a></>
+              <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">{t('screens.admin.prValue0', { value0: execution.pr_number ?? "?" })}</a></>
             )}
-            {isStalled && <> · <span className="text-amber-600 font-semibold">stalled {Math.round(stalledMs / 60000)} min</span></>}
-            {execution.completed_at && <> · finished {new Date(execution.completed_at).toLocaleTimeString()}</>}
+            {isStalled && <> · <span className="text-amber-600 font-semibold">{t('screens.admin.stalledValue0Min', { value0: Math.round(stalledMs / 60000) })}</span></>}
+            {execution.completed_at && <>{t('screens.admin.finishedValue0', { value0: new Date(execution.completed_at).toLocaleTimeString() })}</>}
           </div>
         </div>
       </div>
@@ -342,8 +342,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
       </div>
 
       {isStalled && !isFailed && (
-        <p className="text-[11px] text-amber-700 dark:text-amber-300">
-          No update for {Math.round(stalledMs / 60000)} minutes — the executor reaper will reclaim stuck runs every few minutes. Come back later.
+        <p className="text-[11px] text-amber-700 dark:text-amber-300">{t('screens.admin.noUpdateForValue0MinutesExecutor', { value0: Math.round(stalledMs / 60000) })}
         </p>
       )}
     </Card>
@@ -572,7 +571,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             onClick={safeClose}
             disabled={isBusy}
             className="text-2xl text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label="Close"
+            aria-label={t('screens.admin.close')}
             title={isBusy ? "Working — please wait" : "Close"}
           >
             ×
@@ -694,8 +693,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
               <div className="text-sm font-semibold">{t('screens.admin.processThisTicket')}</div>
-              <p className="text-xs text-muted-foreground">
-                You're the domain expert. Add your instructions below — they take priority over the user's words when the AI drafts the {cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item"}. Then generate, review, and activate.
+              <p className="text-xs text-muted-foreground">{t('screens.admin.youReDomainExpertAddYour', { value0: cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item" })}
               </p>
             </div>
 
@@ -723,15 +721,14 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 className="text-sm"
               />
               <p className="mt-1 text-[11px] text-muted-foreground">
-                {t('screens.admin.persistedAs')} <code>{t('screens.admin.supervisor_notes')}</code>. Saved with the next Generate.
+                {t('screens.admin.persistedAs')} <code>{t('screens.admin.supervisor_notes')}</code>{t('screens.admin.savedWithNextGenerate')}
               </p>
             </div>
 
             {/* Step 2 — generate via resolver */}
             {draftKindHasResolver && (
               <div>
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  2. {hasDraft ? "Re-generate" : "Generate"} the draft
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.text2Value0Draft', { value0: hasDraft ? "Re-generate" : "Generate" })}
                 </label>
                 <Button
                   size="sm"
@@ -748,14 +745,12 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 {generateSpec.isPending && (
                   <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
                     <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                    <span>
-                      AI is drafting via {cfg!.resolver} — this can take up to 30 seconds. Safe to leave the drawer open.
+                    <span>{t('screens.admin.aiDraftingViaResolverThisCan', { resolver: cfg!.resolver })}
                     </span>
                   </div>
                 )}
                 {hasDraft && !generateSpec.isPending && (
-                  <p className="mt-1 text-[11px] text-muted-foreground">
-                    A draft already exists below. Edit your instructions and click Re-generate to replace it.
+                  <p className="mt-1 text-[11px] text-muted-foreground">{t('screens.admin.draftAlreadyExistsBelowEditYour')}
                   </p>
                 )}
               </div>
@@ -763,8 +758,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
 
             {/* Step 3 — activate (gated on draft existing for kinds with a resolver) */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {draftKindHasResolver ? "3. " : ""}Activate or reject
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.value0ActivateReject', { value0: draftKindHasResolver ? "3. " : "" })}
               </label>
               <div className="flex gap-2">
                 <Button
@@ -793,8 +787,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 </Button>
               </div>
               {draftKindHasResolver && !canActivate && (
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Activate is disabled until the draft is generated.
+                <p className="mt-1 text-[11px] text-muted-foreground">{t('screens.admin.activateDisabledUntilDraftGenerated')}
                 </p>
               )}
               {activate.isPending && (
@@ -826,8 +819,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         );
       })()}
       {isTerminal && (
-        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">
-          This ticket is in a terminal state ({STATUS_LABEL[t.status] ?? t.status}). No further action available.
+        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: STATUS_LABEL[t.status] ?? t.status })}
         </Card>
       )}
 
@@ -842,8 +834,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Intake conversation — every turn */}
       {Array.isArray(t.intake_messages) && t.intake_messages.length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Intake conversation ({t.intake_messages.length} turns)
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.intakeConversationLengthTurns', { length: t.intake_messages.length })}
           </h3>
           <div className="flex flex-col gap-2">
             {t.intake_messages.map((m, i) => {
@@ -914,9 +905,9 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       <section className="text-xs text-muted-foreground space-y-0.5">
         {t.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: t.screen_path })}</div>}
         {t.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: t.app_version })}</div>}
-        <div>Created: {new Date(t.created_at).toLocaleString()}</div>
-        {t.resolved_at && <div>Resolved: {new Date(t.resolved_at).toLocaleString()}</div>}
-        {t.user_confirmed_at && <div>Confirmed: {new Date(t.user_confirmed_at).toLocaleString()}</div>}
+        <div>{t('screens.admin.createdValue0', { value0: new Date(t.created_at).toLocaleString() })}</div>
+        {t.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: new Date(t.resolved_at).toLocaleString() })}</div>}
+        {t.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: new Date(t.user_confirmed_at).toLocaleString() })}</div>}
       </section>
     </div>
   );

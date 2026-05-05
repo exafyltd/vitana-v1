@@ -111,7 +111,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                           <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
                         ))}
                         {suggestion.dataTypes.length > 3 && (
-                          <Badge variant="secondary" className="text-xs">+{suggestion.dataTypes.length - 3} more</Badge>
+                          <Badge variant="secondary" className="text-xs">{t('screens.common.value0More', { value0: suggestion.dataTypes.length - 3 })}</Badge>
                         )}
                       </div>
                     </div>
@@ -142,7 +142,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                       id="packageName"
                       value={packageName}
                       onChange={(e) => setPackageName(e.target.value)}
-                      placeholder="e.g., Cardiology Consultation Package"
+                      placeholder={t('screens.common.eGCardiologyConsultationPackage')}
                     />
                   </div>
                   
@@ -152,7 +152,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                       id="purpose"
                       value={purpose}
                       onChange={(e) => setPurpose(e.target.value)}
-                      placeholder="e.g., Dr. Smith at Mayo Clinic"
+                      placeholder={t('screens.common.eGDrSmithAtMayo')}
                     />
                   </div>
                 </div>

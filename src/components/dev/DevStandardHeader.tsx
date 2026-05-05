@@ -48,8 +48,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
             </h1>
             <p className="text-muted-foreground">{description}</p>
             {DEV_HUB_CONFIG.readonly && (
-              <Badge variant="secondary" className="mt-2">
-                Read-Only
+              <Badge variant="secondary" className="mt-2">{t('screens.dev.readonly')}
               </Badge>
             )}
           </div>
@@ -88,8 +87,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
                 </div>
               ))}
               {pendingCount > 2 && (
-                <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                  +{pendingCount - 2} more actions
+                <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.dev.value0MoreActions', { value0: pendingCount - 2 })}
                 </div>
               )}
             </div>

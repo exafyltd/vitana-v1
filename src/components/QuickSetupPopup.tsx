@@ -101,8 +101,7 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      Automatically sync health data from connected devices and apps
+                    <p className="text-sm text-muted-foreground">{t('screens.common.automaticallySyncHealthDataFromConnected')}
                     </p>
                   </div>
                   <Switch

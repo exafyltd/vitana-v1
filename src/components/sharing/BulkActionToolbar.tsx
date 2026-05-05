@@ -38,8 +38,7 @@ export function BulkActionToolbar({
         {/* Left Side - Selection Info */}
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-gray-900">
-              {selectedCount} campaign{selectedCount !== 1 ? "s" : ""} selected
+            <span className="text-sm font-semibold text-gray-900">{t('screens.sharing.selectedcountCampaignValue1Selected', { selectedCount, value1: selectedCount !== 1 ? "s" : "" })}
             </span>
             <div className="flex items-center gap-2 mt-1">
               <button

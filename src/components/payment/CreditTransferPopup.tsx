@@ -109,8 +109,7 @@ export default function CreditTransferPopup({
                   <Coins className="w-5 h-5 text-orange-500" />
                   <span className="font-medium">{t('screens.payment.yourBalance')}</span>
                 </div>
-                <span className="text-lg font-bold text-orange-600">
-                  {currentBalance.toLocaleString()} credits
+                <span className="text-lg font-bold text-orange-600">{t('screens.payment.value0Credits', { value0: currentBalance.toLocaleString() })}
                 </span>
               </div>
             </CardContent>
@@ -168,8 +167,7 @@ export default function CreditTransferPopup({
             </div>
             {transferAmount > 0 && (
               <div className="flex items-center justify-between mt-1 text-xs">
-                <span className="text-muted-foreground">
-                  Remaining: {remainingBalance.toLocaleString()} credits
+                <span className="text-muted-foreground">{t('screens.payment.remainingValue0Credits', { value0: remainingBalance.toLocaleString() })}
                 </span>
                 {!canTransfer && transferAmount > currentBalance && (
                   <span className="text-red-500 flex items-center gap-1">
@@ -224,8 +222,7 @@ export default function CreditTransferPopup({
             >
               {isProcessing ? (
                 <>
-                  <Coins className="w-4 h-4 mr-2 animate-spin" />
-                  Sending...
+                  <Coins className="w-4 h-4 mr-2 animate-spin" />{t('screens.payment.sending')}
                 </>
               ) : (
                 <>

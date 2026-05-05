@@ -56,7 +56,7 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
               id="rule-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Auto-publish on schedule"
+              placeholder={t('screens.sharing.eGAutopublishSchedule')}
               required
             />
           </div>
@@ -66,7 +66,7 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
               id="rule-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe what this rule does..."
+              placeholder={t('screens.sharing.describeWhatThisRuleDoes')}
               rows={2}
             />
           </div>

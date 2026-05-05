@@ -140,8 +140,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                     <Coins className="h-4 w-4 text-purple-600" />
                   )}
               <div className="text-left">
-                <div className="font-medium">
-                  {pkg.tokens.toLocaleString()} VTNA
+                <div className="font-medium">{t('screens.wallet.value0Vtna', { value0: pkg.tokens.toLocaleString() })}
                   {pkg.bonus > 0 && (
                     <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                   )}
@@ -182,9 +181,9 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
               step="0.1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Rate: ${vtnPriceInUSD.toFixed(2)} per VTNA</span>
+              <span>{t('screens.wallet.rateValue0PerVtna', { value0: vtnPriceInUSD.toFixed(2) })}</span>
               {tokenAmount && (
-                <span>Cost: ${(parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2)}</span>
+                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2) })}</span>
               )}
             </div>
             <Button
@@ -197,8 +196,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : (
                 <Zap className="h-4 w-4 mr-2" />
-              )}
-              Buy Custom Amount
+              )}{t('screens.wallet.buyCustomAmount')}
             </Button>
           </div>
 

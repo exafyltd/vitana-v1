@@ -60,8 +60,7 @@ function GroupCard({ group, onClick, actionSlot }: {
         <div className="space-y-2">
           <h3 className="font-bold text-lg drop-shadow-lg line-clamp-1">{group.name}</h3>
           <p className="text-sm text-white/80 flex items-center gap-1">
-            <Users className="w-3.5 h-3.5" />
-            {group.member_count.toLocaleString()} members
+            <Users className="w-3.5 h-3.5" />{t('screens.community.value0Members', { value0: group.member_count.toLocaleString() })}
           </p>
           {actionSlot && (
             <div onClick={(e) => e.stopPropagation()}>

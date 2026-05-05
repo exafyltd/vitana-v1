@@ -124,8 +124,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
               <ResponsiveDialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {t('screens.wallet.spendCredits')}
               </ResponsiveDialogTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                Available: {creditsBalance.toLocaleString()} Credits
+              <p className="text-sm text-muted-foreground mt-1">{t('screens.wallet.availableValue0Credits', { value0: creditsBalance.toLocaleString() })}
               </p>
             </div>
           </div>
@@ -203,8 +202,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                                   <h4 className="font-semibold">{item.name}</h4>
                                   <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                                 </div>
-                                <Badge variant="secondary" className="ml-3">
-                                  {item.cost} Credits
+                                <Badge variant="secondary" className="ml-3">{t('screens.wallet.costCredits', { cost: item.cost })}
                                 </Badge>
                               </div>
                             </div>

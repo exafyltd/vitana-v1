@@ -23,8 +23,7 @@ export default function ComposeNew() {
           title={t('screens.admin.compose')}
           description="Send push and in-app notifications to your users"
           rightAction={
-            <Button size="sm" disabled>
-              Compose New
+            <Button size="sm" disabled>{t('screens.admin.composeNew')}
             </Button>
           }
         />

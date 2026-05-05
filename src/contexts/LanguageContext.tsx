@@ -13,18 +13,29 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const languageOptions = [
-  { label: "German (DE)", value: "de-DE" },  // German first - primary language
-  { label: "English (EN)", value: "en-US" },
-  { label: "Serbian (SR)", value: "sr-RS" },
-  { label: "Arabic (AR)", value: "ar-XA" },
-  { label: "Spanish (ES)", value: "es-ES" },
-  { label: "Russian (RU)", value: "ru-RU" },
-  { label: "Chinese (ZH)", value: "zh-CN" },
-  { label: "French (FR)", value: "fr-FR" },
-  { label: "Portuguese (PT)", value: "pt-PT" },
-  { label: "Polish (PL)", value: "pl-PL" },
+// `status` controls visibility in the user-facing language picker.
+// Only `ga` languages appear by default; `beta`/`draft` are dev-only
+// (override via `?i18n-preview=1` in the URL).
+export const languageOptions: Array<{ label: string; value: string; status: 'ga' | 'beta' | 'draft' }> = [
+  { label: "German (DE)", value: "de-DE", status: 'ga' },     // primary
+  { label: "English (EN)", value: "en-US", status: 'ga' },    // mirror
+  { label: "Serbian (SR)", value: "sr-RS", status: 'draft' },
+  { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
+  { label: "Spanish (ES)", value: "es-ES", status: 'draft' },
+  { label: "Russian (RU)", value: "ru-RU", status: 'draft' },
+  { label: "Chinese (ZH)", value: "zh-CN", status: 'draft' },
+  { label: "French (FR)", value: "fr-FR", status: 'draft' },
+  { label: "Portuguese (PT)", value: "pt-PT", status: 'draft' },
+  { label: "Polish (PL)", value: "pl-PL", status: 'draft' },
 ];
+
+// User-facing list: only GA, unless ?i18n-preview=1 is set.
+export function getVisibleLanguageOptions() {
+  if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('i18n-preview')) {
+    return languageOptions;
+  }
+  return languageOptions.filter((o) => o.status === 'ga');
+}
 
 const ALLOWED_LANGUAGES = languageOptions.map(opt => opt.value);
 const LANGUAGE_STORAGE_KEY = 'selected_language';

@@ -186,21 +186,19 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
                       e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""),
                     )
                   }
-                  placeholder="your_handle"
+                  placeholder={t('screens.profile.your_handle')}
                   className="flex-1"
                 />
               </div>
               {form.handle && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Public URL: /u/{form.handle}
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">{t('screens.profile.publicUrluHandle', { handle: form.handle })}</p>
               )}
             </Field>
             <Field label="Longevity archetype">
               <Input
                 value={form.longevityArchetype}
                 onChange={(e) => set("longevityArchetype", e.target.value)}
-                placeholder="e.g. The Mindful Mover"
+                placeholder={t('screens.profile.eGMindfulMover')}
               />
             </Field>
           </Section>

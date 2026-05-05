@@ -199,15 +199,13 @@ const ReportedContent = () => {
                                         <Button
                                           size="sm"
                                           onClick={() => resolveReport(report.id, 'removed', 'resolved')}
-                                        >
-                                          Remove
+                                        >{t('screens.admin.remove')}
                                         </Button>
                                         <Button
                                           size="sm"
                                           variant="outline"
                                           onClick={() => resolveReport(report.id, 'no_action', 'dismissed')}
-                                        >
-                                          Dismiss
+                                        >{t('screens.admin.dismiss')}
                                         </Button>
                                         <Button
                                           size="sm"
@@ -216,8 +214,7 @@ const ReportedContent = () => {
                                             setSelectedReport(null);
                                             setAdminNotes("");
                                           }}
-                                        >
-                                          Cancel
+                                        >{t('screens.admin.cancel')}
                                         </Button>
                                       </div>
                                     </div>

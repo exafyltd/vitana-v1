@@ -424,7 +424,7 @@ export default function Wallet() {
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
                       <Sparkles className="h-3.5 w-3.5 text-accent" />
-                      <span className="text-xs">Showing: {getFilterLabel(filterType)}</span>
+                      <span className="text-xs">{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                       <button 
                         onClick={clearFilter}
                         className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
@@ -645,7 +645,7 @@ export default function Wallet() {
                 <div className="flex items-center gap-2 mb-4">
                   <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-accent" />
-                    <span>Showing: {getFilterLabel(filterType)}</span>
+                    <span>{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                     <button 
                       onClick={clearFilter}
                       className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
@@ -653,9 +653,7 @@ export default function Wallet() {
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {filteredTransactions.length} transaction{filteredTransactions.length !== 1 ? "s" : ""}
-                  </span>
+                  <span className="text-sm text-muted-foreground">{t('screens.wallet.lengthTransactionValue1', { length: filteredTransactions.length, value1: filteredTransactions.length !== 1 ? "s" : "" })}</span>
                 </div>
               )}
 
@@ -666,8 +664,7 @@ export default function Wallet() {
                 </div>
                 <div className="col-span-3">
                   {loading ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      Loading transactions...
+                    <div className="h-full flex items-center justify-center text-muted-foreground">{t('screens.wallet.loadingTransactions')}
                     </div>
                   ) : filteredTransactions.length > 0 ? (
                     <WalletTransactionCard
@@ -694,8 +691,7 @@ export default function Wallet() {
                 </div>
                 <div className="col-span-3">
                   {loading ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      Loading transactions...
+                    <div className="h-full flex items-center justify-center text-muted-foreground">{t('screens.wallet.loadingTransactions')}
                     </div>
                   ) : filteredTransactions.length > 1 ? (
                     <WalletTransactionCard

@@ -35,8 +35,7 @@ export default function PatientDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">85/100</div>
-            <p className="text-xs text-muted-foreground">
-              +5 from last month
+            <p className="text-xs text-muted-foreground">{t('screens.patient.text5FromLastMonth')}
             </p>
           </CardContent>
         </Card>

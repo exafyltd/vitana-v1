@@ -45,7 +45,7 @@ export default function KnowledgeSearchTest() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Type a question to test KB retrieval..."
+                placeholder={t('screens.admin.typeQuestionTestKbRetrieval')}
                 className="flex-1"
               />
               <Button onClick={handleSearch} disabled={!query.trim() || searchQuery.isLoading}>
@@ -65,8 +65,7 @@ export default function KnowledgeSearchTest() {
         {results.length > 0 && (
           <Card>
             <CardContent className="pt-6 space-y-3">
-              <p className="text-xs text-muted-foreground mb-2">
-                {results.length} result{results.length !== 1 ? "s" : ""} for "{activeQuery}"
+              <p className="text-xs text-muted-foreground mb-2">{t('screens.admin.lengthResultValue1ForActivequery', { length: results.length, value1: results.length !== 1 ? "s" : "", activeQuery })}
               </p>
               {results.map((r, i) => (
                 <div key={r.id} className="flex items-start justify-between border rounded-lg p-3">

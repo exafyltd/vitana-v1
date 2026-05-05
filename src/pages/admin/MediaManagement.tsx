@@ -107,7 +107,7 @@ export default function MediaManagement() {
               <HardDrive className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalStorage || 0} GB</div>
+              <div className="text-2xl font-bold">{t('screens.admin.value0Gb', { value0: stats?.totalStorage || 0 })}</div>
               <p className="text-xs text-muted-foreground">{t('screens.admin.totalStorage')}</p>
             </CardContent>
           </Card>

@@ -104,8 +104,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
             <BarChart3 className="h-5 w-5 text-primary" />
             {t('screens.wallet.subscriptionRoiAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {averageROI}% Avg ROI
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.averageroiAvgRoi', { averageROI })}
           </Badge>
         </div>
       </CardHeader>
@@ -128,7 +127,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            {t('screens.wallet.yourSubscriptionsDeliver')} <span className="font-semibold text-emerald-600">${totalValue - totalCost} net value</span> monthly
+            {t('screens.wallet.yourSubscriptionsDeliver')} <span className="font-semibold text-emerald-600">{t('screens.wallet.value0NetValue', { value0: totalValue - totalCost })}</span>{t('screens.wallet.monthly')}
           </p>
         </div>
 
@@ -148,13 +147,11 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{subscription.name}</h5>
-                    <p className="text-xs text-muted-foreground">
-                      ${subscription.cost}/month • {subscription.usage}% usage
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.costmonthUsageUsage', { cost: subscription.cost, usage: subscription.usage })}
                     </p>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className={`text-xs mb-1 ${getROIColor(subscription.roi)}`}>
-                      {subscription.roi}% ROI
+                    <Badge variant="outline" className={`text-xs mb-1 ${getROIColor(subscription.roi)}`}>{t('screens.wallet.roiRoi', { roi: subscription.roi })}
                     </Badge>
                     <div className={`flex items-center gap-1 text-xs ${trendConfig.color}`}>
                       <TrendIcon className="h-3 w-3" />
@@ -173,12 +170,9 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
-                    Renews {subscription.renewalDate}
-                  </div>
+                    <Calendar className="h-3 w-3" />{t('screens.wallet.renewsRenewaldate', { renewalDate: subscription.renewalDate })}</div>
                   <div className="flex items-center gap-1 text-xs text-emerald-600">
-                    <DollarSign className="h-3 w-3" />
-                    ${subscription.value} value
+                    <DollarSign className="h-3 w-3" />{t('screens.wallet.valueValue', { value: subscription.value })}
                   </div>
                 </div>
               </div>

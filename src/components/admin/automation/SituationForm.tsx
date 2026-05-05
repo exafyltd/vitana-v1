@@ -44,7 +44,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
             id="situation"
             value={situation}
             onChange={(e) => setSituation(e.target.value)}
-            placeholder="Describe the scenario you want to automate..."
+            placeholder={t('screens.admin.describeScenarioYouWantAutomate')}
             rows={4}
             disabled={isAnalyzing}
           />
@@ -73,8 +73,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
         >
           {isAnalyzing ? (
             <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Analyzing...
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.admin.analyzing')}
             </>
           ) : (
             <>

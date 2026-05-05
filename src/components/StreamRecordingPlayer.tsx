@@ -172,9 +172,9 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
 
       {/* Recording Info */}
       <div className="text-sm text-muted-foreground space-y-1">
-        <div>Recorded {formatDistanceToNow(new Date(recording.created_at), { addSuffix: true })}</div>
+        <div>{t('screens.common.recordedValue0', { value0: formatDistanceToNow(new Date(recording.created_at), { addSuffix: true }) })}</div>
         {recording.file_size_bytes && (
-          <div>Size: {(recording.file_size_bytes / 1024 / 1024).toFixed(2)} MB</div>
+          <div>{t('screens.common.sizeValue0Mb', { value0: (recording.file_size_bytes / 1024 / 1024).toFixed(2) })}</div>
         )}
       </div>
     </div>

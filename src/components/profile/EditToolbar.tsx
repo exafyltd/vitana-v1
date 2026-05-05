@@ -44,10 +44,7 @@ export function EditToolbar({
               size="sm" 
               onClick={cycleViewAs}
               className="gap-2"
-            >
-              {getViewAsIcon(viewAs)}
-              View as {viewAs === "me" ? "Me" : viewAs === "public" ? "Public" : "Follower"}
-            </Button>
+            >{t('screens.profile.value0ViewAsValue1', { value0: getViewAsIcon(viewAs), value1: viewAs === "me" ? "Me" : viewAs === "public" ? "Public" : "Follower" })}</Button>
             
             <Badge variant={hasUnsavedChanges ? "destructive" : "secondary"}>
               {hasUnsavedChanges ? "Unsaved changes" : "All changes saved"}

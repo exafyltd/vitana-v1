@@ -77,7 +77,7 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
               id="description" 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's new in this frontpage version?"
+              placeholder={t('screens.dev.whatSNewThisFrontpageVersion')}
               rows={3}
             />
           </div>

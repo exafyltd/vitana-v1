@@ -93,7 +93,7 @@ export default function AssistantRouting() {
                         </TableCell>
                         <TableCell>
                           {surface.has_tenant_override ? (
-                            <AdminStatusBadge variant="active">Custom</AdminStatusBadge>
+                            <AdminStatusBadge variant="active">{t('screens.admin.custom2')}</AdminStatusBadge>
                           ) : (
                             <AdminStatusBadge variant="inactive">{t('screens.admin.global')}</AdminStatusBadge>
                           )}

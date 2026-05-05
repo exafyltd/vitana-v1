@@ -312,7 +312,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
               {getStatusBadge()}
             </div>
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span>{(item.file.size / 1024 / 1024).toFixed(1)} MB</span>
+              <span>{t('screens.community.value0Mb', { value0: (item.file.size / 1024 / 1024).toFixed(1) })}</span>
               {item.duration && (
                 <span>{Math.floor(item.duration / 60)}:{(item.duration % 60).toString().padStart(2, '0')}</span>
               )}
@@ -362,7 +362,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
               >
                 {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 {!isExpanded && item.hasGenericTitle && item.status === 'queued' && (
-                  <span className="ml-1 text-xs">Edit</span>
+                  <span className="ml-1 text-xs">{t('screens.community.edit')}</span>
                 )}
               </Button>
             </CollapsibleTrigger>
@@ -382,7 +382,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
                     title: e.target.value.slice(0, 100),
                     hasGenericTitle: false
                   })}
-                  placeholder="Video title"
+                  placeholder={t('screens.community.videoTitle')}
                   disabled={item.status === 'uploading' || item.status === 'done'}
                   className={cn(
                     item.hasGenericTitle && "border-destructive focus-visible:ring-destructive"
@@ -412,7 +412,7 @@ function VideoItemRow({ item, onUpdate, onRemove, onRetry }: {
                 id={`description-${item.id}`}
                 value={item.description}
                 onChange={(e) => onUpdate({ description: e.target.value.slice(0, 500) })}
-                placeholder="Describe your video..."
+                placeholder={t('screens.community.describeYourVideo')}
                 disabled={item.status === 'uploading' || item.status === 'done'}
                 rows={2}
               />
@@ -615,7 +615,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 </div>
                 <Input
                   id="titlePattern"
-                  placeholder="e.g., My Series - Part {index}"
+                  placeholder={t('screens.community.eGMySeriesPart')}
                   value={titlePattern}
                   onChange={(e) => setTitlePattern(e.target.value)}
                   disabled={isUploading}
@@ -623,9 +623,9 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 />
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">
-                    {t('screens.community.use')} <code className="px-1 py-0.5 bg-muted rounded">{'{base}'}</code> for filename, 
-                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{index}'}</code> for number, 
-                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{date}'}</code> for today's date
+                    {t('screens.community.use')} <code className="px-1 py-0.5 bg-muted rounded">{'{base}'}</code>{t('screens.community.forFilename')} 
+                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{index}'}</code>{t('screens.community.forNumber')} 
+                    <code className="px-1 py-0.5 bg-muted rounded ml-1">{'{date}'}</code>{t('screens.community.forTodaySDate')}
                   </p>
                   {titlePattern !== '{base}' && items.length > 0 && (
                     <div className="bg-background p-2 rounded text-xs border border-border">
@@ -691,11 +691,8 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                   <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-1">
                     {t('screens.community.someVideosNeedBetterTitles')}
                   </p>
-                  <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-3">
-                    Videos with generic titles like "Download" won't be discoverable. 
-                    Click the expand button (
-                    <ChevronDown className="w-3 h-3 inline" />
-                    ) on each video to edit the title and add tags.
+                  <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-3">{t('screens.community.videosWithGenericTitlesLikeDownload')}
+                    <ChevronDown className="w-3 h-3 inline" />{t('screens.community.eachVideoEditTitleAddTags')}
                   </p>
                   <div className="flex gap-2">
                     <Button
@@ -710,8 +707,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                         });
                       }}
                       className="text-xs"
-                    >
-                      Expand all
+                    >{t('screens.community.expandAll')}
                     </Button>
                     <Button
                       type="button"
@@ -731,8 +727,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                         });
                       }}
                       className="text-xs"
-                    >
-                      Auto-rename with pattern
+                    >{t('screens.community.autorenameWithPattern')}
                     </Button>
                   </div>
                 </div>
@@ -752,8 +747,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                     size="sm"
                     onClick={clearCompleted}
                     disabled={isUploading}
-                  >
-                    Clear Completed
+                  >{t('screens.community.clearCompleted')}
                   </Button>
                 )}
               </div>
@@ -784,9 +778,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
               </Button>
               <div className="flex items-center gap-2">
                 {activeUploads > 0 && (
-                  <span className="text-sm text-muted-foreground">
-                    {activeUploads} active upload{activeUploads > 1 ? 's' : ''}
-                  </span>
+                  <span className="text-sm text-muted-foreground">{t('screens.community.activeuploadsActiveUploadValue1', { activeUploads, value1: activeUploads > 1 ? 's' : '' })}</span>
                 )}
                 <Button
                   onClick={handleSubmit}
@@ -799,8 +791,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
                 >
                   {isUploading ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Publishing...
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.publishing')}
                     </>
                   ) : items.some(item => item.status === 'queued' && item.hasGenericTitle) ? (
                     <>

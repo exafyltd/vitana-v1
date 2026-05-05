@@ -16,8 +16,7 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
     <Card className="h-full bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 border-2 border-dashed border-purple-200">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-500" />
-          Hey {userName}! 👋
+          <Sparkles className="w-5 h-5 text-purple-500" />{t('screens.health.heyUsername', { userName })}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

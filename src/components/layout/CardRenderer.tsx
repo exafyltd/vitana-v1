@@ -230,8 +230,7 @@ function ConsentShell({ envelope, displayCols, displayRows }: CardRendererProps)
         </div>
         <div className="space-y-1">
           <h3 className="font-medium text-sm">{t('screens.layout.contentRequiresConsent')}</h3>
-          <p className="text-xs text-muted-foreground">
-            Tap to review privacy settings for this content type
+          <p className="text-xs text-muted-foreground">{t('screens.layout.tapReviewPrivacySettingsForThis')}
           </p>
         </div>
         <button 
@@ -258,12 +257,8 @@ function DefaultCard({ envelope, ...props }: { envelope: CardEnvelope; [key: str
     >
       <div className="space-y-2">
         <h3 className="font-medium text-sm">{t('screens.layout.unknownContentType')}</h3>
-        <p className="text-xs text-muted-foreground">
-          Kind: {envelope.content_ref.kind}
-        </p>
-        <p className="text-xs text-muted-foreground">
-          ID: {envelope.content_ref.id}
-        </p>
+        <p className="text-xs text-muted-foreground">{t('screens.layout.kindKind', { kind: envelope.content_ref.kind })}</p>
+        <p className="text-xs text-muted-foreground">{t('screens.layout.idId', { id: envelope.content_ref.id })}</p>
       </div>
     </div>
   );

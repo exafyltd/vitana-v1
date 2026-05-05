@@ -531,8 +531,7 @@ export default function VertexTesting() {
                           });
                         }}
                         disabled={isTestRunning}
-                      >
-                        ⚡ Quick (5 tests, ~20s)
+                      >{t('screens.admin.quick5Tests20s')}
                       </Button>
                       
                       <Button 
@@ -553,8 +552,7 @@ export default function VertexTesting() {
                           });
                         }}
                         disabled={isTestRunning}
-                      >
-                        🔬 Full (9 tests, ~45s)
+                      >{t('screens.admin.full9Tests45s')}
                       </Button>
                       
                       <Button 
@@ -562,8 +560,7 @@ export default function VertexTesting() {
                         size="sm"
                         onClick={() => setTestMode('custom')}
                         disabled={isTestRunning}
-                      >
-                        ⚙️ Custom
+                      >{t('screens.admin.custom')}
                       </Button>
                     </div>
                     
@@ -580,8 +577,7 @@ export default function VertexTesting() {
                               audioResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          🎤 Audio
+                          />{t('screens.admin.audio')}
                         </label>
                         
                         <label className="flex items-center gap-2 text-sm">
@@ -594,8 +590,7 @@ export default function VertexTesting() {
                               screenResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          🖥️ Screen
+                          />{t('screens.admin.screen')}
                         </label>
                         
                         <label className="flex items-center gap-2 text-sm">
@@ -608,8 +603,7 @@ export default function VertexTesting() {
                               cameraResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          📹 Camera
+                          />{t('screens.admin.camera')}
                         </label>
                       </div>
                     )}
@@ -630,8 +624,7 @@ export default function VertexTesting() {
                       onClick={runAutomatedTest}
                       size="lg"
                       className="w-full h-16 text-lg"
-                    >
-                      🚀 Start Automated Test ({totalEnabledTests} tests)
+                    >{t('screens.admin.startAutomatedTestTotalenabledtestsTests', { totalEnabledTests })}
                     </Button>
                   )}
                   
@@ -639,13 +632,10 @@ export default function VertexTesting() {
                   {isTestRunning && (
                     <div className="space-y-2">
                       <Progress value={(passedTests / totalEnabledTests) * 100} />
-                      <p className="text-sm text-center text-muted-foreground">
-                        {passedTests} / {totalEnabledTests} tests passed
+                      <p className="text-sm text-center text-muted-foreground">{t('screens.admin.passedtestsTotalenabledtestsTestsPassed', { passedTests, totalEnabledTests })}
                       </p>
                       <div className="space-y-2">
-                        <p className="text-xs text-center text-muted-foreground">
-                          Connection: {connectionState}
-                          {connectionState === 'connecting' && (
+                        <p className="text-xs text-center text-muted-foreground">{t('screens.admin.connectionConnectionstate', { connectionState })}{connectionState === 'connecting' && (
                             <span className="ml-2 inline-block align-middle">
                               <span className="inline-block h-3 w-3 animate-spin border-2 border-current border-t-transparent rounded-full" />
                             </span>
@@ -706,8 +696,7 @@ export default function VertexTesting() {
                       <div className="text-center space-y-2">
                         <div className="text-5xl">🎉</div>
                         <h3 className="text-lg font-bold text-green-900">{t('screens.admin.allTestsPassed')}</h3>
-                        <p className="text-sm text-green-700">
-                          {testMode === 'full' ? 'All multimodal features' : 'Core features'} working perfectly
+                        <p className="text-sm text-green-700">{t('screens.admin.value0WorkingPerfectly', { value0: testMode === 'full' ? 'All multimodal features' : 'Core features' })}
                         </p>
                         <Button 
                           onClick={() => {
@@ -717,8 +706,7 @@ export default function VertexTesting() {
                           variant="outline"
                           size="sm"
                           className="mt-3"
-                        >
-                          Run Tests Again
+                        >{t('screens.admin.runTestsAgain')}
                         </Button>
                       </div>
                     </div>
@@ -735,8 +723,7 @@ export default function VertexTesting() {
                       variant="destructive"
                       size="sm"
                       className="w-full"
-                    >
-                      Cancel Test
+                    >{t('screens.admin.cancelTest')}
                     </Button>
                   )}
 
