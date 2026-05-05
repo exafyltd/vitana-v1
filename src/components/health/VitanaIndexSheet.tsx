@@ -43,6 +43,18 @@ function pickKeepGoingMessage(delta: number, streak: number): string {
   return `${streak} days in a row. The streak is real — keep going!`;
 }
 
+const DAILY_ENCOURAGEMENT_MESSAGES = [
+  "Welcome back. One small action today moves your Index.",
+  "Good to see you. Pick one thing — your future self will thank you.",
+  "Hey, you're here. That's already step one — let's make today count.",
+  "Showing up is the work. Let's keep building.",
+];
+
+function pickDailyEncouragement(): string {
+  const idx = Math.floor(Math.random() * DAILY_ENCOURAGEMENT_MESSAGES.length);
+  return DAILY_ENCOURAGEMENT_MESSAGES[idx];
+}
+
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
   hydration: "💧",
@@ -189,9 +201,29 @@ export function VitanaIndexSheet() {
 
   const hasGrowth =
     (sevenDayDelta !== null && sevenDayDelta > 0) || streakDays >= 3;
-  const growthMessage = hasGrowth
-    ? pickKeepGoingMessage(sevenDayDelta ?? 0, streakDays)
-    : null;
+
+  // Track whether the user has already triggered today's burst so subsequent
+  // opens in the same day still render the banner but don't re-fire confetti.
+  // Reads localStorage once per drawer-open via state — `useEffect` below is
+  // the only place that writes the day-key.
+  const [alreadyCelebratedToday, setAlreadyCelebratedToday] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem(GROWTH_CONFETTI_DAY_KEY) === todayKey();
+    } catch {
+      return false;
+    }
+  });
+
+  // First open of the day always gets a small encouragement burst, even with
+  // no growth signal — showing up is the win we're rewarding here.
+  const isFirstOpenToday = !alreadyCelebratedToday;
+  const shouldShowBanner = hasGrowth || isFirstOpenToday;
+  const bannerMessage = useMemo(() => {
+    if (!shouldShowBanner) return null;
+    if (hasGrowth) return pickKeepGoingMessage(sevenDayDelta ?? 0, streakDays);
+    return pickDailyEncouragement();
+  }, [shouldShowBanner, hasGrowth, sevenDayDelta, streakDays]);
 
   // Reset on close so reopening tomorrow can celebrate again. Confetti itself
   // is throttled to once per local day via localStorage so reopening the
@@ -204,20 +236,20 @@ export function VitanaIndexSheet() {
       return;
     }
     if (celebratedRef.current) return;
-    if (!hasGrowth) return;
     if (typeof window === "undefined") return;
-    if (prefersReducedMotion()) {
+    if (alreadyCelebratedToday) {
       celebratedRef.current = true;
       return;
     }
-
-    let lastFired: string | null = null;
-    try {
-      lastFired = localStorage.getItem(GROWTH_CONFETTI_DAY_KEY);
-    } catch {
-      /* localStorage unavailable — accept duplicate fires */
-    }
-    if (lastFired === todayKey()) {
+    if (prefersReducedMotion()) {
+      // Mark the day so banner-only days stay consistent — but don't fire
+      // confetti.
+      try {
+        localStorage.setItem(GROWTH_CONFETTI_DAY_KEY, todayKey());
+      } catch {
+        /* ignore */
+      }
+      setAlreadyCelebratedToday(true);
       celebratedRef.current = true;
       return;
     }
@@ -226,12 +258,12 @@ export function VitanaIndexSheet() {
     // paint with the confetti canvas creation.
     const timer = window.setTimeout(() => {
       confettiManager.fire({
-        particleCount: 120,
-        spread: 90,
+        particleCount: hasGrowth ? 120 : 70,
+        spread: hasGrowth ? 90 : 70,
         startVelocity: 38,
         colors: ["#10B981", "#22D3EE", "#3B82F6", "#A78BFA", "#F59E0B"],
         shapes: ["circle", "square"],
-        scalar: 1.1,
+        scalar: hasGrowth ? 1.1 : 0.9,
       });
     }, 180);
 
@@ -240,10 +272,11 @@ export function VitanaIndexSheet() {
     } catch {
       /* ignore */
     }
+    setAlreadyCelebratedToday(true);
     celebratedRef.current = true;
 
     return () => window.clearTimeout(timer);
-  }, [open, hasGrowth]);
+  }, [open, hasGrowth, alreadyCelebratedToday]);
 
   const { vector: nextDaysVector, total: nextDaysTotal } = useMemo(
     () => sumVectors(pendingActions),
@@ -276,18 +309,26 @@ export function VitanaIndexSheet() {
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
-          {growthMessage && (
+          {bannerMessage && (
             <div
               role="status"
               aria-live="polite"
-              className="rounded-xl border border-green-500/30 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10 p-3 shadow-sm animate-in fade-in slide-in-from-top-2 duration-500"
+              className={`rounded-xl border p-3 shadow-sm animate-in fade-in slide-in-from-top-2 duration-500 ${
+                hasGrowth
+                  ? "border-green-500/30 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10"
+                  : "border-blue-500/30 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10"
+              }`}
             >
               <div className="flex items-center gap-3">
-                <div className="rounded-full bg-background/60 p-2 text-green-600 motion-safe:animate-bounce">
+                <div
+                  className={`rounded-full bg-background/60 p-2 motion-safe:animate-bounce ${
+                    hasGrowth ? "text-green-600" : "text-blue-600"
+                  }`}
+                >
                   <PartyPopper className="w-5 h-5" />
                 </div>
                 <p className="text-sm font-medium text-foreground leading-snug">
-                  {growthMessage}
+                  {bannerMessage}
                 </p>
               </div>
             </div>
