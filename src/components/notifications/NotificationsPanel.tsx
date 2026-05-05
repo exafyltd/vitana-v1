@@ -126,7 +126,7 @@ export function NotificationsPanel({
       : `Clear all ${getCategoryDisplay(filter).label.toLowerCase()}?`;
 
   return (
-    <div className={`flex flex-col ${maxHeightClassName} ${className ?? ''}`}>
+    <div className={`flex flex-col min-w-0 max-w-full ${maxHeightClassName} ${className ?? ''}`}>
       {/* Header */}
       <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b">
         <div className="flex items-baseline gap-2">
@@ -251,11 +251,11 @@ export function NotificationsPanel({
         <div className="shrink-0 border-t px-4 py-2">
           <Button
             variant="ghost"
-            className="w-full text-xs text-muted-foreground hover:text-foreground"
+            className="w-full min-w-0 text-xs text-muted-foreground hover:text-foreground"
             onClick={handleSettingsClick}
           >
-            <Settings className="h-3.5 w-3.5 mr-1.5" />
-            Manage your notifications
+            <Settings className="h-3.5 w-3.5 mr-1.5 shrink-0" />
+            <span className="truncate">Manage your notifications</span>
           </Button>
         </div>
       )}
@@ -330,13 +330,13 @@ function NotificationRow({
           </span>
         </div>
         <div className="flex-1 min-w-0 space-y-0.5 pt-0.5">
-          <p className="text-sm leading-snug">
+          <p className="text-sm leading-snug break-words">
             <span className={!notification.read_at ? 'font-semibold' : ''}>
               {notification.title}
             </span>
           </p>
           {notification.body && (
-            <p className="text-xs text-muted-foreground line-clamp-2">{notification.body}</p>
+            <p className="text-xs text-muted-foreground line-clamp-2 break-words">{notification.body}</p>
           )}
           <p className="text-[11px] text-muted-foreground/70">
             {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
