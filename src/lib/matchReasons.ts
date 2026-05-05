@@ -136,3 +136,52 @@ export function deriveIntentLine(
   }
   return 'Open to new connections';
 }
+
+/**
+ * Short headline for the match card body — used when the
+ * counterparty's intent title isn't surfaced by the gateway yet.
+ * Mirrors the casing/feel of a real My Posts title without
+ * pretending to know specifics.
+ *
+ * Examples:
+ *   ('activity_seek::activity_seek', 'dance.salsa')   → 'Salsa partner'
+ *   ('activity_seek::activity_seek', 'fitness.gym')   → 'Gym buddy'
+ *   ('partner_seek::partner_seek',   'dance.salsa')   → 'Dance life partner'
+ *   (null, 'dance.bachata')                            → 'Bachata partner'
+ */
+export function deriveFallbackTitle(
+  kindPairing: string | null | undefined,
+  category: string | null | undefined,
+): string {
+  const v: MatchVertical = category?.startsWith('dance.')
+    ? 'dance'
+    : category?.startsWith('fitness.')
+      ? 'fitness'
+      : null;
+
+  const subRaw = category?.includes('.') ? category.split('.').slice(1).join(' ') : null;
+  const sub = subRaw ? subRaw.replace(/_/g, ' ').trim().toLowerCase() : null;
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const subHasPartnerWord = !!sub && /\b(partner|buddy|mate)\b/.test(sub);
+  const kindA = (kindPairing ?? '').split('::')[0];
+
+  if (kindA === 'partner_seek') {
+    if (v === 'dance') return 'Dance life partner';
+    if (v === 'fitness') return 'Training life partner';
+    return 'Life partner';
+  }
+
+  if (v === 'dance') {
+    if (!sub) return 'Dance partner';
+    if (subHasPartnerWord) return cap(sub);
+    return `${cap(sub)} partner`;
+  }
+
+  if (v === 'fitness') {
+    if (!sub) return 'Fitness buddy';
+    if (subHasPartnerWord) return cap(sub);
+    return `${cap(sub)} buddy`;
+  }
+
+  return 'Match';
+}

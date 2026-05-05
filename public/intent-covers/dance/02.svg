@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Dance themed cover">
+  <defs>
+    <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="50%" stop-color="#db2777"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <radialGradient id="hl" cx="0.7" cy="0.2" r="0.7">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.5)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#g)"/>
+  <rect width="1600" height="1000" fill="url(#hl)"/>
+  <g stroke="rgba(255,255,255,0.35)" stroke-width="3" fill="none">
+    <path d="M -50 700 Q 400 500 800 720 T 1700 660"/>
+    <path d="M -50 800 Q 500 600 900 820 T 1700 760"/>
+    <path d="M -50 600 Q 350 380 700 600 T 1700 540"/>
+  </g>
+  <g fill="rgba(255,255,255,0.5)" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="200">
+    <text x="200" y="300">♩</text>
+    <text x="1320" y="360">♪</text>
+  </g>
+</svg>

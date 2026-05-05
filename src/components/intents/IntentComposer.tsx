@@ -12,7 +12,7 @@
  * inline category pickers driven by /intent-categories.
  */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,6 +28,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { postIntent, type IntentKind } from "@/lib/intentApi";
+import type { CoverTheme } from "@/lib/intentCovers";
+import { CoverPhotoPicker } from "./CoverPhotoPicker";
 
 interface IntentComposerProps {
   open: boolean;
@@ -54,7 +56,17 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
   const [location, setLocation] = useState("");
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Drives the themed-cover picker. Today only dance/fitness have
+  // dedicated covers; other kinds fall back to the generic set.
+  // Once a real category picker lands in the composer this should
+  // read from the chosen category instead.
+  const coverTheme: CoverTheme = useMemo(() => {
+    if (kind === "activity_seek" || kind === "social_seek") return "dance";
+    return "generic";
+  }, [kind]);
 
   const reset = () => {
     setTitle("");
@@ -62,6 +74,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     setBudgetMin("");
     setBudgetMax("");
     setLocation("");
+    setCoverUrl(null);
   };
 
   const submit = async () => {
@@ -71,6 +84,14 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     }
     if (!scope.trim() || scope.trim().length < 20) {
       toast({ title: "Scope too short", description: "Minimum 20 characters.", variant: "destructive" });
+      return;
+    }
+    if (!coverUrl) {
+      toast({
+        title: "Cover photo required",
+        description: "Upload one, or tap ✨ Generate for me.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -83,6 +104,10 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     } else if (location) {
       kindPayload.location_label = location;
     }
+    // Transit cover_url through kind_payload until the gateway
+    // ships a dedicated column. `getIntentCoverUrl()` reads either
+    // location, so consumers don't need to care.
+    kindPayload.cover_url = coverUrl;
 
     setSubmitting(true);
     try {
@@ -147,6 +172,10 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               <em>"I'm looking for someone to play tennis Tuesday evenings."</em>
               <br />
               ORB will read it back to you and post on confirmation.
+            </p>
+            <p className="text-[11px] text-muted-foreground/80 pt-1">
+              Don't worry about a cover photo — Vitana will pick a themed one for you,
+              and you can swap it from My Posts.
             </p>
           </div>
         ) : (
@@ -218,6 +247,19 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               </Label>
               <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Vienna" />
             </div>
+
+            <div>
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+                Cover photo (required)
+              </Label>
+              <div className="mt-1">
+                <CoverPhotoPicker
+                  value={coverUrl}
+                  onChange={setCoverUrl}
+                  theme={coverTheme}
+                />
+              </div>
+            </div>
           </div>
         )}
 
@@ -226,7 +268,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             Cancel
           </Button>
           {mode === "form" && (
-            <Button onClick={submit} disabled={submitting}>
+            <Button onClick={submit} disabled={submitting || !coverUrl}>
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
             </Button>
           )}
