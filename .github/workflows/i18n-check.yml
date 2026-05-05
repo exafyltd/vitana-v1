@@ -40,8 +40,17 @@ jobs:
 
       - name: ESLint i18n rules (no-raw-jsx-text + no-raw-toast-arg, error-level)
         run: |
-          # Run only the i18n rules; other lint findings are out of scope.
-          npx eslint . --rule 'i18n/no-raw-jsx-text: error' --rule 'i18n/no-raw-toast-arg: error' --no-warn-ignored
+          # Both rules are configured at error-level in eslint.config.js.
+          # Other pre-existing TS lint errors are out of scope; we grep for
+          # i18n-rule violations specifically and fail only on those.
+          npm run lint > /tmp/lint.log 2>&1 || true
+          violations=$(grep -cE "i18n/(no-raw-jsx-text|no-raw-toast-arg)" /tmp/lint.log || true)
+          if [ "$violations" != "0" ]; then
+            echo "::error::Found $violations i18n rule violations:"
+            grep -E "i18n/(no-raw-jsx-text|no-raw-toast-arg)" /tmp/lint.log | head -50
+            exit 1
+          fi
+          echo "✓ Zero i18n violations"
 
       - name: Regenerate screen inventory
         run: node scripts/generate-screen-inventory.mjs
