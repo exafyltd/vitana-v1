@@ -214,14 +214,19 @@ export function useOrbVoiceWidget() {
 
     tryInit();
 
-    // Polling fallback for when VitanaOrb script hasn't loaded yet
+    // Polling fallback for when VitanaOrb script hasn't loaded yet.
+    // The orb-widget script tag is `defer`, so on slow mobile (4G/3G WebView)
+    // it executes only after the 1.7MB main bundle finishes parsing — easily
+    // 15-30s in the wild. 60s ceiling keeps the FAB appearing eventually
+    // instead of permanently.
     let attempts = 0;
+    const MAX_ATTEMPTS = 120; // 120 × 500ms = 60s
     const interval = setInterval(() => {
       attempts++;
       tryInit().then((done) => {
-        if (done || attempts >= 20) {
+        if (done || attempts >= MAX_ATTEMPTS) {
           clearInterval(interval);
-          if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
+          if (attempts >= MAX_ATTEMPTS) console.warn("[ORB] Widget script never loaded");
         }
       });
     }, 500);
