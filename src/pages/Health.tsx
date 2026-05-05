@@ -121,8 +121,8 @@ export default withScreenId(function Health() {
     sleep: 0,
     mental: 0,
   };
-  // Render as 0–100 percentages because the legacy CompactVitanaIndex /
-  // MobileHealthSnapshot props expect that scale; pillars are 0–200 internally.
+  // Render as 0–100 percentages because the legacy CompactVitanaIndex and
+  // MobilePriorityFocus props expect that scale; pillars are 0–200 internally.
   const pillars = {
     nutrition: Math.round((livePillars.nutrition / 200) * 100),
     hydration: Math.round((livePillars.hydration / 200) * 100),
@@ -287,7 +287,7 @@ export default withScreenId(function Health() {
                   vitanaIndex={vitanaScore}
                   vitanaPercentile={15}
                   trend={liveVitanaIndex?.trend ?? "stable"}
-                  pillars={pillars}
+                  pillars={livePillars}
                 />
               </div>
 
