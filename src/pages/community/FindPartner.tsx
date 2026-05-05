@@ -34,6 +34,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
 import { FindPartnerMatchCard } from '@/components/intents/FindPartnerMatchCard';
+import { MatchDiagnosticPanel } from '@/components/intents/MatchDiagnosticPanel';
 import { IntentComposer } from '@/components/intents/IntentComposer';
 import {
   listMyIntents,
@@ -230,7 +231,10 @@ export default function FindPartner() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <>
+              <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+              {view === 'matches' && <MatchDiagnosticPanel />}
+            </>
           )}
 
           {/* My Matches */}
