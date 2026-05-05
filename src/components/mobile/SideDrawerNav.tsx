@@ -394,9 +394,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
 
     <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 gap-0 rounded-2xl overflow-hidden">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 gap-0 rounded-2xl overflow-hidden top-[calc(env(safe-area-inset-top,0px)+1.5rem)] translate-y-0">
         <NotificationsPanel
           onNavigated={() => setNotificationsOpen(false)}
+          onClose={() => setNotificationsOpen(false)}
           maxHeightClassName="max-h-[85vh]"
         />
       </DialogContent>
