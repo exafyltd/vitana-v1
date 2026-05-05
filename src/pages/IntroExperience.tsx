@@ -112,13 +112,13 @@ export default function IntroExperience() {
 
 
   // Get current language for TTS and translations.
-  // NOTE: useTranslation() returns `t` as the translation OBJECT (the catalog
-  // for dotted access like `t.foo.bar`), NOT a function. This file's JSX uses
-  // the function-style `t('screens.foo.bar')` imported from `@/lib/i18n-toast`
-  // at the top of this file. Destructuring `t` here would shadow that function
-  // with an object and crash the entire screen with "t is not a function".
-  // Only pull `isGerman` from the hook.
-  const { isGerman } = useTranslation();
+  // We need BOTH the catalog object `t` (for `t.intro?.preparing` etc dotted
+  // access in the play/pause button below) AND the function-call form
+  // (`lookup('screens.foo.bar')`) for newer i18n keys. The function form is
+  // imported as `lookup` (not `t`) so the local destructured `t` doesn't
+  // shadow it. Don't drop `t` from this destructure — 5 JSX sites below
+  // reference `t.intro?.X` and crash the whole screen if `t` is undefined.
+  const { t, isGerman } = useTranslation();
 
   const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
