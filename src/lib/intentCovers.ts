@@ -1,43 +1,38 @@
 /**
  * Find-a-Match cover-photo helpers.
  *
- * Two responsibilities:
+ *  1. `getIntentCoverUrl(intent)` resolves an intent's cover from
+ *     either the top-level `cover_url` (preferred, once the gateway
+ *     ships the column) or `kind_payload.cover_url` (interim transit
+ *     through the existing JSONB blob).
  *
- *  1. `getIntentCoverUrl(intent)` — resolve an intent's cover URL from
- *     either a top-level `cover_url` (preferred, once the backend
- *     ships the column) or `kind_payload.cover_url` (interim:
- *     transit through the existing JSONB blob so this PR can ship
- *     ahead of a DB migration).
- *
- *  2. `pickThemedCover(category, seed)` — deterministically pick one
- *     of a small curated set of dance / fitness / generic landscape
- *     SVGs from `/public/intent-covers/`. Used as the "✨ Generate
- *     for me" fallback so users always have a presentable cover
- *     even before any AI image-gen backend exists. The endpoint
- *     shape matches what the backend will expose later — this
- *     util will become a thin client around `POST /intents/cover/generate`
- *     once that lands.
+ *  2. `pickThemedCover(theme, seed)` deterministically picks one
+ *     of the brand's real, themed photographs (imported from
+ *     `src/assets/`) so the "✨ Generate for me" path always
+ *     produces a presentable real photo. Every URL Vite emits here
+ *     is content-hashed and CDN-cacheable. Once a backend AI image
+ *     generator exists this util becomes a thin client around
+ *     `POST /intents/cover/generate` with no consumer-side change.
  */
+
+import danceCommunity from '@/assets/actions/community-dance-group.jpg';
+import wellnessYoga from '@/assets/actions/wellness-yoga-nature.jpg';
+import morningYogaFlow from '@/assets/ai-feed/morning-yoga-flow.jpg';
+import morningStretch from '@/assets/shorts-morning-stretch.jpg';
+import breathingExercise from '@/assets/shorts-breathing-exercise.jpg';
+import friendsMeetup from '@/assets/actions/friends-meetup-selfie.jpg';
+import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 
 import type { UserIntent } from './intentApi';
 
 export type CoverTheme = 'dance' | 'fitness' | 'generic';
 
 const COVERS: Record<CoverTheme, string[]> = {
-  dance: [
-    '/intent-covers/dance/01.svg',
-    '/intent-covers/dance/02.svg',
-    '/intent-covers/dance/03.svg',
-  ],
-  fitness: [
-    '/intent-covers/fitness/01.svg',
-    '/intent-covers/fitness/02.svg',
-    '/intent-covers/fitness/03.svg',
-  ],
-  generic: [
-    '/intent-covers/generic/01.svg',
-    '/intent-covers/generic/02.svg',
-  ],
+  // Only one dance photo in the brand library today; backend AI
+  // generation or follow-up curation will add variety.
+  dance: [danceCommunity],
+  fitness: [wellnessYoga, morningYogaFlow, morningStretch, breathingExercise],
+  generic: [friendsMeetup, happyCoffeeGroup],
 };
 
 export function themeFromCategory(category: string | null | undefined): CoverTheme {
@@ -57,9 +52,9 @@ function hashString(s: string): number {
 }
 
 /**
- * Pick a themed cover deterministically. The same `seed` for the
- * same `theme` always returns the same URL — so a given intent
- * keeps its cover across re-renders and re-fetches.
+ * Pick a themed cover deterministically. Same `seed` for the same
+ * `theme` always returns the same URL, so a given intent keeps its
+ * cover across renders and re-fetches.
  */
 export function pickThemedCover(theme: CoverTheme, seed: string): string {
   const list = COVERS[theme] ?? COVERS.generic;
