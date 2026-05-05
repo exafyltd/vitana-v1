@@ -296,6 +296,40 @@ async function stage6_de_leak() {
   return true;
 }
 
+// ---------- STAGE 6d: t-shadow conflict detector ----------
+// Catches the bug class where a file imports `t` (function) from i18n-toast
+// AND also destructures `t` (object) from useTranslation(). The local
+// destructure shadows the module import → JSX `{t('key')}` calls the object
+// as a function → "t is not a function" → React error boundary crash.
+// (Hotfix: production crash on /intro before this detector existed.)
+async function stage6d_t_shadow() {
+  console.log('\n=== STAGE 6d: t-shadow conflict detector ===');
+  const { spawnSync } = await import('node:child_process');
+  const grepRes = spawnSync('grep', [
+    '-rl',
+    '--include=*.tsx', '--include=*.ts',
+    "from '@/lib/i18n-toast'",
+    'src',
+  ], { cwd: ROOT, encoding: 'utf8' });
+  const candidates = (grepRes.stdout || '').trim().split('\n').filter(Boolean);
+  const conflicts = [];
+  for (const rel of candidates) {
+    const abs = join(ROOT, rel);
+    const src = readFileSync(abs, 'utf8');
+    const importsT = /^import\s*\{[^}]*\bt\b[^}]*\}\s*from\s*['"]@\/lib\/i18n-toast['"]/m.test(src);
+    if (!importsT) continue;
+    const destructuresT = /const\s*\{[^}]*\bt\b[^}]*\}\s*=\s*useTranslation\s*\(/.test(src);
+    if (destructuresT) conflicts.push(rel);
+  }
+  if (conflicts.length > 0) {
+    record('STAGE 6d: t-shadow conflict', false, `${conflicts.length} file(s) shadow module-level t`);
+    for (const f of conflicts.slice(0, 10)) console.error(`    ${f}`);
+    return false;
+  }
+  record('STAGE 6d: t-shadow conflict', true, `${candidates.length} files scanned, no conflicts`);
+  return true;
+}
+
 // ---------- STAGE 6b: Trans component test ----------
 // Verifies the new <Trans> component renders correctly (positional <N> markers
 // map to children in template order).
@@ -493,6 +527,7 @@ async function main() {
     stage6_de_leak,
     stage6b_trans_component,
     stage6c_lint_rules,
+    stage6d_t_shadow,
     stage7_runtime,
   ];
   let allOk = true;

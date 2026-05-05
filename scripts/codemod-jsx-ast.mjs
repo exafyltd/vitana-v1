@@ -330,13 +330,29 @@ function rewriteFile(filePath) {
     next = next.slice(0, e.start) + e.replacement + next.slice(e.end);
   }
 
-  // Add `t` import if missing
+  // Pick the symbol name to use: `t` is the short alias from i18n-toast,
+  // BUT files that destructure `t` from useTranslation() shadow it. In
+  // those files we must use `lookup` instead — same singleton, different
+  // name — and rewrite our just-emitted `t('...')` calls accordingly.
+  const usesUseTranslationT = /const\s*\{[^}]*\bt\b[^}]*\}\s*=\s*useTranslation\s*\(/.test(source);
+  const symbol = usesUseTranslationT ? 'lookup' : 't';
+  if (usesUseTranslationT) {
+    // Rewrite our codemod-emitted `t('...')` calls to `lookup('...')`.
+    // Only touch our own outputs (string-literal first arg, `screens.` namespace),
+    // never developer code.
+    next = next.replace(/(?<![A-Za-z0-9_$])t\(\s*'(screens\.[^']+)'/g, "lookup('$1'");
+    next = next.replace(/(?<![A-Za-z0-9_$])t\(\s*'(screens\.[^']+)',/g, "lookup('$1',");
+  }
+
+  // Add `${symbol}` import if missing
   const importRx = /import\s*\{([^}]+)\}\s*from\s*['"]@\/lib\/i18n-toast['"]/;
   const existing = next.match(importRx);
   if (existing) {
     const present = new Set(existing[1].split(',').map((s) => s.trim()).filter(Boolean));
-    if (!present.has('t')) {
-      present.add('t');
+    if (!present.has(symbol)) {
+      present.add(symbol);
+      // Safety: if both `t` and a destructure exist, drop `t` from the import
+      if (usesUseTranslationT) present.delete('t');
       next = next.replace(importRx, `import { ${[...present].sort().join(', ')} } from '@/lib/i18n-toast'`);
     }
   } else {
@@ -354,7 +370,7 @@ function rewriteFile(filePath) {
         inImport = false;
       }
     }
-    const importLine = `import { t } from '@/lib/i18n-toast';`;
+    const importLine = `import { ${symbol} } from '@/lib/i18n-toast';`;
     if (lastImportEndIdx >= 0) ll.splice(lastImportEndIdx + 1, 0, importLine);
     else ll.unshift(importLine);
     next = ll.join('\n');
