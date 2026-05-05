@@ -44,7 +44,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -167,8 +167,8 @@ export default function LiveRooms() {
     // Check if it's a mock room
     if (roomId.startsWith('mock-')) {
       toast({
-        title: "Demo Room",
-        description: "This is an example room. Create your own to go live!",
+        title: lookup('toasts.community.demoRoom'),
+        description: lookup('toasts.community.thisExampleRoomCreateYourOwn'),
         action: (
           <Button 
             size="sm" 

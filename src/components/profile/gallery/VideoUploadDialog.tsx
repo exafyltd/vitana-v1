@@ -9,6 +9,7 @@ import { Upload, Video } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import { lookup } from '@/lib/i18n-toast';
 
 interface VideoUploadDialogProps {
   open: boolean;
@@ -34,7 +35,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
 
   const handleFile = async (f: File) => {
     if (!ACCEPTED_TYPES.includes(f.type)) {
-      toast({ title: translate("gallery.invalidFormat", "Ungültiges Format"), description: "MP4, WebM, MOV", variant: "destructive" });
+      toast({ title: translate("gallery.invalidFormat", "Ungültiges Format"), description: lookup('toasts.profile.mp4WebmMov'), variant: "destructive" });
       return;
     }
     if (f.size > MAX_VIDEO_SIZE) {

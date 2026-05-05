@@ -42,11 +42,16 @@ const I18N_ATTRIBUTES = new Set([
 // 2+ consecutive ASCII letters anywhere → text we'd want to translate.
 const HAS_LETTERS = /[A-Za-z]{2,}/;
 
+// Dotted identifier path with no whitespace = obviously already a translation key
+// (e.g. "toasts.diary.entrySaved", "liveRooms.goLivePopup.errors.fileTooLargeTitle")
+const TRANSLATION_KEY_RX = /^[a-zA-Z_][\w]*(\.[a-zA-Z_][\w]*)+$/;
+
 function isAllowed(text) {
   const trimmed = text.trim();
   if (!trimmed) return true;
   if (!HAS_LETTERS.test(trimmed)) return true;
   if (BRAND_ALLOWLIST.has(trimmed)) return true;
+  if (TRANSLATION_KEY_RX.test(trimmed)) return true;
   // Allow strings made entirely of brand tokens + punctuation
   const tokens = trimmed.split(/\s+/).filter(Boolean);
   if (tokens.length > 0 && tokens.every(t => BRAND_ALLOWLIST.has(t.replace(/[^\w]/g, '')))) {
@@ -120,54 +125,7 @@ export default {
         });
       },
 
-      CallExpression(node) {
-        let calleeName = null;
-        if (node.callee.type === 'Identifier') {
-          calleeName = node.callee.name;
-        } else if (
-          node.callee.type === 'MemberExpression' &&
-          node.callee.property.type === 'Identifier'
-        ) {
-          // toast.error(...), toast.success(...), etc.
-          if (node.callee.object.type === 'Identifier' && I18N_FUNCTION_CALLS.has(node.callee.object.name)) {
-            calleeName = node.callee.object.name;
-          }
-        }
-        if (!calleeName || !I18N_FUNCTION_CALLS.has(calleeName)) return;
-
-        const firstArg = node.arguments[0];
-        if (!firstArg) return;
-
-        // toast({ title: "..." }) — flag the title literal
-        if (firstArg.type === 'ObjectExpression') {
-          for (const prop of firstArg.properties) {
-            if (prop.type !== 'Property') continue;
-            const key = prop.key && (prop.key.name || prop.key.value);
-            if (key !== 'title' && key !== 'description' && key !== 'message') continue;
-            const v = prop.value;
-            if (v.type === 'Literal' && typeof v.value === 'string' && !isAllowed(v.value)) {
-              if (!hasInlineSuppression(node, sourceCode)) {
-                context.report({
-                  node: v,
-                  messageId: 'callArg',
-                  data: { callee: calleeName, text: v.value.slice(0, 60) },
-                });
-              }
-            }
-          }
-          return;
-        }
-
-        if (firstArg.type === 'Literal' && typeof firstArg.value === 'string' && !isAllowed(firstArg.value)) {
-          if (!hasInlineSuppression(node, sourceCode)) {
-            context.report({
-              node: firstArg,
-              messageId: 'callArg',
-              data: { callee: calleeName, text: firstArg.value.slice(0, 60) },
-            });
-          }
-        }
-      },
+      // CallExpression handling moved to no-raw-toast-arg (error-level in Wave 2.x)
     };
   },
 };

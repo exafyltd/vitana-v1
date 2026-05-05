@@ -3,7 +3,7 @@ import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError } from '@/lib/i18n-toast';
 
 type Status = "idle" | "recording" | "stopping";
 
@@ -201,8 +201,8 @@ export default function DiaryButton() {
     if (actions[1]) {
       setTimeout(() => {
         toast({
-          title: "Undo available",
-          description: "Delete the last diary entry",
+          title: lookup('toasts.diary.undoAvailable'),
+          description: lookup('toasts.diary.deleteLastDiaryEntry'),
           action: (
             <button onClick={actions[1].onClick} className="inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               {actions[1].label}

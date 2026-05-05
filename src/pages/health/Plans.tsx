@@ -23,6 +23,7 @@ import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelati
 import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
 import { toast } from "sonner";
+import { lookup } from '@/lib/i18n-toast';
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -37,7 +38,7 @@ export default withScreenId(function Plans() {
   
   // Footer button handlers
   const handleRecalibrateAll = () => {
-    toast.info('🔄 Recalibration Started', {
+    toast.info(lookup('toasts.health.recalibrationStarted'), {
       description: 'Analyzing all plans and cross-pillar synergies. This may take a few moments...',
       action: {
         label: 'View Progress',
@@ -47,7 +48,7 @@ export default withScreenId(function Plans() {
   };
 
   const handleViewReport = () => {
-    toast.info('📊 Report Generation', {
+    toast.info(lookup('toasts.health.reportGeneration'), {
       description: 'Your detailed health analytics report is being prepared. Check back in a few minutes!',
       action: {
         label: 'Got it',

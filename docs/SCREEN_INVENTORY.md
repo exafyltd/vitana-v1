@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 325
-- **Distinct i18n keys consumed:** 531
+- **Distinct i18n keys consumed:** 537
 - **Namespaces in use:** 40
 - **Hardcoded string suspects (regex heuristic):** 390
 
@@ -56,7 +56,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -71,7 +71,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -94,7 +94,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -108,7 +108,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 3, total in shard: 1191
+- `toasts` — used: 3, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -135,7 +135,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `actionBar` — used: 1, total in shard: 5
 - `discover` — used: 4, total in shard: 57
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -193,7 +193,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Index.tsx
 
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+**Status:** ✅ clean — keys consumed: 1, namespaces: 1
+
+**i18n namespaces:**
+
+- `toasts` — used: 1, total in shard: 1210
 
 ### src/pages/IntentBoard.tsx
 
@@ -201,7 +205,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 ### src/pages/IntentMatchDetail.tsx
 
@@ -209,7 +213,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 3, total in shard: 1191
+- `toasts` — used: 3, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -225,7 +229,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 ### src/pages/InviteFriends.tsx
 
@@ -233,7 +237,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -307,7 +311,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 ### src/pages/MyTickets.tsx
 
@@ -339,7 +343,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -355,7 +359,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -422,7 +426,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 6, total in shard: 1191
+- `toasts` — used: 6, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -454,7 +458,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `settings` — used: 1, total in shard: 29
-- `toasts` — used: 6, total in shard: 1191
+- `toasts` — used: 6, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -516,7 +520,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 11, total in shard: 1191
+- `toasts` — used: 11, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -550,7 +554,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 13, total in shard: 1191
+- `toasts` — used: 13, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -576,7 +580,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 ### src/pages/admin/LiveStreamOverview.tsx
 
@@ -620,7 +624,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -684,7 +688,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -702,7 +706,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -717,7 +721,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 3, total in shard: 1191
+- `toasts` — used: 3, total in shard: 1210
 
 ### src/pages/admin/ai-assistant/AISituationAnalyzer.tsx
 
@@ -725,7 +729,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 10, total in shard: 1191
+- `toasts` — used: 10, total in shard: 1210
 
 ### src/pages/admin/ai-assistant/Analytics.tsx
 
@@ -814,7 +818,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -882,7 +886,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 13, total in shard: 1191
+- `toasts` — used: 13, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -963,7 +967,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -982,7 +986,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `loading` — used: 1, total in shard: 7
 - `privacy` — used: 2, total in shard: 2
 - `tableHeaders` — used: 6, total in shard: 11
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 ### src/pages/admin/community/GroupsNew.tsx
 
@@ -1021,7 +1025,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1103,7 +1107,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1119,7 +1123,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 5, total in shard: 1191
+- `toasts` — used: 5, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1135,12 +1139,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/admin/feedback/TicketActionDrawer.tsx
 
-**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 6, namespaces: 2
+**Status:** ⚠️ 4 hardcoded suspects — keys consumed: 7, namespaces: 2
 
 **i18n namespaces:**
 
 - `intake_messages` — **MISSING SHARD** in src/i18n/de/
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 5, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1157,7 +1161,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1224,7 +1228,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 5, total in shard: 1191
+- `toasts` — used: 5, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1251,7 +1255,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1293,7 +1297,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1307,7 +1311,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1326,7 +1330,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 5, total in shard: 1191
+- `toasts` — used: 5, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1342,7 +1346,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `admin` — used: 13, total in shard: 19
 - `payment` — used: 1, total in shard: 19
-- `toasts` — used: 1, total in shard: 1191, **MISSING:** toasts.success.generic
+- `toasts` — used: 1, total in shard: 1210, **MISSING:** toasts.success.generic
 
 ### src/pages/admin/media/Videos.tsx
 
@@ -1350,7 +1354,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 5, total in shard: 1191
+- `toasts` — used: 5, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1378,7 +1382,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1392,7 +1396,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1460,7 +1464,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 6, total in shard: 1191
+- `toasts` — used: 6, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1476,7 +1480,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 ### src/pages/admin/notifications/ComposeNew.tsx
 
@@ -1568,7 +1572,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1600,7 +1604,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1725,7 +1729,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `actionBar` — used: 1, total in shard: 5
 - `buttons` — used: 1, total in shard: 55
 - `events` — used: 16, total in shard: 16, **MISSING:** events.titleShort, events.tabs.hot, events.filterTitle
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 ### src/pages/community/Feed.tsx
 
@@ -1774,7 +1778,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 8, total in shard: 1191
+- `toasts` — used: 8, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1784,13 +1788,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/community/LiveRooms.tsx
 
-**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 18, namespaces: 3
+**Status:** ⚠️ 5 hardcoded suspects — keys consumed: 20, namespaces: 3
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
 - `liveRooms` — used: 8, total in shard: 106
-- `toasts` — used: 9, total in shard: 1191
+- `toasts` — used: 11, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1886,7 +1890,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `resolver_agent` — **MISSING SHARD** in src/i18n/de/
-- `toasts` — used: 10, total in shard: 1191
+- `toasts` — used: 10, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -1962,7 +1966,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 1, total in shard: 1191
+- `toasts` — used: 1, total in shard: 1210
 
 ### src/pages/dev/DevOasis.tsx
 
@@ -2375,7 +2379,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2424,7 +2428,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2491,7 +2495,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2506,7 +2510,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/health/Plans.tsx
 
-**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 0, namespaces: _(none)_
+**Status:** ⚠️ 1 hardcoded suspect — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2540,7 +2548,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2555,7 +2563,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2868,7 +2876,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2884,7 +2892,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 4, total in shard: 1191
+- `toasts` — used: 4, total in shard: 1210
 
 ### src/pages/settings/Preferences.tsx
 
@@ -2926,7 +2934,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 6, total in shard: 1191
+- `toasts` — used: 6, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2961,7 +2969,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 6, total in shard: 1191
+- `toasts` — used: 6, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -2991,7 +2999,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -3005,7 +3013,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `toasts` — used: 2, total in shard: 1191
+- `toasts` — used: 2, total in shard: 1210
 
 <details><summary>Hardcoded suspects (top 10)</summary>
 
@@ -3128,7 +3136,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `toasts` | 60 |
+| `toasts` | 62 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
 | `discover` | 2 |

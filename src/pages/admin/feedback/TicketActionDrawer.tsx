@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
-import { notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError } from '@/lib/i18n-toast';
 
 interface IntakeMessage {
   agent?: string;
@@ -534,7 +534,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       return body;
     },
     onSuccess: async () => {
-      toast({ title: `${ticketNumber} rejected`, description: "Removed from the active list." });
+      toast({ title: `${ticketNumber} rejected`, description: lookup('toasts.admin.removedFromActiveList') });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
       onClose();
     },

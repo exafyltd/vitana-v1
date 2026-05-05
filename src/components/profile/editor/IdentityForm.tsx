@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { AvatarPositioner } from "./AvatarPositioner";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { lookup } from '@/lib/i18n-toast';
 
 interface IdentityFormProps {
   onDataChange?: (data: {
@@ -128,7 +129,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
     if (isHeic) {
       toast({
         title: translate('profileEditor.identity.uploadFailed'),
-        description: 'HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.',
+        description: lookup('toasts.profile.heicheifFormatNotSupportedByBrowsers'),
         variant: "destructive",
       });
       return;

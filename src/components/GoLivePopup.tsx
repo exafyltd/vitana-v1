@@ -228,7 +228,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           console.log('[GoLivePopup] Permanent room created via Gateway:', effectiveRoomId);
         } catch (createError: any) {
           console.error('[GoLivePopup] Failed to create permanent room via Gateway:', createError);
-          notify.error('Error', `Failed to create permanent room: ${createError.message}`);
+          notify.error('toasts.common.error', `Failed to create permanent room: ${createError.message}`);
           setIsLoading(false);
           return;
         }
@@ -333,7 +333,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: any) {
             console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-            notify.error('Error', `Room stuck. Please try again in a few seconds.`);
+            notify.error('toasts.common.error', `Room stuck. Please try again in a few seconds.`);
             throw firstError;
           }
         } else {

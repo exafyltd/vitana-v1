@@ -171,7 +171,8 @@
       "improvementRequested": "Improvement requested",
       "weLlAnalyzeUpdateSuggestionsShortly": "We’ll analyze and update suggestions shortly.",
       "activityHidden": "Activity hidden",
-      "success": "Success! 🎉"
+      "success": "Success! 🎉",
+      "donTBreakStreakOneSmall": "🔥 Don't break the streak — one small action today"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Companion overrides saved — voice cache refreshes within 30s.",
@@ -322,7 +323,8 @@
       "notificationSent": "Notification Sent",
       "sendFailed2": "Send Failed",
       "brandingSaved": "Branding saved",
-      "profileSaved": "Profile saved"
+      "profileSaved": "Profile saved",
+      "removedFromActiveList": "Removed from the active list."
     },
     "audio": {
       "cameraStopped": "Camera stopped",
@@ -410,7 +412,9 @@
       "couldnTConfirm": "Couldn't confirm",
       "reopened": "Reopened",
       "vitanaWillFollowUp": "Vitana will follow up.",
-      "couldnTReopen": "Couldn't reopen"
+      "couldnTReopen": "Couldn't reopen",
+      "demoRoom": "Demo Room",
+      "thisExampleRoomCreateYourOwn": "This is an example room. Create your own to go live!"
     },
     "crossover": {
       "bookingStarted": "📅 Booking started",
@@ -497,7 +501,9 @@
       "entrySaved": "Entry saved!",
       "yourDiaryEntryHasSavedSuccessfully": "Your diary entry has been saved successfully.",
       "saveFailed": "Save failed",
-      "failedSaveYourEntryPleaseTry": "Failed to save your entry. Please try again."
+      "failedSaveYourEntryPleaseTry": "Failed to save your entry. Please try again.",
+      "undoAvailable": "Undo available",
+      "deleteLastDiaryEntry": "Delete the last diary entry"
     },
     "discover": {
       "actionSelected": "Action Selected",
@@ -558,7 +564,9 @@
       "sleepInsightsOpened": "Sleep insights opened",
       "sleepDataLogged": "Sleep data logged! 🌙",
       "noFileAvailable": "No file available",
-      "couldNotLoadFile": "Could not load file"
+      "couldNotLoadFile": "Could not load file",
+      "recalibrationStarted": "🔄 Recalibration Started",
+      "reportGeneration": "📊 Report Generation"
     },
     "intents": {
       "moreDetailNeeded": "More detail needed",
@@ -601,7 +609,9 @@
       "calendarExport": "Calendar export",
       "icalFileDownloaded": "iCal file downloaded",
       "failedSendMessage": "Failed to send message",
-      "pleaseTryAgainLater": "Please try again later"
+      "pleaseTryAgainLater": "Please try again later",
+      "addedSmartCalendar": "Added to Smart Calendar ✓",
+      "eventSavedWeLlRemindYou": "Event saved. We'll remind you before it starts."
     },
     "memory": {
       "voiceRecorded": "Voice Recorded",
@@ -697,7 +707,8 @@
       "eventRegistration": "Event Registration! 🎊"
     },
     "onboarding": {
-      "networkError": "Network error"
+      "networkError": "Network error",
+      "thisYourSpeakableIdAcrossVitana": "This is your speakable ID across Vitana. Permanent — pick wisely!"
     },
     "payment": {
       "missingInformation": "Missing Information",
@@ -798,7 +809,11 @@
       "shareItAnywhereYouLike": "Share it anywhere you like.",
       "couldNotShare": "Could not share",
       "pleaseTryAgain": "Please try again.",
-      "couldNotUpdateVisibility": "Could not update visibility"
+      "couldNotUpdateVisibility": "Could not update visibility",
+      "dancePreferencesSaved": "Dance preferences saved",
+      "displayNameRequired": "Display name is required.",
+      "mp3WavFlacAacOggM4a": "MP3, WAV, FLAC, AAC, OGG, M4A",
+      "mp4WebmMov": "MP4, WebM, MOV"
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Notifications aren't supported in this browser.",
@@ -919,7 +934,8 @@
       "failedShareContentPleaseTryAgain": "Failed to share content. Please try again.",
       "postPublished": "Post published!",
       "campaignsExportedCsv": "Campaigns exported to CSV",
-      "smartrescheduleFeatureComingSoon": "Smart-Reschedule feature coming soon!"
+      "smartrescheduleFeatureComingSoon": "Smart-Reschedule feature coming soon!",
+      "viberNotDetectedLinkCopiedClipboard": "Viber not detected. Link copied to clipboard!"
     },
     "tickets": {
       "ticketDownloaded": "Ticket downloaded!",
@@ -1243,7 +1259,9 @@
       "transferSuccessful": "Transfer Successful! 💸",
       "transferFailed": "Transfer Failed",
       "exchangeSendSuccessful": "Exchange & Send Successful! ✨",
-      "exchangeSendFailed": "Exchange & Send Failed"
+      "exchangeSendFailed": "Exchange & Send Failed",
+      "linkAvailable": "Link available",
+      "errorUpdatingPreferences": "Error updating preferences"
     },
     "businesslistings": {
       "couldNotLoadListings": "Could not load listings"
@@ -1292,6 +1310,9 @@
       "yourActionHasCompletedSuccessfully": "Your action has been completed successfully.",
       "actionDismissed": "Action Dismissed",
       "thisActionHasRemovedFromYour": "This action has been removed from your list."
+    },
+    "index": {
+      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL not configured"
     }
   }
 }

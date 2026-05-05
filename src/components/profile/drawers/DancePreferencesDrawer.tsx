@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
-import { notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError } from '@/lib/i18n-toast';
 
 const VARIETIES = [
   { key: "salsa", label: "Salsa" },
@@ -160,7 +160,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
       return;
     }
     toast({
-      title: "Dance preferences saved",
+      title: lookup('toasts.profile.dancePreferencesSaved'),
       description:
         varieties.size > 0
           ? `Vitana will use these to find matches when you post a dance request.`
