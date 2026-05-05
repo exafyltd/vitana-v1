@@ -1,0 +1,16 @@
+{
+  "groupDetail": {
+    "members": "Mitglieder",
+    "public": "Öffentlich",
+    "private": "Privat",
+    "leaveGroup": "Gruppe verlassen",
+    "leaving": "Verlassen...",
+    "joinGroup": "Beitreten",
+    "joining": "Beitreten...",
+    "back": "Zurück",
+    "notFound": "Gruppe nicht gefunden",
+    "notFoundDesc": "Diese Gruppe wurde möglicherweise entfernt oder existiert nicht.",
+    "browseGroups": "Gruppen durchsuchen",
+    "support": "Hilfe"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "orders": {
+    "myOrders": "Meine Bestellungen",
+    "title": "Bestellungen",
+    "description": "Ihre Bestellhistorie und aktive Abonnements",
+    "trackDescription": "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets",
+    "searchPlaceholder": "Bestellungen suchen...",
+    "tabs": {
+      "active": "Aktiv",
+      "history": "Verlauf",
+      "all": "Alle",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
+    },
+    "filters": {
+      "all": "Alle",
+      "events": "Events",
+      "products": "Produkte",
+      "vouchers": "Gutscheine",
+      "services": "Services",
+      "refunds": "Erstattungen"
+    },
+    "previewNotice": "Dies sind Vorschau-Bestellungen. Ihre tatsächlichen Bestellungen erscheinen hier.",
+    "sampleData": "Beispieldaten",
+    "emptyActive": {
+      "title": "Keine aktiven Bestellungen",
+      "description": "Sie haben keine aktiven Bestellungen oder anstehenden Events."
+    },
+    "emptyHistory": {
+      "title": "Kein Bestellverlauf",
+      "description": "Ihre abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
+    },
+    "noOrders": "Noch keine Bestellungen",
+    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
+    "browseProducts": "Produkte durchsuchen",
+    "findEvents": "Events entdecken",
+    "startShopping": "Einkaufen starten",
+    "noFilter": "Keine {filter} gefunden",
+    "noFilterDesc": "Keine {filter} in Ihrem Verlauf gefunden.",
+    "orderDate": "Bestelldatum",
+    "orderNumber": "Bestellnummer",
+    "viewDetails": "Details anzeigen",
+    "trackOrder": "Bestellung verfolgen",
+    "reorder": "Erneut bestellen",
+    "detailSheet": {
+      "title": "Bestelldetails",
+      "orderInfo": "Bestellinfo",
+      "orderReference": "Bestellreferenz",
+      "purchaseDate": "Kaufdatum",
+      "eventDate": "Event-Datum",
+      "location": "Ort",
+      "quantity": "Menge",
+      "tickets": "Tickets",
+      "yourTicket": "Ihr Ticket",
+      "giftVoucher": "Geschenkgutschein",
+      "code": "Code",
+      "sendToRecipient": "An Empfänger senden",
+      "recipientEmail": "Empfänger-E-Mail *",
+      "recipientName": "Empfängername",
+      "personalMessage": "Persönliche Nachricht",
+      "cancel": "Abbrechen",
+      "send": "Senden",
+      "downloadPdf": "PDF herunterladen"
+    },
+    "status": {
+      "upcoming": "Bevorstehend",
+      "attended": "Besucht",
+      "expired": "Abgelaufen",
+      "completed": "Abgeschlossen",
+      "delivered": "Geliefert",
+      "cancelled": "Storniert",
+      "refunded": "Erstattet",
+      "shipped": "Unterwegs",
+      "confirmed": "Bestätigt",
+      "pending": "Ausstehend",
+      "processing": "In Bearbeitung",
+      "paid": "Aktiv",
+      "active": "Aktiv"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana Gesundheitsindex",
+    "subtitle": "Allgemeine Wellness-Balance über alle Gesundheitssäulen",
+    "veryPoor": "Sehr schlecht",
+    "poor": "Schlecht",
+    "fair": "Ausreichend",
+    "improving": "Verbessernd",
+    "good": "Gut",
+    "excellent": "Ausgezeichnet",
+    "sleep": "Schlaf",
+    "exercise": "Bewegung",
+    "nutrition": "Ernährung",
+    "hydration": "Hydration",
+    "mental": "Mental",
+    "viewFullReport": "Vollständigen Bericht anzeigen",
+    "trackToday": "Heute verfolgen"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "support": {
+    "maxina": {
+      "title": "Maxina Support",
+      "subtitle": "Wie können wir Ihnen heute helfen?",
+      "description": "Finden Sie Antworten auf häufige Fragen oder kontaktieren Sie unser Support-Team.",
+      "categoriesTitle": "Hilfethemen durchsuchen",
+      "categories": {
+        "gettingStarted": "Erste Schritte",
+        "account": "Konto & Profil",
+        "events": "Events & MeetUps",
+        "payments": "Zahlungen & Abrechnung",
+        "technical": "Technische Hilfe"
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "createAccount": {
+          "question": "Wie erstelle ich ein Maxina-Konto?",
+          "answer": "Laden Sie die Maxina-App herunter oder besuchen Sie unser Portal unter vitanaland.com/maxina. Tippen Sie auf 'Registrieren' und geben Sie Ihre E-Mail-Adresse ein. Sie erhalten eine Bestätigungs-E-Mail zur Verifizierung Ihres Kontos. Nach der Bestätigung vervollständigen Sie Ihr Profil, um Wellness-Events und Community-Funktionen zu entdecken."
+        },
+        "resetPassword": {
+          "question": "Wie setze ich mein Passwort zurück?",
+          "answer": "Tippen Sie auf dem Anmeldebildschirm auf 'Passwort vergessen' und geben Sie Ihre registrierte E-Mail-Adresse ein. Sie erhalten innerhalb weniger Minuten einen Link zum Zurücksetzen des Passworts. Prüfen Sie Ihren Spam-Ordner, falls Sie die E-Mail nicht sehen. Der Link läuft aus Sicherheitsgründen nach 24 Stunden ab."
+        },
+        "joinEvents": {
+          "question": "Wie nehme ich an Events und MeetUps teil?",
+          "answer": "Durchsuchen Sie verfügbare Events im Bereich Events & MeetUps. Tippen Sie auf ein Event, um Details wie Datum, Ort und Preis anzuzeigen. Bei kostenlosen Events tippen Sie einfach auf 'Teilnehmen' oder 'Zusagen'. Für kostenpflichtige Events können Sie Tickets sicher über unser integriertes Zahlungssystem erwerben."
+        },
+        "updateProfile": {
+          "question": "Wie aktualisiere ich meine Profilinformationen?",
+          "answer": "Gehen Sie zu Ihrem Profil-Tab und tippen Sie auf das Bearbeiten-Symbol oder 'Profil bearbeiten'. Sie können Ihren Anzeigenamen, Ihre Bio, Ihr Profilbild und Ihre Wellness-Interessen aktualisieren. Änderungen werden automatisch gespeichert. Ihr Profil hilft uns, Event-Empfehlungen für Sie zu personalisieren."
+        },
+        "deleteAccount": {
+          "question": "Wie kann ich mein Konto löschen?",
+          "answer": "Um Ihr Maxina-Konto und die zugehörigen Daten zu löschen, senden Sie bitte eine E-Mail an support@exafy.io mit dem Betreff 'Kontolöschung – Maxina'. Geben Sie die mit Ihrem Konto verknüpfte E-Mail-Adresse an. Wir bearbeiten Löschanfragen innerhalb von 30 Tagen."
+        },
+        "paymentMethods": {
+          "question": "Welche Zahlungsmethoden werden akzeptiert?",
+          "answer": "Wir akzeptieren gängige Kredit- und Debitkarten (Visa, Mastercard, American Express) über unsere sichere Stripe-Zahlungsintegration. Apple Pay und Google Pay sind auf unterstützten Geräten ebenfalls verfügbar. Alle Transaktionen sind verschlüsselt und PCI-DSS-konform."
+        },
+        "contactOrganizers": {
+          "question": "Wie kontaktiere ich Event-Organisatoren?",
+          "answer": "Auf jeder Event-Seite finden Sie das Profil des Organisators. Tippen Sie auf den Namen, um das Profil anzuzeigen und auf Nachrichtenoptionen zuzugreifen. Bei Fragen zu bestimmten Events nutzen Sie den Q&A-Bereich des Events oder kontaktieren Sie den Organisator direkt über die In-App-Nachrichten."
+        },
+        "dataSecure": {
+          "question": "Sind meine persönlichen Daten sicher?",
+          "answer": "Ja, Ihre Privatsphäre und Sicherheit haben für uns höchste Priorität. Wir verwenden branchenübliche Verschlüsselung, sichere Authentifizierung und befolgen die DSGVO-Richtlinien. Wir geben Ihre persönlichen Daten niemals ohne Ihre Zustimmung an Dritte weiter. Lesen Sie unsere vollständige Datenschutzerklärung für weitere Details."
+        }
+      },
+      "contact": {
+        "title": "Support kontaktieren",
+        "email": "E-Mail senden",
+        "responseTime": "Wir antworten in der Regel innerhalb von 24 Stunden"
+      },
+      "usefulLinks": {
+        "title": "Nützliche Links",
+        "privacy": "Datenschutzerklärung",
+        "deleteAccount": "Konto löschen",
+        "portal": "Zurück zum Maxina-Portal"
+      },
+      "footer": "Alle Rechte vorbehalten."
+    }
+  }
+}

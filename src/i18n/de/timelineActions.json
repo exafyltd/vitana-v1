@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Zeitachsen-Aktionen",
+    "items": {
+      "logHealthEvent": {
+        "title": "Gesundheitsereignis erfassen",
+        "description": "Wichtige Gesundheits-Meilensteine festhalten"
+      },
+      "markAchievement": {
+        "title": "Erfolg markieren",
+        "description": "Erreichte Wellness-Ziele feiern"
+      },
+      "recordLifeMoment": {
+        "title": "Lebensmoment festhalten",
+        "description": "Bedeutungsvolle Erlebnisse erfassen"
+      },
+      "addPhotoMemory": {
+        "title": "Fotoerinnerung hinzufügen",
+        "description": "Visuelle Zeitachse mit Gesundheits-Fotos"
+      },
+      "voiceTimelineEntry": {
+        "title": "Sprach-Zeitachsen-Eintrag",
+        "description": "Schnelle Audio-Gesundheits-Updates"
+      },
+      "trackProgress": {
+        "title": "Fortschritt verfolgen",
+        "description": "Wellness-Metriken und Trends erfassen"
+      },
+      "activityCheckIn": {
+        "title": "Aktivitäts-Check-in",
+        "description": "Workouts und Aktivitäten erfassen"
+      },
+      "setTimelineGoal": {
+        "title": "Zeitachsen-Ziel festlegen",
+        "description": "Zukünftige Gesundheitsziele erstellen"
+      }
+    }
+  }
+}

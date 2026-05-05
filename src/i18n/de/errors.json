@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Etwas ist schiefgelaufen",
+    "tryAgain": "Bitte versuchen Sie es erneut",
+    "pageNotFound": "Seite nicht gefunden",
+    "pageNotFoundDesc": "Die angeforderte Seite existiert nicht.",
+    "serverError": "Serverfehler",
+    "serverErrorDesc": "Ein unerwarteter Fehler ist aufgetreten.",
+    "networkError": "Netzwerkfehler",
+    "networkErrorDesc": "Bitte überprüfen Sie Ihre Internetverbindung.",
+    "unauthorized": "Nicht autorisiert",
+    "unauthorizedDesc": "Bitte melden Sie sich an, um fortzufahren.",
+    "forbidden": "Zugriff verweigert",
+    "forbiddenDesc": "Sie haben keine Berechtigung für diese Aktion.",
+    "notFound": "Nicht gefunden",
+    "notFoundDesc": "Das angeforderte Element wurde nicht gefunden."
+  }
+}

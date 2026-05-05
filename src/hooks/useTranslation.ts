@@ -1,14 +1,10 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import en from '@/i18n/en.json';
-import de from '@/i18n/de.json';
+import { catalogs } from '@/i18n';
 
 // Use a flexible record type to handle different translation structures
 type TranslationObject = Record<string, any>;
 
-const translations: Record<string, TranslationObject> = {
-  'en-US': en,
-  'de-DE': de,
-};
+const translations: Record<string, TranslationObject> = catalogs;
 
 // Track missing keys in development to catch untranslated strings
 const missingKeys = new Set<string>();

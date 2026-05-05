@@ -1,0 +1,81 @@
+{
+  "orders": {
+    "myOrders": "My Orders",
+    "title": "Orders",
+    "description": "Your order history and active subscriptions",
+    "trackDescription": "Track your product orders and event tickets",
+    "searchPlaceholder": "Search orders...",
+    "tabs": {
+      "active": "Active",
+      "history": "History",
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "filters": {
+      "all": "All",
+      "events": "Events",
+      "products": "Products",
+      "vouchers": "Vouchers",
+      "services": "Services",
+      "refunds": "Refunds"
+    },
+    "previewNotice": "These are preview orders. Your actual orders will appear here.",
+    "sampleData": "Sample Data",
+    "emptyActive": {
+      "title": "No Active Orders",
+      "description": "You don't have any active orders or upcoming events."
+    },
+    "emptyHistory": {
+      "title": "No Order History",
+      "description": "Your completed orders and past events will appear here."
+    },
+    "noOrders": "No orders yet",
+    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
+    "browseProducts": "Browse Products",
+    "findEvents": "Find Events",
+    "startShopping": "Start Shopping",
+    "noFilter": "No {filter}",
+    "noFilterDesc": "No {filter} found in your history.",
+    "orderDate": "Order date",
+    "orderNumber": "Order number",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "reorder": "Reorder",
+    "detailSheet": {
+      "title": "Order Details",
+      "orderInfo": "Order Info",
+      "orderReference": "Order Reference",
+      "purchaseDate": "Purchase Date",
+      "eventDate": "Event Date",
+      "location": "Location",
+      "quantity": "Quantity",
+      "tickets": "tickets",
+      "yourTicket": "Your Ticket",
+      "giftVoucher": "Gift Voucher",
+      "code": "Code",
+      "sendToRecipient": "Send to Recipient",
+      "recipientEmail": "Recipient Email *",
+      "recipientName": "Recipient Name",
+      "personalMessage": "Personal Message",
+      "cancel": "Cancel",
+      "send": "Send",
+      "downloadPdf": "Download PDF"
+    },
+    "status": {
+      "upcoming": "Upcoming",
+      "attended": "Attended",
+      "expired": "Expired",
+      "completed": "Completed",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "shipped": "In Transit",
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "processing": "Processing",
+      "paid": "Active",
+      "active": "Active"
+    }
+  }
+}

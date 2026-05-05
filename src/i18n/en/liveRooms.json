@@ -1,0 +1,134 @@
+{
+  "liveRooms": {
+    "title": "Live Rooms",
+    "description": "Join live audio and video discussions",
+    "tabs": {
+      "live": "Live Now",
+      "scheduled": "Scheduled",
+      "all": "All Rooms",
+      "past": "Past"
+    },
+    "goLive": "Go Live",
+    "joinRoom": "Join Room",
+    "noRooms": "No live rooms at the moment",
+    "beFirst": "Be the first to go live",
+    "demoRoom": "Demo Room",
+    "demoRoomDesc": "This is an example room. Create your own to go live!",
+    "search": {
+      "placeholder": "Search rooms, topics, or hosts...",
+      "category": "Category",
+      "allCategories": "All Categories"
+    },
+    "room": {
+      "join": "Join Room",
+      "participants": "Participants",
+      "duration": "Duration",
+      "host": "Host",
+      "premium": "Premium",
+      "live": "LIVE"
+    },
+    "viewer": {
+      "leave": "Leave",
+      "mute": "Mute",
+      "video": "Video",
+      "raiseHand": "Raise Hand",
+      "chat": "Chat",
+      "reactions": "Reactions"
+    },
+    "goLivePopup": {
+      "titleCreate": "Go Live",
+      "titleEdit": "Edit Live Stream",
+      "streamTitleLabel": "Stream Title",
+      "streamTitlePlaceholder": "Live with {name}",
+      "descriptionLabel": "Description / Bio (Optional)",
+      "descriptionPlaceholder": "Tell your audience what this stream is about…",
+      "charactersCount": "{count}/500 characters",
+      "streamTypeLabel": "Stream Type",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Cover Image / Thumbnail",
+      "coverAlt": "Stream cover",
+      "coverUploadCta": "Click to upload custom image",
+      "coverUploadHint": "PNG, JPG up to 2MB",
+      "aiAutoGenerateLabel": "Auto-generate with AI",
+      "aiAutoGenerateHint": "Generate image if none uploaded",
+      "generatingAiImage": "Generating AI image…",
+      "tagsLabel": "Tags / Category (Select 1-3)",
+      "tagsSelected": "{count}/3 selected",
+      "tags": {
+        "wellness": "Wellness",
+        "nutrition": "Nutrition",
+        "fitness": "Fitness",
+        "mentalHealth": "Mental Health",
+        "longevity": "Longevity",
+        "meditation": "Meditation",
+        "sleep": "Sleep",
+        "motivation": "Motivation",
+        "education": "Education",
+        "lifestyle": "Lifestyle"
+      },
+      "advancedTitle": "Advanced Options",
+      "cohostLabel": "Co-Host / Guest Invite",
+      "cohostPlaceholder": "Search and add co-host",
+      "accessLevelLabel": "Access Level",
+      "access": {
+        "public": {
+          "label": "Public",
+          "desc": "Anyone can join"
+        },
+        "followers": {
+          "label": "Followers Only",
+          "desc": "Only your followers"
+        },
+        "group": {
+          "label": "Group/VIP",
+          "desc": "Invited members only"
+        }
+      },
+      "scheduleLabel": "Schedule for Later",
+      "goLiveNow": "Go Live Now",
+      "selectTime": "Select time",
+      "clearSchedule": "Clear Schedule (Go Live Now)",
+      "scheduledAt": "{date} at {time}",
+      "dateNeedsTime": "{date} – select time",
+      "time": "Time",
+      "engagementLabel": "Chat & Engagement",
+      "enableChatTitle": "Enable Chat",
+      "enableChatDesc": "Allow viewers to chat",
+      "enablePollsTitle": "Enable Polls",
+      "enablePollsDesc": "Create live polls during stream",
+      "recordReplayTitle": "Record for Replay",
+      "recordReplayDesc": "Save stream for later viewing",
+      "cancel": "Cancel",
+      "starting": "Starting…",
+      "updating": "Updating…",
+      "updateStream": "Update Stream",
+      "scheduleSession": "Schedule Live Session",
+      "goLiveNowAction": "Go Live Now",
+      "errors": {
+        "selectStreamTypeTitle": "Select Stream Type",
+        "selectStreamTypeDesc": "Please select Audio or Video",
+        "notLoggedInTitle": "Error",
+        "notLoggedInDesc": "You must be logged in to go live",
+        "invalidFileTypeTitle": "Invalid File Type",
+        "invalidFileTypeDesc": "Please select an image file (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "File Too Large",
+        "fileTooLargeDesc": "Image must be smaller than 2MB",
+        "imageUploadFailedTitle": "Image upload failed",
+        "imageUploadFailedDesc": "We'll keep the existing image.",
+        "genericTitle": "Error",
+        "genericDesc": "Failed to create stream. Please try again."
+      },
+      "success": {
+        "streamUpdatedTitle": "Stream Updated! ✨",
+        "streamUpdatedDesc": "Your stream has been updated successfully",
+        "streamScheduledTitle": "Stream Scheduled! 📅",
+        "streamScheduledDesc": "Your stream is scheduled for {date} at {time}",
+        "youAreLiveTitle": "You're Live! 🎙️",
+        "youAreLiveDesc": "Joining your stream room…",
+        "aiImageHintTitle": "AI Image Generation",
+        "aiImageHintDesc": "Image will be generated when stream starts."
+      }
+    }
+  }
+}

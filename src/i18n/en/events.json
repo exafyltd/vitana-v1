@@ -1,0 +1,24 @@
+{
+  "events": {
+    "title": "Events & Meet-Ups",
+    "description": "Discover local wellness gatherings",
+    "searchPlaceholder": "Search events and meetups...",
+    "tabs": {
+      "today": "Today",
+      "upcoming": "Upcoming",
+      "following": "Following",
+      "recommended": "Recommended"
+    },
+    "noEvents": "No events scheduled",
+    "checkBack": "Check back soon for upcoming community events!",
+    "emptyStates": {
+      "noEventsToday": "No Events Today",
+      "noEventsTodayDesc": "There are no events scheduled for today. Check upcoming events or create your own!",
+      "createEvent": "Create Event",
+      "viewUpcoming": "View Upcoming Events",
+      "followingTitle": "Posts from People You Follow",
+      "followingDesc": "Content from people and groups you follow will appear here",
+      "findPeople": "Find People to Follow"
+    }
+  }
+}

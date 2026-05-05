@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "Privacy & Permission Actions",
+    "items": {
+      "privacySettings": {
+        "title": "Privacy Settings",
+        "description": "Configure data privacy and sharing preferences"
+      },
+      "manageAccess": {
+        "title": "Manage Access",
+        "description": "Control who can view your health memories"
+      },
+      "securitySettings": {
+        "title": "Security Settings",
+        "description": "Update authentication and security preferences"
+      },
+      "apiKeysAccess": {
+        "title": "API Keys & Access",
+        "description": "Manage third-party app integrations and API access"
+      },
+      "dataRights": {
+        "title": "Data Rights",
+        "description": "Exercise your rights to data portability and deletion"
+      },
+      "auditLogs": {
+        "title": "Audit Logs",
+        "description": "Review access history and security audit trail"
+      },
+      "permissionSettings": {
+        "title": "Permission Settings",
+        "description": "Fine-tune granular permissions for different features"
+      },
+      "exportData": {
+        "title": "Export Data",
+        "description": "Download your memories and health data securely"
+      }
+    }
+  }
+}

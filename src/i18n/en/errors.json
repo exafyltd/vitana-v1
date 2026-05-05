@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Please try again",
+    "pageNotFound": "Page not found",
+    "pageNotFoundDesc": "The requested page doesn't exist.",
+    "serverError": "Server error",
+    "serverErrorDesc": "An unexpected error occurred.",
+    "networkError": "Network error",
+    "networkErrorDesc": "Please check your internet connection.",
+    "unauthorized": "Unauthorized",
+    "unauthorizedDesc": "Please sign in to continue.",
+    "forbidden": "Access denied",
+    "forbiddenDesc": "You don't have permission for this action.",
+    "notFound": "Not found",
+    "notFoundDesc": "The requested item was not found."
+  }
+}

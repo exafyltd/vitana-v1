@@ -1,0 +1,23 @@
+{
+  "payment": {
+    "completed": "Zahlung abgeschlossen! ✅",
+    "sentSuccess": "{amount} erfolgreich gesendet",
+    "alreadyProcessed": "Bereits verarbeitet",
+    "requestIs": "Diese Anfrage ist {status}.",
+    "alreadyAccepted": "Diese Zahlungsanforderung wurde bereits akzeptiert.",
+    "declined": "Zahlung abgelehnt",
+    "declinedDesc": "Zahlungsanforderung wurde abgelehnt",
+    "exchangeSuccess": "Umtausch & Senden erfolgreich! ✨",
+    "exchangeSuccessDesc": "Konvertiert und {amount} gesendet",
+    "insufficientBalance": "Unzureichendes Guthaben",
+    "insufficientBalanceDesc": "Sie haben nicht genug {currency} für diesen Umtausch",
+    "transactionFailed": "Transaktion fehlgeschlagen",
+    "paymentFailed": "Zahlung fehlgeschlagen",
+    "paymentFailedDesc": "Zahlung konnte nicht verarbeitet werden. Bitte erneut versuchen.",
+    "balanceRefreshed": "Guthaben aktualisiert",
+    "balanceRefreshedDesc": "Wallet-Guthaben wurde aktualisiert",
+    "refreshFailed": "Aktualisierung fehlgeschlagen",
+    "refreshFailedDesc": "Guthaben konnte nicht aktualisiert werden. Bitte erneut versuchen.",
+    "error": "Fehler"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "recallActions": {
+    "title": "Erinnerungs-Suche & Abruf",
+    "items": {
+      "askAiQuestion": {
+        "title": "KI-Frage stellen",
+        "description": "Deine Erinnerungen per natürlicher KI-Suche abfragen"
+      },
+      "advancedSearch": {
+        "title": "Erweiterte Suche",
+        "description": "Filter, Tags und Datumsbereiche nutzen, um Erinnerungen zu finden"
+      },
+      "patternAnalysis": {
+        "title": "Muster-Analyse",
+        "description": "Trends und Muster in deinen Wellness-Daten entdecken"
+      },
+      "memoryInsights": {
+        "title": "Erinnerungs-Einsichten",
+        "description": "KI-gestützte Erkenntnisse aus deiner Gesundheits-Reise erhalten"
+      },
+      "searchByDate": {
+        "title": "Nach Datum suchen",
+        "description": "Erinnerungen aus bestimmten Zeiträumen durchsuchen"
+      },
+      "locationMemories": {
+        "title": "Orts-Erinnerungen",
+        "description": "Einträge nach besuchten Orten finden"
+      },
+      "filterByCategory": {
+        "title": "Nach Kategorie filtern",
+        "description": "Erinnerungen nach Wellness-Säulen und Kategorien durchsuchen"
+      },
+      "quickRecalls": {
+        "title": "Schnellabruf",
+        "description": "Auf häufig gesuchte Erinnerungen und Abfragen zugreifen"
+      }
+    }
+  }
+}

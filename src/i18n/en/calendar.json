@@ -1,0 +1,147 @@
+{
+  "calendar": {
+    "smartCalendar": "Smart Calendar",
+    "myCalendar": "My Calendar",
+    "bookedActivities": "Your booked activities in VITANA",
+    "addEvent": "Add Event",
+    "synced": "Synced",
+    "syncing": "Syncing",
+    "today": "Today",
+    "week": "Week",
+    "month": "Month",
+    "agenda": "Agenda",
+    "nothingScheduled": "Nothing scheduled",
+    "tryQuickAdd": "Try Quick Add or let Autopilot plan your day",
+    "clickSlotHint": "Click any slot to create an event • Drag to reschedule",
+    "noEventsOnDate": "No events on this date",
+    "lastSynced": "Last synced",
+    "justNow": "just now",
+    "now": "Now",
+    "untitledEvent": "Untitled Event",
+    "newEvent": "New Event",
+    "close": "Close",
+    "noBookingsToday": "No bookings today",
+    "noBookingsYet": "No bookings yet",
+    "nextUpcoming": "Next upcoming",
+    "exploreActivities": "Explore activities to add to your calendar",
+    "browseActivities": "Browse Activities",
+    "bookedEvents": {
+      "title": "Your Booked Events",
+      "todayLabel": "Today",
+      "nextUp": "Next up",
+      "noEventsToday": "No events today"
+    },
+    "filters": {
+      "personal": "Personal",
+      "community": "Community",
+      "work": "Work",
+      "health": "Health",
+      "workout": "Workout"
+    },
+    "categories": {
+      "community": "Community",
+      "fitness": "Fitness",
+      "health": "Health",
+      "nutrition": "Nutrition",
+      "professional": "Work",
+      "personal": "Personal",
+      "training": "Training"
+    },
+    "bookingStatus": {
+      "booked": "Booked",
+      "rsvp": "RSVP",
+      "ticket": "Ticket",
+      "reserved": "Reserved"
+    },
+    "timeGroups": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This Week",
+      "later": "Later"
+    },
+    "autopilot": {
+      "suggestions": "Autopilot Suggestions",
+      "badge": "Autopilot",
+      "accept": "Accept",
+      "snooze": "Snooze",
+      "dismiss": "Dismiss",
+      "undo": "Undo",
+      "laterToday": "Later today",
+      "tomorrow": "Tomorrow",
+      "conflictsWith": "Conflicts with:",
+      "suggestionAccepted": "Suggestion accepted",
+      "calendarUpdated": "Autopilot has updated your calendar",
+      "suggestionUndone": "Suggestion undone",
+      "changesReverted": "Changes have been reverted",
+      "suggestionSnoozed": "Suggestion snoozed",
+      "reminderLaterToday": "Reminder set for later today",
+      "reminderTomorrow": "Reminder set for tomorrow",
+      "recommendFocus": "Recommend focus block",
+      "focusBlockDesc": "You have a 90-minute window available. Perfect for deep work."
+    },
+    "toasts": {
+      "eventCreated": "Event created",
+      "eventCreatedDesc": "Your event has been added to the calendar",
+      "eventDeleted": "Event deleted",
+      "eventDeletedDesc": "The event has been removed from your calendar",
+      "syncingTitle": "Syncing...",
+      "syncingDesc": "Syncing with external calendars",
+      "syncedTitle": "Synced",
+      "syncedDesc": "Calendar is up to date",
+      "joiningEvent": "Joining event",
+      "openingVideoCall": "Opening video call...",
+      "messageAttendees": "Message attendees",
+      "featureComingSoon": "Feature coming soon",
+      "inviteFollowers": "Invite followers",
+      "rescheduleEvent": "Reschedule event",
+      "shareToGroup": "Share to group"
+    },
+    "error": {
+      "failedToCreate": "Failed to create event"
+    },
+    "allDay": "All day",
+    "milestoneToday": "Milestone",
+    "focus": {
+      "todaysFocus": "Today's focus",
+      "lightDay": "Light day — explore activities or catch up on your diary",
+      "moreSteps": "more steps"
+    },
+    "badge": {
+      "guidedStep": "Guided step",
+      "milestone": "Milestone",
+      "wellness": "Wellness"
+    },
+    "action": {
+      "start": "Start",
+      "continue": "Continue",
+      "join": "Join",
+      "details": "Details",
+      "viewPlan": "View plan",
+      "open": "Open",
+      "done": "Done"
+    },
+    "group": {
+      "stepsRemaining": "steps remaining",
+      "min": "min"
+    },
+    "journey": {
+      "dayOf": "Day {day} of {total}",
+      "yourJourney": "Your journey",
+      "nextMilestone": "Next milestone",
+      "showFullAgenda": "Show full agenda",
+      "moreEvents": "more events",
+      "onboardingPlan": "Today's onboarding plan",
+      "estimatedTime": "~{minutes} min",
+      "startPlan": "Start plan",
+      "tasksCompleted": "{completed}/{total} done",
+      "waveNames": {
+        "wave-1": "Getting Started",
+        "wave-2": "Daily Anchors",
+        "wave-3": "Deepening Connections",
+        "wave-4": "Health Intelligence",
+        "wave-5": "Insight Moments",
+        "wave-6": "Recommendations & Discovery"
+      }
+    }
+  }
+}

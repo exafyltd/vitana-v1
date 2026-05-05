@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "Datenschutz- & Berechtigungs-Aktionen",
+    "items": {
+      "privacySettings": {
+        "title": "Datenschutzeinstellungen",
+        "description": "Datenschutz und Freigabe-Einstellungen konfigurieren"
+      },
+      "manageAccess": {
+        "title": "Zugriff verwalten",
+        "description": "Steuern, wer deine Gesundheits-Erinnerungen sehen darf"
+      },
+      "securitySettings": {
+        "title": "Sicherheitseinstellungen",
+        "description": "Authentifizierungs- und Sicherheitseinstellungen aktualisieren"
+      },
+      "apiKeysAccess": {
+        "title": "API-Schlüssel & Zugriff",
+        "description": "Drittanbieter-Integrationen und API-Zugriffe verwalten"
+      },
+      "dataRights": {
+        "title": "Datenrechte",
+        "description": "Deine Rechte auf Datenübertragbarkeit und Löschung wahrnehmen"
+      },
+      "auditLogs": {
+        "title": "Audit-Logs",
+        "description": "Zugriffsverlauf und Sicherheits-Audit-Trail einsehen"
+      },
+      "permissionSettings": {
+        "title": "Berechtigungseinstellungen",
+        "description": "Granulare Berechtigungen für verschiedene Funktionen feinabstimmen"
+      },
+      "exportData": {
+        "title": "Daten exportieren",
+        "description": "Deine Erinnerungen und Gesundheitsdaten sicher herunterladen"
+      }
+    }
+  }
+}

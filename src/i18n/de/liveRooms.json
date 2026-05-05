@@ -1,0 +1,134 @@
+{
+  "liveRooms": {
+    "title": "Live Rooms",
+    "description": "Nimm an Live-Audio- und Videodiskussionen teil",
+    "tabs": {
+      "live": "Jetzt Live",
+      "scheduled": "Geplant",
+      "all": "Alle Räume",
+      "past": "Rückblick"
+    },
+    "goLive": "Live gehen",
+    "joinRoom": "Raum beitreten",
+    "noRooms": "Derzeit keiner live",
+    "beFirst": "Sei der Erste, der live geht",
+    "demoRoom": "Demo-Raum",
+    "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen!",
+    "search": {
+      "placeholder": "Räume, Themen oder Moderatoren suchen...",
+      "category": "Kategorie",
+      "allCategories": "Alle Kategorien"
+    },
+    "room": {
+      "join": "Raum beitreten",
+      "participants": "Teilnehmer",
+      "duration": "Dauer",
+      "host": "Moderator",
+      "premium": "Premium",
+      "live": "LIVE"
+    },
+    "viewer": {
+      "leave": "Verlassen",
+      "mute": "Stumm",
+      "video": "Video",
+      "raiseHand": "Hand heben",
+      "chat": "Chat",
+      "reactions": "Reaktionen"
+    },
+    "goLivePopup": {
+      "titleCreate": "Live gehen",
+      "titleEdit": "Live-Stream bearbeiten",
+      "streamTitleLabel": "Stream-Titel",
+      "streamTitlePlaceholder": "Live mit {name}",
+      "descriptionLabel": "Beschreibung / Bio (optional)",
+      "descriptionPlaceholder": "Beschreiben Sie kurz, worum es in diesem Stream geht…",
+      "charactersCount": "{count}/500 Zeichen",
+      "streamTypeLabel": "Stream-Typ",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Titelbild / Thumbnail",
+      "coverAlt": "Stream-Titelbild",
+      "coverUploadCta": "Tippen, um ein eigenes Bild hochzuladen",
+      "coverUploadHint": "PNG, JPG bis 2 MB",
+      "aiAutoGenerateLabel": "Mit KI automatisch erstellen",
+      "aiAutoGenerateHint": "Bild erstellen, wenn kein Upload erfolgt",
+      "generatingAiImage": "KI-Bild wird erstellt…",
+      "tagsLabel": "Tags / Kategorie (1–3 auswählen)",
+      "tagsSelected": "{count}/3 ausgewählt",
+      "tags": {
+        "wellness": "Wellness",
+        "nutrition": "Ernährung",
+        "fitness": "Fitness",
+        "mentalHealth": "Mentale Gesundheit",
+        "longevity": "Langlebigkeit",
+        "meditation": "Meditation",
+        "sleep": "Schlaf",
+        "motivation": "Motivation",
+        "education": "Bildung",
+        "lifestyle": "Lebensstil"
+      },
+      "advancedTitle": "Erweiterte Optionen",
+      "cohostLabel": "Co-Host / Gast einladen",
+      "cohostPlaceholder": "Co-Host suchen und hinzufügen",
+      "accessLevelLabel": "Zugriff",
+      "access": {
+        "public": {
+          "label": "Öffentlich",
+          "desc": "Jeder kann beitreten"
+        },
+        "followers": {
+          "label": "Nur Follower",
+          "desc": "Nur Ihre Follower"
+        },
+        "group": {
+          "label": "Gruppe/VIP",
+          "desc": "Nur eingeladene Mitglieder"
+        }
+      },
+      "scheduleLabel": "Für später planen",
+      "goLiveNow": "Jetzt live gehen",
+      "selectTime": "Uhrzeit wählen",
+      "clearSchedule": "Planung löschen (jetzt live gehen)",
+      "scheduledAt": "{date} um {time}",
+      "dateNeedsTime": "{date} – Uhrzeit wählen",
+      "time": "Uhrzeit",
+      "engagementLabel": "Chat & Interaktion",
+      "enableChatTitle": "Chat aktivieren",
+      "enableChatDesc": "Zuschauern erlauben zu chatten",
+      "enablePollsTitle": "Umfragen aktivieren",
+      "enablePollsDesc": "Live-Umfragen während des Streams",
+      "recordReplayTitle": "Für Replay aufzeichnen",
+      "recordReplayDesc": "Stream zur späteren Wiedergabe speichern",
+      "cancel": "Abbrechen",
+      "starting": "Startet…",
+      "updating": "Wird aktualisiert…",
+      "updateStream": "Stream aktualisieren",
+      "scheduleSession": "Live-Session planen",
+      "goLiveNowAction": "Jetzt live gehen",
+      "errors": {
+        "selectStreamTypeTitle": "Stream-Typ auswählen",
+        "selectStreamTypeDesc": "Bitte Audio oder Video auswählen",
+        "notLoggedInTitle": "Fehler",
+        "notLoggedInDesc": "Sie müssen angemeldet sein, um live zu gehen",
+        "invalidFileTypeTitle": "Ungültiger Dateityp",
+        "invalidFileTypeDesc": "Bitte eine Bilddatei auswählen (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Datei zu groß",
+        "fileTooLargeDesc": "Bild muss kleiner als 2 MB sein",
+        "imageUploadFailedTitle": "Bild-Upload fehlgeschlagen",
+        "imageUploadFailedDesc": "Das bestehende Bild wird beibehalten.",
+        "genericTitle": "Fehler",
+        "genericDesc": "Stream konnte nicht erstellt werden. Bitte erneut versuchen."
+      },
+      "success": {
+        "streamUpdatedTitle": "Stream aktualisiert! ✨",
+        "streamUpdatedDesc": "Ihr Stream wurde erfolgreich aktualisiert",
+        "streamScheduledTitle": "Stream geplant! 📅",
+        "streamScheduledDesc": "Ihr Stream ist geplant für {date} um {time}",
+        "youAreLiveTitle": "Sie sind live! 🎙️",
+        "youAreLiveDesc": "Sie treten Ihrem Stream-Raum bei…",
+        "aiImageHintTitle": "KI-Bildgenerierung",
+        "aiImageHintDesc": "Bild wird erstellt, wenn der Stream startet."
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "businessHub": {
+    "title": "Business Hub",
+    "description": "Grow your wellness business",
+    "tabs": {
+      "snapshot": "Snapshot",
+      "services": "Services",
+      "sales": "Sales",
+      "insights": "Insights"
+    },
+    "recentActivity": "Recent Activity",
+    "clients": "Clients",
+    "analytics": "Analytics",
+    "searchBusiness": "Search business...",
+    "noServices": "No services yet",
+    "noServicesDesc": "Create your first service to start attracting clients.",
+    "createService": "Create Service",
+    "noClients": "No clients yet",
+    "noClientsDesc": "Your clients will appear here.",
+    "noSales": "No sales yet",
+    "noSalesDesc": "Your sales history will appear here."
+  }
+}

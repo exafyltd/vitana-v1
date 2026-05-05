@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Tagebuch-Aktionen",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Sprach-Eintrag aufnehmen",
+        "description": "Gedanken und Reflexionen per Sprachaufnahme festhalten"
+      },
+      "addPhotoEntry": {
+        "title": "Foto-Eintrag hinzufügen",
+        "description": "Bilder hochladen, um deine Wellness-Reise zu dokumentieren"
+      },
+      "writeTextEntry": {
+        "title": "Text-Eintrag schreiben",
+        "description": "Detaillierte schriftliche Reflexionen und Notizen erstellen"
+      },
+      "quickNote": {
+        "title": "Kurznotiz",
+        "description": "Kurze Gedanken oder Beobachtungen festhalten"
+      },
+      "videoDiary": {
+        "title": "Video-Tagebuch",
+        "description": "Video-Reflexionen und Fortschritts-Updates aufnehmen"
+      },
+      "scheduleEntry": {
+        "title": "Eintrag planen",
+        "description": "Zukünftige Tagebuch-Einträge und Erinnerungen planen"
+      },
+      "tagMemories": {
+        "title": "Erinnerungen markieren",
+        "description": "Bestehende Einträge mit Tags und Kategorien organisieren"
+      },
+      "importFiles": {
+        "title": "Dateien importieren",
+        "description": "Dokumente, Bilder oder andere Wellness-Dateien hochladen"
+      }
+    }
+  }
+}

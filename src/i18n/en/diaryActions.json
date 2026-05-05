@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Diary Entry Actions",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Record Voice Entry",
+        "description": "Capture thoughts and reflections with voice recording"
+      },
+      "addPhotoEntry": {
+        "title": "Add Photo Entry",
+        "description": "Upload images to document your wellness journey"
+      },
+      "writeTextEntry": {
+        "title": "Write Text Entry",
+        "description": "Create detailed written reflections and notes"
+      },
+      "quickNote": {
+        "title": "Quick Note",
+        "description": "Jot down brief thoughts or observations"
+      },
+      "videoDiary": {
+        "title": "Video Diary",
+        "description": "Record video reflections and progress updates"
+      },
+      "scheduleEntry": {
+        "title": "Schedule Entry",
+        "description": "Plan future diary entries and reminders"
+      },
+      "tagMemories": {
+        "title": "Tag Memories",
+        "description": "Organize existing entries with tags and categories"
+      },
+      "importFiles": {
+        "title": "Import Files",
+        "description": "Upload documents, images, or other wellness files"
+      }
+    }
+  }
+}

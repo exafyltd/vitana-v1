@@ -1,0 +1,10 @@
+{
+  "groupMembership": {
+    "joined": "Beigetreten! 🎉",
+    "joinedDesc": "Du bist jetzt Mitglied dieser Gruppe.",
+    "left": "Gruppe verlassen",
+    "leftDesc": "Du hast diese Gruppe verlassen.",
+    "errorJoin": "Beitritt nicht möglich. Bitte versuche es erneut.",
+    "errorLeave": "Verlassen nicht möglich. Bitte versuche es erneut."
+  }
+}
