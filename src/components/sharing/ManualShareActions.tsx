@@ -6,7 +6,7 @@ import { Link2, MessageCircle, Mail, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getShareUrl } from "@/lib/shareUrl";
 import { cn } from "@/lib/utils";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { lookup, notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface ManualShareActionsProps {
   campaignId: string;
@@ -77,7 +77,7 @@ export function ManualShareActions({
         // Viber didn't open - copy link to clipboard as fallback
         try {
           await navigator.clipboard.writeText(shareUrl);
-          toast.info("Viber not detected. Link copied to clipboard!", {
+          toast.info(lookup('toasts.sharing.viberNotDetectedLinkCopiedClipboard'), {
             description: "Paste it manually in your Viber chat"
           });
         } catch {

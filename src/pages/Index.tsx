@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink } from "lucide-react";
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
+import { lookup } from '@/lib/i18n-toast';
 
 
 const Index = () => {
@@ -121,7 +122,7 @@ const Index = () => {
                 const url = getCommandHubUrl();
                 if (!url) {
                   e.preventDefault();
-                  toast.error("Vitana Dev Gateway URL not configured", {
+                  toast.error(lookup('toasts.index.vitanaDevGatewayUrlNotConfigured'), {
                     description: "VITE_GATEWAY_BASE must point to the Gateway Cloud Run service.",
                   });
                 }

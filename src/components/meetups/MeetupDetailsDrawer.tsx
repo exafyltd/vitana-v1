@@ -93,7 +93,7 @@ import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError } from '@/lib/i18n-toast';
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -524,8 +524,8 @@ export function MeetupDetailsDrawer({
       invalidateEventsCache();
       
       toast({
-        title: "Added to Smart Calendar ✓",
-        description: "Event saved. We'll remind you before it starts.",
+        title: lookup('toasts.meetups.addedSmartCalendar'),
+        description: lookup('toasts.meetups.eventSavedWeLlRemindYou'),
         duration: 5000,
         action: addedEvent ? (
           <Button

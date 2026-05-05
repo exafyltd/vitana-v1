@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/context/ProfileProvider";
 import { useTranslation } from "@/hooks/useTranslation";
+import { lookup } from '@/lib/i18n-toast';
 
 interface IdentityDrawerProps {
   open: boolean;
@@ -30,7 +31,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
     if (!formData.displayName.trim()) {
       toast({
         title: translate('profileEditor.identity.displayName'),
-        description: "Display name is required.",
+        description: lookup('toasts.profile.displayNameRequired'),
         variant: "destructive",
       });
       return;

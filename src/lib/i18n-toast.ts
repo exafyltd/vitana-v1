@@ -25,7 +25,14 @@ export function getI18nLocale(): string {
   return currentLocale;
 }
 
-function lookup(key: string): string {
+// Exported so rich toasts (with action/duration/JSX) can keep their full
+// shape via the underlying sonner.toast(...) API while still pulling strings
+// from the catalog: toast(lookup('toasts.x.y'), { description: lookup(...), action: <Button/> })
+export function lookup(key: string, params?: Record<string, string | number>): string {
+  return applyParams(lookupRaw(key), params);
+}
+
+function lookupRaw(key: string): string {
   const parts = key.split('.');
   const fallbackCatalog = catalogs['de-DE'];
   const primary = catalogs[currentLocale] || fallbackCatalog;
@@ -66,8 +73,8 @@ export function notify(
   descKey?: string,
   params?: Record<string, string | number>
 ): void {
-  const title = applyParams(lookup(titleKey), params);
-  const description = descKey ? applyParams(lookup(descKey), params) : undefined;
+  const title = lookup(titleKey, params);
+  const description = descKey ? lookup(descKey, params) : undefined;
   sonnerToast(title, description ? { description } : undefined);
 }
 
@@ -76,8 +83,8 @@ export function notifySuccess(
   descKey?: string,
   params?: Record<string, string | number>
 ): void {
-  const title = applyParams(lookup(titleKey), params);
-  const description = descKey ? applyParams(lookup(descKey), params) : undefined;
+  const title = lookup(titleKey, params);
+  const description = descKey ? lookup(descKey, params) : undefined;
   sonnerToast.success(title, description ? { description } : undefined);
 }
 
@@ -86,8 +93,8 @@ export function notifyError(
   descKey?: string,
   params?: Record<string, string | number>
 ): void {
-  const title = applyParams(lookup(titleKey), params);
-  const description = descKey ? applyParams(lookup(descKey), params) : undefined;
+  const title = lookup(titleKey, params);
+  const description = descKey ? lookup(descKey, params) : undefined;
   sonnerToast.error(title, description ? { description } : undefined);
 }
 
@@ -96,8 +103,8 @@ export function notifyWarning(
   descKey?: string,
   params?: Record<string, string | number>
 ): void {
-  const title = applyParams(lookup(titleKey), params);
-  const description = descKey ? applyParams(lookup(descKey), params) : undefined;
+  const title = lookup(titleKey, params);
+  const description = descKey ? lookup(descKey, params) : undefined;
   sonnerToast.warning(title, description ? { description } : undefined);
 }
 

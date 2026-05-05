@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
 import { playInstantGreeting, preloadInstantGreeting } from '@/lib/instantGreeting';
 import { getOrCreateUnlockedAudioContext } from '@/lib/iosAudioUnlock';
+import { lookup } from '@/lib/i18n-toast';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
 
@@ -232,7 +233,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         },
         onLink: (url) => {
           console.log('[useOrbVoiceClient] Event link received:', url);
-          toast('Link available', {
+          toast(lookup('toasts.hooks.linkAvailable'), {
             description: url,
             action: {
               label: 'Open',

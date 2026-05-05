@@ -21,7 +21,7 @@ import { Loader2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
-import { notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -147,7 +147,7 @@ export function VitanaIdOnboardingCard() {
       }
       toast({
         title: `Vitana ID set: @${data.vitana_id}`,
-        description: "This is your speakable ID across Vitana. Permanent — pick wisely!",
+        description: lookup('toasts.onboarding.thisYourSpeakableIdAcrossVitana'),
       });
       setPickerOpen(false);
       refreshProfile();

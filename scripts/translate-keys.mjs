@@ -1,0 +1,309 @@
+#!/usr/bin/env node
+// Multi-provider EN→DE translator for the i18n catalog.
+//
+// Walks every shard under src/i18n/<locale>/, finds keys flagged via
+// _pending_review, translates the English source from src/i18n/en/<same shard>,
+// writes back, and clears the _pending_review flag per successful key.
+//
+// Idempotent. Safe to interrupt — persists after every batch.
+//
+// Providers (env vars):
+//   --provider=gemini   GOOGLE_GEMINI_API_KEY  (gemini-2.0-flash, ~free tier)
+//   --provider=deepseek DEEPSEEK_API_KEY       (deepseek-chat)
+//   --provider=anthropic ANTHROPIC_API_KEY     (claude-haiku-4-5; needs API credit)
+//
+// Usage:
+//   GOOGLE_GEMINI_API_KEY=... node scripts/translate-keys.mjs --provider=gemini
+//   DEEPSEEK_API_KEY=...      node scripts/translate-keys.mjs --provider=deepseek --shard=toasts
+//   node scripts/translate-keys.mjs --dry-run   (counts pending, no API calls)
+
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, '..');
+const I18N_DIR = join(ROOT, 'src/i18n');
+
+const args = Object.fromEntries(
+  process.argv.slice(2).map((a) => {
+    if (a.startsWith('--')) {
+      const eq = a.indexOf('=');
+      if (eq < 0) return [a.slice(2), true];
+      return [a.slice(2, eq), a.slice(eq + 1)];
+    }
+    return [a, true];
+  })
+);
+
+const PROVIDER = args.provider || 'gemini';
+const DRY = !!args['dry-run'];
+const SHARD_FILTER = args.shard || null; // single shard name (without .json)
+const TARGET_LOCALE = args.locale || 'de';
+const SRC_LOCALE = args.source || 'en';
+const BATCH_SIZE = parseInt(args.batch || '30', 10);
+const MAX_RETRIES = parseInt(args.retries || '3', 10);
+
+const TARGET_LANG_NAME = (
+  {
+    de: 'German',
+    sr: 'Serbian',
+    ar: 'Arabic',
+    es: 'Spanish',
+    ru: 'Russian',
+    zh: 'Chinese',
+    fr: 'French',
+    pt: 'Portuguese',
+    pl: 'Polish',
+  }[TARGET_LOCALE] || TARGET_LOCALE
+);
+
+const TARGET_DIR = join(I18N_DIR, TARGET_LOCALE);
+const SRC_DIR = join(I18N_DIR, SRC_LOCALE);
+
+if (!existsSync(TARGET_DIR) || !existsSync(SRC_DIR)) {
+  console.error(`[translate] missing locale dir: ${TARGET_DIR} or ${SRC_DIR}`);
+  process.exit(2);
+}
+
+// ---------------------------------------------------------- providers
+
+async function callGemini(prompt) {
+  const key = process.env.GOOGLE_GEMINI_API_KEY;
+  if (!key) throw new Error('GOOGLE_GEMINI_API_KEY is not set');
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.2, maxOutputTokens: 4096, responseMimeType: 'application/json' },
+    }),
+  });
+  if (!res.ok) {
+    const t = await res.text();
+    throw new Error(`Gemini HTTP ${res.status}: ${t.slice(0, 300)}`);
+  }
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Gemini: empty response: ' + JSON.stringify(data).slice(0, 200));
+  return text;
+}
+
+async function callDeepSeek(prompt) {
+  const key = process.env.DEEPSEEK_API_KEY;
+  if (!key) throw new Error('DEEPSEEK_API_KEY is not set');
+  const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${key}`,
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      temperature: 0.2,
+      max_tokens: 4096,
+      response_format: { type: 'json_object' },
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  if (!res.ok) {
+    const t = await res.text();
+    throw new Error(`DeepSeek HTTP ${res.status}: ${t.slice(0, 300)}`);
+  }
+  const data = await res.json();
+  const text = data?.choices?.[0]?.message?.content;
+  if (!text) throw new Error('DeepSeek: empty response: ' + JSON.stringify(data).slice(0, 200));
+  return text;
+}
+
+async function callAnthropic(prompt) {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) throw new Error('ANTHROPIC_API_KEY is not set');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+  if (!res.ok) {
+    const t = await res.text();
+    throw new Error(`Anthropic HTTP ${res.status}: ${t.slice(0, 300)}`);
+  }
+  const data = await res.json();
+  return data?.content?.[0]?.text || '';
+}
+
+const PROVIDERS = {
+  gemini: callGemini,
+  deepseek: callDeepSeek,
+  anthropic: callAnthropic,
+};
+const callProvider = PROVIDERS[PROVIDER];
+if (!callProvider) {
+  console.error(`[translate] unknown provider: ${PROVIDER}. Use gemini | deepseek | anthropic.`);
+  process.exit(2);
+}
+
+// ---------------------------------------------------------- collection
+
+function collectPending(obj, pathParts = []) {
+  const out = [];
+  if (!obj || typeof obj !== 'object') return out;
+  if (obj._pending_review && typeof obj._pending_review === 'object') {
+    for (const slug of Object.keys(obj._pending_review)) {
+      if (obj._pending_review[slug]) out.push({ pathParts, slug });
+    }
+  }
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith('_')) continue;
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      out.push(...collectPending(v, [...pathParts, k]));
+    }
+  }
+  return out;
+}
+
+function setNested(root, parts, value) {
+  let cur = root;
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (!cur[parts[i]]) cur[parts[i]] = {};
+    cur = cur[parts[i]];
+  }
+  cur[parts[parts.length - 1]] = value;
+}
+
+function getNested(root, parts) {
+  let cur = root;
+  for (const p of parts) {
+    if (cur && typeof cur === 'object' && p in cur) cur = cur[p];
+    else return undefined;
+  }
+  return cur;
+}
+
+function pruneEmpty(obj) {
+  if (!obj || typeof obj !== 'object') return;
+  if (obj._pending_review && Object.keys(obj._pending_review).length === 0) delete obj._pending_review;
+  for (const v of Object.values(obj)) if (v && typeof v === 'object' && !Array.isArray(v)) pruneEmpty(v);
+}
+
+// ---------------------------------------------------------- prompt
+
+function buildPrompt(items) {
+  return `Translate the following user-interface strings from English to ${TARGET_LANG_NAME}.
+
+Rules:
+- Output ONLY a JSON object: { "<index>": "${TARGET_LANG_NAME} translation", ... }
+- Use du-form (informal) ${TARGET_LANG_NAME} where applicable, friendly tone matching a wellness app.
+- Keep placeholders intact: {name}, {count}, {date}, etc.
+- Keep emojis intact.
+- For brand names (Vitana, MAXINA, Lovable, Exafy), do not translate.
+- Match length and tone to short UI labels — these are toast notifications, button labels, error messages.
+- Do not add any text outside the JSON object.
+
+Strings:
+${items.map((it, i) => `${i}: ${JSON.stringify(it.en)}`).join('\n')}`;
+}
+
+async function translateBatch(items) {
+  const prompt = buildPrompt(items);
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const raw = await callProvider(prompt);
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error('No JSON object in response: ' + raw.slice(0, 200));
+      const parsed = JSON.parse(m[0]);
+      const out = new Map();
+      for (let i = 0; i < items.length; i++) {
+        const v = parsed[String(i)];
+        if (typeof v === 'string' && v.trim()) out.set(items[i].key, v.trim());
+      }
+      return out;
+    } catch (err) {
+      console.warn(`  [attempt ${attempt}/${MAX_RETRIES}] ${err.message}`);
+      if (attempt === MAX_RETRIES) throw err;
+      await new Promise((r) => setTimeout(r, 1500 * attempt));
+    }
+  }
+  return new Map();
+}
+
+// ---------------------------------------------------------- run
+
+const shards = readdirSync(TARGET_DIR)
+  .filter((f) => f.endsWith('.json'))
+  .filter((f) => !SHARD_FILTER || f === `${SHARD_FILTER}.json`);
+
+let totalPending = 0;
+let totalTranslated = 0;
+let totalFailed = 0;
+
+console.log(`[translate] provider=${PROVIDER} target=${TARGET_LOCALE} (${TARGET_LANG_NAME}) source=${SRC_LOCALE}`);
+
+for (const shardName of shards) {
+  const tgtPath = join(TARGET_DIR, shardName);
+  const srcPath = join(SRC_DIR, shardName);
+  if (!existsSync(srcPath)) continue;
+  const tgtCat = JSON.parse(readFileSync(tgtPath, 'utf8'));
+  const srcCat = JSON.parse(readFileSync(srcPath, 'utf8'));
+
+  const pending = collectPending(tgtCat);
+  if (pending.length === 0) continue;
+
+  totalPending += pending.length;
+  console.log(`[translate] ${shardName}: ${pending.length} pending`);
+  if (DRY) continue;
+
+  const items = pending
+    .map(({ pathParts, slug }) => ({
+      pathParts,
+      slug,
+      key: [...pathParts, slug].join('.'),
+      en: getNested(srcCat, [...pathParts, slug]),
+    }))
+    .filter((x) => typeof x.en === 'string' && x.en.length > 0);
+
+  for (let i = 0; i < items.length; i += BATCH_SIZE) {
+    const batch = items.slice(i, i + BATCH_SIZE);
+    const tStart = Date.now();
+    let translations;
+    try {
+      translations = await translateBatch(batch);
+    } catch (err) {
+      console.error(`  batch ${i}-${i + batch.length} failed: ${err.message}`);
+      totalFailed += batch.length;
+      continue;
+    }
+    for (const it of batch) {
+      const tx = translations.get(it.key);
+      if (!tx) {
+        totalFailed++;
+        continue;
+      }
+      setNested(tgtCat, [...it.pathParts, it.slug], tx);
+      const pendingMap = getNested(tgtCat, [...it.pathParts, '_pending_review']);
+      if (pendingMap && typeof pendingMap === 'object') delete pendingMap[it.slug];
+      totalTranslated++;
+    }
+    writeFileSync(tgtPath, JSON.stringify(tgtCat, null, 2) + '\n', 'utf8');
+    const took = ((Date.now() - tStart) / 1000).toFixed(1);
+    console.log(`  batch ${Math.floor(i / BATCH_SIZE) + 1}: +${translations.size}/${batch.length} in ${took}s`);
+  }
+
+  pruneEmpty(tgtCat);
+  writeFileSync(tgtPath, JSON.stringify(tgtCat, null, 2) + '\n', 'utf8');
+}
+
+console.log('---');
+console.log(`pending found: ${totalPending}`);
+console.log(`translated:    ${totalTranslated}`);
+console.log(`failed:        ${totalFailed}`);
+process.exit(totalFailed > 0 ? 1 : 0);

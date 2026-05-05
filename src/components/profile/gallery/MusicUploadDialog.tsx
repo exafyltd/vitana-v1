@@ -9,6 +9,7 @@ import { Upload, Music } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import { lookup } from '@/lib/i18n-toast';
 
 interface MusicUploadDialogProps {
   open: boolean;
@@ -37,7 +38,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
 
   const handleFile = async (f: File) => {
     if (!ACCEPTED_TYPES.includes(f.type)) {
-      toast({ title: translate("gallery.invalidFormat", "Invalid format"), description: "MP3, WAV, FLAC, AAC, OGG, M4A", variant: "destructive" });
+      toast({ title: translate("gallery.invalidFormat", "Invalid format"), description: lookup('toasts.profile.mp3WavFlacAacOggM4a'), variant: "destructive" });
       return;
     }
     if (f.size > MAX_SIZE) {
