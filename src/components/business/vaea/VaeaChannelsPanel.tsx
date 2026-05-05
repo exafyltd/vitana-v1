@@ -89,7 +89,7 @@ export function VaeaChannelsPanel() {
                 </div>
               </div>
               {channel.last_error && (
-                <p className="text-xs text-destructive italic">Last error: {channel.last_error}</p>
+                <p className="text-xs text-destructive italic">{t('screens.business.lastErrorLast_error', { last_error: channel.last_error })}</p>
               )}
             </div>
           ))

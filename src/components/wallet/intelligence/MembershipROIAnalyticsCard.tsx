@@ -167,7 +167,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
                 <span className="text-muted-foreground">{t('screens.wallet.additionalCost')}</span>
-                <span className="font-semibold ml-1">${upgradeRecommendation.costIncrease}/mo</span>
+                <span className="font-semibold ml-1">{t('screens.wallet.costincreasemo', { costIncrease: upgradeRecommendation.costIncrease })}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">{t('screens.wallet.breakeven')}</span>

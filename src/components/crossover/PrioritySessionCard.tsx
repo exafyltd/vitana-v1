@@ -54,7 +54,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         <div className="space-y-3">
           <div>
             <h3 className="text-2xl font-bold mb-1">{session.title}</h3>
-            <p className="text-white/90 text-sm">with {session.instructor}</p>
+            <p className="text-white/90 text-sm">{t('screens.crossover.withInstructor', { instructor: session.instructor })}</p>
           </div>
           
           {/* Session Details */}

@@ -59,7 +59,7 @@ export default function TenantAudit() {
                         <p className="font-medium">{log.tenant}</p>
                         <Badge variant="outline">{log.action}</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground">By: {log.admin}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.admin.byAdmin', { admin: log.admin })}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-muted-foreground">{log.timestamp}</p>

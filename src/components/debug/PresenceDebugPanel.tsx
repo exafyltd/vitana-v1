@@ -72,7 +72,7 @@ const PresenceDebugPanelInner: React.FC = () => {
         {debugInfo.realtimeLatency && (
           <div className="flex justify-between">
             <span>{t('screens.debug.latency')}</span>
-            <span>{debugInfo.realtimeLatency}ms</span>
+            <span>{t('screens.debug.realtimelatencyMs', { realtimeLatency: debugInfo.realtimeLatency })}</span>
           </div>
         )}
       </CardContent>

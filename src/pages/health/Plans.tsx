@@ -169,7 +169,7 @@ export default withScreenId(function Plans() {
                               {autopilotData.vitanaScore} Vitana Score
                             </button>
                           </VitanaScoreTooltip>
-                          <span> · 5 active plans synced · Cross-pillar synergy {autopilotData.synergyScore}/100</span>
+                          <span>{t('screens.health.text5ActivePlansSyncedCrosspillarSynergy', { synergyScore: autopilotData.synergyScore })}</span>
                         </div>
                         <div>
                           {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}

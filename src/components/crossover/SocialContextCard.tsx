@@ -44,11 +44,11 @@ function SocialContextCardBase({
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-1">
           <MessageCircle className="w-3 h-3 text-green-600" />
-          <span>{supportMessages} support msgs</span>
+          <span>{t('screens.crossover.supportmessagesSupportMsgs', { supportMessages })}</span>
         </div>
         <div className="flex items-center gap-1">
           <Heart className="w-3 h-3 text-red-500" />
-          <span>{groupActivities} group activities</span>
+          <span>{t('screens.crossover.groupactivitiesGroupActivities', { groupActivities })}</span>
         </div>
       </div>
 

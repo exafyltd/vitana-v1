@@ -126,13 +126,13 @@ export function MobileInventoryCard({
         {quantity > 0 && (
           <>
             <span>·</span>
-            <span>Qty {quantity}</span>
+            <span>{t('screens.reseller.qtyQuantity', { quantity })}</span>
           </>
         )}
         {priceFormatted && (
           <>
             <span>·</span>
-            <span>Price {priceFormatted}</span>
+            <span>{t('screens.reseller.pricePriceformatted', { priceFormatted })}</span>
           </>
         )}
       </div>

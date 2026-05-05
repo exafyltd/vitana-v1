@@ -79,7 +79,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl px-0">
         <SheetHeader className="px-4 pb-3 border-b border-border">
-          <SheetTitle className="text-center">Members ({memberCount})</SheetTitle>
+          <SheetTitle className="text-center">{t('screens.community.membersMembercount', { memberCount })}</SheetTitle>
         </SheetHeader>
 
         <ScrollArea className="h-[calc(70vh-80px)]">

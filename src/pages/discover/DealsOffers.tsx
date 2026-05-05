@@ -595,7 +595,7 @@ function DealsOffersInner() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin className="h-4 w-4" />
                         <span>{service.location}</span>
-                        <span className="ml-auto">{service.bookings} bookings</span>
+                        <span className="ml-auto">{t('screens.discover.bookingsBookings', { bookings: service.bookings })}</span>
                       </div>
 
                       <div className="flex gap-1 flex-wrap">
@@ -794,7 +794,7 @@ function DealsOffersInner() {
 
                       <div className="text-xs text-muted-foreground space-y-1">
                         <div className="flex justify-between">
-                          <span>Saved {product.savedDate}</span>
+                          <span>{t('screens.discover.savedSaveddate', { savedDate: product.savedDate })}</span>
                           <span className={product.stock === "In Stock" ? "text-green-600" : "text-orange-600"}>
                             {product.stock}
                           </span>

@@ -442,7 +442,7 @@ function ConnectedApps() {
       expandedContent: app.connected ? (
         <div className="space-y-3 pt-2">
           <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
-          <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
+          <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
             <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
@@ -515,7 +515,7 @@ function ConnectedApps() {
       expandedContent: app.connected ? (
         <div className="space-y-3 pt-2">
           <div className="text-sm"><strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}</div>
-          <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
+          <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
             <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>

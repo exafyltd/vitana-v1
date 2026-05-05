@@ -34,7 +34,7 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
           <div className="bg-white/60 rounded-lg p-3 space-y-2">
             <div className="flex justify-between text-xs font-medium">
               <span>{t('screens.health.healthProfile')}</span>
-              <span className="text-purple-600">{dataCompleteness}% Complete</span>
+              <span className="text-purple-600">{t('screens.health.datacompletenessComplete', { dataCompleteness })}</span>
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div 

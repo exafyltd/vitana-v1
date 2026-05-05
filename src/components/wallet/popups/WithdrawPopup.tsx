@@ -201,7 +201,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
             {selectedMethodData && (
               <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
-                <span>Processing time: {selectedMethodData.processingTime}</span>
+                <span>{t('screens.wallet.processingTimeProcessingtime', { processingTime: selectedMethodData.processingTime })}</span>
               </div>
             )}
           </div>

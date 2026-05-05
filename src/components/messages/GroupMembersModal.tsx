@@ -366,7 +366,7 @@ export default function GroupMembersModal({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Group Members ({participants.length})</span>
+            <span>{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
             {currentUserRole !== 'admin' && (
               <Button
                 variant="outline"

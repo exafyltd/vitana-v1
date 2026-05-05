@@ -423,7 +423,7 @@ export default function DoctorsCoaches() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
-                      <span className="text-xs md:text-sm text-green-600">Available {provider.nextAvailable}</span>
+                      <span className="text-xs md:text-sm text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                     </div>
                   </div>
 
@@ -498,7 +498,7 @@ export default function DoctorsCoaches() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="h-3 w-3 text-green-500" />
-                              <span className="text-xs text-green-600">Available {provider.nextAvailable}</span>
+                              <span className="text-xs text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                             </div>
                           </div>
                     <Button 
@@ -542,7 +542,7 @@ export default function DoctorsCoaches() {
               <Tabs defaultValue="bookmarked" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="bookmarked">{t('screens.discover.bookmarked')}</TabsTrigger>
-                  <TabsTrigger value="upcoming">Upcoming ({upcomingAppointments.length})</TabsTrigger>
+                  <TabsTrigger value="upcoming">{t('screens.discover.upcomingLength', { length: upcomingAppointments.length })}</TabsTrigger>
                   <TabsTrigger value="history">{t('screens.discover.history')}</TabsTrigger>
                 </TabsList>
 
@@ -610,7 +610,7 @@ export default function DoctorsCoaches() {
                                   </div>
                                   <div className="flex items-center gap-2 text-sm">
                                     <Clock className="h-4 w-4 text-green-500" />
-                                    <span className="text-green-600">Available {provider.nextAvailable}</span>
+                                    <span className="text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                                   </div>
                                 </div>
                                 <div className="flex gap-2">
@@ -652,9 +652,9 @@ export default function DoctorsCoaches() {
                         if (daysUntil > 7) {
                           countdownBadge = <Badge variant="outline">{format(appointmentDate, 'MMM dd, yyyy')}</Badge>;
                         } else if (daysUntil > 0) {
-                          countdownBadge = <Badge className="bg-blue-500">{daysUntil} days away</Badge>;
+                          countdownBadge = <Badge className="bg-blue-500">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
                         } else if (hoursUntil > 0) {
-                          countdownBadge = <Badge className="bg-orange-500">Today - {hoursUntil}h away</Badge>;
+                          countdownBadge = <Badge className="bg-orange-500">{t('screens.discover.todayHoursuntilHAway', { hoursUntil })}</Badge>;
                         } else {
                           countdownBadge = <Badge className="bg-red-500">{t('screens.discover.startingSoon')}</Badge>;
                         }

@@ -202,7 +202,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                     <Progress value={opportunity.effort} className="h-1.5" />
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-emerald-600">+{opportunity.potential} VTN</div>
+                    <div className="text-sm font-semibold text-emerald-600">{t('screens.wallet.potentialVtn', { potential: opportunity.potential })}</div>
                     <div className="text-xs text-muted-foreground">{opportunity.timeframe}</div>
                   </div>
                 </div>

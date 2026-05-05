@@ -149,7 +149,7 @@ export default function Marketplace() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <div className="text-sm text-destructive py-4">{t('screens.discover.couldnTLoadError', { error })}</div>
           )}
 
           {!loading && !error && view === "open" && (

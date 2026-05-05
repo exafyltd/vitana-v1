@@ -162,10 +162,10 @@ export function CreatorPaymentsSection() {
                 { price: 49.99, creator: 44.99, platform: 5.00 },
               ].map(({ price, creator, platform }) => (
                 <div key={price} className="flex items-center justify-between text-sm p-2 bg-gray-50 rounded">
-                  <span className="text-muted-foreground">Room Price: ${price}</span>
+                  <span className="text-muted-foreground">{t('screens.creator.roomPricePrice', { price })}</span>
                   <div className="flex gap-4">
-                    <span className="text-green-600 font-medium">You: ${creator}</span>
-                    <span className="text-gray-500">Fee: ${platform}</span>
+                    <span className="text-green-600 font-medium">{t('screens.creator.youCreator', { creator })}</span>
+                    <span className="text-gray-500">{t('screens.creator.feePlatform', { platform })}</span>
                   </div>
                 </div>
               ))}

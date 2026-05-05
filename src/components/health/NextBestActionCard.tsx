@@ -133,7 +133,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
             </div>
           ) : (
             <div className="bg-white/60 rounded-lg p-3 text-sm">
-              <div className="font-medium mb-1">Log activity to lift {focus.name}</div>
+              <div className="font-medium mb-1">{t('screens.health.logActivityLiftName', { name: focus.name })}</div>
               <div className="text-xs text-muted-foreground">
                 {t('screens.health.openIndexDetailLogDataComplete')}
               </div>

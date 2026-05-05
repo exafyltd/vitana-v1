@@ -453,7 +453,7 @@ const Reminders: React.FC = () => {
       <AlertDialog open={confirmDeleteAll} onOpenChange={setConfirmDeleteAll}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete all {upcoming.length} reminders?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}</AlertDialogTitle>
             <AlertDialogDescription>
               They will be removed from your list. This can't be easily undone.
             </AlertDialogDescription>

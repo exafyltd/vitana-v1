@@ -23,7 +23,7 @@ function CommunityPulseCardBase({
     <div className="space-y-2 text-center">
       <div className="flex items-center justify-center gap-1 text-sm">
         <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-        <span className="font-medium">{activeUsers} friends active</span>
+        <span className="font-medium">{t('screens.crossover.activeusersFriendsActive', { activeUsers })}</span>
       </div>
       
       <div className="space-y-1 text-xs text-muted-foreground">

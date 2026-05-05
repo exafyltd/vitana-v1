@@ -73,10 +73,10 @@ export default function AutopilotRecommendations() {
 
         {summary && (
           <div className="flex flex-wrap gap-2">
-            <AdminStatusBadge variant="info">New: {summary.new}</AdminStatusBadge>
-            <AdminStatusBadge variant="active">Activated: {summary.activated}</AdminStatusBadge>
-            <AdminStatusBadge variant="warning">Snoozed: {summary.snoozed}</AdminStatusBadge>
-            <AdminStatusBadge variant="error">Rejected: {summary.rejected}</AdminStatusBadge>
+            <AdminStatusBadge variant="info">{t('screens.admin.newNew', { new: summary.new })}</AdminStatusBadge>
+            <AdminStatusBadge variant="active">{t('screens.admin.activatedActivated', { activated: summary.activated })}</AdminStatusBadge>
+            <AdminStatusBadge variant="warning">{t('screens.admin.snoozedSnoozed', { snoozed: summary.snoozed })}</AdminStatusBadge>
+            <AdminStatusBadge variant="error">{t('screens.admin.rejectedRejected', { rejected: summary.rejected })}</AdminStatusBadge>
           </div>
         )}
 

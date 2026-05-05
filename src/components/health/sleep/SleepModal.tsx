@@ -202,7 +202,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                     {/* Details */}
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-semibold capitalize">{stage.stage} Sleep</p>
+                        <p className="text-sm font-semibold capitalize">{t('screens.health.stageSleep', { stage: stage.stage })}</p>
                         <Badge variant="outline" className="text-xs">
                           {stage.percentage}%
                         </Badge>

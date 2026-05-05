@@ -133,7 +133,7 @@ export function NotificationsPanel({
         <div className="flex items-baseline gap-2">
           <h3 className="font-semibold text-base">{t('screens.notifications.notifications')}</h3>
           {unreadCount > 0 && (
-            <span className="text-xs text-muted-foreground">{unreadCount} unread</span>
+            <span className="text-xs text-muted-foreground">{t('screens.notifications.unreadcountUnread', { unreadCount })}</span>
           )}
         </div>
         <div className="flex items-center gap-0.5">

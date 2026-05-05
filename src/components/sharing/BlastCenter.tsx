@@ -279,7 +279,7 @@ export function BlastCenter() {
             
             return (
               <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 space-y-2">
-                <p className="text-sm font-medium">📊 Campaign: {campaign.name}</p>
+                <p className="text-sm font-medium">{t('screens.sharing.campaignName', { name: campaign.name })}</p>
                 {distributionConfig?.frequency && (
                   <p className="text-xs text-muted-foreground">
                     Frequency: {distributionConfig.frequency}

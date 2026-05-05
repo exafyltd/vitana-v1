@@ -154,7 +154,7 @@ export function WalletSubscriptionCard({
               </div>
               <div>
                 <h3 className="font-semibold text-lg">{name}</h3>
-                <p className="text-sm text-muted-foreground capitalize">{tier} Plan</p>
+                <p className="text-sm text-muted-foreground capitalize">{t('screens.wallet.tierPlan', { tier })}</p>
               </div>
             </div>
             <Badge 

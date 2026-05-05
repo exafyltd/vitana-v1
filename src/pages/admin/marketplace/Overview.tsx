@@ -169,7 +169,7 @@ export default function MarketplaceOverview() {
                         <span className="font-medium">{r.source_network}</span>
                         <span className="text-muted-foreground">
                           +{r.products_inserted} / ~{r.products_updated}
-                          {r.errors > 0 && <span className="text-red-600"> / {r.errors} err</span>}
+                          {r.errors > 0 && <span className="text-red-600">{t('screens.admin.ErrorsErr', { errors: r.errors })}</span>}
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">{timeAgo(r.started_at)}</span>

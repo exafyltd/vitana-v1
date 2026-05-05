@@ -703,7 +703,17 @@
       "menu": "Menü",
       "whyThisAction": "Warum diese Aktion?",
       "expectedOutcome": "Erwartetes Ergebnis",
-      "timeNeeded": "Benötigte Zeit:"
+      "timeNeeded": "Benötigte Zeit:",
+      "connectDisplay_name": "Verbinde {display_name}",
+      "countApps": "{count} Apps",
+      "selectedBiomarkersLength": "Ausgewählte Biomarker ({length})",
+      "packageExpiresAutomaticallyAfterExpirydaysDays": "Paket läuft automatisch nach {expiryDays} Tagen ab",
+      "lengthMarkers": "{length} Marker",
+      "turnaround_daysDays": "{turnaround_days} Tage",
+      "pendingActionsLength": "Ausstehende Aktionen ({length})",
+      "uploadingProgress": "Hochladen... {progress}%",
+      "selectedDataTypesLength": "Ausgewählte Datentypen ({length})",
+      "byUser": "Von: {user}"
     },
     "admin": {
       "usingDefaults": "Standardwerte verwenden",
@@ -1989,7 +1999,43 @@
       "foreground": "Vordergrund",
       "creatorProfileDataWillAppearHere": "Ersteller-Profil-Daten erscheinen hier, sobald sich Ersteller über Stripe Connect registrieren.",
       "granted": "Gewährt",
-      "usersWith": "Benutzer mit"
+      "usersWith": "Benutzer mit",
+      "responsetimeMs": "{responseTime}ms",
+      "avgresponsetimeMs": "{avgResponseTime}ms",
+      "p95latencyMs": "{p95Latency}ms",
+      "p99latencyMs": "{p99Latency}ms",
+      "activeActive": "{active} aktiv",
+      "response_time_msMs": "{response_time_ms}ms",
+      "errorError_log": "Fehler: {error_log}",
+      "emailsProcessLength": "Zu verarbeitende E-Mails ({length})",
+      "recordcountRecords": "{recordCount} Einträge",
+      "byAdmin": "Von: {admin}",
+      "errorLoadingAnalyticsError": "Fehler beim Laden der Analysen: {error}",
+      "enabledEnabledcount": "Aktiviert: {enabledCount}",
+      "executableImplementedcount": "Ausführbar: {implementedCount}",
+      "totalLength": "Gesamt: {length}",
+      "newNew": "Neu: {new}",
+      "activatedActivated": "Aktiviert: {activated}",
+      "snoozedSnoozed": "Pausiert: {snoozed}",
+      "rejectedRejected": "Abgelehnt: {rejected}",
+      "openOpen": "{open} offen",
+      "totalTotal": "{total} gesamt",
+      "actionableReady": "{actionable} bereit",
+      "handledByResolver_agent": "· bearbeitet von {resolver_agent}",
+      "totalTotal2": "Gesamt: {total}",
+      "openOpen2": "Offen: {open}",
+      "resolvedResolved": "Gelöst: {resolved}",
+      "versionVVersion": "Version: v{version}",
+      "handledByResolver_agent2": "bearbeitet von {resolver_agent}",
+      "screenScreen_path": "Bildschirm: {screen_path}",
+      "appVersionApp_version": "App-Version: {app_version}",
+      "display_nameForwardingRules": "{display_name} — Weiterleitungsregeln",
+      "gateGate": "Gate: {gate}",
+      "decisionDecision": "Entscheidung: {decision}",
+      "ErrorsErr": "/ {errors} Fehler",
+      "sizeSelected": "{size} ausgewählt",
+      "byActor": "von {actor}",
+      "blockedBlocked_reason": "Blockiert: {blocked_reason}"
     },
     "ai-feed": {
       "noEventsFound": "Keine Ereignisse gefunden",
@@ -2003,7 +2049,15 @@
       "tryAdjustingYourFiltersSearchQuery": "Versuche, deine Filter oder Suchanfrage anzupassen",
       "viewDetails": "Details anzeigen",
       "addNote": "Notiz hinzufügen",
-      "share": "Teilen"
+      "share": "Teilen",
+      "entriesEntries": "Einträge {entries}",
+      "streakLongeststreakD": "Serie {longestStreak} Tage",
+      "creditsCredits": "+{credits} Credits",
+      "completionCompletionrate": "Abschluss {completionRate}%",
+      "streakcountDayStreak": "{streakCount} Tage am Stück 🔥",
+      "streakDayStreak": "{streak} Tage am Stück!",
+      "successrateSuccess": "{successRate}% Erfolg",
+      "lastLastcompleted": "Zuletzt: {lastCompleted}"
     },
     "analysis": {
       "topMatchFactors": "Top-Match-Faktoren",
@@ -2175,7 +2229,8 @@
       "print": "Drucken",
       "downloadPdf": "PDF herunterladen",
       "vitanalandInc": "Vitanaland Inc.",
-      "text123WellnessStreet": "Wellness-Straße 123"
+      "text123WellnessStreet": "Wellness-Straße 123",
+      "invoiceId": "Rechnung #{id}"
     },
     "business": {
       "performance": "📊 Leistung",
@@ -2306,7 +2361,10 @@
       "theseDecideWhatAutopilotCanDo": "Diese legen fest, was Autopilot in deinem Namen für Community-Empfehlungen tun kann. Schalte jederzeit beliebig um.",
       "eachListenerChannelCanOverrideThis": "Jeder Listener-Kanal kann dies überschreiben. One-Tap und Auto-Post sind noch nicht aktiv – kommen in einer späteren Phase.",
       "autopilotReferrals7d": "Autopilot-Empfehlungen (7d)",
-      "refresh": "Aktualisieren"
+      "refresh": "Aktualisieren",
+      "ldquoPersonal_noteRdquo": "„{personal_note}“",
+      "lastErrorLast_error": "Letzter Fehler: {last_error}",
+      "whyMatch_reason": "Warum: {match_reason}"
     },
     "calendar": {
       "noUpcomingEvents": "Keine anstehenden Ereignisse",
@@ -2356,7 +2414,11 @@
       "weeklyProgress": "Wöchentlicher Fortschritt",
       "month": "Monat",
       "appointments": "Termine",
-      "motivation": "Motivation"
+      "motivation": "Motivation",
+      "attendees_countAttendees": "{attendees_count} Teilnehmer",
+      "priorityPriority": "{priority} Priorität",
+      "dueDue": "Fällig: {due}",
+      "percentageComplete": "{percentage}% abgeschlossen"
     },
     "cart": {
       "yourCart": "Dein Warenkorb",
@@ -2717,7 +2779,26 @@
       "trendingDiscussions": "Trend-Diskussionen",
       "kind": "Freundlich",
       "whatSYourMind": "Was liegt dir auf dem Herzen?",
-      "vitanaDevonSageAtlasMiraAi": "Vitana, Devon, Sage, Atlas und Mira sind KI-Spezialisten. Ein Mensch überprüft Aktionen, bevor sie auf dein Konto angewendet werden."
+      "vitanaDevonSageAtlasMiraAi": "Vitana, Devon, Sage, Atlas und Mira sind KI-Spezialisten. Ein Mensch überprüft Aktionen, bevor sie auf dein Konto angewendet werden.",
+      "queuedcountQueued": "{queuedCount} in der Warteschlange",
+      "uploadingcountUploading": "{uploadingCount} wird hochgeladen",
+      "donecountDone": "{doneCount} erledigt",
+      "failedcountFailed": "{failedCount} fehlgeschlagen",
+      "uploadQueueLength": "Upload-Warteschlange ({length})",
+      "membersMembercount": "Mitglieder ({memberCount})",
+      "participantsLength": "Teilnehmer ({length})",
+      "totalmembersCommunityMembers": "{totalMembers} Community-Mitglieder",
+      "eventstodayEventsToday": "{eventsToday} Events heute",
+      "matchscoreMatch": "{matchScore}% Übereinstimmung",
+      "commongroupsCommonGroups": "{commonGroups} gemeinsame Gruppen",
+      "relevancescoreRelevant": "{relevanceScore}% relevant",
+      "couldnTLoadError": "Konnte nicht geladen werden – {error}",
+      "scorepctMatch": "{scorePct}% Übereinstimmung",
+      "hostedByHost": "Veranstaltet von {host}",
+      "responsesResponsesSoFar": "{responses} Antworten bisher",
+      "membersMembers": "{members} Mitglieder",
+      "matchMatch": "{match}% Übereinstimmung",
+      "handledByResolver_agent": "bearbeitet von {resolver_agent}"
     },
     "contacts": {
       "addContact": "Kontakt hinzufügen",
@@ -2788,7 +2869,10 @@
       "creatorPayments": "Creator-Zahlungen",
       "loadingPaymentStatus": "Zahlungsstatus wird geladen...",
       "active": "Aktiv",
-      "youCanNowCreatePaidLive": "Du kannst jetzt kostenpflichtige Live-Räume erstellen und Einnahmen direkt auf dein Bankkonto erhalten."
+      "youCanNowCreatePaidLive": "Du kannst jetzt kostenpflichtige Live-Räume erstellen und Einnahmen direkt auf dein Bankkonto erhalten.",
+      "roomPricePrice": "Zimmerpreis: ${price}",
+      "youCreator": "Du: ${creator}",
+      "feePlatform": "Gebühr: ${platform}"
     },
     "crossover": {
       "keyFactors": "Schlüsselfaktoren:",
@@ -2862,7 +2946,17 @@
       "deletePodcast": "Podcast löschen",
       "todaySPriority": "Heutige Priorität",
       "video": "Video",
-      "index": "Index"
+      "index": "Index",
+      "confidenceConfidence": "Vertrauen: {confidence}%",
+      "priorityPriority": "{priority} Priorität",
+      "heartrateBpm": "{heartRate} BPM",
+      "hydrationHydration": "Hydration {hydration}%",
+      "energyEnergy": "Energie {energy}%",
+      "activeusersFriendsActive": "{activeUsers} Freunde aktiv",
+      "weekdeltaThisWeek": "+{weekDelta}% diese Woche",
+      "withInstructor": "mit {instructor}",
+      "supportmessagesSupportMsgs": "{supportMessages} Support-Nachrichten",
+      "groupactivitiesGroupActivities": "{groupActivities} Gruppenaktivitäten"
     },
     "debug": {
       "presenceDebug": "Präsenz Debug",
@@ -2870,7 +2964,8 @@
       "users": "Benutzer:",
       "retries": "Wiederholungen:",
       "connected": "Verbunden:",
-      "latency": "Latenz:"
+      "latency": "Latenz:",
+      "realtimelatencyMs": "{realtimeLatency}ms"
     },
     "dev": {
       "currentStep": "Aktueller Schritt",
@@ -3187,7 +3282,21 @@
       "realtimeBackendConnectivityDiagnosticInformation": "Echtzeit-Backend-Konnektivität und Diagnoseinformationen",
       "retryAllConnections": "Alle Verbindungen erneut versuchen",
       "copyDiagnosticInfo": "Diagnoseinfo kopieren",
-      "openDocumentation": "Dokumentation öffnen"
+      "openDocumentation": "Dokumentation öffnen",
+      "eventTimelineLengthEvents": "Event-Zeitleiste ({length} Events)",
+      "executionprogressComplete": "{executionProgress}% abgeschlossen",
+      "entriesEntries": "{entries} Einträge",
+      "updatedUpdated": "Aktualisiert {updated}",
+      "versionVersion": "Version {version}",
+      "lastUpdatedDate": "Zuletzt aktualisiert: {date}",
+      "viewsConfiguredViews": "{views} konfigurierte Ansichten",
+      "countScreensDefined": "{count} Bildschirme definiert",
+      "portalPortal": "Portal: {portal}",
+      "assigneeAssignee": "Zuständig: {assignee}",
+      "vtidVtid": "VTID: {vtid}",
+      "usedUsagecountTimes": "{usageCount} Mal verwendet",
+      "lastLastused": "Zuletzt: {lastUsed}",
+      "latencyMs": "{latency}ms"
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Starte die Aufzeichnung deiner Wellness-Reise",
@@ -3210,7 +3319,10 @@
       "addFavorites": "Zu Favoriten hinzufügen",
       "editDetails": "Details bearbeiten",
       "deletePhoto": "Foto löschen",
-      "report": "Melden"
+      "report": "Melden",
+      "sizeSize": "Größe: {size}",
+      "sourceSource": "Quelle: {source}",
+      "cameraCamera": "Kamera: {camera}"
     },
     "discover": {
       "quickBookActions": "Schnelle Buchaktionen",
@@ -3375,7 +3487,20 @@
       "reviews": "Bewertungen",
       "saveYourFavoriteSupplementsTrackYour": "Speichere deine Lieblingsergänzungsmittel und verfolge deinen Supplement-Stack",
       "browseWellnessServicesBookmarkYourFavorites": "Durchstöbere Wellness-Angebote und setze Lesezeichen für deine Favoriten",
-      "exploreServices": "Angebote erkunden"
+      "exploreServices": "Angebote erkunden",
+      "duration_minutesMinutes": "{duration_minutes} Minuten",
+      "bookingsBookings": "{bookings} Buchungen",
+      "savedSaveddate": "Gespeichert am {savedDate}",
+      "availableNextavailable": "Verfügbar ab {nextAvailable}",
+      "upcomingLength": "Bevorstehend ({length})",
+      "daysuntilDaysAway": "Noch {daysUntil} Tage",
+      "todayHoursuntilHAway": "Heute - noch {hoursUntil}h",
+      "couldnTLoadError": "Konnte nicht geladen werden — {error}",
+      "reviewsReviews": "({reviews} Bewertungen)",
+      "aboutName": "Über {name}",
+      "ratingRating": "Bewertung: {rating}",
+      "vitanaimpactVitana": "+{vitanaImpact} Vitana",
+      "providerProvider": "Anbieter: {provider}"
     },
     "discovery": {
       "filters": "Filter:",
@@ -3755,7 +3880,24 @@
       "youRe": "Du bist",
       "eachFivePillarsMax200Each": "Jede der fünf Säulen (max. 200) ist die Summe von vier Unterwerten:\n                ein kleiner",
       "book": "Buch",
-      "serviceActions": "Service-Aktionen"
+      "serviceActions": "Service-Aktionen",
+      "dayDay7": "Tag {day7}",
+      "dayDay30": "Tag {day30}",
+      "datacompletenessComplete": "{dataCompleteness}% vollständig",
+      "logActivityLiftName": "Aktivität protokollieren, um {name} zu heben",
+      "nextAvailableNextavailable": "Nächste verfügbar: {nextAvailable}",
+      "todayTotal": "Heute: {total}",
+      "day90GoalGoal_score": "Tag 90 — Ziel {GOAL_SCORE}+",
+      "durationMin": "{duration} Min",
+      "caloriesburnedKcal": "{caloriesBurned} kcal",
+      "amountMl": "{amount} ml",
+      "mindfulnessstreakDays": "{mindfulnessStreak} Tage",
+      "caloriesCal": "{calories} cal",
+      "timeminMin": "{timeMin} Min",
+      "stageSleep": "{stage} Schlaf",
+      "readtimeRead": "{readTime} Lesezeit",
+      "viewsViews": "{views} Aufrufe",
+      "text5ActivePlansSyncedCrosspillarSynergy": "· 5 aktive Pläne synchronisiert · pillarübergreifende Synergie {synergyScore}/100"
     },
     "home": {
       "noUpcomingEvents": "Keine anstehenden Termine",
@@ -3843,7 +3985,8 @@
       "groups": "💬 Gruppen",
       "coaches": "✅ Coaches",
       "events": "📅 Events",
-      "analysis": "🎯 Analyse"
+      "analysis": "🎯 Analyse",
+      "lengthOptimizedActions": "{length} optimierte Aktionen"
     },
     "icons": {
       "xFormerlyTwitter": "X (ehemals Twitter)"
@@ -3883,7 +4026,8 @@
       "shareElsewhere": "Andernorts teilen",
       "whatsapp": "WhatsApp",
       "email": "E-Mail",
-      "close": "Schließen"
+      "close": "Schließen",
+      "overMaxrecipientsCap": "über dem Limit von {maxRecipients}"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",
@@ -3927,7 +4071,8 @@
       "outlook": "Outlook",
       "appleCalendar": "Apple Kalender",
       "downloadIcs": "ICS herunterladen",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "purchaseAccessTitle": "Zugang kaufen: {title}"
     },
     "meetups": {
       "detailsProgram": "Details & Programm"
@@ -4248,7 +4393,10 @@
       "customMessages": "✏️ Benutzerdefinierte Nachrichten",
       "myFavoriteTemplates": "Meine Lieblingsvorlagen",
       "recentlyUsedTemplates": "Kürzlich verwendete Vorlagen",
-      "customMessages2": "Benutzerdefinierte Nachrichten"
+      "customMessages2": "Benutzerdefinierte Nachrichten",
+      "attendeesAttendees": "{attendees} Teilnehmer",
+      "groupMembersLength": "Gruppenmitglieder ({length})",
+      "noConversationsMatchingInboxsearchquery": "Keine Unterhaltungen passend zu \"{inboxSearchQuery}\""
     },
     "mobile": {
       "searching": "Suche läuft…",
@@ -4266,7 +4414,8 @@
       "markAllAsRead": "Alle als gelesen markieren",
       "notifications": "Benachrichtigungen",
       "manageYourNotifications": "Verwalte deine Benachrichtigungen",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "unreadcountUnread": "{unreadCount} ungelesen"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Wähle den Namensteil deiner Vitana-ID",
@@ -4358,7 +4507,11 @@
       "sendRequest": "Anfrage senden",
       "exchangeSendRequest": "Austauschen & Anfrage senden",
       "message": "Nachricht",
-      "free": "Kostenlos"
+      "free": "Kostenlos",
+      "transferamountCredits": "{transferAmount} Credits",
+      "receivesTransferamountCredits": "erhält {transferAmount} Credits",
+      "insufficientCurrencyBalance": "Nicht genügend {currency} Guthaben",
+      "idTransactionid": "ID: {transactionId}"
     },
     "proactive": {
       "proTip": "Profi-Tipp:",
@@ -4701,7 +4854,12 @@
       "connections": "Verbindungen",
       "mutualConnections12FeaturedConnectionsShown": "Gemeinsame Verbindungen: 12 • Hervorgehobene Verbindungen werden auf der Übersicht angezeigt.",
       "recentCommunityActionsWillAppearHere": "Aktuelle Community-Aktionen werden hier angezeigt.",
-      "thisPreviewModeWillReflectYour": "Dieser Vorschaumodus spiegelt deine aktuellen Datenschutzeinstellungen wider."
+      "thisPreviewModeWillReflectYour": "Dieser Vorschaumodus spiegelt deine aktuellen Datenschutzeinstellungen wider.",
+      "radiuskmKm": "{radiusKm} km",
+      "withinMaxradiusKm": "Innerhalb von {maxRadius} km",
+      "nextName": "Nächste: {name}",
+      "radius_kmKm": "{radius_km} km",
+      "viewsViews": "{views} Aufrufe"
     },
     "reminders": {
       "reminder": "Erinnerung",
@@ -4736,7 +4894,8 @@
       "cancel": "Abbrechen",
       "delete": "Löschen",
       "deleteAll": "Alle löschen",
-      "tapOrbSay": "Tippe auf den ORB und sage"
+      "tapOrbSay": "Tippe auf den ORB und sage",
+      "deleteAllLengthReminders": "Alle {length} Erinnerungen löschen?"
     },
     "reseller": {
       "noEventsYourInventory": "Keine Ereignisse in deinem Inventar",
@@ -4785,7 +4944,9 @@
       "instagram": "Instagram",
       "openCampaignBuilder": "Kampagnen-Builder öffnen",
       "createFullMarketingCampaignWithEmail": "Erstelle eine vollständige Marketingkampagne mit E-Mail, SMS & Social Media",
-      "yourResellerCode": "Dein Reseller-Code:"
+      "yourResellerCode": "Dein Reseller-Code:",
+      "qtyQuantity": "Menge {quantity}",
+      "pricePriceformatted": "Preis {priceFormatted}"
     },
     "settings": {
       "googleConnectionLiveCheck": "Google-Verbindung – Live-Check",
@@ -5383,7 +5544,11 @@
       "chooseYourPreferredAiModelBehavior": "Wähle dein bevorzugtes KI-Modell und Verhalten",
       "lowerValuesMoreFocusedHigherValues": "Niedrigere Werte sind fokussierter, höhere Werte kreativer",
       "controlHowYourVoiceDataStored": "Steuere, wie deine Sprachdaten gespeichert und genutzt werden",
-      "saveRecordingsForQualityImprovement": "Aufnahmen zur Qualitätsverbesserung speichern"
+      "saveRecordingsForQualityImprovement": "Aufnahmen zur Qualitätsverbesserung speichern",
+      "connectingLabel": "Verbinde {label}…",
+      "labelConnected": "{label} verbunden",
+      "weDidnTSeeLabelConfirm": "Wir haben keine Bestätigung von {label} gesehen",
+      "lastSyncLastsync": "Letzte Synchronisierung: {lastSync}"
     },
     "sharing": {
       "activateCampaign": "Kampagne aktivieren",
@@ -6096,7 +6261,8 @@
       "buildPersonalizedDataPackageWithSpecific": "Erstelle ein personalisiertes Datenpaket mit spezifischen Gesundheitsinformationen",
       "startCustomPackage": "Eigenes Paket starten",
       "previewAvailableData": "Verfügbare Daten anzeigen",
-      "use": "Verwenden"
+      "use": "Verwenden",
+      "nameConnected": "{name} • Verbunden"
     },
     "supplements": {
       "supplementName": "Ergänzungsname*",
@@ -6122,7 +6288,8 @@
       "checkBackLaterForNewRecommendations": "Schau später wieder vorbei für neue Empfehlungen!",
       "noRecommendationsAvailableRightNow": "Aktuell keine Empfehlungen verfügbar.",
       "checkBackLaterForPersonalizedSuggestions": "Schau später wieder vorbei für personalisierte Vorschläge!",
-      "noDataAvailable": "Keine Daten verfügbar"
+      "noDataAvailable": "Keine Daten verfügbar",
+      "withWith": "Mit {with}"
     },
     "tickets": {
       "ticketsSold": "Verkaufte Tickets",
@@ -6654,7 +6821,18 @@
       "copy": "Kopieren",
       "shareViaSocialMedia": "Über soziale Medien teilen",
       "addSubscription": "Abonnement hinzufügen",
-      "subscribe": "Abonnieren"
+      "subscribe": "Abonnieren",
+      "tierPlan": "{tier}-Plan",
+      "feeFees": "Gebühr: {fees}",
+      "potentialVtn": "+{potential} VTN",
+      "totalimpactVtn": "{totalImpact} VTN",
+      "costincreasemo": "${costIncrease}/Monat",
+      "pricemo": "${price}/Monat",
+      "avgconfidenceConfidence": "{avgConfidence}% Konfidenz",
+      "processingFeeFee": "Bearbeitungsgebühr: {fee}",
+      "bonusBonus": "+ {bonus} Bonus",
+      "costCredits": "{cost} Credits",
+      "processingTimeProcessingtime": "Bearbeitungszeit: {processingTime}"
     },
     "ai": {
       "rescheduledMeeting": "Neuer Termin geplant",
@@ -6702,7 +6880,8 @@
       "customAgentPrompt": "Benutzerdefinierter Agenten-Prompt",
       "testAgent": "Agent testen",
       "savePrompt": "Prompt speichern",
-      "aiActivityFeed": "KI-Aktivitätsfeed"
+      "aiActivityFeed": "KI-Aktivitätsfeed",
+      "impactImpact": "Auswirkung: {impact}"
     },
     "authpages": {
       "fullName": "Vollständiger Name",
@@ -6904,7 +7083,9 @@
       "addManually": "Oder manuell hinzufügen",
       "email": "E-Mail",
       "phone": "Telefon",
-      "addContact": "Kontakt hinzufügen"
+      "addContact": "Kontakt hinzufügen",
+      "lengthContacts": "{length} Kontakte",
+      "noContactsMatchSearch": "Keine Kontakte entsprechen \"{search}\""
     },
     "logout": {
       "signingOut": "Abmelden..."

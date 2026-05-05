@@ -703,7 +703,17 @@
       "menu": "Menu",
       "whyThisAction": "Why this action?",
       "expectedOutcome": "Expected outcome",
-      "timeNeeded": "Time needed:"
+      "timeNeeded": "Time needed:",
+      "connectDisplay_name": "Connect {display_name}",
+      "countApps": "{count} apps",
+      "selectedBiomarkersLength": "Selected Biomarkers ({length})",
+      "packageExpiresAutomaticallyAfterExpirydaysDays": "Package expires automatically after {expiryDays} days",
+      "lengthMarkers": "{length} markers",
+      "turnaround_daysDays": "{turnaround_days} days",
+      "pendingActionsLength": "Pending Actions ({length})",
+      "uploadingProgress": "Uploading... {progress}%",
+      "selectedDataTypesLength": "Selected Data Types ({length})",
+      "byUser": "By: {user}"
     },
     "admin": {
       "usingDefaults": "Using defaults",
@@ -1989,7 +1999,43 @@
       "foreground": "Foreground",
       "creatorProfileDataWillAppearHere": "Creator profile data will appear here once creators register via Stripe Connect.",
       "granted": "Granted",
-      "usersWith": "Users with"
+      "usersWith": "Users with",
+      "responsetimeMs": "{responseTime}ms",
+      "avgresponsetimeMs": "{avgResponseTime}ms",
+      "p95latencyMs": "{p95Latency}ms",
+      "p99latencyMs": "{p99Latency}ms",
+      "activeActive": "{active} active",
+      "response_time_msMs": "{response_time_ms}ms",
+      "errorError_log": "Error: {error_log}",
+      "emailsProcessLength": "Emails to process ({length})",
+      "recordcountRecords": "{recordCount} records",
+      "byAdmin": "By: {admin}",
+      "errorLoadingAnalyticsError": "Error loading analytics: {error}",
+      "enabledEnabledcount": "Enabled: {enabledCount}",
+      "executableImplementedcount": "Executable: {implementedCount}",
+      "totalLength": "Total: {length}",
+      "newNew": "New: {new}",
+      "activatedActivated": "Activated: {activated}",
+      "snoozedSnoozed": "Snoozed: {snoozed}",
+      "rejectedRejected": "Rejected: {rejected}",
+      "openOpen": "{open} open",
+      "totalTotal": "{total} total",
+      "actionableReady": "{actionable} ready",
+      "handledByResolver_agent": "· handled by {resolver_agent}",
+      "totalTotal2": "Total: {total}",
+      "openOpen2": "Open: {open}",
+      "resolvedResolved": "Resolved: {resolved}",
+      "versionVVersion": "Version: v{version}",
+      "handledByResolver_agent2": "handled by {resolver_agent}",
+      "screenScreen_path": "Screen: {screen_path}",
+      "appVersionApp_version": "App version: {app_version}",
+      "display_nameForwardingRules": "{display_name} — Forwarding Rules",
+      "gateGate": "gate: {gate}",
+      "decisionDecision": "decision: {decision}",
+      "ErrorsErr": " / {errors} err",
+      "sizeSelected": "{size} selected",
+      "byActor": "by {actor}",
+      "blockedBlocked_reason": "Blocked: {blocked_reason}"
     },
     "ai-feed": {
       "noEventsFound": "No events found",
@@ -2003,7 +2049,15 @@
       "tryAdjustingYourFiltersSearchQuery": "Try adjusting your filters or search query",
       "viewDetails": "View details",
       "addNote": "Add note",
-      "share": "Share"
+      "share": "Share",
+      "entriesEntries": "Entries {entries}",
+      "streakLongeststreakD": "Streak {longestStreak}d",
+      "creditsCredits": "+{credits} Credits",
+      "completionCompletionrate": "Completion {completionRate}%",
+      "streakcountDayStreak": "{streakCount} day streak 🔥",
+      "streakDayStreak": "{streak} day streak!",
+      "successrateSuccess": "{successRate}% success",
+      "lastLastcompleted": "Last: {lastCompleted}"
     },
     "analysis": {
       "topMatchFactors": "Top Match Factors",
@@ -2175,7 +2229,8 @@
       "print": "Print",
       "downloadPdf": "Download PDF",
       "vitanalandInc": "Vitanaland Inc.",
-      "text123WellnessStreet": "123 Wellness Street"
+      "text123WellnessStreet": "123 Wellness Street",
+      "invoiceId": "Invoice #{id}"
     },
     "business": {
       "performance": "📊 Performance",
@@ -2306,7 +2361,10 @@
       "theseDecideWhatAutopilotCanDo": "These decide what Autopilot can do on your behalf for community referrals. Flip any of them any time.",
       "eachListenerChannelCanOverrideThis": "Each listener channel can override this. One-tap and auto-post aren't active yet — coming in a later phase.",
       "autopilotReferrals7d": "Autopilot referrals (7d)",
-      "refresh": "Refresh"
+      "refresh": "Refresh",
+      "ldquoPersonal_noteRdquo": "&ldquo;{personal_note}&rdquo;",
+      "lastErrorLast_error": "Last error: {last_error}",
+      "whyMatch_reason": "Why: {match_reason}"
     },
     "calendar": {
       "noUpcomingEvents": "No upcoming events",
@@ -2356,7 +2414,11 @@
       "weeklyProgress": "Weekly Progress",
       "month": "Month",
       "appointments": "Appointments",
-      "motivation": "Motivation"
+      "motivation": "Motivation",
+      "attendees_countAttendees": "{attendees_count} attendees",
+      "priorityPriority": "{priority} priority",
+      "dueDue": "Due: {due}",
+      "percentageComplete": "{percentage}% complete"
     },
     "cart": {
       "yourCart": "Your Cart",
@@ -2717,7 +2779,26 @@
       "trendingDiscussions": "Trending Discussions",
       "kind": "Kind",
       "whatSYourMind": "What's on your mind?",
-      "vitanaDevonSageAtlasMiraAi": "Vitana, Devon, Sage, Atlas, and Mira are AI specialists. A human reviews actions before they apply to your account."
+      "vitanaDevonSageAtlasMiraAi": "Vitana, Devon, Sage, Atlas, and Mira are AI specialists. A human reviews actions before they apply to your account.",
+      "queuedcountQueued": "{queuedCount} queued",
+      "uploadingcountUploading": "{uploadingCount} uploading",
+      "donecountDone": "{doneCount} done",
+      "failedcountFailed": "{failedCount} failed",
+      "uploadQueueLength": "Upload Queue ({length})",
+      "membersMembercount": "Members ({memberCount})",
+      "participantsLength": "Participants ({length})",
+      "totalmembersCommunityMembers": "{totalMembers} community members",
+      "eventstodayEventsToday": "{eventsToday} events today",
+      "matchscoreMatch": "{matchScore}% match",
+      "commongroupsCommonGroups": "{commonGroups} common groups",
+      "relevancescoreRelevant": "{relevanceScore}% relevant",
+      "couldnTLoadError": "Couldn't load — {error}",
+      "scorepctMatch": "{scorePct}% match",
+      "hostedByHost": "Hosted by {host}",
+      "responsesResponsesSoFar": "{responses} responses so far",
+      "membersMembers": "{members} members",
+      "matchMatch": "{match}% match",
+      "handledByResolver_agent": "handled by {resolver_agent}"
     },
     "contacts": {
       "addContact": "Add Contact",
@@ -2788,7 +2869,10 @@
       "creatorPayments": "Creator Payments",
       "loadingPaymentStatus": "Loading payment status...",
       "active": "Active",
-      "youCanNowCreatePaidLive": "You can now create paid Live Rooms and receive earnings directly to your bank account."
+      "youCanNowCreatePaidLive": "You can now create paid Live Rooms and receive earnings directly to your bank account.",
+      "roomPricePrice": "Room Price: ${price}",
+      "youCreator": "You: ${creator}",
+      "feePlatform": "Fee: ${platform}"
     },
     "crossover": {
       "keyFactors": "Key Factors:",
@@ -2862,7 +2946,17 @@
       "deletePodcast": "Delete Podcast",
       "todaySPriority": "Today's Priority",
       "video": "Video",
-      "index": "Index"
+      "index": "Index",
+      "confidenceConfidence": "Confidence: {confidence}%",
+      "priorityPriority": "{priority} priority",
+      "heartrateBpm": "{heartRate} BPM",
+      "hydrationHydration": "Hydration {hydration}%",
+      "energyEnergy": "Energy {energy}%",
+      "activeusersFriendsActive": "{activeUsers} friends active",
+      "weekdeltaThisWeek": "+{weekDelta}% this week",
+      "withInstructor": "with {instructor}",
+      "supportmessagesSupportMsgs": "{supportMessages} support msgs",
+      "groupactivitiesGroupActivities": "{groupActivities} group activities"
     },
     "debug": {
       "presenceDebug": "Presence Debug",
@@ -2870,7 +2964,8 @@
       "users": "Users:",
       "retries": "Retries:",
       "connected": "Connected:",
-      "latency": "Latency:"
+      "latency": "Latency:",
+      "realtimelatencyMs": "{realtimeLatency}ms"
     },
     "dev": {
       "currentStep": "Current Step",
@@ -3187,7 +3282,21 @@
       "realtimeBackendConnectivityDiagnosticInformation": "Real-time backend connectivity and diagnostic information",
       "retryAllConnections": "Retry All Connections",
       "copyDiagnosticInfo": "Copy Diagnostic Info",
-      "openDocumentation": "Open Documentation"
+      "openDocumentation": "Open Documentation",
+      "eventTimelineLengthEvents": "Event Timeline ({length} events)",
+      "executionprogressComplete": "{executionProgress}% complete",
+      "entriesEntries": "{entries} entries",
+      "updatedUpdated": "Updated {updated}",
+      "versionVersion": "Version {version}",
+      "lastUpdatedDate": "Last updated: {date}",
+      "viewsConfiguredViews": "{views} configured views",
+      "countScreensDefined": "{count} screens defined",
+      "portalPortal": "Portal: {portal}",
+      "assigneeAssignee": "Assignee: {assignee}",
+      "vtidVtid": "VTID: {vtid}",
+      "usedUsagecountTimes": "Used {usageCount} times",
+      "lastLastused": "Last: {lastUsed}",
+      "latencyMs": "{latency}ms"
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Start recording your wellness journey",
@@ -3210,7 +3319,10 @@
       "addFavorites": "Add to favorites",
       "editDetails": "Edit details",
       "deletePhoto": "Delete photo",
-      "report": "Report"
+      "report": "Report",
+      "sizeSize": "Size: {size}",
+      "sourceSource": "Source: {source}",
+      "cameraCamera": "Camera: {camera}"
     },
     "discover": {
       "quickBookActions": "Quick Book Actions",
@@ -3375,7 +3487,20 @@
       "reviews": "Reviews",
       "saveYourFavoriteSupplementsTrackYour": "Save your favorite supplements and track your supplement stack",
       "browseWellnessServicesBookmarkYourFavorites": "Browse wellness services and bookmark your favorites",
-      "exploreServices": "Explore Services"
+      "exploreServices": "Explore Services",
+      "duration_minutesMinutes": "{duration_minutes} minutes",
+      "bookingsBookings": "{bookings} bookings",
+      "savedSaveddate": "Saved {savedDate}",
+      "availableNextavailable": "Available {nextAvailable}",
+      "upcomingLength": "Upcoming ({length})",
+      "daysuntilDaysAway": "{daysUntil} days away",
+      "todayHoursuntilHAway": "Today - {hoursUntil}h away",
+      "couldnTLoadError": "Couldn't load — {error}",
+      "reviewsReviews": "({reviews} reviews)",
+      "aboutName": "About {name}",
+      "ratingRating": "{rating} rating",
+      "vitanaimpactVitana": "+{vitanaImpact} Vitana",
+      "providerProvider": "Provider: {provider}"
     },
     "discovery": {
       "filters": "Filters:",
@@ -3755,7 +3880,24 @@
       "youRe": "You're",
       "eachFivePillarsMax200Each": "Each of the five pillars (max 200 each) is the sum of four sub-scores:\n                a small",
       "book": "Book",
-      "serviceActions": "Service Actions"
+      "serviceActions": "Service Actions",
+      "dayDay7": "Day {day7}",
+      "dayDay30": "Day {day30}",
+      "datacompletenessComplete": "{dataCompleteness}% Complete",
+      "logActivityLiftName": "Log activity to lift {name}",
+      "nextAvailableNextavailable": "Next available: {nextAvailable}",
+      "todayTotal": "Today: {total}",
+      "day90GoalGoal_score": "Day 90 — goal {GOAL_SCORE}+",
+      "durationMin": "{duration} min",
+      "caloriesburnedKcal": "{caloriesBurned} kcal",
+      "amountMl": "{amount}ml",
+      "mindfulnessstreakDays": "{mindfulnessStreak} days",
+      "caloriesCal": "{calories} cal",
+      "timeminMin": "{timeMin} min",
+      "stageSleep": "{stage} Sleep",
+      "readtimeRead": "{readTime} read",
+      "viewsViews": "{views} views",
+      "text5ActivePlansSyncedCrosspillarSynergy": " · 5 active plans synced · Cross-pillar synergy {synergyScore}/100"
     },
     "home": {
       "noUpcomingEvents": "No upcoming events",
@@ -3843,7 +3985,8 @@
       "groups": "💬 Groups",
       "coaches": "✅ Coaches",
       "events": "📅 Events",
-      "analysis": "🎯 Analysis"
+      "analysis": "🎯 Analysis",
+      "lengthOptimizedActions": "{length} optimized actions"
     },
     "icons": {
       "xFormerlyTwitter": "X (formerly Twitter)"
@@ -3883,7 +4026,8 @@
       "shareElsewhere": "Share elsewhere",
       "whatsapp": "WhatsApp",
       "email": "Email",
-      "close": "Close"
+      "close": "Close",
+      "overMaxrecipientsCap": "over the {maxRecipients} cap"
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
@@ -3927,7 +4071,8 @@
       "outlook": "Outlook",
       "appleCalendar": "Apple Calendar",
       "downloadIcs": "Download ICS",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "purchaseAccessTitle": "Purchase Access: {title}"
     },
     "meetups": {
       "detailsProgram": "Details & Program"
@@ -4248,7 +4393,10 @@
       "customMessages": "✏️ Custom Messages",
       "myFavoriteTemplates": "My Favorite Templates",
       "recentlyUsedTemplates": "Recently Used Templates",
-      "customMessages2": "Custom Messages"
+      "customMessages2": "Custom Messages",
+      "attendeesAttendees": "{attendees} attendees",
+      "groupMembersLength": "Group Members ({length})",
+      "noConversationsMatchingInboxsearchquery": "No conversations matching \"{inboxSearchQuery}\""
     },
     "mobile": {
       "searching": "Searching…",
@@ -4266,7 +4414,8 @@
       "markAllAsRead": "Mark all as read",
       "notifications": "Notifications",
       "manageYourNotifications": "Manage your notifications",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "unreadcountUnread": "{unreadCount} unread"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Pick the name part of your Vitana ID",
@@ -4358,7 +4507,11 @@
       "sendRequest": "Send Request",
       "exchangeSendRequest": "Exchange & Send Request",
       "message": "Message",
-      "free": "Free"
+      "free": "Free",
+      "transferamountCredits": "{transferAmount} credits",
+      "receivesTransferamountCredits": "receives {transferAmount} credits",
+      "insufficientCurrencyBalance": "Insufficient {currency} balance",
+      "idTransactionid": "ID: {transactionId}"
     },
     "proactive": {
       "proTip": "Pro Tip:",
@@ -4701,7 +4854,12 @@
       "connections": "Connections",
       "mutualConnections12FeaturedConnectionsShown": "Mutual connections: 12 • Featured connections shown on Overview.",
       "recentCommunityActionsWillAppearHere": "Recent community actions will appear here.",
-      "thisPreviewModeWillReflectYour": "This preview mode will reflect your current privacy settings."
+      "thisPreviewModeWillReflectYour": "This preview mode will reflect your current privacy settings.",
+      "radiuskmKm": "{radiusKm} km",
+      "withinMaxradiusKm": "Within {maxRadius} km",
+      "nextName": "Next: {name}",
+      "radius_kmKm": "{radius_km} km",
+      "viewsViews": "{views} views"
     },
     "reminders": {
       "reminder": "Reminder",
@@ -4736,7 +4894,8 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "deleteAll": "Delete All",
-      "tapOrbSay": "Tap the ORB and say"
+      "tapOrbSay": "Tap the ORB and say",
+      "deleteAllLengthReminders": "Delete all {length} reminders?"
     },
     "reseller": {
       "noEventsYourInventory": "No events in your inventory",
@@ -4785,7 +4944,9 @@
       "instagram": "Instagram",
       "openCampaignBuilder": "Open Campaign Builder",
       "createFullMarketingCampaignWithEmail": "Create a full marketing campaign with email, SMS & social media",
-      "yourResellerCode": "Your reseller code:"
+      "yourResellerCode": "Your reseller code:",
+      "qtyQuantity": "Qty {quantity}",
+      "pricePriceformatted": "Price {priceFormatted}"
     },
     "settings": {
       "googleConnectionLiveCheck": "Google connection — live check",
@@ -5383,7 +5544,11 @@
       "chooseYourPreferredAiModelBehavior": "Choose your preferred AI model and behavior",
       "lowerValuesMoreFocusedHigherValues": "Lower values are more focused, higher values are more creative",
       "controlHowYourVoiceDataStored": "Control how your voice data is stored and used",
-      "saveRecordingsForQualityImprovement": "Save recordings for quality improvement"
+      "saveRecordingsForQualityImprovement": "Save recordings for quality improvement",
+      "connectingLabel": "Connecting {label}…",
+      "labelConnected": "{label} connected",
+      "weDidnTSeeLabelConfirm": "We didn't see {label} confirm",
+      "lastSyncLastsync": "Last sync: {lastSync}"
     },
     "sharing": {
       "activateCampaign": "Activate Campaign",
@@ -6096,7 +6261,8 @@
       "buildPersonalizedDataPackageWithSpecific": "Build a personalized data package with specific health information",
       "startCustomPackage": "Start Custom Package",
       "previewAvailableData": "Preview Available Data",
-      "use": "Use"
+      "use": "Use",
+      "nameConnected": "{name} • Connected"
     },
     "supplements": {
       "supplementName": "Supplement Name*",
@@ -6122,7 +6288,8 @@
       "checkBackLaterForNewRecommendations": "Check back later for new recommendations!",
       "noRecommendationsAvailableRightNow": "No recommendations available right now.",
       "checkBackLaterForPersonalizedSuggestions": "Check back later for personalized suggestions!",
-      "noDataAvailable": "No data available"
+      "noDataAvailable": "No data available",
+      "withWith": "With {with}"
     },
     "tickets": {
       "ticketsSold": "Tickets Sold",
@@ -6654,7 +6821,18 @@
       "copy": "Copy",
       "shareViaSocialMedia": "Share via Social Media",
       "addSubscription": "Add Subscription",
-      "subscribe": "Subscribe"
+      "subscribe": "Subscribe",
+      "tierPlan": "{tier} Plan",
+      "feeFees": "Fee: {fees}",
+      "potentialVtn": "+{potential} VTN",
+      "totalimpactVtn": "{totalImpact} VTN",
+      "costincreasemo": "${costIncrease}/mo",
+      "pricemo": "${price}/mo",
+      "avgconfidenceConfidence": "{avgConfidence}% confidence",
+      "processingFeeFee": "Processing fee: {fee}",
+      "bonusBonus": "+ {bonus} Bonus",
+      "costCredits": "{cost} Credits",
+      "processingTimeProcessingtime": "Processing time: {processingTime}"
     },
     "ai": {
       "rescheduledMeeting": "Rescheduled meeting",
@@ -6702,7 +6880,8 @@
       "customAgentPrompt": "Custom Agent Prompt",
       "testAgent": "Test Agent",
       "savePrompt": "Save Prompt",
-      "aiActivityFeed": "AI Activity Feed"
+      "aiActivityFeed": "AI Activity Feed",
+      "impactImpact": "Impact: {impact}"
     },
     "authpages": {
       "fullName": "Full name",
@@ -6904,7 +7083,9 @@
       "addManually": "Or add manually",
       "email": "Email",
       "phone": "Phone",
-      "addContact": "Add Contact"
+      "addContact": "Add Contact",
+      "lengthContacts": "{length} contacts",
+      "noContactsMatchSearch": "No contacts match \"{search}\""
     },
     "logout": {
       "signingOut": "Signing out..."

@@ -81,7 +81,7 @@ function CompatibilityCardBase({ className }: CompatibilityCardProps) {
             {weekDelta > 0 && (
               <div className="flex items-center justify-center gap-1 text-xs text-green-600 dark:text-green-400 mt-1">
                 <ArrowUp className="w-3 h-3" />
-                <span>+{weekDelta}% this week</span>
+                <span>{t('screens.crossover.weekdeltaThisWeek', { weekDelta })}</span>
               </div>
             )}
           </div>

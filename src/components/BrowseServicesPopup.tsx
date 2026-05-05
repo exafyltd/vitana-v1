@@ -166,7 +166,7 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
                       <CardContent className="p-4 text-center">
                         <IconComponent className="h-6 w-6 mx-auto mb-2 text-primary" />
                         <div className="font-medium text-sm">{category.name}</div>
-                        <div className="text-xs text-muted-foreground">{category.count} apps</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.common.countApps', { count: category.count })}</div>
                       </CardContent>
                     </Card>
                   );

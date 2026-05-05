@@ -158,7 +158,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
           <div className="p-3 rounded-lg bg-gradient-to-r from-emerald-500/5 to-green-500/5 border border-emerald-200/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">{t('screens.wallet.potentialSavings')}</span>
-              <span className="text-sm text-muted-foreground">{avgConfidence}% confidence</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.avgconfidenceConfidence', { avgConfidence })}</span>
             </div>
             <div className="text-2xl font-bold text-emerald-600 mb-1">${totalPotentialSavings}</div>
             <p className="text-xs text-muted-foreground">

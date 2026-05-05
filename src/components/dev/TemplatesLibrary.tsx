@@ -139,8 +139,8 @@ export function TemplatesLibrary() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Used {template.usageCount} times</span>
-                {template.lastUsed && <span>Last: {template.lastUsed}</span>}
+                <span>{t('screens.dev.usedUsagecountTimes', { usageCount: template.usageCount })}</span>
+                {template.lastUsed && <span>{t('screens.dev.lastLastused', { lastUsed: template.lastUsed })}</span>}
               </div>
               <div className="flex gap-2">
                 <Button size="sm" className="flex-1">

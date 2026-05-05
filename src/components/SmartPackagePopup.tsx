@@ -214,7 +214,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                 
                 {selectedDataTypes.length > 0 && (
                   <div className="mt-4 p-3 bg-muted rounded-lg">
-                    <div className="text-sm font-medium">Selected Data Types ({selectedDataTypes.length})</div>
+                    <div className="text-sm font-medium">{t('screens.common.selectedDataTypesLength', { length: selectedDataTypes.length })}</div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {selectedDataTypes.map((typeId) => {
                         const dataType = availableDataTypes.find(dt => dt.id === typeId);

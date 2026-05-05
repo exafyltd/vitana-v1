@@ -57,7 +57,7 @@ export function ProfileProgressCard({
           <div className="p-3 rounded-lg bg-gradient-to-r from-[hsl(var(--util-profile-accent)/0.1)] to-[hsl(var(--domain-community-accent)/0.1)] border">
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-1">
-                <div className="font-medium text-sm">Next: {nextSuggestion.name}</div>
+                <div className="font-medium text-sm">{t('screens.profile.nextName', { name: nextSuggestion.name })}</div>
                 <div className="text-xs text-muted-foreground">
                   {nextSuggestion.description}
                 </div>

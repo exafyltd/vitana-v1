@@ -211,7 +211,7 @@ export default function ProviderProfile() {
                   <div className="flex items-center gap-1">
                     <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-bold text-lg">{provider.rating}</span>
-                    <span className="text-muted-foreground">({provider.reviews} reviews)</span>
+                    <span className="text-muted-foreground">{t('screens.discover.reviewsReviews', { reviews: provider.reviews })}</span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="h-4 w-4" />
@@ -292,7 +292,7 @@ export default function ProviderProfile() {
           <TabsContent value="about" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-3">About {provider.name}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('screens.discover.aboutName', { name: provider.name })}</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {provider.about}
                 </p>

@@ -189,7 +189,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                     <Badge variant="outline" className="text-xs mb-1">
                       {recommendation.match}% match
                     </Badge>
-                    <div className="text-sm font-bold">${recommendation.price}/mo</div>
+                    <div className="text-sm font-bold">{t('screens.wallet.pricemo', { price: recommendation.price })}</div>
                   </div>
                 </div>
                 

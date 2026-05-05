@@ -30,7 +30,7 @@ function AIReasoningCardBase({
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-3 h-3 text-green-600" />
-          <span>Confidence: {confidence}%</span>
+          <span>{t('screens.crossover.confidenceConfidence', { confidence })}</span>
         </div>
         <Lightbulb className="w-3 h-3 text-yellow-600" />
       </div>

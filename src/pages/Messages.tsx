@@ -877,7 +877,7 @@ export default function Messages() {
       return (
         <div className="text-center py-12">
           <Search className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
-          <p className="text-muted-foreground">No conversations matching "{inboxSearchQuery}"</p>
+          <p className="text-muted-foreground">{t('screens.messages.noConversationsMatchingInboxsearchquery', { inboxSearchQuery })}</p>
         </div>
       );
     }

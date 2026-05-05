@@ -229,7 +229,7 @@ export default function Bootstrap() {
 
               {adminEmails.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium">Emails to process ({adminEmails.length})</h4>
+                  <h4 className="text-sm font-medium">{t('screens.admin.emailsProcessLength', { length: adminEmails.length })}</h4>
                   <div className="space-y-1">
                     {adminEmails.map((email) => (
                       <div key={email} className="flex items-center justify-between p-2 bg-muted rounded">

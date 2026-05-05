@@ -209,7 +209,7 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
                             <div className="text-sm font-medium">{entry.event}</div>
                             <div className="text-xs text-muted-foreground">{entry.timestamp}</div>
                           </div>
-                          <div className="text-xs text-muted-foreground mb-1">By: {entry.user}</div>
+                          <div className="text-xs text-muted-foreground mb-1">{t('screens.common.byUser', { user: entry.user })}</div>
                           <div className="text-sm">{entry.details}</div>
                         </div>
                       </div>

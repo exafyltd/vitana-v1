@@ -56,7 +56,7 @@ export function InvoicePreviewDialog({
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Invoice #{invoiceData.id}</span>
+            <span>{t('screens.billing.invoiceId', { id: invoiceData.id })}</span>
             <Badge variant="secondary">{t('screens.billing.paid')}</Badge>
           </DialogTitle>
           <DialogDescription>

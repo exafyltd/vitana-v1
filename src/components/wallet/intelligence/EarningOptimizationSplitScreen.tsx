@@ -111,7 +111,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
             </div>
             <Progress value={implementationProgress} className="h-2 mb-2" />
             <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-primary">{totalImpact} VTN</span> potential monthly increase
+              <span className="font-semibold text-primary">{t('screens.wallet.totalimpactVtn', { totalImpact })}</span> potential monthly increase
             </p>
           </div>
 

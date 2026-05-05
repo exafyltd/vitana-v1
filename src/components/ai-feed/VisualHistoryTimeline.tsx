@@ -451,10 +451,10 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
             <div className="flex items-center gap-6 text-sm">
               <span className="text-muted-foreground">{getRangeLabel()}</span>
               <div className="flex items-center gap-4">
-                <span><strong>Entries {stats.entries}</strong></span>
-                {stats.longestStreak > 0 && <span><strong>Streak {stats.longestStreak}d</strong></span>}
-                <span><strong>+{stats.credits} Credits</strong></span>
-                <span><strong>Completion {stats.completionRate}%</strong></span>
+                <span><strong>{t('screens.ai-feed.entriesEntries', { entries: stats.entries })}</strong></span>
+                {stats.longestStreak > 0 && <span><strong>{t('screens.ai-feed.streakLongeststreakD', { longestStreak: stats.longestStreak })}</strong></span>}
+                <span><strong>{t('screens.ai-feed.creditsCredits', { credits: stats.credits })}</strong></span>
+                <span><strong>{t('screens.ai-feed.completionCompletionrate', { completionRate: stats.completionRate })}</strong></span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -582,7 +582,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                             {event.details.streakCount && (
                               <div className="flex items-center gap-1 text-orange-600 bg-orange-50 px-2 py-1 rounded-full">
                                 <Zap className="w-3 h-3" />
-                                <span>{event.details.streakCount} day streak 🔥</span>
+                                <span>{t('screens.ai-feed.streakcountDayStreak', { streakCount: event.details.streakCount })}</span>
                               </div>
                             )}
                             {event.details.improvement && (

@@ -207,7 +207,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <div className="text-sm font-medium mb-2">Selected Biomarkers ({selectedDetails.length})</div>
+              <div className="text-sm font-medium mb-2">{t('screens.common.selectedBiomarkersLength', { length: selectedDetails.length })}</div>
               <div className="grid grid-cols-2 gap-2">
                 {selectedDetails.map((marker) => (
                   <div key={marker.id} className="text-xs p-2 bg-secondary/20 rounded flex justify-between">
@@ -316,7 +316,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           </div>
           <div className="flex items-start gap-2">
             <Clock className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Package expires automatically after {shareSettings.expiryDays} days</span>
+            <span>{t('screens.common.packageExpiresAutomaticallyAfterExpirydaysDays', { expiryDays: shareSettings.expiryDays })}</span>
           </div>
         </CardContent>
       </Card>
@@ -343,7 +343,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
             </div>
             <div className="flex justify-between">
               <span className="font-medium">{t('screens.common.biomarkersIncluded')}</span>
-              <span>{selectedMarkers.length} markers</span>
+              <span>{t('screens.common.lengthMarkers', { length: selectedMarkers.length })}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">{t('screens.common.expires')}</span>

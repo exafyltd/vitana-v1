@@ -145,7 +145,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                   </div>
                   <div className="flex justify-between">
                     <span>{t('screens.common.resultsTime')}</span>
-                    <span className="font-medium">{labTest.turnaround_days} days</span>
+                    <span className="font-medium">{t('screens.common.turnaround_daysDays', { turnaround_days: labTest.turnaround_days })}</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold">
                     <span>{t('screens.common.total')}</span>

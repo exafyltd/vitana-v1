@@ -121,8 +121,8 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <div className="flex items-center justify-between px-6 py-3">
                 <h3 className="font-semibold truncate">{recipe.title}</h3>
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="text-xs">{recipe.calories} cal</Badge>
-                  <Badge variant="outline" className="text-xs">{recipe.prep.timeMin} min</Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.health.caloriesCal', { calories: recipe.calories })}</Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}</Badge>
                 </div>
               </div>
             </div>
@@ -189,7 +189,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 <div className="flex gap-4">
                   <div className="text-sm flex items-center gap-1">
                     <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span>{recipe.prep.timeMin} min</span>
+                    <span>{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}</span>
                   </div>
                   <div className="text-sm flex items-center gap-1">
                     <ChefHat className="w-4 h-4 text-muted-foreground" />

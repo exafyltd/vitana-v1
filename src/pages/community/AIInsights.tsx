@@ -224,7 +224,7 @@ export default function AIInsights() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-semibold text-sm">{person.name}</h3>
-                            <Badge variant="secondary" className="text-xs">{person.matchScore}% match</Badge>
+                            <Badge variant="secondary" className="text-xs">{t('screens.community.matchscoreMatch', { matchScore: person.matchScore })}</Badge>
                           </div>
                           <p className="text-xs text-muted-foreground mb-2">{person.location}</p>
                           <div className="flex flex-wrap gap-1 mb-2">
@@ -235,7 +235,7 @@ export default function AIInsights() {
                         </div>
                       </div>
                       <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
-                        <span>{person.commonGroups} common groups</span>
+                        <span>{t('screens.community.commongroupsCommonGroups', { commonGroups: person.commonGroups })}</span>
                         <span className="flex items-center gap-1">
                           <div className={`w-2 h-2 rounded-full ${person.activityLevel === 'High' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
                           {person.activityLevel} activity
@@ -317,7 +317,7 @@ export default function AIInsights() {
                     <div key={index} className="p-4 border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <Badge variant="outline" className="text-xs">{rec.type}</Badge>
-                        <Badge variant="secondary" className="text-xs">{rec.relevanceScore}% relevant</Badge>
+                        <Badge variant="secondary" className="text-xs">{t('screens.community.relevancescoreRelevant', { relevanceScore: rec.relevanceScore })}</Badge>
                       </div>
                       <h4 className="font-medium text-sm mb-1">{rec.title}</h4>
                       <p className="text-xs text-muted-foreground mb-2">{rec.reason}</p>

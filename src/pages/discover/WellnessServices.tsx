@@ -494,17 +494,17 @@ export default function WellnessServices() {
                             </div>
                             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                               <Star className="h-3.5 w-3.5" />
-                              <span>{service.rating} rating</span>
+                              <span>{t('screens.discover.ratingRating', { rating: service.rating })}</span>
                             </div>
                             <div className="flex items-center gap-1.5 text-xs font-medium text-primary">
                               <Sparkles className="h-3.5 w-3.5" />
-                              <span>+{service.vitanaImpact} Vitana</span>
+                              <span>{t('screens.discover.vitanaimpactVitana', { vitanaImpact: service.vitanaImpact })}</span>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
                             <MapPin className="h-3.5 w-3.5" />
-                            <span>Provider: {service.provider}</span>
+                            <span>{t('screens.discover.providerProvider', { provider: service.provider })}</span>
                           </div>
 
                           <div className="flex gap-2">

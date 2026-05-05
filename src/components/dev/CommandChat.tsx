@@ -190,7 +190,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                 {/* Timeline View */}
                 {vtidTimeline.length > 0 && (
                   <div className="space-y-2 pt-4 border-t">
-                    <h4 className="text-sm font-semibold mb-3">Event Timeline ({vtidTimeline.length} events)</h4>
+                    <h4 className="text-sm font-semibold mb-3">{t('screens.dev.eventTimelineLengthEvents', { length: vtidTimeline.length })}</h4>
                     <div className="space-y-2">
                       {vtidTimeline.map((evt, idx) => (
                         <div key={idx} className="relative">

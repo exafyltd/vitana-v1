@@ -100,7 +100,7 @@ export default function AuditApiMonitor() {
                     {svc.responseTime != null && (
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">{t('screens.admin.responseTime')}</span>
-                        <span className="font-mono text-xs">{svc.responseTime}ms</span>
+                        <span className="font-mono text-xs">{t('screens.admin.responsetimeMs', { responseTime: svc.responseTime })}</span>
                       </div>
                     )}
                     {svc.data?.timestamp && (

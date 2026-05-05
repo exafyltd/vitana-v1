@@ -131,7 +131,7 @@ export function VitanaIndexTrajectoryCard() {
             <h3 className="text-sm font-medium">{t('screens.health.vitanaIndexTrajectory')}</h3>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">Today: {index.total}</Badge>
+            <Badge variant="outline" className="text-xs">{t('screens.health.todayTotal', { total: index.total })}</Badge>
             <Badge variant="outline" className="text-xs">{index.tier.label}</Badge>
           </div>
         </div>
@@ -221,7 +221,7 @@ export function VitanaIndexTrajectoryCard() {
           <span>{t('screens.health.day0')}</span>
           <span>{t('screens.health.day30')}</span>
           <span>{t('screens.health.day60')}</span>
-          <span>Day 90 — goal {GOAL_SCORE}+</span>
+          <span>{t('screens.health.day90GoalGoal_score', { GOAL_SCORE })}</span>
         </div>
 
         {projectedEnd && projectedTier && (

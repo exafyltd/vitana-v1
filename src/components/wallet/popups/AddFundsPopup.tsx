@@ -124,7 +124,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
                   )}
                   <div className="text-left">
                     <div className="font-medium">{method.name}</div>
-                    <div className="text-xs text-muted-foreground">Processing fee: {method.fee}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.wallet.processingFeeFee', { fee: method.fee })}</div>
                   </div>
                 </div>
                 {method.fee === 'Free' && (

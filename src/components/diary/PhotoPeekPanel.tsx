@@ -168,9 +168,9 @@ export function PhotoPeekPanel({
         {/* Optional Metadata */}
         {metadata && (metadata.size || metadata.source || metadata.camera) && (
           <div className="space-y-1 text-xs text-muted-foreground">
-            {metadata.size && <p>Size: {metadata.size}</p>}
-            {metadata.source && <p>Source: {metadata.source}</p>}
-            {metadata.camera && <p>Camera: {metadata.camera}</p>}
+            {metadata.size && <p>{t('screens.diary.sizeSize', { size: metadata.size })}</p>}
+            {metadata.source && <p>{t('screens.diary.sourceSource', { source: metadata.source })}</p>}
+            {metadata.camera && <p>{t('screens.diary.cameraCamera', { camera: metadata.camera })}</p>}
           </div>
         )}
       </div>

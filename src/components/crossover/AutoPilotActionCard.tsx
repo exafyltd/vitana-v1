@@ -43,7 +43,7 @@ export function AutoPilotActionCard({
         </div>
         <div className="flex items-center gap-1">
           <Target className="w-3 h-3" />
-          <span className={getPriorityColor(priority)}>{priority} priority</span>
+          <span className={getPriorityColor(priority)}>{t('screens.crossover.priorityPriority', { priority })}</span>
         </div>
       </div>
     </div>

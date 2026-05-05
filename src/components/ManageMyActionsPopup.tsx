@@ -115,7 +115,7 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
             {/* Pending Actions Tab */}
             <TabsContent value="pending" className="space-y-4 mt-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium">Pending Actions ({pendingActions.length})</h3>
+                <h3 className="text-lg font-medium">{t('screens.common.pendingActionsLength', { length: pendingActions.length })}</h3>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleConfirmAll}>
                     <CheckCircle className="w-4 h-4 mr-2" />

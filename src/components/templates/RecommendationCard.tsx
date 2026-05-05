@@ -162,7 +162,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               </div>
               
               {item.with && (
-                <p className="text-xs text-muted-foreground mt-2">With {item.with}</p>
+                <p className="text-xs text-muted-foreground mt-2">{t('screens.templates.withWith', { with: item.with })}</p>
               )}
             </div>
           ))}

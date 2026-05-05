@@ -178,7 +178,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
 
               <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg">
                 <Calendar className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-700">Next available: {serviceDetail.nextAvailable}</span>
+                <span className="text-sm font-medium text-green-700">{t('screens.health.nextAvailableNextavailable', { nextAvailable: serviceDetail.nextAvailable })}</span>
               </div>
             </CardContent>
           </Card>

@@ -148,7 +148,7 @@ export default function Calendar() {
                   <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
                     <div>
                       <div className="font-medium">{reminder.title}</div>
-                      <div className="text-sm text-muted-foreground">Due: {reminder.due}</div>
+                      <div className="text-sm text-muted-foreground">{t('screens.calendar.dueDue', { due: reminder.due })}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`px-2 py-1 rounded text-xs ${
@@ -188,7 +188,7 @@ export default function Calendar() {
                           style={{ width: `${goal.percentage}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-muted-foreground">{goal.percentage}% complete</div>
+                      <div className="text-xs text-muted-foreground">{t('screens.calendar.percentageComplete', { percentage: goal.percentage })}</div>
                     </div>
                   ))}
                 </div>

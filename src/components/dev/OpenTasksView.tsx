@@ -116,8 +116,8 @@ export function OpenTasksView({ onTaskClick }: OpenTasksViewProps) {
                       {task.title}
                     </h3>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span>Assignee: {task.assignee}</span>
-                      {task.vtid && <span>VTID: {task.vtid}</span>}
+                      <span>{t('screens.dev.assigneeAssignee', { assignee: task.assignee })}</span>
+                      {task.vtid && <span>{t('screens.dev.vtidVtid', { vtid: task.vtid })}</span>}
                       <span>{formatTime(task.created_at)}</span>
                     </div>
                   </div>

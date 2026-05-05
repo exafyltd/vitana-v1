@@ -238,7 +238,7 @@ export default function TalkToVitana() {
                         <Badge variant="outline" className="text-[10px]">{t('screens.community.viaVoice')}</Badge>
                       )}
                       {t.resolver_agent && (
-                        <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
+                        <span className="text-xs text-muted-foreground">{t('screens.community.handledByResolver_agent', { resolver_agent: t.resolver_agent })}</span>
                       )}
                     </div>
                     <div className="text-xs text-muted-foreground">

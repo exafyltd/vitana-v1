@@ -279,7 +279,7 @@ export function JourneyCheckpoints({
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t('screens.health.thisWeek')}
           </span>
-          <span className="text-xs text-muted-foreground">Day {day7}</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.dayDay7', { day7 })}</span>
         </div>
         {weekPicks.length === 0 ? (
           <div className="py-2 text-sm text-muted-foreground">
@@ -333,7 +333,7 @@ export function JourneyCheckpoints({
             <Sparkles className="w-3 h-3" />
             {t('screens.health.text30dayHorizon')}
           </span>
-          <span className="text-xs text-muted-foreground">Day {day30}</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.dayDay30', { day30 })}</span>
         </div>
         {projected30d !== null && total !== null ? (
           <p className="text-sm leading-snug">

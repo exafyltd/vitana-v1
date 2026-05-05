@@ -291,7 +291,7 @@ export default function InviteFriends() {
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base">{contacts.length} contacts</CardTitle>
+                    <CardTitle className="text-base">{t('screens.invitefriends.lengthContacts', { length: contacts.length })}</CardTitle>
                     <Badge variant="secondary" className="text-xs">
                       {selectedCount} selected
                     </Badge>
@@ -353,7 +353,7 @@ export default function InviteFriends() {
                       );
                     })}
                     {filtered.length === 0 && search && (
-                      <p className="text-sm text-muted-foreground text-center py-8">No contacts match "{search}"</p>
+                      <p className="text-sm text-muted-foreground text-center py-8">{t('screens.invitefriends.noContactsMatchSearch', { search })}</p>
                     )}
                   </div>
                 </ScrollArea>

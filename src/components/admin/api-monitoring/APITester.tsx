@@ -246,7 +246,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
                   </Badge>
                 )}
                 {responseTime > 0 && (
-                  <Badge variant="outline">{responseTime}ms</Badge>
+                  <Badge variant="outline">{t('screens.admin.responsetimeMs', { responseTime })}</Badge>
                 )}
               </div>
               <Button variant="ghost" size="sm" onClick={copyResponse}>

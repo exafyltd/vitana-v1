@@ -219,7 +219,7 @@ export function IntentShareSheet({
               <span>
                 {recipients.length} valid {recipients.length === 1 ? "recipient" : "recipients"}
                 {recipientsExceeded && (
-                  <span className="text-destructive ml-2">over the {maxRecipients} cap</span>
+                  <span className="text-destructive ml-2">{t('screens.intents.overMaxrecipientsCap', { maxRecipients })}</span>
                 )}
               </span>
               <Button
