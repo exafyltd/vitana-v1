@@ -48,7 +48,7 @@ export function VaeaConfigPanel() {
         <CardHeader>
           <CardTitle>{t('screens.business.yourThreeSwitches')}</CardTitle>
           <CardDescription>
-            These decide what Autopilot can do on your behalf for community referrals. Flip any of them any time.
+            {t('screens.business.theseDecideWhatAutopilotCanDo')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -102,7 +102,7 @@ export function VaeaConfigPanel() {
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Each listener channel can override this. One-tap and auto-post aren't active yet — coming in a later phase.
+              {t('screens.business.eachListenerChannelCanOverrideThis')}
             </p>
           </div>
 

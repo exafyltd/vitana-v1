@@ -85,9 +85,9 @@ function Staff() {
           <Tabs defaultValue="directory" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="directory">{t('screens.admin.staffDirectory')}</TabsTrigger>
-              <TabsTrigger value="scheduling">Scheduling</TabsTrigger>
-              <TabsTrigger value="availability">Availability</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="scheduling">{t('screens.admin.scheduling')}</TabsTrigger>
+              <TabsTrigger value="availability">{t('screens.admin.availability')}</TabsTrigger>
+              <TabsTrigger value="reports">{t('screens.admin.reports')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="directory" className="space-y-6">
@@ -95,7 +95,7 @@ function Staff() {
                 <h3 className="text-lg font-semibold">{t('screens.admin.activeStaffMembers')}</h3>
                 <Button>
                   <UserPlus className="w-4 h-4 mr-2" />
-                  Add Staff
+                  {t('screens.admin.addStaff')}
                 </Button>
               </div>
 

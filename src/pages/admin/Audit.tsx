@@ -85,9 +85,9 @@ function Audit() {
           <Tabs defaultValue="logs" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="logs">{t('screens.admin.auditLogs')}</TabsTrigger>
-              <TabsTrigger value="compliance">Compliance</TabsTrigger>
+              <TabsTrigger value="compliance">{t('screens.admin.compliance')}</TabsTrigger>
               <TabsTrigger value="security">{t('screens.admin.securityEvents')}</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="reports">{t('screens.admin.reports')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="logs" className="space-y-6">
@@ -96,11 +96,11 @@ function Audit() {
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm">
                     <Filter className="w-4 h-4 mr-2" />
-                    Filter
+                    {t('screens.admin.filter')}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Download className="w-4 h-4 mr-2" />
-                    Export
+                    {t('screens.admin.export')}
                   </Button>
                 </div>
               </div>

@@ -563,7 +563,7 @@ export default withScreenId(function Distribution() {
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="default">
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Asset
+                  {t('screens.sharing.createAsset')}
                   <ChevronDown className="w-4 h-4 ml-2" />
                 </Button>
               </DropdownMenuTrigger>
@@ -599,15 +599,15 @@ export default withScreenId(function Distribution() {
             <SplitBarList>
               <SplitBarTrigger value="templates">
                 <Rocket className="w-4 h-4" />
-                Campaign Templates
+                {t('screens.sharing.campaignTemplates')}
               </SplitBarTrigger>
               <SplitBarTrigger value="automation">
                 <Zap className="w-4 h-4" />
-                Automation Rules
+                {t('screens.sharing.automationRules')}
               </SplitBarTrigger>
               <SplitBarTrigger value="brand">
                 <Palette className="w-4 h-4" />
-                Brand Kit
+                {t('screens.sharing.brandKit')}
               </SplitBarTrigger>
             </SplitBarList>
 

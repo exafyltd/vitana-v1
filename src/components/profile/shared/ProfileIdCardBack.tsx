@@ -192,10 +192,10 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
         
         <div className="relative z-10 text-center mb-8">
           <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
-            Social Presence
+            {t('screens.profile.socialPresence')}
           </h2>
           <p className={`text-sm transition-colors duration-500 ${themeConfig.backCard.textInactive || 'text-muted-foreground'}`}>
-            Verified connections across your digital life
+            {t('screens.profile.verifiedConnectionsAcrossYourDigitalLife')}
           </p>
         </div>
 
@@ -328,7 +328,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                           border: `1px solid ${platform.brandColor}30`
                         }}
                       >
-                        <span>Connected</span>
+                        <span>{t('screens.profile.connected')}</span>
                       </div>
                       {isOwnProfile && (
                         <Button

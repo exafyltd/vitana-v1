@@ -111,7 +111,7 @@ export default function DevLayout({ children }: DevLayoutProps) {
                 >
                   <Menu className="h-5 w-5" />
                 </Button>
-                <span className="text-sm font-medium">Menu</span>
+                <span className="text-sm font-medium">{t('screens.common.menu')}</span>
               </div>
             )}
             

@@ -201,7 +201,7 @@ export default function Search() {
                   <p className="text-sm text-foreground/80">{result.description}</p>
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" variant="outline" onClick={() => navigate(`/u/${result.id}`)}>{t('screens.search.viewProfile')}</Button>
-                    <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${result.id}`, { state: { openMessage: true } })}>Message</Button>
+                    <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${result.id}`, { state: { openMessage: true } })}>{t('screens.search.message')}</Button>
                   </div>
                 </div>
               </div>
@@ -276,7 +276,7 @@ export default function Search() {
                         </div>
                       )}
                     </div>
-                    <Button size="sm" variant="outline">Watch</Button>
+                    <Button size="sm" variant="outline">{t('screens.search.watch')}</Button>
                   </div>
                 </div>
               </div>
@@ -302,7 +302,7 @@ export default function Search() {
                   <div className="flex justify-end">
                     <Button size="sm" variant="outline">
                       <BookOpen className="h-4 w-4 mr-2" />
-                      Learn More
+                      {t('screens.search.learnMore')}
                     </Button>
                   </div>
                 </div>
@@ -353,31 +353,31 @@ export default function Search() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all" className="flex items-center gap-2">
-              🔍 All
+              {t('screens.search.all')}
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('all')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-2">
-              👥 People
+              {t('screens.search.people')}
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('people')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="groups" className="flex items-center gap-2">
-              💬 Groups
+              {t('screens.search.groups')}
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('groups')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
-              🎬 Content
+              {t('screens.search.content')}
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('content')}
               </Badge>
             </TabsTrigger>
             <TabsTrigger value="health" className="flex items-center gap-2">
-              ❤️ Health
+              {t('screens.search.health')}
               <Badge variant="secondary" className="ml-1">
                 {getResultCount('health')}
               </Badge>
@@ -394,7 +394,7 @@ export default function Search() {
                     <SearchIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="font-semibold text-lg mb-2">{t('screens.search.noResultsFound')}</h3>
                     <p className="text-muted-foreground">
-                      Try adjusting your search terms or browse different categories.
+                      {t('screens.search.tryAdjustingYourSearchTermsBrowse')}
                     </p>
                   </CardContent>
                 </Card>

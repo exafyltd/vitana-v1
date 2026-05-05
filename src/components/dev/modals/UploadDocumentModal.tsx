@@ -44,16 +44,16 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
                 <SelectValue placeholder={t('screens.dev.selectType')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="schema">Schema</SelectItem>
+                <SelectItem value="schema">{t('screens.dev.schema')}</SelectItem>
                 <SelectItem value="api">{t('screens.dev.apiDocumentation')}</SelectItem>
                 <SelectItem value="design">{t('screens.dev.designSpec')}</SelectItem>
-                <SelectItem value="guide">Guide</SelectItem>
+                <SelectItem value="guide">{t('screens.dev.guide')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">{t('screens.dev.title')}</Label>
             <Input 
               id="title" 
               value={title}
@@ -72,7 +72,7 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.dev.description')}</Label>
             <Textarea 
               id="description" 
               value={description}
@@ -85,14 +85,14 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleUpload}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Upload Document
+            {t('screens.dev.uploadDocument')}
           </Button>
         </DialogFooter>
       </DialogContent>

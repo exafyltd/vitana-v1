@@ -61,7 +61,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
             <p className="text-muted-foreground mb-4">{t('screens.admin.noConditionsSetAutomationWill')}</p>
             <Button onClick={addCondition} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
-              Add First Condition
+              {t('screens.admin.addFirstCondition')}
             </Button>
           </div>
         ) : (
@@ -69,7 +69,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
             {conditions.map((condition, index) => (
               <div key={index} className="flex gap-2 items-end">
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Field</Label>
+                  <Label className="text-xs">{t('screens.admin.field')}</Label>
                   <Select 
                     value={condition.field} 
                     onValueChange={(value) => updateCondition(index, { field: value })}
@@ -86,7 +86,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Operator</Label>
+                  <Label className="text-xs">{t('screens.admin.operator')}</Label>
                   <Select 
                     value={condition.operator} 
                     onValueChange={(value) => updateCondition(index, { operator: value })}
@@ -103,7 +103,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <Label className="text-xs">Value</Label>
+                  <Label className="text-xs">{t('screens.admin.value')}</Label>
                   <Input 
                     value={condition.value}
                     onChange={(e) => updateCondition(index, { value: e.target.value })}
@@ -123,7 +123,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
 
             <Button onClick={addCondition} variant="outline" size="sm" className="w-full">
               <Plus className="h-4 w-4 mr-2" />
-              Add Another Condition
+              {t('screens.admin.addAnotherCondition')}
             </Button>
           </div>
         )}

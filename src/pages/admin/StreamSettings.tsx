@@ -48,7 +48,7 @@ export default function StreamSettings() {
             <TabsList>
               <TabsTrigger value="vertex">{t('screens.admin.vertexAi')}</TabsTrigger>
               <TabsTrigger value="community">{t('screens.admin.communityRooms')}</TabsTrigger>
-              <TabsTrigger value="telemedicine">Telemedicine</TabsTrigger>
+              <TabsTrigger value="telemedicine">{t('screens.admin.telemedicine')}</TabsTrigger>
               <TabsTrigger value="global">{t('screens.admin.globalSettings')}</TabsTrigger>
             </TabsList>
 
@@ -60,7 +60,7 @@ export default function StreamSettings() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="vertex-model">Model</Label>
+                    <Label htmlFor="vertex-model">{t('screens.admin.model')}</Label>
                     <Select defaultValue="gemini-2.0-flash">
                       <SelectTrigger id="vertex-model">
                         <SelectValue />
@@ -73,17 +73,17 @@ export default function StreamSettings() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="vertex-voice">Voice</Label>
+                    <Label htmlFor="vertex-voice">{t('screens.admin.voice')}</Label>
                     <Select defaultValue="Puck">
                       <SelectTrigger id="vertex-voice">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Puck">Puck</SelectItem>
-                        <SelectItem value="Charon">Charon</SelectItem>
-                        <SelectItem value="Kore">Kore</SelectItem>
-                        <SelectItem value="Fenrir">Fenrir</SelectItem>
-                        <SelectItem value="Aoede">Aoede</SelectItem>
+                        <SelectItem value="Puck">{t('screens.admin.puck')}</SelectItem>
+                        <SelectItem value="Charon">{t('screens.admin.charon')}</SelectItem>
+                        <SelectItem value="Kore">{t('screens.admin.kore')}</SelectItem>
+                        <SelectItem value="Fenrir">{t('screens.admin.fenrir')}</SelectItem>
+                        <SelectItem value="Aoede">{t('screens.admin.aoede')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -144,9 +144,9 @@ export default function StreamSettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="relaxed">Relaxed</SelectItem>
-                        <SelectItem value="moderate">Moderate</SelectItem>
-                        <SelectItem value="strict">Strict</SelectItem>
+                        <SelectItem value="relaxed">{t('screens.admin.relaxed')}</SelectItem>
+                        <SelectItem value="moderate">{t('screens.admin.moderate')}</SelectItem>
+                        <SelectItem value="strict">{t('screens.admin.strict')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

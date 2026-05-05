@@ -33,7 +33,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
           <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-slate-200/60 dark:border-slate-800/60">
             <div className="flex items-center gap-2 mb-2">
               <Heart className="w-4 h-4 text-rose-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Mood</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.mood')}</span>
             </div>
             <p className="text-xl font-semibold">{data.mood}</p>
           </div>
@@ -43,7 +43,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
             <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-slate-200/60 dark:border-slate-800/60">
               <div className="flex items-center gap-2 mb-2">
                 <Target className="w-4 h-4 text-teal-500" />
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Focus</span>
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.focus')}</span>
               </div>
               <p className="text-2xl font-bold">{data.focusScore}<span className="text-sm text-slate-500">/100</span></p>
             </div>
@@ -51,7 +51,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
             <div className="bg-white/60 dark:bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-slate-200/60 dark:border-slate-800/60">
               <div className="flex items-center gap-2 mb-2">
                 <Brain className="w-4 h-4 text-orange-500" />
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Stress</span>
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.stress')}</span>
               </div>
               <p className="text-2xl font-bold">{data.stressLevel}<span className="text-sm text-slate-500">/100</span></p>
             </div>
@@ -66,7 +66,7 @@ export function MentalModal({ data, open, onOpenChange }: MentalModalProps) {
             <p className="text-xl font-semibold">🧘 {data.mindfulnessDuration}</p>
             <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-slate-800/60">
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Target: 10 min daily
+                {t('screens.health.target10MinDaily')}
               </p>
             </div>
           </div>

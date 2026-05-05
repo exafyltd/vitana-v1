@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 interface CrossPlanRelationshipWidgetProps {
   relationships: PillarSynergy[];
@@ -40,7 +41,7 @@ export function CrossPlanRelationshipWidget({
         <div className="flex items-center gap-3 mb-4">
           <Link2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           <h3 className="text-lg font-semibold text-foreground">
-            How Your Plans Interact
+            {t('screens.health.howYourPlansInteract')}
           </h3>
         </div>
         

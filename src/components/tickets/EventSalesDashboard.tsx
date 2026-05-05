@@ -139,7 +139,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <DollarSign className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Revenue</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.revenue')}</p>
                 <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}</p>
               </div>
             </div>
@@ -167,7 +167,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <Users className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Buyers</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.buyers')}</p>
                 <p className="text-2xl font-bold">{completedSales.length}</p>
               </div>
             </div>
@@ -194,7 +194,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            Sales by Ticket Type
+            {t('screens.tickets.salesByTicketType')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -241,7 +241,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
             </CardTitle>
             <Button variant="outline" size="sm" onClick={exportToCSV}>
               <Download className="h-4 w-4 mr-2" />
-              Export CSV
+              {t('screens.tickets.exportCsv')}
             </Button>
           </div>
         </CardHeader>
@@ -259,7 +259,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                       {sale.checked_in_at && (
                         <Badge variant="secondary" className="text-xs bg-green-500/10 text-green-600">
                           <CheckCircle className="h-3 w-3 mr-1" />
-                          Checked In
+                          {t('screens.tickets.checked')}
                         </Badge>
                       )}
                     </div>

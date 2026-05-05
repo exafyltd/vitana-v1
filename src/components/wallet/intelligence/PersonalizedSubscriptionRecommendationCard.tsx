@@ -110,7 +110,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            Smart Recommendations
+            {t('screens.wallet.smartRecommendations')}
           </CardTitle>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
             {avgMatch}% Avg Match
@@ -161,7 +161,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
             </Badge>
           </div>
           <Button size="sm" className="w-full h-7 text-xs">
-            Start Free Trial
+            {t('screens.wallet.startFreeTrial')}
           </Button>
         </div>
 
@@ -169,7 +169,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-blue-500" />
-            More Recommendations
+            {t('screens.wallet.moreRecommendations')}
           </h4>
           
           {mockRecommendations.slice(1, 3).map((recommendation) => {
@@ -212,7 +212,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                     </Badge>
                   </div>
                   <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                    Learn More
+                    {t('screens.wallet.learnMore')}
                   </Button>
                 </div>
               </div>
@@ -227,13 +227,13 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
             <span className="text-sm font-medium">{t('screens.wallet.trendingYourNetwork')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            87% of users with similar health patterns chose "AI Wellness Coach"
+            {t('screens.wallet.text87UsersWithSimilarHealthPatterns')}
           </p>
           <div className="flex items-center justify-between">
             <span className="text-xs text-blue-600 font-medium">{t('screens.wallet.limitedTime20OffFirst3')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Clock className="h-3 w-3 mr-1" />
-              Claim Deal
+              {t('screens.wallet.claimDeal')}
             </Button>
           </div>
         </div>
@@ -241,7 +241,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Sparkles className="h-4 w-4 mr-2" />
-          View All Recommendations
+          {t('screens.wallet.viewAllRecommendations')}
         </Button>
       </CardContent>
     </Card>

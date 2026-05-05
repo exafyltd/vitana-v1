@@ -78,9 +78,9 @@ export default function KnowledgeIndexing() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Source</TableHead>
-                      <TableHead>Updated</TableHead>
+                      <TableHead>{t('screens.admin.title')}</TableHead>
+                      <TableHead>{t('screens.admin.source')}</TableHead>
+                      <TableHead>{t('screens.admin.updated')}</TableHead>
                       {status === "failed" && <TableHead className="w-24"></TableHead>}
                     </TableRow>
                   </TableHeader>
@@ -102,7 +102,7 @@ export default function KnowledgeIndexing() {
                           <TableCell>
                             <Button size="sm" variant="outline" onClick={() => handleRetry(doc.id)}
                               disabled={reindexMutation.isPending} className="h-7 text-xs">
-                              Retry
+                              {t('screens.admin.retry')}
                             </Button>
                           </TableCell>
                         )}

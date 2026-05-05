@@ -27,7 +27,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-primary" />
-            Community Events
+            {t('screens.home.communityEvents')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -50,7 +50,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-primary" />
-            Community Events
+            {t('screens.home.communityEvents')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -63,7 +63,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
               className="mt-4"
               onClick={() => navigate('/community/meetups')}
             >
-              Create Event
+              {t('screens.home.createEvent')}
             </Button>
           </div>
         </CardContent>
@@ -97,7 +97,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-primary" />
-            Community Events
+            {t('screens.home.communityEvents')}
           </CardTitle>
           <Button 
             variant="ghost" 
@@ -105,7 +105,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
             onClick={() => navigate('/community/meetups')}
             className="text-muted-foreground hover:text-primary"
           >
-            View All
+            {t('screens.home.viewAll')}
             <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
@@ -159,7 +159,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
                 
                 {todayEvents.some(e => e.id === event.id) && (
                   <Badge variant="outline" className="text-xs text-primary border-primary">
-                    Today
+                    {t('screens.home.today')}
                   </Badge>
                 )}
               </div>
@@ -174,7 +174,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
             onClick={() => navigate('/community/meetups')}
           >
             <Calendar className="w-4 h-4 mr-2" />
-            View All Events
+            {t('screens.home.viewAllEvents')}
           </Button>
         )}
       </CardContent>

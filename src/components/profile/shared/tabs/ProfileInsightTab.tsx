@@ -150,7 +150,7 @@ export function ProfileInsightTab({
                     {profile.professionalCredentials?.isLiveStreamingEnabled && (
                       <Badge className="bg-gradient-to-r from-blue-500 to-sky-500 text-white border-0 rounded-full px-3 py-1">
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
-                        Pro
+                        {t('screens.profile.pro')}
                       </Badge>
                     )}
                   </div>
@@ -197,7 +197,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <FileText className="h-8 w-8 mx-auto mb-3 text-violet-600 dark:text-violet-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.posts || 0}</div>
-              <div className="text-xs text-muted-foreground">Posts</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.posts')}</div>
             </CardContent>
           </Card>
 
@@ -205,7 +205,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 mx-auto mb-3 text-sky-600 dark:text-sky-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.followers || 0}</div>
-              <div className="text-xs text-muted-foreground">Followers</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.followers')}</div>
             </CardContent>
           </Card>
 
@@ -213,7 +213,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Heart className="h-8 w-8 mx-auto mb-3 text-rose-600 dark:text-rose-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.following || 0}</div>
-              <div className="text-xs text-muted-foreground">Following</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.following')}</div>
             </CardContent>
           </Card>
 
@@ -221,7 +221,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 mx-auto mb-3 text-amber-600 dark:text-amber-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.groupsJoined || 0}</div>
-              <div className="text-xs text-muted-foreground">Groups</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.groups')}</div>
             </CardContent>
           </Card>
         </div>
@@ -275,7 +275,7 @@ export function ProfileInsightTab({
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <Activity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                Health Snapshot
+                {t('screens.profile.healthSnapshot')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">

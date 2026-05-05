@@ -255,11 +255,11 @@ export default function BusinessHub() {
                   <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
                   <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.noServicesYet')}</h3>
                   <p className="text-muted-foreground mb-4">
-                    Create coaching sessions, consultations, or other services to offer.
+                    {t('screens.businesshub.createCoachingSessionsConsultationsOtherServices')}
                   </p>
                   <Button onClick={() => setShowCreateService(true)} className="gap-2">
                     <Plus className="w-4 h-4" />
-                    Create Service
+                    {t('screens.businesshub.createService')}
                   </Button>
                 </div>
               )}
@@ -281,7 +281,7 @@ export default function BusinessHub() {
                       <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
                       <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.createSessionPackages')}</h3>
                       <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                        Bundle multiple sessions, events, or perks into packages.
+                        {t('screens.businesshub.bundleMultipleSessionsEventsPerksInto')}
                       </p>
                     </div>
                   ) : (
@@ -324,7 +324,7 @@ export default function BusinessHub() {
               {mobileTab === "insights.performance" && (
                 <div className="text-center py-12">
                   <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Performance</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.performance')}</h3>
                   <p className="text-sm text-muted-foreground">{t('screens.businesshub.bookingAnalyticsComingSoon')}</p>
                 </div>
               )}
@@ -333,7 +333,7 @@ export default function BusinessHub() {
               {mobileTab === "insights.earnings" && (
                 <div className="text-center py-12">
                   <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Earnings</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.earnings')}</h3>
                   <p className="text-sm text-muted-foreground">{t('screens.businesshub.earningsBreakdownComingSoon')}</p>
                 </div>
               )}
@@ -342,7 +342,7 @@ export default function BusinessHub() {
               {mobileTab === "insights.growth" && (
                 <div className="text-center py-12">
                   <Users className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Growth</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.growth')}</h3>
                   <p className="text-sm text-muted-foreground">{t('screens.businesshub.growthAnalyticsComingSoon')}</p>
                 </div>
               )}
@@ -412,10 +412,10 @@ export default function BusinessHub() {
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Business Hub 💼
+                  {t('screens.businesshub.businessHub')}
                 </h1>
                 <p className="text-muted-foreground">
-                  Grow your wellness business and manage clients effortlessly
+                  {t('screens.businesshub.growYourWellnessBusinessManageClients')}
                 </p>
               </div>
             </div>
@@ -487,7 +487,7 @@ export default function BusinessHub() {
               onClick={() => setShowBusinessTypeSelector(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Business
+              {t('screens.businesshub.business')}
             </Button>
           </UtilityActionButton>
 

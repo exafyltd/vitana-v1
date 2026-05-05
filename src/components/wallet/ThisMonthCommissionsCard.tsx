@@ -11,7 +11,7 @@ export function ThisMonthCommissionsCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <DollarSign className="h-5 w-5 text-green-500" />
-          This Month Commissions
+          {t('screens.wallet.thisMonthCommissions')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.january2024Earnings')}</CardDescription>
       </CardHeader>
@@ -20,7 +20,7 @@ export function ThisMonthCommissionsCard() {
           <div className="text-3xl font-bold text-green-600 mb-1">$247.80</div>
           <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
             <TrendingUp className="h-3 w-3" />
-            +18% vs last month
+            {t('screens.wallet.text18VsLastMonth')}
           </div>
         </div>
         
@@ -45,7 +45,7 @@ export function ThisMonthCommissionsCard() {
         
         <Button variant="outline" size="sm" className="w-full">
           <Eye className="h-4 w-4 mr-2" />
-          View Details
+          {t('screens.wallet.viewDetails')}
         </Button>
       </CardContent>
     </Card>

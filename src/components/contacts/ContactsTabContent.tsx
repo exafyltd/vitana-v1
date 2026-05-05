@@ -78,7 +78,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
       <div className="mb-4 mr-3 flex gap-2">
         <Button onClick={() => setShowAddContact(true)} className="flex-1">
           <Plus className="w-4 h-4 mr-2" />
-          Add Contact
+          {t('screens.contacts.addContact')}
         </Button>
         <ImportContactsButton onImport={handleImportContacts} />
       </div>
@@ -101,11 +101,11 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-lg font-semibold mb-2">{t('screens.contacts.noContactsYet')}</h3>
             <p className="text-muted-foreground mb-4">
-              Add contacts to easily find and message them on VITANA
+              {t('screens.contacts.addContactsEasilyFindMessageThem')}
             </p>
             <Button onClick={() => setShowAddContact(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Your First Contact
+              {t('screens.contacts.addYourFirstContact')}
             </Button>
           </div>
         ) : (

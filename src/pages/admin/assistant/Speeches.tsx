@@ -79,7 +79,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
             {speech.has_override ? (
               <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
             ) : (
-              <AdminStatusBadge variant="inactive">Default</AdminStatusBadge>
+              <AdminStatusBadge variant="inactive">{t('screens.admin.default')}</AdminStatusBadge>
             )}
           </div>
         </div>
@@ -117,7 +117,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
           )}
           {dirty && (
             <Button size="sm" variant="ghost" onClick={handleCancel} disabled={saving}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
           )}
         </div>

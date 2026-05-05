@@ -134,7 +134,7 @@ export function DedupePreviewList({
                       className="h-8"
                     >
                       <MessageCircle className="w-3.5 h-3.5 mr-1" />
-                      Connect
+                      {t('screens.contacts.connect')}
                     </Button>
                   )}
                 </div>

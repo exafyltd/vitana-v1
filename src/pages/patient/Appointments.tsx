@@ -11,12 +11,12 @@ export default function PatientAppointments() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{t('screens.patient.myAppointments')}</h1>
           <p className="text-muted-foreground">
-            Manage your upcoming and past appointments
+            {t('screens.patient.manageYourUpcomingPastAppointments')}
           </p>
         </div>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Schedule New
+          {t('screens.patient.scheduleNew')}
         </Button>
       </div>
 
@@ -27,11 +27,11 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. Sarah Miller - Annual Checkup
+                  {t('screens.patient.drSarahMillerAnnualCheckup')}
                 </CardTitle>
                 <CardDescription>{t('screens.patient.generalMedicine')}</CardDescription>
               </div>
-              <Badge>Upcoming</Badge>
+              <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
@@ -45,8 +45,8 @@ export default function PatientAppointments() {
                 <span className="text-sm">{t('screens.patient.medicalCenterRoom205')}</span>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">Reschedule</Button>
-                <Button size="sm" variant="outline">Cancel</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.reschedule')}</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
           </CardContent>
@@ -58,11 +58,11 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. James Davis - Follow-up
+                  {t('screens.patient.drJamesDavisFollowup')}
                 </CardTitle>
-                <CardDescription>Cardiology</CardDescription>
+                <CardDescription>{t('screens.patient.cardiology')}</CardDescription>
               </div>
-              <Badge>Upcoming</Badge>
+              <Badge>{t('screens.patient.upcoming')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
@@ -76,8 +76,8 @@ export default function PatientAppointments() {
                 <span className="text-sm">{t('screens.patient.cardiologyWingRoom301')}</span>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline">Reschedule</Button>
-                <Button size="sm" variant="outline">Cancel</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.reschedule')}</Button>
+                <Button size="sm" variant="outline">{t('screens.patient.cancel')}</Button>
               </div>
             </div>
           </CardContent>
@@ -89,11 +89,11 @@ export default function PatientAppointments() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  Dr. Lisa Chen - Consultation
+                  {t('screens.patient.drLisaChenConsultation')}
                 </CardTitle>
-                <CardDescription>Dermatology</CardDescription>
+                <CardDescription>{t('screens.patient.dermatology')}</CardDescription>
               </div>
-              <Badge variant="secondary">Completed</Badge>
+              <Badge variant="secondary">{t('screens.patient.completed')}</Badge>
             </div>
           </CardHeader>
           <CardContent>

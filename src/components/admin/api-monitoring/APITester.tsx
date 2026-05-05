@@ -150,10 +150,10 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <PlayCircle className="w-5 h-5" />
-          API Tester
+          {t('screens.admin.apiTester')}
         </CardTitle>
         <CardDescription>
-          Test API endpoints and view responses in real-time
+          {t('screens.admin.testApiEndpointsViewResponsesRealtime')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -166,11 +166,11 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="GET">GET</SelectItem>
-                <SelectItem value="POST">POST</SelectItem>
-                <SelectItem value="PUT">PUT</SelectItem>
-                <SelectItem value="PATCH">PATCH</SelectItem>
-                <SelectItem value="DELETE">DELETE</SelectItem>
+                <SelectItem value="GET">{t('screens.admin.get')}</SelectItem>
+                <SelectItem value="POST">{t('screens.admin.post')}</SelectItem>
+                <SelectItem value="PUT">{t('screens.admin.put')}</SelectItem>
+                <SelectItem value="PATCH">{t('screens.admin.patch')}</SelectItem>
+                <SelectItem value="DELETE">{t('screens.admin.delete')}</SelectItem>
               </SelectContent>
             </Select>
             <Input
@@ -194,8 +194,8 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
           {/* Tabs for additional config */}
           <Tabs defaultValue="headers" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="headers">Headers</TabsTrigger>
-              <TabsTrigger value="body">Body</TabsTrigger>
+              <TabsTrigger value="headers">{t('screens.admin.headers')}</TabsTrigger>
+              <TabsTrigger value="body">{t('screens.admin.body')}</TabsTrigger>
               <TabsTrigger value="params">{t('screens.admin.queryParams')}</TabsTrigger>
             </TabsList>
 
@@ -239,7 +239,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
           <div className="space-y-3 mt-6 pt-6 border-t">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Response</span>
+                <span className="text-sm font-medium">{t('screens.admin.response')}</span>
                 {response.status && (
                   <Badge className={getStatusColor(response.status)}>
                     {response.status} {response.statusText}

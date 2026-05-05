@@ -59,11 +59,11 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
         </div>
         {!parsedEvent ? (
           <Button onClick={handleParse} disabled={!input.trim()}>
-            Parse
+            {t('screens.calendar.parse')}
           </Button>
         ) : (
           <Button onClick={handleCancel} variant="outline">
-            Clear
+            {t('screens.calendar.clear')}
           </Button>
         )}
       </div>
@@ -73,7 +73,7 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Check className="h-4 w-4 text-green-600" />
-              Event Preview
+              {t('screens.calendar.eventPreview')}
             </h4>
           </div>
 
@@ -107,7 +107,7 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
           </div>
 
           <Button onClick={handleCreate} className="w-full">
-            Create Event
+            {t('screens.calendar.createEvent')}
           </Button>
         </Card>
       )}

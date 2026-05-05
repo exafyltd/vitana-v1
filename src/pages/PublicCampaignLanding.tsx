@@ -342,7 +342,7 @@ export default function PublicCampaignLanding() {
                   <div className="flex items-start gap-3">
                     <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Channels</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.channels')}</p>
                       <p className="text-sm font-medium text-foreground">
                         {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
                       </p>
@@ -353,7 +353,7 @@ export default function PublicCampaignLanding() {
                 <div className="flex items-start gap-3">
                   <Target className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Type</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.type')}</p>
                     <p className="text-sm font-medium text-foreground">{t('screens.publiccampaignlanding.marketingCampaign')}</p>
                   </div>
                 </div>
@@ -361,7 +361,7 @@ export default function PublicCampaignLanding() {
                 <div className="flex items-start gap-3">
                   <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Community</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.community')}</p>
                     <p className="text-sm font-medium text-foreground">VITANA</p>
                   </div>
                 </div>
@@ -421,7 +421,7 @@ export default function PublicCampaignLanding() {
                       <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                          Discover more events and longevity communities.
+                          {t('screens.publiccampaignlanding.discoverMoreEventsLongevityCommunities')}
                         </span>
                       </div>
                       <Button
@@ -458,7 +458,7 @@ export default function PublicCampaignLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
+              {t('screens.publiccampaignlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
             </p>
           </div>
         </div>

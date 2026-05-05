@@ -17,7 +17,7 @@ export function ComingSoonCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-          Coming Soon
+          {t('screens.wallet.comingSoon')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.excitingNewFeatures')}</CardDescription>
       </CardHeader>
@@ -52,7 +52,7 @@ export function ComingSoonCard() {
         
         <Button variant="outline" className="w-full">
           <Bell className="h-4 w-4 mr-2" />
-          Notify Me
+          {t('screens.wallet.notifyMe')}
         </Button>
       </CardContent>
     </Card>

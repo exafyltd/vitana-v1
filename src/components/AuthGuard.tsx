@@ -243,7 +243,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             variant="default"
           >
             <RefreshCw className="mr-2 h-4 w-4" />
-            Try Apple Sign-In again
+            {t('screens.common.tryAppleSigninAgain')}
           </Button>
           <Button
             onClick={() => {
@@ -256,7 +256,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             className="w-full"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to login
+            {t('screens.common.backLogin')}
           </Button>
         </div>
       </div>

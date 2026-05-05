@@ -114,7 +114,7 @@ export default function MembersInvitations() {
           rightAction={
             <Button onClick={() => setShowForm(!showForm)} size="sm">
               <Plus className="mr-2 h-4 w-4" />
-              Invite Member
+              {t('screens.admin.inviteMember')}
             </Button>
           }
         />
@@ -127,7 +127,7 @@ export default function MembersInvitations() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Email</Label>
+                <Label>{t('screens.admin.email')}</Label>
                 <Input
                   type="email"
                   value={email}
@@ -158,7 +158,7 @@ export default function MembersInvitations() {
                   {createMutation.isPending ? "Sending..." : "Send Invitation"}
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setShowForm(false)}>
-                  Cancel
+                  {t('screens.admin.cancel')}
                 </Button>
               </div>
             </CardContent>
@@ -202,11 +202,11 @@ export default function MembersInvitations() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Roles</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Expires</TableHead>
+                  <TableHead>{t('screens.admin.email')}</TableHead>
+                  <TableHead>{t('screens.admin.roles')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.created')}</TableHead>
+                  <TableHead>{t('screens.admin.expires')}</TableHead>
                   <TableHead className="w-[80px]" />
                 </TableRow>
               </TableHeader>

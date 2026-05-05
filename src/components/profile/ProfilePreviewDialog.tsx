@@ -149,7 +149,7 @@ export function ProfilePreviewDialog() {
             <div className="flex flex-col items-center justify-center h-[300px] sm:h-[400px] gap-3 px-6">
               <p className="text-muted-foreground">{t('screens.profile.unableLoadProfile')}</p>
               <Button variant="outline" onClick={closePreview}>
-                Close
+                {t('screens.profile.close')}
               </Button>
             </div>
           ) : (
@@ -190,7 +190,7 @@ export function ProfilePreviewDialog() {
                   size="lg"
                 >
                   <ExternalLink className="h-5 w-5" />
-                  View Full Profile
+                  {t('screens.profile.viewFullProfile')}
                 </Button>
               </div>
             </div>

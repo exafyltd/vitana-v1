@@ -17,7 +17,7 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
@@ -444,7 +444,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
             </Button>
             <div className="text-center">
               <Badge variant="destructive" className="animate-pulse">
-                Recording
+                {t('screens.memory.recording')}
               </Badge>
               <div className="text-2xl font-mono font-bold text-destructive mt-1">
                 {formatDuration(recordingDuration)}
@@ -475,7 +475,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       {isTranscribing && (
         <p className="text-sm text-center text-muted-foreground flex items-center justify-center gap-2">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Transcribing your recording…
+          {t('screens.memory.transcribingYourRecording')}
         </p>
       )}
 
@@ -501,7 +501,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
 
             {isRecording && useBackendSTT && (
               <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
-                Your transcription will appear here as soon as you tap <strong>Stop</strong>.
+                {t('screens.memory.yourTranscriptionWillAppearHereAs')} <strong>{t('screens.memory.stop')}</strong>.
                 Your phone's browser doesn't support live word-by-word
                 transcription, so the full text shows up after recording ends.
               </div>
@@ -540,7 +540,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                   ) : (
                     <>
                       <Save className="h-4 w-4 mr-2" />
-                      Save Entry
+                      {t('screens.memory.saveEntry')}
                     </>
                   )}
                 </Button>

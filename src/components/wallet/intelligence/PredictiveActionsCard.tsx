@@ -112,7 +112,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            AI Predictions
+            {t('screens.wallet.aiPredictions')}
           </CardTitle>
           <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">
             {avgConfidence.toFixed(0)}% Confidence
@@ -175,19 +175,19 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-primary" />
-              Prediction Accuracy
+              {t('screens.wallet.predictionAccuracy')}
             </span>
             <span className="text-sm text-primary font-semibold">{avgConfidence.toFixed(0)}%</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Based on your behavior patterns and market analysis
+            {t('screens.wallet.basedYourBehaviorPatternsMarketAnalysis')}
           </p>
         </div>
 
         {/* Quick Action */}
         <Button className="w-full" variant="default">
           <Sparkles className="h-4 w-4 mr-2" />
-          Act on Top Recommendation
+          {t('screens.wallet.actTopRecommendation')}
         </Button>
       </CardContent>
     </Card>

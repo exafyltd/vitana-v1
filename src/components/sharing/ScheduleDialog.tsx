@@ -46,7 +46,7 @@ export function ScheduleDialog({
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.schedulePost')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Choose when you want this post to be distributed
+            {t('screens.sharing.chooseWhenYouWantThisPost')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
@@ -82,7 +82,7 @@ export function ScheduleDialog({
             onClick={() => onOpenChange(false)}
             disabled={isLoading}
           >
-            Cancel
+            {t('screens.sharing.cancel')}
           </Button>
           <Button onClick={handleConfirm} disabled={!selectedDate || isLoading}>
             {isLoading ? (

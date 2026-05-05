@@ -125,7 +125,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Gift className="h-5 w-5 text-primary" />
-            Live Opportunities
+            {t('screens.wallet.liveOpportunities')}
           </CardTitle>
           <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">
             {totalPotential} VTN Available
@@ -205,7 +205,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Join Now
+                  {t('screens.wallet.joinNow')}
                 </Button>
               </div>
             </div>
@@ -216,7 +216,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
         <div className="grid grid-cols-2 gap-2">
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-primary">{activeOpportunities.length}</div>
-            <div className="text-xs text-muted-foreground">Active</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
@@ -227,7 +227,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
         {/* Action Button */}
         <Button className="w-full" variant="default">
           <Gift className="h-4 w-4 mr-2" />
-          View All Opportunities
+          {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>
     </Card>

@@ -76,7 +76,7 @@ export default function SystemCreators() {
             <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('screens.admin.creatorProfiles')}</h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Creator profile data will appear here once creators register via Stripe Connect.
+              {t('screens.admin.creatorProfileDataWillAppearHere')}
             </p>
           </div>
         </div>

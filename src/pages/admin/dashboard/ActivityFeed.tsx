@@ -156,7 +156,7 @@ export default function ActivityFeed() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="source-filter">Source</Label>
+              <Label htmlFor="source-filter">{t('screens.admin.source')}</Label>
               <Input
                 id="source-filter"
                 placeholder={t('screens.admin.eGGateway')}

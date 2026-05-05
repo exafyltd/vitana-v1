@@ -12,7 +12,10 @@ import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const MANIFEST = join(__dirname, '.codemod-jsx.manifest.json');
+// Prefer v2 manifest if it exists (Wave 4); else fall back to v1 (Wave 3).
+const MANIFEST_V2 = join(__dirname, '.codemod-jsx-v2.manifest.json');
+const MANIFEST_V1 = join(__dirname, '.codemod-jsx.manifest.json');
+const MANIFEST = existsSync(MANIFEST_V2) ? MANIFEST_V2 : MANIFEST_V1;
 const EN_PATH = join(ROOT, 'src/i18n/en/screens.json');
 const DE_PATH = join(ROOT, 'src/i18n/de/screens.json');
 

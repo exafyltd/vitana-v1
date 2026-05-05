@@ -5,7 +5,7 @@ import { Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { TicketShareSheet } from "./TicketShareSheet";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 // Tenant Types
 export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
@@ -335,7 +335,7 @@ export function EventTicket({
             {/* Date */}
             <div>
               <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                Date
+                {t('screens.tickets.date')}
               </div>
               <p className="text-white font-semibold text-sm drop-shadow-sm">
                 {format(eventDate, "EEE, MMM d, yyyy")}
@@ -345,7 +345,7 @@ export function EventTicket({
             {/* Time */}
             <div>
               <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                Time
+                {t('screens.tickets.time')}
               </div>
               <p className="text-white font-semibold text-sm drop-shadow-sm">
                 {format(eventDate, "h:mm a")}
@@ -356,7 +356,7 @@ export function EventTicket({
           {/* Location */}
           <div className="mb-3">
             <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-              Venue
+              {t('screens.tickets.venue')}
             </div>
             <p className="text-white font-semibold text-sm drop-shadow-sm">
               {eventLocation || "TBA"}
@@ -374,7 +374,7 @@ export function EventTicket({
           <div className="flex items-start justify-between mt-3 mb-3 px-3 py-2 rounded-lg bg-black/30 backdrop-blur-sm">
             <div>
               <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                Attendee
+                {t('screens.tickets.attendee')}
               </div>
               <p className="text-white font-bold text-base uppercase tracking-wide drop-shadow-sm">
                 {buyerName}
@@ -382,7 +382,7 @@ export function EventTicket({
             </div>
             <div className="text-right">
               <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                Qty
+                {t('screens.tickets.qty')}
               </div>
               <p className="text-white font-bold text-xl drop-shadow-sm">
                 {quantity}
@@ -401,7 +401,7 @@ export function EventTicket({
               />
             </div>
             <div className="mt-2 text-[10px] font-semibold text-white/80 uppercase tracking-widest drop-shadow-sm">
-              Scan for Entry
+              {t('screens.tickets.scanForEntry')}
             </div>
           </div>
           
@@ -450,14 +450,14 @@ export function EventTicket({
           onClick={handleDownload}
         >
           <Download className="h-4 w-4 mr-2" />
-          Download
+          {t('screens.tickets.download')}
         </Button>
         <Button
           className="flex-1 rounded-xl"
           onClick={() => setShareSheetOpen(true)}
         >
           <Share2 className="h-4 w-4 mr-2" />
-          Share
+          {t('screens.tickets.share')}
         </Button>
       </div>
 

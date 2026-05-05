@@ -220,7 +220,7 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
           {room.premium && (
             <Badge className="absolute top-2 right-2 bg-yellow-500 text-white">
               <Star className="w-3 h-3 mr-1" />
-              Premium
+              {t('screens.community.premium')}
             </Badge>
           )}
           <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -310,7 +310,7 @@ function RoomCard({ room, onJoin }: { room: LiveRoom; onJoin: (room: LiveRoom) =
           ) : (
             <>
               <Calendar className="w-4 h-4 mr-2" />
-              Set Reminder
+              {t('screens.community.setReminder')}
             </>
           )}
         </Button>

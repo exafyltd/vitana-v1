@@ -59,7 +59,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
             <p className="text-muted-foreground mb-4">{t('screens.admin.noActionsConfiguredYet')}</p>
             <Button onClick={addAction} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
-              Add First Action
+              {t('screens.admin.addFirstAction')}
             </Button>
           </div>
         ) : (
@@ -112,7 +112,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   {action.type === "send_email" && (
                     <>
                       <div className="space-y-2">
-                        <Label>Subject</Label>
+                        <Label>{t('screens.admin.subject')}</Label>
                         <Input 
                           value={action.config.subject || ""}
                           onChange={(e) => updateActionConfig(index, "subject", e.target.value)}
@@ -120,7 +120,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Message</Label>
+                        <Label>{t('screens.admin.message')}</Label>
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
@@ -134,7 +134,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   {action.type === "send_notification" && (
                     <>
                       <div className="space-y-2">
-                        <Label>Title</Label>
+                        <Label>{t('screens.admin.title')}</Label>
                         <Input 
                           value={action.config.title || ""}
                           onChange={(e) => updateActionConfig(index, "title", e.target.value)}
@@ -142,7 +142,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Message</Label>
+                        <Label>{t('screens.admin.message')}</Label>
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
@@ -158,7 +158,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
 
             <Button onClick={addAction} variant="outline" size="sm" className="w-full">
               <Plus className="h-4 w-4 mr-2" />
-              Add Another Action
+              {t('screens.admin.addAnotherAction')}
             </Button>
           </div>
         )}

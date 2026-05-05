@@ -39,7 +39,7 @@ export function DevHubHeader() {
                 className="gap-2"
               >
                 <Settings className="h-4 w-4" />
-                <span className="hidden lg:inline">Settings</span>
+                <span className="hidden lg:inline">{t('screens.dev.settings')}</span>
               </Button>
             )}
             

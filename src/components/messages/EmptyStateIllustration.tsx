@@ -44,7 +44,7 @@ export default function EmptyStateIllustration({
           {onCreateGroup && (
             <Button onClick={onCreateGroup} className="gap-2">
               <Users className="w-4 h-4" />
-              Create your first group
+              {t('screens.messages.createYourFirstGroup')}
             </Button>
           )}
         </div>
@@ -73,7 +73,7 @@ export default function EmptyStateIllustration({
         {onAction && (
           <Button onClick={onAction} className="gap-2">
             <Plus className="w-4 h-4" />
-            Start a conversation
+            {t('screens.messages.startConversation')}
           </Button>
         )}
       </div>
@@ -90,7 +90,7 @@ export default function EmptyStateIllustration({
       
       <h3 className="text-lg font-medium mb-2">{t('screens.messages.noMessagesYet')}</h3>
       <p className="text-muted-foreground">
-        Start the conversation! Send your first message below.
+        {t('screens.messages.startConversationSendYourFirstMessage')}
       </p>
     </div>
   );

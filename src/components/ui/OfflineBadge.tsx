@@ -8,6 +8,7 @@
 import { WifiOff } from 'lucide-react';
 import { useOffline } from '@/context/OfflineProvider';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface OfflineBadgeProps {
   className?: string;
@@ -28,7 +29,7 @@ export function OfflineBadge({ className }: OfflineBadgeProps) {
       )}
     >
       <WifiOff className="h-3 w-3" />
-      <span>Offline</span>
+      <span>{t('screens.ui.offline')}</span>
     </div>
   );
 }

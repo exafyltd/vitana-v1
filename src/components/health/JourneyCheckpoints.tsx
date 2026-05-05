@@ -230,7 +230,7 @@ export function JourneyCheckpoints({
       <CheckpointCard pillar={todayPillar}>
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Today
+            {t('screens.health.today')}
           </span>
           <span className="text-xs text-muted-foreground">{t('screens.health.nextStep')}</span>
         </div>
@@ -268,7 +268,7 @@ export function JourneyCheckpoints({
           </>
         ) : (
           <div className="py-2 text-sm text-muted-foreground">
-            Nothing waiting on you today — your Index keeps growing in the background ✨
+            {t('screens.health.nothingWaitingYouTodayYourIndex')}
           </div>
         )}
       </CheckpointCard>
@@ -277,7 +277,7 @@ export function JourneyCheckpoints({
       <CheckpointCard pillar={weekDominant}>
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            This week
+            {t('screens.health.thisWeek')}
           </span>
           <span className="text-xs text-muted-foreground">Day {day7}</span>
         </div>
@@ -319,7 +319,7 @@ export function JourneyCheckpoints({
               className="w-full justify-center text-xs"
               onClick={onOpenAutopilot}
             >
-              Open Autopilot
+              {t('screens.health.openAutopilot')}
               <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
             </Button>
           </>
@@ -331,7 +331,7 @@ export function JourneyCheckpoints({
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5">
             <Sparkles className="w-3 h-3" />
-            30-day horizon
+            {t('screens.health.text30dayHorizon')}
           </span>
           <span className="text-xs text-muted-foreground">Day {day30}</span>
         </div>
@@ -341,7 +341,7 @@ export function JourneyCheckpoints({
           </p>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Need a few more days of data to project the 30-day arc.
+            {t('screens.health.needFewMoreDaysDataProject')}
           </p>
         )}
         {weakest && pillars && (

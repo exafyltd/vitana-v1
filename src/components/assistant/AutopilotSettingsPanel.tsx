@@ -19,7 +19,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
         <CardHeader>
           <CardTitle>{t('screens.assistant.enableAutopilot')}</CardTitle>
           <CardDescription>
-            Turn on autopilot to receive automated suggestions and actions
+            {t('screens.assistant.turnAutopilotReceiveAutomatedSuggestionsActions')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -42,7 +42,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
         <CardHeader>
           <CardTitle>{t('screens.assistant.actionCategories')}</CardTitle>
           <CardDescription>
-            Choose which types of autopilot actions you want to receive
+            {t('screens.assistant.chooseWhichTypesAutopilotActionsYou')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -118,7 +118,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
         <CardHeader>
           <CardTitle>{t('screens.assistant.frequencyTiming')}</CardTitle>
           <CardDescription>
-            Control when and how often you receive autopilot suggestions
+            {t('screens.assistant.controlWhenHowOftenYouReceive')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

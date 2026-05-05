@@ -49,11 +49,11 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
           <div className="flex gap-2">
             <Button className="flex-1">
               <Calendar className="h-4 w-4 mr-2" />
-              Log Progress
+              {t('screens.health.logProgress')}
             </Button>
             <Button variant="outline" className="flex-1">
               <TrendingUp className="h-4 w-4 mr-2" />
-              View Analytics
+              {t('screens.health.viewAnalytics')}
             </Button>
           </div>
         </div>
@@ -64,7 +64,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
         <Card className="p-6">
           <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
             <Target className="h-5 w-5" />
-            Goals
+            {t('screens.health.goals')}
           </h3>
           <ul className="space-y-2">
             {planData.goals.map((goal: string, idx: number) => (

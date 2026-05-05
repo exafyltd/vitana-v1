@@ -72,7 +72,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
           <span>{t('screens.profile.activeCommunities')}</span>
         </h2>
         <p className="text-sm text-muted-foreground/80">
-          Connect, collaborate, and grow together with like-minded wellness enthusiasts
+          {t('screens.profile.connectCollaborateGrowTogetherWithLikeminded')}
         </p>
       </div>
 

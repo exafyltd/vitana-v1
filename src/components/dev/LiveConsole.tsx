@@ -317,13 +317,13 @@ export default function LiveConsole() {
         >
           <div className="flex gap-2 mt-2">
             <Button size="sm" onClick={() => { setUseFallback(true); setShowFallbackPrompt(false); }}>
-              Enable Polling
+              {t('screens.dev.enablePolling')}
             </Button>
             <Button size="sm" variant="outline" onClick={handleForceReconnect}>
-              Force Reconnect
+              {t('screens.dev.forceReconnect')}
             </Button>
             <Button size="sm" variant="ghost" onClick={() => setShowFallbackPrompt(false)}>
-              Dismiss
+              {t('screens.dev.dismiss')}
             </Button>
           </div>
         </SoftWarningBanner>
@@ -335,7 +335,7 @@ export default function LiveConsole() {
           dismissible={true}
         >
           <Button size="sm" onClick={handleForceReconnect} className="mt-2">
-            Try Reconnecting to Live Stream
+            {t('screens.dev.tryReconnectingLiveStream')}
           </Button>
         </SoftWarningBanner>
       )}
@@ -378,7 +378,7 @@ export default function LiveConsole() {
                     onClick={handleRunSmoke}
                     disabled={isOffline}
                   >
-                    Run Smoke
+                    {t('screens.dev.runSmoke')}
                   </Button>
                 </span>
               </TooltipTrigger>
@@ -414,11 +414,11 @@ export default function LiveConsole() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">{t('screens.dev.allLayers')}</SelectItem>
-            <SelectItem value="CICDL">CICDL</SelectItem>
-            <SelectItem value="AICOR">AICOR</SelectItem>
-            <SelectItem value="AGENT">AGENT</SelectItem>
-            <SelectItem value="GATEWAY">GATEWAY</SelectItem>
-            <SelectItem value="OASIS">OASIS</SelectItem>
+            <SelectItem value="CICDL">{t('screens.dev.cicdl')}</SelectItem>
+            <SelectItem value="AICOR">{t('screens.dev.aicor')}</SelectItem>
+            <SelectItem value="AGENT">{t('screens.dev.agent2')}</SelectItem>
+            <SelectItem value="GATEWAY">{t('screens.dev.gateway')}</SelectItem>
+            <SelectItem value="OASIS">{t('screens.dev.oasis')}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -428,10 +428,10 @@ export default function LiveConsole() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">{t('screens.dev.allStatus')}</SelectItem>
-            <SelectItem value="info">Info</SelectItem>
-            <SelectItem value="success">Success</SelectItem>
-            <SelectItem value="warn">Warning</SelectItem>
-            <SelectItem value="error">Error</SelectItem>
+            <SelectItem value="info">{t('screens.dev.info')}</SelectItem>
+            <SelectItem value="success">{t('screens.dev.success')}</SelectItem>
+            <SelectItem value="warn">{t('screens.dev.warning')}</SelectItem>
+            <SelectItem value="error">{t('screens.dev.error')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

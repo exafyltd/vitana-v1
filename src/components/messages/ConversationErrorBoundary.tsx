@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   children: React.ReactNode;
@@ -33,13 +34,13 @@ export class ConversationErrorBoundary extends React.Component<Props, State> {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle className="w-5 h-5" />
-              Conversation Error
+              {t('screens.messages.conversationError')}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center">
             <div className="text-center space-y-4">
               <p className="text-muted-foreground">
-                Failed to load conversation
+                {t('screens.messages.failedLoadConversation')}
               </p>
               <p className="text-sm text-muted-foreground">
                 {this.state.error?.message || 'Unknown error'}
@@ -49,7 +50,7 @@ export class ConversationErrorBoundary extends React.Component<Props, State> {
                 className="flex items-center gap-2"
               >
                 <RefreshCw className="w-4 h-4" />
-                Try Again
+                {t('screens.messages.tryAgain')}
               </Button>
             </div>
           </CardContent>

@@ -1,5 +1,6 @@
 import { HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 export function MatchInfoTooltip() {
   return (
@@ -10,7 +11,7 @@ export function MatchInfoTooltip() {
         </TooltipTrigger>
         <TooltipContent className="max-w-xs">
           <p className="text-xs">
-            Why these matches? Based on sleep, activity and diary entries (last 7 days).
+            {t('screens.common.whyTheseMatchesBasedSleepActivity')}
           </p>
         </TooltipContent>
       </Tooltip>

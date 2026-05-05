@@ -111,7 +111,7 @@ function Rewards() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Quick Actions
+            {t('screens.wallet.quickActions')}
           </Button>
         </UtilityActionButton>
 
@@ -208,7 +208,7 @@ function Rewards() {
                           <p className="text-sm text-muted-foreground">{reward.amount}</p>
                         </div>
                         <Button size="sm" onClick={() => console.log('Claim:', reward.id)}>
-                          Claim
+                          {t('screens.wallet.claim')}
                         </Button>
                       </div>
                     ))}
@@ -248,12 +248,12 @@ function Rewards() {
                         className="flex-1 px-3 py-2 text-sm border rounded"
                       />
                       <Button size="sm" onClick={() => console.log('Copy link')}>
-                        Copy
+                        {t('screens.wallet.copy')}
                       </Button>
                     </div>
                   </div>
                   <Button className="w-full" onClick={() => console.log('Share via social')}>
-                    Share via Social Media
+                    {t('screens.wallet.shareViaSocialMedia')}
                   </Button>
                 </div>
               )}

@@ -120,7 +120,7 @@ export default function MobileSettings() {
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
                 <Bell className="w-4.5 h-4.5 text-primary" />
-                <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
+                <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.notifications')}</h3>
               </div>
               <div className="flex items-center justify-between py-2.5">
                 <div className="flex items-center gap-2">
@@ -277,14 +277,14 @@ export default function MobileSettings() {
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
                 <Lock className="w-4.5 h-4.5 text-primary" />
-                <h3 className="text-sm font-semibold text-foreground">Security</h3>
+                <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.security')}</h3>
               </div>
               <div className="flex items-center justify-between py-2.5">
                 <div className="flex-1 min-w-0 mr-3">
                   <h4 className="text-sm font-medium text-foreground">{t('screens.mobilesettings.passwordProtection')}</h4>
                   <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.lastChanged30DaysAgo')}</p>
                 </div>
-                <Button variant="outline" size="sm">Change</Button>
+                <Button variant="outline" size="sm">{t('screens.mobilesettings.change')}</Button>
               </div>
               <div className="flex items-center justify-between py-2.5">
                 <div className="flex-1 min-w-0 mr-3">
@@ -323,7 +323,7 @@ export default function MobileSettings() {
                       {s.current ? (
                         <span className="text-xs text-green-600 font-medium">Current</span>
                       ) : (
-                        <Button variant="ghost" size="sm" className="text-xs text-destructive">Revoke</Button>
+                        <Button variant="ghost" size="sm" className="text-xs text-destructive">{t('screens.mobilesettings.revoke')}</Button>
                       )}
                     </div>
                   ))}
@@ -339,16 +339,16 @@ export default function MobileSettings() {
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
                 <Palette className="w-4.5 h-4.5 text-primary" />
-                <h3 className="text-sm font-semibold text-foreground">Appearance</h3>
+                <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.appearance')}</h3>
               </div>
               <div>
-                <label className="text-sm font-medium mb-2 block">Theme</label>
+                <label className="text-sm font-medium mb-2 block">{t('screens.mobilesettings.theme')}</label>
                 <Select value={themeMounted ? theme : undefined} onValueChange={setTheme}>
                   <SelectTrigger className="w-full"><SelectValue placeholder={t('screens.mobilesettings.selectTheme')} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="light"><div className="flex items-center gap-2"><Sun className="w-4 h-4" /> Light</div></SelectItem>
-                    <SelectItem value="dark"><div className="flex items-center gap-2"><Moon className="w-4 h-4" /> Dark</div></SelectItem>
-                    <SelectItem value="system"><div className="flex items-center gap-2"><Monitor className="w-4 h-4" /> System</div></SelectItem>
+                    <SelectItem value="light"><div className="flex items-center gap-2"><Sun className="w-4 h-4" /> {t('screens.mobilesettings.light')}</div></SelectItem>
+                    <SelectItem value="dark"><div className="flex items-center gap-2"><Moon className="w-4 h-4" /> {t('screens.mobilesettings.dark')}</div></SelectItem>
+                    <SelectItem value="system"><div className="flex items-center gap-2"><Monitor className="w-4 h-4" /> {t('screens.mobilesettings.system')}</div></SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -473,11 +473,11 @@ export default function MobileSettings() {
                   <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.submitTicket')}</h3>
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Subject</label>
+                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.subject')}</label>
                   <Input placeholder={t('screens.mobilesettings.brieflyDescribeYourIssue')} />
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Category</label>
+                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.category')}</label>
                   <Select><SelectTrigger><SelectValue placeholder={t('screens.mobilesettings.selectCategory')} /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="account">{t('screens.mobilesettings.accountIssues')}</SelectItem>
@@ -489,7 +489,7 @@ export default function MobileSettings() {
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium mb-1.5 block">Description</label>
+                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.description')}</label>
                   <Textarea placeholder={t('screens.mobilesettings.pleaseProvideAsMuchDetailAs')} className="min-h-20" />
                 </div>
                 <Button className="w-full"><Send className="w-4 h-4 mr-2" />{t('screens.mobilesettings.submitTicket2')}</Button>

@@ -92,7 +92,7 @@ export default function AuditApiMonitor() {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Status</span>
+                      <span className="text-muted-foreground">{t('screens.admin.status')}</span>
                       <Badge variant={svc.status === "healthy" ? "default" : "destructive"}>
                         {svc.status}
                       </Badge>
@@ -105,7 +105,7 @@ export default function AuditApiMonitor() {
                     )}
                     {svc.data?.timestamp && (
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Timestamp</span>
+                        <span className="text-muted-foreground">{t('screens.admin.timestamp')}</span>
                         <span className="text-xs">{new Date(svc.data.timestamp).toLocaleTimeString()}</span>
                       </div>
                     )}
@@ -119,7 +119,7 @@ export default function AuditApiMonitor() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Auto-refreshes every 30 seconds. Additional services will appear as they are registered.
+          {t('screens.admin.autorefreshesEvery30SecondsAdditionalServices')}
         </p>
       </div>
     </AppLayout>

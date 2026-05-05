@@ -215,7 +215,7 @@ export function MiniAudioPlayer() {
                   className="h-8 px-3 text-xs text-muted-foreground"
                 >
                   <X className="h-3.5 w-3.5 mr-1" />
-                  Close
+                  {t('screens.common.close')}
                 </Button>
               </div>
             </div>

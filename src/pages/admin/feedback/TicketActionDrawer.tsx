@@ -202,7 +202,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           <div className="flex-1 min-w-0">
             <div className="font-semibold">{t('screens.admin.dispatchedDevAutopilot')}</div>
             <div className="text-xs text-muted-foreground">
-              Recommendation <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
+              {t('screens.admin.recommendation')} <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
             </div>
           </div>
         </div>
@@ -278,17 +278,17 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
             </span>
             {isFailed && (
               <span className="rounded-full bg-red-500/10 text-red-700 dark:text-red-300 text-[10px] px-2 py-0.5 font-normal border border-red-500/30">
-                Click Activate to retry
+                {t('screens.admin.clickActivateRetry')}
               </span>
             )}
             {isCompleted && playwrightVerified && (
               <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">
-                ✓ Visually verified
+                {t('screens.admin.visuallyVerified')}
               </span>
             )}
           </div>
           <div className="text-xs text-muted-foreground">
-            Execution <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
+            {t('screens.admin.execution')} <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
             {execution.pr_url && (
               <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">PR #{execution.pr_number ?? "?"}</a></>
             )}
@@ -592,8 +592,8 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       <div>
         <p className="text-sm text-destructive">{err}</p>
         <div className="mt-3 flex gap-2">
-          <Button variant="outline" onClick={() => detailQuery.refetch()}>Retry</Button>
-          <Button variant="ghost" onClick={onClose}>Close</Button>
+          <Button variant="outline" onClick={() => detailQuery.refetch()}>{t('screens.admin.retry')}</Button>
+          <Button variant="ghost" onClick={onClose}>{t('screens.admin.close')}</Button>
         </div>
       </div>
     );
@@ -644,7 +644,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         <Card className="flex flex-col gap-2 p-3">
           <div className="flex items-center justify-between gap-2">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Kind</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.kind')}</div>
               <div className="text-sm">{KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind}</div>
             </div>
             <Select
@@ -702,7 +702,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             {/* Step 1 — supervisor instructions */}
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                1. Your instructions <span className="font-normal normal-case opacity-70">{t('screens.admin.takesPriorityOverUserSReport')}</span>
+                {t('screens.admin.text1YourInstructions')} <span className="font-normal normal-case opacity-70">{t('screens.admin.takesPriorityOverUserSReport')}</span>
               </label>
               <Textarea
                 value={supervisorInstructions}
@@ -723,7 +723,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 className="text-sm"
               />
               <p className="mt-1 text-[11px] text-muted-foreground">
-                Persisted as <code>{t('screens.admin.supervisor_notes')}</code>. Saved with the next Generate.
+                {t('screens.admin.persistedAs')} <code>{t('screens.admin.supervisor_notes')}</code>. Saved with the next Generate.
               </p>
             </div>
 
@@ -789,7 +789,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   onClick={handleReject}
                   disabled={isBusy}
                 >
-                  Reject
+                  {t('screens.admin.reject')}
                 </Button>
               </div>
               {draftKindHasResolver && !canActivate && (
@@ -809,7 +809,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               {activateViolations && activateViolations.length > 0 && (
                 <div className="mt-3 rounded border border-red-500/40 bg-red-500/5 p-3 text-xs">
                   <div className="mb-1 font-semibold text-red-700 dark:text-red-300">
-                    Activate blocked. Revise the spec and Re-generate.
+                    {t('screens.admin.activateBlockedReviseSpecRegenerate')}
                   </div>
                   <ul className="ml-4 list-disc space-y-1 text-foreground/80">
                     {activateViolations.map((v, i) => (

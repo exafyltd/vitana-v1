@@ -85,7 +85,7 @@ export function EventDetailsPanel({
                 {event.has_rewards && (
                   <Badge variant="outline" className="text-xs border-yellow-300 text-yellow-600">
                     <Zap className="h-2.5 w-2.5 mr-0.5" />
-                    +10 Credits
+                    {t('screens.calendar.text10Credits')}
                   </Badge>
                 )}
               </div>
@@ -100,13 +100,13 @@ export function EventDetailsPanel({
               {onJoin && (
                 <Button className="flex-1 gap-2" onClick={() => onJoin(event)}>
                   <Video className="h-4 w-4" />
-                  Join
+                  {t('screens.calendar.join')}
                 </Button>
               )}
               {onMessage && (
                 <Button variant="outline" className="flex-1 gap-2" onClick={() => onMessage(event)}>
                   <MessageSquare className="h-4 w-4" />
-                  Message
+                  {t('screens.calendar.message')}
                 </Button>
               )}
             </div>
@@ -134,7 +134,7 @@ export function EventDetailsPanel({
                   <p className="text-sm">{event.location}</p>
                   <Button variant="link" className="h-auto p-0 text-xs text-muted-foreground" asChild>
                     <a href={`https://maps.google.com/?q=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer">
-                      Open in Maps →
+                      {t('screens.calendar.openMaps')}
                     </a>
                   </Button>
                 </div>
@@ -159,7 +159,7 @@ export function EventDetailsPanel({
                 <div className="space-y-2">
                   <p className="text-sm font-semibold flex items-center gap-2">
                     <CalendarIcon className="h-4 w-4" />
-                    Notes
+                    {t('screens.calendar.notes')}
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
                 </div>
@@ -170,7 +170,7 @@ export function EventDetailsPanel({
             <div className="space-y-2">
               <p className="text-sm font-semibold flex items-center gap-2">
                 <Bell className="h-4 w-4" />
-                Reminders
+                {t('screens.calendar.reminders')}
               </p>
               <div className="text-sm text-muted-foreground">
                 <p>{t('screens.calendar.text15MinutesBefore')}</p>
@@ -181,7 +181,7 @@ export function EventDetailsPanel({
             <div className="space-y-2">
               <p className="text-sm font-semibold flex items-center gap-2">
                 <Tag className="h-4 w-4" />
-                Tags
+                {t('screens.calendar.tags')}
               </p>
               <div className="flex gap-2 flex-wrap">
                 <Badge variant="secondary" className="text-xs">{event.event_type}</Badge>
@@ -195,7 +195,7 @@ export function EventDetailsPanel({
             <div className="space-y-2">
               <p className="text-sm font-semibold flex items-center gap-2">
                 <Paperclip className="h-4 w-4" />
-                Attachments
+                {t('screens.calendar.attachments')}
               </p>
               <p className="text-xs text-muted-foreground">{t('screens.calendar.noAttachments')}</p>
             </div>
@@ -207,21 +207,21 @@ export function EventDetailsPanel({
               {onInvite && (
                 <Button className="w-full justify-start" variant="outline" onClick={() => onInvite(event)}>
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Invite
+                  {t('screens.calendar.invite')}
                 </Button>
               )}
 
               {onReschedule && (
                 <Button className="w-full justify-start" variant="outline" onClick={() => onReschedule(event)}>
                   <Clock className="h-4 w-4 mr-2" />
-                  Reschedule
+                  {t('screens.calendar.reschedule')}
                 </Button>
               )}
 
               {onShare && (
                 <Button className="w-full justify-start" variant="outline" onClick={() => onShare(event)}>
                   <Share2 className="h-4 w-4 mr-2" />
-                  Share
+                  {t('screens.calendar.share')}
                 </Button>
               )}
 
@@ -230,7 +230,7 @@ export function EventDetailsPanel({
               {onEdit && (
                 <Button className="w-full justify-start" variant="outline" onClick={() => onEdit(event)}>
                   <Edit className="h-4 w-4 mr-2" />
-                  Edit Event
+                  {t('screens.calendar.editEvent')}
                 </Button>
               )}
 
@@ -244,7 +244,7 @@ export function EventDetailsPanel({
                   }}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
-                  Delete Event
+                  {t('screens.calendar.deleteEvent')}
                 </Button>
               )}
             </div>

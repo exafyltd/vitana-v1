@@ -65,7 +65,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="h-5 w-5 text-green-600" />
-            Add Funds to USD Balance
+            {t('screens.wallet.addFundsUsdBalance')}
           </DialogTitle>
         </DialogHeader>
         

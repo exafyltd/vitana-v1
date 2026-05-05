@@ -98,16 +98,16 @@ export function PromoteToKnowledgeDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="memoryType">Category</Label>
+              <Label htmlFor="memoryType">{t('screens.memory.category')}</Label>
               <Select value={memoryType} onValueChange={(value: any) => setMemoryType(value)}>
                 <SelectTrigger id="memoryType">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="personal">Personal</SelectItem>
-                  <SelectItem value="health">Health</SelectItem>
-                  <SelectItem value="preference">Preference</SelectItem>
-                  <SelectItem value="goal">Goal</SelectItem>
+                  <SelectItem value="personal">{t('screens.memory.personal')}</SelectItem>
+                  <SelectItem value="health">{t('screens.memory.health')}</SelectItem>
+                  <SelectItem value="preference">{t('screens.memory.preference')}</SelectItem>
+                  <SelectItem value="goal">{t('screens.memory.goal')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -139,7 +139,7 @@ export function PromoteToKnowledgeDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isCreating}>
-            Cancel
+            {t('screens.memory.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isCreating || !content.trim()}>
             {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

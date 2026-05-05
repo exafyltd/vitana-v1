@@ -61,7 +61,7 @@ export function TopPerformerCard({
             <div>
               <p className="text-sm font-medium">{t('screens.business.noTopPerformerYet')}</p>
               <p className="text-xs text-muted-foreground/70">
-                Start selling to see your best performer
+                {t('screens.business.startSellingSeeYourBestPerformer')}
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ export function TopPerformerCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
-                Top Performer
+                {t('screens.business.topPerformer')}
               </p>
               <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                 {type === "event" ? (

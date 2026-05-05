@@ -183,7 +183,7 @@ export function UniversalShareDialog({
             Share {content.type}
           </DialogTitle>
           <DialogDescription>
-            Share personally or distribute across your connected channels
+            {t('screens.sharing.sharePersonallyDistributeAcrossYourConnected')}
           </DialogDescription>
         </DialogHeader>
 
@@ -217,7 +217,7 @@ export function UniversalShareDialog({
               <Badge variant="secondary" className="text-[10px]">{t('screens.sharing.noSetupNeeded')}</Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              Opens your personal apps to share directly with friends and contacts
+              {t('screens.sharing.opensYourPersonalAppsShareDirectly2')}
             </p>
             <PersonalShareButtons
               shareUrl={shareUrl}
@@ -269,7 +269,7 @@ export function UniversalShareDialog({
                 <Alert className="bg-muted/50">
                   <Info className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    Select connected accounts to auto-post. Click <strong>+</strong> to connect new accounts.
+                    {t('screens.sharing.selectConnectedAccountsAutopostClick')} <strong>+</strong> to connect new accounts.
                   </AlertDescription>
                 </Alert>
                 
@@ -332,7 +332,7 @@ export function UniversalShareDialog({
               onClick={handleCreateCampaign}
             >
               <Plus className="mr-2 h-4 w-4" />
-              Create Campaign
+              {t('screens.sharing.createCampaign')}
             </Button>
             <Button
               type="button"
@@ -348,7 +348,7 @@ export function UniversalShareDialog({
               ) : (
                 <>
                   <Send className="mr-2 h-4 w-4" />
-                  Blast Now
+                  {t('screens.sharing.blastNow')}
                 </>
               )}
             </Button>

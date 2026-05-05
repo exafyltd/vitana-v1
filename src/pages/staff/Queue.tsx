@@ -11,20 +11,20 @@ export default function StaffQueue() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.patientQueue')}</h1>
         <p className="text-muted-foreground">
-          Manage patient check-ins and waiting list
+          {t('screens.staff.managePatientCheckinsWaitingList')}
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Waiting</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.staff.waiting')}</CardTitle>
             <Clock className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">8</div>
             <p className="text-xs text-muted-foreground">
-              Patients in queue
+              {t('screens.staff.patientsQueue')}
             </p>
           </CardContent>
         </Card>
@@ -37,33 +37,33 @@ export default function StaffQueue() {
           <CardContent>
             <div className="text-2xl font-bold">5</div>
             <p className="text-xs text-muted-foreground">
-              Being seen
+              {t('screens.staff.seen')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Urgent</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.staff.urgent')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2</div>
             <p className="text-xs text-muted-foreground">
-              Priority cases
+              {t('screens.staff.priorityCases')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.staff.completed')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">24</div>
             <p className="text-xs text-muted-foreground">
-              Today's total
+              {t('screens.staff.todaySTotal')}
             </p>
           </CardContent>
         </Card>
@@ -77,14 +77,14 @@ export default function StaffQueue() {
             <div className="flex justify-between items-start">
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <AvatarFallback className="bg-red-100 text-red-800">JD</AvatarFallback>
+                  <AvatarFallback className="bg-red-100 text-red-800">{t('screens.staff.jd')}</AvatarFallback>
                 </Avatar>
                 <div>
                   <CardTitle className="text-lg">{t('screens.staff.johnDoe')}</CardTitle>
                   <CardDescription>{t('screens.staff.walkinChestPain')}</CardDescription>
                 </div>
               </div>
-              <Badge variant="destructive">URGENT</Badge>
+              <Badge variant="destructive">{t('screens.staff.urgent2')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
@@ -107,14 +107,14 @@ export default function StaffQueue() {
             <div className="flex justify-between items-start">
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <AvatarFallback className="bg-orange-100 text-orange-800">SJ</AvatarFallback>
+                  <AvatarFallback className="bg-orange-100 text-orange-800">{t('screens.staff.sj')}</AvatarFallback>
                 </Avatar>
                 <div>
                   <CardTitle className="text-lg">{t('screens.staff.sarahJohnson')}</CardTitle>
                   <CardDescription>{t('screens.staff.appointmentFollowup')}</CardDescription>
                 </div>
               </div>
-              <Badge variant="outline">WAITING</Badge>
+              <Badge variant="outline">{t('screens.staff.waiting2')}</Badge>
             </div>
           </CardHeader>
           <CardContent>
@@ -137,7 +137,7 @@ export default function StaffQueue() {
             <div className="flex justify-between items-start">
               <div className="flex items-center space-x-4">
                 <Avatar>
-                  <AvatarFallback className="bg-blue-100 text-blue-800">MW</AvatarFallback>
+                  <AvatarFallback className="bg-blue-100 text-blue-800">{t('screens.staff.mw')}</AvatarFallback>
                 </Avatar>
                 <div>
                   <CardTitle className="text-lg">{t('screens.staff.mikeWilson')}</CardTitle>

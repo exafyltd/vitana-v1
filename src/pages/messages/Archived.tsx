@@ -52,23 +52,23 @@ export default function Archived() {
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setArchiveActionOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                Archive Actions
+                {t('screens.messages.archiveActions')}
               </Button>
             </UtilityActionButton>
 
             <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
               <SplitBarList>
                 <SplitBarTrigger value="all">
-                  📂 All Archives
+                  {t('screens.messages.allArchives')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="recent">
-                  ⏰ Recently Archived
+                  {t('screens.messages.recentlyArchived')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="category">
-                  📦 By Category
+                  {t('screens.messages.byCategory')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="settings">
-                  ⚙️ Settings
+                  {t('screens.messages.settings')}
                 </SplitBarTrigger>
               </SplitBarList>
 
@@ -99,10 +99,10 @@ export default function Archived() {
                         <h3 className="font-medium">{t('screens.messages.allArchivedConversations')}</h3>
                         <div className="flex gap-2">
                           <Button variant="ghost" size="sm">
-                            Export
+                            {t('screens.messages.export')}
                           </Button>
                           <Button variant="ghost" size="sm">
-                            Delete Selected
+                            {t('screens.messages.deleteSelected')}
                           </Button>
                         </div>
                       </div>
@@ -134,7 +134,7 @@ export default function Archived() {
                             </div>
                             <div className="flex items-center gap-2">
                               <Button variant="ghost" size="sm">
-                                Restore
+                                {t('screens.messages.restore')}
                               </Button>
                               <Button variant="ghost" size="sm">
                                 <MoreHorizontal className="h-4 w-4" />
@@ -157,13 +157,13 @@ export default function Archived() {
                           <div className="space-y-2">
                             <Button variant="outline" className="w-full justify-start">
                               <Archive className="h-4 w-4 mr-2" />
-                              Archive Current Chat
+                              {t('screens.messages.archiveCurrentChat')}
                             </Button>
                             <Button variant="outline" className="w-full justify-start">
-                              Export Archives
+                              {t('screens.messages.exportArchives')}
                             </Button>
                             <Button variant="outline" className="w-full justify-start">
-                              Import Archives
+                              {t('screens.messages.importArchives')}
                             </Button>
                           </div>
                         </div>

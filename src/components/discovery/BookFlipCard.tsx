@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
+import { t } from '@/lib/i18n-toast';
 
 interface BookFlipCardProps {
   profile: {
@@ -249,7 +250,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                 <div className="flex items-center gap-1 mb-1.5">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
                   <span className="text-xs font-bold text-white uppercase tracking-wider drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
-                    Interests
+                    {t('screens.discovery.interests')}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">

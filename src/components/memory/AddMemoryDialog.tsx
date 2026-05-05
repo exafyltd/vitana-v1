@@ -168,7 +168,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Type className="w-4 h-4 mr-2" />
-              Text
+              {t('screens.memory.text')}
             </Button>
             <Button
               type="button"
@@ -178,7 +178,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Mic className="w-4 h-4 mr-2" />
-              Voice
+              {t('screens.memory.voice')}
             </Button>
             <Button
               type="button"
@@ -191,7 +191,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Camera className="w-4 h-4 mr-2" />
-              Photo
+              {t('screens.memory.photo')}
             </Button>
           </div>
 
@@ -219,11 +219,11 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                 <div className="text-center py-8 border-2 border-dashed rounded-lg">
                   <Mic className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-4">
-                    Click below to start recording your voice diary
+                    {t('screens.memory.clickBelowStartRecordingYourVoice')}
                   </p>
                   <Button onClick={() => setIsRecording(true)}>
                     <Mic className="w-4 h-4 mr-2" />
-                    Start Recording
+                    {t('screens.memory.startRecording')}
                   </Button>
                 </div>
               )}
@@ -352,7 +352,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               onClick={() => onOpenChange(false)}
               disabled={isCreating}
             >
-              Cancel
+              {t('screens.memory.cancel')}
             </Button>
             <Button
               type="button"

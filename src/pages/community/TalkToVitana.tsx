@@ -153,10 +153,10 @@ export default function TalkToVitana() {
         <Card className="space-y-3 p-4">
           <div className="flex items-center gap-2 text-sm font-medium">
             <MessageSquare className="h-4 w-4" />
-            What's on your mind?
+            {t('screens.community.whatSYourMind')}
           </div>
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">Topic</label>
+            <label className="mb-1 block text-xs text-muted-foreground">{t('screens.community.topic')}</label>
             <Select value={kind} onValueChange={v => setKind(v as Kind)}>
               <SelectTrigger>
                 <SelectValue />
@@ -186,7 +186,7 @@ export default function TalkToVitana() {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Vitana, Devon, Sage, Atlas, and Mira are AI specialists. A human reviews actions before they apply to your account.
+            {t('screens.community.vitanaDevonSageAtlasMiraAi')}
           </p>
         </Card>
 

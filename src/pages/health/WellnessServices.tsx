@@ -241,13 +241,13 @@ export default function WellnessServices() {
               )}
               <div className="flex gap-2 pt-3">
                 <Button size="sm" className="flex-1" onClick={(e) => e.stopPropagation()}>
-                  Book
+                  {t('screens.health.book')}
                 </Button>
                 <Button size="sm" variant="outline" className="flex-1" onClick={(e) => e.stopPropagation()}>
-                  Add to Plan
+                  {t('screens.health.addPlan')}
                 </Button>
                 <Button size="sm" variant="outline" onClick={(e) => e.stopPropagation()}>
-                  Ask AI
+                  {t('screens.health.askAi')}
                 </Button>
               </div>
             </CardHeader>
@@ -279,7 +279,7 @@ export default function WellnessServices() {
               onClick={() => setServicesActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Service Actions
+              {t('screens.health.serviceActions')}
             </Button>
           </UtilityActionButton>
 

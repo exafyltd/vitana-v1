@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Calendar, Download, Share2, TrendingUp, Stethoscope } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface BiomarkersMasterActionPopupProps {
   open: boolean;
@@ -63,7 +64,7 @@ export function BiomarkersMasterActionPopup({ open, onOpenChange }: BiomarkersMa
         <DialogHeader className="bg-gradient-to-r from-blue-500/10 via-green-500/10 to-purple-500/10 -m-6 p-6 mb-0">
           <DialogTitle className="flex items-center gap-2 text-xl">
             <FileText className="w-6 h-6 text-blue-500" />
-            Biomarker Actions
+            {t('screens.common.biomarkerActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -91,7 +92,7 @@ export function BiomarkersMasterActionPopup({ open, onOpenChange }: BiomarkersMa
 
         <div className="flex justify-end gap-3 px-6 pb-6">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Close
+            {t('screens.common.close')}
           </Button>
         </div>
       </DialogContent>

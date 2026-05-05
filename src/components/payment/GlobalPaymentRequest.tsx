@@ -140,7 +140,7 @@ export default function GlobalPaymentRequest({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-green-500" />
-            Request Payment
+            {t('screens.payment.requestPayment')}
           </DialogTitle>
         </DialogHeader>
 
@@ -197,7 +197,7 @@ export default function GlobalPaymentRequest({
               {isSearching && (
                 <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                   <Users className="w-4 h-4 animate-pulse" />
-                  Searching users...
+                  {t('screens.payment.searchingUsers')}
                 </div>
               )}
             </div>
@@ -220,7 +220,7 @@ export default function GlobalPaymentRequest({
                   size="sm"
                   onClick={() => setSelectedRecipient(null)}
                 >
-                  Change
+                  {t('screens.payment.change')}
                 </Button>
               </div>
             </div>
@@ -228,22 +228,22 @@ export default function GlobalPaymentRequest({
 
           {/* Currency Selection */}
           <div>
-            <Label htmlFor="currency">Currency</Label>
+            <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
             <Select value={currency} onValueChange={setCurrency}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="CREDITS">Credits</SelectItem>
+                <SelectItem value="USD">{t('screens.payment.usd')}</SelectItem>
+                <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
             <Input
               id="amount"
               type="number"
@@ -274,7 +274,7 @@ export default function GlobalPaymentRequest({
               onClick={onClose}
               className="flex-1"
             >
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleSendRequest}

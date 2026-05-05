@@ -50,7 +50,7 @@ function Logs() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4" />
-              View Details
+              {t('screens.sharing.viewDetails')}
             </Button>
           </UtilityActionButton>
 
@@ -58,7 +58,7 @@ function Logs() {
             <SplitBarList>
               <SplitBarTrigger value="activity">{t('screens.sharing.activityLogs')}</SplitBarTrigger>
               <SplitBarTrigger value="revoked">{t('screens.sharing.revokedAccess')}</SplitBarTrigger>
-              <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
+              <SplitBarTrigger value="analytics">{t('screens.sharing.analytics')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="activity">
@@ -77,8 +77,8 @@ function Logs() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Completed</span>
-                          <Button size="sm" variant="outline" className="ml-2">Details</Button>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{t('screens.sharing.completed')}</span>
+                          <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.details')}</Button>
                         </div>
                       </div>
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
@@ -91,8 +91,8 @@ function Logs() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Completed</span>
-                          <Button size="sm" variant="outline" className="ml-2">Details</Button>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{t('screens.sharing.completed')}</span>
+                          <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.details')}</Button>
                         </div>
                       </div>
                       <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
@@ -105,8 +105,8 @@ function Logs() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Completed</span>
-                          <Button size="sm" variant="outline" className="ml-2">Details</Button>
+                          <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{t('screens.sharing.completed')}</span>
+                          <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.details')}</Button>
                         </div>
                       </div>
                     </div>
@@ -150,7 +150,7 @@ function Logs() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Revoked</span>
+                          <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{t('screens.sharing.revoked')}</span>
                           <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.viewHistory')}</Button>
                         </div>
                       </div>
@@ -164,8 +164,8 @@ function Logs() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">Restorable</span>
-                          <Button size="sm" variant="outline" className="ml-2">Restore</Button>
+                          <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">{t('screens.sharing.restorable')}</span>
+                          <Button size="sm" variant="outline" className="ml-2">{t('screens.sharing.restore')}</Button>
                         </div>
                       </div>
                     </div>

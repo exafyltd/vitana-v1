@@ -10,7 +10,7 @@ export function SubscriptionsOverviewCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <CreditCard className="h-5 w-5 text-blue-500" />
-          Subscriptions
+          {t('screens.wallet.subscriptions')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.activePlansBilling')}</CardDescription>
       </CardHeader>
@@ -21,7 +21,7 @@ export function SubscriptionsOverviewCard() {
               <div className="font-medium text-sm">{t('screens.wallet.healthPro')}</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.text2999month')}</div>
             </div>
-            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.active')}</Badge>
           </div>
           
           <div className="flex items-center justify-between p-2 bg-muted/50 rounded">
@@ -29,7 +29,7 @@ export function SubscriptionsOverviewCard() {
               <div className="font-medium text-sm">{t('screens.wallet.dataVault')}</div>
               <div className="text-xs text-muted-foreground">{t('screens.wallet.text999month')}</div>
             </div>
-            <Badge variant="outline">Paused</Badge>
+            <Badge variant="outline">{t('screens.wallet.paused')}</Badge>
           </div>
         </div>
         
@@ -42,11 +42,11 @@ export function SubscriptionsOverviewCard() {
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="flex-1">
             <Settings className="h-4 w-4 mr-1" />
-            Manage
+            {t('screens.wallet.manage')}
           </Button>
           <Button size="sm" variant="outline" className="flex-1">
             <Plus className="h-4 w-4 mr-1" />
-            Add Plan
+            {t('screens.wallet.addPlan')}
           </Button>
         </div>
       </CardContent>

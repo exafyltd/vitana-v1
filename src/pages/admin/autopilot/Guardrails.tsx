@@ -92,7 +92,7 @@ export default function AutopilotGuardrails() {
                   <div>
                     <CardTitle className="text-base">{t('screens.admin.autopilotEnabled')}</CardTitle>
                     <CardDescription>
-                      When disabled, no recommendations are generated or shown for this tenant.
+                      {t('screens.admin.whenDisabledNoRecommendationsGeneratedShown')}
                     </CardDescription>
                   </div>
                   <Switch
@@ -108,7 +108,7 @@ export default function AutopilotGuardrails() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm">{t('screens.admin.allowedDomains')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Which recommendation domains are visible to this tenant.
+                  {t('screens.admin.whichRecommendationDomainsVisibleThisTenant')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -130,7 +130,7 @@ export default function AutopilotGuardrails() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm">{t('screens.admin.allowedRiskLevels')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Maximum risk level the autopilot can recommend.
+                  {t('screens.admin.maximumRiskLevelAutopilotCanRecommend')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -157,7 +157,7 @@ export default function AutopilotGuardrails() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm">{t('screens.admin.rateLimits')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Cap how many recommendations and activations per day.
+                  {t('screens.admin.capHowManyRecommendationsActivationsPer')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">

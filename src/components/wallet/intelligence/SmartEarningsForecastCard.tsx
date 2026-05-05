@@ -97,7 +97,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Earning Forecast
+            {t('screens.wallet.earningForecast')}
           </CardTitle>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
             +{totalPotential} VTNA Available
@@ -114,7 +114,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
           </div>
           <Progress value={completionProgress} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            On track to earn <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span> this week
+            {t('screens.wallet.trackEarn')} <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span> this week
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Zap className="h-4 w-4 text-amber-500" />
-            Next Best Actions
+            {t('screens.wallet.nextBestActions')}
           </h4>
           
           {mockOpportunities.slice(0, 2).map((opportunity) => (
@@ -163,7 +163,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Target className="h-4 w-4 mr-2" />
-          View All Opportunities
+          {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>
     </Card>

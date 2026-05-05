@@ -89,13 +89,13 @@ export default function SettingsBranding() {
             {(accent || bg || fg) && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Preview</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.preview')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-2 h-12 rounded-md overflow-hidden border">
-                    {bg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: bg, color: fg || "#000" }}>Background</div>}
-                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-white" style={{ backgroundColor: accent }}>Accent</div>}
-                    {fg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: fg, color: "#fff" }}>Foreground</div>}
+                    {bg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: bg, color: fg || "#000" }}>{t('screens.admin.background')}</div>}
+                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-white" style={{ backgroundColor: accent }}>{t('screens.admin.accent')}</div>}
+                    {fg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: fg, color: "#fff" }}>{t('screens.admin.foreground')}</div>}
                   </div>
                 </CardContent>
               </Card>

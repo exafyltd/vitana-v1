@@ -1240,7 +1240,7 @@ export default withScreenId(function Community() {
         <div className="flex flex-col gap-4 p-4 pb-32 min-h-dvh bg-gradient-to-b from-primary/5 to-background">
           {/* Compact Header */}
           <div className="space-y-1 pt-2">
-            <h1 className="text-xl font-bold text-foreground">Community</h1>
+            <h1 className="text-xl font-bold text-foreground">{t('screens.community.community')}</h1>
             <p className="text-sm text-muted-foreground">{t('screens.community.connectShareGrowTogether')}</p>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span className="inline-flex items-center gap-1">
@@ -1335,7 +1335,7 @@ export default withScreenId(function Community() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Hub
+              {t('screens.community.hub')}
             </Button>
           </UtilityActionButton>
 
@@ -1430,7 +1430,7 @@ export default withScreenId(function Community() {
                     }}
                   >
                     <Trophy className="w-3 h-3 mr-1" />
-                    View All Rankings
+                    {t('screens.community.viewAllRankings')}
                   </Button>
                 </div>
                 {(() => {
@@ -1453,7 +1453,7 @@ export default withScreenId(function Community() {
                   {membersLoading && (
                     <Badge variant="outline" className="animate-pulse">
                       <Users className="w-3 h-3 mr-1" />
-                      Loading...
+                      {t('screens.community.loading')}
                     </Badge>
                   )}
                   {!membersLoading && realCommunityPeople.length > 0 && (
@@ -1540,7 +1540,7 @@ export default withScreenId(function Community() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="today">Today</SelectItem>
+                      <SelectItem value="today">{t('screens.community.today')}</SelectItem>
                       <SelectItem value="7d">{t('screens.community.text7Days')}</SelectItem>
                       <SelectItem value="30d">{t('screens.community.text30Days')}</SelectItem>
                       <SelectItem value="all">{t('screens.community.alltime')}</SelectItem>
@@ -1554,8 +1554,8 @@ export default withScreenId(function Community() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="global">Global</SelectItem>
-                      <SelectItem value="region">Region</SelectItem>
+                      <SelectItem value="global">{t('screens.community.global')}</SelectItem>
+                      <SelectItem value="region">{t('screens.community.region')}</SelectItem>
                       <SelectItem value="group">{t('screens.community.myGroups')}</SelectItem>
                     </SelectContent>
                   </Select>
@@ -1568,11 +1568,11 @@ export default withScreenId(function Community() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">{t('screens.community.allCategories')}</SelectItem>
-                      <SelectItem value="sleep">Sleep</SelectItem>
-                      <SelectItem value="exercise">Exercise</SelectItem>
-                      <SelectItem value="nutrition">Nutrition</SelectItem>
-                      <SelectItem value="hydration">Hydration</SelectItem>
-                      <SelectItem value="mental">Mental</SelectItem>
+                      <SelectItem value="sleep">{t('screens.community.sleep')}</SelectItem>
+                      <SelectItem value="exercise">{t('screens.community.exercise')}</SelectItem>
+                      <SelectItem value="nutrition">{t('screens.community.nutrition')}</SelectItem>
+                      <SelectItem value="hydration">{t('screens.community.hydration')}</SelectItem>
+                      <SelectItem value="mental">{t('screens.community.mental')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1707,7 +1707,7 @@ export default withScreenId(function Community() {
                     <Sparkles className="w-12 h-12 mx-auto mb-3 text-blue-600" />
                     <h3 className="text-lg font-semibold mb-2">{t('screens.community.getPersonalizedAiRecommendations')}</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Let AI analyze your wellness goals and suggest the perfect events for you
+                      {t('screens.community.letAiAnalyzeYourWellnessGoals')}
                     </p>
                     <Button 
                       onClick={() => generateRecommendations('events')} 
@@ -1722,7 +1722,7 @@ export default withScreenId(function Community() {
                       ) : (
                         <>
                           <Sparkles className="w-4 h-4 mr-2" />
-                          Generate AI Recommendations
+                          {t('screens.community.generateAiRecommendations')}
                         </>
                       )}
                     </Button>
@@ -1738,7 +1738,7 @@ export default withScreenId(function Community() {
                       <h3 className="text-xl font-bold">{t('screens.community.aiRecommendedForYou')}</h3>
                       <Badge className="bg-gradient-to-r from-blue-500 to-purple-500">
                         <Sparkles className="w-3 h-3 mr-1" />
-                        AI Powered
+                        {t('screens.community.aiPowered')}
                       </Badge>
                     </div>
                     <Button 
@@ -1748,7 +1748,7 @@ export default withScreenId(function Community() {
                       disabled={generating}
                     >
                       <RefreshCw className={`w-3 h-3 mr-1 ${generating ? 'animate-spin' : ''}`} />
-                      Refresh
+                      {t('screens.community.refresh')}
                     </Button>
                   </div>
                   {(() => {

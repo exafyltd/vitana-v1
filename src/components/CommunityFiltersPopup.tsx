@@ -101,7 +101,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
         <DialogHeader>
           <DialogTitle>{t('screens.common.communityFilters')}</DialogTitle>
           <DialogDescription>
-            Customize your community overview to show the content most relevant to you.
+            {t('screens.common.customizeYourCommunityOverviewShowContent')}
           </DialogDescription>
         </DialogHeader>
 
@@ -181,19 +181,19 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   <SelectItem value="events">{t('screens.common.eventsOnly')}</SelectItem>
                   <SelectItem value="groups">{t('screens.common.groupsOnly')}</SelectItem>
                   <SelectItem value="live">{t('screens.common.liveSessions')}</SelectItem>
-                  <SelectItem value="educational">Educational</SelectItem>
+                  <SelectItem value="educational">{t('screens.common.educational')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Timeframe</h4>
+              <h4 className="text-sm font-medium">{t('screens.common.timeframe')}</h4>
               <Select value={timeframe} onValueChange={setTimeframe}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="now">{t('screens.common.rightNow')}</SelectItem>
-                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="today">{t('screens.common.today')}</SelectItem>
                   <SelectItem value="week">{t('screens.common.thisWeek')}</SelectItem>
                   <SelectItem value="month">{t('screens.common.thisMonth')}</SelectItem>
                 </SelectContent>
@@ -216,7 +216,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="show-live" className="text-sm">
-                  Show live content only
+                  {t('screens.common.showLiveContentOnly')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -228,7 +228,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="prioritize-nearby" className="text-sm">
-                  Prioritize nearby activities
+                  {t('screens.common.prioritizeNearbyActivities')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -240,7 +240,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="hide-completed" className="text-sm">
-                  Hide completed events
+                  {t('screens.common.hideCompletedEvents')}
                 </label>
               </div>
               <div className="flex items-center space-x-2">
@@ -252,7 +252,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
                   }
                 />
                 <label htmlFor="premium-only" className="text-sm">
-                  Show premium content only
+                  {t('screens.common.showPremiumContentOnly')}
                 </label>
               </div>
             </div>
@@ -261,14 +261,14 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
 
         <div className="flex justify-between pt-6">
           <Button variant="outline" onClick={handleResetFilters}>
-            Reset
+            {t('screens.common.reset')}
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleApplyFilters}>
-              Apply Filters
+              {t('screens.common.applyFilters')}
             </Button>
           </div>
         </div>

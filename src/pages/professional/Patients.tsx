@@ -13,12 +13,12 @@ export default function ProfessionalPatients() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{t('screens.professional.myPatients')}</h1>
           <p className="text-muted-foreground">
-            Manage your patient roster and care plans
+            {t('screens.professional.manageYourPatientRosterCarePlans')}
           </p>
         </div>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Add Patient
+          {t('screens.professional.addPatient')}
         </Button>
       </div>
 
@@ -36,7 +36,7 @@ export default function ProfessionalPatients() {
           <CardHeader>
             <div className="flex items-center space-x-4">
               <Avatar>
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback>{t('screens.professional.jd')}</AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle className="text-lg">{t('screens.professional.johnDoe')}</CardTitle>
@@ -55,8 +55,8 @@ export default function ProfessionalPatients() {
                 <Badge variant="outline">{t('screens.professional.tomorrow900Am')}</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Condition</span>
-                <Badge variant="secondary">Hypertension</Badge>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.condition')}</span>
+                <Badge variant="secondary">{t('screens.professional.hypertension')}</Badge>
               </div>
               <div className="flex gap-2 pt-2">
                 <Button size="sm" className="flex-1">{t('screens.professional.viewChart')}</Button>
@@ -72,7 +72,7 @@ export default function ProfessionalPatients() {
           <CardHeader>
             <div className="flex items-center space-x-4">
               <Avatar>
-                <AvatarFallback>SJ</AvatarFallback>
+                <AvatarFallback>{t('screens.professional.sj')}</AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle className="text-lg">{t('screens.professional.sarahJohnson')}</CardTitle>
@@ -91,7 +91,7 @@ export default function ProfessionalPatients() {
                 <Badge variant="outline">{t('screens.professional.friday230Pm')}</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Condition</span>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.condition')}</span>
                 <Badge variant="secondary">{t('screens.professional.followup')}</Badge>
               </div>
               <div className="flex gap-2 pt-2">
@@ -108,7 +108,7 @@ export default function ProfessionalPatients() {
           <CardHeader>
             <div className="flex items-center space-x-4">
               <Avatar>
-                <AvatarFallback>MW</AvatarFallback>
+                <AvatarFallback>{t('screens.professional.mw')}</AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle className="text-lg">{t('screens.professional.mikeWilson')}</CardTitle>
@@ -127,7 +127,7 @@ export default function ProfessionalPatients() {
                 <Badge variant="outline">{t('screens.professional.nextWeek')}</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Condition</span>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.condition')}</span>
                 <Badge variant="secondary">{t('screens.professional.labReview')}</Badge>
               </div>
               <div className="flex gap-2 pt-2">

@@ -42,7 +42,7 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Ticket className="w-5 h-5 text-blue-500" />
-            Create Support Ticket
+            {t('screens.common.createSupportTicket')}
           </DialogTitle>
         </DialogHeader>
         
@@ -55,7 +55,7 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
                 <div>
                   <h4 className="font-medium text-blue-900 mb-1">{t('screens.common.expectedResponseTime')}</h4>
                   <p className="text-sm text-blue-800">
-                    We typically respond within 24 hours for standard inquiries, and within 4 hours for urgent issues.
+                    {t('screens.common.weTypicallyRespondWithin24Hours')}
                   </p>
                 </div>
               </div>
@@ -88,13 +88,13 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
                     <SelectItem value="feature">{t('screens.common.featureRequest')}</SelectItem>
                     <SelectItem value="privacy">{t('screens.common.privacySecurity')}</SelectItem>
                     <SelectItem value="integrations">{t('screens.common.appIntegrations')}</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="other">{t('screens.common.other')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label htmlFor="priority">Priority</Label>
+                <Label htmlFor="priority">{t('screens.common.priority')}</Label>
                 <Select onValueChange={(value) => handleInputChange('priority', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder={t('screens.common.selectPriority')} />
@@ -102,25 +102,25 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
                   <SelectContent>
                     <SelectItem value="low">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-green-600 border-green-600">Low</Badge>
+                        <Badge variant="outline" className="text-green-600 border-green-600">{t('screens.common.low')}</Badge>
                         <span>{t('screens.common.generalQuestion')}</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="medium">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-yellow-600 border-yellow-600">Medium</Badge>
+                        <Badge variant="outline" className="text-yellow-600 border-yellow-600">{t('screens.common.medium')}</Badge>
                         <span>{t('screens.common.featureNotWorking')}</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="high">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-orange-600 border-orange-600">High</Badge>
+                        <Badge variant="outline" className="text-orange-600 border-orange-600">{t('screens.common.high')}</Badge>
                         <span>{t('screens.common.blockingMyUsage')}</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="urgent">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-red-600 border-red-600">Urgent</Badge>
+                        <Badge variant="outline" className="text-red-600 border-red-600">{t('screens.common.urgent')}</Badge>
                         <span>{t('screens.common.criticalIssue')}</span>
                       </div>
                     </SelectItem>
@@ -149,13 +149,13 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
                   onCheckedChange={(checked) => handleInputChange('attachScreenshot', checked as boolean)}
                 />
                 <Label htmlFor="screenshot" className="text-sm cursor-pointer">
-                  Attach screenshot of the current page (helps us understand the issue better)
+                  {t('screens.common.attachScreenshotCurrentPageHelpsUs')}
                 </Label>
               </div>
 
               <Button type="button" variant="outline" className="w-full">
                 <Upload className="w-4 h-4 mr-2" />
-                Upload Additional Files
+                {t('screens.common.uploadAdditionalFiles')}
               </Button>
             </div>
           </div>
@@ -165,26 +165,26 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <AlertCircle className="w-4 h-4" />
-                Before submitting, have you tried:
+                {t('screens.common.beforeSubmittingHaveYouTried')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="flex items-center gap-2">
                 <Checkbox id="tried-refresh" />
                 <Label htmlFor="tried-refresh" className="text-sm cursor-pointer">
-                  Refreshing the page or restarting the app
+                  {t('screens.common.refreshingPageRestartingApp')}
                 </Label>
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox id="tried-help" />
                 <Label htmlFor="tried-help" className="text-sm cursor-pointer">
-                  Checking the help documentation
+                  {t('screens.common.checkingHelpDocumentation')}
                 </Label>
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox id="tried-different" />
                 <Label htmlFor="tried-different" className="text-sm cursor-pointer">
-                  Using a different browser or device
+                  {t('screens.common.usingDifferentBrowserDevice')}
                 </Label>
               </div>
             </CardContent>
@@ -192,7 +192,7 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
 
           <div className="flex gap-3 pt-6">
             <Button type="button" variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button 
               type="submit" 
@@ -200,7 +200,7 @@ export function NewTicketPopup({ isOpen, onClose }: NewTicketPopupProps) {
               disabled={!formData.subject || !formData.description || !formData.category}
             >
               <Ticket className="w-4 h-4 mr-2" />
-              Submit Ticket
+              {t('screens.common.submitTicket')}
             </Button>
           </div>
         </form>

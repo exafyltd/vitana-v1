@@ -62,7 +62,7 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
                 <SelectValue placeholder={t('screens.dev.selectCommandType')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="deploy">Deploy</SelectItem>
+                <SelectItem value="deploy">{t('screens.dev.deploy')}</SelectItem>
                 <SelectItem value="restart">{t('screens.dev.restartService')}</SelectItem>
                 <SelectItem value="backup">{t('screens.dev.backupData')}</SelectItem>
                 <SelectItem value="sync">{t('screens.dev.syncResources')}</SelectItem>
@@ -116,7 +116,7 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleSubmit} 

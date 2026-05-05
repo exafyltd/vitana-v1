@@ -139,7 +139,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b bg-card">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm tracking-wide">TICKER</h3>
+          <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.ticker')}</h3>
           {hasUnread && !isFocused && (
             <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
               •
@@ -147,11 +147,11 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
           )}
           {connectionState === "LIVE" ? (
             <Badge variant="default" className="text-xs bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30">
-              LIVE
+              {t('screens.dev.live')}
             </Badge>
           ) : (
             <Badge variant="secondary" className="text-xs">
-              OFFLINE (mock)
+              {t('screens.dev.offlineMock')}
             </Badge>
           )}
         </div>

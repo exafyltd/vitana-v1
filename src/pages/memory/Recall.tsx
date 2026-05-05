@@ -124,7 +124,7 @@ function Recall() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Memory Actions
+            {t('screens.memory.memoryActions')}
           </Button>
         </UtilityActionButton>
 
@@ -133,7 +133,7 @@ function Recall() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5 text-blue-600" />
-              AI Memory Search
+              {t('screens.memory.aiMemorySearch')}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex gap-3">
@@ -145,7 +145,7 @@ function Recall() {
             />
             <Button>
               <Search className="h-4 w-4 mr-2" />
-              Search Memories
+              {t('screens.memory.searchMemories')}
             </Button>
           </CardContent>
         </Card>

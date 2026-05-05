@@ -227,11 +227,11 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
           <ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogTitle>{t('screens.feedback.deleteReport')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              This feedback report will be permanently deleted. This action cannot be undone.
+              {t('screens.feedback.thisFeedbackReportWillPermanentlyDeleted')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>{t('screens.feedback.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

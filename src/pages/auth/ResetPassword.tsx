@@ -66,11 +66,11 @@ function RequestResetView() {
           </div>
           <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.checkYourEmail')}</h3>
           <p className="text-sm text-muted-foreground">
-            We've sent a password reset link to<br />
+            {t('screens.auth.weVeSentPasswordResetLink')}<br />
             <span className="font-medium text-foreground">{email}</span>
           </p>
           <p className="text-xs text-muted-foreground">
-            If you don't see it, check your spam folder.
+            {t('screens.auth.ifYouDonTSeeIt')}
           </p>
           <div className="pt-2">
             <Link
@@ -78,7 +78,7 @@ function RequestResetView() {
               className="inline-flex items-center gap-1.5 text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Back to Maxina
+              {t('screens.auth.backMaxina')}
             </Link>
           </div>
         </CardContent>
@@ -131,7 +131,7 @@ function RequestResetView() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Maxina
+            {t('screens.auth.backMaxina')}
           </Link>
         </div>
       </CardContent>
@@ -174,12 +174,12 @@ function UpdatePasswordView() {
           </div>
           <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.passwordUpdated')}</h3>
           <p className="text-sm text-muted-foreground">
-            Your password has been successfully reset.
+            {t('screens.auth.yourPasswordHasSuccessfullyReset')}
           </p>
           <div className="pt-2">
             <Link to="/maxina">
               <Button className="bg-pink-500 hover:bg-pink-600 text-white">
-                Continue to Maxina
+                {t('screens.auth.continueMaxina')}
               </Button>
             </Link>
           </div>
@@ -261,7 +261,7 @@ function UpdatePasswordView() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Maxina
+            {t('screens.auth.backMaxina')}
           </Link>
         </div>
       </CardContent>

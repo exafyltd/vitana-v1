@@ -89,7 +89,7 @@ function HealthCoachChatBase({
                   </div>
                   <div>
                     <CardTitle className="text-sm">{t('screens.health.aiHealthCoach')}</CardTitle>
-                    <Badge variant="secondary" className="text-xs">Online</Badge>
+                    <Badge variant="secondary" className="text-xs">{t('screens.health.online')}</Badge>
                   </div>
                 </div>
                 <div className="flex gap-1">

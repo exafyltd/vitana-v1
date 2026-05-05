@@ -78,23 +78,23 @@ export default function Inspiration() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setInspirationActionOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Template Actions
+              {t('screens.messages.templateActions')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="templates">
-                💡 Templates
+                {t('screens.messages.templates')}
               </SplitBarTrigger>
               <SplitBarTrigger value="favorites">
-                ❤️ My Favorites
+                {t('screens.messages.myFavorites')}
               </SplitBarTrigger>
               <SplitBarTrigger value="recent">
-                ⏰ Recently Used
+                {t('screens.messages.recentlyUsed')}
               </SplitBarTrigger>
               <SplitBarTrigger value="custom">
-                ✏️ Custom Messages
+                {t('screens.messages.customMessages')}
               </SplitBarTrigger>
             </SplitBarList>
 
@@ -122,7 +122,7 @@ export default function Inspiration() {
                               onClick={() => navigator.clipboard.writeText(template.text)}
                             >
                               <Copy className="w-3 h-3 mr-1" />
-                              Copy
+                              {t('screens.messages.copy')}
                             </Button>
                             <Button
                               variant="default"
@@ -130,7 +130,7 @@ export default function Inspiration() {
                               onClick={() => console.log(`Forwarding: ${template.text}`)}
                             >
                               <Send className="w-3 h-3 mr-1" />
-                              Send
+                              {t('screens.messages.send')}
                             </Button>
                           </div>
                         </div>
@@ -146,7 +146,7 @@ export default function Inspiration() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Heart className="w-5 h-5 text-red-500" />
-                    My Favorite Templates
+                    {t('screens.messages.myFavoriteTemplates')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
                 </CardHeader>
@@ -161,7 +161,7 @@ export default function Inspiration() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-blue-500" />
-                    Recently Used Templates
+                    {t('screens.messages.recentlyUsedTemplates')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
                 </CardHeader>
@@ -176,7 +176,7 @@ export default function Inspiration() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Edit className="w-5 h-5 text-green-500" />
-                    Custom Messages
+                    {t('screens.messages.customMessages2')}
                     <Badge variant="secondary">0</Badge>
                   </CardTitle>
                 </CardHeader>

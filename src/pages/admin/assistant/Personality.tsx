@@ -103,7 +103,7 @@ export default function AssistantPersonality() {
                 <div className="space-y-3">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                      Global default (read-only)
+                      {t('screens.admin.globalDefaultReadonly')}
                     </label>
                     <div className="text-xs font-mono bg-muted/50 rounded p-3 max-h-32 overflow-y-auto whitespace-pre-wrap">
                       {(surface.global_config?.base_identity as string)?.slice(0, 500) || "—"}
@@ -112,7 +112,7 @@ export default function AssistantPersonality() {
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                      Tenant override (editable)
+                      {t('screens.admin.tenantOverrideEditable')}
                     </label>
                     <Textarea
                       value={promptDraft}
@@ -128,10 +128,10 @@ export default function AssistantPersonality() {
                     </Button>
                     {surface.has_tenant_override && (
                       <Button size="sm" variant="outline" onClick={() => removeOverride(surface.surface_key)} disabled={deleteMutation.isPending}>
-                        Remove Override
+                        {t('screens.admin.removeOverride')}
                       </Button>
                     )}
-                    <Button size="sm" variant="ghost" onClick={() => setEditingSurface(null)}>Cancel</Button>
+                    <Button size="sm" variant="ghost" onClick={() => setEditingSurface(null)}>{t('screens.admin.cancel')}</Button>
                   </div>
                 </div>
               ) : (
@@ -141,7 +141,7 @@ export default function AssistantPersonality() {
                     {((surface.effective_config?.base_identity as string)?.length || 0) > 200 && "..."}
                   </div>
                   <Button size="sm" variant="outline" onClick={() => startEdit(surface)}>
-                    Edit
+                    {t('screens.admin.edit')}
                   </Button>
                 </div>
               )}

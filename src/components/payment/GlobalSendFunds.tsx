@@ -149,7 +149,7 @@ export default function GlobalSendFunds({
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-green-600" />
-            Send Funds
+            {t('screens.payment.sendFunds')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
 
@@ -207,13 +207,13 @@ export default function GlobalSendFunds({
                 {isSearching && (
                   <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                     <Users className="w-4 h-4 animate-pulse" />
-                    Searching users...
+                    {t('screens.payment.searchingUsers')}
                   </div>
                 )}
               </div>
             ) : (
               <div>
-                <Label>Recipient</Label>
+                <Label>{t('screens.payment.recipient')}</Label>
                 <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={selectedRecipient.avatar_url} />
@@ -230,7 +230,7 @@ export default function GlobalSendFunds({
                     size="sm"
                     onClick={() => setSelectedRecipient(null)}
                   >
-                    Change
+                    {t('screens.payment.change')}
                   </Button>
                 </div>
               </div>
@@ -238,15 +238,15 @@ export default function GlobalSendFunds({
 
             {/* Currency Selection */}
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="CREDITS">Credits</SelectItem>
+                  <SelectItem value="USD">{t('screens.payment.usd')}</SelectItem>
+                  <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground mt-1">
@@ -256,7 +256,7 @@ export default function GlobalSendFunds({
 
             {/* Amount Input */}
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -276,7 +276,7 @@ export default function GlobalSendFunds({
             onClick={onClose}
             className="flex-1"
           >
-            Cancel
+            {t('screens.payment.cancel')}
           </Button>
           <Button 
             onClick={handleSendFunds}

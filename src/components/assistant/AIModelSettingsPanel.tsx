@@ -16,7 +16,7 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
       <CardHeader>
         <CardTitle>{t('screens.assistant.aiModelPreferences')}</CardTitle>
         <CardDescription>
-          Choose your preferred AI model and behavior
+          {t('screens.assistant.chooseYourPreferredAiModelBehavior')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -53,7 +53,7 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
             disabled={isUpdating}
           />
           <p className="text-xs text-muted-foreground">
-            Lower values are more focused, higher values are more creative
+            {t('screens.assistant.lowerValuesMoreFocusedHigherValues')}
           </p>
         </div>
 
@@ -69,7 +69,7 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="short">{t('screens.assistant.shortConcise')}</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="medium">{t('screens.assistant.medium')}</SelectItem>
               <SelectItem value="long">{t('screens.assistant.detailedComprehensive')}</SelectItem>
             </SelectContent>
           </Select>

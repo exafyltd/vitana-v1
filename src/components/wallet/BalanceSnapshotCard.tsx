@@ -11,7 +11,7 @@ export function BalanceSnapshotCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-green-600" />
-          Balance Snapshot
+          {t('screens.wallet.balanceSnapshot')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.currentWalletOverview')}</CardDescription>
       </CardHeader>
@@ -22,7 +22,7 @@ export function BalanceSnapshotCard() {
             <span className="font-semibold text-lg">$2,847.32</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Pending</span>
+            <span className="text-sm text-muted-foreground">{t('screens.wallet.pending')}</span>
             <span className="font-medium text-amber-600">$124.50</span>
           </div>
           <div className="flex justify-between items-center">
@@ -34,11 +34,11 @@ export function BalanceSnapshotCard() {
         <div className="flex gap-2 pt-2">
           <Button size="sm" className="flex-1">
             <Plus className="h-4 w-4 mr-1" />
-            Add Funds
+            {t('screens.wallet.addFunds')}
           </Button>
           <Button size="sm" variant="outline">
             <Eye className="h-4 w-4 mr-1" />
-            Details
+            {t('screens.wallet.details')}
           </Button>
         </div>
       </CardContent>

@@ -264,7 +264,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
 
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? "Saving…" : "Save"}

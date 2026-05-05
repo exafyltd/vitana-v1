@@ -28,7 +28,7 @@ export default function OverviewAlerts() {
           rightAction={
             <Button variant="outline" size="sm" onClick={() => alertsQuery.refetch()} disabled={alertsQuery.isFetching}>
               <RefreshCw className={`h-4 w-4 mr-2 ${alertsQuery.isFetching ? "animate-spin" : ""}`} />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           }
         />
@@ -48,10 +48,10 @@ export default function OverviewAlerts() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[30px]" />
-                  <TableHead>Time</TableHead>
-                  <TableHead>Topic</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>VTID</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.topic')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

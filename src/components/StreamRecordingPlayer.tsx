@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { formatDistanceToNow } from 'date-fns';
+import { t } from '@/lib/i18n-toast';
 
 interface StreamRecordingPlayerProps {
   recording: {
@@ -164,7 +165,7 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
             onClick={handleDownload}
           >
             <Download className="h-4 w-4 mr-2" />
-            Download
+            {t('screens.common.download')}
           </Button>
         </div>
       </div>

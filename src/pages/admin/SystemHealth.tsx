@@ -32,7 +32,7 @@ export default function SystemHealth() {
                   <Activity className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">99.9%</p>
-                    <p className="text-sm text-muted-foreground">Uptime</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.uptime')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -56,7 +56,7 @@ export default function SystemHealth() {
                   <Database className="w-8 h-8 text-purple-500" />
                   <div>
                     <p className="text-2xl font-bold">67%</p>
-                    <p className="text-sm text-muted-foreground">Storage</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.storage')}</p>
                   </div>
                 </div>
               </CardContent>

@@ -36,7 +36,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
   const content = (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Vetted professionals, tailored to your goals.
+        {t('screens.crossover.vettedProfessionalsTailoredYourGoals')}
       </p>
       
       {coaches.map((coach) => (

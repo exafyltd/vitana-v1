@@ -30,7 +30,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Archive className="w-6 h-6" />
-            Archive Settings
+            {t('screens.memory.archiveSettings')}
           </DialogTitle>
         </DialogHeader>
 
@@ -39,10 +39,10 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           <div className="flex items-center justify-between space-x-4 p-4 border rounded-lg">
             <div className="flex-1">
               <Label htmlFor="auto-archive" className="text-base font-medium">
-                Enable Auto-Archive
+                {t('screens.memory.enableAutoarchive')}
               </Label>
               <p className="text-sm text-muted-foreground mt-1">
-                Automatically archive old activity items based on age
+                {t('screens.memory.automaticallyArchiveOldActivityItemsBased')}
               </p>
             </div>
             <Switch
@@ -72,7 +72,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Items older than this will be automatically archived
+              {t('screens.memory.itemsOlderThanThisWillAutomatically')}
             </p>
           </div>
 
@@ -80,10 +80,10 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           <div className="flex items-center justify-between space-x-4 p-4 border rounded-lg">
             <div className="flex-1">
               <Label htmlFor="show-archived" className="text-base font-medium">
-                Show Archived Items
+                {t('screens.memory.showArchivedItems')}
               </Label>
               <p className="text-sm text-muted-foreground mt-1">
-                Include archived items in timeline views
+                {t('screens.memory.includeArchivedItemsTimelineViews')}
               </p>
             </div>
             <Switch
@@ -103,10 +103,10 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.memory.cancel')}
             </Button>
             <Button onClick={handleSave}>
-              Save Settings
+              {t('screens.memory.saveSettings')}
             </Button>
           </div>
         </div>

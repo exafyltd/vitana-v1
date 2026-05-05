@@ -216,7 +216,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                     GO ({selectedActions.length})
                   </Button>
                   <Button variant="outline" onClick={handleNotNow}>
-                    Not Now
+                    {t('screens.dev.notNow')}
                   </Button>
                   {!showOptions && (
                     <Button 
@@ -224,7 +224,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       onClick={() => setShowOptions(true)}
                     >
                       <Settings className="w-4 h-4 mr-1" />
-                      See Options
+                      {t('screens.dev.seeOptions')}
                     </Button>
                   )}
                 </div>
@@ -234,7 +234,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                   onClick={handleQuickJump}
                   className="text-sm text-muted-foreground p-0 h-auto"
                 >
-                  See All in Command Hub →
+                  {t('screens.dev.seeAllCommandHub')}
                 </Button>
               </div>
             </DialogFooter>

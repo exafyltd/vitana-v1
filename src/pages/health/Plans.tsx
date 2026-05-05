@@ -105,7 +105,7 @@ export default withScreenId(function Plans() {
             }}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Generate New Plan
+            {t('screens.health.generateNewPlan')}
           </Button>
           </UtilityActionButton>
           
@@ -160,7 +160,7 @@ export default withScreenId(function Plans() {
                   <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-                        🧠 Autopilot Summary
+                        {t('screens.health.autopilotSummary')}
                       </h3>
                       <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                         <div>
@@ -172,7 +172,7 @@ export default withScreenId(function Plans() {
                           <span> · 5 active plans synced · Cross-pillar synergy {autopilotData.synergyScore}/100</span>
                         </div>
                         <div>
-                          Next recalibration: <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}
+                          {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}
                         </div>
                       </div>
                     </div>

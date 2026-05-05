@@ -101,7 +101,7 @@ export default function CompanionFieldsSection({
           <CardTitle className="text-sm flex items-center gap-2">
             Companion Fields (Phase B)
             {hasTenantOverride && (effectiveConfig as any)?._has_extra_override ? (
-              <Badge variant="default" className="text-xs">Overridden</Badge>
+              <Badge variant="default" className="text-xs">{t('screens.admin.overridden')}</Badge>
             ) : (
               <Badge variant="outline" className="text-xs">{t('screens.admin.usingDefaults')}</Badge>
             )}
@@ -130,7 +130,7 @@ export default function CompanionFieldsSection({
         {jsonOpen && (
           <div className="border-t pt-4 mt-4 space-y-2">
             <label className="text-xs font-medium text-muted-foreground block">
-              Tenant <code>{t('screens.admin.extra_config')}</code> override (JSON object). Keys listed above will
+              {t('screens.admin.tenant')} <code>{t('screens.admin.extra_config')}</code> override (JSON object). Keys listed above will
               override the defaults; unlisted keys fall back to global defaults.
             </label>
             <Textarea

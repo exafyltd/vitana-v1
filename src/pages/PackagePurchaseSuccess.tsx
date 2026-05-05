@@ -94,10 +94,10 @@ const PackagePurchaseSuccess = () => {
               <Package className="h-12 w-12 text-destructive mx-auto mb-4" />
               <h1 className="text-xl font-semibold mb-2">{t('screens.packagepurchasesuccess.missingPurchaseInformation')}</h1>
               <p className="text-muted-foreground mb-4">
-                We couldn't find your purchase details. Please check your email for confirmation.
+                {t('screens.packagepurchasesuccess.weCouldnTFindYourPurchase')}
               </p>
               <Button onClick={() => navigate("/discover/orders")}>
-                View My Orders
+                {t('screens.packagepurchasesuccess.viewMyOrders')}
               </Button>
             </CardContent>
           </Card>
@@ -131,7 +131,7 @@ const PackagePurchaseSuccess = () => {
                 {error || "Unable to verify your purchase. Please contact support."}
               </p>
               <Button onClick={() => navigate("/discover/orders")}>
-                View My Orders
+                {t('screens.packagepurchasesuccess.viewMyOrders')}
               </Button>
             </CardContent>
           </Card>
@@ -158,7 +158,7 @@ const PackagePurchaseSuccess = () => {
             </div>
             <h1 className="text-2xl font-bold mb-2">{t('screens.packagepurchasesuccess.paymentSuccessful')}</h1>
             <p className="text-muted-foreground">
-              A confirmation has been sent to <span className="font-medium">{purchase.buyer_email}</span>
+              {t('screens.packagepurchasesuccess.confirmationHasSent')} <span className="font-medium">{purchase.buyer_email}</span>
             </p>
           </div>
 
@@ -215,7 +215,7 @@ const PackagePurchaseSuccess = () => {
               onClick={() => navigate("/discover/orders?tab=packages")}
             >
               <Gift className="h-4 w-4 mr-2" />
-              Redeem Now
+              {t('screens.packagepurchasesuccess.redeemNow')}
             </Button>
             <Button 
               variant="outline" 
@@ -223,7 +223,7 @@ const PackagePurchaseSuccess = () => {
               onClick={() => navigate("/discover/orders")}
             >
               <ShoppingBag className="h-4 w-4 mr-2" />
-              View Orders
+              {t('screens.packagepurchasesuccess.viewOrders')}
             </Button>
           </div>
         </div>

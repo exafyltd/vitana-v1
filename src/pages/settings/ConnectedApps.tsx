@@ -152,7 +152,7 @@ function ConnectedApps() {
         variant: "destructive",
         action: (
           <ToastAction altText={`Retry ${label} sign-in`} onClick={retry}>
-            Try again
+            {t('screens.settings.tryAgain')}
           </ToastAction>
         ),
       });
@@ -201,9 +201,9 @@ function ConnectedApps() {
               <strong>{t('screens.settings.permissions')}</strong> Post content, read analytics
             </div>
             <div className="text-sm text-muted-foreground">
-              Last sync: 5 minutes ago
+              {t('screens.settings.lastSync5MinutesAgo')}
             </div>
-            <Button variant="destructive" size="sm">Disconnect</Button>
+            <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
           </div>
         ) : (
           <div className="text-sm text-muted-foreground pt-2">
@@ -278,7 +278,7 @@ function ConnectedApps() {
                 size="sm"
                 onClick={() => setAiModalProvider(p.provider)}
               >
-                Replace key
+                {t('screens.settings.replaceKey')}
               </Button>
               <Button
                 variant="destructive"
@@ -382,7 +382,7 @@ function ConnectedApps() {
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-              <Button variant="destructive" size="sm">Disconnect</Button>
+              <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
             </div>
           </div>
         ) : (
@@ -445,7 +445,7 @@ function ConnectedApps() {
           <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-            <Button variant="destructive" size="sm">Disconnect</Button>
+            <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
           </div>
         </div>
       ) : (
@@ -518,7 +518,7 @@ function ConnectedApps() {
           <div className="text-sm text-muted-foreground">Last sync: {app.lastSync}</div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
-            <Button variant="destructive" size="sm">Disconnect</Button>
+            <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
           </div>
         </div>
       ) : (
@@ -1735,7 +1735,7 @@ function ConnectedApps() {
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setActionPopupOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
-                Connect App
+                {t('screens.settings.connectApp')}
               </Button>
             </div>
           </UtilityActionButton>
@@ -1745,19 +1745,19 @@ function ConnectedApps() {
         <SplitBarList className="w-full bg-white/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
           <SplitBarTrigger value="connected" className="flex-1 flex items-center justify-center gap-1.5">
             <Link className="w-4 h-4" />
-            Connected Apps
+            {t('screens.settings.connectedApps')}
           </SplitBarTrigger>
           <SplitBarTrigger value="available" className="flex-1 flex items-center justify-center gap-1.5">
             <Sparkles className="w-4 h-4" />
-            Available Integrations
+            {t('screens.settings.availableIntegrations')}
           </SplitBarTrigger>
           <SplitBarTrigger value="sync" className="flex-1 flex items-center justify-center gap-1.5">
             <RefreshCw className="w-4 h-4" />
-            Data Sync
+            {t('screens.settings.dataSync')}
           </SplitBarTrigger>
           <SplitBarTrigger value="agent-ingest" className="flex-1 flex items-center justify-center gap-1.5">
             <Radio className="w-4 h-4" />
-            Autopilot
+            {t('screens.settings.autopilot')}
           </SplitBarTrigger>
         </SplitBarList>
 
@@ -1768,7 +1768,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5" />
-                AI Assistants
+                {t('screens.settings.aiAssistants')}
               </h2>
               <HorizontalCardList
                 items={getAIAssistantsCards()}
@@ -1786,7 +1786,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Share2 className="w-5 h-5" />
-                Social Media & Sharing
+                {t('screens.settings.socialMediaSharing')}
               </h2>
               <HorizontalCardList
                 items={getSocialMediaCards()}
@@ -1804,7 +1804,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Activity className="w-5 h-5" />
-                Wearables & Fitness Apps
+                {t('screens.settings.wearablesFitnessApps')}
               </h2>
               <HorizontalCardList
                 items={getHealthFitnessCards()}
@@ -1822,7 +1822,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Moon className="w-5 h-5" />
-                Sleep & Recovery Devices
+                {t('screens.settings.sleepRecoveryDevices')}
               </h2>
               <HorizontalCardList
                 items={getSleepRecoveryCards()}
@@ -1840,7 +1840,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Apple className="w-5 h-5" />
-                Nutrition & Wellness Apps
+                {t('screens.settings.nutritionWellnessApps')}
               </h2>
               <HorizontalCardList
                 items={getNutritionCards()}
@@ -1858,7 +1858,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <TestTube className="w-5 h-5" />
-                Clinical & Lab Integrations
+                {t('screens.settings.clinicalLabIntegrations')}
               </h2>
               <HorizontalCardList
                 items={getClinicalLabCards()}
@@ -1876,7 +1876,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Brain className="w-5 h-5" />
-                Mindfulness & Mental Health
+                {t('screens.settings.mindfulnessMentalHealth')}
               </h2>
               <HorizontalCardList
                 items={getMindfulnessCards()}
@@ -1894,7 +1894,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Home className="w-5 h-5" />
-                Smart Home & Environment
+                {t('screens.settings.smartHomeEnvironment')}
               </h2>
               <HorizontalCardList
                 items={getSmartHomeCards()}
@@ -1912,7 +1912,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Mail className="w-5 h-5" />
-                Mail, Calendar & Contacts
+                {t('screens.settings.mailCalendarContacts')}
               </h2>
               <HorizontalCardList
                 items={getCommunicationCards()}
@@ -1930,7 +1930,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Music className="w-5 h-5" />
-                Music & Video
+                {t('screens.settings.musicVideo')}
               </h2>
               <HorizontalCardList
                 items={getEntertainmentMediaCards()}
@@ -1948,7 +1948,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Wallet className="w-5 h-5" />
-                Wallet & Payments
+                {t('screens.settings.walletPayments')}
               </h2>
               <HorizontalCardList
                 items={getWalletPaymentsCards()}
@@ -1966,7 +1966,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Braces className="w-5 h-5" />
-                Developer & Pro Tools
+                {t('screens.settings.developerProTools')}
               </h2>
               <HorizontalCardList
                 items={getDeveloperToolsCards()}
@@ -1989,7 +1989,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
-                Productivity & Calendar
+                {t('screens.settings.productivityCalendar')}
               </h2>
               <HorizontalCardList
                 items={getProductivityCards()}
@@ -2007,7 +2007,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Music className="w-5 h-5" />
-                Music & Video
+                {t('screens.settings.musicVideo')}
               </h2>
               <HorizontalCardList
                 items={getEntertainmentMediaCards()}
@@ -2025,7 +2025,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Activity className="w-5 h-5" />
-                Wellness & Fitness Integrations
+                {t('screens.settings.wellnessFitnessIntegrations')}
               </h2>
               <HorizontalCardList
                 items={getWellnessFitnessIntegrationsCards()}
@@ -2043,7 +2043,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Apple className="w-5 h-5" />
-                Nutrition & Lifestyle
+                {t('screens.settings.nutritionLifestyle')}
               </h2>
               <HorizontalCardList
                 items={getNutritionLifestyleCards()}
@@ -2061,7 +2061,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <TestTube className="w-5 h-5" />
-                Clinical & Labs
+                {t('screens.settings.clinicalLabs')}
               </h2>
               <HorizontalCardList
                 items={getClinicalLabsIntegrationsCards()}
@@ -2079,7 +2079,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Brain className="w-5 h-5" />
-                Mental Health & Mindfulness
+                {t('screens.settings.mentalHealthMindfulness')}
               </h2>
               <HorizontalCardList
                 items={getMentalHealthMindfulnessCards()}
@@ -2097,7 +2097,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Home className="w-5 h-5" />
-                Smart Home & Environment
+                {t('screens.settings.smartHomeEnvironment')}
               </h2>
               <HorizontalCardList
                 items={getSmartHomeEnvironmentCards()}
@@ -2115,7 +2115,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <MessageCircle className="w-5 h-5" />
-                Communication Apps
+                {t('screens.settings.communicationApps')}
               </h2>
               <HorizontalCardList
                 items={getCommunicationAppsIntegrationsCards()}
@@ -2133,7 +2133,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Wallet className="w-5 h-5" />
-                Wallet & Payments
+                {t('screens.settings.walletPayments')}
               </h2>
               <HorizontalCardList
                 items={getWalletPaymentsIntegrationsCards()}
@@ -2151,7 +2151,7 @@ function ConnectedApps() {
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Braces className="w-5 h-5" />
-                Developer Tools
+                {t('screens.settings.developerTools')}
               </h2>
               <HorizontalCardList
                 items={getDeveloperToolsIntegrationsCards()}
@@ -2179,7 +2179,7 @@ function ConnectedApps() {
                 <div>
                   <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                     <RefreshCw className="w-5 h-5" />
-                    Sync Overview
+                    {t('screens.settings.syncOverview')}
                   </h2>
                   <HorizontalCardList
                     items={[getSyncOverviewCard()]}
@@ -2197,7 +2197,7 @@ function ConnectedApps() {
                 <div>
                   <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                     <ListChecks className="w-5 h-5" />
-                    App Sync Details
+                    {t('screens.settings.appSyncDetails')}
                   </h2>
                   <HorizontalCardList
                     items={getPerAppSyncCards()}
@@ -2217,7 +2217,7 @@ function ConnectedApps() {
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-xl font-semibold flex items-center gap-2">
                       <History className="w-5 h-5" />
-                      Sync Activity Log
+                      {t('screens.settings.syncActivityLog')}
                     </h2>
                     <div className="flex items-center gap-4 text-sm">
                       <button 

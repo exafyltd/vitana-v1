@@ -28,7 +28,7 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
             <div className="space-y-2">
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-primary" />
-                AI Analysis Complete
+                {t('screens.admin.aiAnalysisComplete')}
               </CardTitle>
               <CardDescription>
                 Analysis took {analysis.analysis_duration_ms}ms
@@ -41,7 +41,7 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <h4 className="font-medium mb-2">Analysis</h4>
+            <h4 className="font-medium mb-2">{t('screens.admin.analysis')}</h4>
             <p className="text-sm text-muted-foreground">{result.analysis}</p>
           </div>
 
@@ -127,7 +127,7 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
 
       <div className="flex gap-3 justify-end">
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Analyze Another
+          {t('screens.admin.analyzeAnother')}
         </Button>
         <Button onClick={onDeploy} disabled={isDeploying}>
           {isDeploying ? "Deploying..." : "Deploy as Automation"}

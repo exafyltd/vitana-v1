@@ -88,9 +88,9 @@ export function CompletedTasksTable() {
             <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b bg-muted/30 text-sm font-medium text-muted-foreground">
               <div className="col-span-4">{t('screens.dev.taskName')}</div>
               <div className="col-span-2">{t('screens.dev.completedDate')}</div>
-              <div className="col-span-2">Result</div>
-              <div className="col-span-2">Assignee</div>
-              <div className="col-span-2 text-right">Actions</div>
+              <div className="col-span-2">{t('screens.dev.result')}</div>
+              <div className="col-span-2">{t('screens.dev.assignee')}</div>
+              <div className="col-span-2 text-right">{t('screens.dev.actions')}</div>
             </div>
 
             {/* Table Rows */}
@@ -119,7 +119,7 @@ export function CompletedTasksTable() {
                         onClick={() => handleReopen(task.id)}
                       >
                         <RotateCcw className="w-3 h-3 mr-1" />
-                        Reopen
+                        {t('screens.dev.reopen')}
                       </Button>
                       <Button
                         size="sm"
@@ -128,7 +128,7 @@ export function CompletedTasksTable() {
                         onClick={() => handleDuplicate(task.id)}
                       >
                         <Copy className="w-3 h-3 mr-1" />
-                        Duplicate
+                        {t('screens.dev.duplicate')}
                       </Button>
                     </div>
                   </div>

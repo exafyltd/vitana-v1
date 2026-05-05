@@ -72,12 +72,12 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
             <div className="pt-2 border-t border-border">
               <div className="text-xs text-muted-foreground mb-1">{t('screens.health.highestImpactToday')}</div>
               <div className="text-sm font-medium text-foreground">
-                Sleep consistency + Exercise recovery
+                {t('screens.health.sleepConsistencyExerciseRecovery')}
               </div>
             </div>
             
             <div className="text-xs text-muted-foreground">
-              Next Score Update: 23h 12m
+              {t('screens.health.nextScoreUpdate23h12m')}
             </div>
           </div>
         </TooltipContent>

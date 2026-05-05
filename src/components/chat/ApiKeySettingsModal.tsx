@@ -84,7 +84,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
         <DialogHeader>
           <DialogTitle>{t('screens.chat.googleCloudApiKey')}</DialogTitle>
           <DialogDescription>
-            Enter your Google Cloud API key to enable voice AI features (Speech-to-Text and Text-to-Speech).
+            {t('screens.chat.enterYourGoogleCloudApiKey')}
           </DialogDescription>
         </DialogHeader>
 
@@ -100,14 +100,14 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
               disabled={isSaving}
             />
             <p className="text-sm text-muted-foreground">
-              Your API key is stored securely and only used for AI voice features.
+              {t('screens.chat.yourApiKeyStoredSecurelyOnly')}
             </p>
           </div>
 
           <div className="space-y-2 text-sm text-muted-foreground">
             <p className="font-medium">{t('screens.chat.getYourGoogleCloudApiKey')}</p>
             <ol className="list-decimal list-inside space-y-1 ml-2">
-              <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t('screens.chat.googleCloudConsole')}</a></li>
+              <li>{t('screens.chat.go')} <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t('screens.chat.googleCloudConsole')}</a></li>
               <li>{t('screens.chat.enableCloudSpeechtotextApiCloudTexttospeech')}</li>
               <li>{t('screens.chat.createApiKeyCredentials')}</li>
               <li>{t('screens.chat.pasteItHere')}</li>
@@ -121,7 +121,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
             onClick={() => onOpenChange(false)}
             disabled={isSaving}
           >
-            Cancel
+            {t('screens.chat.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
             {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

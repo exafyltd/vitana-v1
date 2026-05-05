@@ -30,7 +30,7 @@ export function InspirationMasterActionPopup({ open, onOpenChange, trigger }: In
         <ResponsiveDialogHeader className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 -mx-6 -mt-6 px-6 pt-6 pb-4 rounded-t-lg">
           <ResponsiveDialogTitle className="text-xl font-semibold flex items-center gap-2">
             <Lightbulb className="w-6 h-6 text-purple-500" />
-            Inspiration Actions
+            {t('screens.messages.inspirationActions')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         

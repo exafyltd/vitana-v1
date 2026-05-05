@@ -121,7 +121,7 @@ export function CredentialUploadPopup({
             <CardContent className="p-4">
               <h4 className="font-semibold mb-4 flex items-center gap-2">
                 <Plus className="h-4 w-4" />
-                Add Coaching Specialty
+                {t('screens.profile.addCoachingSpecialty')}
               </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -135,17 +135,17 @@ export function CredentialUploadPopup({
                     />
                   </div>
                   <div>
-                    <Label>Category</Label>
+                    <Label>{t('screens.profile.category')}</Label>
                     <Select value={newSpecialtyType} onValueChange={(value: CoachingSpecialty['type']) => setNewSpecialtyType(value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="fitness">Fitness</SelectItem>
+                        <SelectItem value="fitness">{t('screens.profile.fitness')}</SelectItem>
                         <SelectItem value="mental">{t('screens.profile.mentalHealth')}</SelectItem>
-                        <SelectItem value="nutrition">Nutrition</SelectItem>
-                        <SelectItem value="wellness">Wellness</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="nutrition">{t('screens.profile.nutrition')}</SelectItem>
+                        <SelectItem value="wellness">{t('screens.profile.wellness')}</SelectItem>
+                        <SelectItem value="other">{t('screens.profile.other')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -163,7 +163,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Participants</Label>
+                      <Label>{t('screens.profile.participants')}</Label>
                       <Input
                         type="number"
                         value={newParticipants}
@@ -174,7 +174,7 @@ export function CredentialUploadPopup({
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <Label>Rating</Label>
+                      <Label>{t('screens.profile.rating')}</Label>
                       <Input
                         type="number"
                         step="0.1"
@@ -195,7 +195,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Subscribers</Label>
+                      <Label>{t('screens.profile.subscribers')}</Label>
                       <Input
                         type="number"
                         value={newSubscribers}
@@ -209,7 +209,7 @@ export function CredentialUploadPopup({
 
               <Button onClick={addNewSpecialty} className="mt-4" disabled={!newSpecialtyTitle}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Specialty
+                {t('screens.profile.addSpecialty')}
               </Button>
             </CardContent>
           </Card>
@@ -239,19 +239,19 @@ export function CredentialUploadPopup({
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.sessionsHeld}</div>
-                    <div className="text-xs text-muted-foreground">Sessions</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.sessions')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.participantsHelped}</div>
-                    <div className="text-xs text-muted-foreground">Participants</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.participants')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.rating.toFixed(1)}</div>
-                    <div className="text-xs text-muted-foreground">Rating</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.rating')}</div>
                   </div>
                   <div className="text-center p-2 bg-muted/50 rounded">
                     <div className="font-semibold">{specialty.subscribers}</div>
-                    <div className="text-xs text-muted-foreground">Subscribers</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.profile.subscribers')}</div>
                   </div>
                 </div>
 
@@ -259,7 +259,7 @@ export function CredentialUploadPopup({
                 <div>
                   <h5 className="font-medium mb-2 flex items-center gap-2">
                     <Award className="h-4 w-4" />
-                    Certifications
+                    {t('screens.profile.certifications')}
                   </h5>
                   
                   <div className="space-y-2 mb-3">
@@ -305,7 +305,7 @@ export function CredentialUploadPopup({
                     disabled={!certTitle || !certIssuer}
                   >
                     <Plus className="h-4 w-4 mr-1" />
-                    Add Certification
+                    {t('screens.profile.addCertification')}
                   </Button>
                 </div>
               </CardContent>
@@ -319,10 +319,10 @@ export function CredentialUploadPopup({
               className="flex-1"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button className="flex-1" onClick={handleSave}>
-              Save Credentials
+              {t('screens.profile.saveCredentials')}
             </Button>
           </div>
         </div>

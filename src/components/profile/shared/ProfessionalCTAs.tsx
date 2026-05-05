@@ -63,14 +63,14 @@ export function ProfessionalCTAs({
                   ) : (
                     <>
                       <Video className="h-4 w-4 mr-2" />
-                      Go Live
+                      {t('screens.profile.goLive')}
                     </>
                   )}
                 </Button>
               )}
               <Button variant="outline" onClick={onBookSession} className="w-full">
                 <Calendar className="h-4 w-4 mr-2" />
-                Manage Availability
+                {t('screens.profile.manageAvailability')}
               </Button>
             </>
           ) : (
@@ -83,17 +83,17 @@ export function ProfessionalCTAs({
                   size="lg"
                 >
                   <Play className="h-4 w-4 mr-2" />
-                  Join LIVE Session
+                  {t('screens.profile.joinLiveSession')}
                 </Button>
               )}
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={onBookSession} className="flex-1">
                   <Calendar className="h-4 w-4 mr-2" />
-                  Book Session
+                  {t('screens.profile.bookSession')}
                 </Button>
                 <Button variant="outline" onClick={onMessage} className="flex-1">
                   <MessageCircle className="h-4 w-4 mr-2" />
-                  Message
+                  {t('screens.profile.message')}
                 </Button>
               </div>
             </>

@@ -47,16 +47,16 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={handlePrintTickets}>
           <Printer className="w-4 h-4 mr-2" />
-          Print Tickets
+          {t('screens.business.printTickets')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleResendConfirmation}>
           <Mail className="w-4 h-4 mr-2" />
-          Resend Confirmation
+          {t('screens.business.resendConfirmation')}
         </Button>
         {order.status === "completed" && (
           <Button variant="outline" size="sm" onClick={handleRefund} className="text-destructive hover:text-destructive">
             <RefreshCw className="w-4 h-4 mr-2" />
-            Refund
+            {t('screens.business.refund')}
           </Button>
         )}
       </div>
@@ -65,7 +65,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
         {/* Event Card */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Event</CardTitle>
+            <CardTitle className="text-base">{t('screens.business.event')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex gap-3">
@@ -102,14 +102,14 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <User className="w-3.5 h-3.5" />
-                Buyer
+                {t('screens.business.buyer')}
               </span>
               <span className="font-medium">{order.buyer_name}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5" />
-                Email
+                {t('screens.business.email')}
               </span>
               <span className="text-sm">{order.buyer_email}</span>
             </div>
@@ -121,7 +121,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <Calendar className="w-3.5 h-3.5" />
-                Purchase Date
+                {t('screens.business.purchaseDate')}
               </span>
               <span className="text-sm">
                 {format(new Date(order.created_at), "MMM d, yyyy 'at' h:mm a")}
@@ -131,9 +131,9 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground flex items-center gap-2">
                   <CreditCard className="w-3.5 h-3.5" />
-                  Payment
+                  {t('screens.business.payment')}
                 </span>
-                <span className="text-sm font-mono">Stripe</span>
+                <span className="text-sm font-mono">{t('screens.business.stripe')}</span>
               </div>
             )}
           </CardContent>
@@ -154,9 +154,9 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
               <thead>
                 <tr className="bg-muted/50 text-sm">
                   <th className="text-left px-4 py-2 font-semibold">{t('screens.business.ticket')}</th>
-                  <th className="text-left px-4 py-2 font-semibold">Name</th>
-                  <th className="text-left px-4 py-2 font-semibold">Type</th>
-                  <th className="text-right px-4 py-2 font-semibold">Price</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.name')}</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.type')}</th>
+                  <th className="text-right px-4 py-2 font-semibold">{t('screens.business.price')}</th>
                   <th className="text-center px-4 py-2 font-semibold">{t('screens.business.checkin')}</th>
                 </tr>
               </thead>
@@ -177,7 +177,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                       {order.checked_in_at ? (
                         <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                           <Check className="w-3 h-3 mr-1" />
-                          Checked In
+                          {t('screens.business.checked')}
                         </Badge>
                       ) : (
                         <Badge variant="secondary">{t('screens.business.notYet')}</Badge>

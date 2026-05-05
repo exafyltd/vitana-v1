@@ -91,7 +91,7 @@ export function DataRenderer<T>({
         <OfflineBadge className="mb-4" />
         <p className="text-muted-foreground">{t('screens.ui.noCachedDataAvailable')}</p>
         <p className="text-sm text-muted-foreground mt-1">
-          Connect to the internet to load content
+          {t('screens.ui.connectInternetLoadContent')}
         </p>
       </div>
     );

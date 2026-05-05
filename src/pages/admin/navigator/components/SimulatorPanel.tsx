@@ -75,7 +75,7 @@ export function SimulatorPanel({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="h-5 w-5 text-primary" />
-          Live Simulator
+          {t('screens.admin.liveSimulator')}
         </CardTitle>
         <CardDescription>
           Run the real Navigator pipeline against a test utterance. Shows top-3 picks with scores so
@@ -84,7 +84,7 @@ export function SimulatorPanel({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="sim-utterance">Utterance</Label>
+          <Label htmlFor="sim-utterance">{t('screens.admin.utterance')}</Label>
           <Textarea
             id="sim-utterance"
             value={utterance}
@@ -97,14 +97,14 @@ export function SimulatorPanel({
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-2">
-            <Label htmlFor="sim-lang">Language</Label>
+            <Label htmlFor="sim-lang">{t('screens.admin.language')}</Label>
             <Select value={lang} onValueChange={setLang}>
               <SelectTrigger id="sim-lang">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="de">Deutsch</SelectItem>
+                <SelectItem value="en">{t('screens.admin.english')}</SelectItem>
+                <SelectItem value="de">{t('screens.admin.deutsch')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -183,7 +183,7 @@ export function SimulatorPanel({
             {result.top_picks.length > 0 && (
               <div>
                 <div className="mb-2 text-xs font-medium text-muted-foreground">
-                  Top picks (ranked)
+                  {t('screens.admin.topPicksRanked')}
                 </div>
                 <div className="space-y-1">
                   {result.top_picks.map((p, i) => (

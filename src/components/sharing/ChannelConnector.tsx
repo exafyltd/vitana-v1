@@ -79,7 +79,7 @@ export function ChannelConnector() {
         <CardHeader>
           <CardTitle className="text-base">{t('screens.sharing.distributionChannels')}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Connect messaging channels for direct distribution
+            {t('screens.sharing.connectMessagingChannelsForDirectDistribution')}
           </p>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
@@ -96,7 +96,7 @@ export function ChannelConnector() {
                   {isConnected ? (
                     <Badge variant="outline" className="mt-1 text-xs gap-1">
                       <CheckCircle className="w-3 h-3" />
-                      Connected
+                      {t('screens.sharing.connected')}
                     </Badge>
                   ) : (
                     <p className="text-xs text-muted-foreground">{t('screens.sharing.notConnected')}</p>
@@ -126,7 +126,7 @@ export function ChannelConnector() {
         <CardHeader>
           <CardTitle className="text-base">{t('screens.sharing.socialMedia')}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Social platforms require API integration (coming soon)
+            {t('screens.sharing.socialPlatformsRequireApiIntegrationComing')}
           </p>
         </CardHeader>
         <CardContent className="grid gap-3 md:grid-cols-2">
@@ -142,7 +142,7 @@ export function ChannelConnector() {
                   {isConnected ? (
                     <Badge variant="outline" className="mt-1 text-xs gap-1">
                       <CheckCircle className="w-3 h-3" />
-                      Connected
+                      {t('screens.sharing.connected')}
                     </Badge>
                   ) : (
                     <p className="text-xs text-muted-foreground">{t('screens.sharing.comingSoon')}</p>

@@ -175,7 +175,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           <div className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" onClick={handleEditProfile}>
               <User className="mr-2 h-4 w-4" />
-              Profile
+              {t('screens.profile.profile')}
             </Button>
           </div>
 
@@ -187,7 +187,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                   <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
                     <Link to="/delete-account">
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete Account
+                      {t('screens.profile.deleteAccount')}
                     </Link>
                   </Button>
                 </DrawerClose>
@@ -237,7 +237,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Button>
           <DrawerClose asChild>
-            <Button variant="ghost" disabled={isLoggingOut}>Cancel</Button>
+            <Button variant="ghost" disabled={isLoggingOut}>{t('screens.profile.cancel')}</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

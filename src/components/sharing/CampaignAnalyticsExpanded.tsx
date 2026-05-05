@@ -197,7 +197,7 @@ export function CampaignAnalyticsExpanded({
                 {campaign.name}
               </h3>
               <Badge className="text-xs px-2 py-0.5 bg-teal-100 text-teal-700 border-teal-300">
-                Analytics
+                {t('screens.sharing.analytics')}
               </Badge>
             </div>
             {campaign.start_date && campaign.end_date && (
@@ -224,14 +224,14 @@ export function CampaignAnalyticsExpanded({
           {/* Left Column - Summary Metrics */}
           <div className="lg:col-span-1 space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
-              Performance Summary
+              {t('screens.sharing.performanceSummary')}
             </h4>
             
             {/* Delivered Card */}
             <Card className="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Delivered</p>
+                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.delivered')}</p>
                   <p className="text-2xl font-bold text-teal-700">
                     {displayData.reach.toLocaleString()}
                   </p>
@@ -251,7 +251,7 @@ export function CampaignAnalyticsExpanded({
             <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Opened</p>
+                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.opened')}</p>
                   <p className="text-2xl font-bold text-blue-700">
                     {displayData.engagement.toLocaleString()}
                   </p>
@@ -303,7 +303,7 @@ export function CampaignAnalyticsExpanded({
             {/* Channel Breakdown */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
-                Channel Performance
+                {t('screens.sharing.channelPerformance')}
               </h4>
               <div className="space-y-3">
                 {isLoading ? (
@@ -312,7 +312,7 @@ export function CampaignAnalyticsExpanded({
                   </div>
                 ) : displayData.channelBreakdown.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    No channel data available yet
+                    {t('screens.sharing.noChannelDataAvailableYet')}
                   </div>
                 ) : (
                   displayData.channelBreakdown.map((channel) => {
@@ -368,7 +368,7 @@ export function CampaignAnalyticsExpanded({
             {/* Trend Chart (Simple Bar Chart) */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
-                Reach Trend
+                {t('screens.sharing.reachTrend')}
               </h4>
               <div className="p-4 bg-white/60 rounded-xl border border-gray-200">
                 {/* Chart Area */}
@@ -432,7 +432,7 @@ export function CampaignAnalyticsExpanded({
             onClick={handleExportReport}
           >
             <Download className="w-4 h-4" />
-            Export Report
+            {t('screens.sharing.exportReport')}
           </Button>
           
           <Button
@@ -440,7 +440,7 @@ export function CampaignAnalyticsExpanded({
             className="gap-2 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700"
             onClick={handleOpenFullDashboard}
           >
-            Open Full Dashboard
+            {t('screens.sharing.openFullDashboard')}
             <ExternalLink className="w-4 h-4" />
           </Button>
         </div>

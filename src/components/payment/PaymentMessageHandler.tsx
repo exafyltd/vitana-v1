@@ -422,12 +422,12 @@ export function PaymentMessageHandler({
               </div>
               {walletError && walletError.includes('authenticated') && (
                 <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
-                  Authentication Required: Please sign in to view balance
+                  {t('screens.payment.authenticationRequiredPleaseSignViewBalance')}
                 </div>
               )}
               {walletError && walletError.includes('permission') && (
                 <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
-                  Permission Error: Unable to access wallet data
+                  {t('screens.payment.permissionErrorUnableAccessWalletData')}
                 </div>
               )}
             </div>

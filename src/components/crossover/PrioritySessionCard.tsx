@@ -43,7 +43,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         <div className="flex justify-between items-start">
           <Badge variant="secondary" className="bg-primary/90 text-primary-foreground border-0">
             <Star className="w-3 h-3 mr-1" />
-            Today's Priority
+            {t('screens.crossover.todaySPriority')}
           </Badge>
           <Badge variant="outline" className="bg-white/20 text-white border-white/30">
             {session.type}

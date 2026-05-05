@@ -227,7 +227,7 @@ export default function PushDiagnostics() {
                     onClick={runDiagnostics}
                     className="text-xs flex-1"
                   >
-                    Re-check
+                    {t('screens.common.recheck')}
                   </Button>
                   <Button
                     size="sm"

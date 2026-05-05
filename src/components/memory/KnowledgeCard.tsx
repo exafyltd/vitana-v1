@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Brain, Edit2, Trash2, Clock, Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { KnowledgeItem } from "@/hooks/useKnowledgeBase";
+import { t } from '@/lib/i18n-toast';
 
 interface KnowledgeCardProps {
   item: KnowledgeItem;
@@ -73,7 +74,7 @@ export function KnowledgeCard({ item, onEdit, onDelete }: KnowledgeCardProps) {
               {renderConfidence()}
 
               <Badge className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700">
-                AI uses this
+                {t('screens.memory.aiUsesThis')}
               </Badge>
             </div>
 
@@ -108,7 +109,7 @@ export function KnowledgeCard({ item, onEdit, onDelete }: KnowledgeCardProps) {
                     className="h-7 px-2"
                   >
                     <Edit2 className="w-3 h-3 mr-1" />
-                    Edit
+                    {t('screens.memory.edit')}
                   </Button>
                   <Button
                     size="sm"
@@ -117,7 +118,7 @@ export function KnowledgeCard({ item, onEdit, onDelete }: KnowledgeCardProps) {
                     className="h-7 px-2 text-destructive hover:text-destructive"
                   >
                     <Trash2 className="w-3 h-3 mr-1" />
-                    Delete
+                    {t('screens.memory.delete')}
                   </Button>
                 </div>
               )}

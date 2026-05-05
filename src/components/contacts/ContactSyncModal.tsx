@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useContactSync } from "@/hooks/useContactSync";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 type SyncStep = "consent" | "sources" | "syncing" | "preview" | "invite" | "success" | "error";
 
@@ -158,7 +159,7 @@ export function ContactSyncModal({
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Choose contact sources
+                {t('screens.contacts.chooseContactSources')}
               </h3>
               <p className="text-sm text-muted-foreground">
                 Select where to import your contacts from
@@ -176,7 +177,7 @@ export function ContactSyncModal({
               className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
             >
               <Users className="w-4 h-4 mr-2" />
-              Find Friends
+              {t('screens.contacts.findFriends')}
             </Button>
           </div>
         );
@@ -194,10 +195,10 @@ export function ContactSyncModal({
 
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Finding your friends...
+                {t('screens.contacts.findingYourFriends')}
               </h3>
               <p className="text-sm text-muted-foreground">
-                Securely matching your contacts
+                {t('screens.contacts.securelyMatchingYourContacts')}
               </p>
             </div>
 

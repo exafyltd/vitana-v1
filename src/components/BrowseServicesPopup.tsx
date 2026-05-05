@@ -61,10 +61,10 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Search className="h-5 w-5 text-blue-600" />
-            Browse Integration Services
+            {t('screens.common.browseIntegrationServices')}
           </DialogTitle>
           <DialogDescription>
-            Discover and connect with healthcare platforms, research studies, and wellness apps
+            {t('screens.common.discoverConnectWithHealthcarePlatformsResearch')}
           </DialogDescription>
         </DialogHeader>
 
@@ -85,15 +85,15 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Filter className="h-4 w-4 mr-2" />
-                Filter
+                {t('screens.common.filter')}
               </Button>
             </div>
           </div>
 
           <Tabs defaultValue="featured" className="space-y-4">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="featured">Featured</TabsTrigger>
-              <TabsTrigger value="categories">Categories</TabsTrigger>
+              <TabsTrigger value="featured">{t('screens.common.featured')}</TabsTrigger>
+              <TabsTrigger value="categories">{t('screens.common.categories')}</TabsTrigger>
               <TabsTrigger value="all">{t('screens.common.allServices')}</TabsTrigger>
             </TabsList>
 
@@ -186,13 +186,13 @@ export function BrowseServicesPopup({ isOpen, onClose }: BrowseServicesPopupProp
           <div className="flex flex-wrap gap-2 pt-4 border-t">
             <Button size="sm">
               <Shield className="h-4 w-4 mr-2" />
-              View My Connections
+              {t('screens.common.viewMyConnections')}
             </Button>
             <Button variant="outline" size="sm">
               <Star className="h-4 w-4 mr-2" />
-              Submit Integration Request
+              {t('screens.common.submitIntegrationRequest')}
             </Button>
-            <Button variant="ghost" size="sm" onClick={onClose}>Close</Button>
+            <Button variant="ghost" size="sm" onClick={onClose}>{t('screens.common.close')}</Button>
           </div>
         </div>
       </DialogContent>

@@ -268,7 +268,7 @@ export function LiveRoomDrawer({
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem onClick={onEdit}>
                     <Pencil className="h-4 w-4 mr-2" />
-                    Edit Stream
+                    {t('screens.liverooms.editStream')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
@@ -276,7 +276,7 @@ export function LiveRoomDrawer({
                     className="text-destructive focus:text-destructive"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Delete Stream
+                    {t('screens.liverooms.deleteStream')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -324,7 +324,7 @@ export function LiveRoomDrawer({
                     <span className="text-sm font-semibold">{room.host.name}</span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
-                      Host
+                      {t('screens.liverooms.host')}
                     </span>
                   </div>
                 </button>
@@ -392,7 +392,7 @@ export function LiveRoomDrawer({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">When</span>
+                  <span className="font-semibold">{t('screens.liverooms.when')}</span>
                 </div>
                 {isScheduled && (
                   <Button
@@ -408,7 +408,7 @@ export function LiveRoomDrawer({
               {room.isLive ? (
                 <Badge className="bg-red-500 text-white border-0 gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  LIVE NOW
+                  {t('screens.liverooms.liveNow')}
                 </Badge>
               ) : isScheduled ? (
                 <div>
@@ -453,7 +453,7 @@ export function LiveRoomDrawer({
           isCreator ? (
             <div className="flex items-center gap-2">
               <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
-                End Room
+                {t('screens.liverooms.endRoom')}
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
@@ -462,7 +462,7 @@ export function LiveRoomDrawer({
           ) : (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1" onClick={handleJoin}>
-                Join Room
+                {t('screens.liverooms.joinRoom')}
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
@@ -476,7 +476,7 @@ export function LiveRoomDrawer({
           isCreator ? (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1" onClick={handleJoin}>
-                Go Live Now
+                {t('screens.liverooms.goLiveNow')}
               </Button>
               <Button size="lg" variant="outline" onClick={onEdit}>
                 <Pencil className="w-4 h-4" />
@@ -500,17 +500,17 @@ export function LiveRoomDrawer({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => handleAddToCalendar("google")}>
-                      Google Calendar
+                      {t('screens.liverooms.googleCalendar')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("outlook")}>
-                      Outlook
+                      {t('screens.liverooms.outlook')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("apple")}>
-                      Apple Calendar
+                      {t('screens.liverooms.appleCalendar')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("ics")}>
                       <Download className="w-4 h-4 mr-2" />
-                      Download ICS
+                      {t('screens.liverooms.downloadIcs')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -542,7 +542,7 @@ export function LiveRoomDrawer({
               </ResponsiveConfirmDialogDescription>
             </ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogFooter>
-              <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+              <ResponsiveConfirmDialogCancel>{t('screens.liverooms.cancel')}</ResponsiveConfirmDialogCancel>
               <ResponsiveConfirmDialogAction
                 onClick={() => {
                   setShowDeleteDialog(false);
@@ -577,7 +577,7 @@ export function LiveRoomDrawer({
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{t('screens.liverooms.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => {
                 setShowDeleteDialog(false);

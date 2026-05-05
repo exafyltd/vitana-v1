@@ -39,7 +39,7 @@ function Support() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Ticket
+              {t('screens.settings.newTicket')}
             </Button>
           </UtilityActionButton>
 
@@ -127,11 +127,11 @@ function Support() {
                       <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <label className="text-sm font-medium mb-2 block">Subject</label>
+                            <label className="text-sm font-medium mb-2 block">{t('screens.settings.subject')}</label>
                             <Input placeholder={t('screens.settings.brieflyDescribeYourIssue')} />
                           </div>
                           <div>
-                            <label className="text-sm font-medium mb-2 block">Category</label>
+                            <label className="text-sm font-medium mb-2 block">{t('screens.settings.category')}</label>
                             <select className="w-full p-2 border rounded-md bg-background">
                               <option>{t('screens.settings.selectCategory')}</option>
                               <option>{t('screens.settings.accountIssues')}</option>
@@ -143,7 +143,7 @@ function Support() {
                           </div>
                         </div>
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Description</label>
+                          <label className="text-sm font-medium mb-2 block">{t('screens.settings.description')}</label>
                           <Textarea 
                             placeholder={t('screens.settings.pleaseProvideAsMuchDetailAs')}
                             className="min-h-24"
@@ -151,7 +151,7 @@ function Support() {
                         </div>
                         <Button className="w-full">
                           <Send className="w-4 h-4 mr-2" />
-                          Submit Ticket
+                          {t('screens.settings.submitTicket')}
                         </Button>
                       </div>
                     }
@@ -183,7 +183,7 @@ function Support() {
                     icon={Book}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">Setup</div>
+                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.setup')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.gettingStarted')}</div>
                       </div>
                     }
@@ -204,7 +204,7 @@ function Support() {
                           />
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          Popular searches: "getting started", "sync issues", "privacy settings"
+                          {t('screens.settings.popularSearchesGettingStartedSyncIssues')}
                         </div>
                       </div>
                     }
@@ -296,7 +296,7 @@ function Support() {
                               <h4 className="font-medium">{t('screens.settings.expertUserForum')}</h4>
                               <p className="text-sm text-muted-foreground">{t('screens.settings.advancedTipsTricksFromPowerUsers')}</p>
                             </div>
-                            <Button size="sm" variant="outline">Browse</Button>
+                            <Button size="sm" variant="outline">{t('screens.settings.browse')}</Button>
                           </div>
                         </div>
                         <div className="space-y-3">
@@ -369,7 +369,7 @@ function Support() {
                             <h4 className="font-medium text-sm">{t('screens.settings.unableSyncFitbitData')}</h4>
                             <p className="text-xs text-muted-foreground">{t('screens.settings.submittedDec102024')}</p>
                           </div>
-                          <Badge className="bg-green-100 text-green-700 text-xs">Resolved</Badge>
+                          <Badge className="bg-green-100 text-green-700 text-xs">{t('screens.settings.resolved')}</Badge>
                         </div>
                         <div className="flex items-center justify-between p-3 border rounded-lg">
                           <div>

@@ -100,7 +100,7 @@ export function MemoryEducationTab() {
               
               <div className="pt-4 border-t">
                 <div className="text-xs font-medium text-muted-foreground mb-2">
-                  Related Factors:
+                  {t('screens.memory.relatedFactors')}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {item.relatedFactors.map((factor) => (

@@ -118,7 +118,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ArrowDown className="h-5 w-5 text-blue-600" />
-            Withdraw Funds
+            {t('screens.wallet.withdrawFunds')}
           </DialogTitle>
           <DialogDescription>
             Transfer money from your VITANA wallet to your bank account or card
@@ -232,7 +232,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
         <DialogFooter className="gap-2 sm:gap-0">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleWithdraw}

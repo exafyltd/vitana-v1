@@ -45,7 +45,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.privacySettings')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Configure global privacy controls and data handling policies
+            {t('screens.sharing.configureGlobalPrivacyControlsDataHandling')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <form onSubmit={handleSubmit}>
@@ -62,11 +62,11 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
                     <SelectItem value="90days">{t('screens.sharing.text90Days')}</SelectItem>
                     <SelectItem value="1year">{t('screens.sharing.text1Year')}</SelectItem>
                     <SelectItem value="2years">{t('screens.sharing.text2Years')}</SelectItem>
-                    <SelectItem value="indefinite">Indefinite</SelectItem>
+                    <SelectItem value="indefinite">{t('screens.sharing.indefinite')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  How long to keep data before automatic deletion
+                  {t('screens.sharing.howLongKeepDataBeforeAutomatic')}
                 </p>
               </div>
 
@@ -92,7 +92,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
                   <div className="space-y-0.5">
                     <Label htmlFor="thirdPartySharing">{t('screens.sharing.thirdpartyDataSharing')}</Label>
                     <p className="text-xs text-muted-foreground">
-                      Allow sharing data with external partners
+                      {t('screens.sharing.allowSharingDataWithExternalPartners')}
                     </p>
                   </div>
                   <Switch
@@ -120,7 +120,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
                   <div className="space-y-0.5">
                     <Label htmlFor="activityLogging">{t('screens.sharing.accessActivityLogging')}</Label>
                     <p className="text-xs text-muted-foreground">
-                      Track who accessed your data and when
+                      {t('screens.sharing.trackWhoAccessedYourDataWhen')}
                     </p>
                   </div>
                   <Switch
@@ -134,7 +134,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
           </ResponsiveDialogBody>
           <ResponsiveDialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit">{t('screens.sharing.saveSettings')}</Button>
           </ResponsiveDialogFooter>

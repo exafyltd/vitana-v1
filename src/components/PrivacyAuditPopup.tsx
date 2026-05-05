@@ -24,7 +24,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-blue-500" />
-            Privacy Audit Report
+            {t('screens.common.privacyAuditReport')}
           </DialogTitle>
         </DialogHeader>
         
@@ -34,7 +34,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                Privacy Score
+                {t('screens.common.privacyScore')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -46,10 +46,10 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
                   </div>
                   <Progress value={70} className="h-3" />
                 </div>
-                <Badge className="bg-green-500 text-white">Good</Badge>
+                <Badge className="bg-green-500 text-white">{t('screens.common.good')}</Badge>
               </div>
               <p className="text-sm text-muted-foreground mt-3">
-                Your privacy settings are mostly secure, but there are a few areas for improvement.
+                {t('screens.common.yourPrivacySettingsMostlySecureBut')}
               </p>
             </CardContent>
           </Card>
@@ -59,7 +59,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-orange-500" />
-                Issues Found (2)
+                {t('screens.common.issuesFound2')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -68,14 +68,14 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
                 <div className="flex-1">
                   <h4 className="font-medium text-orange-900">{t('screens.common.publicProfileVisibility')}</h4>
                   <p className="text-sm text-orange-800 mb-3">
-                    Your profile is currently visible to all users. Consider limiting visibility to friends only.
+                    {t('screens.common.yourProfileCurrentlyVisibleAllUsers')}
                   </p>
                   <Button size="sm" onClick={() => handleFixIssue('profile-visibility')}>
-                    Fix Now
+                    {t('screens.common.fixNow')}
                   </Button>
                 </div>
                 <Badge variant="outline" className="text-orange-600 border-orange-600">
-                  Medium Risk
+                  {t('screens.common.mediumRisk')}
                 </Badge>
               </div>
 
@@ -84,14 +84,14 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
                 <div className="flex-1">
                   <h4 className="font-medium text-yellow-900">{t('screens.common.locationDataSharing')}</h4>
                   <p className="text-sm text-yellow-800 mb-3">
-                    Location data is being shared with third-party services. Review sharing settings.
+                    {t('screens.common.locationDataSharedWithThirdpartyServices')}
                   </p>
                   <Button size="sm" variant="outline" onClick={() => handleFixIssue('location-sharing')}>
-                    Review Settings
+                    {t('screens.common.reviewSettings')}
                   </Button>
                 </div>
                 <Badge variant="outline" className="text-yellow-600 border-yellow-600">
-                  Low Risk
+                  {t('screens.common.lowRisk')}
                 </Badge>
               </div>
             </CardContent>
@@ -103,14 +103,14 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Eye className="w-4 h-4" />
-                  Profile Visibility
+                  {t('screens.common.profileVisibility')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
+                  <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
                   <Badge variant="outline" className="text-orange-600 border-orange-600">
-                    Needs Review
+                    {t('screens.common.needsReview')}
                   </Badge>
                 </div>
               </CardContent>
@@ -120,13 +120,13 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Lock className="w-4 h-4" />
-                  Data Encryption
+                  {t('screens.common.dataEncryption')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
-                  <Badge className="bg-green-500 text-white">Secure</Badge>
+                  <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
+                  <Badge className="bg-green-500 text-white">{t('screens.common.secure')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -135,13 +135,13 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Users className="w-4 h-4" />
-                  Sharing Permissions
+                  {t('screens.common.sharingPermissions')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
-                  <Badge className="bg-green-500 text-white">Protected</Badge>
+                  <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
+                  <Badge className="bg-green-500 text-white">{t('screens.common.protected')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -150,14 +150,14 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Database className="w-4 h-4" />
-                  Data Collection
+                  {t('screens.common.dataCollection')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
+                  <span className="text-sm text-muted-foreground">{t('screens.common.status')}</span>
                   <Badge variant="outline" className="text-yellow-600 border-yellow-600">
-                    Review Needed
+                    {t('screens.common.reviewNeeded')}
                   </Badge>
                 </div>
               </CardContent>
@@ -169,7 +169,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-blue-500" />
-                Recommendations
+                {t('screens.common.recommendations')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -190,11 +190,11 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
 
           <div className="flex gap-3 pt-6">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Close Report
+              {t('screens.common.closeReport')}
             </Button>
             <Button className="flex-1">
               <Shield className="w-4 h-4 mr-2" />
-              Apply All Fixes
+              {t('screens.common.applyAllFixes')}
             </Button>
           </div>
         </div>

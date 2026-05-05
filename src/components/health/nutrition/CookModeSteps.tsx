@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CookModeStepsProps {
   steps: string[];
@@ -29,7 +30,7 @@ export function CookModeSteps({ steps }: CookModeStepsProps) {
           onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
-          Previous
+          {t('screens.health.previous')}
         </Button>
         <Button
           variant="default"

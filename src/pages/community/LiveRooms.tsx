@@ -174,7 +174,7 @@ export default function LiveRooms() {
             size="sm" 
             onClick={() => setIsGoLiveOpen(true)}
           >
-            Create Room
+            {t('screens.community.createRoom')}
           </Button>
         ),
       });
@@ -745,7 +745,7 @@ export default function LiveRooms() {
                   onClick={() => setIsGoLiveOpen(true)}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Schedule a live room
+                  {t('screens.community.scheduleLiveRoom')}
                 </Button>
               </div>
             )}
@@ -805,11 +805,11 @@ export default function LiveRooms() {
           <ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogTitle>{t('screens.community.deleteLiveRoom')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              Are you sure you want to delete this live room? This action cannot be undone.
+              {t('screens.community.youSureYouWantDeleteThis')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{t('screens.community.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

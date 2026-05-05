@@ -99,7 +99,7 @@ function PatientRecords() {
                     <Input placeholder={t('screens.admin.searchByNameDobPatientId')} className="flex-1" />
                     <Button>
                       <Search className="w-4 h-4 mr-2" />
-                      Search
+                      {t('screens.admin.search')}
                     </Button>
                   </div>
                   

@@ -162,7 +162,7 @@ export default function AutomationBuilder() {
             rightAction={
               <Button variant="outline" size="sm" onClick={() => navigate("/admin/ai-assistant")}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Overview
+                {t('screens.admin.backOverview')}
               </Button>
             }
           />
@@ -192,7 +192,7 @@ export default function AutomationBuilder() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.admin.description')}</Label>
                 <Textarea 
                   id="description"
                   value={description}
@@ -206,7 +206,7 @@ export default function AutomationBuilder() {
                 <div className="space-y-0.5">
                   <Label>{t('screens.admin.enableImmediately')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Automation will start running once saved
+                    {t('screens.admin.automationWillStartRunningOnceSaved')}
                   </p>
                 </div>
                 <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
@@ -224,7 +224,7 @@ export default function AutomationBuilder() {
 
           <div className="flex gap-3 justify-end">
             <Button variant="outline" onClick={() => handleSave(true)}>
-              Save as Draft
+              {t('screens.admin.saveAsDraft')}
             </Button>
             <Button onClick={() => handleSave(false)} disabled={createRule.isPending}>
               <Save className="h-4 w-4 mr-2" />

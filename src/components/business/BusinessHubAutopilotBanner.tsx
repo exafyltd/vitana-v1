@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { Plane, X, ChevronRight, Users, Calendar, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAutopilot } from "@/hooks/use-autopilot";
+import { t } from '@/lib/i18n-toast';
 
 interface Suggestion {
   id: string;
@@ -130,7 +131,7 @@ export function BusinessHubAutopilotBanner() {
         <div className="flex-1 min-w-0 pr-8">
           {/* Label - updated text */}
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60 mb-1.5 block">
-            Autopilot · Recommendation
+            {t('screens.business.autopilotRecommendation')}
           </span>
           
           {/* Title with icon - emphasized */}

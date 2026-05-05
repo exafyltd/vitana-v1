@@ -11,7 +11,7 @@ export function PendingRewardsCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Clock className="h-5 w-5 text-amber-500" />
-          Pending Rewards
+          {t('screens.wallet.pendingRewards')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.readyClaim')}</CardDescription>
       </CardHeader>
@@ -38,7 +38,7 @@ export function PendingRewardsCard() {
         
         <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600">
           <Gift className="h-4 w-4 mr-2" />
-          Claim All Rewards
+          {t('screens.wallet.claimAllRewards')}
         </Button>
       </CardContent>
     </Card>

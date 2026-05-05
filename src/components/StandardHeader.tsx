@@ -82,7 +82,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
             <div>
               <Plane className="w-10 h-10 text-destructive transform rotate-0" />
             </div>
-            <span className="text-sm font-medium text-destructive">Autopilot</span>
+            <span className="text-sm font-medium text-destructive">{t('screens.common.autopilot')}</span>
           </div>
           
           {/* Hover Preview */}

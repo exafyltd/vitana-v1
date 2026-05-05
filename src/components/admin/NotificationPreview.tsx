@@ -28,7 +28,7 @@ export function NotificationPreview({
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Smartphone className="h-4 w-4" />
-              Push Notification
+              {t('screens.admin.pushNotification')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4">
@@ -59,7 +59,7 @@ export function NotificationPreview({
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Bell className="h-4 w-4" />
-              In-App Card
+              {t('screens.admin.inappCard')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4">
@@ -88,7 +88,7 @@ export function NotificationPreview({
       {channel === "silent" && (
         <Card>
           <CardContent className="py-6 text-center text-sm text-muted-foreground">
-            Silent notifications are written to the database but not shown to the user.
+            {t('screens.admin.silentNotificationsWrittenDatabaseButNot')}
           </CardContent>
         </Card>
       )}
@@ -96,11 +96,11 @@ export function NotificationPreview({
       {/* Meta info */}
       <div className="rounded-lg border p-3 space-y-1 text-xs text-muted-foreground">
         <div className="flex justify-between">
-          <span>Channel</span>
+          <span>{t('screens.admin.channel')}</span>
           <span className="font-medium text-foreground">{channel || "push_and_inapp"}</span>
         </div>
         <div className="flex justify-between">
-          <span>Priority</span>
+          <span>{t('screens.admin.priority')}</span>
           <span className="font-medium text-foreground">{priority || "p1"}</span>
         </div>
         <div className="flex justify-between">

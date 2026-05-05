@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Brain, Heart, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface MotivationalBannerProps {
   message?: string;
@@ -104,7 +105,7 @@ export function MotivationalBanner({
             </div>
           </div>
           <Badge variant="outline" className="text-xs bg-white/40 backdrop-blur-sm border-white/60">
-            AI Insight
+            {t('screens.ai-feed.aiInsight')}
           </Badge>
         </div>
       </CardContent>

@@ -97,8 +97,7 @@ export function InviteSheet() {
         <SheetHeader>
           <SheetTitle className="text-xl font-semibold">{t('screens.common.bringFriendAlong')}</SheetTitle>
           <SheetDescription className="text-sm text-muted-foreground">
-            The journey is better together. Share your invite link — they get a
-            head start, you get the company.
+            {t('screens.common.journeyBetterTogetherShareYourInvite')}
           </SheetDescription>
         </SheetHeader>
 
@@ -107,7 +106,7 @@ export function InviteSheet() {
             {loading ? (
               <span className="text-sm text-muted-foreground inline-flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Generating your invite link…
+                {t('screens.common.generatingYourInviteLink')}
               </span>
             ) : error ? (
               <span className="text-sm text-destructive">{error}</span>
@@ -130,7 +129,7 @@ export function InviteSheet() {
             ) : (
               <>
                 <Copy className="w-4 h-4 mr-2" />
-                Copy invite link
+                {t('screens.common.copyInviteLink')}
               </>
             )}
           </Button>
@@ -142,18 +141,17 @@ export function InviteSheet() {
             className="w-full"
           >
             <MessageCircle className="w-4 h-4 mr-2" />
-            Share on WhatsApp
+            {t('screens.common.shareWhatsapp')}
           </Button>
 
           {error && (
             <Button variant="ghost" onClick={fetchLink} className="w-full">
-              Try again
+              {t('screens.common.tryAgain2')}
             </Button>
           )}
 
           <p className="text-xs text-muted-foreground text-center">
-            Each share is tracked, so when a friend signs up your reward credit
-            arrives automatically.
+            {t('screens.common.eachShareTrackedSoWhenFriend')}
           </p>
         </div>
       </SheetContent>

@@ -37,7 +37,7 @@ export default function CronHealthCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Activity className="w-5 h-5" />
-          Cron Job Health
+          {t('screens.admin.cronJobHealth')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -46,7 +46,7 @@ export default function CronHealthCard() {
           <span className="text-sm font-medium">{t('screens.admin.status')}</span>
           <Badge className="bg-green-500 text-white">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Running
+            {t('screens.admin.running')}
           </Badge>
         </div>
 
@@ -82,13 +82,13 @@ export default function CronHealthCard() {
             onClick={() => window.open('https://supabase.com/dashboard/project/inmkhvwdcuyhnxkgfvsb/functions/send-appointment-reminder/logs', '_blank')}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
-            View Edge Function Logs
+            {t('screens.admin.viewEdgeFunctionLogs')}
           </Button>
         </div>
 
         {/* Help Text */}
         <p className="text-xs text-muted-foreground border-t pt-2">
-          This cron job sends appointment reminders 24 hours and 1 hour before appointments.
+          {t('screens.admin.thisCronJobSendsAppointmentReminders')}
         </p>
       </CardContent>
     </Card>

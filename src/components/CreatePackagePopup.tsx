@@ -82,7 +82,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Package className="w-6 h-6 text-purple-600" />
-            Create Health Data Package
+            {t('screens.common.createHealthDataPackage')}
           </DialogTitle>
         </DialogHeader>
 
@@ -90,19 +90,19 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="details" className="flex items-center gap-2">
               <Package className="w-4 h-4" />
-              Details
+              {t('screens.common.details')}
             </TabsTrigger>
             <TabsTrigger value="data" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
-              Data Types
+              {t('screens.common.dataTypes')}
             </TabsTrigger>
             <TabsTrigger value="timeline" className="flex items-center gap-2">
               <CalendarIcon className="w-4 h-4" />
-              Timeline
+              {t('screens.common.timeline')}
             </TabsTrigger>
             <TabsTrigger value="sharing" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Sharing
+              {t('screens.common.sharing')}
             </TabsTrigger>
           </TabsList>
 
@@ -111,7 +111,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  Package Information
+                  {t('screens.common.packageInformation')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -127,7 +127,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                 </div>
 
                 <div>
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">{t('screens.common.description')}</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
@@ -149,7 +149,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleTemplateSelect(template.id)}>
-                          Use Template
+                          {t('screens.common.useTemplate')}
                         </Button>
                       </div>
                     ))}
@@ -283,7 +283,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="recipient">Recipient</Label>
+                  <Label htmlFor="recipient">{t('screens.common.recipient')}</Label>
                   <Input
                     id="recipient"
                     value={formData.recipient}
@@ -322,10 +322,10 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
 
         <div className="flex gap-3 pt-4">
           <Button variant="outline" onClick={onClose} className="flex-1">
-            Cancel
+            {t('screens.common.cancel')}
           </Button>
           <Button onClick={handleSubmit} className="flex-1" disabled={!formData.name || selectedDataTypes.length === 0}>
-            Create Package
+            {t('screens.common.createPackage')}
           </Button>
         </div>
       </DialogContent>

@@ -198,7 +198,7 @@ const GroupsModeration = () => {
                                       onClick={() => moderateGroup(group.id, 'approved')}
                                     >
                                       <CheckCircle className="h-4 w-4 mr-1" />
-                                      Approve
+                                      {t('screens.admin.approve')}
                                     </Button>
                                     <Button
                                       size="sm"
@@ -206,7 +206,7 @@ const GroupsModeration = () => {
                                       onClick={() => moderateGroup(group.id, 'rejected', 'Does not meet guidelines')}
                                     >
                                       <XCircle className="h-4 w-4 mr-1" />
-                                      Reject
+                                      {t('screens.admin.reject')}
                                     </Button>
                                   </>
                                 )}
@@ -217,7 +217,7 @@ const GroupsModeration = () => {
                                     onClick={() => moderateGroup(group.id, 'flagged', 'Flagged for review')}
                                   >
                                     <Flag className="h-4 w-4 mr-1" />
-                                    Flag
+                                    {t('screens.admin.flag')}
                                   </Button>
                                 )}
                                 <Button size="sm" variant="ghost">

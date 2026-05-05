@@ -33,7 +33,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
           <Lock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
           <AlertTitle className="text-yellow-800 dark:text-yellow-300">{t('screens.dev.readonlyMode2')}</AlertTitle>
           <AlertDescription className="text-yellow-700 dark:text-yellow-400">
-            Phase 1: View-only access. Write operations available in Phase 2.
+            {t('screens.dev.phase1ViewonlyAccessWriteOperations')}
           </AlertDescription>
         </Alert>
       )}
@@ -74,7 +74,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
             <div>
               <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
             </div>
-            <span className="text-sm font-medium text-red-400">Autopilot</span>
+            <span className="text-sm font-medium text-red-400">{t('screens.dev.autopilot')}</span>
           </div>
 
           {/* Hover Preview */}

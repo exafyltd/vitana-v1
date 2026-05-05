@@ -22,7 +22,7 @@ export function CompletedPane({ tasks, onTaskClick }: CompletedPaneProps) {
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
         <CheckCircle2 className="h-5 w-5 text-pill-nutrition-accent" />
-        <h2 className="text-lg font-semibold">Completed</h2>
+        <h2 className="text-lg font-semibold">{t('screens.dev.completed')}</h2>
         <span className="ml-auto text-sm text-muted-foreground">
           {completedTasks.length} tasks
         </span>

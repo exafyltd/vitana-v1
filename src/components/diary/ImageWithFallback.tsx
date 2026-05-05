@@ -59,7 +59,7 @@ export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWi
           }}
           className="text-xs text-primary hover:underline mt-1"
         >
-          Retry
+          {t('screens.diary.retry')}
         </button>
       </div>
     );

@@ -647,7 +647,7 @@ const MaxinaPortal = () => {
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">{t('screens.portals.checkYourEmail')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
+                      {t('screens.portals.weVeSentConfirmationLink')} <span className="font-medium text-foreground">{signupEmail}</span>
                     </p>
                     <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.maxina)} />
                     <button
@@ -804,19 +804,19 @@ const MaxinaPortal = () => {
             
             <div className="flex justify-center items-center space-x-3 text-xs md:text-sm">
               <Link to="/privacy" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
-                Privacy
+                {t('screens.portals.privacy')}
               </Link>
               <span className="text-white/30">·</span>
               <Link to="/terms" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
-                Terms
+                {t('screens.portals.terms')}
               </Link>
               <span className="text-white/30">·</span>
               <Link to="/delete-account" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
-                Delete Account
+                {t('screens.portals.deleteAccount')}
               </Link>
               <span className="text-white/30">·</span>
               <a href="mailto:support@exafy.io" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
-                Help
+                {t('screens.portals.help')}
               </a>
             </div>
             

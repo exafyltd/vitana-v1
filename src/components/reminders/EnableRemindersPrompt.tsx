@@ -23,7 +23,7 @@ import { Bell, BellOff, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { isAppilix } from "@/lib/appilix";
 import { pushNotificationManager } from "@/lib/pushNotifications";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 type PermissionState = "default" | "granted" | "denied" | "unsupported";
 
@@ -115,7 +115,7 @@ export const EnableRemindersPrompt: React.FC = () => {
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
             <Bell className="h-4 w-4" />
-            For closed-app reminders
+            {t('screens.reminders.forClosedappReminders')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
@@ -131,11 +131,11 @@ export const EnableRemindersPrompt: React.FC = () => {
                 rel="noreferrer"
               >
                 <ExternalLink className="h-3 w-3 mr-1" />
-                Open in Chrome
+                {t('screens.reminders.openChrome')}
               </a>
             </Button>
             <Button size="sm" variant="ghost" onClick={handleNotNow}>
-              Not now
+              {t('screens.reminders.notNow')}
             </Button>
           </div>
         </CardContent>
@@ -152,19 +152,18 @@ export const EnableRemindersPrompt: React.FC = () => {
         <CardHeader className="pb-2">
           <CardTitle className="text-base flex items-center gap-2">
             <BellOff className="h-4 w-4 text-muted-foreground" />
-            Notifications are blocked
+            {t('screens.reminders.notificationsBlocked')}
           </CardTitle>
           <CardDescription className="text-xs">
-            Reminders only fire while you have the app open.
+            {t('screens.reminders.remindersOnlyFireWhileYouHave')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           <p>
-            To get notified when the app is closed, tap the lock icon in your browser's address bar →
-            Site settings → Notifications → <strong>Allow</strong>. Then reload this page.
+            {t('screens.reminders.getNotifiedWhenAppClosedTap')} <strong>{t('screens.reminders.allow')}</strong>. Then reload this page.
           </p>
           <Button size="sm" variant="ghost" onClick={handleNotNow}>
-            Not now
+            {t('screens.reminders.notNow')}
           </Button>
         </CardContent>
       </Card>
@@ -177,10 +176,10 @@ export const EnableRemindersPrompt: React.FC = () => {
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
           <Bell className="h-4 w-4 text-primary" />
-          Get reminded even when the app is closed
+          {t('screens.reminders.getRemindedEvenWhenAppClosed')}
         </CardTitle>
         <CardDescription className="text-xs">
-          One tap — Vitana will chime and surface the reminder on your phone at the scheduled time.
+          {t('screens.reminders.oneTapVitanaWillChimeSurface')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -189,7 +188,7 @@ export const EnableRemindersPrompt: React.FC = () => {
             {busy ? "Enabling…" : "Allow"}
           </Button>
           <Button onClick={handleNotNow} disabled={busy} size="sm" variant="ghost">
-            Not now
+            {t('screens.reminders.notNow')}
           </Button>
         </div>
       </CardContent>

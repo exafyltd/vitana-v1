@@ -69,7 +69,7 @@ export default function AgentPromptCenter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-5 w-5" />
-                Agent Templates
+                {t('screens.ai.agentTemplates')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -106,7 +106,7 @@ export default function AgentPromptCenter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bot className="h-5 w-5" />
-                Custom Agent Prompt
+                {t('screens.ai.customAgentPrompt')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -140,11 +140,11 @@ export default function AgentPromptCenter() {
               <div className="flex gap-2 pt-4">
                 <Button className="flex-1" disabled>
                   <Play className="h-4 w-4 mr-2" />
-                  Test Agent
+                  {t('screens.ai.testAgent')}
                 </Button>
                 <Button variant="outline" className="flex-1" disabled>
                   <Save className="h-4 w-4 mr-2" />
-                  Save Prompt
+                  {t('screens.ai.savePrompt')}
                 </Button>
               </div>
             </CardContent>

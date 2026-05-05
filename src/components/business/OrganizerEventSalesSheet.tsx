@@ -114,11 +114,11 @@ export function OrganizerEventSalesSheet({
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="sales" className="gap-2">
                   <DollarSign className="w-4 h-4" />
-                  Sales
+                  {t('screens.business.sales')}
                 </TabsTrigger>
                 <TabsTrigger value="operations" className="gap-2">
                   <Settings className="w-4 h-4" />
-                  Operations
+                  {t('screens.business.operations')}
                 </TabsTrigger>
               </TabsList>
 
@@ -128,7 +128,7 @@ export function OrganizerEventSalesSheet({
                   <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-4 border border-green-200/50 dark:border-green-800/50">
                     <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
                       <DollarSign className="w-4 h-4" />
-                      <span className="text-xs font-medium">Revenue</span>
+                      <span className="text-xs font-medium">{t('screens.business.revenue')}</span>
                     </div>
                     <p className="text-2xl font-bold text-green-700 dark:text-green-300">
                       ${(event.totalRevenue ?? 0).toLocaleString()}
@@ -153,7 +153,7 @@ export function OrganizerEventSalesSheet({
                   <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 rounded-xl p-4 border border-purple-200/50 dark:border-purple-800/50">
                     <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-1">
                       <Users className="w-4 h-4" />
-                      <span className="text-xs font-medium">Buyers</span>
+                      <span className="text-xs font-medium">{t('screens.business.buyers')}</span>
                     </div>
                     <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
                       {event.buyerCount ?? 0}
@@ -180,7 +180,7 @@ export function OrganizerEventSalesSheet({
                 <div className="flex justify-end">
                   <Button variant="outline" size="sm" onClick={handleExportCSV}>
                     <Download className="w-4 h-4 mr-2" />
-                    Export CSV
+                    {t('screens.business.exportCsv')}
                   </Button>
                 </div>
 

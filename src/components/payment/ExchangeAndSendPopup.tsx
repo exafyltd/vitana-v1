@@ -159,7 +159,7 @@ export default function ExchangeAndSendPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-purple-600" />
-            Exchange & Send
+            {t('screens.payment.exchangeSend')}
           </DialogTitle>
         </DialogHeader>
 
@@ -173,7 +173,7 @@ export default function ExchangeAndSendPopup({
               </Avatar>
               <div className="flex-1">
                 <p className="font-medium">{recipient.name}</p>
-                <p className="text-sm text-muted-foreground">Recipient</p>
+                <p className="text-sm text-muted-foreground">{t('screens.payment.recipient')}</p>
               </div>
             </div>
           )}
@@ -203,7 +203,7 @@ export default function ExchangeAndSendPopup({
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
             <Input
               id="amount"
               type="number"
@@ -291,7 +291,7 @@ export default function ExchangeAndSendPopup({
                 
                 {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
-                    🎉 +5% Bonus Applied
+                    {t('screens.payment.text5BonusApplied')}
                   </Badge>
                 )}
               </CardContent>
@@ -300,7 +300,7 @@ export default function ExchangeAndSendPopup({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
               placeholder={t('screens.payment.whatThisPaymentFor')}
@@ -313,7 +313,7 @@ export default function ExchangeAndSendPopup({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleExchangeAndSend} 
@@ -328,7 +328,7 @@ export default function ExchangeAndSendPopup({
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Exchange & Send
+                  {t('screens.payment.exchangeSend')}
                 </>
               )}
             </Button>

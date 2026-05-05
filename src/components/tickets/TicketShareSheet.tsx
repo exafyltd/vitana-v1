@@ -238,7 +238,7 @@ export function TicketShareSheet({
         <DialogHeader>
           <DialogTitle>{t('screens.tickets.shareYourTicket')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Send your ticket to friends or save for easy access.
+            {t('screens.tickets.sendYourTicketFriendsSaveFor')}
           </p>
         </DialogHeader>
 
@@ -300,7 +300,7 @@ export function TicketShareSheet({
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          Opens your personal apps to share directly
+          {t('screens.tickets.opensYourPersonalAppsShareDirectly')}
         </p>
       </DialogContent>
     </Dialog>

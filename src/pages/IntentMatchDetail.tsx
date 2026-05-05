@@ -67,7 +67,7 @@ export default function IntentMatchDetail() {
     return (
       <div className="container mx-auto px-4 py-12 max-w-3xl space-y-4">
         <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back to My Intents
+          <ArrowLeft className="h-4 w-4" /> {t('screens.intentmatchdetail.backMyIntents')}
         </Link>
         <p className="text-muted-foreground">{t('screens.intentmatchdetail.intentNotFound')}</p>
       </div>
@@ -77,7 +77,7 @@ export default function IntentMatchDetail() {
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 max-w-3xl">
       <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to My Intents
+        <ArrowLeft className="h-4 w-4" /> {t('screens.intentmatchdetail.backMyIntents')}
       </Link>
 
       <IntentCard intent={intent} />
@@ -85,7 +85,7 @@ export default function IntentMatchDetail() {
       {intent.status === "open" && (
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={handleClose}>
-            <X className="h-4 w-4 mr-1" /> Close intent
+            <X className="h-4 w-4 mr-1" /> {t('screens.intentmatchdetail.closeIntent')}
           </Button>
         </div>
       )}
@@ -96,7 +96,7 @@ export default function IntentMatchDetail() {
         </h2>
         {matches.length === 0 ? (
           <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-            No matches yet. We'll keep looking and notify you when someone matches.
+            {t('screens.intentmatchdetail.noMatchesYetWeLlKeep')}
           </div>
         ) : (
           <div className="space-y-3">

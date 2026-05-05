@@ -74,7 +74,7 @@ export default function MyIntents() {
           )}
         </div>
         <Button onClick={() => setComposerOpen(true)} size="sm">
-          <Plus className="h-4 w-4 mr-1" /> New
+          <Plus className="h-4 w-4 mr-1" /> {t('screens.myintents.new')}
         </Button>
       </div>
 
@@ -100,7 +100,7 @@ export default function MyIntents() {
         </div>
       ) : intents.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          No intents in this view.
+          {t('screens.myintents.noIntentsThisView')}
         </div>
       ) : (
         <div className="space-y-3">
@@ -121,7 +121,7 @@ export default function MyIntents() {
       />
 
       <p className="text-xs text-muted-foreground text-center">
-        Browse what others are looking for: <Link to="/intents/board" className="underline">{t('screens.myintents.communityBoard')}</Link>
+        {t('screens.myintents.browseWhatOthersLookingFor')} <Link to="/intents/board" className="underline">{t('screens.myintents.communityBoard')}</Link>
       </p>
     </div>
   );

@@ -321,7 +321,7 @@ export function WalletTransactionCard({
           <div className="flex items-center justify-between pt-2 border-t">
             <span className="text-xs text-muted-foreground">{timestamp}</span>
             <Button size="sm" variant="ghost">
-              View Details
+              {t('screens.wallet.viewDetails')}
             </Button>
           </div>
         </div>

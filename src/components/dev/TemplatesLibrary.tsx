@@ -145,7 +145,7 @@ export function TemplatesLibrary() {
               <div className="flex gap-2">
                 <Button size="sm" className="flex-1">
                   <Play className="w-3 h-3 mr-2" />
-                  Run Now
+                  {t('screens.dev.runNow')}
                 </Button>
                 <Button size="sm" variant="outline">
                   <Edit className="w-3 h-3" />

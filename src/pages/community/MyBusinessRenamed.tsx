@@ -89,10 +89,10 @@ export default function MyBusiness() {
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Business Hub 💼
+                  {t('screens.community.businessHub')}
                 </h1>
                 <p className="text-muted-foreground">
-                  Grow your wellness business and manage clients effortlessly
+                  {t('screens.community.growYourWellnessBusinessManageClients')}
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function MyBusiness() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
@@ -164,7 +164,7 @@ export default function MyBusiness() {
               onClick={() => setShowBusinessTypeSelector(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Business
+              {t('screens.community.business')}
             </Button>
           </UtilityActionButton>
 
@@ -172,13 +172,13 @@ export default function MyBusiness() {
           <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full mb-6">
             <SplitBarList>
               <SplitBarTrigger value="overview">
-                📊 Overview
+                {t('screens.community.overview')}
               </SplitBarTrigger>
               <SplitBarTrigger value="services">
-                💼 Services
+                {t('screens.community.services')}
               </SplitBarTrigger>
               <SplitBarTrigger value="clients">
-                👥 Clients
+                {t('screens.community.clients')}
               </SplitBarTrigger>
               {isReseller && (
                 <SplitBarTrigger value="sell-earn">
@@ -186,7 +186,7 @@ export default function MyBusiness() {
                 </SplitBarTrigger>
               )}
               <SplitBarTrigger value="analytics">
-                📈 Analytics
+                {t('screens.community.analytics')}
               </SplitBarTrigger>
             </SplitBarList>
 

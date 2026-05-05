@@ -42,10 +42,10 @@ export default function BusinessListings() {
     return (
       <div className="container mx-auto px-4 py-12 max-w-3xl space-y-4">
         <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+          <ArrowLeft className="h-4 w-4" /> {t('screens.businesslistings.backBusinessHub')}
         </Link>
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          Listings are available for Pro accounts.
+          {t('screens.businesslistings.listingsAvailableForProAccounts')}
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default function BusinessListings() {
   return (
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+        <ArrowLeft className="h-4 w-4" /> {t('screens.businesslistings.backBusinessHub')}
       </Link>
 
       <div className="flex items-start justify-between gap-4">
@@ -63,7 +63,7 @@ export default function BusinessListings() {
           <p className="text-sm text-muted-foreground">{t('screens.businesslistings.servicesProductsYouReOfferingMatches')}</p>
         </div>
         <Button size="sm" onClick={() => setComposerOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" /> New listing
+          <Plus className="h-4 w-4 mr-1" /> {t('screens.businesslistings.newListing')}
         </Button>
       </div>
 
@@ -73,7 +73,7 @@ export default function BusinessListings() {
         </div>
       ) : listings.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          No listings yet. Click <span className="font-medium">{t('screens.businesslistings.newListing')}</span> to add one — or open ORB and just say <em>{t('screens.businesslistings.iMOfferingX')}</em>.
+          {t('screens.businesslistings.noListingsYetClick')} <span className="font-medium">{t('screens.businesslistings.newListing')}</span> to add one — or open ORB and just say <em>{t('screens.businesslistings.iMOfferingX')}</em>.
         </div>
       ) : (
         <div className="space-y-3">

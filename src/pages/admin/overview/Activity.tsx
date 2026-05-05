@@ -29,7 +29,7 @@ export default function OverviewActivity() {
           rightAction={
             <Button variant="outline" size="sm" onClick={() => activityQuery.refetch()} disabled={activityQuery.isFetching}>
               <RefreshCw className={`h-4 w-4 mr-2 ${activityQuery.isFetching ? "animate-spin" : ""}`} />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           }
         />
@@ -45,10 +45,10 @@ export default function OverviewActivity() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Topic</TableHead>
-                  <TableHead>VTID</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.topic')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

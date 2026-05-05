@@ -222,7 +222,7 @@ export default function Categories() {
                       onClick={(e) => { e.stopPropagation(); openCreateDialog(type); }}
                     >
                       <Plus className="w-4 h-4 mr-1" />
-                      Add
+                      {t('screens.admin.add')}
                     </Button>
                     {isExpanded ? (
                       <ChevronDown className="w-4 h-4 text-muted-foreground" />
@@ -320,7 +320,7 @@ export default function Categories() {
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="display_name">Name</Label>
+              <Label htmlFor="display_name">{t('screens.admin.name')}</Label>
               <Input
                 id="display_name"
                 value={form.display_name}
@@ -330,7 +330,7 @@ export default function Categories() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.admin.description')}</Label>
               <Textarea
                 id="description"
                 value={form.description}
@@ -380,7 +380,7 @@ export default function Categories() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <Button
               onClick={handleSave}
@@ -406,9 +406,9 @@ export default function Categories() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.admin.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>
-              Deactivate
+              {t('screens.admin.deactivate')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

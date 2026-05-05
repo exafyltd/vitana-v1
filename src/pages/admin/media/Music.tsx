@@ -112,10 +112,10 @@ export default function Music() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t('screens.admin.allStatus')}</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                  <SelectItem value="flagged">Flagged</SelectItem>
+                  <SelectItem value="pending">{t('screens.admin.pending')}</SelectItem>
+                  <SelectItem value="approved">{t('screens.admin.approved')}</SelectItem>
+                  <SelectItem value="rejected">{t('screens.admin.rejected')}</SelectItem>
+                  <SelectItem value="flagged">{t('screens.admin.flagged')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -128,14 +128,14 @@ export default function Music() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Artist</TableHead>
-                  <TableHead>Genre</TableHead>
-                  <TableHead>Mood</TableHead>
-                  <TableHead>Plays</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.artist')}</TableHead>
+                  <TableHead>{t('screens.admin.genre')}</TableHead>
+                  <TableHead>{t('screens.admin.mood')}</TableHead>
+                  <TableHead>{t('screens.admin.plays')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

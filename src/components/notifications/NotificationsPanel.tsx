@@ -131,7 +131,7 @@ export function NotificationsPanel({
       {/* Header */}
       <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b">
         <div className="flex items-baseline gap-2">
-          <h3 className="font-semibold text-base">Notifications</h3>
+          <h3 className="font-semibold text-base">{t('screens.notifications.notifications')}</h3>
           {unreadCount > 0 && (
             <span className="text-xs text-muted-foreground">{unreadCount} unread</span>
           )}
@@ -256,7 +256,7 @@ export function NotificationsPanel({
             onClick={handleSettingsClick}
           >
             <Settings className="h-3.5 w-3.5 mr-1.5" />
-            Manage your notifications
+            {t('screens.notifications.manageYourNotifications')}
           </Button>
         </div>
       )}
@@ -273,7 +273,7 @@ export function NotificationsPanel({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.notifications.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDeleteAll}
               className={filter !== 'unread' ? 'bg-destructive hover:bg-destructive/90' : ''}

@@ -132,8 +132,7 @@ export default function Members() {
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Meet everyone in the Vitana community. Tap a card to see their profile, send a message,
-        or invite them to a dance.
+        {t('screens.community.meetEveryoneVitanaCommunityTapCard')}
       </p>
 
       <div className="space-y-3">
@@ -145,7 +144,7 @@ export default function Members() {
         />
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Sort</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.sort')}</span>
           {(["newest", "oldest", "name"] as const).map((s) => (
             <button
               key={s}
@@ -161,7 +160,7 @@ export default function Members() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Dance</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.dance')}</span>
           {VARIETY_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}

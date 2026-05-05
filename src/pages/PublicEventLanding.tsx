@@ -321,7 +321,7 @@ export default function PublicEventLanding() {
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Location</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.location')}</p>
                       <p className="text-sm font-medium text-foreground">{event.location}</p>
                     </div>
                   </div>
@@ -330,7 +330,7 @@ export default function PublicEventLanding() {
                 <div className="flex items-start gap-3">
                   <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Attending</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.publiceventlanding.attending')}</p>
                     <p className="text-sm font-medium text-foreground">
                       {event.participant_count} {event.max_participants ? `/ ${event.max_participants}` : ''} people
                     </p>
@@ -411,7 +411,7 @@ export default function PublicEventLanding() {
                       <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
                         <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                         <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                          Discover more events and longevity communities.
+                          {t('screens.publiceventlanding.discoverMoreEventsLongevityCommunities')}
                         </span>
                       </div>
                       <Button
@@ -448,7 +448,7 @@ export default function PublicEventLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
+              {t('screens.publiceventlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
             </p>
           </div>
         </div>

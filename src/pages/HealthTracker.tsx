@@ -138,7 +138,7 @@ export default function HealthTracker() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="w-5 h-5 text-calendar-primary" />
-                Health Pillars Progress
+                {t('screens.healthtracker.healthPillarsProgress')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -193,7 +193,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("nutrition")}
                 >
                   <Apple className="w-4 h-4 mr-2" />
-                  Nutrition
+                  {t('screens.healthtracker.nutrition')}
                 </Button>
                 <Button
                   variant={activePanel === "sleep" ? "default" : "ghost"}
@@ -201,7 +201,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("sleep")}
                 >
                   <Moon className="w-4 h-4 mr-2" />
-                  Sleep
+                  {t('screens.healthtracker.sleep')}
                 </Button>
                 <Button
                   variant={activePanel === "exercise" ? "default" : "ghost"}
@@ -209,7 +209,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("exercise")}
                 >
                   <Dumbbell className="w-4 h-4 mr-2" />
-                  Exercise
+                  {t('screens.healthtracker.exercise')}
                 </Button>
                 <Button
                   variant={activePanel === "mental" ? "default" : "ghost"}
@@ -217,7 +217,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("mental")}
                 >
                   <Brain className="w-4 h-4 mr-2" />
-                  Mental
+                  {t('screens.healthtracker.mental')}
                 </Button>
                 <Button
                   variant={activePanel === "index" ? "default" : "ghost"}
@@ -225,7 +225,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("index")}
                 >
                   <Activity className="w-4 h-4 mr-2" />
-                  Vitana Index
+                  {t('screens.healthtracker.vitanaIndex')}
                 </Button>
               </div>
             }
@@ -238,13 +238,13 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Apple className="w-5 h-5 text-green-500" />
-                            Daily Nutrition
+                            {t('screens.healthtracker.dailyNutrition')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex justify-between text-sm">
-                              <span>Calories</span>
+                              <span>{t('screens.healthtracker.calories')}</span>
                               <span>1,847 / 2,200</span>
                             </div>
                             <Progress value={84} className="h-2" />
@@ -262,10 +262,10 @@ export default function HealthTracker() {
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-2 gap-2">
-                            <Button size="sm" variant="outline">Breakfast</Button>
-                            <Button size="sm" variant="outline">Lunch</Button>
-                            <Button size="sm" variant="outline">Dinner</Button>
-                            <Button size="sm" variant="outline">Snack</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.breakfast')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.lunch')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.dinner')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.snack')}</Button>
                           </div>
                         </CardContent>
                       </Card>
@@ -280,7 +280,7 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Moon className="w-5 h-5 text-purple-500" />
-                            Sleep Quality
+                            {t('screens.healthtracker.sleepQuality')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
@@ -324,7 +324,7 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Dumbbell className="w-5 h-5 text-orange-500" />
-                            Weekly Activity
+                            {t('screens.healthtracker.weeklyActivity')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
@@ -370,7 +370,7 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Brain className="w-5 h-5 text-pink-500" />
-                            Mental Wellness
+                            {t('screens.healthtracker.mentalWellness')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
@@ -386,7 +386,7 @@ export default function HealthTracker() {
                       </Card>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-lg">Mindfulness</CardTitle>
+                          <CardTitle className="text-lg">{t('screens.healthtracker.mindfulness')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2 text-sm">
@@ -412,7 +412,7 @@ export default function HealthTracker() {
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                           <Activity className="w-5 h-5 text-green-500" />
-                          Vitana Index Overview
+                          {t('screens.healthtracker.vitanaIndexOverview')}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>

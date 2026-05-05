@@ -36,12 +36,12 @@ export function AnalyticsSubTabs() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <BarChart3 className="w-5 h-5" />
-                Bookings Overview
+                {t('screens.business.bookingsOverview')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground text-center py-8">
-                Booking analytics coming soon
+                {t('screens.business.bookingAnalyticsComingSoon')}
               </p>
             </CardContent>
           </Card>
@@ -50,12 +50,12 @@ export function AnalyticsSubTabs() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Users className="w-5 h-5" />
-                Attendance Rates
+                {t('screens.business.attendanceRates')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground text-center py-8">
-                Attendance metrics coming soon
+                {t('screens.business.attendanceMetricsComingSoon')}
               </p>
             </CardContent>
           </Card>
@@ -109,7 +109,7 @@ export function AnalyticsSubTabs() {
                     className="p-0 h-auto text-lg font-semibold"
                     onClick={() => navigate("/wallet")}
                   >
-                    View in Wallet →
+                    {t('screens.business.viewWallet')}
                   </Button>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export function AnalyticsSubTabs() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <TrendingUp className="w-5 h-5" />
-              Client Growth
+              {t('screens.business.clientGrowth')}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center py-8 space-y-4">
@@ -136,7 +136,7 @@ export function AnalyticsSubTabs() {
               onClick={() => navigate("/sharing")}
             >
               <Share2 className="w-4 h-4" />
-              Create Campaign in Sharing
+              {t('screens.business.createCampaignSharing')}
             </Button>
           </CardContent>
         </Card>

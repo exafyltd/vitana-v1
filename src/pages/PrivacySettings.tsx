@@ -181,7 +181,7 @@ export default function PrivacySettings() {
     return (
       <AppLayout>
         <div className="container max-w-xl mx-auto px-4 py-10 text-center text-muted-foreground">
-          Please sign in to manage your privacy settings.
+          {t('screens.privacysettings.pleaseSignManageYourPrivacySettings')}
         </div>
       </AppLayout>
     );
@@ -245,7 +245,7 @@ export default function PrivacySettings() {
         ))}
 
         <p className="text-xs text-muted-foreground text-center pt-4">
-          Server enforces these tiers on every cross-user fetch — your toggle is binding, not advisory.
+          {t('screens.privacysettings.serverEnforcesTheseTiersEveryCrossuser')}
         </p>
       </div>
     </AppLayout>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 export function ContinueConnectingFeed() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export function ContinueConnectingFeed() {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-pink-600" />
-          Continue Connecting
+          {t('screens.analysis.continueConnecting')}
         </h2>
         <Button 
           variant="ghost" 
@@ -45,7 +46,7 @@ export function ContinueConnectingFeed() {
           onClick={() => navigate('/discover')}
           className="text-xs"
         >
-          Explore All →
+          {t('screens.analysis.exploreAll')}
         </Button>
       </div>
       

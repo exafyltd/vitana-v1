@@ -190,7 +190,7 @@ export default function Groups() {
                   <p className="text-muted-foreground mb-4">{t('screens.community.firstStartCommunity')}</p>
                   <Button onClick={() => setCreateGroupOpen(true)}>
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Group
+                    {t('screens.community.createGroup')}
                   </Button>
                 </div>
               ) : (

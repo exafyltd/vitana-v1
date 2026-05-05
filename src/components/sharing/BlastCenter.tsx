@@ -226,10 +226,10 @@ export function BlastCenter() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Send className="w-5 h-5" />
-          Blast Center
+          {t('screens.sharing.blastCenter')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Share your content across multiple channels instantly
+          {t('screens.sharing.shareYourContentAcrossMultipleChannels')}
         </p>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -241,11 +241,11 @@ export function BlastCenter() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="event">Event</SelectItem>
-              <SelectItem value="meetup">Meetup</SelectItem>
-              <SelectItem value="group">Group</SelectItem>
+              <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+              <SelectItem value="meetup">{t('screens.sharing.meetup')}</SelectItem>
+              <SelectItem value="group">{t('screens.sharing.group')}</SelectItem>
               <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
-              <SelectItem value="profile">Profile</SelectItem>
+              <SelectItem value="profile">{t('screens.sharing.profile')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -303,7 +303,7 @@ export function BlastCenter() {
         {/* Content Editor */}
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>Title</Label>
+            <Label>{t('screens.sharing.title')}</Label>
             <Input
               placeholder={t('screens.sharing.enterCompellingTitle')}
               value={title}
@@ -312,7 +312,7 @@ export function BlastCenter() {
           </div>
 
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label>{t('screens.sharing.description')}</Label>
             <Textarea
               placeholder={t('screens.sharing.writeYourMessage')}
               value={description}
@@ -367,7 +367,7 @@ export function BlastCenter() {
               <MessageSquare className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
               <p className="text-sm text-muted-foreground">{t('screens.sharing.noChannelsConnectedYet')}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Go to Integrations to connect channels
+                {t('screens.sharing.goIntegrationsConnectChannels')}
               </p>
             </div>
           )}
@@ -377,7 +377,7 @@ export function BlastCenter() {
         <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
           <Coins className="w-4 h-4 text-green-600" />
           <span className="text-sm text-green-800 dark:text-green-200">
-            Post now, earn +5 credits
+            {t('screens.sharing.postNowEarn5Credits')}
           </span>
         </div>
 

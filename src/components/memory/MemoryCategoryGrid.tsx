@@ -187,7 +187,7 @@ export function MemoryCategoryGrid() {
           className="gap-2"
         >
           <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-          Refresh Progress
+          {t('screens.memory.refreshProgress')}
         </Button>
       </div>
 

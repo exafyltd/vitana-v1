@@ -39,16 +39,16 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="role">{t('screens.dev.role')}</Label>
             <Select value={role} onValueChange={setRole}>
               <SelectTrigger id="role">
                 <SelectValue placeholder={t('screens.dev.selectRole')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="patient">Patient</SelectItem>
-                <SelectItem value="professional">Professional</SelectItem>
-                <SelectItem value="staff">Staff</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="patient">{t('screens.dev.patient')}</SelectItem>
+                <SelectItem value="professional">{t('screens.dev.professional')}</SelectItem>
+                <SelectItem value="staff">{t('screens.dev.staff')}</SelectItem>
+                <SelectItem value="admin">{t('screens.dev.admin')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -64,7 +64,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="permissions">Permissions</Label>
+            <Label htmlFor="permissions">{t('screens.dev.permissions')}</Label>
             <Input 
               id="permissions" 
               value={permissions}
@@ -74,7 +74,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.dev.description')}</Label>
             <Textarea 
               id="description" 
               value={description}
@@ -87,14 +87,14 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleAdd}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Add Role View
+            {t('screens.dev.addRoleView')}
           </Button>
         </DialogFooter>
       </DialogContent>

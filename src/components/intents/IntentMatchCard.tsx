@@ -126,10 +126,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
             {isRedacted ? (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-base font-semibold tracking-wide text-muted-foreground">
-                  Anonymous match
+                  {t('screens.intents.anonymousMatch')}
                 </span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
-                  mutual reveal
+                  {t('screens.intents.mutualReveal')}
                 </span>
               </div>
             ) : match.partner_display_name ? (
@@ -164,14 +164,14 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
       {isMutual ? (
         <div className="space-y-2">
           <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
-            🎉 Mutual interest — open the message thread to start chatting.
+            {t('screens.intents.mutualInterestOpenMessageThreadStart')}
           </div>
           <button
             type="button"
             onClick={() => setDisputeOpen(true)}
             className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
           >
-            <Flag className="h-3 w-3" /> Report an issue
+            <Flag className="h-3 w-3" /> {t('screens.intents.reportIssue')}
           </button>
         </div>
       ) : match.state === "declined" || match.state === "closed" ? (
@@ -199,7 +199,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
               onClick={() => setDisputeOpen(true)}
               className="ml-auto text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
             >
-              <Flag className="h-3 w-3" /> Report
+              <Flag className="h-3 w-3" /> {t('screens.intents.report')}
             </button>
           )}
         </div>

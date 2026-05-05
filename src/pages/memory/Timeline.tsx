@@ -250,7 +250,7 @@ function Timeline() {
       expandedContent: isConversation ? (
         <div className="space-y-3 transition-opacity duration-150">
           <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
-            <div className="text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">You</div>
+            <div className="text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">{t('screens.memory.you')}</div>
             <div className="text-sm text-foreground">{item.userMessage?.content}</div>
           </div>
           <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
@@ -304,7 +304,7 @@ function Timeline() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Manage History
+            {t('screens.memory.manageHistory')}
           </Button>
           <Button
             variant="ghost"
@@ -322,10 +322,10 @@ function Timeline() {
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "all" | "by-category")} className="mt-6">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="all" className="flex items-center gap-2">
-              📋 All
+              {t('screens.memory.all')}
             </TabsTrigger>
             <TabsTrigger value="by-category" className="flex items-center gap-2">
-              📊 By Category
+              {t('screens.memory.byCategory')}
             </TabsTrigger>
           </TabsList>
 
@@ -354,10 +354,10 @@ function Timeline() {
                   <CardContent className="p-12 text-center">
                     <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
                     <p className="text-muted-foreground mb-3">
-                      No activity history yet. Start using the system to see your activity!
+                      {t('screens.memory.noActivityHistoryYetStartUsing')}
                     </p>
                     <Button variant="outline" size="sm" onClick={() => setActionPopupOpen(true)}>
-                      Add Memory
+                      {t('screens.memory.addMemory')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -452,7 +452,7 @@ function Timeline() {
                               size="sm" 
                               onClick={() => setActiveTab("all")}
                             >
-                              View All Activity
+                              {t('screens.memory.viewAllActivity')}
                             </Button>
                           </CardContent>
                         </Card>

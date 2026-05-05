@@ -136,7 +136,7 @@ export function ActivateCampaignDialog({
                     <span className="font-medium">{t('screens.sharing.scheduleForLater')}</span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Pick a specific date and time to activate the campaign
+                    {t('screens.sharing.pickSpecificDateTimeActivateCampaign')}
                   </p>
                 </Label>
               </div>
@@ -190,7 +190,7 @@ export function ActivateCampaignDialog({
 
         <ResponsiveDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
+            {t('screens.sharing.cancel')}
           </Button>
           <Button 
             onClick={handleActivate} 

@@ -899,10 +899,10 @@ const EventsAndMeetups = () => {
                         <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                         <h3 className="text-lg font-semibold mb-2">{t('screens.community.noUpcomingEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
-                          There are no events scheduled. Be the first to create one!
+                          {t('screens.community.thereNoEventsScheduledFirstCreate')}
                         </p>
                         <Button onClick={() => setCreateSelectionOpen(true)}>
-                          Create Event
+                          {t('screens.community.createEvent')}
                         </Button>
                       </div>
                     }
@@ -980,7 +980,7 @@ const EventsAndMeetups = () => {
                         <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                         <h3 className="text-lg font-semibold mb-2">{t('screens.community.noRecommendedEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
-                          Check back soon for curated events.
+                          {t('screens.community.checkBackSoonForCuratedEvents')}
                         </p>
                       </div>
                     }

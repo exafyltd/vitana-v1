@@ -146,7 +146,7 @@ export default function TenantRole() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5" />
-                Current Context
+                {t('screens.settings.currentContext')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -160,7 +160,7 @@ export default function TenantRole() {
                     <p className="text-sm text-muted-foreground">{tenant?.name || "No Organization"}</p>
                   </div>
                 </div>
-                <Badge className="bg-green-100 text-green-700">Active</Badge>
+                <Badge className="bg-green-100 text-green-700">{t('screens.settings.active')}</Badge>
               </div>
             </CardContent>
           </Card>
@@ -170,7 +170,7 @@ export default function TenantRole() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5" />
-                Switch Role
+                {t('screens.settings.switchRole')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -235,7 +235,7 @@ export default function TenantRole() {
                 <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
-                    You don't have any role memberships yet. Contact an administrator to get access.
+                    {t('screens.settings.youDonTHaveAnyRole')}
                   </AlertDescription>
                 </Alert>
               )}
@@ -248,7 +248,7 @@ export default function TenantRole() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Building2 className="w-5 h-5" />
-                  Switch Organization (Admin Only)
+                  {t('screens.settings.switchOrganizationAdminOnly')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -314,7 +314,7 @@ export default function TenantRole() {
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      No organization memberships found.
+                      {t('screens.settings.noOrganizationMembershipsFound')}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -338,7 +338,7 @@ export default function TenantRole() {
                         {status === "granted" ? (
                           <>
                             <CheckCircle2 className="w-4 h-4 text-green-600" />
-                            <Badge className="bg-green-100 text-green-700">Granted</Badge>
+                            <Badge className="bg-green-100 text-green-700">{t('screens.settings.granted')}</Badge>
                           </>
                         ) : (
                           <>

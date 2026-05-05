@@ -40,7 +40,7 @@ function Privacy() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Privacy Audit
+              {t('screens.settings.privacyAudit')}
             </Button>
           </UtilityActionButton>
 
@@ -175,7 +175,7 @@ function Privacy() {
                     icon={Users}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">Active</div>
+                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.active')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.anonymizedSharing')}</div>
                       </div>
                     }
@@ -188,7 +188,7 @@ function Privacy() {
                     icon={Smartphone}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-orange-600">Limited</div>
+                        <div className="text-2xl font-bold text-orange-600">{t('screens.settings.limited')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.controlledAccess')}</div>
                       </div>
                     }
@@ -239,7 +239,7 @@ function Privacy() {
                           <div>
                             <h4 className="font-medium">{t('screens.settings.shareDataWithAiProvider')}</h4>
                             <p className="text-sm text-muted-foreground">
-                              Allow personal data to be sent to third-party AI services for AI-powered features.
+                              {t('screens.settings.allowPersonalDataSentThirdpartyAi')}
                             </p>
                           </div>
                           <Switch
@@ -351,7 +351,7 @@ function Privacy() {
                               <h4 className="font-medium">{t('screens.settings.passwordProtection')}</h4>
                               <p className="text-sm text-muted-foreground">{t('screens.settings.lastChanged30DaysAgo')}</p>
                             </div>
-                            <Button variant="outline" size="sm">Change</Button>
+                            <Button variant="outline" size="sm">{t('screens.settings.change')}</Button>
                           </div>
                           <div className="flex items-center justify-between">
                             <div>
@@ -426,21 +426,21 @@ function Privacy() {
                             <div className="font-medium">{t('screens.settings.passwordChanged')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.text30DaysAgo')}</div>
                           </div>
-                          <div className="text-green-600 text-xs">Secure</div>
+                          <div className="text-green-600 text-xs">{t('screens.settings.secure')}</div>
                         </div>
                         <div className="flex justify-between items-center p-2 bg-muted rounded">
                           <div>
                             <div className="font-medium">{t('screens.settings.newDeviceLogin')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.iphone2HoursAgo')}</div>
                           </div>
-                          <div className="text-green-600 text-xs">Verified</div>
+                          <div className="text-green-600 text-xs">{t('screens.settings.verified')}</div>
                         </div>
                         <div className="flex justify-between items-center p-2 bg-muted rounded">
                           <div>
                             <div className="font-medium">{t('screens.settings.privacySettingsUpdated')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.text1WeekAgo')}</div>
                           </div>
-                          <div className="text-blue-600 text-xs">Updated</div>
+                          <div className="text-blue-600 text-xs">{t('screens.settings.updated')}</div>
                         </div>
                       </div>
                     }

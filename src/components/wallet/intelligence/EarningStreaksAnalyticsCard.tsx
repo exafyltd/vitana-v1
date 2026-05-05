@@ -133,7 +133,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Flame className="h-5 w-5 text-orange-500" />
-            Earning Streaks Analytics
+            {t('screens.wallet.earningStreaksAnalytics')}
           </CardTitle>
           <Badge variant="secondary" className="bg-orange-500/10 text-orange-600">
             {activeStreaks} Active Streaks
@@ -147,11 +147,11 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-orange-600">{activeStreaks}</div>
-              <div className="text-xs text-muted-foreground">Active</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-primary">{totalMultiplier.toFixed(1)}x</div>
-              <div className="text-xs text-muted-foreground">Multiplier</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.multiplier')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">{longestStreak}</div>
@@ -159,7 +159,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your streaks are boosting earnings by <span className="font-semibold text-orange-600">{Math.round((totalMultiplier - activeStreaks) * 100)}%</span>
+            {t('screens.wallet.yourStreaksBoostingEarningsBy')} <span className="font-semibold text-orange-600">{Math.round((totalMultiplier - activeStreaks) * 100)}%</span>
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Trophy className="h-4 w-4 text-yellow-500" />
-            Current Streaks
+            {t('screens.wallet.currentStreaks')}
           </h4>
           
           {mockStreaks.slice(0, 2).map((streak) => {
@@ -213,7 +213,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Zap className="h-4 w-4 text-purple-500" />
-            Next Opportunities
+            {t('screens.wallet.nextOpportunities')}
           </h4>
           
           {mockOpportunities.slice(0, 1).map((opportunity) => (
@@ -238,7 +238,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Start Streak
+                  {t('screens.wallet.startStreak')}
                 </Button>
               </div>
             </div>
@@ -256,7 +256,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
               Restart your Wellness Goals streak today to rebuild your {mockStreaks.find(s => s.status === "broken")?.bestStreak}-day record
             </p>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
-              Restart Streak
+              {t('screens.wallet.restartStreak')}
             </Button>
           </div>
         )}
@@ -264,7 +264,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Flame className="h-4 w-4 mr-2" />
-          View All Streaks
+          {t('screens.wallet.viewAllStreaks')}
         </Button>
       </CardContent>
     </Card>

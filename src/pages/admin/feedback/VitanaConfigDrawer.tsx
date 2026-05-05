@@ -193,8 +193,8 @@ export function VitanaConfigDrawer({ onClose }: Props) {
             <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => personaQuery.refetch()}>Retry</Button>
-            <Button variant="ghost" onClick={onClose}>Close</Button>
+            <Button variant="outline" onClick={() => personaQuery.refetch()}>{t('screens.admin.retry')}</Button>
+            <Button variant="ghost" onClick={onClose}>{t('screens.admin.close')}</Button>
           </div>
         </div>
       </div>
@@ -223,7 +223,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
 
         {/* Rulebook header — frames the rules so admins read the philosophy first. */}
         <Card className="mb-4 border-primary/30 bg-primary/5 p-4">
-          <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-primary">Rulebook</h3>
+          <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-primary">{t('screens.admin.rulebook')}</h3>
           <p className="text-sm leading-relaxed">{RULEBOOK_HEADER}</p>
         </Card>
 
@@ -266,12 +266,12 @@ export function VitanaConfigDrawer({ onClose }: Props) {
               variant="outline"
               onClick={() => addPhrase(forwardDraft, forwardPhrases, setForwardPhrases, () => setForwardDraft(""))}
             >
-              Add
+              {t('screens.admin.add')}
             </Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveForward} disabled={forwardMutation.isPending}>
-              Save forward triggers
+              {t('screens.admin.saveForwardTriggers')}
             </Button>
           </div>
         </Card>
@@ -315,12 +315,12 @@ export function VitanaConfigDrawer({ onClose }: Props) {
               variant="outline"
               onClick={() => addPhrase(stayDraft, stayInlinePhrases, setStayInlinePhrases, () => setStayDraft(""))}
             >
-              Add
+              {t('screens.admin.add')}
             </Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveStayInline} disabled={stayInlineMutation.isPending}>
-              Save stay-inline overrides
+              {t('screens.admin.saveStayinlineOverrides')}
             </Button>
           </div>
         </Card>
@@ -358,7 +358,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
               </div>
               {(testResult.matched_phrase || testResult.matched_keyword) && (
                 <div className="mt-2 text-muted-foreground">
-                  Matched phrase: <code className="rounded bg-background px-1">{testResult.matched_phrase ?? testResult.matched_keyword}</code>
+                  {t('screens.admin.matchedPhrase')} <code className="rounded bg-background px-1">{testResult.matched_phrase ?? testResult.matched_keyword}</code>
                 </div>
               )}
               {typeof testResult.confidence === "number" && (

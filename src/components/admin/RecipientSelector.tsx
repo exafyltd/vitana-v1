@@ -68,7 +68,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
 
   return (
     <div className="space-y-3">
-      <label className="text-sm font-medium">Recipients</label>
+      <label className="text-sm font-medium">{t('screens.admin.recipients')}</label>
 
       {/* Mode selector */}
       <div className="flex gap-2">
@@ -79,7 +79,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("all")}
         >
           <Users className="mr-1 h-4 w-4" />
-          All Users
+          {t('screens.admin.allUsers')}
         </Button>
         <Button
           type="button"
@@ -88,7 +88,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("role")}
         >
           <Shield className="mr-1 h-4 w-4" />
-          By Role
+          {t('screens.admin.byRole')}
         </Button>
         <Button
           type="button"
@@ -97,7 +97,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("individual")}
         >
           <UserCheck className="mr-1 h-4 w-4" />
-          Individual
+          {t('screens.admin.individual')}
         </Button>
       </div>
 

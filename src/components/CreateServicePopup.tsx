@@ -269,15 +269,15 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                 />
               </div>
               <div>
-                <Label htmlFor="format">Format</Label>
+                <Label htmlFor="format">{t('screens.common.format')}</Label>
                 <Select value={formData.format} onValueChange={(value) => setFormData(prev => ({ ...prev, format: value }))}>
                   <SelectTrigger>
                     <SelectValue placeholder={t('screens.common.chooseFormat')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="in-person">{t('screens.common.inperson')}</SelectItem>
-                    <SelectItem value="virtual">Virtual</SelectItem>
-                    <SelectItem value="hybrid">Hybrid</SelectItem>
+                    <SelectItem value="virtual">{t('screens.common.virtual')}</SelectItem>
+                    <SelectItem value="hybrid">{t('screens.common.hybrid')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -292,7 +292,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="one-time">{t('screens.common.onetime')}</SelectItem>
-                    <SelectItem value="recurring">Recurring</SelectItem>
+                    <SelectItem value="recurring">{t('screens.common.recurring')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -412,7 +412,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             </div>
 
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.common.description')}</Label>
               <Textarea
                 id="description"
                 placeholder={t('screens.common.eGStartYourDayWith')}
@@ -446,7 +446,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             {currentStep > 1 && (
               <Button variant="outline" onClick={handlePrevious}>
                 <ChevronLeft className="w-4 h-4 mr-2" />
-                Previous
+                {t('screens.common.previous')}
               </Button>
             )}
           </div>
@@ -455,23 +455,23 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             {currentStep === 4 ? (
               <>
                 <Button variant="outline" onClick={handleSaveDraft}>
-                  Save Draft
+                  {t('screens.common.saveDraft')}
                 </Button>
                 <Button 
                   className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
                   onClick={handlePublish}
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
-                  Publish & Offer Service
+                  {t('screens.common.publishOfferService')}
                 </Button>
               </>
             ) : (
               <>
                 <Button variant="outline" onClick={handleClose}>
-                  Cancel
+                  {t('screens.common.cancel')}
                 </Button>
                 <Button onClick={handleNext} disabled={currentStep === 1 && !selectedServiceType}>
-                  Next
+                  {t('screens.common.next')}
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </>

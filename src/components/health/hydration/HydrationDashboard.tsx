@@ -26,7 +26,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
       
       <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-        Weekly Progress & Consistency
+        {t('screens.health.weeklyProgressConsistency')}
       </h3>
       
       {/* Metrics Grid */}
@@ -63,7 +63,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
               </span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">Consistency</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.consistency')}</p>
         </div>
         
         {/* Avg Daily Intake */}
@@ -105,7 +105,7 @@ export function HydrationDashboard({ progress, aiSummary }: HydrationDashboardPr
           </Badge>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Proper hydration is boosting your energy and recovery metrics
+          {t('screens.health.properHydrationBoostingYourEnergyRecovery')}
         </p>
       </div>
       

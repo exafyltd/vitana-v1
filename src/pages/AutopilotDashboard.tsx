@@ -185,7 +185,7 @@ function CompassCard({ alignedCount }: { alignedCount: number }) {
           <>
             <p className="text-base font-semibold leading-snug">{t('screens.autopilotdashboard.setYourLifeCompass')}</p>
             <p className="text-xs text-muted-foreground">
-              Pick a direction so suggestions stay aligned with what matters to you.
+              {t('screens.autopilotdashboard.pickDirectionSoSuggestionsStayAligned')}
             </p>
           </>
         )}
@@ -246,7 +246,7 @@ function PathStopCard({
           disabled={isEmpty}
           onClick={onOpen}
         >
-          Open
+          {t('screens.autopilotdashboard.open')}
         </Button>
       </CardContent>
     </Card>
@@ -392,7 +392,7 @@ export default function AutopilotDashboard() {
 
                 <div className="text-center text-sm text-muted-foreground pb-4">
                   <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
-                  New stops appear as Autopilot learns more about you.
+                  {t('screens.autopilotdashboard.newStopsAppearAsAutopilotLearns')}
                 </div>
               </>
             )}
@@ -442,7 +442,7 @@ export default function AutopilotDashboard() {
                   className="text-sm"
                 >
                   <Zap className="w-4 h-4 mr-1.5" />
-                  Open Autopilot
+                  {t('screens.autopilotdashboard.openAutopilot')}
                   <ChevronRight className="w-4 h-4 ml-0.5" />
                 </Button>
               </div>
@@ -460,7 +460,7 @@ export default function AutopilotDashboard() {
 
               <div className="text-center text-sm text-muted-foreground pb-8">
                 <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
-                New stops appear as Autopilot learns more about you.
+                {t('screens.autopilotdashboard.newStopsAppearAsAutopilotLearns')}
               </div>
             </>
           )}

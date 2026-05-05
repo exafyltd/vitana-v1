@@ -144,7 +144,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <Zap className="h-5 w-5 text-purple-600" />
-          Exchange & Send
+          {t('screens.wallet.exchangeSend')}
         </DialogTitle>
       </DialogHeader>
 
@@ -329,7 +329,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="outline" onClick={onBack} className="flex-1">
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleExchangeAndSend}

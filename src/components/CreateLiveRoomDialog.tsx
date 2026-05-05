@@ -81,14 +81,14 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       <ResponsiveDialogTrigger asChild>
         <Button className="gap-2">
           <Video className="h-4 w-4" />
-          Create Live Room
+          {t('screens.common.createLiveRoom')}
         </Button>
       </ResponsiveDialogTrigger>
       <ResponsiveDialogContent className="sm:max-w-md">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Create Live Room
+            {t('screens.common.createLiveRoom')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         
@@ -125,7 +125,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
                   <p className="font-medium text-yellow-800 dark:text-yellow-300">{t('screens.common.paymentSetupRequired')}</p>
                   <p className="text-yellow-700 dark:text-yellow-400 text-xs mt-1">
                     <Link to="/settings/billing" className="underline" onClick={() => setIsOpen(false)}>
-                      Enable Payments
+                      {t('screens.common.enablePayments')}
                     </Link>{' '}
                     in Settings to create paid rooms.
                   </p>
@@ -154,7 +154,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
             )}
 
             <div className="text-sm text-muted-foreground">
-              Create a multi-participant video room for events, coaching sessions, or meetups.
+              {t('screens.common.createMultiparticipantVideoRoomForEvents')}
             </div>
 
             <Button

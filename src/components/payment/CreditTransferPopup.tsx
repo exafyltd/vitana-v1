@@ -96,7 +96,7 @@ export default function CreditTransferPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-blue-600" />
-            Transfer Credits
+            {t('screens.payment.transferCredits')}
           </DialogTitle>
         </DialogHeader>
 
@@ -163,7 +163,7 @@ export default function CreditTransferPopup({
                 className="pr-16"
               />
               <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                credits
+                {t('screens.payment.credits2')}
               </div>
             </div>
             {transferAmount > 0 && (
@@ -174,7 +174,7 @@ export default function CreditTransferPopup({
                 {!canTransfer && transferAmount > currentBalance && (
                   <span className="text-red-500 flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" />
-                    Insufficient balance
+                    {t('screens.payment.insufficientBalance')}
                   </span>
                 )}
               </div>
@@ -215,7 +215,7 @@ export default function CreditTransferPopup({
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleTransfer} 
@@ -230,7 +230,7 @@ export default function CreditTransferPopup({
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Credits
+                  {t('screens.payment.sendCredits')}
                 </>
               )}
             </Button>

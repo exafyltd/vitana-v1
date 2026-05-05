@@ -81,9 +81,9 @@ function Reports() {
 
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="overview">{t('screens.admin.overview')}</TabsTrigger>
               <TabsTrigger value="users">{t('screens.admin.userAnalytics')}</TabsTrigger>
-              <TabsTrigger value="revenue">Revenue</TabsTrigger>
+              <TabsTrigger value="revenue">{t('screens.admin.revenue')}</TabsTrigger>
               <TabsTrigger value="health">{t('screens.admin.systemHealth')}</TabsTrigger>
               <TabsTrigger value="custom">{t('screens.admin.customReports')}</TabsTrigger>
             </TabsList>
@@ -93,10 +93,10 @@ function Reports() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                      User Growth Trends
+                      {t('screens.admin.userGrowthTrends')}
                       <Button size="sm" variant="outline">
                         <Download className="w-4 h-4 mr-2" />
-                        Export
+                        {t('screens.admin.export')}
                       </Button>
                     </CardTitle>
                   </CardHeader>
@@ -125,7 +125,7 @@ function Reports() {
                 <h3 className="text-lg font-semibold">{t('screens.admin.userAnalyticsDashboard')}</h3>
                 <Button variant="outline">
                   <Filter className="w-4 h-4 mr-2" />
-                  Filter
+                  {t('screens.admin.filter')}
                 </Button>
               </div>
               

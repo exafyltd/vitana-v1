@@ -236,20 +236,20 @@ export default function MyBiology() {
               onClick={() => setBiomarkerActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Data
+              {t('screens.health.addData')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="medical">
-                🧪 My Medical
+                {t('screens.health.myMedical')}
               </SplitBarTrigger>
               <SplitBarTrigger value="omics">
-                🧬 My Omics
+                {t('screens.health.myOmics')}
               </SplitBarTrigger>
               <SplitBarTrigger value="supplements">
-                💊 My Supplements
+                {t('screens.health.mySupplements')}
               </SplitBarTrigger>
             </SplitBarList>
 
@@ -260,7 +260,7 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <TestTube className="w-5 h-5" />
-                      Medical Biomarkers
+                      {t('screens.health.medicalBiomarkers')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
                       Clinical lab results from blood tests, devices, and wearables
@@ -274,7 +274,7 @@ export default function MyBiology() {
                         onClick={() => openUploadSheet('blood_panel')}
                       >
                         <Upload className="w-4 h-4 mr-2" />
-                        Upload PDF
+                        {t('screens.health.uploadPdf')}
                       </Button>
                       <Button 
                         variant="outline" 
@@ -282,7 +282,7 @@ export default function MyBiology() {
                         onClick={() => logDeviceConnect('Wearable Device')}
                       >
                         <Activity className="w-4 h-4 mr-2" />
-                        Connect Device
+                        {t('screens.health.connectDevice')}
                       </Button>
                     </div>
 
@@ -298,7 +298,7 @@ export default function MyBiology() {
                           <p className="font-medium mb-1">{t('screens.health.noMedicalReportsYet')}</p>
                           <p className="text-sm">{t('screens.health.uploadYourFirstBloodPanelStart')}</p>
                           <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
-                            <Upload className="w-4 h-4 mr-2" /> Upload Blood Panel
+                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadBloodPanel')}
                           </Button>
                         </div>
                       }
@@ -315,10 +315,10 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Dna className="w-5 h-5" />
-                      Omics Biomarkers
+                      {t('screens.health.omicsBiomarkers')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Genomics, Epigenomics, Metabolomics, Microbiome, Proteomics, and more
+                      {t('screens.health.genomicsEpigenomicsMetabolomicsMicrobiomeProteomic')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -329,7 +329,7 @@ export default function MyBiology() {
                         onClick={() => openUploadSheet('genomics')}
                       >
                         <FileText className="w-4 h-4 mr-2" />
-                        Upload Results
+                        {t('screens.health.uploadResults')}
                       </Button>
                       <Button 
                         variant="outline" 
@@ -337,7 +337,7 @@ export default function MyBiology() {
                         onClick={() => logOmicsConnectAPI('API Provider')}
                       >
                         <Activity className="w-4 h-4 mr-2" />
-                        Connect API
+                        {t('screens.health.connectApi')}
                       </Button>
                     </div>
 
@@ -353,7 +353,7 @@ export default function MyBiology() {
                           <p className="font-medium mb-1">{t('screens.health.noOmicsDataYet')}</p>
                           <p className="text-sm">{t('screens.health.uploadYourGenomicsMetabolomicsResultsUnlock')}</p>
                           <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
-                            <Upload className="w-4 h-4 mr-2" /> Upload Omics Report
+                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadOmicsReport')}
                           </Button>
                         </div>
                       }
@@ -370,10 +370,10 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Pill className="w-5 h-5" />
-                      My Supplements
+                      {t('screens.health.mySupplements2')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Track your supplement regimen across 40+ categories
+                      {t('screens.health.trackYourSupplementRegimenAcross40')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -387,7 +387,7 @@ export default function MyBiology() {
                         }}
                       >
                         <Plus className="w-4 h-4 mr-2" />
-                        Add Supplement
+                        {t('screens.health.addSupplement')}
                       </Button>
                       
                       <Select value={categoryFilter} onValueChange={setCategoryFilter}>

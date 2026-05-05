@@ -199,7 +199,7 @@ export function ContactPicker({
           {/* Actions */}
           <div className="flex items-center justify-between pt-4 border-t">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('screens.events.cancel')}
             </Button>
             <Button onClick={handleConfirm} disabled={selectedContacts.size === 0}>
               Invite {selectedContacts.size} {selectedContacts.size === 1 ? "Person" : "People"}

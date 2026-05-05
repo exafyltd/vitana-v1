@@ -45,7 +45,7 @@ export default function TicketDemo() {
           <div>
             <h1 className="text-xl font-bold">{t('screens.ticketdemo.ticketPreview')}</h1>
             <p className="text-sm text-muted-foreground">
-              Multi-tenant boarding pass design
+              {t('screens.ticketdemo.multitenantBoardingPassDesign')}
             </p>
           </div>
         </div>
@@ -76,10 +76,10 @@ export default function TicketDemo() {
         {/* Demo Badge */}
         <div className="mb-6 p-3 rounded-lg bg-primary/10 border border-primary/20 text-center">
           <p className="text-sm font-medium text-primary">
-            🎫 This is a demo ticket preview
+            {t('screens.ticketdemo.thisDemoTicketPreview')}
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Actual tickets will display your real event and purchase details
+            {t('screens.ticketdemo.actualTicketsWillDisplayYourReal')}
           </p>
         </div>
 

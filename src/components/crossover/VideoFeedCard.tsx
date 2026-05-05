@@ -15,7 +15,7 @@ export function VideoFeedCard() {
       <Video className="absolute top-2 right-2 w-8 h-8 text-red-400/20" />
       
       <div className="absolute top-2 left-2 z-10">
-        <Badge className="bg-red-500 text-white text-xs">Video</Badge>
+        <Badge className="bg-red-500 text-white text-xs">{t('screens.crossover.video')}</Badge>
       </div>
       
       <CardContent className="p-4">

@@ -28,11 +28,11 @@ export function ProfessionalCredentialsStrip({
               <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-lg font-semibold mb-2">{t('screens.profile.showcaseYourProfessionalExpertise')}</h3>
               <p className="text-muted-foreground mb-4">
-                Add your coaching specialties, certifications, and credentials to build trust with your clients
+                {t('screens.profile.addYourCoachingSpecialtiesCertificationsCredential')}
               </p>
               <Button onClick={onUploadCredentials}>
                 <Upload className="h-4 w-4 mr-2" />
-                Add Credentials
+                {t('screens.profile.addCredentials')}
               </Button>
             </CardContent>
           </Card>
@@ -49,12 +49,12 @@ export function ProfessionalCredentialsStrip({
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-primary" />
-                Professional Credentials & Expertise
+                {t('screens.profile.professionalCredentialsExpertise')}
               </h3>
               {isOwnProfile && (
                 <Button variant="outline" size="sm" onClick={onUploadCredentials}>
                   <Upload className="h-3 w-3 mr-1" />
-                  Manage <ChevronRight className="h-3 w-3 ml-1" />
+                  {t('screens.profile.manage')} <ChevronRight className="h-3 w-3 ml-1" />
                 </Button>
               )}
             </div>
@@ -87,7 +87,7 @@ export function ProfessionalCredentialsStrip({
                   <Users className="h-4 w-4 text-green-600 mr-1" />
                   <span className="text-lg font-bold">{credentials.totalSubscribers}</span>
                 </div>
-                <div className="text-xs text-muted-foreground">Subscribers</div>
+                <div className="text-xs text-muted-foreground">{t('screens.profile.subscribers')}</div>
               </div>
             </div>
 

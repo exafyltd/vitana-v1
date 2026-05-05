@@ -222,7 +222,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
     return (
       <Card className="p-6 text-center text-sm text-muted-foreground">
         <Inbox className="mx-auto mb-2 h-8 w-8 opacity-50" />
-        No tickets yet. Your members' submissions via "Talk to Vitana" will land here.
+        {t('screens.admin.noTicketsYetYourMembersSubmissions')}
       </Card>
     );
   }
@@ -691,7 +691,7 @@ export default function AdminFeedback() {
                       </div>
                       {isVitana ? (
                         <span className="whitespace-nowrap rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                          Always on
+                          {t('screens.admin.always')}
                         </span>
                       ) : (
                         <SpecialistEnableToggle

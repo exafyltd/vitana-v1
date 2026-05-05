@@ -96,14 +96,14 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <ArrowUpDown className="h-5 w-5 text-primary" />
-          Exchange Currency
+          {t('screens.wallet.exchangeCurrency')}
         </DialogTitle>
       </DialogHeader>
 
       <div className="space-y-4">
         {/* From Currency */}
         <div className="space-y-2">
-          <Label htmlFor="from-amount">From</Label>
+          <Label htmlFor="from-amount">{t('screens.wallet.from')}</Label>
           <div className="flex gap-2">
             <Input
               id="from-amount"
@@ -148,7 +148,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
 
         {/* To Currency */}
         <div className="space-y-2">
-          <Label htmlFor="to-currency">To</Label>
+          <Label htmlFor="to-currency">{t('screens.wallet.text')}</Label>
           <Select value={toCurrency} onValueChange={(value: any) => setToCurrency(value)}>
             <SelectTrigger>
               <SelectValue />
@@ -189,7 +189,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="outline" onClick={onBack} className="flex-1">
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleExchange}

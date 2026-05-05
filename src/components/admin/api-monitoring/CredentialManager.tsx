@@ -145,24 +145,24 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
           <div>
             <CardTitle className="flex items-center gap-2">
               <Shield className="w-5 h-5" />
-              Credentials & Authentication
+              {t('screens.admin.credentialsAuthentication')}
             </CardTitle>
             <CardDescription>
-              Securely manage API keys, tokens, and authentication credentials
+              {t('screens.admin.securelyManageApiKeysTokensAuthentication')}
             </CardDescription>
           </div>
           <ResponsiveDialog open={showDialog} onOpenChange={setShowDialog}>
             <ResponsiveDialogTrigger asChild>
               <Button size="sm">
                 <Plus className="w-4 h-4 mr-2" />
-                Add Credential
+                {t('screens.admin.addCredential')}
               </Button>
             </ResponsiveDialogTrigger>
             <ResponsiveDialogContent>
               <ResponsiveDialogHeader>
                 <ResponsiveDialogTitle>{t('screens.admin.addNewCredential')}</ResponsiveDialogTitle>
                 <ResponsiveDialogDescription>
-                  Store authentication credentials securely using encryption
+                  {t('screens.admin.storeAuthenticationCredentialsSecurelyUsingEncrypt')}
                 </ResponsiveDialogDescription>
               </ResponsiveDialogHeader>
               <ResponsiveDialogBody>
@@ -177,7 +177,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Type</Label>
+                    <Label>{t('screens.admin.type')}</Label>
                     <Select
                       value={newCredential.type}
                       onValueChange={(value: any) => setNewCredential({ ...newCredential, type: value })}
@@ -204,13 +204,13 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
                     />
                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                       <Shield className="w-3 h-3" />
-                      Stored encrypted using Supabase Vault
+                      {t('screens.admin.storedEncryptedUsingSupabaseVault')}
                     </p>
                   </div>
 
                   <Button onClick={handleAddCredential} className="w-full">
                     <Check className="w-4 h-4 mr-2" />
-                    Save Credential
+                    {t('screens.admin.saveCredential')}
                   </Button>
                 </div>
               </ResponsiveDialogBody>
@@ -224,7 +224,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
             <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground mb-4">{t('screens.admin.noCredentialsStoredYet')}</p>
             <p className="text-sm text-muted-foreground">
-              Add API keys, tokens, or OAuth credentials to authenticate your integrations
+              {t('screens.admin.addApiKeysTokensOauthCredentials')}
             </p>
           </div>
         ) : (

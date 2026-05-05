@@ -183,7 +183,7 @@ export function MobileLiveRoomCarousel({
                 }}
               >
                 <Pencil className="w-4 h-4 mr-2" />
-                Edit
+                {t('screens.community.edit')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -193,7 +193,7 @@ export function MobileLiveRoomCarousel({
                 className="text-destructive focus:text-destructive"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Delete
+                {t('screens.community.delete')}
               </DropdownMenuItem>
             </KebabMenu>
           )}

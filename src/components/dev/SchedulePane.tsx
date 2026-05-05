@@ -22,7 +22,7 @@ export function SchedulePane({ tasks, onTaskClick }: SchedulePaneProps) {
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
         <Calendar className="h-5 w-5 text-pill-hydration-accent" />
-        <h2 className="text-lg font-semibold">Schedule</h2>
+        <h2 className="text-lg font-semibold">{t('screens.dev.schedule')}</h2>
         <span className="ml-auto text-sm text-muted-foreground">
           {scheduledTasks.length} tasks
         </span>

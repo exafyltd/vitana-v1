@@ -312,7 +312,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
               onChange={e => setKbScopeDraft(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addKbScope(); } }}
             />
-            <Button variant="outline" onClick={addKbScope}>Add</Button>
+            <Button variant="outline" onClick={addKbScope}>{t('screens.admin.add')}</Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveKb} disabled={kbMutation.isPending}>{t('screens.admin.saveKnowledge')}</Button>
@@ -328,7 +328,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
           </p>
           {platformDefaults?.handoff_keywords && platformDefaults.handoff_keywords.length > 0 && (
             <p className="mt-1 text-xs text-muted-foreground">
-              Platform defaults: <code>{platformDefaults.handoff_keywords.slice(0, 6).join(", ")}
+              {t('screens.admin.platformDefaults')} <code>{platformDefaults.handoff_keywords.slice(0, 6).join(", ")}
               {platformDefaults.handoff_keywords.length > 6 ? "…" : ""}</code>
             </p>
           )}
@@ -348,7 +348,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
               onChange={e => setKeywordDraft(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addKeyword(); } }}
             />
-            <Button variant="outline" onClick={addKeyword}>Add</Button>
+            <Button variant="outline" onClick={addKeyword}>{t('screens.admin.add')}</Button>
           </div>
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveKeywords} disabled={keywordsMutation.isPending}>{t('screens.admin.saveKeywords')}</Button>
@@ -373,7 +373,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
           <Textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className="mt-2" />
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveOverlayBasics} disabled={overrideMutation.isPending}>
-              Save enabled / intake / notes
+              {t('screens.admin.saveEnabledIntakeNotes')}
             </Button>
           </div>
         </Card>

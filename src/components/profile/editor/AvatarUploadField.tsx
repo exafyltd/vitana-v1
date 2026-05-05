@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { AvatarPositioner } from "./AvatarPositioner";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export interface AvatarUploadValue {
   url: string;
@@ -134,7 +134,7 @@ export function AvatarUploadField({
             disabled={uploading}
           >
             <Move className="w-4 h-4 mr-2" />
-            Reposition
+            {t('screens.profile.reposition')}
           </Button>
         )}
         {value.url && (
@@ -148,7 +148,7 @@ export function AvatarUploadField({
             disabled={uploading}
           >
             <X className="w-4 h-4 mr-2" />
-            Remove
+            {t('screens.profile.remove')}
           </Button>
         )}
       </div>

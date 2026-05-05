@@ -92,14 +92,14 @@ export function PersonalitySettings() {
       <CardHeader>
         <CardTitle>{t('screens.admin.systemPersonality')}</CardTitle>
         <CardDescription>
-          Configure the overall personality and communication style of the proactive assistant
+          {t('screens.admin.configureOverallPersonalityCommunicationStyleProac')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Tone</Label>
+              <Label>{t('screens.admin.tone')}</Label>
               <span className="text-sm text-muted-foreground">
                 {tone <= 12 ? 'Formal' : tone <= 37 ? 'Professional' : tone <= 62 ? 'Friendly' : tone <= 87 ? 'Casual' : 'Playful'}
               </span>
@@ -113,14 +113,14 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Formal</span>
-              <span>Playful</span>
+              <span>{t('screens.admin.formal')}</span>
+              <span>{t('screens.admin.playful')}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Verbosity</Label>
+              <Label>{t('screens.admin.verbosity')}</Label>
               <span className="text-sm text-muted-foreground">
                 {verbosity <= 16 ? 'Minimal' : verbosity <= 50 ? 'Concise' : verbosity <= 83 ? 'Moderate' : 'Detailed'}
               </span>
@@ -134,8 +134,8 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Minimal</span>
-              <span>Detailed</span>
+              <span>{t('screens.admin.minimal')}</span>
+              <span>{t('screens.admin.detailed')}</span>
             </div>
           </div>
 
@@ -155,7 +155,7 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Low</span>
+              <span>{t('screens.admin.low')}</span>
               <span>{t('screens.admin.veryHigh')}</span>
             </div>
           </div>

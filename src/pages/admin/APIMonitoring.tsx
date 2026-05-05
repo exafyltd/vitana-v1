@@ -145,11 +145,11 @@ export default function APIMonitoring() {
       case 'success':
         return <Badge className="bg-green-500"><CheckCircle2 className="w-3 h-3 mr-1" />Healthy</Badge>;
       case 'failed':
-        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />Failed</Badge>;
+        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />{t('screens.admin.failed')}</Badge>;
       case 'warning':
-        return <Badge variant="secondary"><AlertTriangle className="w-3 h-3 mr-1" />Warning</Badge>;
+        return <Badge variant="secondary"><AlertTriangle className="w-3 h-3 mr-1" />{t('screens.admin.warning')}</Badge>;
       default:
-        return <Badge variant="outline"><Clock className="w-3 h-3 mr-1" />Pending</Badge>;
+        return <Badge variant="outline"><Clock className="w-3 h-3 mr-1" />{t('screens.admin.pending')}</Badge>;
     }
   };
 
@@ -254,10 +254,10 @@ export default function APIMonitoring() {
             {/* Main Content Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="integrations">Integrations</TabsTrigger>
+                <TabsTrigger value="overview">{t('screens.admin.overview')}</TabsTrigger>
+                <TabsTrigger value="integrations">{t('screens.admin.integrations')}</TabsTrigger>
                 <TabsTrigger value="logs">{t('screens.admin.testLogs')}</TabsTrigger>
-                <TabsTrigger value="alerts">Alerts</TabsTrigger>
+                <TabsTrigger value="alerts">{t('screens.admin.alerts')}</TabsTrigger>
               </TabsList>
 
               {/* Overview Tab */}
@@ -277,11 +277,11 @@ export default function APIMonitoring() {
                       <div className="flex gap-2">
                         <Button onClick={handleDiscoverIntegrations} variant="default" size="sm">
                           <Server className="w-4 h-4 mr-2" />
-                          Discover
+                          {t('screens.admin.discover')}
                         </Button>
                         <Button onClick={() => refetchIntegrations()} variant="outline" size="sm">
                           <RefreshCw className="w-4 h-4 mr-2" />
-                          Refresh
+                          {t('screens.admin.refresh')}
                         </Button>
                       </div>
                     </div>
@@ -300,9 +300,9 @@ export default function APIMonitoring() {
                                   <div className="flex items-center gap-2 flex-wrap">
                                     <h3 className="font-semibold">{integration.name}</h3>
                                     {integration.is_active ? (
-                                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Active</Badge>
+                                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">{t('screens.admin.active')}</Badge>
                                     ) : (
-                                      <Badge variant="outline">Inactive</Badge>
+                                      <Badge variant="outline">{t('screens.admin.inactive')}</Badge>
                                     )}
                                     {(integration.metadata as any)?.deployment_type && (
                                       <Badge variant="secondary" className="text-xs">
@@ -338,7 +338,7 @@ export default function APIMonitoring() {
                                   onClick={() => handleTestIntegration(integration.id)}
                                 >
                                   <PlayCircle className="w-4 h-4 mr-1" />
-                                  Test
+                                  {t('screens.admin.test')}
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -357,7 +357,7 @@ export default function APIMonitoring() {
                         <Server className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                         <p className="text-muted-foreground mb-4">{t('screens.admin.noIntegrationsRegisteredYet')}</p>
                         <Button variant="outline">
-                          Add First Integration
+                          {t('screens.admin.addFirstIntegration')}
                         </Button>
                       </div>
                     )}
@@ -414,7 +414,7 @@ export default function APIMonitoring() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <AlertTriangle className="w-5 h-5" />
-                      Alert Notifications
+                      {t('screens.admin.alertNotifications')}
                     </CardTitle>
                     <CardDescription>{t('screens.admin.recentAlertsNotificationsFromApiMonitoring')}</CardDescription>
                   </CardHeader>

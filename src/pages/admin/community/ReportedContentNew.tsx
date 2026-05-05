@@ -54,10 +54,10 @@ export default function ReportedContentNew() {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('screens.admin.contentType')}</TableHead>
-                  <TableHead>Reason</TableHead>
-                  <TableHead>Reporter</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead>{t('screens.admin.reason')}</TableHead>
+                  <TableHead>{t('screens.admin.reporter')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

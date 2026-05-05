@@ -124,7 +124,7 @@ export default function WalletIntegratedExchangeAndSend({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-purple-600" />
-            Exchange & Send Request
+            {t('screens.payment.exchangeSendRequest')}
           </DialogTitle>
         </DialogHeader>
 
@@ -250,7 +250,7 @@ export default function WalletIntegratedExchangeAndSend({
                 
                 {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
-                    🎉 +5% Bonus Applied
+                    {t('screens.payment.text5BonusApplied')}
                   </Badge>
                 )}
               </CardContent>
@@ -259,7 +259,7 @@ export default function WalletIntegratedExchangeAndSend({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Message</Label>
+            <Label htmlFor="description">{t('screens.payment.message')}</Label>
             <Textarea
               id="description"
               placeholder={t('screens.payment.whatThisExchangeFor')}
@@ -272,7 +272,7 @@ export default function WalletIntegratedExchangeAndSend({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleExchangeAndSend} 
@@ -287,7 +287,7 @@ export default function WalletIntegratedExchangeAndSend({
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Request
+                  {t('screens.payment.sendRequest')}
                 </>
               )}
             </Button>

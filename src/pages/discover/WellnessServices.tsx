@@ -259,7 +259,7 @@ export default function WellnessServices() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
@@ -389,10 +389,10 @@ export default function WellnessServices() {
                     <Bookmark className="h-16 w-16 mx-auto mb-4 text-yellow-400" />
                     <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noBookmarkedServicesYet')}</h3>
                     <p className="text-muted-foreground mb-4">
-                      Browse wellness services and bookmark your favorites
+                      {t('screens.discover.browseWellnessServicesBookmarkYourFavorites')}
                     </p>
                     <Button onClick={() => setActiveTab('categories')}>
-                      Explore Services
+                      {t('screens.discover.exploreServices')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -509,7 +509,7 @@ export default function WellnessServices() {
 
                           <div className="flex gap-2">
                             <Button size="sm" className="flex-1">
-                              Book Now
+                              {t('screens.discover.bookNow')}
                             </Button>
                             <AddToCartButton
                               item={{

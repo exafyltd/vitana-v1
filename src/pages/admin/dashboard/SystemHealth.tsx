@@ -48,7 +48,7 @@ function ServiceCard({ name, description, healthy }: ServiceCardProps) {
           </span>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Check <code className="rounded bg-muted px-1 py-0.5">{t('screens.admin.alive')}</code> endpoint
+          {t('screens.admin.check')} <code className="rounded bg-muted px-1 py-0.5">{t('screens.admin.alive')}</code> endpoint
         </p>
       </CardContent>
     </Card>
@@ -99,7 +99,7 @@ export default function SystemHealth() {
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Server className="h-5 w-5 text-muted-foreground" />
-              Cloud Run Services
+              {t('screens.admin.cloudRunServices')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {services.map((service) => (
@@ -123,7 +123,7 @@ export default function SystemHealth() {
                     <code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.uscentral1')}</code>{" "}
                     under project{" "}
                     <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                      lovable-vitana-vers1
+                      {t('screens.admin.lovablevitanavers1')}
                     </code>
                     .
                   </p>

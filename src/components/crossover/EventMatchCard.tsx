@@ -112,7 +112,7 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
           size="sm" 
           onClick={() => navigate('/community/events')}
         >
-          View All
+          {t('screens.crossover.viewAll')}
         </Button>
       </div>
 
@@ -141,7 +141,7 @@ function EventMatchCardBase({ className }: EventMatchCardProps) {
           onClick={() => navigate('/community/events?recommended=1')}
           className="text-sm"
         >
-          See more →
+          {t('screens.crossover.seeMore')}
         </Button>
       </div>
     </div>

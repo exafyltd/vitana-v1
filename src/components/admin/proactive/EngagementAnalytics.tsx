@@ -94,7 +94,7 @@ export function EngagementAnalytics() {
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.uniqueUsers || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Engaged with proactive assistant
+              {t('screens.admin.engagedWithProactiveAssistant')}
             </p>
           </CardContent>
         </Card>

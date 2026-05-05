@@ -217,7 +217,7 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  This name will appear in recipient inboxes
+                  {t('screens.sharing.thisNameWillAppearRecipientInboxes')}
                 </p>
               </div>
               
@@ -232,7 +232,7 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Must be a verified domain in Resend
+                  {t('screens.sharing.mustVerifiedDomainResend')}
                 </p>
               </div>
 
@@ -240,7 +240,7 @@ export function InlineChannelConnector({
                 <div className="flex-1 text-sm">
                   <p className="font-medium">{t('screens.sharing.domainVerification')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Verify your domain in Resend to send emails
+                    {t('screens.sharing.verifyYourDomainResendSendEmails')}
                   </p>
                 </div>
                 <Button
@@ -250,7 +250,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://resend.com/domains', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Verify
+                  {t('screens.sharing.verify')}
                 </Button>
               </div>
 
@@ -305,7 +305,7 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Your Twilio phone number with country code
+                  {t('screens.sharing.yourTwilioPhoneNumberWithCountry')}
                 </p>
               </div>
 
@@ -323,7 +323,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://console.twilio.com', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Open
+                  {t('screens.sharing.open')}
                 </Button>
               </div>
 
@@ -354,7 +354,7 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  From Meta Business Suite
+                  {t('screens.sharing.fromMetaBusinessSuite')}
                 </p>
               </div>
 
@@ -369,7 +369,7 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Your WhatsApp Business phone number ID
+                  {t('screens.sharing.yourWhatsappBusinessPhoneNumberId')}
                 </p>
               </div>
 
@@ -377,7 +377,7 @@ export function InlineChannelConnector({
                 <div className="flex-1 text-sm">
                   <p className="font-medium">{t('screens.sharing.whatsappBusinessSetup')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Configure in Meta Business Suite
+                    {t('screens.sharing.configureMetaBusinessSuite')}
                   </p>
                 </div>
                 <Button
@@ -387,7 +387,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://business.facebook.com', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Open
+                  {t('screens.sharing.open')}
                 </Button>
               </div>
 
@@ -411,7 +411,7 @@ export function InlineChannelConnector({
               onClick={() => onOpenChange(false)}
               className="flex-1"
             >
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button
               type="submit"

@@ -102,7 +102,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
-            Subscription ROI Analytics
+            {t('screens.wallet.subscriptionRoiAnalytics')}
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
             {averageROI}% Avg ROI
@@ -128,7 +128,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your subscriptions deliver <span className="font-semibold text-emerald-600">${totalValue - totalCost} net value</span> monthly
+            {t('screens.wallet.yourSubscriptionsDeliver')} <span className="font-semibold text-emerald-600">${totalValue - totalCost} net value</span> monthly
           </p>
         </div>
 
@@ -136,7 +136,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-purple-500" />
-            Performance Analysis
+            {t('screens.wallet.performanceAnalysis')}
           </h4>
           
           {mockSubscriptions.slice(0, 2).map((subscription) => {
@@ -202,7 +202,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
                   {subscription.recommendation}
                 </p>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Optimize Plan
+                  {t('screens.wallet.optimizePlan')}
                 </Button>
               </div>
             ))}
@@ -211,7 +211,7 @@ export function SubscriptionROIAnalyticsCard({ className }: SubscriptionROIAnaly
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <BarChart3 className="h-4 w-4 mr-2" />
-          View Detailed Analysis
+          {t('screens.wallet.viewDetailedAnalysis')}
         </Button>
       </CardContent>
     </Card>

@@ -129,10 +129,10 @@ export default function Videos() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">{t('screens.admin.allStatus')}</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                  <SelectItem value="flagged">Flagged</SelectItem>
+                  <SelectItem value="pending">{t('screens.admin.pending')}</SelectItem>
+                  <SelectItem value="approved">{t('screens.admin.approved')}</SelectItem>
+                  <SelectItem value="rejected">{t('screens.admin.rejected')}</SelectItem>
+                  <SelectItem value="flagged">{t('screens.admin.flagged')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -145,14 +145,14 @@ export default function Videos() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Video</TableHead>
-                  <TableHead>Uploader</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Views</TableHead>
-                  <TableHead>Likes</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.video')}</TableHead>
+                  <TableHead>{t('screens.admin.uploader')}</TableHead>
+                  <TableHead>{t('screens.admin.duration')}</TableHead>
+                  <TableHead>{t('screens.admin.views')}</TableHead>
+                  <TableHead>{t('screens.admin.likes')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

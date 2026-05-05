@@ -48,7 +48,7 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.grantDataAccess')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Allow an entity to access specific data with defined permissions
+            {t('screens.sharing.allowEntityAccessSpecificDataWith')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <form onSubmit={handleSubmit}>
@@ -87,8 +87,8 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
                   <SelectContent>
                     <SelectItem value="health">{t('screens.sharing.healthRecords')}</SelectItem>
                     <SelectItem value="calendar">{t('screens.sharing.calendarEvents')}</SelectItem>
-                    <SelectItem value="messages">Messages</SelectItem>
-                    <SelectItem value="documents">Documents</SelectItem>
+                    <SelectItem value="messages">{t('screens.sharing.messages')}</SelectItem>
+                    <SelectItem value="documents">{t('screens.sharing.documents')}</SelectItem>
                     <SelectItem value="all">{t('screens.sharing.allData')}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -106,7 +106,7 @@ export function GrantAccessDialog({ open, onOpenChange }: GrantAccessDialogProps
           </ResponsiveDialogBody>
           <ResponsiveDialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit">{t('screens.sharing.grantAccess')}</Button>
           </ResponsiveDialogFooter>

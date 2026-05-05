@@ -169,7 +169,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <span>{t('screens.reseller.commissionLogic')}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              You earn <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
+              {t('screens.reseller.youEarn')} <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
               Commission is calculated on gross ticket price before platform fees.
             </p>
           </div>
@@ -184,7 +184,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Paid to Wallet
+                  {t('screens.reseller.paidWallet')}
                 </Badge>
                 {payoutInfo.paidAt && (
                   <span className="text-xs text-muted-foreground">
@@ -196,7 +196,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
                   <Clock className="h-3 w-3 mr-1" />
-                  Pending
+                  {t('screens.reseller.pending')}
                 </Badge>
                 <span className="text-xs text-muted-foreground">{t('screens.reseller.includedNextPayoutCycle')}</span>
               </div>
@@ -215,7 +215,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Receipt className="h-4 w-4 text-muted-foreground" />
-              <span>Transactions</span>
+              <span>{t('screens.reseller.transactions')}</span>
             </div>
             
             {isLoading ? (
@@ -247,14 +247,14 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               </div>
             ) : (
               <p className="text-sm text-muted-foreground py-4 text-center">
-                No transactions found
+                {t('screens.reseller.noTransactionsFound')}
               </p>
             )}
           </div>
 
           {/* Summary Footer */}
           <div className="bg-accent/10 rounded-xl p-4 space-y-3 border border-accent/20">
-            <h4 className="text-sm font-medium">Summary</h4>
+            <h4 className="text-sm font-medium">{t('screens.reseller.summary')}</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-muted-foreground">{t('screens.reseller.totalTickets')}</p>

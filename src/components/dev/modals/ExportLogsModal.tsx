@@ -91,7 +91,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
                 <SelectValue placeholder={t('screens.dev.selectStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="all">{t('screens.dev.all')}</SelectItem>
                 <SelectItem value="success">{t('screens.dev.successOnly')}</SelectItem>
                 <SelectItem value="failed">{t('screens.dev.failedOnly')}</SelectItem>
               </SelectContent>
@@ -110,7 +110,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleSubmit} 

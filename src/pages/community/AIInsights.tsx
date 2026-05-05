@@ -159,7 +159,7 @@ export default function AIInsights() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
@@ -196,11 +196,11 @@ export default function AIInsights() {
         
         <div className="flex items-center justify-between">
           <div className="text-lg font-bold flex items-center gap-2">
-            Powered by AI
+            {t('screens.community.poweredByAi')}
           </div>
           <Badge variant="secondary" className="flex items-center gap-1">
             <Star className="w-3 h-3" />
-            Powered by AI
+            {t('screens.community.poweredByAi')}
           </Badge>
         </div>
 
@@ -212,7 +212,7 @@ export default function AIInsights() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <UserPlus className="w-5 h-5" />
-                  People You Should Meet
+                  {t('screens.community.peopleYouShouldMeet')}
                 </h2>
                 <div className="space-y-4">
                   {recommendedConnections.map((person, index) => (
@@ -244,10 +244,10 @@ export default function AIInsights() {
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" className="flex-1">
                           <MessageSquare className="w-3 h-3 mr-1" />
-                          Message
+                          {t('screens.community.message')}
                         </Button>
                         <Button size="sm" className="flex-1">
-                          Connect
+                          {t('screens.community.connect')}
                         </Button>
                       </div>
                     </div>
@@ -260,7 +260,7 @@ export default function AIInsights() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Shield className="w-5 h-5" />
-                  Safety Nudges
+                  {t('screens.community.safetyNudges')}
                 </h3>
                 <div className="space-y-3">
                   {safetyNudges.map((nudge, index) => (
@@ -286,7 +286,7 @@ export default function AIInsights() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
-                  Weekly Digest
+                  {t('screens.community.weeklyDigest')}
                 </h2>
                 <div className="space-y-4">
                   {weeklyDigest.map((section, index) => (
@@ -310,7 +310,7 @@ export default function AIInsights() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Lightbulb className="w-5 h-5" />
-                  Personalized Recommendations
+                  {t('screens.community.personalizedRecommendations')}
                 </h3>
                 <div className="space-y-3">
                   {personalizedRecommendations.map((rec, index) => (
@@ -323,7 +323,7 @@ export default function AIInsights() {
                       <p className="text-xs text-muted-foreground mb-2">{rec.reason}</p>
                       <div className="flex items-center justify-between">
                         <Badge variant="outline" className="text-xs">{rec.category}</Badge>
-                        <Button size="sm">Explore</Button>
+                        <Button size="sm">{t('screens.community.explore')}</Button>
                       </div>
                     </div>
                   ))}
@@ -338,7 +338,7 @@ export default function AIInsights() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  Goal-Based Suggestions
+                  {t('screens.community.goalbasedSuggestions')}
                 </h3>
                 <div className="space-y-4">
                   {goalBasedSuggestions.map((suggestion, index) => (
@@ -362,7 +362,7 @@ export default function AIInsights() {
                         </div>
                       </div>
                       <Button size="sm" className="w-full">
-                        Join Challenge
+                        {t('screens.community.joinChallenge')}
                       </Button>
                     </div>
                   ))}
@@ -376,18 +376,18 @@ export default function AIInsights() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 border rounded-lg">
                     <span className="text-sm">{t('screens.community.connectionSuggestions')}</span>
-                    <Badge variant="secondary">On</Badge>
+                    <Badge variant="secondary">{t('screens.community.text')}</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 border rounded-lg">
                     <span className="text-sm">{t('screens.community.contentRecommendations')}</span>
-                    <Badge variant="secondary">On</Badge>
+                    <Badge variant="secondary">{t('screens.community.text')}</Badge>
                   </div>
                   <div className="flex items-center justify-between p-3 border rounded-lg">
                     <span className="text-sm">{t('screens.community.weeklyDigest')}</span>
-                    <Badge variant="secondary">On</Badge>
+                    <Badge variant="secondary">{t('screens.community.text')}</Badge>
                   </div>
                   <Button variant="outline" className="w-full mt-3">
-                    Customize Settings
+                    {t('screens.community.customizeSettings')}
                   </Button>
                 </div>
               </CardContent>

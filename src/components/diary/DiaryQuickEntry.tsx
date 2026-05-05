@@ -153,7 +153,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
               onClick={handleCancel}
               className="px-6"
             >
-              Cancel
+              {t('screens.diary.cancel')}
             </Button>
           </div>
         </div>

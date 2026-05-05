@@ -39,7 +39,7 @@ export default function PatternDetails({ pattern, open, onOpenChange }: PatternD
                 <div className="text-2xl font-bold">{Math.round(pattern.occurrence_rate * 100)}%</div>
               </div>
               <div className="p-3 border rounded-lg">
-                <div className="text-sm text-muted-foreground">Status</div>
+                <div className="text-sm text-muted-foreground">{t('screens.admin.status')}</div>
                 <div className="text-lg font-semibold capitalize">{pattern.status}</div>
               </div>
             </div>

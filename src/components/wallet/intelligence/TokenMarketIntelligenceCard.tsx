@@ -98,7 +98,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
-            Token Intelligence
+            {t('screens.wallet.tokenIntelligence')}
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
             +{potentialIncrease}% APY Available
@@ -132,7 +132,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-green-500" />
-            Market Insights
+            {t('screens.wallet.marketInsights')}
           </h4>
           
           {mockInsights.slice(0, 2).map((insight) => {
@@ -179,12 +179,12 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
             <span className="text-sm font-medium">{t('screens.wallet.governanceAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            New proposal available: "Community Fund Allocation" - voting ends in 3 days
+            {t('screens.wallet.newProposalAvailableCommunityFundAllocation')}
           </p>
           <div className="flex items-center justify-between">
             <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.bonusApy12')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-              Vote Now
+              {t('screens.wallet.voteNow')}
             </Button>
           </div>
         </div>
@@ -193,11 +193,11 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         <div className="grid grid-cols-2 gap-2">
           <Button size="sm" variant="outline">
             <Shield className="h-3 w-3 mr-1" />
-            Optimize Stake
+            {t('screens.wallet.optimizeStake')}
           </Button>
           <Button size="sm" variant="outline">
             <BarChart3 className="h-3 w-3 mr-1" />
-            View Analysis
+            {t('screens.wallet.viewAnalysis')}
           </Button>
         </div>
       </CardContent>

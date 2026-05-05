@@ -174,8 +174,7 @@ export default function AIAssistantOverview() {
                     <h4 className="font-semibold">{t('screens.admin.autopilotIntegration')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Connects automations to user-facing proactive actions 
-                    for seamless engagement.
+                    {t('screens.admin.connectsAutomationsUserfacingProactiveActionsFor')}
                   </p>
                 </div>
               </div>

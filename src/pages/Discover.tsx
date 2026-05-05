@@ -306,7 +306,7 @@ function DiscoverInner() {
                   onClick={() => setMasterActionOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="ml-2">Action</span>
+                  <span className="ml-2">{t('screens.discover.action')}</span>
                 </Button>
               )}
             </div>
@@ -320,13 +320,13 @@ function DiscoverInner() {
             <SplitBar value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="suggested">
-                  💡 Suggested for You
+                  {t('screens.discover.suggestedForYou')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="categories">
-                  📂 Categories
+                  {t('screens.discover.categories')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="share">
-                  💰 Share & Earn
+                  {t('screens.discover.shareEarn')}
                 </SplitBarTrigger>
               </SplitBarList>
 
@@ -590,7 +590,7 @@ function DiscoverInner() {
                           </div>
                           <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">
                             <p className="text-xs text-green-700 dark:text-green-300">
-                              Community earned: <span className="font-bold">{item.earnings}</span>
+                              {t('screens.discover.communityEarned')} <span className="font-bold">{item.earnings}</span>
                             </p>
                           </div>
                           <div className="flex gap-2">

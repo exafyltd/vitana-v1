@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
+import { t } from '@/lib/i18n-toast';
 
 interface AutopilotSuggestion {
   id: string;
@@ -42,7 +43,7 @@ export function AutopilotSuggestions({ suggestions, onAccept, onDismiss }: Autop
         <CardContent className="pt-6 pb-6 text-center">
           <Sparkles className="h-8 w-8 mx-auto mb-2 text-muted-foreground opacity-50" />
           <p className="text-sm text-muted-foreground">
-            No autopilot suggestions at the moment
+            {t('screens.calendar.noAutopilotSuggestionsAtMoment')}
           </p>
         </CardContent>
       </Card>
@@ -59,7 +60,7 @@ export function AutopilotSuggestions({ suggestions, onAccept, onDismiss }: Autop
               {suggestion.title}
               <Badge variant="outline" className="ml-auto text-xs">
                 <Sparkles className="h-2.5 w-2.5 mr-1" />
-                Autopilot
+                {t('screens.calendar.autopilot')}
               </Badge>
             </CardTitle>
           </CardHeader>
@@ -78,14 +79,14 @@ export function AutopilotSuggestions({ suggestions, onAccept, onDismiss }: Autop
                 onClick={() => onAccept(suggestion)}
                 className="flex-1"
               >
-                Accept
+                {t('screens.calendar.accept')}
               </Button>
               <Button 
                 size="sm" 
                 variant="outline"
                 onClick={() => onDismiss(suggestion.id)}
               >
-                Dismiss
+                {t('screens.calendar.dismiss')}
               </Button>
             </div>
           </CardContent>

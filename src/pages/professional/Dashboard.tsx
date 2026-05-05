@@ -10,7 +10,7 @@ export default function ProfessionalDashboard() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.professional.professionalDashboard')}</h1>
         <p className="text-muted-foreground">
-          Your healthcare practice management center
+          {t('screens.professional.yourHealthcarePracticeManagementCenter')}
         </p>
       </div>
 
@@ -23,7 +23,7 @@ export default function ProfessionalDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">12</div>
             <p className="text-xs text-muted-foreground">
-              3 pending appointments
+              {t('screens.professional.text3PendingAppointments')}
             </p>
           </CardContent>
         </Card>
@@ -36,7 +36,7 @@ export default function ProfessionalDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{t('screens.professional.text230Pm')}</div>
             <p className="text-xs text-muted-foreground">
-              Sarah Johnson - Follow-up
+              {t('screens.professional.sarahJohnsonFollowup')}
             </p>
           </CardContent>
         </Card>
@@ -49,7 +49,7 @@ export default function ProfessionalDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">5</div>
             <p className="text-xs text-muted-foreground">
-              Pending clinical reviews
+              {t('screens.professional.pendingClinicalReviews')}
             </p>
           </CardContent>
         </Card>
@@ -107,15 +107,15 @@ export default function ProfessionalDashboard() {
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
               <Users className="mr-2 h-4 w-4" />
-              View Patient List
+              {t('screens.professional.viewPatientList')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <Calendar className="mr-2 h-4 w-4" />
-              Manage Schedule
+              {t('screens.professional.manageSchedule')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <Activity className="mr-2 h-4 w-4" />
-              Clinical Tools
+              {t('screens.professional.clinicalTools')}
             </Button>
           </CardContent>
         </Card>

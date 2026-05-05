@@ -217,7 +217,7 @@ export function WalletSubscriptionCard({
             {status !== "available" && (
               <Button size="sm" variant="outline">
                 <Settings className="h-4 w-4 mr-1" />
-                Settings
+                {t('screens.wallet.settings')}
               </Button>
             )}
           </div>

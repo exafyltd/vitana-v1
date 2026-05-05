@@ -118,7 +118,7 @@ export default function MembersRolesAccess() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[40px]" />
-                  <TableHead>Member</TableHead>
+                  <TableHead>{t('screens.admin.member')}</TableHead>
                   <TableHead>{t('screens.admin.activeRole')}</TableHead>
                   <TableHead>{t('screens.admin.grantedRoles')}</TableHead>
                   <TableHead className="w-[200px]">{t('screens.admin.grantRole')}</TableHead>

@@ -125,7 +125,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold bg-gradient-to-r from-violet-500 to-sky-400 bg-clip-text text-transparent">
-            Upload Video Short
+            {t('screens.community.uploadVideoShort')}
           </DialogTitle>
         </DialogHeader>
 
@@ -140,10 +140,10 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
               >
                 <Video className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground mb-2">
-                  Click to upload or drag and drop
+                  {t('screens.community.clickUploadDragDrop')}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  MP4, WebM, or OGG (max 500MB, 5min)
+                  {t('screens.community.mp4WebmOggMax500mb5min')}
                 </p>
                 <input
                   ref={fileInputRef}
@@ -240,7 +240,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.community.description')}</Label>
             <Textarea
               id="description"
               value={description}
@@ -254,7 +254,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
 
           {/* Category */}
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category">{t('screens.community.category')}</Label>
             <Input
               id="category"
               value={category}
@@ -267,7 +267,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
 
           {/* Tags */}
           <div className="space-y-2">
-            <Label htmlFor="tags">Tags</Label>
+            <Label htmlFor="tags">{t('screens.community.tags')}</Label>
             <div className="flex gap-2">
               <Input
                 id="tags"
@@ -288,7 +288,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
                 onClick={handleAddTag}
                 disabled={!tagInput.trim() || isUploading}
               >
-                Add
+                {t('screens.community.add')}
               </Button>
             </div>
             {tags.length > 0 && (
@@ -333,7 +333,7 @@ export const UploadVideoModal = ({ open, onOpenChange, onUploadComplete }: Uploa
               onClick={() => onOpenChange(false)}
               disabled={isUploading}
             >
-              Cancel
+              {t('screens.community.cancel')}
             </Button>
             <Button
               type="submit"

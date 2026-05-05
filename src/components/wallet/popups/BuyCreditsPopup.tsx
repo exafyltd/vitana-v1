@@ -99,7 +99,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-blue-600" />
-            Buy Credits
+            {t('screens.wallet.buyCredits')}
           </DialogTitle>
         </DialogHeader>
         
@@ -153,7 +153,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                   {pkg.popular && (
                     <Badge className="bg-blue-600 text-white flex items-center gap-1">
                       <Star className="h-3 w-3" />
-                      Popular
+                      {t('screens.wallet.popular')}
                     </Badge>
                   )}
                 </div>

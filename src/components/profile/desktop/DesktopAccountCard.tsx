@@ -53,7 +53,7 @@ export function DesktopAccountCard({
             <div>
               <h2 className="text-xl font-semibold tracking-tight">{t('screens.profile.personalDataVault')}</h2>
               <p className="text-sm text-muted-foreground">
-                Each field has a value and a visibility rule.
+                {t('screens.profile.eachFieldHasValueVisibilityRule')}
               </p>
             </div>
           </div>
@@ -79,7 +79,7 @@ export function DesktopAccountCard({
               <Lock className="h-6 w-6 text-muted-foreground" />
             </div>
             <p className="text-sm text-muted-foreground">
-              This user keeps account details private.
+              {t('screens.profile.thisUserKeepsAccountDetailsPrivate')}
             </p>
           </div>
         )}

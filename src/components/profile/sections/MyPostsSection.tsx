@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { listMyIntents, type UserIntent } from "@/lib/intentApi";
 import { FileText } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface MyPostsSectionProps {
   userId: string;
@@ -62,7 +63,7 @@ export function MyPostsSection({ userId }: MyPostsSectionProps) {
       <header className="flex items-center gap-2">
         <FileText className="h-4 w-4 text-blue-600" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          My posts
+          {t('screens.profile.myPosts')}
         </h3>
       </header>
 

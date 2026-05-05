@@ -88,10 +88,10 @@ export function SellEventModal({
         <DialogHeader>
           <DialogTitle className="text-xl flex items-center gap-2">
             <Share2 className="w-5 h-5 text-primary" />
-            Sell This Event
+            {t('screens.reseller.sellThisEvent')}
           </DialogTitle>
           <DialogDescription>
-            Share your unique reseller link to earn commission on every ticket sold.
+            {t('screens.reseller.shareYourUniqueResellerLinkEarn')}
           </DialogDescription>
         </DialogHeader>
 
@@ -112,7 +112,7 @@ export function SellEventModal({
             <div className="min-w-0 flex-1">
               <p className="font-semibold truncate">{event.title}</p>
               <p className="text-xs text-muted-foreground">
-                Your reseller code: <span className="font-mono font-medium text-primary">{resellerCode}</span>
+                {t('screens.reseller.yourResellerCode')} <span className="font-mono font-medium text-primary">{resellerCode}</span>
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ export function SellEventModal({
                 >
                   <path d={siWhatsapp.path} />
                 </svg>
-                <span className="text-green-700 dark:text-green-300">WhatsApp</span>
+                <span className="text-green-700 dark:text-green-300">{t('screens.reseller.whatsapp')}</span>
               </Button>
               
               <Button 
@@ -175,7 +175,7 @@ export function SellEventModal({
                 >
                   <path d={siInstagram.path} />
                 </svg>
-                <span className="text-pink-700 dark:text-pink-300">Instagram</span>
+                <span className="text-pink-700 dark:text-pink-300">{t('screens.reseller.instagram')}</span>
               </Button>
             </div>
           </div>
@@ -187,10 +187,10 @@ export function SellEventModal({
               onClick={handleOpenCampaignBuilder}
             >
               <Megaphone className="h-5 w-5" />
-              Open Campaign Builder
+              {t('screens.reseller.openCampaignBuilder')}
             </Button>
             <p className="text-xs text-muted-foreground text-center mt-2">
-              Create a full marketing campaign with email, SMS & social media
+              {t('screens.reseller.createFullMarketingCampaignWithEmail')}
             </p>
           </div>
         </div>

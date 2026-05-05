@@ -157,7 +157,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <Badge variant="destructive" className="text-xs">LIVE</Badge>
+            <Badge variant="destructive" className="text-xs">{t('screens.community.live')}</Badge>
           </div>
           <h2 className="font-semibold">{t('screens.community.morningMeditationMindfulness')}</h2>
           <Badge variant="secondary" className="text-xs">
@@ -173,7 +173,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
             onClick={() => setShowParticipants(!showParticipants)}
           >
             <Users className="w-4 h-4 mr-2" />
-            Participants
+            {t('screens.community.participants')}
           </Button>
           <Button variant="ghost" size="sm">
             <Settings className="w-4 h-4" />
@@ -184,7 +184,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
             onClick={onLeave}
           >
             <PhoneOff className="w-4 h-4 mr-2" />
-            Leave
+            {t('screens.community.leave')}
           </Button>
         </div>
       </div>
@@ -200,14 +200,14 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
                 <div className="relative mb-4">
                   <Avatar className="h-32 w-32 mx-auto ring-4 ring-green-500 ring-offset-4">
                     <AvatarImage src="/lovable-uploads/emma-wilson-avatar.jpg" />
-                    <AvatarFallback>EW</AvatarFallback>
+                    <AvatarFallback>{t('screens.community.ew')}</AvatarFallback>
                   </Avatar>
                   <div className="absolute -bottom-2 -right-2 bg-green-500 text-white p-2 rounded-full">
                     <Mic className="w-4 h-4" />
                   </div>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground">{t('screens.community.drEmmaWilson')}</h3>
-                <Badge className="mt-2">Host</Badge>
+                <Badge className="mt-2">{t('screens.community.host')}</Badge>
               </div>
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
             <div className="p-4 border-b">
               <h3 className="font-semibold flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
-                Chat
+                {t('screens.community.chat')}
               </h3>
             </div>
             

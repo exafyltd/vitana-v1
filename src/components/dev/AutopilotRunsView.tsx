@@ -15,7 +15,7 @@ export function AutopilotRunsView() {
         <SplitBarTrigger value="run-history">{t('screens.dev.runHistory')}</SplitBarTrigger>
         <SplitBarTrigger value="active-runs">{t('screens.dev.activeRuns')}</SplitBarTrigger>
         <SplitBarTrigger value="templates">{t('screens.dev.templatesRecipes')}</SplitBarTrigger>
-        <SplitBarTrigger value="analytics">Analytics</SplitBarTrigger>
+        <SplitBarTrigger value="analytics">{t('screens.dev.analytics')}</SplitBarTrigger>
       </SplitBarList>
 
       <SplitBarContent value="run-history">

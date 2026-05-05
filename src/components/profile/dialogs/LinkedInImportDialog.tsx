@@ -72,7 +72,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
             <ResponsiveDialogTitle>{t('screens.profile.importFromLinkedin')}</ResponsiveDialogTitle>
           </div>
           <ResponsiveDialogDescription>
-            Import your professional profile to enrich your Vitana profile
+            {t('screens.profile.importYourProfessionalProfileEnrichYour')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
@@ -99,7 +99,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
                 className="resize-none"
               />
               <p className="text-xs text-muted-foreground">
-                Copy your LinkedIn bio for AI-powered parsing of skills, experience, and headline
+                {t('screens.profile.copyYourLinkedinBioForAipowered')}
               </p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
             onClick={() => onOpenChange(false)}
             disabled={importing}
           >
-            Cancel
+            {t('screens.profile.cancel')}
           </Button>
           <Button
             onClick={handleImport}

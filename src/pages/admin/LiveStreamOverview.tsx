@@ -83,7 +83,7 @@ export default function LiveStreamOverview() {
                 </CardHeader>
                 <CardContent className="pb-4">
                   <p className="text-xs text-muted-foreground">
-                    Test voice streaming with visual feedback and debugging tools
+                    {t('screens.admin.testVoiceStreamingWithVisualFeedback')}
                   </p>
                 </CardContent>
               </Card>
@@ -121,13 +121,13 @@ export default function LiveStreamOverview() {
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.scheduleSession')}</CardTitle>
-                      <CardDescription className="text-xs">Telemedicine</CardDescription>
+                      <CardDescription className="text-xs">{t('screens.admin.telemedicine')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pb-4">
                   <p className="text-xs text-muted-foreground">
-                    Schedule a telemedicine consultation session
+                    {t('screens.admin.scheduleTelemedicineConsultationSession')}
                   </p>
                 </CardContent>
               </Card>
@@ -143,13 +143,13 @@ export default function LiveStreamOverview() {
                     </div>
                     <div>
                       <CardTitle className="text-sm">{t('screens.admin.viewReports')}</CardTitle>
-                      <CardDescription className="text-xs">Analytics</CardDescription>
+                      <CardDescription className="text-xs">{t('screens.admin.analytics')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pb-4">
                   <p className="text-xs text-muted-foreground">
-                    View detailed streaming analytics and reports
+                    {t('screens.admin.viewDetailedStreamingAnalyticsReports')}
                   </p>
                 </CardContent>
               </Card>
@@ -183,7 +183,7 @@ export default function LiveStreamOverview() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Ready for testing and streaming
+                  {t('screens.admin.readyForTestingStreaming')}
                 </p>
               </CardContent>
             </Card>
@@ -211,7 +211,7 @@ export default function LiveStreamOverview() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Coming soon - Infrastructure ready
+                  {t('screens.admin.comingSoonInfrastructureReady')}
                 </p>
               </CardContent>
             </Card>

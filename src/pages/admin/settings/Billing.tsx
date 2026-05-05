@@ -40,7 +40,7 @@ export default function SettingsBilling() {
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-muted-foreground">Plan</CardTitle>
+                <CardTitle className="text-sm text-muted-foreground">{t('screens.admin.plan')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-2xl font-bold">{(billing.plan_name as string) || "Unknown"}</p>

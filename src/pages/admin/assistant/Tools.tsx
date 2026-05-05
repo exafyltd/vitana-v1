@@ -55,9 +55,9 @@ export default function AssistantTools() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Surface</TableHead>
-                    <TableHead>Tools</TableHead>
-                    <TableHead>Override</TableHead>
+                    <TableHead>{t('screens.admin.surface')}</TableHead>
+                    <TableHead>{t('screens.admin.tools')}</TableHead>
+                    <TableHead>{t('screens.admin.override')}</TableHead>
                     <TableHead className="w-24"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -82,12 +82,12 @@ export default function AssistantTools() {
                           {surface.has_tenant_override ? (
                             <AdminStatusBadge variant="active">Custom</AdminStatusBadge>
                           ) : (
-                            <AdminStatusBadge variant="inactive">Global</AdminStatusBadge>
+                            <AdminStatusBadge variant="inactive">{t('screens.admin.global')}</AdminStatusBadge>
                           )}
                         </TableCell>
                         <TableCell>
                           <Button size="sm" variant="outline" disabled>
-                            Configure
+                            {t('screens.admin.configure')}
                           </Button>
                         </TableCell>
                       </TableRow>

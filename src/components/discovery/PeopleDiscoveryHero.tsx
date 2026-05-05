@@ -342,7 +342,7 @@ export function PeopleDiscoveryHero() {
         <div className="text-center pt-2 pb-1">
           {/* Title with inline emoji */}
           <h2 className="text-lg font-semibold text-foreground">
-            Meet Vitanaland Citizens 👋
+            {t('screens.discovery.meetVitanalandCitizens')}
           </h2>
           
           {/* Status line - standard metadata */}
@@ -401,7 +401,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
+              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">{t('screens.discovery.pass')}</div>
             </div>
           </button>
 
@@ -425,7 +425,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">Super</div>
+              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">{t('screens.discovery.super')}</div>
             </div>
           </button>
 
@@ -449,7 +449,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-green-600 dark:text-green-400">Connect</div>
+              <div className="text-sm font-bold text-green-600 dark:text-green-400">{t('screens.discovery.connect')}</div>
             </div>
           </button>
         </div>
@@ -468,11 +468,11 @@ export function PeopleDiscoveryHero() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('screens.discovery.allInterests')}</SelectItem>
-                <SelectItem value="yoga">Yoga</SelectItem>
-                <SelectItem value="nutrition">Nutrition</SelectItem>
-                <SelectItem value="biohacking">Biohacking</SelectItem>
-                <SelectItem value="running">Running</SelectItem>
-                <SelectItem value="meditation">Meditation</SelectItem>
+                <SelectItem value="yoga">{t('screens.discovery.yoga')}</SelectItem>
+                <SelectItem value="nutrition">{t('screens.discovery.nutrition')}</SelectItem>
+                <SelectItem value="biohacking">{t('screens.discovery.biohacking')}</SelectItem>
+                <SelectItem value="running">{t('screens.discovery.running')}</SelectItem>
+                <SelectItem value="meditation">{t('screens.discovery.meditation')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -485,8 +485,8 @@ export function PeopleDiscoveryHero() {
                 <SelectItem value="san francisco">{t('screens.discovery.sanFrancisco')}</SelectItem>
                 <SelectItem value="los angeles">{t('screens.discovery.losAngeles')}</SelectItem>
                 <SelectItem value="new york">{t('screens.discovery.newYork')}</SelectItem>
-                <SelectItem value="austin">Austin</SelectItem>
-                <SelectItem value="seattle">Seattle</SelectItem>
+                <SelectItem value="austin">{t('screens.discovery.austin')}</SelectItem>
+                <SelectItem value="seattle">{t('screens.discovery.seattle')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -506,7 +506,7 @@ export function PeopleDiscoveryHero() {
             
             {/* Keyboard Shortcuts in same line */}
             <span className="text-[10px] text-muted-foreground ml-4">
-              ← Pass • → Connect • ↑ Super
+              {t('screens.discovery.passConnectSuper')}
             </span>
           </div>
         </div>

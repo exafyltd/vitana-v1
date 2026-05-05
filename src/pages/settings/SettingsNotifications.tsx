@@ -87,7 +87,7 @@ export default function SettingsNotifications() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Smartphone className="w-5 h-5" />
-              Push Notifications
+              {t('screens.settings.pushNotifications')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -146,7 +146,7 @@ export default function SettingsNotifications() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Moon className="w-5 h-5" />
-              Quiet Hours
+              {t('screens.settings.quietHours')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">

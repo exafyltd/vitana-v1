@@ -40,28 +40,28 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
         return (
           <Badge className="bg-success/10 text-success border-success/20">
             <CheckCircle2 className="w-3 h-3 mr-1" />
-            Success
+            {t('screens.admin.success')}
           </Badge>
         );
       case 'failed':
         return (
           <Badge className="bg-destructive/10 text-destructive border-destructive/20">
             <XCircle className="w-3 h-3 mr-1" />
-            Failed
+            {t('screens.admin.failed')}
           </Badge>
         );
       case 'warning':
         return (
           <Badge className="bg-warning/10 text-warning border-warning/20">
             <AlertTriangle className="w-3 h-3 mr-1" />
-            Warning
+            {t('screens.admin.warning')}
           </Badge>
         );
       default:
         return (
           <Badge variant="outline">
             <Clock className="w-3 h-3 mr-1" />
-            Pending
+            {t('screens.admin.pending')}
           </Badge>
         );
     }
@@ -168,7 +168,7 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
             <Activity className="w-12 h-12 text-muted-foreground/50 mb-3" />
             <p className="text-muted-foreground font-medium">{t('screens.admin.noActivityYet')}</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Run tests or discover integrations to see activity
+              {t('screens.admin.runTestsDiscoverIntegrationsSeeActivity')}
             </p>
           </div>
         )}

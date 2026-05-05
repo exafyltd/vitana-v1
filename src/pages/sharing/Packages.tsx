@@ -100,14 +100,14 @@ export default withScreenId(function Packages() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Package
+              {t('screens.sharing.createPackage')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
               <SplitBarTrigger value="my-packages">{t('screens.sharing.myPackages')}</SplitBarTrigger>
-              <SplitBarTrigger value="templates">Templates</SplitBarTrigger>
+              <SplitBarTrigger value="templates">{t('screens.sharing.templates')}</SplitBarTrigger>
               <SplitBarTrigger value="create-custom">{t('screens.sharing.createCustom')}</SplitBarTrigger>
             </SplitBarList>
 
@@ -141,7 +141,7 @@ export default withScreenId(function Packages() {
                             <div>{pkg.dateRange}</div>
                           </div>
                           <div>
-                            <div className="font-medium text-muted-foreground">Created</div>
+                            <div className="font-medium text-muted-foreground">{t('screens.sharing.created')}</div>
                             <div>{pkg.createdDate}</div>
                           </div>
                         </div>
@@ -161,15 +161,15 @@ export default withScreenId(function Packages() {
                         <div className="flex gap-2 pt-2">
                           <Button variant="outline" size="sm">
                             <Eye className="h-4 w-4 mr-2" />
-                            Preview
+                            {t('screens.sharing.preview')}
                           </Button>
                           <Button variant="outline" size="sm">
                             <Download className="h-4 w-4 mr-2" />
-                            Download
+                            {t('screens.sharing.download')}
                           </Button>
                           <Button variant="outline" size="sm">
                             <Share2 className="h-4 w-4 mr-2" />
-                            Share
+                            {t('screens.sharing.share')}
                           </Button>
                         </div>
                       </CardContent>
@@ -205,7 +205,7 @@ export default withScreenId(function Packages() {
                         
                         <Button className="w-full" size="sm">
                           <Package className="h-4 w-4 mr-2" />
-                          Use Template
+                          {t('screens.sharing.useTemplate')}
                         </Button>
                       </CardContent>
                     </Card>
@@ -221,10 +221,10 @@ export default withScreenId(function Packages() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Package className="h-5 w-5" />
-                        Create Custom Package
+                        {t('screens.sharing.createCustomPackage')}
                       </CardTitle>
                       <CardDescription>
-                        Build a personalized data package with specific health information
+                        {t('screens.sharing.buildPersonalizedDataPackageWithSpecific')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -236,11 +236,11 @@ export default withScreenId(function Packages() {
                       <div className="flex gap-4">
                         <Button size="sm">
                           <Package className="h-4 w-4 mr-2" />
-                          Start Custom Package
+                          {t('screens.sharing.startCustomPackage')}
                         </Button>
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4 mr-2" />
-                          Preview Available Data
+                          {t('screens.sharing.previewAvailableData')}
                         </Button>
                       </div>
                     </CardContent>

@@ -142,7 +142,7 @@ export default function LiveInteraction() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
@@ -182,11 +182,11 @@ export default function LiveInteraction() {
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
-              Settings
+              {t('screens.community.settings')}
             </Button>
             <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
               <Radio className="w-4 h-4 mr-2" />
-              Go Live
+              {t('screens.community.goLive')}
             </Button>
           </div>
         </div>
@@ -199,14 +199,14 @@ export default function LiveInteraction() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Radio className="w-5 h-5 text-red-500" />
-                  Live Now
+                  {t('screens.community.liveNow')}
                 </h2>
                 <div className="space-y-4">
                   {activeLiveRooms.map((room, index) => (
                     <div key={index} className="p-4 border rounded-lg relative">
                       <div className="absolute top-2 right-2">
                         <Badge variant="destructive" className="text-xs animate-pulse">
-                          • LIVE
+                          {t('screens.community.live2')}
                         </Badge>
                       </div>
                       <div className="flex items-start gap-3 mb-3">
@@ -232,7 +232,7 @@ export default function LiveInteraction() {
                       </div>
                       <Button size="sm" className="w-full">
                         <Radio className="w-4 h-4 mr-2" />
-                        Join Now
+                        {t('screens.community.joinNow')}
                       </Button>
                     </div>
                   ))}
@@ -244,7 +244,7 @@ export default function LiveInteraction() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5" />
-                  Live Polls
+                  {t('screens.community.livePolls')}
                 </h3>
                 <div className="space-y-3">
                   {livePolls.map((poll, index) => (
@@ -279,7 +279,7 @@ export default function LiveInteraction() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  Upcoming Sessions
+                  {t('screens.community.upcomingSessions')}
                 </h2>
                 <div className="space-y-4">
                   {scheduledSessions.map((session, index) => (
@@ -305,10 +305,10 @@ export default function LiveInteraction() {
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" className="flex-1">
                           <Bell className="w-4 h-4 mr-1" />
-                          Remind Me
+                          {t('screens.community.remindMe')}
                         </Button>
                         <Button size="sm" className="flex-1">
-                          Join Session
+                          {t('screens.community.joinSession')}
                         </Button>
                       </div>
                     </div>
@@ -321,7 +321,7 @@ export default function LiveInteraction() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Mic className="w-5 h-5" />
-                  Co-Host Invitations
+                  {t('screens.community.cohostInvitations')}
                 </h3>
                 <div className="space-y-3">
                   {coHostInvitations.map((invitation, index) => (
@@ -333,10 +333,10 @@ export default function LiveInteraction() {
                       <p className="text-xs text-muted-foreground mb-3">{invitation.time}</p>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" className="flex-1">
-                          Decline
+                          {t('screens.community.decline')}
                         </Button>
                         <Button size="sm" className="flex-1">
-                          Accept
+                          {t('screens.community.accept')}
                         </Button>
                       </div>
                     </div>
@@ -366,7 +366,7 @@ export default function LiveInteraction() {
                         </span>
                       </div>
                       <Button size="sm" variant="outline" className="w-full">
-                        View Group
+                        {t('screens.community.viewGroup')}
                       </Button>
                     </div>
                   ))}
@@ -380,19 +380,19 @@ export default function LiveInteraction() {
                 <div className="space-y-2">
                   <Button variant="outline" className="w-full justify-start">
                     <Radio className="w-4 h-4 mr-2" />
-                    Start Audio Room
+                    {t('screens.community.startAudioRoom')}
                   </Button>
                   <Button variant="outline" className="w-full justify-start">
                     <Video className="w-4 h-4 mr-2" />
-                    Start Video Session
+                    {t('screens.community.startVideoSession')}
                   </Button>
                   <Button variant="outline" className="w-full justify-start">
                     <Calendar className="w-4 h-4 mr-2" />
-                    Schedule Session
+                    {t('screens.community.scheduleSession')}
                   </Button>
                   <Button variant="outline" className="w-full justify-start">
                     <Settings className="w-4 h-4 mr-2" />
-                    Audio/Video Settings
+                    {t('screens.community.audiovideoSettings')}
                   </Button>
                 </div>
               </CardContent>

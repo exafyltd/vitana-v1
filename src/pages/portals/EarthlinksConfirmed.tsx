@@ -56,7 +56,7 @@ export default function EarthlinksConfirmed() {
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
             <Button onClick={() => navigate('/earthlinks')} variant="outline" className="w-full">
-              Back to Earthlinks Portal
+              {t('screens.portals.backEarthlinksPortal')}
             </Button>
           </CardContent>
         </Card>
@@ -77,19 +77,19 @@ export default function EarthlinksConfirmed() {
               <Leaf className="h-8 w-8 text-green-600" />
             </div>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              Welcome to Earthlinks!
+              {t('screens.portals.welcomeEarthlinks')}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-6">
             <div className="space-y-2">
               <p className="text-muted-foreground">
-                Your email has been successfully confirmed.
+                {t('screens.portals.yourEmailHasSuccessfullyConfirmed')}
               </p>
               <p className="text-sm text-green-600 font-medium">
-                Your sustainable wellness journey begins now
+                {t('screens.portals.yourSustainableWellnessJourneyBeginsNow')}
               </p>
               <p className="text-xs text-muted-foreground">
-                You'll be redirected to your dashboard in a few seconds...
+                {t('screens.portals.youLlRedirectedYourDashboardFew')}
               </p>
             </div>
             
@@ -98,12 +98,12 @@ export default function EarthlinksConfirmed() {
                 onClick={handleContinue} 
                 className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
               >
-                Continue to Dashboard
+                {t('screens.portals.continueDashboard')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               
               <div className="text-xs text-muted-foreground">
-                Connecting health with environmental sustainability
+                {t('screens.portals.connectingHealthWithEnvironmentalSustainability')}
               </div>
             </div>
           </CardContent>

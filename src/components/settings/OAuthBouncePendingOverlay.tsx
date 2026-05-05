@@ -101,16 +101,16 @@ export function OAuthBouncePendingOverlay() {
             <div className="space-y-1">
               <p className="font-medium leading-tight">Connecting {label}…</p>
               <p className="text-sm text-muted-foreground">
-                Finish signing in in your browser, then come back to Maxina. We're checking in the background.
+                {t('screens.settings.finishSigningYourBrowserThenCome')}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
-              I'm back — check now
+              {t('screens.settings.iMBackCheckNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
-              Cancel
+              {t('screens.settings.cancel')}
             </Button>
           </div>
         </div>
@@ -133,16 +133,16 @@ export function OAuthBouncePendingOverlay() {
             <div className="space-y-1">
               <p className="font-medium leading-tight text-amber-700">We didn't see {label} confirm</p>
               <p className="text-sm text-amber-700/80">
-                If you completed sign-in, tap Check now. Otherwise, close this and tap Connect again.
+                {t('screens.settings.ifYouCompletedSigninTapCheck')}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={checkNow} className="flex-1 min-w-[8rem]">
-              Check now
+              {t('screens.settings.checkNow')}
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
-              Close
+              {t('screens.settings.close')}
             </Button>
           </div>
         </div>

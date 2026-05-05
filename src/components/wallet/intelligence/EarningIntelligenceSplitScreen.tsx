@@ -143,7 +143,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            Cross-Platform Intelligence
+            {t('screens.wallet.crossplatformIntelligence')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -160,7 +160,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">{avgConfidence}%</div>
-                <div className="text-xs text-muted-foreground">Confidence</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.confidence')}</div>
               </div>
             </div>
             <p className="text-xs text-muted-foreground text-center">
@@ -172,7 +172,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Layers className="h-4 w-4 text-green-500" />
-              Platform Synergies
+              {t('screens.wallet.platformSynergies')}
             </h4>
             
             {mockCrossPlatformOpportunities.map((opportunity) => (
@@ -196,7 +196,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                 <div className="grid grid-cols-2 gap-3 mb-2">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-muted-foreground">Effort</span>
+                      <span className="text-xs text-muted-foreground">{t('screens.wallet.effort')}</span>
                       <span className="text-xs text-muted-foreground">{opportunity.effort}%</span>
                     </div>
                     <Progress value={opportunity.effort} className="h-1.5" />
@@ -217,7 +217,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            AI Intelligence Insights
+            {t('screens.wallet.aiIntelligenceInsights')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -225,7 +225,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Zap className="h-4 w-4 text-yellow-500" />
-              Strategic Insights
+              {t('screens.wallet.strategicInsights')}
             </h4>
             
             {mockIntelligenceInsights.map((insight) => (
@@ -269,13 +269,13 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
               <span className="text-sm font-medium">{t('screens.wallet.masterStrategy')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
-              Combine all three insights for a potential 725% earning multiplier
+              {t('screens.wallet.combineAllThreeInsightsForPotential')}
             </p>
             <div className="flex items-center justify-between">
               <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.estimatedMonthlyImpact2400')}</span>
               <Button size="sm" variant="outline" className="text-xs h-6 px-2">
                 <Zap className="h-3 w-3 mr-1" />
-                Activate All
+                {t('screens.wallet.activateAll')}
               </Button>
             </div>
           </div>
@@ -298,7 +298,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           {/* Action Button */}
           <Button className="w-full">
             <Brain className="h-4 w-4 mr-2" />
-            Optimize All Earnings
+            {t('screens.wallet.optimizeAllEarnings')}
           </Button>
         </CardContent>
       </Card>

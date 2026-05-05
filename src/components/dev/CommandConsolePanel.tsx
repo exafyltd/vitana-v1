@@ -38,7 +38,7 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button disabled={readonly} className="gap-2">
                   <CheckCircle className="h-4 w-4" />
-                  Approve
+                  {t('screens.dev.approve')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -52,7 +52,7 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button variant="destructive" disabled={readonly} className="gap-2">
                   <StopCircle className="h-4 w-4" />
-                  Stop
+                  {t('screens.dev.stop')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -66,7 +66,7 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button variant="outline" disabled={readonly} className="gap-2">
                   <Zap className="h-4 w-4" />
-                  Emit Test Event
+                  {t('screens.dev.emitTestEvent')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

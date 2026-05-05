@@ -315,11 +315,11 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
           <ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogTitle>{t('screens.diary.deleteEntry')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              This diary entry will be permanently deleted. This action cannot be undone.
+              {t('screens.diary.thisDiaryEntryWillPermanentlyDeleted')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>{t('screens.diary.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

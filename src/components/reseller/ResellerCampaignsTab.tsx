@@ -128,12 +128,12 @@ export function ResellerCampaignsTab({ searchQuery }: ResellerCampaignsTabProps)
         <div>
           <p className="font-medium text-foreground">{t('screens.reseller.noCampaignsYet')}</p>
           <p className="text-sm text-muted-foreground">
-            Create a campaign to promote events and boost your ticket sales.
+            {t('screens.reseller.createCampaignPromoteEventsBoostYour')}
           </p>
         </div>
         <Button onClick={() => setShowCreateCampaign(true)} className="gap-2">
           <Plus className="h-4 w-4" />
-          Create Campaign
+          {t('screens.reseller.createCampaign')}
         </Button>
 
         <CampaignDialog open={showCreateCampaign} onOpenChange={setShowCreateCampaign} />
@@ -146,7 +146,7 @@ export function ResellerCampaignsTab({ searchQuery }: ResellerCampaignsTabProps)
       <div className="flex justify-end">
         <Button onClick={() => setShowCreateCampaign(true)} size="sm" className="gap-2">
           <Plus className="h-4 w-4" />
-          Create Campaign
+          {t('screens.reseller.createCampaign')}
         </Button>
       </div>
 

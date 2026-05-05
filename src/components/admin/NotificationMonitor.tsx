@@ -5,6 +5,7 @@ import { Activity, Mail, Smartphone, Bell, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface NotificationLog {
   id: string;
@@ -69,9 +70,9 @@ export default function NotificationMonitor() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Activity className="w-5 h-5" />
-          Real-Time Notification Monitor
+          {t('screens.admin.realtimeNotificationMonitor')}
           <Badge variant="outline" className="ml-auto">
-            Live
+            {t('screens.admin.live')}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -83,7 +84,7 @@ export default function NotificationMonitor() {
             </div>
           ) : logs.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No recent notifications
+              {t('screens.admin.noRecentNotifications')}
             </div>
           ) : (
             <div className="space-y-3">

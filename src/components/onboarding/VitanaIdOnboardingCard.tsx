@@ -223,7 +223,7 @@ export function VitanaIdOnboardingCard() {
               onClick={() => setPickerOpen(true)}
               disabled={submitting}
             >
-              Change the name
+              {t('screens.onboarding.changeName')}
             </Button>
           </div>
         </div>
@@ -243,7 +243,7 @@ export function VitanaIdOnboardingCard() {
             {baseAlternatives.length > 0 && (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  Suggestions
+                  {t('screens.onboarding.suggestions')}
                 </p>
                 <div className="grid grid-cols-3 gap-2">
                   {baseAlternatives.map((b) => (
@@ -290,8 +290,7 @@ export function VitanaIdOnboardingCard() {
                 </span>
               </div>
               <p id="vitana-id-help" className="text-xs text-muted-foreground">
-                Name part: 2–8 characters · lowercase letters and digits · must start with a letter.
-                Final ID will be <span className="font-mono">@{candidatePreview || `(your name)${seqDigits}`}</span>.
+                {t('screens.onboarding.namePart28CharactersLowercase')} <span className="font-mono">@{candidatePreview || `(your name)${seqDigits}`}</span>.
                 {customValidationError && (
                   <span className="block text-destructive mt-1">{customValidationError}</span>
                 )}
@@ -305,7 +304,7 @@ export function VitanaIdOnboardingCard() {
               onClick={() => setPickerOpen(false)}
               disabled={submitting}
             >
-              Cancel
+              {t('screens.onboarding.cancel')}
             </Button>
             <Button
               variant="default"

@@ -97,7 +97,7 @@ export default function Calendar() {
               <CardContent>
                 <div className="text-2xl font-bold">68%</div>
                 <p className="text-xs text-muted-foreground">
-                  Average across all goals
+                  {t('screens.calendar.averageAcrossAllGoals')}
                 </p>
               </CardContent>
             </Card>
@@ -110,7 +110,7 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  Today's Schedule
+                  {t('screens.calendar.todaySSchedule')}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{todayFormatted}</p>
               </CardHeader>
@@ -139,7 +139,7 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="h-5 w-5" />
-                  Active Reminders
+                  {t('screens.calendar.activeReminders')}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{t('screens.calendar.upcomingNotifications')}</p>
               </CardHeader>
@@ -170,7 +170,7 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  Weekly Progress
+                  {t('screens.calendar.weeklyProgress')}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{t('screens.calendar.yourGoalAchievementsThisWeek')}</p>
               </CardHeader>
@@ -210,7 +210,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/month')}
                 >
                   <CalendarIcon className="h-6 w-6" />
-                  <span>Month</span>
+                  <span>{t('screens.calendar.month')}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -218,7 +218,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/appointments')}
                 >
                   <Users className="h-6 w-6" />
-                  <span>Appointments</span>
+                  <span>{t('screens.calendar.appointments')}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -226,7 +226,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/motivation')}
                 >
                   <Target className="h-6 w-6" />
-                  <span>Motivation</span>
+                  <span>{t('screens.calendar.motivation')}</span>
                 </Button>
                 <Button 
                   variant="outline" 

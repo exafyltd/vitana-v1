@@ -256,7 +256,7 @@ export function PodcastCard({
                   className="text-destructive cursor-pointer"
                   onClick={onDelete}
                 >
-                  Delete Podcast
+                  {t('screens.crossover.deletePodcast')}
                 </DropdownMenuItem>
               </KebabMenu>
             </>

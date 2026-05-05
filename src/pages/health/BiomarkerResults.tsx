@@ -266,10 +266,10 @@ export default function BiomarkerResults() {
                 <div className="text-6xl mb-4">🧪</div>
                 <h3 className="text-xl font-semibold mb-2">{t('screens.health.noLabResultsYet')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Your lab test results will appear here once they're ready.
+                  {t('screens.health.yourLabTestResultsWillAppear')}
                 </p>
                 <Button onClick={() => { window.history.pushState({}, '', '/discover'); window.dispatchEvent(new PopStateEvent('popstate')); }}>
-                  Order Lab Tests
+                  {t('screens.health.orderLabTests')}
                 </Button>
               </CardContent>
             </Card>
@@ -302,7 +302,7 @@ export default function BiomarkerResults() {
               onClick={() => setBiomarkerActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Biomarker Actions
+              {t('screens.health.biomarkerActions')}
             </Button>
           </UtilityActionButton>
           
@@ -422,7 +422,7 @@ export default function BiomarkerResults() {
                                   onClick={() => logBiomarkerDownload(result.lab_test.name)}
                                 >
                                   <Download className="h-4 w-4" />
-                                  Download PDF
+                                  {t('screens.health.downloadPdf')}
                                 </Button>
                                 <Button 
                                   variant="outline" 
@@ -430,7 +430,7 @@ export default function BiomarkerResults() {
                                   onClick={() => logBiomarkerShare(result.lab_test.name, 'Doctor')}
                                 >
                                   <Share2 className="h-4 w-4" />
-                                  Share with Doctor
+                                  {t('screens.health.shareWithDoctor')}
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
@@ -547,11 +547,11 @@ export default function BiomarkerResults() {
                               <div className="flex items-center gap-3">
                                 <Button variant="outline" className="flex items-center gap-2">
                                   <Download className="h-4 w-4" />
-                                  Download PDF
+                                  {t('screens.health.downloadPdf')}
                                 </Button>
                                 <Button variant="outline" className="flex items-center gap-2">
                                   <Share2 className="h-4 w-4" />
-                                  Share with Doctor
+                                  {t('screens.health.shareWithDoctor')}
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />

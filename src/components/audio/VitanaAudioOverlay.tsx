@@ -21,7 +21,7 @@ import { Send } from 'lucide-react';
 import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
 import { useAIConsent } from '@/hooks/useAIConsent';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 export function VitanaAudioOverlay() {
   const { 
@@ -344,7 +344,7 @@ export function VitanaAudioOverlay() {
                       className="gap-2"
                     >
                       <Send className="h-3.5 w-3.5" />
-                      Send
+                      {t('screens.audio.send')}
                     </Button>
                   </div>
                 </div>

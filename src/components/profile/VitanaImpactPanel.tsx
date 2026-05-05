@@ -100,7 +100,7 @@ export function VitanaImpactPanel({
                   {vitanaIndex}
                 </div>
                 <div className="text-xs font-semibold text-muted-foreground mt-1">
-                  VITANA INDEX
+                  {t('screens.profile.vitanaIndex')}
                 </div>
                 <Badge 
                   variant="outline" 
@@ -155,7 +155,7 @@ export function VitanaImpactPanel({
                     <Sparkles className="w-5 h-5 text-[hsl(var(--pill-sleep-accent))]" />
                   </div>
                   <div className="text-2xl font-bold text-foreground">{communityStats.featuredStories}</div>
-                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">Stories</div>
+                  <div className="text-[10px] font-medium text-muted-foreground text-center leading-tight">{t('screens.profile.stories')}</div>
                 </div>
               </div>
 

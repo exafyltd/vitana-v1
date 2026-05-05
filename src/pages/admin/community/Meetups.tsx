@@ -95,12 +95,12 @@ export default function Meetups() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Event</TableHead>
-                <TableHead>Organizer</TableHead>
+                <TableHead>{t('screens.admin.event')}</TableHead>
+                <TableHead>{t('screens.admin.organizer')}</TableHead>
                 <TableHead>{t('screens.admin.dateTime')}</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Capacity</TableHead>
-                <TableHead>Price</TableHead>
+                <TableHead>{t('screens.admin.location')}</TableHead>
+                <TableHead>{t('screens.admin.capacity')}</TableHead>
+                <TableHead>{t('screens.admin.price')}</TableHead>
                 <TableHead className="w-[60px]" />
               </TableRow>
             </TableHeader>
@@ -151,7 +151,7 @@ export default function Meetups() {
                       <a href={m.virtual_link} target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
                         <ExternalLink className="h-3.5 w-3.5" />
-                        Virtual
+                        {t('screens.admin.virtual')}
                       </a>
                     ) : (
                       <span className="text-xs text-muted-foreground">—</span>
@@ -229,7 +229,7 @@ export default function Meetups() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.admin.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

@@ -238,7 +238,7 @@ export default function AddContactDialog({
         <DialogHeader>
           <DialogTitle>{t('screens.contacts.addContact')}</DialogTitle>
           <DialogDescription>
-            Search for VITANA users or add manually
+            {t('screens.contacts.searchForVitanaUsersAddManually')}
           </DialogDescription>
         </DialogHeader>
         
@@ -391,7 +391,7 @@ export default function AddContactDialog({
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('screens.contacts.cancel')}
             </Button>
             <Button 
               type="submit" 

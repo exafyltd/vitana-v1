@@ -160,7 +160,7 @@ export default withScreenId(function Campaigns() {
             
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              New Campaign
+              {t('screens.sharing.newCampaign')}
             </Button>
           </UtilityActionButton>
 
@@ -211,11 +211,11 @@ export default withScreenId(function Campaigns() {
                 <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noCampaignsYet')}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Create your first campaign to organize and track your content distribution
+                  {t('screens.sharing.createYourFirstCampaignOrganizeTrack')}
                 </p>
                 <Button onClick={() => setCampaignPopupOpen(true)}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Campaign
+                  {t('screens.sharing.createYourFirstCampaign')}
                 </Button>
               </CardContent>
             </Card>

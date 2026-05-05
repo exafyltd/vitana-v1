@@ -85,10 +85,10 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Brain className="w-5 h-5 text-primary" />
-            Enrich My Context
+            {t('screens.common.enrichMyContext')}
           </DialogTitle>
           <DialogDescription>
-            Add or refine signals to improve the accuracy of your Context Snapshot. This helps Autopilot make better decisions.
+            {t('screens.common.addRefineSignalsImproveAccuracyYour')}
           </DialogDescription>
         </DialogHeader>
 
@@ -105,7 +105,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
-                    Location & Environment
+                    {t('screens.common.locationEnvironment')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -118,8 +118,8 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                       <SelectContent>
                         <SelectItem value="home">{t('screens.common.atHome')}</SelectItem>
                         <SelectItem value="work">{t('screens.common.atWork')}</SelectItem>
-                        <SelectItem value="traveling">Traveling</SelectItem>
-                        <SelectItem value="outdoors">Outdoors</SelectItem>
+                        <SelectItem value="traveling">{t('screens.common.traveling')}</SelectItem>
+                        <SelectItem value="outdoors">{t('screens.common.outdoors')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -140,7 +140,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Smile className="w-4 h-4" />
-                    Mood & Energy
+                    {t('screens.common.moodEnergy')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -179,7 +179,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Heart className="w-4 h-4" />
-                    Wellness Input
+                    {t('screens.common.wellnessInput')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -204,7 +204,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    Social Input
+                    {t('screens.common.socialInput')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -221,7 +221,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
 
               <div className="flex justify-end">
                 <Button onClick={handleSaveSignal} className="bg-gradient-to-r from-primary to-primary-glow">
-                  Save Signal
+                  {t('screens.common.saveSignal')}
                 </Button>
               </div>
             </TabsContent>
@@ -232,7 +232,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Smile className="w-4 h-4" />
-                    Current Vibe Override
+                    {t('screens.common.currentVibeOverride')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -271,7 +271,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Activity className="w-4 h-4" />
-                    Biometric Snapshot Adjustment
+                    {t('screens.common.biometricSnapshotAdjustment')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -316,7 +316,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Target className="w-4 h-4" />
-                    Short-Term Goal
+                    {t('screens.common.shorttermGoal')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -339,7 +339,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
 
               <div className="flex justify-end">
                 <Button onClick={handleUpdateSnapshot} className="bg-gradient-to-r from-primary to-primary-glow">
-                  Update Snapshot
+                  {t('screens.common.updateSnapshot')}
                 </Button>
               </div>
             </TabsContent>
@@ -348,10 +348,10 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
 
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>
-            Cancel
+            {t('screens.common.cancel')}
           </Button>
           <Button onClick={activeTab === "add-signal" ? handleSaveSignal : handleUpdateSnapshot}>
-            Save & Close
+            {t('screens.common.saveClose')}
           </Button>
         </DialogFooter>
       </DialogContent>

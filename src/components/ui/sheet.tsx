@@ -5,6 +5,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { useOrbSuppression } from "@/hooks/useOrbSuppression"
+import { t } from '@/lib/i18n-toast';
 
 const Sheet = SheetPrimitive.Root
 
@@ -69,7 +70,7 @@ const SheetContent = React.forwardRef<
       {children}
       <SheetPrimitive.Close style={{ boxShadow: 'none' }} className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-secondary">
         <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">{t('screens.ui.close')}</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

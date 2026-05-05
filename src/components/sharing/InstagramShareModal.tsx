@@ -193,7 +193,7 @@ export function InstagramShareModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <InstagramIcon className="h-5 w-5" />
-            Share to Instagram
+            {t('screens.sharing.shareInstagram')}
           </DialogTitle>
         </DialogHeader>
 
@@ -203,11 +203,11 @@ export function InstagramShareModal({
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="story" className="gap-2">
                 <Smartphone className="h-4 w-4" />
-                Story (9:16)
+                {t('screens.sharing.story916')}
               </TabsTrigger>
               <TabsTrigger value="square" className="gap-2">
                 <Square className="h-4 w-4" />
-                Feed (1:1)
+                {t('screens.sharing.feed11')}
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -235,7 +235,7 @@ export function InstagramShareModal({
                 ) : (
                   <>
                     <Share2 className="h-4 w-4" />
-                    Share to Instagram
+                    {t('screens.sharing.shareInstagram')}
                   </>
                 )}
               </Button>
@@ -250,7 +250,7 @@ export function InstagramShareModal({
                 size="lg"
               >
                 <ExternalLink className="h-4 w-4" />
-                Open Instagram App
+                {t('screens.sharing.openInstagramApp')}
               </Button>
             )}
 
@@ -270,7 +270,7 @@ export function InstagramShareModal({
               ) : (
                 <>
                   <Download className="h-4 w-4" />
-                  Download Image
+                  {t('screens.sharing.downloadImage')}
                 </>
               )}
             </Button>
@@ -289,7 +289,7 @@ export function InstagramShareModal({
               ) : (
                 <>
                   <Copy className="h-4 w-4" />
-                  Copy Link (for Link Sticker)
+                  {t('screens.sharing.copyLinkForLinkSticker')}
                 </>
               )}
             </Button>

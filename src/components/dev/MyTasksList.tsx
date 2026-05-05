@@ -194,7 +194,7 @@ export function MyTasksList() {
 
                       {task.logs && task.logs.length > 0 && (
                         <div>
-                          <h4 className="text-sm font-semibold mb-2">Logs</h4>
+                          <h4 className="text-sm font-semibold mb-2">{t('screens.dev.logs')}</h4>
                           <ul className="space-y-1">
                             {task.logs.map((log, idx) => (
                               <li key={idx} className="text-xs font-mono text-muted-foreground bg-muted/30 px-2 py-1 rounded">
@@ -239,7 +239,7 @@ export function MyTasksList() {
                           }}
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
-                          Complete
+                          {t('screens.dev.complete')}
                         </Button>
                         <Button
                           size="sm"
@@ -251,7 +251,7 @@ export function MyTasksList() {
                           }}
                         >
                           <Clock className="w-3.5 h-3.5 mr-1" />
-                          Postpone
+                          {t('screens.dev.postpone')}
                         </Button>
                         <Button
                           size="sm"
@@ -263,7 +263,7 @@ export function MyTasksList() {
                           }}
                         >
                           <XCircle className="w-3.5 h-3.5 mr-1" />
-                          Cancel
+                          {t('screens.dev.cancel')}
                         </Button>
                         <Button
                           size="sm"
@@ -275,7 +275,7 @@ export function MyTasksList() {
                           }}
                         >
                           <StickyNote className="w-3.5 h-3.5 mr-1" />
-                          Add Note
+                          {t('screens.dev.addNote')}
                         </Button>
                       </div>
                     </div>

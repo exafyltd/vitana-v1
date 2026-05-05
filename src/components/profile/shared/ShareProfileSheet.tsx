@@ -75,9 +75,9 @@ export function ShareProfileSheet({
               <Share2 className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium">Share</div>
+              <div className="text-sm font-medium">{t('screens.profile.share')}</div>
               <div className="text-xs text-muted-foreground">
-                Open your device's share sheet
+                {t('screens.profile.openYourDeviceSShareSheet')}
               </div>
             </div>
           </button>
@@ -93,7 +93,7 @@ export function ShareProfileSheet({
             <div className="flex-1">
               <div className="text-sm font-medium">{t('screens.profile.showQrCode')}</div>
               <div className="text-xs text-muted-foreground">
-                Let someone scan to open your profile
+                {t('screens.profile.letSomeoneScanOpenYourProfile')}
               </div>
             </div>
           </button>

@@ -41,7 +41,7 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                 {activity.icon} {activity.metadata?.label || 'Activity'}
               </Badge>
               <Badge variant="secondary" className="text-xs">
-                Read-only
+                {t('screens.memory.readonly')}
               </Badge>
             </div>
 
@@ -66,7 +66,7 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                     onClick={() => onPromote(activity.id)}
                   >
                     <Sparkles className="w-3 h-3 mr-1" />
-                    Save as Knowledge
+                    {t('screens.memory.saveAsKnowledge')}
                   </Button>
                 )}
                 
@@ -85,11 +85,11 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                       <ResponsiveConfirmDialogHeader>
                         <ResponsiveConfirmDialogTitle>{t('screens.memory.deleteActivity')}</ResponsiveConfirmDialogTitle>
                         <ResponsiveConfirmDialogDescription>
-                          Are you sure you want to delete this activity? This action cannot be undone.
+                          {t('screens.memory.youSureYouWantDeleteThis')}
                         </ResponsiveConfirmDialogDescription>
                       </ResponsiveConfirmDialogHeader>
                       <ResponsiveConfirmDialogFooter>
-                        <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                        <ResponsiveConfirmDialogCancel>{t('screens.memory.cancel')}</ResponsiveConfirmDialogCancel>
                         <ResponsiveConfirmDialogAction
                           onClick={() => onDelete(activity.id, 'activity')}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

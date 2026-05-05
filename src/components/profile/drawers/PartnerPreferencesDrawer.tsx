@@ -121,7 +121,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
 
         <p className="text-xs text-muted-foreground flex items-center gap-1.5 -mt-2">
           <Lock className="h-3 w-3" />
-          Private by default. Adjust visibility per field in Privacy & Visibility.
+          {t('screens.profile.privateByDefaultAdjustVisibilityPer')}
         </p>
 
         {loading ? (
@@ -137,9 +137,9 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
                   <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="female">Women</SelectItem>
-                  <SelectItem value="male">Men</SelectItem>
-                  <SelectItem value="any">Anyone</SelectItem>
+                  <SelectItem value="female">{t('screens.profile.women')}</SelectItem>
+                  <SelectItem value="male">{t('screens.profile.men')}</SelectItem>
+                  <SelectItem value="any">{t('screens.profile.anyone')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -169,7 +169,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Where</Label>
+              <Label htmlFor="location">{t('screens.profile.where')}</Label>
               <Input
                 id="location"
                 placeholder={t('screens.profile.eGViennaAustria')}
@@ -186,10 +186,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
                   <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="dating">Dating</SelectItem>
+                  <SelectItem value="dating">{t('screens.profile.dating')}</SelectItem>
                   <SelectItem value="life_partner">{t('screens.profile.lifePartner')}</SelectItem>
-                  <SelectItem value="companionship">Companionship</SelectItem>
-                  <SelectItem value="open">Open</SelectItem>
+                  <SelectItem value="companionship">{t('screens.profile.companionship')}</SelectItem>
+                  <SelectItem value="open">{t('screens.profile.open')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -218,7 +218,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-                Cancel
+                {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
                 {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}

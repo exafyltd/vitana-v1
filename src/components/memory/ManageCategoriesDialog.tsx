@@ -73,7 +73,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <FolderOpen className="w-6 h-6" />
-            Manage Categories
+            {t('screens.memory.manageCategories')}
           </DialogTitle>
         </DialogHeader>
 
@@ -104,7 +104,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
             </div>
             <Button onClick={handleAddCategory} className="w-full">
               <Plus className="w-4 h-4 mr-2" />
-              Add Category
+              {t('screens.memory.addCategory')}
             </Button>
           </div>
 
@@ -161,7 +161,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
           {/* Actions */}
           <div className="flex justify-end pt-4 border-t">
             <Button onClick={() => onOpenChange(false)}>
-              Done
+              {t('screens.memory.done')}
             </Button>
           </div>
         </div>

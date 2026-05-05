@@ -54,7 +54,7 @@ export default function TicketPurchaseSuccess() {
           <h1 className="text-2xl font-bold">{t('screens.ticketpurchasesuccess.invalidRequest')}</h1>
           <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.noPurchaseInformationFound')}</p>
           <Button onClick={() => navigate("/comm/events-meetups")}>
-            Browse Events
+            {t('screens.ticketpurchasesuccess.browseEvents')}
           </Button>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default function TicketPurchaseSuccess() {
             {error || "Could not load your ticket. Please check your email for confirmation."}
           </p>
           <Button onClick={() => navigate("/my-tickets")}>
-            View My Tickets
+            {t('screens.ticketpurchasesuccess.viewMyTickets')}
           </Button>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function TicketPurchaseSuccess() {
             <CheckCircle className="h-8 w-8 text-green-500" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">
-            Payment Successful!
+            {t('screens.ticketpurchasesuccess.paymentSuccessful')}
           </h1>
           <p className="text-muted-foreground">
             Your ticket has been confirmed. A confirmation email has been sent to{" "}
@@ -134,14 +134,14 @@ export default function TicketPurchaseSuccess() {
           onClick={() => navigate("/my-tickets")}
         >
           <Calendar className="h-4 w-4 mr-2" />
-          View All My Tickets
+          {t('screens.ticketpurchasesuccess.viewAllMyTickets')}
         </Button>
         
         <Button
           className="w-full"
           onClick={() => navigate("/comm/events-meetups")}
         >
-          Discover More Events
+          {t('screens.ticketpurchasesuccess.discoverMoreEvents')}
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       </div>

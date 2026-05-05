@@ -214,7 +214,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="city">City</Label>
+                        <Label htmlFor="city">{t('screens.common.city')}</Label>
                         <Input
                           id="city"
                           value={shippingAddress.city}
@@ -223,7 +223,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                         />
                       </div>
                       <div>
-                        <Label htmlFor="state">State</Label>
+                        <Label htmlFor="state">{t('screens.common.state')}</Label>
                         <Input
                           id="state"
                           value={shippingAddress.state}
@@ -308,7 +308,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
               {/* Submit Button */}
               <div className="flex gap-4">
                 <Button type="button" variant="outline" onClick={onClose} className="flex-1">
-                  Cancel
+                  {t('screens.common.cancel')}
                 </Button>
                 <Button type="submit" disabled={isSubmitting} className="flex-1">
                   {isSubmitting ? (

@@ -123,11 +123,11 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
             <AlertDescription className="text-sm">
               <strong>{meta.display_name}</strong> connected and verified.
               <div className="mt-1 text-xs text-muted-foreground">
-                Key <code>{meta.prefix}•••{verifyResult.last4}</code> — verified in {verifyResult.latency_ms}ms.
+                {t('screens.common.key')} <code>{meta.prefix}•••{verifyResult.last4}</code> — verified in {verifyResult.latency_ms}ms.
               </div>
             </AlertDescription>
           </Alert>
-          <Button className="w-full" onClick={handleClose}>Done</Button>
+          <Button className="w-full" onClick={handleClose}>{t('screens.common.done')}</Button>
         </div>
       ) : (
         <>
@@ -175,7 +175,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleClose} disabled={busy} className="flex-1">
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleConnect} disabled={busy || !apiKey} className="flex-1">
               {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

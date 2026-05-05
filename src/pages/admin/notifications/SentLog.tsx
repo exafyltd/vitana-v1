@@ -80,9 +80,9 @@ const columns = [
     label: "Read",
     render: (val: string | null) =>
       val ? (
-        <Badge variant="outline" className="text-xs text-green-600">Read</Badge>
+        <Badge variant="outline" className="text-xs text-green-600">{t('screens.admin.read')}</Badge>
       ) : (
-        <Badge variant="outline" className="text-xs text-muted-foreground">Unread</Badge>
+        <Badge variant="outline" className="text-xs text-muted-foreground">{t('screens.admin.unread')}</Badge>
       ),
   },
   {

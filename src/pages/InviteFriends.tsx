@@ -245,7 +245,7 @@ export default function InviteFriends() {
                     </Button>
                   ) : (
                     <Button size="sm" className="w-full" disabled>
-                      Not available in this browser
+                      {t('screens.invitefriends.notAvailableThisBrowser')}
                     </Button>
                   )}
                 </CardContent>
@@ -279,7 +279,7 @@ export default function InviteFriends() {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="w-4 h-4 mr-1" />
-                  Choose File
+                  {t('screens.invitefriends.chooseFile')}
                 </Button>
               </CardContent>
             </Card>
@@ -367,7 +367,7 @@ export default function InviteFriends() {
               <CardContent className="py-12 text-center">
                 <Share2 className="w-10 h-10 mx-auto text-muted-foreground/50 mb-3" />
                 <p className="text-sm text-muted-foreground">
-                  Import contacts using the methods above to get started
+                  {t('screens.invitefriends.importContactsUsingMethodsAboveGet')}
                 </p>
               </CardContent>
             </Card>
@@ -379,7 +379,7 @@ export default function InviteFriends() {
               <Button variant="ghost" className="w-full justify-between text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <Plus className="w-4 h-4" />
-                  Or add manually
+                  {t('screens.invitefriends.addManually')}
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${manualOpen ? "rotate-180" : ""}`} />
               </Button>
@@ -393,16 +393,16 @@ export default function InviteFriends() {
                   </div>
                   <div className={`grid gap-3 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
                     <div className="space-y-1.5">
-                      <Label htmlFor="manual-email">Email</Label>
+                      <Label htmlFor="manual-email">{t('screens.invitefriends.email')}</Label>
                       <Input id="manual-email" type="email" placeholder={t('screens.invitefriends.emailExampleCom')} value={manualEmail} onChange={e => setManualEmail(e.target.value)} />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="manual-phone">Phone</Label>
+                      <Label htmlFor="manual-phone">{t('screens.invitefriends.phone')}</Label>
                       <Input id="manual-phone" type="tel" placeholder="+1 234 567 890" value={manualPhone} onChange={e => setManualPhone(e.target.value)} />
                     </div>
                   </div>
                   <Button onClick={handleManualAdd} size="sm">
-                    <Plus className="w-4 h-4 mr-1" /> Add Contact
+                    <Plus className="w-4 h-4 mr-1" /> {t('screens.invitefriends.addContact')}
                   </Button>
                 </CardContent>
               </Card>

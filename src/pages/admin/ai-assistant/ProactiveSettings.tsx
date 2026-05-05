@@ -29,7 +29,7 @@ export default function ProactiveSettings() {
               <h1 className="text-3xl font-bold">{t('screens.admin.proactiveAssistantSettings')}</h1>
             </div>
             <p className="text-muted-foreground">
-              Configure system-wide AI assistant behavior, personality, engagement rules, and greeting templates.
+              {t('screens.admin.configureSystemwideAiAssistantBehaviorPersonality')}
             </p>
           </div>
 
@@ -37,19 +37,19 @@ export default function ProactiveSettings() {
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="personality" className="gap-2">
                 <Settings className="h-4 w-4" />
-                Personality
+                {t('screens.admin.personality')}
               </TabsTrigger>
               <TabsTrigger value="engagement" className="gap-2">
                 <Bot className="h-4 w-4" />
-                Engagement Rules
+                {t('screens.admin.engagementRules')}
               </TabsTrigger>
               <TabsTrigger value="templates" className="gap-2">
                 <MessageSquare className="h-4 w-4" />
-                Templates
+                {t('screens.admin.templates')}
               </TabsTrigger>
               <TabsTrigger value="analytics" className="gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Analytics
+                {t('screens.admin.analytics')}
               </TabsTrigger>
             </TabsList>
 

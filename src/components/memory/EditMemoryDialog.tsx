@@ -85,7 +85,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
         <div className="space-y-4">
           {/* Content Editor */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Content</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.memory.content')}</label>
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -97,7 +97,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
 
           {/* Category Selection */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Category</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.memory.category')}</label>
             <div className="flex flex-wrap gap-2">
               {MEMORY_CATEGORIES.map((cat) => (
                 <Badge
@@ -115,7 +115,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.memory.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isUpdating || !content.trim()}>
             {isUpdating ? "Saving..." : "Save Changes"}

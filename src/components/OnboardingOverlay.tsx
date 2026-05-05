@@ -174,7 +174,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
         <div className="flex gap-3">
           {currentStep > 0 && (
             <Button variant="outline" onClick={handlePrevious} className="flex-1">
-              Previous
+              {t('screens.common.previous')}
             </Button>
           )}
           <Button onClick={handleNext} className="flex-1">

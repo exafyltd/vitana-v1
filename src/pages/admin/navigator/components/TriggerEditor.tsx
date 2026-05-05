@@ -214,7 +214,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="route">Route</Label>
+          <Label htmlFor="route">{t('screens.admin.route')}</Label>
           <Input
             id="route"
             value={form.route}
@@ -227,7 +227,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
 
       <div className="grid grid-cols-3 gap-3">
         <div className="space-y-2">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">{t('screens.admin.category')}</Label>
           <Select
             value={form.category}
             onValueChange={(v) => setForm((f) => ({ ...f, category: v }))}
@@ -245,7 +245,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="access">Access</Label>
+          <Label htmlFor="access">{t('screens.admin.access')}</Label>
           <Select
             value={form.access}
             onValueChange={(v: any) => setForm((f) => ({ ...f, access: v }))}
@@ -310,11 +310,11 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           {Object.entries(form.i18n).map(([lang, content]) => (
             <TabsContent key={lang} value={lang} className="space-y-3 pt-3">
               <div className="space-y-1">
-                <Label>Title</Label>
+                <Label>{t('screens.admin.title')}</Label>
                 <Input value={content.title} onChange={(e) => setI18nField(lang, "title", e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label>Description</Label>
+                <Label>{t('screens.admin.description')}</Label>
                 <Input
                   value={content.description}
                   onChange={(e) => setI18nField(lang, "description", e.target.value)}
@@ -322,7 +322,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
               </div>
               <div className="space-y-1">
                 <Label>
-                  When to visit <span className="text-xs text-muted-foreground">{t('screens.admin.whatUserSaysThatShouldLand')}</span>
+                  {t('screens.admin.whenVisit')} <span className="text-xs text-muted-foreground">{t('screens.admin.whatUserSaysThatShouldLand')}</span>
                 </Label>
                 <Textarea
                   rows={5}
@@ -341,11 +341,11 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           <div>
             <Label>{t('screens.admin.overrideTriggers')}</Label>
             <p className="text-xs text-muted-foreground">
-              Exact-match phrases that force this screen to win, bypassing scoring.
+              {t('screens.admin.exactmatchPhrasesThatForceThisScreen')}
             </p>
           </div>
           <Button size="sm" variant="outline" onClick={addOverride}>
-            <Plus className="mr-1 h-4 w-4" /> Add
+            <Plus className="mr-1 h-4 w-4" /> {t('screens.admin.add')}
           </Button>
         </div>
         {form.override_triggers.length === 0 ? (
@@ -375,7 +375,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
                     checked={t.active}
                     onChange={(e) => updateOverride(i, { active: e.target.checked })}
                   />
-                  active
+                  {t('screens.admin.active2')}
                 </label>
                 <Button size="icon" variant="ghost" onClick={() => removeOverride(i)}>
                   <Trash2 className="h-4 w-4" />
@@ -392,14 +392,14 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           {entry && (
             <Button variant="ghost" className="text-destructive hover:text-destructive" onClick={onDelete}>
               <Trash2 className="mr-2 h-4 w-4" />
-              Delete
+              {t('screens.admin.delete2')}
             </Button>
           )}
         </div>
         <div className="flex gap-2">
           {onClose && (
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
           )}
           <Button onClick={onSave} disabled={createMutation.isPending || updateMutation.isPending}>

@@ -126,7 +126,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-primary" />
-            Create New Group
+            {t('screens.common.createNewGroup')}
           </DialogTitle>
         </DialogHeader>
 
@@ -148,7 +148,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.common.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -160,7 +160,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectCategory')} />
@@ -177,7 +177,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                 </div>
 
                 <div>
-                  <Label htmlFor="privacy">Privacy</Label>
+                  <Label htmlFor="privacy">{t('screens.common.privacy')}</Label>
                   <Select value={formData.privacy} onValueChange={(value) => setFormData({...formData, privacy: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue />
@@ -186,13 +186,13 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                       <SelectItem value="public">
                         <div className="flex items-center gap-2">
                           <Globe className="w-4 h-4" />
-                          Public
+                          {t('screens.common.public')}
                         </div>
                       </SelectItem>
                       <SelectItem value="private">
                         <div className="flex items-center gap-2">
                           <Lock className="w-4 h-4" />
-                          Private
+                          {t('screens.common.private')}
                         </div>
                       </SelectItem>
                     </SelectContent>
@@ -201,7 +201,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
               </div>
 
               <div>
-                <Label>Tags</Label>
+                <Label>{t('screens.common.tags')}</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {availableTags.map((tag) => (
                     <Badge
@@ -263,7 +263,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isSubmitting}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting}>
               {isSubmitting ? 'Creating...' : 'Create Group'}

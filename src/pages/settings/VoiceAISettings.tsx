@@ -282,9 +282,9 @@ export default function VoiceAISettings() {
           {/* Settings Tabs */}
           <Tabs defaultValue="voice" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="voice">Voice</TabsTrigger>
+              <TabsTrigger value="voice">{t('screens.settings.voice')}</TabsTrigger>
               <TabsTrigger value="ai">{t('screens.settings.aiModels')}</TabsTrigger>
-              <TabsTrigger value="privacy">Privacy</TabsTrigger>
+              <TabsTrigger value="privacy">{t('screens.settings.privacy')}</TabsTrigger>
             </TabsList>
 
             {/* Voice Settings Tab */}
@@ -300,7 +300,7 @@ export default function VoiceAISettings() {
                   <CardContent className="space-y-6">
                     {/* Language */}
                     <div className="space-y-2">
-                      <Label>Language</Label>
+                      <Label>{t('screens.settings.language')}</Label>
                       <Select
                         value={preferences.stt_language}
                         onValueChange={handleLanguageChange}
@@ -326,7 +326,7 @@ export default function VoiceAISettings() {
                     {/* Voice Selection */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label>Voice</Label>
+                        <Label>{t('screens.settings.voice')}</Label>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -350,7 +350,7 @@ export default function VoiceAISettings() {
                           {currentCloudVoices.length > 0 && (
                             <>
                               <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                                Google Cloud Voices (High Quality)
+                                {t('screens.settings.googleCloudVoicesHighQuality')}
                               </div>
                               {currentCloudVoices.map((voice) => (
                                 <SelectItem key={voice.name} value={voice.name}>
@@ -365,7 +365,7 @@ export default function VoiceAISettings() {
                             <>
                               {currentCloudVoices.length > 0 && (
                                 <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
-                                  Browser Voices
+                                  {t('screens.settings.browserVoices')}
                                 </div>
                               )}
                               {filteredVoices.map((voice) => (
@@ -379,7 +379,7 @@ export default function VoiceAISettings() {
                           {/* No voices */}
                           {filteredVoices.length === 0 && currentCloudVoices.length === 0 && (
                             <SelectItem value="" disabled>
-                              No voices available
+                              {t('screens.settings.noVoicesAvailable')}
                             </SelectItem>
                           )}
                         </SelectContent>
@@ -397,7 +397,7 @@ export default function VoiceAISettings() {
                     {/* Speed */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Speed</Label>
+                        <Label>{t('screens.settings.speed')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_speed.toFixed(1)}x</span>
                       </div>
                       <Slider
@@ -413,7 +413,7 @@ export default function VoiceAISettings() {
                     {/* Pitch */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Pitch</Label>
+                        <Label>{t('screens.settings.pitch')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_pitch.toFixed(1)}</span>
                       </div>
                       <Slider
@@ -429,7 +429,7 @@ export default function VoiceAISettings() {
                     {/* Volume */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <Label>Volume</Label>
+                        <Label>{t('screens.settings.volume')}</Label>
                         <span className="text-sm text-muted-foreground">{preferences.tts_volume}%</span>
                       </div>
                       <Slider
@@ -468,7 +468,7 @@ export default function VoiceAISettings() {
                       <div className="space-y-0.5">
                         <Label>{t('screens.settings.autogreeting')}</Label>
                         <p className="text-sm text-muted-foreground">
-                          Vitana will greet you automatically
+                          {t('screens.settings.vitanaWillGreetYouAutomatically')}
                         </p>
                       </div>
                       <Switch
@@ -499,7 +499,7 @@ export default function VoiceAISettings() {
                               <SelectItem value="session">{t('screens.settings.oncePerSession')}</SelectItem>
                               <SelectItem value="daily">{t('screens.settings.oncePerDay')}</SelectItem>
                               <SelectItem value="hourly">{t('screens.settings.oncePerHour')}</SelectItem>
-                              <SelectItem value="off">Off</SelectItem>
+                              <SelectItem value="off">{t('screens.settings.off')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -550,7 +550,7 @@ export default function VoiceAISettings() {
                 <CardHeader>
                   <CardTitle>{t('screens.settings.aiModelPreferences')}</CardTitle>
                   <CardDescription>
-                    Choose your preferred AI model and behavior
+                    {t('screens.settings.chooseYourPreferredAiModelBehavior')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -587,7 +587,7 @@ export default function VoiceAISettings() {
                       disabled={isUpdating}
                     />
                     <p className="text-xs text-muted-foreground">
-                      Lower values are more focused, higher values are more creative
+                      {t('screens.settings.lowerValuesMoreFocusedHigherValues')}
                     </p>
                   </div>
 
@@ -603,7 +603,7 @@ export default function VoiceAISettings() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="short">{t('screens.settings.shortConcise')}</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="medium">{t('screens.settings.medium')}</SelectItem>
                         <SelectItem value="long">{t('screens.settings.detailedComprehensive')}</SelectItem>
                       </SelectContent>
                     </Select>
@@ -618,7 +618,7 @@ export default function VoiceAISettings() {
                 <CardHeader>
                   <CardTitle>{t('screens.settings.privacyDataSettings')}</CardTitle>
                   <CardDescription>
-                    Control how your voice data is stored and used
+                    {t('screens.settings.controlHowYourVoiceDataStored')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -626,7 +626,7 @@ export default function VoiceAISettings() {
                     <div className="space-y-0.5">
                       <Label htmlFor="store-recordings">{t('screens.settings.storeVoiceRecordings')}</Label>
                       <p className="text-xs text-muted-foreground">
-                        Save recordings for quality improvement
+                        {t('screens.settings.saveRecordingsForQualityImprovement')}
                       </p>
                     </div>
                     <Switch

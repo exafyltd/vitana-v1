@@ -41,7 +41,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-green-500" />
-            Billing Actions
+            {t('screens.common.billingActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -76,7 +76,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
               onClick={() => setActiveTab("invoices")}
             >
               <Download className="w-6 h-6" />
-              <span className="text-sm">Invoices</span>
+              <span className="text-sm">{t('screens.common.invoices')}</span>
             </Button>
 
             <Button
@@ -110,7 +110,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="cvv">CVV</Label>
+                    <Label htmlFor="cvv">{t('screens.common.cvv')}</Label>
                     <Input id="cvv" placeholder="123" />
                   </div>
                   <div>
@@ -124,7 +124,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                 </div>
                 <Button onClick={handleAddPayment} className="w-full">
                   <CreditCard className="w-4 h-4 mr-2" />
-                  Add Payment Method
+                  {t('screens.common.addPaymentMethod')}
                 </Button>
               </CardContent>
             </Card>
@@ -144,7 +144,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                           <Badge className="bg-primary">{t('screens.common.mostPopular')}</Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3">
-                          Advanced AI insights, unlimited storage, priority support
+                          {t('screens.common.advancedAiInsightsUnlimitedStoragePriority')}
                         </p>
                         <div className="flex items-center gap-4">
                           <span className="text-2xl font-bold">{t('screens.common.text1999mo')}</span>
@@ -153,7 +153,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                       </div>
                       <Button onClick={handleUpgradePlan}>
                         <Star className="w-4 h-4 mr-2" />
-                        Upgrade Now
+                        {t('screens.common.upgradeNow')}
                       </Button>
                     </div>
                   </CardContent>
@@ -165,7 +165,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                       <div>
                         <h4 className="font-semibold mb-2">{t('screens.common.enterprisePlan')}</h4>
                         <p className="text-sm text-muted-foreground mb-3">
-                          Custom AI models, team management, advanced analytics
+                          {t('screens.common.customAiModelsTeamManagementAdvanced')}
                         </p>
                         <div className="flex items-center gap-4">
                           <span className="text-2xl font-bold">{t('screens.common.text4999mo')}</span>
@@ -173,7 +173,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                       </div>
                       <Button variant="outline">
                         <Users className="w-4 h-4 mr-2" />
-                        Contact Sales
+                        {t('screens.common.contactSales')}
                       </Button>
                     </div>
                   </CardContent>
@@ -238,7 +238,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
                   </div>
                   <div className="text-center p-4 border rounded-lg">
                     <div className="text-2xl font-bold text-purple-600">7</div>
-                    <div className="text-sm text-muted-foreground">Integrations</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.common.integrations')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -247,11 +247,11 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
 
           <div className="flex gap-3 pt-6">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Close
+              {t('screens.common.close')}
             </Button>
             <Button className="flex-1">
               <Zap className="w-4 h-4 mr-2" />
-              Quick Actions
+              {t('screens.common.quickActions')}
             </Button>
           </div>
         </div>

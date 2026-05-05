@@ -179,7 +179,7 @@ export default function LiveRoomViewer() {
           <div className="text-center">
             <p className="text-xl mb-4">{t('screens.community.roomNotFound')}</p>
             <Button onClick={() => navigate('/comm/live-rooms')}>
-              Back to Live Rooms
+              {t('screens.community.backLiveRooms')}
             </Button>
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function LiveRoomViewer() {
               )}
               <Button onClick={() => navigate('/comm/live-rooms')}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Rooms
+                {t('screens.community.backRooms')}
               </Button>
             </Card>
           </div>
@@ -323,7 +323,7 @@ export default function LiveRoomViewer() {
                   {isRecording && (
                     <div className="absolute top-4 right-4 flex items-center gap-2 bg-destructive text-destructive-foreground px-3 py-1 rounded-full animate-pulse z-10">
                       <div className="w-3 h-3 bg-destructive-foreground rounded-full" />
-                      Recording
+                      {t('screens.community.recording')}
                     </div>
                   )}
                 </div>

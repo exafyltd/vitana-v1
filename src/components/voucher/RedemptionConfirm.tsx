@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Gift, Loader2, AlertCircle, Sparkles, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
+import { t } from '@/lib/i18n-toast';
 
 interface RedemptionConfirmProps {
   voucherData: VoucherLookupData;
@@ -66,10 +67,10 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
             <Gift className="w-10 h-10 text-primary" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">
-            Claim Your Gift
+            {t('screens.voucher.claimYourGift')}
           </h1>
           <p className="text-muted-foreground">
-            You're about to add this voucher to your account
+            {t('screens.voucher.youReAboutAddThisVoucher')}
           </p>
         </motion.div>
 
@@ -103,7 +104,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
               €{((voucherData.order?.amount_cents || 0) / 100).toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground mt-1">
-              Voucher Value
+              {t('screens.voucher.voucherValue')}
             </div>
           </div>
 
@@ -117,7 +118,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
           {/* Code Display */}
           <div className="bg-muted/50 rounded-xl p-4 text-center mb-4">
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-              Voucher Code
+              {t('screens.voucher.voucherCode')}
             </div>
             <div className="font-mono text-xl font-bold text-foreground tracking-widest">
               {voucherData.voucher?.code}
@@ -127,7 +128,7 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
           {/* Benefits */}
           <div className="space-y-2">
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-              What you'll get
+              {t('screens.voucher.whatYouLlGet')}
             </div>
             {config.benefits.map((benefit, index) => (
               <div key={index} className="flex items-start gap-2 text-sm text-foreground">
@@ -171,12 +172,12 @@ export function RedemptionConfirm({ voucherData, onClaim, isLoading, error }: Re
             ) : (
               <>
                 <Gift className="w-5 h-5" />
-                Claim Voucher
+                {t('screens.voucher.claimVoucher')}
               </>
             )}
           </button>
           <p className="text-center text-xs text-muted-foreground pt-3">
-            The voucher will be added to your wallet
+            {t('screens.voucher.voucherWillAddedYourWallet')}
           </p>
         </motion.div>
       </main>

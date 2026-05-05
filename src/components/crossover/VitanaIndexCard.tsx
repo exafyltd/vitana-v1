@@ -80,7 +80,7 @@ function VitanaIndexCardBase({
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <div className="text-xl font-bold" style={{ color: scoreStatus.color }}>{isComputing ? "…" : score}</div>
-            <div className="text-xs text-muted-foreground">Index</div>
+            <div className="text-xs text-muted-foreground">{t('screens.crossover.index')}</div>
           </div>
         </div>
       </div>

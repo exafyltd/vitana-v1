@@ -56,18 +56,18 @@ export function OrderManagementTable({
         return (
           <Badge variant="default" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
             <Check className="w-3 h-3 mr-1" />
-            Paid
+            {t('screens.business.paid')}
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="secondary">Pending</Badge>
+          <Badge variant="secondary">{t('screens.business.pending')}</Badge>
         );
       case "refunded":
         return (
           <Badge variant="destructive">
             <X className="w-3 h-3 mr-1" />
-            Refunded
+            {t('screens.business.refunded')}
           </Badge>
         );
       default:
@@ -99,11 +99,11 @@ export function OrderManagementTable({
             <TableHeader>
               <TableRow className="bg-muted/50">
                 <TableHead className="font-semibold">{t('screens.business.order')}</TableHead>
-                <TableHead className="font-semibold">Buyer</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.buyer')}</TableHead>
                 <TableHead className="font-semibold">{t('screens.business.ticketType')}</TableHead>
-                <TableHead className="font-semibold">Date</TableHead>
-                <TableHead className="font-semibold text-right">Total</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.date')}</TableHead>
+                <TableHead className="font-semibold text-right">{t('screens.business.total')}</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.status')}</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -152,7 +152,7 @@ export function OrderManagementTable({
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => onSelectOrder(order)}>
                           <Eye className="w-4 h-4 mr-2" />
-                          View Details
+                          {t('screens.business.viewDetails')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

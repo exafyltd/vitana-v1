@@ -74,7 +74,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
               onClick={handleDownload}
             >
               <Download className="h-4 w-4 mr-2" />
-              Download
+              {t('screens.profile.download')}
             </Button>
             <Button
               variant="default"
@@ -89,7 +89,7 @@ export function QRCodeModal({ isOpen, onOpenChange, profileUrl, profileName }: Q
               }}
             >
               <Share2 className="h-4 w-4 mr-2" />
-              Share
+              {t('screens.profile.share')}
             </Button>
           </div>
         </div>

@@ -30,11 +30,11 @@ export default function TenantConfig() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Settings className="w-5 h-5" />
-                Tenant Settings
+                {t('screens.admin.tenantSettings')}
               </CardTitle>
               <Button>
                 <Save className="w-4 h-4 mr-2" />
-                Save Changes
+                {t('screens.admin.saveChanges')}
               </Button>
             </CardHeader>
             <CardContent>

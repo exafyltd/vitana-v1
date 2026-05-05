@@ -29,28 +29,28 @@ export function VertexVisualFeedback({
         return (
           <Badge className="bg-green-500 hover:bg-green-600 text-white">
             <Wifi className="h-3 w-3 mr-1" />
-            Connected
+            {t('screens.vertex.connected')}
           </Badge>
         );
       case 'connecting':
         return (
           <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white">
             <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-            Connecting...
+            {t('screens.vertex.connecting')}
           </Badge>
         );
       case 'error':
         return (
           <Badge variant="destructive">
             <WifiOff className="h-3 w-3 mr-1" />
-            Error
+            {t('screens.vertex.error')}
           </Badge>
         );
       default:
         return (
           <Badge variant="secondary">
             <WifiOff className="h-3 w-3 mr-1" />
-            Disconnected
+            {t('screens.vertex.disconnected')}
           </Badge>
         );
     }
@@ -74,7 +74,7 @@ export function VertexVisualFeedback({
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Mic className="h-4 w-4 text-red-500 animate-pulse" />
-              Recording...
+              {t('screens.vertex.recording')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -95,7 +95,7 @@ export function VertexVisualFeedback({
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Volume2 className="h-4 w-4 text-primary animate-pulse" />
-              AI Speaking...
+              {t('screens.vertex.aiSpeaking')}
             </CardTitle>
           </CardHeader>
         </Card>
@@ -112,7 +112,7 @@ export function VertexVisualFeedback({
               {userTranscript && (
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">You</Badge>
+                    <Badge variant="outline" className="text-xs">{t('screens.vertex.you')}</Badge>
                   </div>
                   <p className="text-sm bg-secondary/30 p-3 rounded-lg">
                     {userTranscript}

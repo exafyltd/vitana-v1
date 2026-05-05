@@ -91,7 +91,7 @@ export function QuickExchangeWidget({
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <ArrowUpDown className="w-5 h-5 text-blue-600" />
-          Quick Exchange
+          {t('screens.wallet.quickExchange')}
         </CardTitle>
       </CardHeader>
       
@@ -118,7 +118,7 @@ export function QuickExchangeWidget({
         <div className="grid grid-cols-2 gap-3">
           {/* From Currency */}
           <div className="space-y-2">
-            <Label htmlFor="from-amount">From</Label>
+            <Label htmlFor="from-amount">{t('screens.wallet.from')}</Label>
             <div className="space-y-2">
               <Input
                 id="from-amount"
@@ -147,7 +147,7 @@ export function QuickExchangeWidget({
 
           {/* To Currency */}
           <div className="space-y-2">
-            <Label htmlFor="to-amount">To</Label>
+            <Label htmlFor="to-amount">{t('screens.wallet.text')}</Label>
             <div className="space-y-2">
               <div className="relative">
                 <Input
@@ -230,7 +230,7 @@ export function QuickExchangeWidget({
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
             <Zap className="w-4 h-4 mr-1" />
-            Exchange & Send
+            {t('screens.wallet.exchangeSend')}
           </Button>
         </div>
       </CardContent>

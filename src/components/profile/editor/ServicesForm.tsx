@@ -59,7 +59,7 @@ export function ServicesForm() {
       <div>
         <h3 className="text-lg font-medium mb-4">{t('screens.profile.servicesPricing')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Offer sessions and services to the community. Available to all roles.
+          {t('screens.profile.offerSessionsServicesCommunityAvailableAll')}
         </p>
       </div>
 
@@ -68,10 +68,10 @@ export function ServicesForm() {
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="host-sessions" className="text-base font-medium">
-              Host Sessions
+              {t('screens.profile.hostSessions')}
             </Label>
             <p className="text-sm text-muted-foreground">
-              Enable this to start offering services to other users
+              {t('screens.profile.enableThisStartOfferingServicesOther')}
             </p>
           </div>
           <Switch
@@ -88,7 +88,7 @@ export function ServicesForm() {
             <Label className="text-base font-medium">{t('screens.profile.yourOfferings')}</Label>
             <Button variant="outline" size="sm" onClick={addOffering}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Offering
+              {t('screens.profile.addOffering')}
             </Button>
           </div>
 
@@ -122,7 +122,7 @@ export function ServicesForm() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Title</Label>
+                    <Label>{t('screens.profile.title')}</Label>
                     <Input
                       placeholder={t('screens.profile.eGWellnessConsultation')}
                       value={offering.title}
@@ -131,7 +131,7 @@ export function ServicesForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Duration</Label>
+                    <Label>{t('screens.profile.duration')}</Label>
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-muted-foreground" />
                       <Select 
@@ -153,7 +153,7 @@ export function ServicesForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Price</Label>
+                    <Label>{t('screens.profile.price')}</Label>
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <Input
@@ -174,7 +174,7 @@ export function ServicesForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Currency</Label>
+                    <Label>{t('screens.profile.currency')}</Label>
                     <Select 
                       value={offering.currency} 
                       onValueChange={(value) => updateOffering(offering.id, "currency", value)}
@@ -183,10 +183,10 @@ export function ServicesForm() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="GBP">GBP</SelectItem>
-                        <SelectItem value="CAD">CAD</SelectItem>
+                        <SelectItem value="USD">{t('screens.profile.usd')}</SelectItem>
+                        <SelectItem value="EUR">{t('screens.profile.eur')}</SelectItem>
+                        <SelectItem value="GBP">{t('screens.profile.gbp')}</SelectItem>
+                        <SelectItem value="CAD">{t('screens.profile.cad')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

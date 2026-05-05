@@ -74,7 +74,7 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
 
         <div className="space-y-3">
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Category</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.category')}</Label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as DisputeReasonCategory)}
@@ -106,7 +106,7 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t('screens.intents.cancel')}
           </Button>
           <Button variant="destructive" onClick={submit} disabled={submitting}>
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Raise dispute"}

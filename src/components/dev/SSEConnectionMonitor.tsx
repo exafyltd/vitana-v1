@@ -56,10 +56,10 @@ export function SSEConnectionMonitor() {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              SSE Connection Monitor
+              {t('screens.dev.sseConnectionMonitor')}
             </CardTitle>
             <CardDescription>
-              Active Server-Sent Events connections
+              {t('screens.dev.activeServersentEventsConnections')}
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export function SSEConnectionMonitor() {
             {activeCount > 5 && (
               <Badge variant="destructive" className="gap-1">
                 <AlertCircle className="w-3 h-3" />
-                High Load
+                {t('screens.dev.highLoad')}
               </Badge>
             )}
           </div>
@@ -88,7 +88,7 @@ export function SSEConnectionMonitor() {
                 onClick={handleForceCloseAll}
               >
                 <XCircle className="w-4 h-4 mr-2" />
-                Force Close All
+                {t('screens.dev.forceCloseAll')}
               </Button>
             </div>
             

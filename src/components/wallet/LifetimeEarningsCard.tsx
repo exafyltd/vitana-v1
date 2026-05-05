@@ -16,7 +16,7 @@ export function LifetimeEarningsCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-500" />
-          Lifetime Earnings
+          {t('screens.wallet.lifetimeEarnings')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.totalEarnedSinceJoining')}</CardDescription>
       </CardHeader>
@@ -39,7 +39,7 @@ export function LifetimeEarningsCard() {
         
         <Button variant="outline" className="w-full">
           <BarChart3 className="h-4 w-4 mr-2" />
-          View Analytics
+          {t('screens.wallet.viewAnalytics')}
         </Button>
       </CardContent>
     </Card>

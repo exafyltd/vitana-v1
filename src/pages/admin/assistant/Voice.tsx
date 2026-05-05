@@ -89,7 +89,7 @@ export default function AssistantVoice() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    Current voice config (effective)
+                    {t('screens.admin.currentVoiceConfigEffective')}
                   </label>
                   <pre className="text-xs font-mono bg-muted/50 rounded p-3 max-h-40 overflow-y-auto whitespace-pre-wrap">
                     {JSON.stringify(voiceConfig, null, 2) || "—"}
@@ -107,7 +107,7 @@ export default function AssistantVoice() {
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-medium mb-1 block">Language</label>
+                    <label className="text-xs font-medium mb-1 block">{t('screens.admin.language')}</label>
                     <Select value={language} onValueChange={(v) => { setLanguage(v); setDirty(true); }}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>

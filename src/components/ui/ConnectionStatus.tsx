@@ -9,7 +9,7 @@ export function ConnectionStatus() {
     return (
       <div className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400">
         <Wifi className="w-3 h-3" />
-        <span>Live</span>
+        <span>{t('screens.ui.live')}</span>
       </div>
     );
   }
@@ -26,7 +26,7 @@ export function ConnectionStatus() {
   return (
     <div className="flex items-center gap-1.5 text-xs text-red-600 dark:text-red-400">
       <WifiOff className="w-3 h-3" />
-      <span>Offline</span>
+      <span>{t('screens.ui.offline')}</span>
     </div>
   );
 }

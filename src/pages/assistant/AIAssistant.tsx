@@ -55,19 +55,19 @@ export default function AIAssistant() {
             {/* Mobile: horizontal-scroll strip so long labels never overflow.
                 Desktop: even 5-col grid once there's room. */}
             <TabsList className="flex w-full gap-1 overflow-x-auto justify-start md:grid md:grid-cols-5">
-              <TabsTrigger value="voice" className="shrink-0">Voice</TabsTrigger>
+              <TabsTrigger value="voice" className="shrink-0">{t('screens.assistant.voice')}</TabsTrigger>
               <TabsTrigger value="ai" className="shrink-0">AI</TabsTrigger>
               <TabsTrigger value="autopilot" className="shrink-0">
-                <span className="md:hidden">Autopilot</span>
+                <span className="md:hidden">{t('screens.assistant.autopilot')}</span>
                 <span className="hidden md:inline">{t('screens.assistant.autopilotAmpAutomation')}</span>
               </TabsTrigger>
               <TabsTrigger value="proactive" className="shrink-0">
-                <span className="md:hidden">Proactive</span>
+                <span className="md:hidden">{t('screens.assistant.proactive')}</span>
                 <span className="hidden md:inline">{t('screens.assistant.proactiveTalking')}</span>
               </TabsTrigger>
               <TabsTrigger value="referrals" className="shrink-0">
-                <span className="md:hidden">Referrals</span>
-                <span className="hidden md:inline">Referrals</span>
+                <span className="md:hidden">{t('screens.assistant.referrals')}</span>
+                <span className="hidden md:inline">{t('screens.assistant.referrals')}</span>
               </TabsTrigger>
             </TabsList>
 

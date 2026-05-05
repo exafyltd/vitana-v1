@@ -264,7 +264,7 @@ const Reminders: React.FC = () => {
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Bell className="h-6 w-6" />
-          Reminders
+          {t('screens.reminders.reminders')}
         </h1>
         <p className="text-sm text-muted-foreground">
           {filteredView
@@ -290,7 +290,7 @@ const Reminders: React.FC = () => {
           )}
           <Button variant="ghost" size="sm" onClick={() => setOpenCreate(true)}>
             <Plus className="h-4 w-4 mr-1" />
-            Add manually
+            {t('screens.reminders.addManually')}
           </Button>
         </div>
       ) : null}
@@ -304,7 +304,7 @@ const Reminders: React.FC = () => {
               onClick={clearFilter}
               className="text-xs text-muted-foreground hover:text-foreground underline"
             >
-              Show all
+              {t('screens.reminders.showAll')}
             </button>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -325,7 +325,7 @@ const Reminders: React.FC = () => {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                Suggested by Vitana
+                {t('screens.reminders.suggestedByVitana')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -333,7 +333,7 @@ const Reminders: React.FC = () => {
                 <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
               ) : suggestedByVitana.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-6 text-center">
-                  Vitana hasn't suggested any reminders yet. Once Autopilot connects, contextual nudges will appear here.
+                  {t('screens.reminders.vitanaHasnTSuggestedAnyReminders')}
                 </div>
               ) : (
                 suggestedByVitana.map((r) => (
@@ -352,7 +352,7 @@ const Reminders: React.FC = () => {
                 <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
               ) : scheduledByYou.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-6 text-center">
-                  Tap the ORB and say <em>{t('screens.reminders.remindMeAt8pmTakeMy')}</em>
+                  {t('screens.reminders.tapOrbSay')} <em>{t('screens.reminders.remindMeAt8pmTakeMy')}</em>
                 </div>
               ) : (
                 scheduledByYou.map((r) => (
@@ -396,7 +396,7 @@ const Reminders: React.FC = () => {
               />
             </div>
             <div>
-              <Label htmlFor="reminder-when">When</Label>
+              <Label htmlFor="reminder-when">{t('screens.reminders.when')}</Label>
               <Input
                 id="reminder-when"
                 type="datetime-local"
@@ -424,7 +424,7 @@ const Reminders: React.FC = () => {
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setOpenCreate(false)}>
-              Cancel
+              {t('screens.reminders.cancel')}
             </Button>
             <Button onClick={handleCreate} disabled={createMut.isPending}>
               {createMut.isPending ? "Creating…" : "Create reminder"}
@@ -441,9 +441,9 @@ const Reminders: React.FC = () => {
             <AlertDialogDescription>{confirmDelete?.action_text}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+              {t('screens.reminders.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -459,9 +459,9 @@ const Reminders: React.FC = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteAll} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete All
+              {t('screens.reminders.deleteAll')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

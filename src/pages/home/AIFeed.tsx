@@ -165,7 +165,7 @@ export default function AIFeed() {
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setAddToFeedOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Feed
+              {t('screens.home.feed')}
             </Button>
           </UtilityActionButton>
 
@@ -206,9 +206,9 @@ export default function AIFeed() {
                         className="h-9"
                       >
                         <History className="w-4 h-4 mr-1" />
-                        Autopilot History
+                        {t('screens.home.autopilotHistory')}
                       </Button>
-                      <Badge variant="outline">Live</Badge>
+                      <Badge variant="outline">{t('screens.home.live')}</Badge>
                     </div>
                   </div>
 
@@ -251,13 +251,13 @@ export default function AIFeed() {
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
-                        <Pause className="w-4 h-4 mr-1" />Pause All
+                        <Pause className="w-4 h-4 mr-1" />{t('screens.home.pauseAll')}
                       </Button>
                       <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
-                        <Settings className="w-4 h-4 mr-1" />Edit
+                        <Settings className="w-4 h-4 mr-1" />{t('screens.home.edit')}
                       </Button>
                       <Button size="sm" className="h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-                        <Play className="w-4 h-4 mr-1" />Run Now
+                        <Play className="w-4 h-4 mr-1" />{t('screens.home.runNow')}
                       </Button>
                     </div>
                   </div>
@@ -342,7 +342,7 @@ export default function AIFeed() {
                     </div>
                     <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
                       <RotateCcw className="w-4 h-4 mr-1" />
-                      Export History
+                      {t('screens.home.exportHistory')}
                     </Button>
                   </div>
 
@@ -360,15 +360,15 @@ export default function AIFeed() {
                   <div className="flex items-center space-x-2">
                     <Zap className="w-5 h-5 text-yellow-600 animate-pulse" />
                     <span className="font-medium">{t('screens.home.autopilotStatus')}</span>
-                    <Badge variant="default">Active</Badge>
+                    <Badge variant="default">{t('screens.home.active')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Central feed of everything AI does • Feels alive with real-time updates
+                    {t('screens.home.centralFeedEverythingAiDoesFeels')}
                   </p>
                 </div>
                 <Button variant="outline" size="sm">
                   <Settings className="w-4 h-4 mr-1" />
-                  Configure
+                  {t('screens.home.configure')}
                 </Button>
               </div>
             </CardContent>

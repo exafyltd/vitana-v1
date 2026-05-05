@@ -23,7 +23,7 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
       <Card className="bg-destructive/10 border-destructive/20">
         <CardContent className="py-4 flex items-center justify-between gap-3">
           <p className="text-sm text-destructive">{error}</p>
-          <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+          <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
         </CardContent>
       </Card>
     );

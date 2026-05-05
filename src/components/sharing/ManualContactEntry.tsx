@@ -58,14 +58,14 @@ export function ManualContactEntry({
           disabled={contacts.length >= maxContacts}
         >
           <Plus className="h-4 w-4 mr-1" />
-          Add Contact
+          {t('screens.sharing.addContact')}
         </Button>
       </div>
 
       {contacts.length === 0 ? (
         <Card className="p-6 text-center border-dashed">
           <p className="text-sm text-muted-foreground">
-            No contacts added yet. Click "Add Contact" to get started.
+            {t('screens.sharing.noContactsAddedYetClickAdd')}
           </p>
         </Card>
       ) : (
@@ -87,7 +87,7 @@ export function ManualContactEntry({
               <div className="space-y-3">
                 <div>
                   <Label htmlFor={`name-${idx}`} className="text-xs">
-                    Name <span className="text-destructive">*</span>
+                    {t('screens.sharing.name')} <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id={`name-${idx}`}
@@ -101,7 +101,7 @@ export function ManualContactEntry({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
                     <Label htmlFor={`email-${idx}`} className="text-xs">
-                      Email
+                      {t('screens.sharing.email')}
                     </Label>
                     <Input
                       id={`email-${idx}`}
@@ -115,7 +115,7 @@ export function ManualContactEntry({
 
                   <div>
                     <Label htmlFor={`phone-${idx}`} className="text-xs">
-                      Phone
+                      {t('screens.sharing.phone')}
                     </Label>
                     <Input
                       id={`phone-${idx}`}
@@ -129,7 +129,7 @@ export function ManualContactEntry({
 
                   <div>
                     <Label htmlFor={`whatsapp-${idx}`} className="text-xs">
-                      WhatsApp
+                      {t('screens.sharing.whatsapp')}
                     </Label>
                     <Input
                       id={`whatsapp-${idx}`}
