@@ -79,7 +79,7 @@ export function NextScheduledPosts() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Calendar className="w-5 h-5" />
-          Automation Queue
+          {t('screens.sharing.automationQueue')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">{t('screens.sharing.nextScheduledPosts')}</p>
       </CardHeader>

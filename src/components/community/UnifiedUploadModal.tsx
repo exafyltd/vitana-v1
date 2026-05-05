@@ -327,7 +327,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
             <div className="rounded-lg border border-violet-200 bg-gradient-to-br from-violet-50 to-sky-50 p-4 space-y-2">
               <div className="flex items-center gap-2 text-sm font-medium text-violet-700">
                 <Sparkles className="w-4 h-4" />
-                Analyzing your video…
+                {t('screens.community.analyzingYourVideo')}
               </div>
               <div className="space-y-2">
                 <div className="h-3 w-3/4 rounded bg-violet-200/60 animate-pulse" />
@@ -363,7 +363,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 className="text-amber-900 hover:text-amber-950"
               >
                 <RotateCw className="w-3.5 h-3.5 mr-1" />
-                Retry
+                {t('screens.community.retry')}
               </Button>
             </div>
           )}
@@ -392,23 +392,23 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                     ) : (
                       <RotateCw className="w-3.5 h-3.5" />
                     )}
-                    <span className="ml-1 text-xs">Regenerate</span>
+                    <span className="ml-1 text-xs">{t('screens.community.regenerate')}</span>
                   </Button>
                 </div>
                 <dl className="text-sm space-y-1.5">
                   <div className="flex gap-2">
-                    <dt className="text-muted-foreground min-w-[80px] shrink-0">Title</dt>
+                    <dt className="text-muted-foreground min-w-[80px] shrink-0">{t('screens.community.title')}</dt>
                     <dd className="font-medium text-foreground">{title || '—'}</dd>
                   </div>
                   {description && (
                     <div className="flex gap-2">
-                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Description</dt>
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">{t('screens.community.description')}</dt>
                       <dd className="text-foreground line-clamp-2">{description}</dd>
                     </div>
                   )}
                   {topic && (
                     <div className="flex gap-2">
-                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Category</dt>
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">{t('screens.community.category')}</dt>
                       <dd className="text-foreground">
                         {translate(`mediaHub.upload.predefinedTags.${topic}`) || topic}
                       </dd>
@@ -416,7 +416,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                   )}
                   {tags.length > 0 && (
                     <div className="flex gap-2">
-                      <dt className="text-muted-foreground min-w-[80px] shrink-0">Tags</dt>
+                      <dt className="text-muted-foreground min-w-[80px] shrink-0">{t('screens.community.tags')}</dt>
                       <dd className="text-foreground">
                         {tags
                           .map((t) => translate(`mediaHub.upload.predefinedTags.${t}`) || t)

@@ -36,7 +36,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
               <p className="text-sm text-muted-foreground">{visit.provider_specialty}</p>
             </div>
           </div>
-          <Badge variant="secondary">Completed</Badge>
+          <Badge variant="secondary">{t('screens.discover.completed')}</Badge>
         </div>
 
         <div className="space-y-2 mb-3">

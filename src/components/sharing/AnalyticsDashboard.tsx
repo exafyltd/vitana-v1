@@ -47,7 +47,7 @@ export function AnalyticsDashboard() {
           <TrendingUp className="w-12 h-12 text-muted-foreground mb-3" />
           <p className="text-sm text-muted-foreground">{t('screens.sharing.noAnalyticsDataYet')}</p>
           <p className="text-xs text-muted-foreground mt-1">
-            Start blasting posts to see your performance metrics
+            {t('screens.sharing.startBlastingPostsSeeYourPerformance')}
           </p>
         </CardContent>
       </Card>

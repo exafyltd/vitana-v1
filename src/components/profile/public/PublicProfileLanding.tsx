@@ -215,7 +215,7 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
           {translate('publicProfile.viewFull', 'View Full Profile')}
         </Button>
         <p className="text-xs text-muted-foreground mt-3">
-          Powered by <span className="font-semibold text-primary">VITANA</span>
+          {t('screens.profile.poweredBy')} <span className="font-semibold text-primary">VITANA</span>
         </p>
       </div>
     </div>

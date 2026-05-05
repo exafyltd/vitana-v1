@@ -56,12 +56,12 @@ export function MobileAccountCard({
             <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-white/5 border border-white/10 mb-3">
               <ShieldCheck className="h-3.5 w-3.5 text-white/70 mr-1.5" />
               <span className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">
-                Account
+                {t('screens.profile.account')}
               </span>
             </div>
             <h2 className="text-lg font-semibold text-white">{t('screens.profile.personalDataVault')}</h2>
             <p className="text-xs text-white/50 mt-1">
-              Each field has a value and a visibility rule.
+              {t('screens.profile.eachFieldHasValueVisibilityRule')}
             </p>
           </div>
 
@@ -85,7 +85,7 @@ export function MobileAccountCard({
                 <Lock className="h-5 w-5 text-white/40" />
               </div>
               <p className="text-sm text-white/50">
-                This user keeps account details private.
+                {t('screens.profile.thisUserKeepsAccountDetailsPrivate')}
               </p>
             </div>
           )}

@@ -140,7 +140,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
           <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
           <h3 className="font-semibold mb-2">{t('screens.sharing.uploadCsvFile')}</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            CSV should contain columns: name, email, phone, whatsapp_number
+            {t('screens.sharing.csvShouldContainColumnsNameEmail')}
           </p>
           <Button variant="outline" className="relative" disabled={isProcessing}>
             <input
@@ -193,7 +193,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
 
           {/* Preview first 5 contacts */}
           <div className="mt-4">
-            <h4 className="text-sm font-medium mb-2">Preview</h4>
+            <h4 className="text-sm font-medium mb-2">{t('screens.sharing.preview')}</h4>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {currentContacts.slice(0, 5).map((contact, idx) => (
                 <div key={idx} className="text-xs bg-muted/50 rounded p-2">
@@ -220,8 +220,8 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
         <p className="font-medium">{t('screens.sharing.csvFormatRequirements')}</p>
         <ul className="list-disc list-inside space-y-0.5 ml-2">
           <li>{t('screens.sharing.firstRowMustContainColumnHeaders')}</li>
-          <li>Required column: <code>{t('screens.sharing.name')}</code></li>
-          <li>Optional columns: <code>{t('screens.sharing.email')}</code>, <code>{t('screens.sharing.phone')}</code>, <code>{t('screens.sharing.whatsapp_number')}</code></li>
+          <li>{t('screens.sharing.requiredColumn')} <code>{t('screens.sharing.name')}</code></li>
+          <li>{t('screens.sharing.optionalColumns')} <code>{t('screens.sharing.email')}</code>, <code>{t('screens.sharing.phone')}</code>, <code>{t('screens.sharing.whatsapp_number')}</code></li>
           <li>{t('screens.sharing.atLeastOneContactMethodEmail')}</li>
         </ul>
       </div>

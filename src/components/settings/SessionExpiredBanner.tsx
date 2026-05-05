@@ -35,7 +35,7 @@ export function SessionExpiredBanner({ error }: Props) {
         <span>{t('screens.settings.signAgainSeeYourConnectedApps')}</span>
         <div>
           <Button size="sm" variant="secondary" onClick={handleRefresh}>
-            Refresh session
+            {t('screens.settings.refreshSession')}
           </Button>
         </div>
       </AlertDescription>

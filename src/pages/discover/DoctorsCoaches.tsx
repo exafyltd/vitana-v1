@@ -261,7 +261,7 @@ export default function DoctorsCoaches() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
@@ -288,7 +288,7 @@ export default function DoctorsCoaches() {
                   <SelectItem value="fitness">{t('screens.discover.fitnessMovement')}</SelectItem>
                   <SelectItem value="mental">{t('screens.discover.mentalWellness')}</SelectItem>
                   <SelectItem value="recovery">{t('screens.discover.recoveryTherapy')}</SelectItem>
-                  <SelectItem value="nutrition">Nutrition</SelectItem>
+                  <SelectItem value="nutrition">{t('screens.discover.nutrition')}</SelectItem>
                   <SelectItem value="sleep">{t('screens.discover.sleepMedicine')}</SelectItem>
                 </SelectContent>
               </Select>
@@ -298,7 +298,7 @@ export default function DoctorsCoaches() {
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">{t('screens.discover.allLocations')}</SelectItem>
-                  <SelectItem value="online">Online</SelectItem>
+                  <SelectItem value="online">{t('screens.discover.online')}</SelectItem>
                   <SelectItem value="local">{t('screens.discover.nearMe')}</SelectItem>
                   <SelectItem value="travel">{t('screens.discover.travelAvailable')}</SelectItem>
                 </SelectContent>
@@ -320,7 +320,7 @@ export default function DoctorsCoaches() {
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
                   <SelectItem value="all">{t('screens.discover.anyTime')}</SelectItem>
-                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="today">{t('screens.discover.today')}</SelectItem>
                   <SelectItem value="week">{t('screens.discover.thisWeek')}</SelectItem>
                   <SelectItem value="month">{t('screens.discover.thisMonth')}</SelectItem>
                 </SelectContent>
@@ -506,7 +506,7 @@ export default function DoctorsCoaches() {
                       className="w-full text-xs"
                       onClick={() => handleBookNow(provider)}
                     >
-                      Book Now
+                      {t('screens.discover.bookNow')}
                     </Button>
                         </CardContent>
                       </Card>
@@ -522,7 +522,7 @@ export default function DoctorsCoaches() {
                 <Card className="bg-blue-500/10 border-blue-500/20">
                   <CardContent className="p-4 text-center">
                     <div className="text-3xl font-bold text-blue-600">{upcomingAppointments.length}</div>
-                    <div className="text-sm text-muted-foreground">Upcoming</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.discover.upcoming')}</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-green-500/10 border-green-500/20">
@@ -534,16 +534,16 @@ export default function DoctorsCoaches() {
                 <Card className="bg-purple-500/10 border-purple-500/20">
                   <CardContent className="p-4 text-center">
                     <div className="text-3xl font-bold text-purple-600">{getBookmarksByType('provider').length}</div>
-                    <div className="text-sm text-muted-foreground">Bookmarked</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.discover.bookmarked')}</div>
                   </CardContent>
                 </Card>
               </div>
 
               <Tabs defaultValue="bookmarked" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
+                  <TabsTrigger value="bookmarked">{t('screens.discover.bookmarked')}</TabsTrigger>
                   <TabsTrigger value="upcoming">Upcoming ({upcomingAppointments.length})</TabsTrigger>
-                  <TabsTrigger value="history">History</TabsTrigger>
+                  <TabsTrigger value="history">{t('screens.discover.history')}</TabsTrigger>
                 </TabsList>
 
                 {/* Bookmarked Tab */}
@@ -558,7 +558,7 @@ export default function DoctorsCoaches() {
                             <div className="text-6xl mb-4">💛</div>
                             <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedProvidersYet')}</h3>
                             <p className="text-muted-foreground">
-                              Save your favorite providers to access them quickly
+                              {t('screens.discover.saveYourFavoriteProvidersAccessThem')}
                             </p>
                           </CardContent>
                         </Card>
@@ -616,7 +616,7 @@ export default function DoctorsCoaches() {
                                 <div className="flex gap-2">
                                   <Button size="sm" className="flex-1">{t('screens.discover.bookNow')}</Button>
                                   <Button size="sm" variant="outline" onClick={() => removeBookmark('provider', provider.id.toString())}>
-                                    Remove
+                                    {t('screens.discover.remove')}
                                   </Button>
                                 </div>
                               </CardContent>
@@ -636,7 +636,7 @@ export default function DoctorsCoaches() {
                         <div className="text-6xl mb-4">📅</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noUpcomingAppointments')}</h3>
                         <p className="text-muted-foreground">
-                          Book an appointment with a provider to see it here
+                          {t('screens.discover.bookAppointmentWithProviderSeeIt')}
                         </p>
                       </CardContent>
                     </Card>
@@ -696,8 +696,8 @@ export default function DoctorsCoaches() {
                               </div>
 
                               <div className="flex gap-2">
-                                <Button size="sm" variant="outline">Reschedule</Button>
-                                <Button size="sm" variant="outline">Cancel</Button>
+                                <Button size="sm" variant="outline">{t('screens.discover.reschedule')}</Button>
+                                <Button size="sm" variant="outline">{t('screens.discover.cancel')}</Button>
                                 <Button size="sm" variant="outline">{t('screens.discover.addNotes')}</Button>
                               </div>
                             </CardContent>
@@ -716,7 +716,7 @@ export default function DoctorsCoaches() {
                         <div className="text-6xl mb-4">📋</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noVisitHistoryYet')}</h3>
                         <p className="text-muted-foreground">
-                          Your completed appointments will appear here
+                          {t('screens.discover.yourCompletedAppointmentsWillAppearHere')}
                         </p>
                       </CardContent>
                     </Card>

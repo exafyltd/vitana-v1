@@ -148,7 +148,7 @@ export default withScreenId(function Memory() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Add Memory
+            {t('screens.memory.addMemory')}
           </Button>
         </UtilityActionButton>
 

@@ -96,7 +96,7 @@ export function NotificationComposer({
 
       {/* Notification type */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Type</label>
+        <label className="text-sm font-medium">{t('screens.admin.type')}</label>
         <Select value={formData.type} onValueChange={(type) => update({ type })}>
           <SelectTrigger>
             <SelectValue />
@@ -113,7 +113,7 @@ export function NotificationComposer({
 
       {/* Title */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Title</label>
+        <label className="text-sm font-medium">{t('screens.admin.title')}</label>
         <Input
           placeholder={t('screens.admin.notificationTitle')}
           value={formData.title}
@@ -125,7 +125,7 @@ export function NotificationComposer({
 
       {/* Body */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Body</label>
+        <label className="text-sm font-medium">{t('screens.admin.body')}</label>
         <Textarea
           placeholder={t('screens.admin.writeNotificationMessage')}
           value={formData.body}
@@ -139,7 +139,7 @@ export function NotificationComposer({
       {/* Channel + Priority row */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">Channel</label>
+          <label className="text-sm font-medium">{t('screens.admin.channel')}</label>
           <Select value={formData.channel} onValueChange={(channel) => update({ channel })}>
             <SelectTrigger>
               <SelectValue />
@@ -154,7 +154,7 @@ export function NotificationComposer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">Priority</label>
+          <label className="text-sm font-medium">{t('screens.admin.priority')}</label>
           <Select value={formData.priority} onValueChange={(priority) => update({ priority })}>
             <SelectTrigger>
               <SelectValue />
@@ -185,7 +185,7 @@ export function NotificationComposer({
         ) : (
           <>
             <Send className="mr-2 h-4 w-4" />
-            Send Notification
+            {t('screens.admin.sendNotification')}
           </>
         )}
       </Button>

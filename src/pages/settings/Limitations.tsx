@@ -126,7 +126,7 @@ function TagEditor({
           className="max-w-sm"
         />
         <Button type="button" variant="outline" onClick={add} disabled={!input.trim()}>
-          Add
+          {t('screens.settings.add')}
         </Button>
       </div>
     </div>
@@ -238,7 +238,7 @@ export default function Limitations() {
         <SubNavigation items={settingsNavigation} />
         <div className="p-8 flex items-center gap-2 text-muted-foreground">
           <Loader2 className="w-4 h-4 animate-spin" />
-          Loading your preferences...
+          {t('screens.settings.loadingYourPreferences')}
         </div>
       </AppLayout>
     );
@@ -279,7 +279,7 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
-                Allergies
+                {t('screens.settings.allergies')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
               </CardTitle>
               <CardDescription>
@@ -298,7 +298,7 @@ export default function Limitations() {
                 placeholder="e.g. peanuts, shellfish, latex"
               />
               <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
-                Save allergies
+                {t('screens.settings.saveAllergies')}
               </Button>
             </CardContent>
           </Card>
@@ -308,7 +308,7 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="w-5 h-5 text-orange-600" />
-                Dietary restrictions
+                {t('screens.settings.dietaryRestrictions')}
               </CardTitle>
               <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
             </CardHeader>
@@ -318,7 +318,7 @@ export default function Limitations() {
                 onChange={(next) => setState((s) => ({ ...s, dietary_restrictions: next }))}
               />
               <Button onClick={() => save({ dietary_restrictions: state.dietary_restrictions })} disabled={saving}>
-                Save dietary
+                {t('screens.settings.saveDietary')}
               </Button>
             </CardContent>
           </Card>
@@ -328,7 +328,7 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Pill className="w-5 h-5 text-indigo-600" />
-                Current medications
+                {t('screens.settings.currentMedications')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
               </CardTitle>
               <CardDescription>
@@ -345,7 +345,7 @@ export default function Limitations() {
                 placeholder="e.g. ssri, blood-thinner, statin"
               />
               <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
-                Save medications
+                {t('screens.settings.saveMedications')}
               </Button>
             </CardContent>
           </Card>
@@ -355,13 +355,13 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Baby className="w-5 h-5 text-pink-600" />
-                Pregnancy / Nursing
+                {t('screens.settings.pregnancyNursing')}
               </CardTitle>
               <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="max-w-sm space-y-2">
-                <Label>Status</Label>
+                <Label>{t('screens.settings.status')}</Label>
                 <Select
                   value={state.pregnancy_status ?? "prefer_not_say"}
                   onValueChange={(v) => setState((s) => ({ ...s, pregnancy_status: v }))}
@@ -369,14 +369,14 @@ export default function Limitations() {
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="not_pregnant">{t('screens.settings.notPregnant')}</SelectItem>
-                    <SelectItem value="pregnant">Pregnant</SelectItem>
-                    <SelectItem value="nursing">Nursing</SelectItem>
+                    <SelectItem value="pregnant">{t('screens.settings.pregnant')}</SelectItem>
+                    <SelectItem value="nursing">{t('screens.settings.nursing')}</SelectItem>
                     <SelectItem value="prefer_not_say">{t('screens.settings.preferNotSay')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <Button onClick={() => save({ pregnancy_status: state.pregnancy_status as Limitations["pregnancy_status"] })} disabled={saving}>
-                Save pregnancy status
+                {t('screens.settings.savePregnancyStatus')}
               </Button>
             </CardContent>
           </Card>
@@ -386,7 +386,7 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Wallet className="w-5 h-5 text-emerald-600" />
-                Budget
+                {t('screens.settings.budget')}
               </CardTitle>
               <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
             </CardHeader>
@@ -426,10 +426,10 @@ export default function Limitations() {
                   >
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="any">Any</SelectItem>
+                      <SelectItem value="any">{t('screens.settings.any')}</SelectItem>
                       <SelectItem value="budget">{t('screens.settings.budgetfriendly')}</SelectItem>
                       <SelectItem value="mid">{t('screens.settings.midrange')}</SelectItem>
-                      <SelectItem value="premium">Premium</SelectItem>
+                      <SelectItem value="premium">{t('screens.settings.premium')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -454,7 +454,7 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Accessibility className="w-5 h-5 text-sky-600" />
-                Accessibility
+                {t('screens.settings.accessibility')}
               </CardTitle>
               <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
             </CardHeader>
@@ -467,7 +467,7 @@ export default function Limitations() {
                 placeholder="e.g. liquid-form, large-label"
               />
               <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
-                Save accessibility
+                {t('screens.settings.saveAccessibility')}
               </Button>
             </CardContent>
           </Card>

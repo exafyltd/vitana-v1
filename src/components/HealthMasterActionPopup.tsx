@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Users, BookOpen, Activity, Stethoscope, Upload, FlaskConical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthMasterActionPopupProps {
   open: boolean;
@@ -83,7 +84,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
         <DialogHeader className="bg-gradient-to-r from-green-500/10 via-blue-500/10 to-purple-500/10 -m-6 p-6 mb-0">
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Heart className="w-6 h-6 text-green-500" />
-            Health Actions
+            {t('screens.common.healthActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -111,7 +112,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
 
         <div className="flex justify-end gap-3 px-6 pb-6">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Close
+            {t('screens.common.close')}
           </Button>
         </div>
       </DialogContent>

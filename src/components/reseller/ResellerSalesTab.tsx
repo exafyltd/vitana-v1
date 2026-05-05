@@ -154,7 +154,7 @@ export function ResellerSalesTab() {
           <Ticket className="h-12 w-12 mx-auto text-muted-foreground/40 mb-4" />
           <h3 className="text-lg font-medium mb-2">{t('screens.reseller.noSalesYet')}</h3>
           <p className="text-sm text-muted-foreground mb-8 max-w-sm mx-auto">
-            Share your reseller links or create a promotion to start earning commissions.
+            {t('screens.reseller.shareYourResellerLinksCreatePromotion')}
           </p>
           <div className="flex justify-center gap-3">
             <Button 
@@ -164,7 +164,7 @@ export function ResellerSalesTab() {
               onClick={() => setShowEventPicker(true)}
             >
               <Share2 className="h-4 w-4" />
-              Share reseller link
+              {t('screens.reseller.shareResellerLink')}
             </Button>
             <Button 
               size="sm" 
@@ -172,7 +172,7 @@ export function ResellerSalesTab() {
               onClick={() => setShowCampaignDialog(true)}
             >
               <Megaphone className="h-4 w-4" />
-              Create promotion
+              {t('screens.reseller.createPromotion')}
             </Button>
           </div>
         </div>
@@ -214,7 +214,7 @@ export function ResellerSalesTab() {
                 ))
               ) : (
                 <p className="text-center text-sm text-muted-foreground py-8">
-                  No events available to sell
+                  {t('screens.reseller.noEventsAvailableSell')}
                 </p>
               )}
             </div>
@@ -376,7 +376,7 @@ export function ResellerSalesTab() {
               <ResponsivePopoverContent title={t('screens.reseller.info')} align="end" className="w-auto p-2">
                 <div className="flex items-center gap-2 text-xs text-amber-600">
                   <Badge variant="outline" className="gap-1 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
-                    Mock data active
+                    {t('screens.reseller.mockDataActive')}
                   </Badge>
                 </div>
               </ResponsivePopoverContent>
@@ -428,7 +428,7 @@ export function ResellerSalesTab() {
                               variant="outline" 
                               className="text-[10px] px-1.5 py-0 h-5 rounded-md font-medium"
                             >
-                              Reseller Sale
+                              {t('screens.reseller.resellerSale')}
                             </Badge>
                           </div>
 
@@ -537,7 +537,7 @@ export function ResellerSalesTab() {
               ))
             ) : (
               <p className="text-center text-sm text-muted-foreground py-8">
-                No events available to sell
+                {t('screens.reseller.noEventsAvailableSell')}
               </p>
             )}
           </div>

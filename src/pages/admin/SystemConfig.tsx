@@ -65,10 +65,10 @@ export default function SystemConfig() {
 
           <Tabs defaultValue="general" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="general">{t('screens.admin.general')}</TabsTrigger>
               <TabsTrigger value="vitana">{t('screens.admin.vitanaIndex')}</TabsTrigger>
-              <TabsTrigger value="autopilot">Autopilot</TabsTrigger>
-              <TabsTrigger value="integrations">Integrations</TabsTrigger>
+              <TabsTrigger value="autopilot">{t('screens.admin.autopilot')}</TabsTrigger>
+              <TabsTrigger value="integrations">{t('screens.admin.integrations')}</TabsTrigger>
             </TabsList>
 
             {/* General Settings */}
@@ -78,12 +78,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Database className="w-5 h-5" />
-                      Database
+                      {t('screens.admin.database')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.connectionBackupSettings')}</p>
-                    <Button variant="outline" size="sm">Configure</Button>
+                    <Button variant="outline" size="sm">{t('screens.admin.configure')}</Button>
                   </CardContent>
                 </Card>
 
@@ -91,12 +91,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Mail className="w-5 h-5" />
-                      Email Service
+                      {t('screens.admin.emailService')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.smtpNotificationSettings')}</p>
-                    <Button variant="outline" size="sm">Configure</Button>
+                    <Button variant="outline" size="sm">{t('screens.admin.configure')}</Button>
                   </CardContent>
                 </Card>
 
@@ -104,12 +104,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Code className="w-5 h-5" />
-                      API Keys
+                      {t('screens.admin.apiKeys')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.thirdpartyIntegrations')}</p>
-                    <Button variant="outline" size="sm">Manage</Button>
+                    <Button variant="outline" size="sm">{t('screens.admin.manage')}</Button>
                   </CardContent>
                 </Card>
               </div>
@@ -123,15 +123,15 @@ export default function SystemConfig() {
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <Activity className="w-5 h-5" />
-                        Vitana Index Algorithm Weights
+                        {t('screens.admin.vitanaIndexAlgorithmWeights')}
                       </CardTitle>
                       <CardDescription>
-                        Configure the weight of each health metric in the Vitana Index calculation
+                        {t('screens.admin.configureWeightEachHealthMetricVitana')}
                       </CardDescription>
                     </div>
                     <Button onClick={handleSaveWeights} disabled={isUpdating}>
                       <Save className="w-4 h-4 mr-2" />
-                      Save Weights
+                      {t('screens.admin.saveWeights')}
                     </Button>
                   </div>
                 </CardHeader>
@@ -217,7 +217,7 @@ export default function SystemConfig() {
                 <CardHeader>
                   <CardTitle>{t('screens.admin.scoringTiersConfiguration')}</CardTitle>
                   <CardDescription>
-                    Define the score ranges and labels for the Vitana Index tiers
+                    {t('screens.admin.defineScoreRangesLabelsForVitana')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -238,10 +238,10 @@ export default function SystemConfig() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Bot className="w-5 h-5" />
-                    Global Autopilot Rules
+                    {t('screens.admin.globalAutopilotRules')}
                   </CardTitle>
                   <CardDescription>
-                    Configure system-wide automation rules that apply to all users by default
+                    {t('screens.admin.configureSystemwideAutomationRulesThatApply')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -268,7 +268,7 @@ export default function SystemConfig() {
                   <div className="pt-4">
                     <Button>
                       <Save className="w-4 h-4 mr-2" />
-                      Save Global Settings
+                      {t('screens.admin.saveGlobalSettings')}
                     </Button>
                   </div>
                 </CardContent>
@@ -278,12 +278,12 @@ export default function SystemConfig() {
                 <CardHeader>
                   <CardTitle>{t('screens.admin.automationRuleTemplates')}</CardTitle>
                   <CardDescription>
-                    Create reusable rule templates that users can enable
+                    {t('screens.admin.createReusableRuleTemplatesThatUsers')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button variant="outline">
-                    Manage Rule Templates
+                    {t('screens.admin.manageRuleTemplates')}
                   </Button>
                 </CardContent>
               </Card>
@@ -295,12 +295,12 @@ export default function SystemConfig() {
                 <CardHeader>
                   <CardTitle>{t('screens.admin.thirdpartyIntegrations2')}</CardTitle>
                   <CardDescription>
-                    Manage API keys and configurations for external services
+                    {t('screens.admin.manageApiKeysConfigurationsForExternal')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Integration management coming soon
+                    {t('screens.admin.integrationManagementComingSoon')}
                   </p>
                 </CardContent>
               </Card>

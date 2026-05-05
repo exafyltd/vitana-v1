@@ -99,11 +99,11 @@ export default function Uploads() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.type')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.submitted')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -120,9 +120,9 @@ export default function Uploads() {
                       {new Date(item.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right space-x-1">
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>Approve</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "reject")}>Reject</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "flag")}>Flag</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>{t('screens.admin.approve')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "reject")}>{t('screens.admin.reject')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "flag")}>{t('screens.admin.flag')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -87,7 +87,7 @@ export function GreetingTemplates() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5" />
-          Greeting Templates
+          {t('screens.admin.greetingTemplates')}
         </CardTitle>
         <CardDescription>
           Customize base greeting templates for different user experience levels. The AI will use these as starting points and personalize them with user context.
@@ -104,7 +104,7 @@ export function GreetingTemplates() {
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for users in their first week or with low engagement score
+            {t('screens.admin.usedForUsersTheirFirstWeek')}
           </p>
         </div>
 
@@ -118,7 +118,7 @@ export function GreetingTemplates() {
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for users with moderate engagement and familiarity
+            {t('screens.admin.usedForUsersWithModerateEngagement')}
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export function GreetingTemplates() {
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
-            Used for highly engaged users with deep platform knowledge
+            {t('screens.admin.usedForHighlyEngagedUsersWith')}
           </p>
         </div>
 

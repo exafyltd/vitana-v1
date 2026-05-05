@@ -27,12 +27,12 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
             <h2 className="text-xl font-bold">{t('screens.health.yourHydrationPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
-            Smart hydration guidance tailored to your lifestyle, activity, and environment
+            {t('screens.health.smartHydrationGuidanceTailoredYourLifestyle')}
           </p>
         </div>
         <Badge variant="secondary" className="gap-1">
           <Sparkles className="w-3 h-3" />
-          AI Optimized
+          {t('screens.health.aiOptimized')}
         </Badge>
       </div>
       
@@ -51,7 +51,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-sky-600 dark:text-sky-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Schedule</span>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
             {planData.schedule}
@@ -65,7 +65,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         <div className="p-4 rounded-xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-900" />
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Progress</span>
+            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">
             Week {planData.currentWeek} of {planData.totalWeeks}
@@ -80,7 +80,7 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-slate-700 dark:text-slate-300 tracking-tight">
-            Tracking your weekly consistency...
+            {t('screens.health.trackingYourWeeklyConsistency')}
           </span>
           <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
             {planData.completionPercentage}%
@@ -120,12 +120,12 @@ export function HydrationOverviewCard({ planData, onRecalibrate }: HydrationOver
         onClick={onRecalibrate}
       >
         <Sparkles className="w-4 h-4 mr-2" />
-        Recalibrate Plan
+        {t('screens.health.recalibratePlan')}
       </Button>
       
       {/* Helper Text */}
       <p className="text-xs text-center text-muted-foreground mt-2">
-        Recalibration adjusts hydration goals based on temperature, activity, and sleep
+        {t('screens.health.recalibrationAdjustsHydrationGoalsBasedTemperature')}
       </p>
     </Card>
   );

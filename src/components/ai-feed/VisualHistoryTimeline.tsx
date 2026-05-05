@@ -469,7 +469,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
               </Button>
               <Button variant="secondary" size="sm" className="h-8 px-3 text-xs">
                 <Download className="w-3 h-3 mr-1" />
-                Export History
+                {t('screens.ai-feed.exportHistory')}
               </Button>
             </div>
           </div>
@@ -484,7 +484,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
               <Filter className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
               <p className="text-sm text-muted-foreground">{t('screens.ai-feed.noEventsFound')}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Try adjusting your filters or search query
+                {t('screens.ai-feed.tryAdjustingYourFiltersSearchQuery')}
               </p>
             </CardContent>
           </Card>
@@ -554,16 +554,16 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                             <KebabMenu>
                               <DropdownMenuItem>
                                 <Eye className="w-4 h-4 mr-2" />
-                                View details
+                                {t('screens.ai-feed.viewDetails')}
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <MessageSquare className="w-4 h-4 mr-2" />
-                                Add note
+                                {t('screens.ai-feed.addNote')}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem>
                                 <Share2 className="w-4 h-4 mr-2" />
-                                Share
+                                {t('screens.ai-feed.share')}
                               </DropdownMenuItem>
                             </KebabMenu>
                           </div>

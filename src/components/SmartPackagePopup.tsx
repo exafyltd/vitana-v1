@@ -71,10 +71,10 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-purple-600" />
-            Smart Package Creator
+            {t('screens.common.smartPackageCreator')}
           </DialogTitle>
           <DialogDescription>
-            Create an intelligent health data package with AI-powered recommendations
+            {t('screens.common.createIntelligentHealthDataPackageWith')}
           </DialogDescription>
         </DialogHeader>
 
@@ -118,7 +118,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                     
                     <Button size="sm" className="w-full">
                       <Target className="h-3 w-3 mr-1" />
-                      Use This Package
+                      {t('screens.common.useThisPackage')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -168,7 +168,7 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
                 
                 <Button className="w-full" size="sm">
                   <Sparkles className="h-4 w-4 mr-2" />
-                  Generate AI Recommendations
+                  {t('screens.common.generateAiRecommendations')}
                 </Button>
               </CardContent>
             </Card>
@@ -235,14 +235,14 @@ export function SmartPackagePopup({ isOpen, onClose }: SmartPackagePopupProps) {
           <div className="flex flex-wrap gap-2 pt-4 border-t">
             <Button disabled={selectedDataTypes.length === 0 && !packageName} size="sm">
               <Wand2 className="h-4 w-4 mr-2" />
-              Create Smart Package
+              {t('screens.common.createSmartPackage')}
             </Button>
             <Button variant="outline" size="sm">
               <Target className="h-4 w-4 mr-2" />
-              Preview Package
+              {t('screens.common.previewPackage')}
             </Button>
             <Button variant="outline" size="sm">{t('screens.common.saveAsDraft')}</Button>
-            <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
+            <Button variant="ghost" size="sm" onClick={onClose}>{t('screens.common.cancel')}</Button>
           </div>
         </div>
       </DialogContent>

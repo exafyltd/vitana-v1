@@ -110,7 +110,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         <DialogHeader>
           <DialogTitle>{t('screens.intents.postCommunity')}</DialogTitle>
           <DialogDescription>
-            Tell the community what you need or what you're offering — the system will match you with the right people.
+            {t('screens.intents.tellCommunityWhatYouNeedWhat')}
           </DialogDescription>
         </DialogHeader>
 
@@ -120,14 +120,14 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             size="sm"
             onClick={() => setMode("form")}
           >
-            Form
+            {t('screens.intents.form')}
           </Button>
           <Button
             variant={mode === "voice" ? "default" : "outline"}
             size="sm"
             onClick={() => setMode("voice")}
           >
-            <Mic className="h-4 w-4 mr-1.5" /> Voice
+            <Mic className="h-4 w-4 mr-1.5" /> {t('screens.intents.voice')}
           </Button>
         </div>
 
@@ -142,14 +142,14 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               <br />
               <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
               <br />
-              ORB will read it back to you and post on confirmation.
+              {t('screens.intents.orbWillReadItBackYou')}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             <div>
               <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Kind
+                {t('screens.intents.kind')}
               </Label>
               <select
                 value={kind}
@@ -166,7 +166,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
             <div>
               <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Title (3–140 chars)
+                {t('screens.intents.title3140Chars')}
               </Label>
               <Input
                 id="intent-title"
@@ -179,7 +179,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
             <div>
               <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Description (≥ 20 chars)
+                {t('screens.intents.description20Chars')}
               </Label>
               <Textarea
                 id="intent-scope"
@@ -195,13 +195,13 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget min (€)
+                    {t('screens.intents.budgetMin')}
                   </Label>
                   <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
                 </div>
                 <div>
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget max (€)
+                    {t('screens.intents.budgetMax')}
                   </Label>
                   <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
                 </div>
@@ -210,7 +210,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
             <div>
               <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Location (optional)
+                {t('screens.intents.locationOptional')}
               </Label>
               <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Vienna" />
             </div>
@@ -219,7 +219,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t('screens.intents.cancel')}
           </Button>
           {mode === "form" && (
             <Button onClick={submit} disabled={submitting}>

@@ -132,7 +132,7 @@ export default function AutomationOverview() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                    <h4 className="font-semibold">Conditions</h4>
+                    <h4 className="font-semibold">{t('screens.admin.conditions')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Define rules that must be met before actions execute. Filter by user 
@@ -143,7 +143,7 @@ export default function AutomationOverview() {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <h4 className="font-semibold">Actions</h4>
+                    <h4 className="font-semibold">{t('screens.admin.actions')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Execute specific operations like sending notifications, updating data, 

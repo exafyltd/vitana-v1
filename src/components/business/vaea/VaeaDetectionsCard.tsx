@@ -11,7 +11,7 @@ export function VaeaDetectionsCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Radio className="w-5 h-5" />
-          Autopilot referrals (7d)
+          {t('screens.business.autopilotReferrals7d')}
         </CardTitle>
       </CardHeader>
       <CardContent>

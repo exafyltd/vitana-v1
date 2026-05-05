@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, X, Clock, Users } from 'lucide-react';
 import { CalendarInviteResponse } from '@/hooks/useCalendarEvents';
+import { t } from '@/lib/i18n-toast';
 
 interface InviteResponseSummaryProps {
   responses: CalendarInviteResponse[];
@@ -18,7 +19,7 @@ export const InviteResponseSummary: React.FC<InviteResponseSummaryProps> = ({ re
       <div className="mt-3">
         <Badge variant="secondary" className="bg-gray-100 text-gray-600 border-gray-200">
           <Users className="w-3 h-3 mr-1" />
-          No responses yet
+          {t('screens.messages.noResponsesYet')}
         </Badge>
       </div>
     );

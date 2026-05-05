@@ -134,7 +134,7 @@ export default function OpenAsks() {
 
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Kind</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.kind')}</span>
           {KIND_FILTERS.map((f) => (
             <button
               key={f.key ?? "all"}
@@ -150,7 +150,7 @@ export default function OpenAsks() {
         </div>
 
         <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Topic</span>
+          <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">{t('screens.community.topic')}</span>
           {DANCE_FILTERS.map((f) => (
             <button
               key={f.label}

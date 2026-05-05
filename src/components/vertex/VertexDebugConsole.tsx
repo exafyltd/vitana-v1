@@ -25,9 +25,9 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
       case 'error':
         return <Badge variant="destructive" className="text-xs">ERROR</Badge>;
       case 'warn':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs">WARN</Badge>;
+        return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs">{t('screens.vertex.warn')}</Badge>;
       default:
-        return <Badge variant="outline" className="text-xs">INFO</Badge>;
+        return <Badge variant="outline" className="text-xs">{t('screens.vertex.info')}</Badge>;
     }
   };
 
@@ -44,7 +44,7 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
               className="h-8"
             >
               <Download className="h-3 w-3 mr-1" />
-              Export
+              {t('screens.vertex.export')}
             </Button>
             <Button
               variant="ghost"

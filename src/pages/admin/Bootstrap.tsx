@@ -53,7 +53,7 @@ export default function Bootstrap() {
               <div className="text-center space-y-2">
                 <h2 className="text-xl font-semibold">{t('screens.admin.accessRestricted')}</h2>
                 <p className="text-muted-foreground">
-                  You must be an Exafy administrator to access the bootstrap interface.
+                  {t('screens.admin.youMustExafyAdministratorAccessBootstrap')}
                 </p>
               </div>
             </CardContent>
@@ -207,10 +207,10 @@ export default function Bootstrap() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="h-5 w-5" />
-                Add Admin Emails
+                {t('screens.admin.addAdminEmails')}
               </CardTitle>
               <CardDescription>
-                Add email addresses to elevate to super administrator status
+                {t('screens.admin.addEmailAddressesElevateSuperAdministrator')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -264,10 +264,10 @@ export default function Bootstrap() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Current Super Admins
+                {t('screens.admin.currentSuperAdmins')}
               </CardTitle>
               <CardDescription>
-                List of current Exafy super administrators
+                {t('screens.admin.listCurrentExafySuperAdministrators')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -294,7 +294,7 @@ export default function Bootstrap() {
                         <div className="flex items-center gap-2">
                           <Badge variant="secondary">
                             <Shield className="h-3 w-3 mr-1" />
-                            Admin
+                            {t('screens.admin.admin')}
                           </Badge>
                           <Button
                             variant="ghost"
@@ -310,7 +310,7 @@ export default function Bootstrap() {
                   </div>
                 ) : (
                   <div className="text-center py-4 text-muted-foreground">
-                    No administrators loaded. Click refresh to load current admins.
+                    {t('screens.admin.noAdministratorsLoadedClickRefreshLoad')}
                   </div>
                 )}
               </div>
@@ -378,7 +378,7 @@ export default function Bootstrap() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <Button onClick={runBootstrap} disabled={isLoading}>
               {isLoading ? "Processing..." : "Confirm Bootstrap"}

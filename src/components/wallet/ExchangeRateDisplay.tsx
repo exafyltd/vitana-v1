@@ -58,7 +58,7 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
         <div className="flex items-center justify-between mb-2">
           <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.liveExchangeRates')}</h4>
           <Badge variant="outline" className="text-xs bg-white">
-            Updated now
+            {t('screens.wallet.updatedNow')}
           </Badge>
         </div>
         
@@ -83,7 +83,7 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
               
               {rate.from === 'VTNA' && rate.to === 'CREDITS' && (
                 <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
-                  +5% Bonus
+                  {t('screens.wallet.text5Bonus')}
                 </Badge>
               )}
             </div>

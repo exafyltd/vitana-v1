@@ -173,7 +173,7 @@ export function AddSupplementDialog({
               name="dosage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Dosage</FormLabel>
+                  <FormLabel>{t('screens.supplements.dosage')}</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder={t('screens.supplements.eG1000Iu500mg')} 
@@ -190,7 +190,7 @@ export function AddSupplementDialog({
               name="frequency"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Frequency</FormLabel>
+                  <FormLabel>{t('screens.supplements.frequency')}</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder={t('screens.supplements.eGOnceDailyTwiceDaily')} 
@@ -224,7 +224,7 @@ export function AddSupplementDialog({
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Notes</FormLabel>
+                  <FormLabel>{t('screens.supplements.notes')}</FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder={t('screens.supplements.anyAdditionalInformation')} 
@@ -245,7 +245,7 @@ export function AddSupplementDialog({
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                {t('screens.supplements.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

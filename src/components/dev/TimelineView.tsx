@@ -120,7 +120,7 @@ export function TimelineView() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
+              <SelectItem value="today">{t('screens.dev.today')}</SelectItem>
               <SelectItem value="week">{t('screens.dev.thisWeek')}</SelectItem>
               <SelectItem value="month">{t('screens.dev.thisMonth')}</SelectItem>
             </SelectContent>
@@ -193,7 +193,7 @@ export function TimelineView() {
       {MOCK_EVENTS.length === 0 && (
         <Card className="p-12 text-center bg-white/50 dark:bg-card/50 backdrop-blur-sm">
           <p className="text-muted-foreground">
-            No timeline events for the selected time range.
+            {t('screens.dev.noTimelineEventsForSelectedTime')}
           </p>
         </Card>
       )}

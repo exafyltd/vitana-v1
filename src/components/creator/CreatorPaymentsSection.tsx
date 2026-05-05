@@ -21,13 +21,13 @@ export function CreatorPaymentsSection() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="w-5 h-5" />
-            Creator Payments
+            {t('screens.creator.creatorPayments')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-4 h-4 animate-spin" />
-            Loading payment status...
+            {t('screens.creator.loadingPaymentStatus')}
           </div>
         </CardContent>
       </Card>
@@ -43,7 +43,7 @@ export function CreatorPaymentsSection() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <DollarSign className="w-5 h-5" />
-          Creator Payments
+          {t('screens.creator.creatorPayments')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -58,13 +58,13 @@ export function CreatorPaymentsSection() {
           {isFullyOnboarded && (
             <Badge variant="default" className="bg-green-600">
               <CheckCircle className="w-3 h-3 mr-1" />
-              Active
+              {t('screens.creator.active')}
             </Badge>
           )}
           {isPartiallyOnboarded && (
             <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
               <AlertCircle className="w-3 h-3 mr-1" />
-              Setup Incomplete
+              {t('screens.creator.setupIncomplete')}
             </Badge>
           )}
           {notOnboarded && (
@@ -84,7 +84,7 @@ export function CreatorPaymentsSection() {
                 <div className="flex-1">
                   <h4 className="font-medium text-green-900">{t('screens.creator.paymentsEnabled')}</h4>
                   <p className="text-sm text-green-700 mt-1">
-                    You can now create paid Live Rooms and receive earnings directly to your bank account.
+                    {t('screens.creator.youCanNowCreatePaidLive')}
                   </p>
                 </div>
               </div>

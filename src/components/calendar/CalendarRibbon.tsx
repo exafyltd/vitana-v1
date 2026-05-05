@@ -106,7 +106,7 @@ export function CalendarRibbon() {
           className="h-8 gap-1"
         >
           <Plus className="h-3 w-3" />
-          <span className="hidden sm:inline">Add</span>
+          <span className="hidden sm:inline">{t('screens.calendar.add')}</span>
         </Button>
       </div>
 

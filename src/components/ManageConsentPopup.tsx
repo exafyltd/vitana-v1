@@ -17,10 +17,10 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
-            Manage Consent Settings
+            {t('screens.common.manageConsentSettings')}
           </DialogTitle>
           <DialogDescription>
-            Control your data sharing preferences and manage consent permissions
+            {t('screens.common.controlYourDataSharingPreferencesManage')}
           </DialogDescription>
         </DialogHeader>
         
@@ -30,7 +30,7 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  Grant New Access
+                  {t('screens.common.grantNewAccess')}
                 </CardTitle>
                 <CardDescription className="text-sm">
                   Allow new organizations to access your health data
@@ -45,14 +45,14 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  Create Data Package
+                  {t('screens.common.createDataPackage')}
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Bundle and share specific data sets
+                  {t('screens.common.bundleShareSpecificDataSets')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-0">
-                <Badge variant="secondary" className="text-xs">New</Badge>
+                <Badge variant="secondary" className="text-xs">{t('screens.common.new')}</Badge>
               </CardContent>
             </Card>
             
@@ -60,10 +60,10 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Settings className="h-4 w-4" />
-                  Privacy Settings
+                  {t('screens.common.privacySettings')}
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Configure default sharing preferences
+                  {t('screens.common.configureDefaultSharingPreferences')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -72,10 +72,10 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Shield className="h-4 w-4" />
-                  Review Consents
+                  {t('screens.common.reviewConsents')}
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  View and manage all active permissions
+                  {t('screens.common.viewManageAllActivePermissions')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -83,10 +83,10 @@ export default function ManageConsentPopup({ isOpen, onClose }: ManageConsentPop
           
           <div className="flex justify-end gap-2 pt-4">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button>
-              Continue
+              {t('screens.common.continue')}
             </Button>
           </div>
         </div>

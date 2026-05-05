@@ -17,14 +17,14 @@ export function EconomyHealthCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Activity className="h-5 w-5 text-emerald-500" />
-          Economy Health
+          {t('screens.wallet.economyHealth')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.vtnaEcosystemStatus')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">{t('screens.wallet.systemStatus')}</span>
-          <Badge className="bg-green-100 text-green-700">Healthy</Badge>
+          <Badge className="bg-green-100 text-green-700">{t('screens.wallet.healthy')}</Badge>
         </div>
         
         <div className="space-y-3 text-sm">
@@ -61,7 +61,7 @@ export function EconomyHealthCard() {
         
         <Button variant="ghost" size="sm" className="w-full text-xs">
           <ExternalLink className="h-3 w-3 mr-1" />
-          View Tokenomics
+          {t('screens.wallet.viewTokenomics')}
         </Button>
       </CardContent>
     </Card>

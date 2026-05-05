@@ -49,24 +49,24 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>{t('screens.sharing.createBrandGuideline')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Define channel-specific rules and best practices
+            {t('screens.sharing.defineChannelspecificRulesBestPractices')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <form onSubmit={handleSubmit}>
           <ResponsiveDialogBody>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="channel">Channel</Label>
+                <Label htmlFor="channel">{t('screens.sharing.channel')}</Label>
                 <Select value={channel} onValueChange={setChannel}>
                   <SelectTrigger id="channel">
                     <SelectValue placeholder={t('screens.sharing.selectChannel')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="instagram">Instagram</SelectItem>
-                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                    <SelectItem value="instagram">{t('screens.sharing.instagram')}</SelectItem>
+                    <SelectItem value="linkedin">{t('screens.sharing.linkedin')}</SelectItem>
                     <SelectItem value="twitter">{t('screens.sharing.twitterx')}</SelectItem>
-                    <SelectItem value="facebook">Facebook</SelectItem>
-                    <SelectItem value="tiktok">TikTok</SelectItem>
+                    <SelectItem value="facebook">{t('screens.sharing.facebook')}</SelectItem>
+                    <SelectItem value="tiktok">{t('screens.sharing.tiktok')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -102,7 +102,7 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
           </ResponsiveDialogBody>
           <ResponsiveDialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit">{t('screens.sharing.saveGuideline')}</Button>
           </ResponsiveDialogFooter>

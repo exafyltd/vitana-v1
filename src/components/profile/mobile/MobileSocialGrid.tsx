@@ -43,7 +43,7 @@ export function MobileSocialGrid({
             onClick={onManage}
             className="text-xs text-primary hover:underline"
           >
-            Manage
+            {t('screens.profile.manage')}
           </button>
         )}
       </div>

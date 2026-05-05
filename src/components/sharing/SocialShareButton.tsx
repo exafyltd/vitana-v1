@@ -250,7 +250,7 @@ export default function SocialShareButton({
                 <span className="text-sm font-medium">{t('screens.sharing.quickSharePersonal')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Opens your personal apps - no setup needed
+                {t('screens.sharing.opensYourPersonalAppsNo')}
               </p>
               <PersonalShareButtons
                 shareUrl={shareLink}
@@ -275,7 +275,7 @@ export default function SocialShareButton({
                 <span className="text-sm font-medium">{t('screens.sharing.socialMediaAutopost2')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Select connected accounts to share automatically
+                {t('screens.sharing.selectConnectedAccountsShareAutomatically')}
               </p>
               
               {loading ? (
@@ -314,7 +314,7 @@ export default function SocialShareButton({
                             </Badge>
                           ) : (
                             <Badge variant="outline" className="text-[9px] px-1 py-0">
-                              Connect
+                              {t('screens.sharing.connect')}
                             </Badge>
                           )}
                         </Button>

@@ -8,6 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 type RewardKind = "vtn" | "index-tier" | "none";
 
@@ -111,11 +112,11 @@ export default function MilestoneCelebration() {
               if (detail.url) navigate(detail.url);
             }}
           >
-            Continue
+            {t('screens.common.continue')}
           </Button>
           {mapping.inviteCta && (
             <Button variant="outline" className="w-full" onClick={handleInvite}>
-              Invite a friend to celebrate
+              {t('screens.common.inviteFriendCelebrate')}
             </Button>
           )}
         </div>

@@ -15,7 +15,7 @@ export function LabWalletCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-cyan-500" />
-          Lab Wallet
+          {t('screens.wallet.labWallet')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.testResultsBiomarkers')}</CardDescription>
       </CardHeader>
@@ -38,7 +38,7 @@ export function LabWalletCard() {
           </div>
           <div className="flex items-center justify-between text-sm">
             <span>{t('screens.wallet.pendingLipidProfile')}</span>
-            <Badge variant="outline" className="text-xs">Processing</Badge>
+            <Badge variant="outline" className="text-xs">{t('screens.wallet.processing')}</Badge>
           </div>
         </div>
         
@@ -49,7 +49,7 @@ export function LabWalletCard() {
             onClick={logLabReportUpload}
           >
             <Upload className="h-4 w-4 mr-1" />
-            Upload
+            {t('screens.wallet.upload')}
           </Button>
           <Button 
             size="sm" 
@@ -57,7 +57,7 @@ export function LabWalletCard() {
             onClick={logLabReportExport}
           >
             <Download className="h-4 w-4 mr-1" />
-            Export
+            {t('screens.wallet.export')}
           </Button>
         </div>
       </CardContent>

@@ -281,7 +281,7 @@ const generateImageUrl = (title: string, description: string) => {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-orange-600" />
-            Create New Meetup
+            {t('screens.common.createNewMeetup')}
           </DialogTitle>
         </DialogHeader>
 
@@ -309,7 +309,7 @@ const generateImageUrl = (title: string, description: string) => {
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.common.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -321,7 +321,7 @@ const generateImageUrl = (title: string, description: string) => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectCategory')} />
@@ -338,7 +338,7 @@ const generateImageUrl = (title: string, description: string) => {
                 </div>
 
                 <div>
-                  <Label htmlFor="duration">Duration</Label>
+                  <Label htmlFor="duration">{t('screens.common.duration')}</Label>
                   <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectDuration')} />
@@ -349,7 +349,7 @@ const generateImageUrl = (title: string, description: string) => {
                       <SelectItem value="2hour">{t('screens.common.text2Hours')}</SelectItem>
                       <SelectItem value="half-day">{t('screens.common.halfDay')}</SelectItem>
                       <SelectItem value="full-day">{t('screens.common.fullDay')}</SelectItem>
-                      <SelectItem value="custom">Custom</SelectItem>
+                      <SelectItem value="custom">{t('screens.common.custom')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -373,7 +373,7 @@ const generateImageUrl = (title: string, description: string) => {
               )}
 
               <div>
-                <Label>Tags</Label>
+                <Label>{t('screens.common.tags')}</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {availableTags.map((tag) => (
                     <Badge

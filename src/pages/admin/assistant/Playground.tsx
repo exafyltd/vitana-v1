@@ -92,7 +92,7 @@ export default function AssistantPlayground() {
               {loading && (
                 <div className="flex justify-start">
                   <div className="bg-card border rounded-lg px-3 py-2 text-sm text-muted-foreground">
-                    Thinking...
+                    {t('screens.admin.thinking')}
                   </div>
                 </div>
               )}
@@ -107,7 +107,7 @@ export default function AssistantPlayground() {
                 disabled={loading}
               />
               <Button onClick={send} disabled={loading || !input.trim()}>
-                Send
+                {t('screens.admin.send')}
               </Button>
             </div>
           </CardContent>

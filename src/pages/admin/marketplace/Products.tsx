@@ -192,7 +192,7 @@ export default function MarketplaceProducts() {
                 variant={inactiveOnly ? "default" : "outline"}
                 onClick={() => setFilter("is_active", inactiveOnly ? null : "false")}
               >
-                Inactive
+                {t('screens.admin.inactive')}
               </Button>
               <Button size="sm" variant="outline" onClick={load}>
                 <RefreshCw className="w-4 h-4" />
@@ -206,16 +206,16 @@ export default function MarketplaceProducts() {
             <div className="flex gap-2 items-center bg-slate-100 border rounded-md p-3">
               <span className="text-sm font-medium">{selected.size} selected</span>
               <Button size="sm" variant="outline" onClick={() => bulkAction("clear_review")} disabled={busy}>
-                <CheckCircle className="w-4 h-4 mr-1" /> Clear review
+                <CheckCircle className="w-4 h-4 mr-1" /> {t('screens.admin.clearReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("flag_review")} disabled={busy}>
-                <Flag className="w-4 h-4 mr-1" /> Flag for review
+                <Flag className="w-4 h-4 mr-1" /> {t('screens.admin.flagForReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("hide")} disabled={busy}>
-                <EyeOff className="w-4 h-4 mr-1" /> Hide
+                <EyeOff className="w-4 h-4 mr-1" /> {t('screens.admin.hide')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => setSelected(new Set())}>
-                Cancel
+                {t('screens.admin.cancel')}
               </Button>
             </div>
           )}
@@ -223,7 +223,7 @@ export default function MarketplaceProducts() {
           {/* Products list */}
           {loading ? (
             <div className="p-8 flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+              <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loading')}
             </div>
           ) : items.length === 0 ? (
             <Card>

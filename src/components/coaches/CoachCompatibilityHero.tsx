@@ -80,7 +80,7 @@ export function CoachCompatibilityHero({
             </div>
           </div>
           <p className="text-center text-sm text-muted-foreground mt-3">
-            Overall Compatibility
+            {t('screens.coaches.overallCompatibility')}
           </p>
         </div>
         

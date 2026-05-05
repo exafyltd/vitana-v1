@@ -57,7 +57,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-purple-600" />
-            Create New Content
+            {t('screens.common.createNewContent')}
           </DialogTitle>
         </DialogHeader>
 
@@ -65,15 +65,15 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="post" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
-              Post
+              {t('screens.common.post')}
             </TabsTrigger>
             <TabsTrigger value="article" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
-              Article
+              {t('screens.common.article')}
             </TabsTrigger>
             <TabsTrigger value="media" className="flex items-center gap-2">
               <Image className="w-4 h-4" />
-              Media
+              {t('screens.common.media')}
             </TabsTrigger>
           </TabsList>
 
@@ -96,30 +96,30 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="category">Category</Label>
+                    <Label htmlFor="category">{t('screens.common.category')}</Label>
                     <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                       <SelectTrigger className="mt-1">
                         <SelectValue placeholder={t('screens.common.selectCategory')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="general">General</SelectItem>
-                        <SelectItem value="fitness">Fitness</SelectItem>
-                        <SelectItem value="nutrition">Nutrition</SelectItem>
+                        <SelectItem value="general">{t('screens.common.general')}</SelectItem>
+                        <SelectItem value="fitness">{t('screens.common.fitness')}</SelectItem>
+                        <SelectItem value="nutrition">{t('screens.common.nutrition')}</SelectItem>
                         <SelectItem value="mental-health">{t('screens.common.mentalHealth')}</SelectItem>
                         <SelectItem value="progress">{t('screens.common.progressUpdate')}</SelectItem>
-                        <SelectItem value="question">Question</SelectItem>
+                        <SelectItem value="question">{t('screens.common.question')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor="visibility">Visibility</Label>
+                    <Label htmlFor="visibility">{t('screens.common.visibility')}</Label>
                     <Select value={formData.visibility} onValueChange={(value) => setFormData({...formData, visibility: value})}>
                       <SelectTrigger className="mt-1">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
+                        <SelectItem value="public">{t('screens.common.public')}</SelectItem>
                         <SelectItem value="friends">{t('screens.common.friendsOnly')}</SelectItem>
                         <SelectItem value="groups">{t('screens.common.groupsOnly')}</SelectItem>
                       </SelectContent>
@@ -128,7 +128,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                 </div>
 
                 <div>
-                  <Label>Tags</Label>
+                  <Label>{t('screens.common.tags')}</Label>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {availableTags.map((tag) => (
                       <Badge
@@ -165,7 +165,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                 </div>
 
                 <div>
-                  <Label htmlFor="content">Content</Label>
+                  <Label htmlFor="content">{t('screens.common.content')}</Label>
                   <Textarea
                     id="content"
                     value={formData.content}
@@ -176,7 +176,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                 </div>
 
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectCategory')} />
@@ -186,8 +186,8 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                       <SelectItem value="personal-story">{t('screens.common.personalStory')}</SelectItem>
                       <SelectItem value="how-to">{t('screens.common.howtoGuide')}</SelectItem>
                       <SelectItem value="research">{t('screens.common.researchStudies')}</SelectItem>
-                      <SelectItem value="recipes">Recipes</SelectItem>
-                      <SelectItem value="workouts">Workouts</SelectItem>
+                      <SelectItem value="recipes">{t('screens.common.recipes')}</SelectItem>
+                      <SelectItem value="workouts">{t('screens.common.workouts')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -206,12 +206,12 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                   <p className="text-lg font-medium mb-2">{t('screens.common.uploadMedia')}</p>
                   <p className="text-muted-foreground mb-4">{t('screens.common.dragDropClickSelectFiles')}</p>
                   <Button variant="outline">
-                    Choose Files
+                    {t('screens.common.chooseFiles')}
                   </Button>
                 </div>
 
                 <div>
-                  <Label htmlFor="title">Caption</Label>
+                  <Label htmlFor="title">{t('screens.common.caption')}</Label>
                   <Textarea
                     id="title"
                     value={formData.title}
@@ -222,7 +222,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                 </div>
 
                 <div>
-                  <Label>Tags</Label>
+                  <Label>{t('screens.common.tags')}</Label>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {availableTags.map((tag) => (
                       <Badge
@@ -244,7 +244,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
 
         <div className="flex gap-3 pt-4">
           <Button variant="outline" onClick={onClose} className="flex-1">
-            Cancel
+            {t('screens.common.cancel')}
           </Button>
           <Button onClick={handleSubmit} className="flex-1">
             {contentType === "post" ? "Share Post" : contentType === "article" ? "Publish Article" : "Upload Media"}

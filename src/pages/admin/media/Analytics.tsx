@@ -102,7 +102,7 @@ export default function Analytics() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                Top Videos
+                {t('screens.admin.topVideos')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -129,7 +129,7 @@ export default function Analytics() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                Top Podcasts
+                {t('screens.admin.topPodcasts')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -156,7 +156,7 @@ export default function Analytics() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                Top Music
+                {t('screens.admin.topMusic')}
               </CardTitle>
             </CardHeader>
             <CardContent>

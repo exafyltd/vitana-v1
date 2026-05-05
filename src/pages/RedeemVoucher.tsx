@@ -59,13 +59,13 @@ export default function RedeemVoucher() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.invalidLink')}</h1>
           <p className="text-muted-foreground mb-6">
-            This redemption link is missing the voucher code. Please check your email for the correct link.
+            {t('screens.redeemvoucher.thisRedemptionLinkMissingVoucherCode')}
           </p>
           <button
             onClick={() => navigate("/maxina")}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            Go to MAXINA
+            {t('screens.redeemvoucher.goMaxina')}
           </button>
         </motion.div>
       </div>
@@ -102,13 +102,13 @@ export default function RedeemVoucher() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherNotFound')}</h1>
           <p className="text-muted-foreground mb-6">
-            We couldn't find a voucher with this code. It may have been redeemed already or the link is incorrect.
+            {t('screens.redeemvoucher.weCouldnTFindVoucherWith')}
           </p>
           <button
             onClick={() => navigate("/maxina")}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            Go to MAXINA
+            {t('screens.redeemvoucher.goMaxina')}
           </button>
         </motion.div>
       </div>
@@ -129,13 +129,13 @@ export default function RedeemVoucher() {
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.alreadyRedeemed')}</h1>
           <p className="text-muted-foreground mb-6">
-            This voucher has already been claimed. If you believe this is an error, please contact support.
+            {t('screens.redeemvoucher.thisVoucherHasAlreadyClaimedIf')}
           </p>
           <button
             onClick={() => navigate("/maxina")}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            Go to MAXINA
+            {t('screens.redeemvoucher.goMaxina')}
           </button>
         </motion.div>
       </div>
@@ -162,7 +162,7 @@ export default function RedeemVoucher() {
             onClick={() => navigate("/maxina")}
             className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
           >
-            Go to MAXINA
+            {t('screens.redeemvoucher.goMaxina')}
           </button>
         </motion.div>
       </div>

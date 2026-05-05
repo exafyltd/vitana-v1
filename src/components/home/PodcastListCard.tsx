@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Episode {
   id: string;
@@ -61,10 +62,10 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
         <CardContent className="flex flex-col items-center justify-center h-full py-12">
           <Radio className="w-12 h-12 text-orange-400/40 mb-4" />
           <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
-            No podcasts available yet
+            {t('screens.home.noPodcastsAvailableYet')}
           </h3>
           <p className="text-sm text-muted-foreground mb-4 text-center max-w-xs">
-            Upload podcasts to see personalized recommendations here
+            {t('screens.home.uploadPodcastsSeePersonalizedRecommendationsHere')}
           </p>
           <Button 
             variant="outline" 
@@ -72,7 +73,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
             className="border-orange-400/50 hover:border-orange-400"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Upload Podcast
+            {t('screens.home.uploadPodcast')}
           </Button>
         </CardContent>
       </Card>

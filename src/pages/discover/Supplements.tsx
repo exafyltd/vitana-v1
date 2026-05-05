@@ -173,7 +173,7 @@ function SupplementsInner() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
@@ -423,7 +423,7 @@ function SupplementsInner() {
                         <div className="text-6xl mb-4">💛</div>
                         <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedSupplementsYet')}</h3>
                         <p className="text-muted-foreground">
-                          Save your favorite supplements and track your supplement stack
+                          {t('screens.discover.saveYourFavoriteSupplementsTrackYour')}
                         </p>
                       </CardContent>
                     </Card>

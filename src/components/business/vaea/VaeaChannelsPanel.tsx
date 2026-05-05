@@ -31,7 +31,7 @@ export function VaeaChannelsPanel() {
           <div>
             <CardTitle>{t('screens.business.autopilotChannels')}</CardTitle>
             <CardDescription>
-              Channels Autopilot listens to for referral opportunities. Each channel can be paused, set to dry-run, or removed.
+              {t('screens.business.channelsAutopilotListensForReferralOpportunities')}
             </CardDescription>
           </div>
           <Button size="sm" onClick={() => setShowForm((v) => !v)}>
@@ -44,7 +44,7 @@ export function VaeaChannelsPanel() {
         {error && (
           <div className="rounded border border-destructive/20 bg-destructive/10 p-3 flex items-center justify-between gap-2">
             <p className="text-sm text-destructive">{error}</p>
-            <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+            <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
           </div>
         )}
 
@@ -110,7 +110,7 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
     <div className="rounded border bg-muted/30 p-3 space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <label className="text-xs space-y-1">
-          <span className="text-muted-foreground">Platform</span>
+          <span className="text-muted-foreground">{t('screens.business.platform')}</span>
           <select
             className="w-full h-11 rounded-md border px-3 text-sm bg-background"
             value={platform}

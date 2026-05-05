@@ -72,7 +72,7 @@ export default function PersonalAITimeline() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bot className="h-5 w-5" />
-                AI Activity Feed
+                {t('screens.ai.aiActivityFeed')}
               </CardTitle>
             </CardHeader>
             <CardContent>

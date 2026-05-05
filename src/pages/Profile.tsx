@@ -205,7 +205,7 @@ export default function Profile() {
 
                   <Card className="rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
                     <CardHeader>
-                      <CardTitle>Motivations</CardTitle>
+                      <CardTitle>{t('screens.profile.motivations')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {[
@@ -228,7 +228,7 @@ export default function Profile() {
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Personality</CardTitle>
+                      <CardTitle>{t('screens.profile.personality')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {[
@@ -250,7 +250,7 @@ export default function Profile() {
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Frustrations</CardTitle>
+                      <CardTitle>{t('screens.profile.frustrations')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
@@ -263,7 +263,7 @@ export default function Profile() {
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Goals</CardTitle>
+                      <CardTitle>{t('screens.profile.goals')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
@@ -295,11 +295,11 @@ export default function Profile() {
             <TabsContent value="highlights">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Highlights</CardTitle>
+                  <CardTitle>{t('screens.profile.highlights')}</CardTitle>
                   <CardDescription>{t('screens.profile.achievementsFeaturedContentSpotlightStories')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Coming soon: badges, featured photos/videos, and spotlight stories curated by the user.
+                  {t('screens.profile.comingSoonBadgesFeaturedPhotosvideosSpotlight')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -307,11 +307,11 @@ export default function Profile() {
             <TabsContent value="connections">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Connections</CardTitle>
+                  <CardTitle>{t('screens.profile.connections')}</CardTitle>
                   <CardDescription>{t('screens.profile.friendsFollowersRequests')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Mutual connections: 12 • Featured connections shown on Overview.
+                  {t('screens.profile.mutualConnections12FeaturedConnectionsShown')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -323,7 +323,7 @@ export default function Profile() {
                   <CardDescription>{t('screens.profile.postsCommentsEvents')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Recent community actions will appear here.
+                  {t('screens.profile.recentCommunityActionsWillAppearHere')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -354,7 +354,7 @@ export default function Profile() {
                   <CardDescription>{t('screens.profile.seeHowOthersViewYourProfile')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  This preview mode will reflect your current privacy settings.
+                  {t('screens.profile.thisPreviewModeWillReflectYour')}
                 </CardContent>
               </Card>
             </TabsContent>

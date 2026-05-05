@@ -173,7 +173,7 @@ export function ManualShareActions({
                       variant="secondary" 
                       className="text-[10px] px-1.5 py-0 bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
                     >
-                      Recommended
+                      {t('screens.sharing.recommended')}
                     </Badge>
                   )}
                 </div>

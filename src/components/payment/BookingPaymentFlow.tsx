@@ -263,7 +263,7 @@ export default function BookingPaymentFlow({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            Complete Booking
+            {t('screens.payment.completeBooking')}
           </DialogTitle>
         </DialogHeader>
 
@@ -367,7 +367,7 @@ export default function BookingPaymentFlow({
                   <div className="flex items-center gap-3">
                     <Coins className="w-5 h-5 text-orange-500" />
                     <div>
-                      <p className="font-medium">Credits</p>
+                      <p className="font-medium">{t('screens.payment.credits')}</p>
                       <p className="text-sm text-muted-foreground">
                         Balance: {formatCurrency(userBalance?.credits || 0, 'CREDITS')}
                       </p>
@@ -440,7 +440,7 @@ export default function BookingPaymentFlow({
                     <div>
                       <p className="font-medium">{t('screens.payment.debitcreditCard')}</p>
                       <p className="text-sm text-muted-foreground">
-                        Pay with Stripe
+                        {t('screens.payment.payWithStripe')}
                       </p>
                     </div>
                   </div>
@@ -461,7 +461,7 @@ export default function BookingPaymentFlow({
                   <span className="text-sm font-medium">{t('screens.payment.insufficientBalance')}</span>
                 </div>
                 <p className="text-sm text-red-600 mt-1">
-                  Top up your wallet to complete this booking
+                  {t('screens.payment.topUpYourWalletCompleteThis')}
                 </p>
               </CardContent>
             </Card>
@@ -471,7 +471,7 @@ export default function BookingPaymentFlow({
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between text-lg font-semibold">
-                <span>Total</span>
+                <span>{t('screens.payment.total')}</span>
                 <span>
                   {paymentMethod === 'cash' 
                     ? `$${booking.price.toFixed(2)}`
@@ -493,7 +493,7 @@ export default function BookingPaymentFlow({
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleConfirmBooking} 
@@ -508,7 +508,7 @@ export default function BookingPaymentFlow({
               ) : (
                 <>
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Confirm Booking
+                  {t('screens.payment.confirmBooking')}
                 </>
               )}
             </Button>

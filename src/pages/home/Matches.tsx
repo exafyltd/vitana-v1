@@ -59,7 +59,7 @@ export default function Matches() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Matches
+              {t('screens.home.matches')}
             </Button>
           </UtilityActionButton>
 
@@ -67,19 +67,19 @@ export default function Matches() {
           <SplitBar defaultValue="people" className="w-full mb-6">
             <SplitBarList className="grid w-full grid-cols-5">
               <SplitBarTrigger value="people">
-                👥 People
+                {t('screens.home.people')}
               </SplitBarTrigger>
               <SplitBarTrigger value="groups">
-                💬 Groups
+                {t('screens.home.groups')}
               </SplitBarTrigger>
               <SplitBarTrigger value="coaches">
-                ✅ Coaches
+                {t('screens.home.coaches')}
               </SplitBarTrigger>
               <SplitBarTrigger value="events">
-                📅 Events
+                {t('screens.home.events')}
               </SplitBarTrigger>
               <SplitBarTrigger value="compatibility">
-                🎯 Analysis
+                {t('screens.home.analysis')}
               </SplitBarTrigger>
             </SplitBarList>
 

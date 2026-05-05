@@ -78,12 +78,12 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
               {metrics.successRate >= 95 ? (
                 <>
                   <TrendingUp className="w-3 h-3 text-green-500" />
-                  <span className="text-green-500">Healthy</span>
+                  <span className="text-green-500">{t('screens.admin.healthy')}</span>
                 </>
               ) : (
                 <>
                   <TrendingDown className="w-3 h-3 text-red-500" />
-                  <span className="text-red-500">Degraded</span>
+                  <span className="text-red-500">{t('screens.admin.degraded')}</span>
                 </>
               )}
             </div>
@@ -92,7 +92,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
 
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription className="text-xs">Throughput</CardDescription>
+            <CardDescription className="text-xs">{t('screens.admin.throughput')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
@@ -120,7 +120,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
             {metrics.errorRate > 5 && (
               <div className="flex items-center gap-1 mt-2 text-xs text-red-500">
                 <AlertTriangle className="w-3 h-3" />
-                Above threshold
+                {t('screens.admin.aboveThreshold')}
               </div>
             )}
           </CardContent>

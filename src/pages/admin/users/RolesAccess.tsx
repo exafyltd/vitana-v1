@@ -75,7 +75,7 @@ export default function RolesAccess() {
                   <div>
                     <CardTitle>{t('screens.admin.devAccess')}</CardTitle>
                     <CardDescription>
-                      Users with <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.exafy_adminTrue')}</code>.
+                      {t('screens.admin.usersWith')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.exafy_adminTrue')}</code>.
                       Data sourced from <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.apiv1devaccessusers')}</code>.
                     </CardDescription>
                   </div>
@@ -87,9 +87,9 @@ export default function RolesAccess() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Granted</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>{t('screens.admin.email')}</TableHead>
+                        <TableHead>{t('screens.admin.granted')}</TableHead>
+                        <TableHead>{t('screens.admin.status')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

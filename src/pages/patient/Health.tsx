@@ -10,7 +10,7 @@ export default function PatientHealth() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.patient.myHealth')}</h1>
         <p className="text-muted-foreground">
-          Track and manage your health metrics and wellness journey
+          {t('screens.patient.trackManageYourHealthMetricsWellness')}
         </p>
       </div>
 
@@ -19,7 +19,7 @@ export default function PatientHealth() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Heart className="h-5 w-5 text-red-500" />
-              Vital Signs
+              {t('screens.patient.vitalSigns')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -33,7 +33,7 @@ export default function PatientHealth() {
                 <Badge variant="outline">{t('screens.patient.text72Bpm')}</Badge>
               </div>
               <div className="flex justify-between">
-                <span>Weight</span>
+                <span>{t('screens.patient.weight')}</span>
                 <Badge variant="outline">{t('screens.patient.text165Lbs')}</Badge>
               </div>
             </div>
@@ -44,7 +44,7 @@ export default function PatientHealth() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-blue-500" />
-              Activity
+              {t('screens.patient.activity')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -69,7 +69,7 @@ export default function PatientHealth() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-green-500" />
-              Progress
+              {t('screens.patient.progress')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -83,7 +83,7 @@ export default function PatientHealth() {
                 <Badge variant="outline">85/100</Badge>
               </div>
               <div className="flex justify-between">
-                <span>Trend</span>
+                <span>{t('screens.patient.trend')}</span>
                 <Badge variant="default">{t('screens.patient.improving')}</Badge>
               </div>
             </div>

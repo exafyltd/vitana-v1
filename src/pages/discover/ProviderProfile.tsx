@@ -131,7 +131,7 @@ export default function ProviderProfile() {
         <div className="p-8 text-center">
           <h1 className="text-2xl font-bold mb-4">{t('screens.discover.providerNotFound')}</h1>
           <Button onClick={() => navigate('/discover/doctors-coaches')}>
-            Back to Providers
+            {t('screens.discover.backProviders')}
           </Button>
         </div>
       </AppLayout>
@@ -153,7 +153,7 @@ export default function ProviderProfile() {
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
+          {t('screens.discover.back')}
         </Button>
         
         {/* Profile Header */}
@@ -226,11 +226,11 @@ export default function ProviderProfile() {
                     onClick={() => setBookingOpen(true)}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
-                    Book Appointment
+                    {t('screens.discover.bookAppointment')}
                   </Button>
                   <Button size="lg" variant="outline">
                     <MessageCircle className="h-4 w-4 mr-2" />
-                    Message
+                    {t('screens.discover.message')}
                   </Button>
                   <Button size="lg" variant="outline">
                     <Share2 className="h-4 w-4" />
@@ -248,7 +248,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Location</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.location')}</p>
                   <p className="font-medium">{provider.location}</p>
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <Shield className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Experience</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.experience')}</p>
                   <p className="font-medium">{provider.experience}</p>
                 </div>
               </div>
@@ -283,10 +283,10 @@ export default function ProviderProfile() {
         {/* Tabs */}
         <Tabs defaultValue="about" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="availability">Availability</TabsTrigger>
+            <TabsTrigger value="about">{t('screens.discover.about')}</TabsTrigger>
+            <TabsTrigger value="services">{t('screens.discover.services')}</TabsTrigger>
+            <TabsTrigger value="reviews">{t('screens.discover.reviews')}</TabsTrigger>
+            <TabsTrigger value="availability">{t('screens.discover.availability')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="about" className="space-y-4">
@@ -349,7 +349,7 @@ export default function ProviderProfile() {
           <TabsContent value="availability" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Availability</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.availability')}</h3>
                 <p className="text-muted-foreground">{t('screens.discover.calendarIntegrationComingSoon')}</p>
               </CardContent>
             </Card>

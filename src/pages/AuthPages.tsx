@@ -146,7 +146,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
           <div className="flex items-center gap-4 mb-6">
             <div className="h-px bg-border flex-1" />
-            <span className="text-xs text-muted-foreground">OR</span>
+            <span className="text-xs text-muted-foreground">{t('screens.authpages.text')}</span>
             <div className="h-px bg-border flex-1" />
           </div>
 
@@ -162,7 +162,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
               <Input id="email" name="email" type="email" placeholder={t('screens.authpages.yourEmailAddress')} required />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('screens.authpages.password')}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -209,14 +209,14 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
               <span>
                 Already have an account? {" "}
                 <Link className="text-primary underline-offset-4 hover:underline" to="/login">
-                  Login
+                  {t('screens.authpages.login')}
                 </Link>
               </span>
             ) : (
               <span>
                 Don&apos;t have an account? {" "}
                 <Link className="text-primary underline-offset-4 hover:underline" to="/register">
-                  Sign up
+                  {t('screens.authpages.signUp')}
                 </Link>
               </span>
             )}

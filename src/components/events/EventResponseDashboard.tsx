@@ -117,7 +117,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.accepted}</p>
-                <p className="text-sm text-muted-foreground">Accepted</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.accepted')}</p>
               </div>
             </div>
           </CardContent>
@@ -129,7 +129,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <Clock className="w-5 h-5 text-yellow-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.maybe}</p>
-                <p className="text-sm text-muted-foreground">Maybe</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.maybe')}</p>
               </div>
             </div>
           </CardContent>
@@ -141,7 +141,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <X className="w-5 h-5 text-red-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.declined}</p>
-                <p className="text-sm text-muted-foreground">Declined</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.declined')}</p>
               </div>
             </div>
           </CardContent>
@@ -153,7 +153,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <Users className="w-5 h-5 text-blue-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.pending}</p>
-                <p className="text-sm text-muted-foreground">Pending</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.pending')}</p>
               </div>
             </div>
           </CardContent>
@@ -166,7 +166,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              Distribution Analytics
+              {t('screens.events.distributionAnalytics')}
             </CardTitle>
           </CardHeader>
           <CardContent>

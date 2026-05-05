@@ -106,7 +106,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
         </DialogHeader>
 
         <p className="text-xs text-muted-foreground -mt-2">
-          Public by default — these show on your profile so others can find what you offer.
+          {t('screens.profile.publicByDefaultTheseShowYour')}
         </p>
 
         {loading ? (
@@ -117,7 +117,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
           <div className="space-y-4">
             {offers.length === 0 && (
               <div className="text-sm text-muted-foreground py-6 text-center border border-dashed rounded-lg">
-                No offerings yet. Add one to start.
+                {t('screens.profile.noOfferingsYetAddOneStart')}
               </div>
             )}
 
@@ -135,7 +135,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
 
                 <div className="grid grid-cols-2 gap-2">
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`title-${idx}`} className="text-xs">Title</Label>
+                    <Label htmlFor={`title-${idx}`} className="text-xs">{t('screens.profile.title')}</Label>
                     <Input
                       id={`title-${idx}`}
                       placeholder={t('screens.profile.eG1on1SalsaLesson')}
@@ -145,7 +145,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`category-${idx}`} className="text-xs">Category</Label>
+                    <Label htmlFor={`category-${idx}`} className="text-xs">{t('screens.profile.category')}</Label>
                     <Input
                       id={`category-${idx}`}
                       placeholder={t('screens.profile.eGDanceTeachingSalsa')}
@@ -155,7 +155,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`desc-${idx}`} className="text-xs">Description</Label>
+                    <Label htmlFor={`desc-${idx}`} className="text-xs">{t('screens.profile.description')}</Label>
                     <Textarea
                       id={`desc-${idx}`}
                       placeholder={t('screens.profile.whatSIncludedFormatEtc')}
@@ -188,7 +188,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`curr-${idx}`} className="text-xs">Currency</Label>
+                    <Label htmlFor={`curr-${idx}`} className="text-xs">{t('screens.profile.currency')}</Label>
                     <Input
                       id={`curr-${idx}`}
                       value={o.currency ?? ""}
@@ -222,7 +222,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-                Cancel
+                {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
                 {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}

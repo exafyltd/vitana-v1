@@ -104,7 +104,7 @@ export default function MarketplaceOverview() {
       <AppLayout>
         <SubNavigation items={adminMarketplaceCatalogNavigation} />
         <div className="p-8 flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" /> Loading marketplace overview…
+          <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loadingMarketplaceOverview')}
         </div>
       </AppLayout>
     );
@@ -126,7 +126,7 @@ export default function MarketplaceOverview() {
             />
             <Button variant="outline" size="sm" onClick={load}>
               <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           </div>
 

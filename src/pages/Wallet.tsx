@@ -481,7 +481,7 @@ export default function Wallet() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Wallet Actions
+            {t('screens.wallet.walletActions')}
           </Button>
         </UtilityActionButton>
 
@@ -716,7 +716,7 @@ export default function Wallet() {
                     />
                   ) : (
                     <div className="h-full flex items-center justify-center text-muted-foreground">
-                      No additional transactions
+                      {t('screens.wallet.noAdditionalTransactions')}
                     </div>
                   )}
                 </div>
@@ -750,7 +750,7 @@ export default function Wallet() {
                   Array.from({ length: 3 - Math.max(0, filteredTransactions.length - 2) }).map((_, index) => (
                     <div key={`empty-${index}`} className="col-span-4">
                       <div className="h-full flex items-center justify-center text-muted-foreground">
-                        No additional transactions
+                        {t('screens.wallet.noAdditionalTransactions')}
                       </div>
                     </div>
                   ))

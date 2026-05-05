@@ -127,7 +127,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
         )}
       </svg>
       <p className="text-xs text-muted-foreground">
-        At this pace you land around <strong>{projectedScore}</strong> in 30 days.
+        {t('screens.health.atThisPaceYouLandAround')} <strong>{projectedScore}</strong> in 30 days.
       </p>
     </div>
   );
@@ -199,7 +199,7 @@ export function VitanaIndexSheet() {
               id="vitana-index-today"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
             >
-              Today
+              {t('screens.health.today')}
             </h3>
 
             <div className="flex items-center justify-center">
@@ -270,7 +270,7 @@ export function VitanaIndexSheet() {
               id="vitana-index-next-days"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
             >
-              Next few days
+              {t('screens.health.nextFewDays')}
             </h3>
 
             {pendingActions.length === 0 ? (
@@ -294,7 +294,7 @@ export function VitanaIndexSheet() {
                   className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                 >
                   <Zap className="w-4 h-4 mr-2" />
-                  Open Autopilot
+                  {t('screens.health.openAutopilot')}
                 </Button>
               </div>
             )}
@@ -309,7 +309,7 @@ export function VitanaIndexSheet() {
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5"
             >
               <Sparkles className="w-3 h-3" />
-              30-day horizon
+              {t('screens.health.text30dayHorizon')}
             </h3>
 
             {horizonPoints.length === 0 ? (

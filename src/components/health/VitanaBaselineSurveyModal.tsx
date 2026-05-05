@@ -5,7 +5,7 @@ import { Apple, Droplets, Dumbbell, Moon, Brain } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -184,7 +184,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
 
         <DialogFooter className="flex justify-between sm:justify-between gap-2">
           <Button variant="ghost" onClick={handleBack} disabled={step === 0 || submitting}>
-            Back
+            {t('screens.health.back')}
           </Button>
           <Button onClick={handleNext} disabled={currentRating === undefined || submitting}>
             {submitting ? "Saving…" : step === QUESTIONS.length - 1 ? "Finish" : "Next"}

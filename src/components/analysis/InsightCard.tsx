@@ -53,7 +53,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=people')}
         >
-          View All →
+          {t('screens.analysis.viewAll')}
         </Button>
       </div>
     );
@@ -96,7 +96,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate(`/comm/groups/${data.group.id}`)}
         >
-          Explore →
+          {t('screens.analysis.explore')}
         </Button>
       </div>
     );
@@ -139,7 +139,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=events')}
         >
-          View Schedule →
+          {t('screens.analysis.viewSchedule')}
         </Button>
       </div>
     );
@@ -176,7 +176,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           className="w-full text-xs"
           onClick={() => navigate('/home/matches?tab=coaches')}
         >
-          Find Coaches →
+          {t('screens.analysis.findCoaches')}
         </Button>
       </div>
     );

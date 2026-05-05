@@ -214,7 +214,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
                 {varieties.size > 0 && (
                   <div className="space-y-2 pt-2">
                     <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                      My level per style
+                      {t('screens.profile.myLevelPerStyle')}
                     </p>
                     {Array.from(varieties).map((v) => (
                       <div key={v} className="flex items-center gap-3">
@@ -326,7 +326,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
         <DrawerFooter>
           <div className="flex gap-2">
             <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving} className="flex-1">
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={saving || loading} className="flex-1">
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save preferences"}

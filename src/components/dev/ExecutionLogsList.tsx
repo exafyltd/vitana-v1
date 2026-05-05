@@ -106,32 +106,32 @@ export function ExecutionLogsList() {
       <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex flex-wrap gap-4 items-center">
           <div className="flex-1 min-w-[200px]">
-            <label className="text-sm font-medium mb-2 block">Status</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.dev.status')}</label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
                 <SelectValue placeholder={t('screens.dev.allStatuses2')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('screens.dev.allStatuses')}</SelectItem>
-                <SelectItem value="success">Success</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
-                <SelectItem value="running">Running</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="success">{t('screens.dev.success')}</SelectItem>
+                <SelectItem value="failed">{t('screens.dev.failed')}</SelectItem>
+                <SelectItem value="running">{t('screens.dev.running')}</SelectItem>
+                <SelectItem value="cancelled">{t('screens.dev.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex-1 min-w-[200px]">
-            <label className="text-sm font-medium mb-2 block">Agent</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.dev.agent')}</label>
             <Select value={agentFilter} onValueChange={setAgentFilter}>
               <SelectTrigger>
                 <SelectValue placeholder={t('screens.dev.allAgents2')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('screens.dev.allAgents')}</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-                <SelectItem value="user">User</SelectItem>
-                <SelectItem value="autopilot">Autopilot</SelectItem>
+                <SelectItem value="system">{t('screens.dev.system')}</SelectItem>
+                <SelectItem value="user">{t('screens.dev.user')}</SelectItem>
+                <SelectItem value="autopilot">{t('screens.dev.autopilot')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -145,12 +145,12 @@ export function ExecutionLogsList() {
             <TableRow className="hover:bg-transparent border-border/50">
               <TableHead className="w-12"></TableHead>
               <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Duration</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Initiator</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t('screens.dev.name')}</TableHead>
+              <TableHead>{t('screens.dev.status')}</TableHead>
+              <TableHead>{t('screens.dev.duration')}</TableHead>
+              <TableHead>{t('screens.dev.date')}</TableHead>
+              <TableHead>{t('screens.dev.initiator')}</TableHead>
+              <TableHead className="text-right">{t('screens.dev.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -213,7 +213,7 @@ export function ExecutionLogsList() {
                       <div className="space-y-4">
                         <div>
                           <h4 className="text-sm font-semibold mb-2">
-                            Execution Output
+                            {t('screens.dev.executionOutput')}
                           </h4>
                           <pre className="bg-background/50 p-4 rounded-lg text-xs font-mono whitespace-pre-wrap border border-border/50">
                             {log.output || "No output available"}
@@ -234,15 +234,15 @@ export function ExecutionLogsList() {
                         <div className="flex gap-2 pt-2">
                           <Button size="sm" variant="outline">
                             <Download className="w-3 h-3 mr-2" />
-                            Export Log
+                            {t('screens.dev.exportLog')}
                           </Button>
                           <Button size="sm" variant="outline">
                             <Play className="w-3 h-3 mr-2" />
-                            Re-run Command
+                            {t('screens.dev.rerunCommand')}
                           </Button>
                           <Button size="sm" variant="outline">
                             <ExternalLink className="w-3 h-3 mr-2" />
-                            View Details
+                            {t('screens.dev.viewDetails')}
                           </Button>
                         </div>
                       </div>

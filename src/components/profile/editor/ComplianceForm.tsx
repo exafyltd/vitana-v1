@@ -46,9 +46,9 @@ export function ComplianceForm() {
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              This section is only available for users with Professional role. 
+              {t('screens.profile.thisSectionOnlyAvailableForUsers')} 
               <Button variant="link" className="h-auto p-0 ml-1">
-                Switch to Professional role
+                {t('screens.profile.switchProfessionalRole')}
               </Button>
             </AlertDescription>
           </Alert>
@@ -62,7 +62,7 @@ export function ComplianceForm() {
       <div>
         <h3 className="text-lg font-medium mb-4">{t('screens.profile.professionalCompliance')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Manage your professional credentials and specialties. License verification is required before publishing services.
+          {t('screens.profile.manageYourProfessionalCredentialsSpecialtiesLicens')}
         </p>
       </div>
 
@@ -73,7 +73,7 @@ export function ComplianceForm() {
             <div className="space-y-1">
               <Label className="text-base font-medium">{t('screens.profile.licenseVerification')}</Label>
               <p className="text-sm text-muted-foreground">
-                Upload your professional licenses for verification
+                {t('screens.profile.uploadYourProfessionalLicensesForVerification')}
               </p>
             </div>
             <Badge variant={licenseVerified ? "default" : "secondary"} className="gap-1">
@@ -85,7 +85,7 @@ export function ComplianceForm() {
               ) : (
                 <>
                   <AlertCircle className="w-3 h-3" />
-                  Pending
+                  {t('screens.profile.pending')}
                 </>
               )}
             </Badge>
@@ -95,7 +95,7 @@ export function ComplianceForm() {
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                License verification is required before you can publish services to the public.
+                {t('screens.profile.licenseVerificationRequiredBeforeYouCan')}
               </AlertDescription>
             </Alert>
           )}
@@ -115,7 +115,7 @@ export function ComplianceForm() {
             </div>
             <Button variant="outline" onClick={handleLicenseUpload}>
               <Upload className="w-4 h-4 mr-2" />
-              Upload License
+              {t('screens.profile.uploadLicense')}
             </Button>
           </div>
         </div>
@@ -123,7 +123,7 @@ export function ComplianceForm() {
 
       {/* Specialties */}
       <div className="space-y-4">
-        <Label className="text-base font-medium">Specialties</Label>
+        <Label className="text-base font-medium">{t('screens.profile.specialties')}</Label>
         
         <div className="flex flex-wrap gap-2">
           {specialties.map((specialty) => (
@@ -154,7 +154,7 @@ export function ComplianceForm() {
         </div>
 
         <div className="text-xs text-muted-foreground">
-          Common specialties: Nutrition, Mental Health, Fitness Training, Physiotherapy, etc.
+          {t('screens.profile.commonSpecialtiesNutritionMentalHealthFitness')}
         </div>
       </div>
 

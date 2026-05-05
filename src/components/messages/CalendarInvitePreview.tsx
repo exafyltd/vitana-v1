@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Calendar, Clock, MapPin, Users, CheckCircle, X, Loader2 } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 interface CalendarInvitePreviewProps {
   contentData?: any;
@@ -24,12 +25,12 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
         <div className="flex items-center justify-between mb-3">
           <Badge variant="secondary" className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
-            Calendar Invite
+            {t('screens.messages.calendarInvite')}
           </Badge>
           {status === 'sending' && (
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Loader2 className="w-3 h-3 animate-spin" />
-              Sending...
+              {t('screens.messages.sending')}
             </div>
           )}
           {status === 'failed' && (
@@ -39,7 +40,7 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
               className="h-6 text-xs"
               onClick={onRetry}
             >
-              Retry
+              {t('screens.messages.retry')}
             </Button>
           )}
         </div>
@@ -94,7 +95,7 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
             disabled
           >
             <CheckCircle className="w-3 h-3 mr-1" />
-            Accept
+            {t('screens.messages.accept')}
           </Button>
           <Button
             size="sm"
@@ -103,7 +104,7 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
             disabled
           >
             <X className="w-3 h-3 mr-1" />
-            Decline
+            {t('screens.messages.decline')}
           </Button>
           <Button
             size="sm"
@@ -112,7 +113,7 @@ export const CalendarInvitePreview: React.FC<CalendarInvitePreviewProps> = ({
             disabled
           >
             <Clock className="w-3 h-3 mr-1" />
-            Maybe
+            {t('screens.messages.maybe')}
           </Button>
         </div>
         

@@ -157,7 +157,7 @@ function DrawerBody() {
         {matchReasons.length > 0 && (
           <section className="bg-emerald-50 dark:bg-emerald-950/30 rounded-lg p-4 space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-semibold text-emerald-900 dark:text-emerald-200">
-              <Sparkles className="w-4 h-4" /> Why this for you
+              <Sparkles className="w-4 h-4" /> {t('screens.discover.whyThisForYou')}
             </h3>
             <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
               {matchReasons.slice(0, 5).map((r, i) => (
@@ -184,7 +184,7 @@ function DrawerBody() {
         {goals.length > 0 && (
           <section>
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
-              <Target className="w-4 h-4 text-muted-foreground" /> Supports
+              <Target className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.supports')}
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {goals.map((g) => (
@@ -200,7 +200,7 @@ function DrawerBody() {
         {ingredients.length > 0 && (
           <section>
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
-              <Leaf className="w-4 h-4 text-muted-foreground" /> Key ingredients
+              <Leaf className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.keyIngredients')}
             </h3>
             <ul className="space-y-1 text-sm text-muted-foreground">
               {ingredients.map((ing) => (
@@ -217,7 +217,7 @@ function DrawerBody() {
         {dietary.length > 0 && (
           <section>
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
-              <ShieldCheck className="w-4 h-4 text-muted-foreground" /> Dietary
+              <ShieldCheck className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.dietary')}
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {dietary.map((t) => (
@@ -233,24 +233,24 @@ function DrawerBody() {
         {(p.dosage || p.serving_size || p.servings_per_container) && (
           <section>
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
-              <ClipboardList className="w-4 h-4 text-muted-foreground" /> Directions
+              <ClipboardList className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.directions')}
             </h3>
             <div className="grid grid-cols-3 gap-2 text-sm">
               {p.dosage && (
                 <div className="rounded-md bg-muted/50 p-2">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Dose</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.dose')}</div>
                   <div className="font-medium leading-tight">{p.dosage}</div>
                 </div>
               )}
               {p.serving_size && (
                 <div className="rounded-md bg-muted/50 p-2">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Serving</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.serving')}</div>
                   <div className="font-medium leading-tight">{p.serving_size}</div>
                 </div>
               )}
               {p.servings_per_container != null && (
                 <div className="rounded-md bg-muted/50 p-2">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Servings</div>
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.servings')}</div>
                   <div className="font-medium leading-tight">{p.servings_per_container}</div>
                 </div>
               )}
@@ -262,7 +262,7 @@ function DrawerBody() {
         {p.safety_notes && (
           <section className="bg-amber-50 dark:bg-amber-950/20 rounded-lg p-4 border border-amber-200/60 dark:border-amber-900/40">
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2 text-amber-900 dark:text-amber-200">
-              <AlertTriangle className="w-4 h-4" /> Safety &amp; interactions
+              <AlertTriangle className="w-4 h-4" /> {t('screens.discover.safetyAmpInteractions')}
             </h3>
             <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
               {p.safety_notes}
@@ -274,7 +274,7 @@ function DrawerBody() {
         {Array.isArray(p.evidence_links) && p.evidence_links.length > 0 && (
           <section>
             <h3 className="flex items-center gap-2 text-sm font-semibold mb-2">
-              <BookOpen className="w-4 h-4 text-muted-foreground" /> Evidence
+              <BookOpen className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.evidence')}
             </h3>
             <ul className="space-y-2 text-sm">
               {p.evidence_links.map((e, i) => (
@@ -328,7 +328,7 @@ function DrawerBody() {
         />
         <Button asChild variant="outline" className="flex-shrink-0">
           <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-            Buy <ExternalLink className="w-4 h-4 ml-1.5" />
+            {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </Button>
         <UniversalShareButton

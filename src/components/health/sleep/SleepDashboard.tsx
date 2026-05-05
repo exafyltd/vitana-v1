@@ -24,7 +24,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
       
       <h3 className="text-xl font-semibold tracking-tight mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-        Weekly Sleep Analytics
+        {t('screens.health.weeklySleepAnalytics')}
       </h3>
       
       {/* Metrics Grid */}
@@ -68,7 +68,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
               </span>
             </div>
           </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400">Consistency</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.consistency')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
             <TrendingUp className="w-3 h-3 mr-1" />
             +{progress.consistencyTrend}%
@@ -103,7 +103,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
           </Badge>
         </div>
         <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-          Quality sleep is improving your energy and performance metrics
+          {t('screens.health.qualitySleepImprovingYourEnergyPerformance')}
         </p>
       </div>
       

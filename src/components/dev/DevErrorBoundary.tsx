@@ -55,7 +55,7 @@ export class DevErrorBoundary extends Component<Props, State> {
                 <div>
                   <CardTitle>{t('screens.dev.somethingWentWrong')}</CardTitle>
                   <CardDescription>
-                    The Dev Hub encountered an unexpected error
+                    {t('screens.dev.devHubEncounteredUnexpectedError')}
                   </CardDescription>
                 </div>
               </div>
@@ -69,13 +69,13 @@ export class DevErrorBoundary extends Component<Props, State> {
               
               <div className="flex gap-2">
                 <Button onClick={this.handleReset} variant="default">
-                  Try Again
+                  {t('screens.dev.tryAgain')}
                 </Button>
                 <Button
                   onClick={() => window.location.reload()}
                   variant="outline"
                 >
-                  Refresh Page
+                  {t('screens.dev.refreshPage')}
                 </Button>
                 <Button
                   onClick={() => { window.history.pushState({}, '', '/dev/dashboard'); window.dispatchEvent(new PopStateEvent('popstate')); }}

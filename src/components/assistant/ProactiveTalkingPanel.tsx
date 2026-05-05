@@ -50,7 +50,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
             <div className="space-y-0.5">
               <Label>{t('screens.assistant.autogreeting')}</Label>
               <p className="text-sm text-muted-foreground">
-                Vitana will greet you automatically
+                {t('screens.assistant.vitanaWillGreetYouAutomatically')}
               </p>
             </div>
             <Switch
@@ -80,7 +80,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
                     <SelectItem value="session">{t('screens.assistant.oncePerSession')}</SelectItem>
                     <SelectItem value="daily">{t('screens.assistant.oncePerDay')}</SelectItem>
                     <SelectItem value="hourly">{t('screens.assistant.oncePerHour')}</SelectItem>
-                    <SelectItem value="off">Off</SelectItem>
+                    <SelectItem value="off">{t('screens.assistant.off')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -173,7 +173,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
               disabled={isUpdating}
             >
               <RotateCcw className="mr-2 h-4 w-4" />
-              Reset Session
+              {t('screens.assistant.resetSession')}
             </Button>
           </div>
         </CardContent>

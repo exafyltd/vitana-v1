@@ -77,7 +77,7 @@ export function FilteredView() {
           <div>
             <h3 className="text-sm font-semibold mb-1">{t('screens.dev.savedFilters')}</h3>
             <p className="text-xs text-muted-foreground">
-              Quick access to pre-configured query filters
+              {t('screens.dev.quickAccessPreconfiguredQueryFilters')}
             </p>
           </div>
           <Button
@@ -90,7 +90,7 @@ export function FilteredView() {
             }
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create New Filter
+            {t('screens.dev.createNewFilter')}
           </Button>
         </div>
       </Card>
@@ -163,7 +163,7 @@ export function FilteredView() {
                     {MOCK_FILTERS.find((f) => f.id === selectedFilter)?.name}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Showing filtered results below
+                    {t('screens.dev.showingFilteredResultsBelow')}
                   </p>
                 </div>
               </div>
@@ -180,10 +180,10 @@ export function FilteredView() {
           <CardContent>
             <div className="rounded-lg bg-muted/30 p-8 text-center border border-border/50">
               <p className="text-sm text-muted-foreground">
-                Filtered results would appear here in production.
+                {t('screens.dev.filteredResultsWouldAppearHereProduction')}
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                This will display a table similar to the Execution Logs view.
+                {t('screens.dev.thisWillDisplayTableSimilarExecution')}
               </p>
             </div>
           </CardContent>

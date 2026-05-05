@@ -278,7 +278,7 @@ export default function PublicProfilePage() {
             onClick={() => navigate('/')}
             className="text-primary hover:underline"
           >
-            Return to Home
+            {t('screens.publicprofilepage.returnHome')}
           </button>
         </div>
       </AppLayout>

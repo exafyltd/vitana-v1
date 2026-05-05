@@ -214,7 +214,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="relative">
                     <Search className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Search</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.search')}</span>
                 </button>
 
                 <button
@@ -225,7 +225,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="relative">
                     <Calendar className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.calendar')}</span>
                 </button>
 
                 <button
@@ -241,7 +241,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
                     />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.alerts')}</span>
                 </button>
 
                 <button
@@ -252,7 +252,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <div className="relative">
                     <Plane className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.autopilot')}</span>
                 </button>
 
                 <button
@@ -268,7 +268,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
                     />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.cart')}</span>
                 </button>
               </div>
             ) : (

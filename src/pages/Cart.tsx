@@ -44,7 +44,7 @@ export default function Cart() {
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t('screens.cart.back')}
           </Button>
 
           <StandardHeader
@@ -62,7 +62,7 @@ export default function Cart() {
                   Start adding items from the Discover marketplace
                 </p>
                 <Button onClick={() => navigate('/discover')}>
-                  Browse Marketplace
+                  {t('screens.cart.browseMarketplace')}
                 </Button>
               </CardContent>
             </Card>
@@ -140,7 +140,7 @@ export default function Cart() {
                   onClick={clearCart}
                   className="w-full"
                 >
-                  Clear Cart
+                  {t('screens.cart.clearCart')}
                 </Button>
               </div>
 
@@ -153,15 +153,15 @@ export default function Cart() {
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="text-muted-foreground">{t('screens.cart.subtotal')}</span>
                         <span>${cartTotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Shipping</span>
-                        <span className="text-green-600">FREE</span>
+                        <span className="text-muted-foreground">{t('screens.cart.shipping')}</span>
+                        <span className="text-green-600">{t('screens.cart.free')}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Tax</span>
+                        <span className="text-muted-foreground">{t('screens.cart.tax')}</span>
                         <span>{t('screens.cart.calculatedAtCheckout')}</span>
                       </div>
                     </div>
@@ -169,7 +169,7 @@ export default function Cart() {
                     <Separator />
 
                     <div className="flex justify-between text-lg font-bold">
-                      <span>Total</span>
+                      <span>{t('screens.cart.total')}</span>
                       <span>${cartTotal.toFixed(2)}</span>
                     </div>
 
@@ -183,7 +183,7 @@ export default function Cart() {
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                      Secure checkout powered by Stripe
+                      {t('screens.cart.secureCheckoutPoweredByStripe')}
                     </p>
                   </CardContent>
                 </Card>

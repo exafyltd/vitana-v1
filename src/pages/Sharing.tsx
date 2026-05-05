@@ -44,7 +44,7 @@ function Sharing() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Campaign
+              {t('screens.sharing.newCampaign')}
             </Button>
           </UtilityActionButton>
 

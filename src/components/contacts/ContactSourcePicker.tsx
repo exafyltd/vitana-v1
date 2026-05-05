@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Check, Smartphone, Cloud, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 export type ContactSource = "google" | "icloud" | "phonebook" | "whatsapp";
 
@@ -103,7 +104,7 @@ export function ContactSourcePicker({
             {isConnected && (
               <div className="absolute top-2 right-2">
                 <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-[hsl(var(--contact-success)/0.1)] text-[hsl(var(--contact-success))]">
-                  Connected
+                  {t('screens.contacts.connected')}
                 </span>
               </div>
             )}

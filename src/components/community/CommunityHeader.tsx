@@ -59,7 +59,7 @@ export function CommunityHeader({ title, description, emoji = "✨" }: Community
             <div>
               <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
             </div>
-            <span className="text-sm font-medium text-red-400">Autopilot</span>
+            <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
           </div>
           
           {/* Hover Preview */}

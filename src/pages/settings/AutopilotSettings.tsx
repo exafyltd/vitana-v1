@@ -53,7 +53,7 @@ export default function AutopilotSettings() {
             <CardHeader>
               <CardTitle>{t('screens.settings.enableAutopilot')}</CardTitle>
               <CardDescription>
-                Turn on autopilot to receive automated suggestions and actions
+                {t('screens.settings.turnAutopilotReceiveAutomatedSuggestionsActions')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -76,7 +76,7 @@ export default function AutopilotSettings() {
             <CardHeader>
               <CardTitle>{t('screens.settings.actionCategories')}</CardTitle>
               <CardDescription>
-                Choose which types of autopilot actions you want to receive
+                {t('screens.settings.chooseWhichTypesAutopilotActionsYou')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -152,7 +152,7 @@ export default function AutopilotSettings() {
             <CardHeader>
               <CardTitle>{t('screens.settings.frequencyTiming')}</CardTitle>
               <CardDescription>
-                Control when and how often you receive autopilot suggestions
+                {t('screens.settings.controlWhenHowOftenYouReceive')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -287,7 +287,7 @@ function AutoShareCard() {
       <CardHeader>
         <CardTitle>{t('screens.settings.autoshare')}</CardTitle>
         <CardDescription>
-          Automatically share your milestones and achievements
+          {t('screens.settings.automaticallyShareYourMilestonesAchievements')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -326,7 +326,7 @@ function AutoShareCard() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="share-visibility">Visibility</Label>
+          <Label htmlFor="share-visibility">{t('screens.settings.visibility')}</Label>
           <Select
             value={prefs?.share_visibility ?? "public"}
             onValueChange={(v: any) => update({ share_visibility: v })}
@@ -336,9 +336,9 @@ function AutoShareCard() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="public">Public</SelectItem>
+              <SelectItem value="public">{t('screens.settings.public')}</SelectItem>
               <SelectItem value="connections">{t('screens.settings.connectionsOnly')}</SelectItem>
-              <SelectItem value="private">Private</SelectItem>
+              <SelectItem value="private">{t('screens.settings.private')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

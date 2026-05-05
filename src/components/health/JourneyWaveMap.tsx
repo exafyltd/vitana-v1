@@ -35,7 +35,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
       <div className="rounded-2xl border ring-1 ring-border/60 shadow-sm bg-card p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            90-day arc
+            {t('screens.health.text90dayArc')}
           </span>
           {currentId && (
             <span className="text-[10px] text-muted-foreground">

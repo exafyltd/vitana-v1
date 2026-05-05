@@ -39,13 +39,13 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="catalog">Catalog</Label>
+            <Label htmlFor="catalog">{t('screens.dev.catalog')}</Label>
             <Select value={catalog} onValueChange={setCatalog}>
               <SelectTrigger id="catalog">
                 <SelectValue placeholder={t('screens.dev.selectCatalog')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="components">Components</SelectItem>
+                <SelectItem value="components">{t('screens.dev.components')}</SelectItem>
                 <SelectItem value="patterns">{t('screens.dev.designPatterns')}</SelectItem>
                 <SelectItem value="apis">{t('screens.dev.apiEndpoints')}</SelectItem>
                 <SelectItem value="schemas">{t('screens.dev.dataSchemas')}</SelectItem>
@@ -64,7 +64,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category">{t('screens.dev.category')}</Label>
             <Input 
               id="category" 
               value={category}
@@ -74,7 +74,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.dev.description')}</Label>
             <Textarea 
               id="description" 
               value={description}
@@ -87,14 +87,14 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleCreate}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Create Entry
+            {t('screens.dev.createEntry')}
           </Button>
         </DialogFooter>
       </DialogContent>

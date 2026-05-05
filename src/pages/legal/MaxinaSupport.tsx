@@ -188,7 +188,7 @@ const MaxinaSupport = () => {
                     href="mailto:support@exafy.io"
                     className="text-[#FF7BAC] hover:underline font-medium"
                   >
-                    support@exafy.io
+                    {t('screens.legal.supportExafyIo')}
                   </a>
                 </div>
               </div>

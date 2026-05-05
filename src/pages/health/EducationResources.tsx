@@ -41,7 +41,7 @@ export default function EducationResources() {
               onClick={() => setEducationActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Education Actions
+              {t('screens.health.educationActions')}
             </Button>
           </UtilityActionButton>
 

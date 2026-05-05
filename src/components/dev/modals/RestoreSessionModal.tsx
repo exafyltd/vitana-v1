@@ -59,10 +59,10 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Clock className="h-5 w-5" />
-            Restore Previous Session
+            {t('screens.dev.restorePreviousSession')}
           </DialogTitle>
           <DialogDescription>
-            Reopen your last working context or restore a previous workspace snapshot.
+            {t('screens.dev.reopenYourLastWorkingContextRestore')}
           </DialogDescription>
         </DialogHeader>
 
@@ -112,7 +112,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span>{formatDuration(session.duration)}</span>
                         <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400">
-                          Saved
+                          {t('screens.dev.saved')}
                         </span>
                       </div>
                     </div>
@@ -143,7 +143,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Clear All Sessions
+              {t('screens.dev.clearAllSessions')}
             </Button>
           </div>
         )}

@@ -105,7 +105,7 @@ export function TriggerRunModal({ open, onOpenChange, onSuccess }: TriggerRunMod
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleSubmit} 

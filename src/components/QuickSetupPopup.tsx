@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Zap, Shield, Bell, Globe, Check } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface QuickSetupPopupProps {
   isOpen: boolean;
@@ -34,13 +35,13 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-primary" />
-            Quick Setup Wizard
+            {t('screens.common.quickSetupWizard')}
           </DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
           <p className="text-muted-foreground">
-            Configure the most important settings quickly to get started with your personalized experience.
+            {t('screens.common.configureMostImportantSettingsQuicklyGet')}
           </p>
 
           <div className="grid gap-4">
@@ -48,15 +49,15 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Bell className="w-4 h-4" />
-                  Notifications
-                  <Badge variant="outline" className="ml-auto">Recommended</Badge>
+                  {t('screens.common.notifications')}
+                  <Badge variant="outline" className="ml-auto">{t('screens.common.recommended')}</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
-                      Get notified about important updates, health reminders, and community activity
+                      {t('screens.common.getNotifiedAboutImportantUpdatesHealth')}
                     </p>
                   </div>
                   <Switch
@@ -71,14 +72,14 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Shield className="w-4 h-4" />
-                  Privacy Protection
+                  {t('screens.common.privacyProtection')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
-                      Enable enhanced privacy mode and limit data sharing
+                      {t('screens.common.enableEnhancedPrivacyModeLimitData')}
                     </p>
                   </div>
                   <Switch
@@ -93,8 +94,8 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Globe className="w-4 h-4" />
-                  Auto-Sync Data
-                  <Badge variant="outline" className="ml-auto">Recommended</Badge>
+                  {t('screens.common.autosyncData')}
+                  <Badge variant="outline" className="ml-auto">{t('screens.common.recommended')}</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -116,14 +117,14 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Check className="w-4 h-4" />
-                  Anonymous Analytics
+                  {t('screens.common.anonymousAnalytics')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
-                      Help improve the platform by sharing anonymous usage data
+                      {t('screens.common.helpImprovePlatformBySharingAnonymous')}
                     </p>
                   </div>
                   <Switch
@@ -137,11 +138,11 @@ export function QuickSetupPopup({ isOpen, onClose }: QuickSetupPopupProps) {
 
           <div className="flex gap-3 pt-6">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Skip Setup
+              {t('screens.common.skipSetup')}
             </Button>
             <Button onClick={handleApplySettings} className="flex-1">
               <Zap className="w-4 h-4 mr-2" />
-              Apply Settings
+              {t('screens.common.applySettings')}
             </Button>
           </div>
         </div>

@@ -467,7 +467,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.common.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -488,13 +488,13 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   rows={6}
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  This will be shown in the event details drawer. Use it for agenda, program details, inclusions, etc.
+                  {t('screens.common.thisWillShownEventDetailsDrawer')}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectCategory')} />
@@ -511,7 +511,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                 </div>
 
                 <div>
-                  <Label htmlFor="duration">Duration</Label>
+                  <Label htmlFor="duration">{t('screens.common.duration')}</Label>
                   <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue placeholder={t('screens.common.selectDuration')} />
@@ -550,7 +550,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                     ) : (
                       <>
                         <Sparkles className="w-4 h-4 mr-2" />
-                        Generate Image with AI
+                        {t('screens.common.generateImageWithAi')}
                       </>
                     )}
                   </Button>
@@ -719,7 +719,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-primary" />
-                  Event Pricing & Tickets
+                  {t('screens.common.eventPricingTickets')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -727,7 +727,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   <div className="space-y-0.5">
                     <Label htmlFor="enableTicketSales">{t('screens.common.enableTicketSales')}</Label>
                     <p className="text-sm text-muted-foreground">
-                      Set up different ticket types with individual prices
+                      {t('screens.common.setUpDifferentTicketTypesWith')}
                     </p>
                   </div>
                   <Switch
@@ -788,7 +788,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                           />
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
-                          This price is for display purposes. Enable ticket sales above for actual payment processing.
+                          {t('screens.common.thisPriceForDisplayPurposesEnable')}
                         </p>
                       </div>
                     )}
@@ -804,7 +804,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Share className="w-5 h-5 text-green-600" />
-                  Reseller Options
+                  {t('screens.common.resellerOptions')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -812,7 +812,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   <div className="space-y-0.5">
                     <Label>{t('screens.common.allowResellersSellTickets')}</Label>
                     <p className="text-sm text-muted-foreground">
-                      Let other resellers promote and sell tickets for this event
+                      {t('screens.common.letOtherResellersPromoteSellTickets')}
                     </p>
                   </div>
                   <Switch 
@@ -847,7 +847,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                         className="mt-1"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Resellers earn this percentage of each ticket sale
+                        {t('screens.common.resellersEarnThisPercentageEachTicket')}
                       </p>
                     </div>
                   </>
@@ -858,7 +858,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
           <div className="flex justify-end gap-4">
             <Button variant="outline" onClick={onClose} disabled={loading}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={loading}>
               {loading ? "Updating..." : `Update ${event.event_type === 'event' ? 'Event' : 'Meetup'}`}

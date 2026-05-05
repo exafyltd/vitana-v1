@@ -44,7 +44,7 @@ function Preferences() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Reset Defaults
+              {t('screens.settings.resetDefaults')}
             </Button>
           </UtilityActionButton>
 
@@ -66,7 +66,7 @@ function Preferences() {
                     content={
                       <div className="space-y-4">
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Theme</label>
+                          <label className="text-sm font-medium mb-2 block">{t('screens.settings.theme')}</label>
                           <Select value={themeMounted ? theme : undefined} onValueChange={setTheme}>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder={t('screens.settings.selectTheme')} />
@@ -75,19 +75,19 @@ function Preferences() {
                               <SelectItem value="light">
                                 <div className="flex items-center gap-2">
                                   <Sun className="w-4 h-4" />
-                                  Light
+                                  {t('screens.settings.light')}
                                 </div>
                               </SelectItem>
                               <SelectItem value="dark">
                                 <div className="flex items-center gap-2">
                                   <Moon className="w-4 h-4" />
-                                  Dark
+                                  {t('screens.settings.dark')}
                                 </div>
                               </SelectItem>
                               <SelectItem value="system">
                                 <div className="flex items-center gap-2">
                                   <Monitor className="w-4 h-4" />
-                                  System
+                                  {t('screens.settings.system')}
                                 </div>
                               </SelectItem>
                             </SelectContent>
@@ -117,7 +117,7 @@ function Preferences() {
                           <Switch />
                         </div>
                         <div className="text-xs text-muted-foreground text-center">
-                          Show more content by reducing spacing
+                          {t('screens.settings.showMoreContentByReducingSpacing')}
                         </div>
                       </div>
                     }
@@ -216,7 +216,7 @@ function Preferences() {
                     icon={Globe}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">PST</div>
+                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.pst')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.pacificStandard')}</div>
                       </div>
                     }
@@ -244,7 +244,7 @@ function Preferences() {
                             </SelectContent>
                           </Select>
                           <p className="text-xs text-muted-foreground mt-1">
-                            This language is used for voice recognition and AI responses
+                            {t('screens.settings.thisLanguageUsedForVoiceRecognition')}
                           </p>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -296,16 +296,16 @@ function Preferences() {
                           <div className="font-medium">{t('screens.settings.measurementUnits')}</div>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Distance</span>
-                              <span className="font-medium">Miles</span>
+                              <span className="text-muted-foreground">{t('screens.settings.distance')}</span>
+                              <span className="font-medium">{t('screens.settings.miles')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Weight</span>
-                              <span className="font-medium">Pounds</span>
+                              <span className="text-muted-foreground">{t('screens.settings.weight')}</span>
+                              <span className="font-medium">{t('screens.settings.pounds')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Temperature</span>
-                              <span className="font-medium">Fahrenheit</span>
+                              <span className="text-muted-foreground">{t('screens.settings.temperature')}</span>
+                              <span className="font-medium">{t('screens.settings.fahrenheit')}</span>
                             </div>
                           </div>
                         </div>
@@ -313,7 +313,7 @@ function Preferences() {
                           <div className="font-medium">{t('screens.settings.currencyNumbers')}</div>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Currency</span>
+                              <span className="text-muted-foreground">{t('screens.settings.currency')}</span>
                               <span className="font-medium">{t('screens.settings.usd')}</span>
                             </div>
                             <div className="flex justify-between">
@@ -322,7 +322,7 @@ function Preferences() {
                             </div>
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">{t('screens.settings.firstDayWeek')}</span>
-                              <span className="font-medium">Sunday</span>
+                              <span className="font-medium">{t('screens.settings.sunday')}</span>
                             </div>
                           </div>
                         </div>
@@ -350,9 +350,9 @@ function Preferences() {
                               <SelectValue placeholder={t('screens.settings.selectSize')} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="small">Small</SelectItem>
-                              <SelectItem value="medium">Medium</SelectItem>
-                              <SelectItem value="large">Large</SelectItem>
+                              <SelectItem value="small">{t('screens.settings.small')}</SelectItem>
+                              <SelectItem value="medium">{t('screens.settings.medium')}</SelectItem>
+                              <SelectItem value="large">{t('screens.settings.large')}</SelectItem>
                               <SelectItem value="extra-large">{t('screens.settings.extraLarge')}</SelectItem>
                             </SelectContent>
                           </Select>
@@ -384,7 +384,7 @@ function Preferences() {
                     icon={Type}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-purple-600">Medium</div>
+                        <div className="text-2xl font-bold text-purple-600">{t('screens.settings.medium')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.text16pxBaseSize')}</div>
                       </div>
                     }
@@ -417,7 +417,7 @@ function Preferences() {
                     icon={Home}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-blue-600">Dashboard</div>
+                        <div className="text-2xl font-bold text-blue-600">{t('screens.settings.dashboard')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.defaultHomeView')}</div>
                       </div>
                     }
@@ -430,7 +430,7 @@ function Preferences() {
                     icon={SettingsIcon}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-green-600">On</div>
+                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.text')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.settingsSaved')}</div>
                       </div>
                     }
@@ -450,9 +450,9 @@ function Preferences() {
                               <SelectValue placeholder={t('screens.settings.selectDefaultView')} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="dashboard">Dashboard</SelectItem>
-                              <SelectItem value="discover">Discover</SelectItem>
-                              <SelectItem value="community">Community</SelectItem>
+                              <SelectItem value="dashboard">{t('screens.settings.dashboard')}</SelectItem>
+                              <SelectItem value="discover">{t('screens.settings.discover')}</SelectItem>
+                              <SelectItem value="community">{t('screens.settings.community')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

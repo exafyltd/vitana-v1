@@ -204,7 +204,7 @@ export default function OAuthComplete() {
               catch up within a few seconds.
             </p>
             <Button size="lg" className="w-full" onClick={() => (window.location.href = deepLinkHref)}>
-              Return to Vitana
+              {t('screens.auth.returnVitana')}
             </Button>
           </>
         )}
@@ -216,10 +216,10 @@ export default function OAuthComplete() {
             <p className="text-muted-foreground break-words">{message}</p>
             <div className="flex flex-col gap-2">
               <Button variant="secondary" onClick={() => window.history.back()}>
-                Go back and try again
+                {t('screens.auth.goBackTryAgain')}
               </Button>
               <Button variant="ghost" onClick={() => navigate("/maxina")}>
-                Return to Vitana
+                {t('screens.auth.returnVitana')}
               </Button>
             </div>
           </>

@@ -202,7 +202,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Package className="w-5 h-5" />
-              Package Summary
+              {t('screens.common.packageSummary')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -271,7 +271,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Share2 className="w-5 h-5 text-blue-500" />
-              Generate Share Link
+              {t('screens.common.generateShareLink')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -284,7 +284,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Users className="w-5 h-5 text-green-500" />
-              Send to Provider
+              {t('screens.common.sendProvider')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -298,7 +298,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-amber-500" />
-            Data Protection & Privacy
+            {t('screens.common.dataProtectionPrivacy')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
@@ -393,7 +393,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
         <DialogHeader>
           <DialogTitle>{t('screens.common.createConsentPackage')}</DialogTitle>
           <DialogDescription>
-            Create a secure package of your biomarker data to share with healthcare providers or researchers.
+            {t('screens.common.createSecurePackageYourBiomarkerData')}
           </DialogDescription>
         </DialogHeader>
 
@@ -409,14 +409,14 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
             <div>
               {step !== "selection" && (
                 <Button variant="outline" onClick={handleBack}>
-                  Back
+                  {t('screens.common.back')}
                 </Button>
               )}
             </div>
             
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('screens.common.cancel')}
               </Button>
               {step !== "sharing" ? (
                 <Button 
@@ -428,7 +428,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
                 </Button>
               ) : (
                 <Button onClick={handleNext}>
-                  Create Package
+                  {t('screens.common.createPackage')}
                 </Button>
               )}
             </div>
@@ -438,7 +438,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
         {step === "confirmation" && (
           <DialogFooter>
             <Button onClick={() => onOpenChange(false)} className="w-full">
-              Close
+              {t('screens.common.close')}
             </Button>
           </DialogFooter>
         )}

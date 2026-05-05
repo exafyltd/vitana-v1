@@ -55,11 +55,11 @@ export default function Podcasts() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.submitted')}</TableHead>
                   <TableHead>URL</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -77,16 +77,16 @@ export default function Podcasts() {
                     <TableCell>
                       {p.external_url ? (
                         <a href={p.external_url as string} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">
-                          Link
+                          {t('screens.admin.link')}
                         </a>
                       ) : (
                         <span className="text-muted-foreground text-sm">--</span>
                       )}
                     </TableCell>
                     <TableCell className="text-right space-x-1">
-                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "approve")}>Approve</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "reject")}>Reject</Button>
-                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "flag")}>Flag</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "approve")}>{t('screens.admin.approve')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "reject")}>{t('screens.admin.reject')}</Button>
+                      <Button size="sm" variant="outline" onClick={() => handleAction(p.id, "flag")}>{t('screens.admin.flag')}</Button>
                     </TableCell>
                   </TableRow>
                 ))}

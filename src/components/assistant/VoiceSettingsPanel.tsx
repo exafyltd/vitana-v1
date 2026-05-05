@@ -258,7 +258,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Label>Language</Label>
+          <Label>{t('screens.assistant.language')}</Label>
           <Select
             value={preferences.stt_language}
             onValueChange={handleLanguageChange}
@@ -284,7 +284,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label>Voice</Label>
+            <Label>{t('screens.assistant.voice')}</Label>
             <Button
               variant="ghost"
               size="sm"
@@ -292,7 +292,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               disabled={isUpdating}
               className="h-7 text-xs"
             >
-              Refresh Browser Voices
+              {t('screens.assistant.refreshBrowserVoices')}
             </Button>
           </div>
           <Select
@@ -322,7 +322,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
                 <>
                   {currentCloudVoices.length > 0 && (
                     <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
-                      Browser Voices
+                      {t('screens.assistant.browserVoices')}
                     </div>
                   )}
                   {filteredVoices
@@ -337,7 +337,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 && 
                currentCloudVoices.length === 0 && (
                 <SelectItem value="" disabled>
-                  No voices available
+                  {t('screens.assistant.noVoicesAvailable')}
                 </SelectItem>
               )}
             </SelectContent>
@@ -356,7 +356,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
         <div className="space-y-2">
           <div className="flex justify-between">
-            <Label>Speed</Label>
+            <Label>{t('screens.assistant.speed')}</Label>
             <span className="text-sm text-muted-foreground">{preferences.tts_speed.toFixed(1)}x</span>
           </div>
           <Slider
@@ -371,7 +371,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
         <div className="space-y-2">
           <div className="flex justify-between">
-            <Label>Pitch</Label>
+            <Label>{t('screens.assistant.pitch')}</Label>
             <span className="text-sm text-muted-foreground">{preferences.tts_pitch.toFixed(1)}</span>
           </div>
           <Slider
@@ -386,7 +386,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
         <div className="space-y-2">
           <div className="flex justify-between">
-            <Label>Volume</Label>
+            <Label>{t('screens.assistant.volume')}</Label>
             <span className="text-sm text-muted-foreground">{preferences.tts_volume}%</span>
           </div>
           <Slider

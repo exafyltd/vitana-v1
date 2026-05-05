@@ -99,7 +99,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            Spending Intelligence
+            {t('screens.wallet.spendingIntelligence')}
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
             {totalSavings} VTNA Savings Available
@@ -124,7 +124,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Brain className="h-4 w-4 text-purple-500" />
-            Smart Insights
+            {t('screens.wallet.smartInsights')}
           </h4>
           
           {mockInsights.slice(0, 2).map((insight) => {
@@ -168,17 +168,17 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             <span className="text-sm font-medium">{t('screens.wallet.marketTimingAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            VTNA conversion rates are expected to increase by 12% in the next 48 hours
+            {t('screens.wallet.vtnaConversionRatesExpectedIncreaseBy')}
           </p>
           <Button size="sm" variant="outline" className="text-xs h-7">
-            Set Reminder
+            {t('screens.wallet.setReminder')}
           </Button>
         </div>
 
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Brain className="h-4 w-4 mr-2" />
-          View Detailed Analysis
+          {t('screens.wallet.viewDetailedAnalysis')}
         </Button>
       </CardContent>
     </Card>

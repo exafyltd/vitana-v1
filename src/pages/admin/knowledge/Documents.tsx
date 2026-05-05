@@ -415,12 +415,12 @@ function SystemDocViewer({ id }: { id: string }) {
                 rel="noopener noreferrer"
                 className="text-xs text-primary hover:underline"
               >
-                View in Command Hub →
+                {t('screens.admin.viewCommandHub')}
               </a>
             )}
             {isExafyAdmin && !editing && (
               <Button size="sm" variant="outline" onClick={startEdit}>
-                Edit
+                {t('screens.admin.edit')}
               </Button>
             )}
           </div>
@@ -483,10 +483,10 @@ function SystemDocViewer({ id }: { id: string }) {
             onClick={() => setEditing(false)}
             disabled={editMutation.isPending}
           >
-            Cancel
+            {t('screens.admin.cancel')}
           </Button>
           <span className="text-xs text-muted-foreground ml-auto">
-            Saving will apply to every tenant immediately.
+            {t('screens.admin.savingWillApplyEveryTenantImmediately')}
           </span>
         </div>
       ) : (
@@ -509,7 +509,7 @@ function SystemDocViewer({ id }: { id: string }) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={editMutation.isPending}>
-              Cancel
+              {t('screens.admin.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={(e) => {
@@ -642,7 +642,7 @@ function KbDocViewer({
               className="ml-auto"
               onClick={startEdit}
             >
-              Edit
+              {t('screens.admin.edit')}
             </Button>
           )}
         </div>
@@ -704,10 +704,10 @@ function KbDocViewer({
               onClick={() => setEditing(false)}
               disabled={editBaselineMutation.isPending}
             >
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <span className="text-xs text-muted-foreground ml-auto">
-              Applies to all non-opted-out tenants.
+              {t('screens.admin.appliesAllNonoptedoutTenants')}
             </span>
           </>
         ) : scope === "tenant" ? (
@@ -718,7 +718,7 @@ function KbDocViewer({
               onClick={handleReindex}
               disabled={reindexMutation.isPending}
             >
-              Reindex
+              {t('screens.admin.reindex')}
             </Button>
             <Button
               size="sm"
@@ -741,7 +741,7 @@ function KbDocViewer({
                 onCheckedChange={(v) => handleOptout(!!v)}
                 disabled={optoutMutation.isPending}
               />
-              Opt out of this baseline doc for my tenant
+              {t('screens.admin.optOutThisBaselineDocFor')}
             </label>
             <span className="text-xs text-muted-foreground ml-auto">
               updated {new Date(doc.updated_at).toLocaleString()}
@@ -755,7 +755,7 @@ function KbDocViewer({
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.admin.editBaselineDocument')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This document is shared across <b>{t('screens.admin.allTenants')}</b>. Saving applies
+              {t('screens.admin.thisDocumentSharedAcross')} <b>{t('screens.admin.allTenants')}</b>. Saving applies
               your changes immediately to every tenant that hasn't opted out —
               their Assistant will reflect the new content on the next retrieval.
               Continue?
@@ -763,7 +763,7 @@ function KbDocViewer({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={editBaselineMutation.isPending}>
-              Cancel
+              {t('screens.admin.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={(e) => {
@@ -811,7 +811,7 @@ function UploadCard({ onDone }: { onDone: () => void }) {
     <Card>
       <CardContent className="pt-6 space-y-3">
         <p className="text-xs text-muted-foreground">
-          Upload goes to <span className="font-medium">{t('screens.admin.yourTenantDocs')}</span>.
+          {t('screens.admin.uploadGoes')} <span className="font-medium">{t('screens.admin.yourTenantDocs')}</span>.
         </p>
         <Input
           value={title}

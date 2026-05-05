@@ -701,7 +701,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <div className="flex items-center justify-between mb-3">
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  Calendar Invite
+                  {t('screens.messages.calendarInvite')}
                 </Badge>
                 {message.content_data?.priority === 'high' && (
                   <Badge variant="destructive" className="text-xs">
@@ -994,10 +994,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     />
                     <div className="flex gap-2 justify-end">
                       <Button variant="outline" size="sm" onClick={handleEditCancel} className="text-foreground">
-                        <X className="w-3 h-3 mr-1" /> Cancel
+                        <X className="w-3 h-3 mr-1" /> {t('screens.messages.cancel')}
                       </Button>
                       <Button size="sm" onClick={handleEditSave} disabled={!editContent.trim()}>
-                        <Check className="w-3 h-3 mr-1" /> Save
+                        <Check className="w-3 h-3 mr-1" /> {t('screens.messages.save')}
                       </Button>
                     </div>
                     {inlineBelowTimestamp}
@@ -1074,7 +1074,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
                 >
                   <Reply className="w-5 h-5 text-foreground" />
-                  <span className="text-xs text-muted-foreground">Reply</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.messages.reply')}</span>
                 </button>
               )}
               <button
@@ -1082,14 +1082,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
               >
                 <Copy className="w-5 h-5 text-foreground" />
-                <span className="text-xs text-muted-foreground">Copy</span>
+                <span className="text-xs text-muted-foreground">{t('screens.messages.copy')}</span>
               </button>
               <button
                 onClick={() => { handleForward(); setShowDoubleTapReactions(false); }}
                 className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
               >
                 <Forward className="w-5 h-5 text-foreground" />
-                <span className="text-xs text-muted-foreground">Forward</span>
+                <span className="text-xs text-muted-foreground">{t('screens.messages.forward')}</span>
               </button>
               {isOwnMessage && (
                 <button
@@ -1097,7 +1097,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
                 >
                   <Pencil className="w-5 h-5 text-foreground" />
-                  <span className="text-xs text-muted-foreground">Edit</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.messages.edit')}</span>
                 </button>
               )}
               {isOwnMessage && !showDeleteConfirm && (
@@ -1106,7 +1106,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
                 >
                   <Trash2 className="w-5 h-5 text-destructive" />
-                  <span className="text-xs text-destructive">Delete</span>
+                  <span className="text-xs text-destructive">{t('screens.messages.delete')}</span>
                 </button>
               )}
             </div>

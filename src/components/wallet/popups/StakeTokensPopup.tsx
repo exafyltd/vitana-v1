@@ -71,7 +71,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Stake VTNA Tokens
+            {t('screens.wallet.stakeVtnaTokens')}
           </DialogTitle>
         </DialogHeader>
         
@@ -122,7 +122,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
                 size="sm"
                 onClick={() => setStakeAmount(vtnaBalance.toString())}
               >
-                MAX
+                {t('screens.wallet.max')}
               </Button>
             </div>
           </div>
@@ -156,7 +156,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
                     <TrendingUp className="h-3 w-3 text-green-600" />
                     <span className="font-semibold text-green-600">{option.apy}</span>
                   </div>
-                  <div className="text-xs text-muted-foreground">APY</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.wallet.apy')}</div>
                 </div>
               </Button>
             ))}

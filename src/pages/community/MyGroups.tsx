@@ -81,7 +81,7 @@ export default function MyGroups() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{t('screens.community.autopilot')}</span>
               </div>
               
               {/* Hover Preview */}
@@ -125,7 +125,7 @@ export default function MyGroups() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCreateGroupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Group
+              {t('screens.community.group')}
             </Button>
           </UtilityActionButton>
 
@@ -146,11 +146,11 @@ export default function MyGroups() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold flex items-center gap-2">
                     <Users className="w-5 h-5" />
-                    My Groups
+                    {t('screens.community.myGroups')}
                   </h2>
                   <Button size="sm" variant="outline">
                     <Plus className="w-4 h-4 mr-1" />
-                    Join
+                    {t('screens.community.join')}
                   </Button>
                 </div>
                 <div className="space-y-3">
@@ -178,7 +178,7 @@ export default function MyGroups() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Lightbulb className="w-5 h-5" />
-                  Recommended Groups
+                  {t('screens.community.recommendedGroups')}
                 </h3>
                 <div className="space-y-3">
                   {recommendedGroups.map((group, index) => (
@@ -205,7 +205,7 @@ export default function MyGroups() {
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5" />
-                  Recent Updates
+                  {t('screens.community.recentUpdates')}
                 </h2>
                 <div className="space-y-4">
                   {groupUpdates.map((update, index) => (
@@ -228,11 +228,11 @@ export default function MyGroups() {
                         </Button>
                         <Button size="sm" variant="ghost" className="h-8 px-2">
                           <MessageSquare className="w-4 h-4 mr-1" />
-                          Reply
+                          {t('screens.community.reply')}
                         </Button>
                         <Button size="sm" variant="ghost" className="h-8 px-2">
                           <Share2 className="w-4 h-4 mr-1" />
-                          Share
+                          {t('screens.community.share')}
                         </Button>
                       </div>
                     </div>
@@ -248,7 +248,7 @@ export default function MyGroups() {
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  Trending Discussions
+                  {t('screens.community.trendingDiscussions')}
                 </h3>
                 <div className="space-y-3">
                   <div className="p-3 bg-muted/50 rounded-lg">

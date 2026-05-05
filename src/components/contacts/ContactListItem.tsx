@@ -68,7 +68,7 @@ export default function ContactListItem({
             {contact.is_on_platform && (
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
-                On VITANA
+                {t('screens.contacts.vitana')}
               </Badge>
             )}
           </div>
@@ -90,7 +90,7 @@ export default function ContactListItem({
               className="flex items-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
-              Message
+              {t('screens.contacts.message')}
             </Button>
           )}
 
@@ -126,7 +126,7 @@ export default function ContactListItem({
                   </ResponsiveConfirmDialogDescription>
                 </ResponsiveConfirmDialogHeader>
                 <ResponsiveConfirmDialogFooter>
-                  <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                  <ResponsiveConfirmDialogCancel>{t('screens.contacts.cancel')}</ResponsiveConfirmDialogCancel>
                   <ResponsiveConfirmDialogAction
                     onClick={() => onDelete(contact.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

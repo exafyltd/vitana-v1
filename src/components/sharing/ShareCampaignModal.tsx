@@ -29,7 +29,7 @@ export function ShareCampaignModal({
         <DialogHeader>
           <DialogTitle>{t('screens.sharing.shareThisCampaign')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Send a personal invite – no extra setup needed.
+            {t('screens.sharing.sendPersonalInviteNoExtraSetup')}
           </p>
         </DialogHeader>
 
@@ -63,7 +63,7 @@ export function ShareCampaignModal({
             showCopyLink={true}
           />
           <p className="text-xs text-muted-foreground">
-            Opens your personal apps to share directly
+            {t('screens.sharing.opensYourPersonalAppsShareDirectly')}
           </p>
         </div>
       </DialogContent>

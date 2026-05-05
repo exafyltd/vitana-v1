@@ -54,13 +54,13 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
             {trend === "up" && (
               <>
                 <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="text-green-600">Improving</span>
+                <span className="text-green-600">{t('screens.health.improving')}</span>
               </>
             )}
             {trend === "down" && (
               <>
                 <TrendingDown className="w-4 h-4 text-red-500" />
-                <span className="text-red-600">Declining</span>
+                <span className="text-red-600">{t('screens.health.declining')}</span>
               </>
             )}
             {trend === "stable" && (

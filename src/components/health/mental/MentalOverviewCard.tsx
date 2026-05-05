@@ -19,15 +19,15 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-              Your Mental Plan, Powered by Autopilot 🧩
+              {t('screens.health.yourMentalPlanPoweredByAutopilot')}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              AI-guided insights to help you manage stress, enhance focus, and nurture emotional balance.
+              {t('screens.health.aiguidedInsightsHelpYouManageStress')}
             </p>
           </div>
           <Badge variant="secondary" className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/60">
             <Brain className="w-3 h-3 mr-1 animate-pulse" />
-            AI Optimized
+            {t('screens.health.aiOptimized')}
           </Badge>
         </div>
 
@@ -44,7 +44,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
           <div className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-4 border border-slate-200/60 dark:border-slate-800/50 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
               <Clock className="w-4 h-4 text-orange-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Schedule</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.schedule')}</span>
             </div>
             <p className="text-base font-semibold">{planData.schedule}</p>
           </div>
@@ -61,7 +61,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
         {/* Progress Bar */}
         <div className="space-y-2">
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Tracking your average mental balance and focus consistency…
+            {t('screens.health.trackingYourAverageMentalBalanceFocus')}
           </p>
           <Progress 
             value={planData.completion} 
@@ -92,10 +92,10 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
             onClick={onRecalibrate}
           >
             <Settings className="w-4 h-4 mr-2" />
-            Recalibrate Plan
+            {t('screens.health.recalibratePlan')}
           </Button>
           <p className="text-xs text-center text-slate-500 dark:text-slate-400">
-            Recalibration adjusts your mental goals based on focus level, workload, and mood variability.
+            {t('screens.health.recalibrationAdjustsYourMentalGoalsBased')}
           </p>
         </div>
       </div>

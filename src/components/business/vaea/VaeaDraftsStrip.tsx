@@ -54,7 +54,7 @@ export function VaeaDraftsStrip() {
               />
             ))}
             <div className="flex justify-end">
-              <Button variant="ghost" size="sm" onClick={reload}>Refresh</Button>
+              <Button variant="ghost" size="sm" onClick={reload}>{t('screens.business.refresh')}</Button>
             </div>
           </div>
         )}

@@ -82,7 +82,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       {/* Progress Bar */}
       <div className="space-y-2">
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Progress</span>
+          <span className="text-muted-foreground">{t('screens.crossover.progress')}</span>
           <span className={cn(
             "font-medium",
             isOnTrack ? "text-health-success" : "text-health-warning"

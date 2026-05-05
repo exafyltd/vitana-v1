@@ -84,10 +84,10 @@ export function ChannelEligibilityBadges({
       {hasWarnings && (
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
           <p className="text-xs font-medium text-destructive">
-            ⚠️ Warning: Some selected channels have 0 eligible recipients
+            {t('screens.sharing.warningSomeSelectedChannelsHave0')}
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Messages will only be sent to contacts with the required contact information
+            {t('screens.sharing.messagesWillOnlySentContactsWith')}
           </p>
         </div>
       )}

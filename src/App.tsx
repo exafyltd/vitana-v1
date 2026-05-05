@@ -1269,14 +1269,14 @@ const App = () => {
           <Route path="/patient/insurance" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <div className="p-6"><h1 className="text-3xl font-bold">Insurance</h1><p className="text-muted-foreground">{t('screens.common.insuranceInformationCoverageDetails')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.insurance')}</h1><p className="text-muted-foreground">{t('screens.common.insuranceInformationCoverageDetails')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/patient/notifications" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="patient">
-                <div className="p-6"><h1 className="text-3xl font-bold">Notifications</h1><p className="text-muted-foreground">{t('screens.common.healthRemindersAlerts')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.notifications')}</h1><p className="text-muted-foreground">{t('screens.common.healthRemindersAlerts')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1299,7 +1299,7 @@ const App = () => {
           <Route path="/professional/schedule" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">{t('screens.common.manageYourAppointmentCalendar')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.schedule')}</h1><p className="text-muted-foreground">{t('screens.common.manageYourAppointmentCalendar')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1313,14 +1313,14 @@ const App = () => {
           <Route path="/professional/referrals" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <div className="p-6"><h1 className="text-3xl font-bold">Referrals</h1><p className="text-muted-foreground">{t('screens.common.patientReferralsSpecialistNetworks')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.referrals')}</h1><p className="text-muted-foreground">{t('screens.common.patientReferralsSpecialistNetworks')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/professional/billing" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="professional">
-                <div className="p-6"><h1 className="text-3xl font-bold">Billing</h1><p className="text-muted-foreground">{t('screens.common.practiceBillingRevenueManagement')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.billing')}</h1><p className="text-muted-foreground">{t('screens.common.practiceBillingRevenueManagement')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1364,21 +1364,21 @@ const App = () => {
           <Route path="/staff/schedule" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <div className="p-6"><h1 className="text-3xl font-bold">Schedule</h1><p className="text-muted-foreground">{t('screens.common.workScheduleShiftManagement')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.schedule')}</h1><p className="text-muted-foreground">{t('screens.common.workScheduleShiftManagement')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/reports" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <div className="p-6"><h1 className="text-3xl font-bold">Reports</h1><p className="text-muted-foreground">{t('screens.common.dailyWeeklyActivityReports')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.reports')}</h1><p className="text-muted-foreground">{t('screens.common.dailyWeeklyActivityReports')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />
           <Route path="/staff/communications" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="staff">
-                <div className="p-6"><h1 className="text-3xl font-bold">Communications</h1><p className="text-muted-foreground">{t('screens.common.teamMessagesAnnouncements')}</p></div>
+                <div className="p-6"><h1 className="text-3xl font-bold">{t('screens.common.communications')}</h1><p className="text-muted-foreground">{t('screens.common.teamMessagesAnnouncements')}</p></div>
               </ProtectedRoute>
             </AuthGuard>
           } />

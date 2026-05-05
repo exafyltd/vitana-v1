@@ -330,7 +330,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   onClick={handleMessageClick}
                 >
                   <MessageSquare className="h-4 w-4" />
-                  <span>Message</span>
+                  <span>{t('screens.profile.message')}</span>
                 </Button>
                 
                 <Button 

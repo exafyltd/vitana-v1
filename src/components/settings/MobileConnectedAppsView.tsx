@@ -139,7 +139,7 @@ export function MobileConnectedAppsView() {
         variant: "destructive",
         action: (
           <ToastAction altText={`Retry ${label} sign-in`} onClick={retry}>
-            Try again
+            {t('screens.settings.tryAgain')}
           </ToastAction>
         ),
       });

@@ -107,7 +107,7 @@ export function MemoryEditDialog({
         <div className="space-y-4 py-4">
           {/* Content */}
           <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
+            <Label htmlFor="content">{t('screens.memory.content')}</Label>
             <Textarea
               id="content"
               value={content}
@@ -148,11 +148,11 @@ export function MemoryEditDialog({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="fact">Fact</SelectItem>
-                  <SelectItem value="preference">Preference</SelectItem>
-                  <SelectItem value="goal">Goal</SelectItem>
-                  <SelectItem value="pattern">Pattern</SelectItem>
-                  <SelectItem value="insight">Insight</SelectItem>
+                  <SelectItem value="fact">{t('screens.memory.fact')}</SelectItem>
+                  <SelectItem value="preference">{t('screens.memory.preference')}</SelectItem>
+                  <SelectItem value="goal">{t('screens.memory.goal')}</SelectItem>
+                  <SelectItem value="pattern">{t('screens.memory.pattern')}</SelectItem>
+                  <SelectItem value="insight">{t('screens.memory.insight')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -195,7 +195,7 @@ export function MemoryEditDialog({
             onClick={() => onOpenChange(false)}
             disabled={isSaving}
           >
-            Cancel
+            {t('screens.memory.cancel')}
           </Button>
           <Button
             onClick={handleSave}

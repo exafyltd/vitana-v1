@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { DailySleepData } from "@/types/sleep";
 import { Moon, Clock, Brain, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface DailySleepCardProps {
   data: DailySleepData;
@@ -119,7 +120,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
         <div className="absolute top-3 left-3">
           <Badge className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white text-xs font-semibold px-2 py-1 rounded-full gap-1 border-0">
             <Sparkles className="w-3 h-3" />
-            Excellent
+            {t('screens.health.excellent')}
           </Badge>
         </div>
       )}

@@ -61,15 +61,15 @@ export default function PatternCard({
         <div className="grid grid-cols-3 gap-4 py-3 border-t border-b">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">{confidencePercentage}%</div>
-            <div className="text-xs text-muted-foreground">Confidence</div>
+            <div className="text-xs text-muted-foreground">{t('screens.admin.confidence')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">{pattern.sample_size}</div>
-            <div className="text-xs text-muted-foreground">Occurrences</div>
+            <div className="text-xs text-muted-foreground">{t('screens.admin.occurrences')}</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">{occurrencePercentage}%</div>
-            <div className="text-xs text-muted-foreground">Frequency</div>
+            <div className="text-xs text-muted-foreground">{t('screens.admin.frequency')}</div>
           </div>
         </div>
 
@@ -83,18 +83,18 @@ export default function PatternCard({
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" onClick={onViewDetails}>
             <Eye className="h-4 w-4 mr-2" />
-            View Details
+            {t('screens.admin.viewDetails')}
           </Button>
           
           {pattern.status === "discovered" && (
             <>
               <Button variant="outline" size="sm" onClick={onReview}>
                 <CheckCircle className="h-4 w-4 mr-2" />
-                Review
+                {t('screens.admin.review')}
               </Button>
               <Button size="sm" onClick={onCreateAutomation}>
                 <Wand2 className="h-4 w-4 mr-2" />
-                Create Automation
+                {t('screens.admin.createAutomation')}
               </Button>
             </>
           )}
@@ -102,14 +102,14 @@ export default function PatternCard({
           {pattern.status === "reviewed" && (
             <Button size="sm" onClick={onCreateAutomation}>
               <Wand2 className="h-4 w-4 mr-2" />
-              Create Automation
+              {t('screens.admin.createAutomation')}
             </Button>
           )}
 
           {pattern.status !== "dismissed" && pattern.status !== "implemented" && (
             <Button variant="ghost" size="sm" onClick={onDismiss}>
               <X className="h-4 w-4 mr-2" />
-              Dismiss
+              {t('screens.admin.dismiss')}
             </Button>
           )}
         </div>

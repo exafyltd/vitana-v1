@@ -45,8 +45,8 @@ export default function SystemSecurity() {
                 <div className="flex items-center gap-3">
                   <Lock className="w-8 h-8 text-blue-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Encryption</p>
-                    <Badge variant="default">Active</Badge>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.encryption')}</p>
+                    <Badge variant="default">{t('screens.admin.active')}</Badge>
                   </div>
                 </div>
               </CardContent>
@@ -69,7 +69,7 @@ export default function SystemSecurity() {
                 <div className="flex items-center gap-3">
                   <AlertTriangle className="w-8 h-8 text-orange-500" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Alerts</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.alerts')}</p>
                     <p className="text-2xl font-bold">0</p>
                   </div>
                 </div>
@@ -81,7 +81,7 @@ export default function SystemSecurity() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="w-5 h-5" />
-                Security Policies
+                {t('screens.admin.securityPolicies')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -90,21 +90,21 @@ export default function SystemSecurity() {
                   <p className="font-medium">{t('screens.admin.passwordPolicy')}</p>
                   <p className="text-sm text-muted-foreground">{t('screens.admin.minimum8CharactersSpecialCharsRequired')}</p>
                 </div>
-                <Button variant="outline" size="sm">Edit</Button>
+                <Button variant="outline" size="sm">{t('screens.admin.edit')}</Button>
               </div>
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium">{t('screens.admin.sessionTimeout')}</p>
                   <p className="text-sm text-muted-foreground">{t('screens.admin.autologoutAfter30MinutesInactivity')}</p>
                 </div>
-                <Button variant="outline" size="sm">Edit</Button>
+                <Button variant="outline" size="sm">{t('screens.admin.edit')}</Button>
               </div>
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium">{t('screens.admin.apiRateLimiting')}</p>
                   <p className="text-sm text-muted-foreground">{t('screens.admin.text1000RequestsPerHourPerUser')}</p>
                 </div>
-                <Button variant="outline" size="sm">Edit</Button>
+                <Button variant="outline" size="sm">{t('screens.admin.edit')}</Button>
               </div>
             </CardContent>
           </Card>

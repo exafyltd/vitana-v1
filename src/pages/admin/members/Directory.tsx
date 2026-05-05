@@ -117,11 +117,11 @@ export default function MembersDirectory() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[40px]" />
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
+                  <TableHead>{t('screens.admin.name')}</TableHead>
+                  <TableHead>{t('screens.admin.email')}</TableHead>
                   <TableHead>{t('screens.admin.activeRole')}</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Joined</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.joined')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -48,7 +48,7 @@ export default function CreatorOnboarded() {
               <div>
                 <h1 className="text-2xl font-bold">{t('screens.creatoronboarded.checkingYourPaymentStatus')}</h1>
                 <p className="text-muted-foreground mt-2">
-                  This should only take a moment
+                  {t('screens.creatoronboarded.thisShouldOnlyTakeMoment')}
                 </p>
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function CreatorOnboarded() {
                   <div className="text-left flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.youKeep90')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Earn 90% of every paid Live Room ticket sale, with only a 10% platform fee
+                      {t('screens.creatoronboarded.earn90EveryPaidLiveRoom')}
                     </p>
                   </div>
                 </div>
@@ -99,7 +99,7 @@ export default function CreatorOnboarded() {
                   <div className="text-left flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.instantAccess')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Start creating paid rooms immediately - no waiting period
+                      {t('screens.creatoronboarded.startCreatingPaidRoomsImmediately')}
                     </p>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export default function CreatorOnboarded() {
                   <div className="text-left flex-1">
                     <h3 className="font-semibold text-gray-900">{t('screens.creatoronboarded.directDeposits')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Earnings deposited directly to your bank account via Stripe
+                      {t('screens.creatoronboarded.earningsDepositedDirectlyYourBankAccount')}
                     </p>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function CreatorOnboarded() {
                   onClick={() => navigate('/community')}
                   className="gap-2"
                 >
-                  Create Your First Paid Room
+                  {t('screens.creatoronboarded.createYourFirstPaidRoom')}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
 
@@ -134,7 +134,7 @@ export default function CreatorOnboarded() {
                   onClick={() => navigate('/settings/billing')}
                   className="gap-2"
                 >
-                  View Payment Settings
+                  {t('screens.creatoronboarded.viewPaymentSettings')}
                   <ExternalLink className="w-4 h-4" />
                 </Button>
               </div>
@@ -153,7 +153,7 @@ export default function CreatorOnboarded() {
               <div>
                 <h1 className="text-2xl font-bold">{t('screens.creatoronboarded.setupProgress')}</h1>
                 <p className="text-muted-foreground mt-2">
-                  Your payment setup is being processed. This can take a few minutes.
+                  {t('screens.creatoronboarded.yourPaymentSetupProcessedThisCan')}
                 </p>
               </div>
 
@@ -171,14 +171,14 @@ export default function CreatorOnboarded() {
                   onClick={() => refetch()}
                   variant="outline"
                 >
-                  Refresh Status
+                  {t('screens.creatoronboarded.refreshStatus')}
                 </Button>
 
                 <Button
                   onClick={() => navigate('/settings/billing')}
                   variant="secondary"
                 >
-                  Go to Settings
+                  {t('screens.creatoronboarded.goSettings')}
                 </Button>
               </div>
             </div>

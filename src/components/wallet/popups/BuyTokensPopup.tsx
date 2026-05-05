@@ -105,7 +105,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Buy VTNA Tokens
+            {t('screens.wallet.buyVtnaTokens')}
           </DialogTitle>
         </DialogHeader>
         
@@ -159,7 +159,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                   {pkg.popular && (
                     <Badge className="bg-purple-600 text-white flex items-center gap-1">
                       <Star className="h-3 w-3" />
-                      Popular
+                      {t('screens.wallet.popular')}
                     </Badge>
                   )}
                 </div>

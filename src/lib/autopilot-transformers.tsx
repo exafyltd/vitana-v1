@@ -27,6 +27,7 @@ import aiNeuralImage from '@/assets/actions/ai-neural-patterns.jpg';
 import friendsMeetupImage from '@/assets/actions/friends-meetup-selfie.jpg';
 import hydrationBottleImage from '@/assets/actions/hydration-water-bottle.jpg';
 import wellnessYogaImage from '@/assets/actions/wellness-yoga-nature.jpg';
+import { t } from '@/lib/i18n-toast';
 
 /**
  * Maps autopilot category to domain accent color from design system
@@ -304,7 +305,7 @@ export function transformAutopilotActionToVisualCard(
         <div>
           <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-primary" />
-            Why this action?
+            {t('screens.common.whyThisAction')}
           </h4>
           <p className="text-sm text-muted-foreground leading-relaxed">{action.reason}</p>
         </div>
@@ -313,7 +314,7 @@ export function transformAutopilotActionToVisualCard(
         {action.timeEstimate && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
-            <span>Time needed: <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
+            <span>{t('screens.common.timeNeeded')} <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
           </div>
         )}
 
@@ -327,7 +328,7 @@ export function transformAutopilotActionToVisualCard(
         <div>
           <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-emerald-600" />
-            Expected outcome
+            {t('screens.common.expectedOutcome')}
           </h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
             {action.category === 'community' && 'Connect with like-minded individuals, strengthen social wellness, and expand your longevity network.'}
@@ -414,7 +415,7 @@ export function transformAutopilotActionsToStandardCards(
           <div>
             <h4 className="font-semibold text-sm mb-1.5 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-primary" />
-              Why this action?
+              {t('screens.common.whyThisAction')}
             </h4>
             <p className="text-sm text-muted-foreground leading-relaxed">{action.reason}</p>
           </div>
@@ -423,7 +424,7 @@ export function transformAutopilotActionsToStandardCards(
           {action.timeEstimate && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Clock className="w-4 h-4" />
-              <span>Time needed: <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
+              <span>{t('screens.common.timeNeeded')} <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
             </div>
           )}
 
@@ -437,7 +438,7 @@ export function transformAutopilotActionsToStandardCards(
           <div>
             <h4 className="font-semibold text-sm mb-1.5 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-emerald-600" />
-              Expected outcome
+              {t('screens.common.expectedOutcome')}
             </h4>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {action.category === 'community' && 'Connect with like-minded individuals, strengthen social wellness, and expand your longevity network.'}

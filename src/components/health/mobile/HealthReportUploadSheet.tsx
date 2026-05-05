@@ -147,7 +147,7 @@ export function HealthReportUploadSheet({
         <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2">
             <Upload className="w-5 h-5 text-primary" />
-            Upload Health Report
+            {t('screens.health.uploadHealthReport')}
           </SheetTitle>
         </SheetHeader>
 
@@ -180,7 +180,7 @@ export function HealthReportUploadSheet({
 
           {/* File Upload Zone */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Document</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.document')}</label>
             <input
               ref={fileInputRef}
               type="file"

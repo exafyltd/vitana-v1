@@ -10,7 +10,7 @@ export default function StaffDashboard() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.staff.staffDashboard')}</h1>
         <p className="text-muted-foreground">
-          Your daily workflow and task management center
+          {t('screens.staff.yourDailyWorkflowTaskManagementCenter')}
         </p>
       </div>
 
@@ -23,7 +23,7 @@ export default function StaffDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">8</div>
             <p className="text-xs text-muted-foreground">
-              Patients waiting
+              {t('screens.staff.patientsWaiting')}
             </p>
           </CardContent>
         </Card>
@@ -36,7 +36,7 @@ export default function StaffDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">6.5h</div>
             <p className="text-xs text-muted-foreground">
-              1.5h remaining
+              {t('screens.staff.text15hRemaining')}
             </p>
           </CardContent>
         </Card>
@@ -49,7 +49,7 @@ export default function StaffDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">12/18</div>
             <p className="text-xs text-muted-foreground">
-              6 tasks remaining
+              {t('screens.staff.text6TasksRemaining')}
             </p>
           </CardContent>
         </Card>
@@ -62,7 +62,7 @@ export default function StaffDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">4/5</div>
             <p className="text-xs text-muted-foreground">
-              Staff on duty
+              {t('screens.staff.staffDuty')}
             </p>
           </CardContent>
         </Card>
@@ -80,21 +80,21 @@ export default function StaffDashboard() {
                 <p className="text-sm font-medium">{t('screens.staff.patientCheckinAssistance')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.staff.room3MrJohnson')}</p>
               </div>
-              <Badge variant="destructive">Urgent</Badge>
+              <Badge variant="destructive">{t('screens.staff.urgent')}</Badge>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium">{t('screens.staff.equipmentSanitization')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.staff.examRooms14')}</p>
               </div>
-              <Badge variant="outline">Normal</Badge>
+              <Badge variant="outline">{t('screens.staff.normal')}</Badge>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium">{t('screens.staff.insuranceVerification')}</p>
                 <p className="text-xs text-muted-foreground">{t('screens.staff.text3PendingCases')}</p>
               </div>
-              <Badge variant="outline">Normal</Badge>
+              <Badge variant="outline">{t('screens.staff.normal')}</Badge>
             </div>
           </CardContent>
         </Card>
@@ -107,15 +107,15 @@ export default function StaffDashboard() {
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
               <ClipboardList className="mr-2 h-4 w-4" />
-              View Patient Queue
+              {t('screens.staff.viewPatientQueue')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <Clock className="mr-2 h-4 w-4" />
-              Clock In/Out
+              {t('screens.staff.clockInout')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <Activity className="mr-2 h-4 w-4" />
-              Daily Tasks
+              {t('screens.staff.dailyTasks')}
             </Button>
           </CardContent>
         </Card>

@@ -227,7 +227,7 @@ export function ProfileLayout({
             <div className="p-4">
               <MobileShowcaseHeader onManage={onEditShowcase} />
               <div className="px-4 py-2 text-sm text-muted-foreground">
-                Select posts and content to feature
+                {t('screens.profile.selectPostsContentFeature')}
               </div>
               <MobileAutopilotBanner onTry={() => {
                 const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
@@ -251,7 +251,7 @@ export function ProfileLayout({
                 onClick={onEditAbout}
                 className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
               >
-                <h3 className="text-sm font-semibold mb-2">About</h3>
+                <h3 className="text-sm font-semibold mb-2">{t('screens.profile.about')}</h3>
                 <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
                 {effectiveEditMode && <p className="text-xs text-primary mt-2">{t('screens.profile.tapEdit')}</p>}
               </button>
@@ -390,14 +390,14 @@ export function ProfileLayout({
             {effectiveEditMode && onEditShowcase && (
               <div className="bg-background rounded-lg border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold">Showcase</h3>
+                  <h3 className="text-lg font-semibold">{t('screens.profile.showcase')}</h3>
                   <Button variant="outline" size="sm" onClick={onEditShowcase}>
                     <Star className="h-4 w-4 mr-2" />
-                    Manage Featured Content
+                    {t('screens.profile.manageFeaturedContent')}
                   </Button>
                 </div>
                 <p className="text-muted-foreground">
-                  Select posts and content to feature at the top of your profile
+                  {t('screens.profile.selectPostsContentFeatureAtTop')}
                 </p>
               </div>
             )}

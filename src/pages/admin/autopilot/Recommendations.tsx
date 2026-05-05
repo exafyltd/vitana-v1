@@ -82,7 +82,7 @@ export default function AutopilotRecommendations() {
 
         {recsQuery.data && !recsQuery.data.autopilot_enabled && (
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-300">
-            Autopilot is currently disabled for this tenant. Enable it in the Guardrails tab to see recommendations.
+            {t('screens.admin.autopilotCurrentlyDisabledForThisTenant')}
           </div>
         )}
 
@@ -142,13 +142,13 @@ export default function AutopilotRecommendations() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Domain</TableHead>
-                  <TableHead>Risk</TableHead>
-                  <TableHead className="text-center">Impact</TableHead>
-                  <TableHead className="text-center">Effort</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Created</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.domain')}</TableHead>
+                  <TableHead>{t('screens.admin.risk')}</TableHead>
+                  <TableHead className="text-center">{t('screens.admin.impact')}</TableHead>
+                  <TableHead className="text-center">{t('screens.admin.effort')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.created')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

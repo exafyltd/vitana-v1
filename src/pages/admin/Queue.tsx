@@ -92,7 +92,7 @@ function Queue() {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="queue">{t('screens.admin.liveQueue')}</TabsTrigger>
               <TabsTrigger value="checkin">{t('screens.admin.checkin')}</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="reports">{t('screens.admin.reports')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="queue" className="space-y-6">
@@ -137,8 +137,8 @@ function Queue() {
                           <p className="text-sm text-muted-foreground">{patient.provider} • {patient.room}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge variant="default">Active</Badge>
-                          <Button size="sm" variant="outline">Complete</Button>
+                          <Badge variant="default">{t('screens.admin.active')}</Badge>
+                          <Button size="sm" variant="outline">{t('screens.admin.complete')}</Button>
                         </div>
                       </div>
                     ))}

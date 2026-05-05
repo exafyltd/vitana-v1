@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Clock, Edit, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WeekGridViewProps {
   weekDays: Date[];
@@ -167,7 +168,7 @@ export function WeekGridView({
             className="gap-1.5 shadow-lg border h-8 text-xs"
           >
             <Clock className="h-3.5 w-3.5" />
-            Jump to now
+            {t('screens.calendar.jumpNow')}
           </Button>
         </div>
       )}

@@ -12,6 +12,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface SmartEditingToolbarProps {
   hasUnsavedChanges: boolean;
@@ -82,17 +83,17 @@ export function SmartEditingToolbar({
           {isSaving ? (
             <Badge variant="secondary" className="gap-1">
               <Clock className="h-3 w-3 animate-spin" />
-              Saving...
+              {t('screens.profile.saving')}
             </Badge>
           ) : hasUnsavedChanges ? (
             <Badge variant="outline" className="gap-1">
               <div className="h-2 w-2 rounded-full bg-[hsl(var(--util-profile-accent))]" />
-              Unsaved changes
+              {t('screens.profile.unsavedChanges')}
             </Badge>
           ) : (
             <Badge variant="secondary" className="gap-1">
               <CheckCircle className="h-3 w-3" />
-              All changes saved
+              {t('screens.profile.allChangesSaved')}
             </Badge>
           )}
 
@@ -103,7 +104,7 @@ export function SmartEditingToolbar({
             disabled={!hasUnsavedChanges || isSaving}
           >
             <Save className="h-4 w-4 mr-2" />
-            Save Now
+            {t('screens.profile.saveNow')}
           </Button>
 
           <Button
@@ -112,7 +113,7 @@ export function SmartEditingToolbar({
             className="bg-gradient-to-r from-[hsl(var(--util-profile-accent))] to-[hsl(var(--domain-community-accent))] hover:from-[hsl(var(--util-profile-accent)/0.9)] hover:to-[hsl(var(--domain-community-accent)/0.9)] text-white border-0"
           >
             <Sparkles className="h-4 w-4 mr-2" />
-            AI Assist
+            {t('screens.profile.aiAssist')}
           </Button>
         </div>
       </div>

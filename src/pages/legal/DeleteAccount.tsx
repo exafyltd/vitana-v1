@@ -84,10 +84,10 @@ const DeleteAccount = () => {
           <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-foreground mb-2">{t('screens.legal.signRequired')}</h2>
           <p className="text-muted-foreground mb-6">
-            You need to sign in to your account before you can request deletion.
+            {t('screens.legal.youNeedSignYourAccountBefore')}
           </p>
           <Button onClick={() => navigate("/maxina")} className="w-full max-w-xs">
-            Sign In
+            {t('screens.legal.sign')}
           </Button>
         </main>
       </div>
@@ -121,7 +121,7 @@ const DeleteAccount = () => {
               </div>
               <CardTitle className="text-xl">{t('screens.legal.deleteYourAccount')}</CardTitle>
               <CardDescription className="text-sm">
-                This action is permanent and cannot be undone.
+                {t('screens.legal.thisActionPermanentCannotUndone')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -139,7 +139,7 @@ const DeleteAccount = () => {
               <p className="text-xs text-muted-foreground">
                 Completed payment transactions may be retained as required by financial regulations, in accordance with our{" "}
                 <Link to="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
+                  {t('screens.legal.privacyPolicy')}
                 </Link>.
               </p>
 
@@ -148,7 +148,7 @@ const DeleteAccount = () => {
                 className="w-full"
                 onClick={() => setStep("confirm")}
               >
-                Delete My Account
+                {t('screens.legal.deleteMyAccount')}
               </Button>
             </CardContent>
           </Card>
@@ -163,7 +163,7 @@ const DeleteAccount = () => {
               </div>
               <CardTitle className="text-xl">{t('screens.legal.youSure')}</CardTitle>
               <CardDescription className="text-sm">
-                Type <span className="font-mono font-bold text-destructive">DELETE</span> below to confirm account deletion.
+                {t('screens.legal.type')} <span className="font-mono font-bold text-destructive">{t('screens.legal.delete')}</span> below to confirm account deletion.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -192,7 +192,7 @@ const DeleteAccount = () => {
                   disabled={!isConfirmValid}
                   onClick={() => setShowDialog(true)}
                 >
-                  Permanently Delete
+                  {t('screens.legal.permanentlyDelete')}
                 </Button>
               </div>
             </CardContent>
@@ -215,10 +215,10 @@ const DeleteAccount = () => {
               <CheckCircle2 className="h-12 w-12 text-primary mx-auto" />
               <h2 className="text-xl font-semibold text-foreground">{t('screens.legal.accountDeleted')}</h2>
               <p className="text-muted-foreground text-sm">
-                Your account and associated data have been permanently deleted.
+                {t('screens.legal.yourAccountAssociatedDataHavePermanently')}
               </p>
               <Button variant="outline" onClick={() => navigate("/")} className="mt-4">
-                Return to Home
+                {t('screens.legal.returnHome')}
               </Button>
             </CardContent>
           </Card>
@@ -233,10 +233,10 @@ const DeleteAccount = () => {
               <p className="text-muted-foreground text-sm">{errorMsg}</p>
               <div className="flex gap-3 justify-center">
                 <Button variant="outline" onClick={() => setStep("info")}>
-                  Try Again
+                  {t('screens.legal.tryAgain')}
                 </Button>
                 <Button variant="outline" onClick={() => navigate(-1)}>
-                  Go Back
+                  {t('screens.legal.goBack')}
                 </Button>
               </div>
             </CardContent>
@@ -250,16 +250,16 @@ const DeleteAccount = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.legal.finalConfirmation')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete your account and all associated data. This action cannot be undone.
+              {t('screens.legal.thisWillPermanentlyDeleteYourAccount')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.legal.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteRequest}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Yes, Delete My Account
+              {t('screens.legal.yesDeleteMyAccount')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

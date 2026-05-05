@@ -41,11 +41,11 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
             <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noServicesYet')}</h3>
             <p className="text-muted-foreground mb-4">
-              Create coaching sessions, consultations, or other services to offer.
+              {t('screens.business.createCoachingSessionsConsultationsOtherServices')}
             </p>
             <Button onClick={onCreateService} className="gap-2">
               <Plus className="w-4 h-4" />
-              Create Service
+              {t('screens.business.createService')}
             </Button>
           </div>
         </SplitBarContent>
@@ -64,11 +64,11 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
               <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.createSessionPackages')}</h3>
               <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                Bundle multiple sessions, events, or perks into packages that increase commitment and lifetime value.
+                {t('screens.business.bundleMultipleSessionsEventsPerksInto')}
               </p>
               <Button onClick={() => setShowCreatePackage(true)} className="gap-2">
                 <Plus className="w-4 h-4" />
-                Create Package
+                {t('screens.business.createPackage')}
               </Button>
             </div>
           ) : (
@@ -79,7 +79,7 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
                 </p>
                 <Button onClick={() => setShowCreatePackage(true)} size="sm" className="gap-2">
                   <Plus className="w-4 h-4" />
-                  New Package
+                  {t('screens.business.newPackage')}
                 </Button>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

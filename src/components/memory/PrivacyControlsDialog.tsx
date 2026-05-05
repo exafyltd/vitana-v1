@@ -68,7 +68,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Shield className="w-6 h-6" />
-            Privacy Controls
+            {t('screens.memory.privacyControls')}
           </DialogTitle>
         </DialogHeader>
 
@@ -77,7 +77,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
           <div className="space-y-3">
             <h3 className="font-semibold">{t('screens.memory.activityTracking')}</h3>
             <p className="text-sm text-muted-foreground">
-              Choose which activities to track in your history
+              {t('screens.memory.chooseWhichActivitiesTrackYourHistory')}
             </p>
             <div className="space-y-2">
               {categories.map(({ key, label, emoji }) => (
@@ -117,7 +117,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Automatically delete activity history after the specified period
+              {t('screens.memory.automaticallyDeleteActivityHistoryAfterSpecified')}
             </p>
           </div>
 
@@ -135,7 +135,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Choose how your data is formatted when exported
+              {t('screens.memory.chooseHowYourDataFormattedWhen')}
             </p>
           </div>
 
@@ -155,10 +155,10 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.memory.cancel')}
             </Button>
             <Button onClick={handleSave}>
-              Save Settings
+              {t('screens.memory.saveSettings')}
             </Button>
           </div>
         </div>

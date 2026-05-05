@@ -90,34 +90,34 @@ export function TaskDetailsPanel({ task }: TaskDetailsPanelProps) {
               <span className="font-mono font-medium">{task.id}</span>
             </div>
             <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-muted-foreground">Assignee</span>
+              <span className="text-muted-foreground">{t('screens.dev.assignee')}</span>
               <span className="font-medium">{task.assignee}</span>
             </div>
             {task.vtid && (
               <div className="flex items-center justify-between py-2 border-b">
-                <span className="text-muted-foreground">VTID</span>
+                <span className="text-muted-foreground">{t('screens.dev.vtid')}</span>
                 <span className="font-mono font-medium">{task.vtid}</span>
               </div>
             )}
             <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-muted-foreground">Created</span>
+              <span className="text-muted-foreground">{t('screens.dev.created')}</span>
               <span className="font-medium">{formatTime(task.created_at)}</span>
             </div>
           </div>
 
           <div className="pt-4 space-y-2">
-            <h4 className="text-sm font-semibold mb-3">Actions</h4>
+            <h4 className="text-sm font-semibold mb-3">{t('screens.dev.actions')}</h4>
             <Button variant="outline" size="sm" className="w-full justify-start">
               <ExternalLink className="w-4 h-4 mr-2" />
-              View Related Workflow
+              {t('screens.dev.viewRelatedWorkflow')}
             </Button>
             <Button variant="outline" size="sm" className="w-full justify-start">
               <ExternalLink className="w-4 h-4 mr-2" />
-              View Task Logs
+              {t('screens.dev.viewTaskLogs')}
             </Button>
             <Button variant="outline" size="sm" className="w-full justify-start">
               <CheckCircle2 className="w-4 h-4 mr-2" />
-              Mark as Complete
+              {t('screens.dev.markAsComplete')}
             </Button>
           </div>
         </CardContent>

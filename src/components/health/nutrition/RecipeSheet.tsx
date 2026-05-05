@@ -225,7 +225,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {recipe.allergens.length > 0 && (
                 <Alert className="border-amber-500/20 bg-amber-500/5">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
-                  <AlertTitle>Allergens</AlertTitle>
+                  <AlertTitle>{t('screens.health.allergens')}</AlertTitle>
                   <AlertDescription>
                     Contains: {recipe.allergens.join(', ')}
                   </AlertDescription>
@@ -235,14 +235,14 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Ingredients Checklist */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-lg">Ingredients</h3>
+                  <h3 className="font-semibold text-lg">{t('screens.health.ingredients')}</h3>
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => notifySuccess('toasts.health.addedShoppingList')}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to List
+                    {t('screens.health.addList')}
                   </Button>
                 </div>
                 <div className="space-y-2">
@@ -276,13 +276,13 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Steps */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-lg">Instructions</h3>
+                  <h3 className="font-semibold text-lg">{t('screens.health.instructions')}</h3>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setFullScreenCookMode(true)}
                   >
-                    👁 Cook Mode
+                    {t('screens.health.cookMode')}
                   </Button>
                 </div>
                 
@@ -303,7 +303,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <Repeat className="w-5 h-5 text-primary" />
-                    Recipe Swaps
+                    {t('screens.health.recipeSwaps')}
                   </h3>
                   <div className="space-y-2">
                     {recipe.swaps.map((swap, idx) => {
@@ -328,7 +328,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                               <p className="text-xs text-muted-foreground mt-1">
                                 {Object.entries(swap.replace).map(([from, to]) => (
                                   <span key={from}>
-                                    Replace <strong>{from}</strong> with <strong>{to}</strong>
+                                    {t('screens.health.replace')} <strong>{from}</strong> with <strong>{to}</strong>
                                   </span>
                                 ))}
                               </p>
@@ -342,7 +342,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                           
                           {isVegan && (
                             <Badge variant="outline" className="text-xs bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
-                              vegan
+                              {t('screens.health.vegan')}
                             </Badge>
                           )}
                         </button>
@@ -373,7 +373,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 onClick={() => notifySuccess('toasts.health.recipeSavedFavorites')}
               >
                 <Heart className="w-4 h-4" />
-                <span className="hidden sm:inline">Save</span>
+                <span className="hidden sm:inline">{t('screens.health.save')}</span>
               </Button>
               
               <Button 
@@ -382,7 +382,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 onClick={() => notifyInfo('toasts.health.findingSimilarRecipes')}
               >
                 <Repeat className="w-4 h-4" />
-                <span className="hidden sm:inline">Replace</span>
+                <span className="hidden sm:inline">{t('screens.health.replace')}</span>
               </Button>
               
               <Button 
@@ -391,7 +391,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 onClick={() => notifySuccess('toasts.health.addedFoodDiary')}
               >
                 <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Diary</span>
+                <span className="hidden sm:inline">{t('screens.health.diary')}</span>
               </Button>
               
               <Button 
@@ -399,7 +399,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 onClick={() => notifySuccess('toasts.health.addedShoppingList')}
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline">Shop</span>
+                <span className="hidden sm:inline">{t('screens.health.shop')}</span>
               </Button>
             </div>
           </SheetFooter>

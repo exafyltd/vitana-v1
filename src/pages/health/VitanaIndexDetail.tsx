@@ -87,16 +87,16 @@ function StackLegend() {
   return (
     <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-3 h-3 rounded-sm bg-slate-600" /> Baseline
+        <span className="w-3 h-3 rounded-sm bg-slate-600" /> {t('screens.health.baseline')}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-3 h-3 rounded-sm bg-blue-500" /> Completions
+        <span className="w-3 h-3 rounded-sm bg-blue-500" /> {t('screens.health.completions')}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-3 h-3 rounded-sm bg-green-500" /> Connected data
+        <span className="w-3 h-3 rounded-sm bg-green-500" /> {t('screens.health.connectedData')}
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-3 h-3 rounded-sm bg-amber-500" /> Streak
+        <span className="w-3 h-3 rounded-sm bg-amber-500" /> {t('screens.health.streak')}
       </span>
     </div>
   );
@@ -145,15 +145,15 @@ export default function VitanaIndexDetail() {
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-1">{t('screens.health.yourVitanaIndex')}</h1>
               <p className="text-muted-foreground">
-                One number. Five pillars. Ninety days to lift it — balanced, honest, aspirational.
+                {t('screens.health.oneNumberFivePillarsNinetyDays')}
               </p>
             </div>
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={() => setLogDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-1" />
-                Log data
+                {t('screens.health.logData')}
               </Button>
-              <Button variant="outline" size="sm" onClick={() => refetch()}>Refresh</Button>
+              <Button variant="outline" size="sm" onClick={() => refetch()}>{t('screens.health.refresh')}</Button>
             </div>
           </div>
           <VitanaLogDataDialog open={logDialogOpen} onOpenChange={setLogDialogOpen} />
@@ -226,7 +226,7 @@ export default function VitanaIndexDetail() {
               {index ? (
                 index.total >= stretchGoal ? (
                   <div className="text-sm font-medium text-calendar-success">
-                    You're in the elite band — keep the balance, keep the streaks.
+                    {t('screens.health.youReEliteBandKeepBalance')}
                   </div>
                 ) : index.total >= milestoneGoal ? (
                   <div className="text-sm">
@@ -234,16 +234,16 @@ export default function VitanaIndexDetail() {
                   </div>
                 ) : (
                   <div className="text-sm">
-                    You're <strong>{milestoneGoal - index.total}</strong> points away from the thriving zone. Every completion on the {weakestPillarLabel(index)} pillar moves you forward the fastest.
+                    {t('screens.health.youRe')} <strong>{milestoneGoal - index.total}</strong> points away from the thriving zone. Every completion on the {weakestPillarLabel(index)} pillar moves you forward the fastest.
                   </div>
                 )
               ) : (
                 <div className="text-sm text-muted-foreground">
-                  Seed your Index with the baseline survey to start tracking the climb.
+                  {t('screens.health.seedYourIndexWithBaselineSurvey')}
                 </div>
               )}
               <p className="text-xs text-muted-foreground">
-                We never force you to the top. Different lives have different capacities — the number is a compass, not a verdict.
+                {t('screens.health.weNeverForceYouTopDifferent')}
               </p>
             </CardContent>
           </Card>
@@ -285,8 +285,7 @@ export default function VitanaIndexDetail() {
             </CardHeader>
             <CardContent className="text-sm space-y-2 text-muted-foreground">
               <p>
-                Each of the five pillars (max 200 each) is the sum of four sub-scores:
-                a small <strong>{t('screens.health.baseline')}</strong> from your onboarding survey, <strong>{t('screens.health.completions')}</strong>
+                {t('screens.health.eachFivePillarsMax200Each')} <strong>{t('screens.health.baseline')}</strong> from your onboarding survey, <strong>{t('screens.health.completions')}</strong>
                 of journey actions in the last 30 days, <strong>{t('screens.health.connectedData')}</strong> from wearables and logs,
                 and a <strong>{t('screens.health.streakBonus')}</strong> for consistency. We sum the five pillars, apply a
                 <strong> {t('screens.health.balanceFactor')}</strong> (it dampens when one pillar is far ahead of another),
@@ -299,7 +298,7 @@ export default function VitanaIndexDetail() {
               </p>
               <p className="pt-2">
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/autopilot')}>
-                  See your 90-day journey →
+                  {t('screens.health.seeYour90dayJourney')}
                 </Button>
               </p>
             </CardContent>

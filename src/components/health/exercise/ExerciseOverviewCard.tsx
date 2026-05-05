@@ -24,12 +24,12 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
             <h2 className="text-xl font-bold">{t('screens.health.yourExercisePlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
-            AI-optimized workouts tailored to your fitness level and recovery
+            {t('screens.health.aioptimizedWorkoutsTailoredYourFitnessLevel')}
           </p>
         </div>
         <Badge variant="secondary" className="gap-1">
           <Sparkles className="w-3 h-3" />
-          AI Optimized
+          {t('screens.health.aiOptimized')}
         </Badge>
       </div>
       
@@ -45,7 +45,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <span className="text-xs font-medium text-muted-foreground">Schedule</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
             {planData.sessionsPerWeek} sessions / week
@@ -58,7 +58,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-            <span className="text-xs font-medium text-muted-foreground">Progress</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">
             Week {planData.currentWeek} of {planData.totalWeeks}
@@ -99,7 +99,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         onClick={onRecalibrate}
       >
         <Sparkles className="w-4 h-4 mr-2" />
-        Recalibrate Plan
+        {t('screens.health.recalibratePlan')}
       </Button>
     </Card>
   );

@@ -119,7 +119,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
             />
           </div>
           <Button type="submit" className="w-full">
-            Send Calendar Invite
+            {t('screens.messages.sendCalendarInvite')}
           </Button>
         </form>
       </DialogContent>

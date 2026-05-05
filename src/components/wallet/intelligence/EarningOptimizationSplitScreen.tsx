@@ -97,7 +97,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            Earning Optimization Dashboard
+            {t('screens.wallet.earningOptimizationDashboard')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -119,7 +119,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Target className="h-4 w-4 text-green-500" />
-              Recommended Strategies
+              {t('screens.wallet.recommendedStrategies')}
             </h4>
             
             {mockStrategies.map((strategy) => (
@@ -133,7 +133,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                       {strategy.title}
                       {strategy.implemented && (
                         <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600">
-                          Active
+                          {t('screens.wallet.active')}
                         </Badge>
                       )}
                     </h5>
@@ -175,18 +175,18 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-emerald-600">{implementedStrategies}</div>
-              <div className="text-xs text-muted-foreground">Active</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-amber-600">{Math.round(implementationProgress)}%</div>
-              <div className="text-xs text-muted-foreground">Complete</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.complete')}</div>
             </div>
           </div>
 
           {/* Action Button */}
           <Button className="w-full">
             <Zap className="h-4 w-4 mr-2" />
-            Activate All Optimizations
+            {t('screens.wallet.activateAllOptimizations')}
           </Button>
         </CardContent>
       </Card>

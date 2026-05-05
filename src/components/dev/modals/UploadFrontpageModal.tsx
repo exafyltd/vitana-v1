@@ -38,22 +38,22 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="portal">Portal</Label>
+            <Label htmlFor="portal">{t('screens.dev.portal')}</Label>
             <Select value={portal} onValueChange={setPortal}>
               <SelectTrigger id="portal">
                 <SelectValue placeholder={t('screens.dev.selectPortal')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="maxina">Maxina</SelectItem>
-                <SelectItem value="alkalma">Alkalma</SelectItem>
-                <SelectItem value="earthlinks">Earthlinks</SelectItem>
-                <SelectItem value="community">Community</SelectItem>
+                <SelectItem value="alkalma">{t('screens.dev.alkalma')}</SelectItem>
+                <SelectItem value="earthlinks">{t('screens.dev.earthlinks')}</SelectItem>
+                <SelectItem value="community">{t('screens.dev.community')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="version">Version</Label>
+            <Label htmlFor="version">{t('screens.dev.version')}</Label>
             <Input 
               id="version" 
               value={version}
@@ -72,7 +72,7 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.dev.description')}</Label>
             <Textarea 
               id="description" 
               value={description}
@@ -85,14 +85,14 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleUpload}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Upload Frontpage
+            {t('screens.dev.uploadFrontpage')}
           </Button>
         </DialogFooter>
       </DialogContent>

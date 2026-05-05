@@ -634,7 +634,7 @@ const {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            MeetUp
+            {t('screens.community.meetup2')}
           </Button>
         </UtilityActionButton>
 

@@ -55,10 +55,10 @@ export default function MyTickets() {
             <Ticket className="h-16 w-16 text-muted-foreground/30 mx-auto" />
             <h2 className="text-xl font-semibold text-foreground">{t('screens.mytickets.noTicketsYet')}</h2>
             <p className="text-muted-foreground">
-              When you purchase event tickets, they'll appear here.
+              {t('screens.mytickets.whenYouPurchaseEventTicketsThey')}
             </p>
             <Button onClick={() => navigate("/comm/events-meetups")}>
-              Browse Events
+              {t('screens.mytickets.browseEvents')}
             </Button>
           </div>
         ) : (
@@ -199,7 +199,7 @@ function TicketCard({ ticket, onClick, isPast }: TicketCardProps) {
             )}
             {ticket.checked_in_at && (
               <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
-                Checked In
+                {t('screens.mytickets.checked')}
               </span>
             )}
           </div>

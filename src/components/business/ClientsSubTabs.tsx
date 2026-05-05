@@ -20,7 +20,7 @@ export function ClientsSubTabs() {
           <Users className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noActiveClients')}</h3>
           <p className="text-muted-foreground">
-            Active clients with subscriptions or bookings will appear here.
+            {t('screens.business.activeClientsWithSubscriptionsBookingsWill')}
           </p>
         </div>
       </SplitBarContent>
@@ -34,7 +34,7 @@ export function ClientsSubTabs() {
           </p>
           <Button variant="outline" className="gap-2" onClick={() => navigate("/sharing")}>
             <Share2 className="w-4 h-4" />
-            Promote via Sharing
+            {t('screens.business.promoteViaSharing')}
           </Button>
         </div>
       </SplitBarContent>
@@ -44,7 +44,7 @@ export function ClientsSubTabs() {
           <History className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noPastClients')}</h3>
           <p className="text-muted-foreground">
-            Clients who had past sessions but no active plan will appear here.
+            {t('screens.business.clientsWhoHadPastSessionsBut')}
           </p>
         </div>
       </SplitBarContent>

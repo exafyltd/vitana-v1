@@ -52,7 +52,7 @@ export function CreateLiveRoomDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Create Live Room
+          {t('screens.liverooms.createLiveRoom')}
         </Button>
       </DialogTrigger>
 
@@ -73,7 +73,7 @@ export function CreateLiveRoomDialog() {
           </div>
 
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.liverooms.description')}</Label>
             <Textarea
               id="description"
               value={description}
@@ -108,10 +108,10 @@ export function CreateLiveRoomDialog() {
                     <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800">
-                        ⛔ Cannot create paid rooms
+                        {t('screens.liverooms.cannotCreatePaidRooms')}
                       </p>
                       <p className="text-sm text-red-700 mt-1">
-                        Complete payment setup first to enable paid room creation and receive 90% of revenue.
+                        {t('screens.liverooms.completePaymentSetupFirstEnablePaid')}
                       </p>
                     </div>
                   </div>
@@ -130,7 +130,7 @@ export function CreateLiveRoomDialog() {
                   placeholder="9.99"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  You'll receive 90% of the price. Vitana platform fee: 10%.
+                  {t('screens.liverooms.youLlReceive90PriceVitana')}
                 </p>
               </div>
             </>

@@ -131,7 +131,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Network className="h-5 w-5 text-primary" />
-            Social Earning Intelligence
+            {t('screens.wallet.socialEarningIntelligence')}
           </CardTitle>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
             Rank #{avgRank}
@@ -157,7 +157,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your social earning potential is <span className="font-semibold text-blue-600">{t('screens.wallet.aboveAverage')}</span>
+            {t('screens.wallet.yourSocialEarningPotential')} <span className="font-semibold text-blue-600">{t('screens.wallet.aboveAverage')}</span>
           </p>
         </div>
 
@@ -165,7 +165,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Users className="h-4 w-4 text-green-500" />
-            Network Analysis
+            {t('screens.wallet.networkAnalysis')}
           </h4>
           
           {mockNetworkAnalysis.slice(0, 2).map((analysis) => (
@@ -189,7 +189,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               
               <div className="mb-2">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">Potential</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.wallet.potential')}</span>
                   <span className="text-xs text-muted-foreground">{analysis.potential}%</span>
                 </div>
                 <Progress value={analysis.potential} className="h-1.5" />
@@ -202,7 +202,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-purple-500" />
-            Social Opportunities
+            {t('screens.wallet.socialOpportunities')}
           </h4>
           
           {mockSocialOpportunities.slice(0, 2).map((opportunity) => (
@@ -234,7 +234,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
                   +{opportunity.reward} VTN
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Join Now
+                  {t('screens.wallet.joinNow')}
                 </Button>
               </div>
             </div>
@@ -248,13 +248,13 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
             <span className="text-sm font-medium">{t('screens.wallet.growthOpportunity')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            Increase your collaboration rate by 15% to move into top 25 earners
+            {t('screens.wallet.increaseYourCollaborationRateBy15')}
           </p>
           <div className="flex items-center justify-between">
             <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.potential40MonthlyEarnings')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Target className="h-3 w-3 mr-1" />
-              Focus Here
+              {t('screens.wallet.focusHere')}
             </Button>
           </div>
         </div>
@@ -262,7 +262,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Network className="h-4 w-4 mr-2" />
-          Expand Network
+          {t('screens.wallet.expandNetwork')}
         </Button>
       </CardContent>
     </Card>

@@ -88,7 +88,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Calculator className="h-5 w-5 text-primary" />
-            Membership ROI Analytics
+            {t('screens.wallet.membershipRoiAnalytics')}
           </CardTitle>
           <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
             {totalROI}% Average ROI
@@ -110,11 +110,11 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-purple-600">{avgUsage}%</div>
-              <div className="text-xs text-muted-foreground">Utilization</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.utilization')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your membership is <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span> based on usage
+            {t('screens.wallet.yourMembership')} <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span> based on usage
           </p>
         </div>
 
@@ -122,7 +122,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-blue-500" />
-            Category Performance
+            {t('screens.wallet.categoryPerformance')}
           </h4>
           
           {mockROIMetrics.slice(0, 2).map((metric) => (
@@ -194,7 +194,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             </div>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Crown className="h-3 w-3 mr-1" />
-              Upgrade
+              {t('screens.wallet.upgrade')}
             </Button>
           </div>
         </div>
@@ -206,10 +206,10 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             <span className="text-sm font-medium">{t('screens.wallet.usageOptimization')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            You're underutilizing Advanced Analytics (67% usage). Increase usage to maximize ROI.
+            {t('screens.wallet.youReUnderutilizingAdvancedAnalytics67')}
           </p>
           <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
-            View Optimization Tips
+            {t('screens.wallet.viewOptimizationTips')}
           </Button>
         </div>
       </CardContent>

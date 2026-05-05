@@ -258,7 +258,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="w-5 h-5 text-primary" />
-            Edit Package
+            {t('screens.sharing.editPackage')}
           </DialogTitle>
           <DialogDescription>
             {step === 1 && "Update package details and cover image"}
@@ -348,7 +348,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.sharing.description')}</Label>
               <Textarea
                 id="description"
                 placeholder={t('screens.sharing.describeWhatSIncludedTransformationClients')}
@@ -367,7 +367,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               <Label>{t('screens.sharing.includedItems')}</Label>
               <Button type="button" variant="outline" size="sm" onClick={addItem}>
                 <Plus className="w-4 h-4 mr-1" />
-                Add Item
+                {t('screens.sharing.addItem')}
               </Button>
             </div>
 
@@ -375,11 +375,11 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <Package className="w-10 h-10 mx-auto text-muted-foreground/50 mb-2" />
                 <p className="text-sm text-muted-foreground mb-3">
-                  Add sessions or events to your package
+                  {t('screens.sharing.addSessionsEventsYourPackage')}
                 </p>
                 <Button type="button" variant="outline" size="sm" onClick={addItem}>
                   <Plus className="w-4 h-4 mr-1" />
-                  Add First Item
+                  {t('screens.sharing.addFirstItem')}
                 </Button>
               </div>
             ) : (
@@ -439,7 +439,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                           </Select>
                         ) : (
                           <div className="text-sm text-muted-foreground p-2 bg-muted rounded">
-                            No events found. Create an event first.
+                            {t('screens.sharing.noEventsFoundCreateEventFirst')}
                           </div>
                         )}
                       </div>
@@ -560,7 +560,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                How long the buyer has to redeem all sessions
+                {t('screens.sharing.howLongBuyerHasRedeemAll')}
               </p>
             </div>
 
@@ -568,7 +568,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               <div>
                 <Label htmlFor="publish">{t('screens.sharing.publishImmediately')}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Make available for purchase right away
+                  {t('screens.sharing.makeAvailableForPurchaseRightAway')}
                 </p>
               </div>
               <Switch
@@ -609,7 +609,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               onClick={() => setStep(step - 1)}
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
-              Back
+              {t('screens.sharing.back')}
             </Button>
           )}
           
@@ -619,7 +619,7 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
             >
-              Next
+              {t('screens.sharing.next')}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           ) : (

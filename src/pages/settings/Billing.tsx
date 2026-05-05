@@ -98,7 +98,7 @@ export default function Billing() {
             onClick={() => setActionPopupOpen(true)}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Billing Actions
+            {t('screens.settings.billingActions')}
           </Button>
         </UtilityActionButton>
         
@@ -117,7 +117,7 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5 text-yellow-500" />
-              Current Subscription
+              {t('screens.settings.currentSubscription')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -126,7 +126,7 @@ export default function Billing() {
                 <h3 className="text-lg font-semibold">{t('screens.settings.vitanaPremium')}</h3>
                 <p className="text-sm text-muted-foreground">{t('screens.settings.advancedAiInsightsUnlimitedStoragePriority')}</p>
               </div>
-              <Badge className="bg-primary text-primary-foreground">Active</Badge>
+              <Badge className="bg-primary text-primary-foreground">{t('screens.settings.active')}</Badge>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
@@ -139,12 +139,12 @@ export default function Billing() {
                 <p className="font-semibold">{t('screens.settings.jan152025')}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Started</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.started')}</p>
                 <p className="font-semibold">{t('screens.settings.oct152024')}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">{t('screens.settings.autorenew')}</p>
-                <p className="font-semibold text-green-600">Enabled</p>
+                <p className="font-semibold text-green-600">{t('screens.settings.enabled')}</p>
               </div>
             </div>
 
@@ -163,20 +163,20 @@ export default function Billing() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="border rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Basic</h3>
-                <div className="text-2xl font-bold mb-4">Free</div>
+                <h3 className="font-semibold mb-2">{t('screens.settings.basic')}</h3>
+                <div className="text-2xl font-bold mb-4">{t('screens.settings.free')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Basic health tracking
+                    {t('screens.settings.basicHealthTracking')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Community access
+                    {t('screens.settings.communityAccess')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Limited AI insights
+                    {t('screens.settings.limitedAiInsights')}
                   </li>
                 </ul>
                 <Button variant="outline" className="w-full" disabled>{t('screens.settings.currentPlan')}</Button>
@@ -184,51 +184,51 @@ export default function Billing() {
 
               <div className="border-2 border-primary rounded-lg p-6 relative">
                 <Badge className="absolute -top-3 left-6 bg-primary">{t('screens.settings.mostPopular')}</Badge>
-                <h3 className="font-semibold mb-2">Premium</h3>
+                <h3 className="font-semibold mb-2">{t('screens.settings.premium')}</h3>
                 <div className="text-2xl font-bold mb-4">{t('screens.settings.text1999mo')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Advanced AI insights
+                    {t('screens.settings.advancedAiInsights')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Unlimited storage
+                    {t('screens.settings.unlimitedStorage')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Priority support
+                    {t('screens.settings.prioritySupport')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    All integrations
+                    {t('screens.settings.allIntegrations')}
                   </li>
                 </ul>
                 <Button className="w-full" disabled>{t('screens.settings.currentPlan')}</Button>
               </div>
 
               <div className="border rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Enterprise</h3>
+                <h3 className="font-semibold mb-2">{t('screens.settings.enterprise')}</h3>
                 <div className="text-2xl font-bold mb-4">{t('screens.settings.text4999mo')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Custom AI models
+                    {t('screens.settings.customAiModels')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Team management
+                    {t('screens.settings.teamManagement')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Advanced analytics
+                    {t('screens.settings.advancedAnalytics')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    24/7 phone support
+                    {t('screens.settings.text247PhoneSupport')}
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full">Upgrade</Button>
+                <Button variant="outline" className="w-full">{t('screens.settings.upgrade')}</Button>
               </div>
             </div>
           </CardContent>
@@ -239,7 +239,7 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
-              Payment Methods
+              {t('screens.settings.paymentMethods')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -254,14 +254,14 @@ export default function Billing() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">Primary</Badge>
-                <Button variant="outline" size="sm">Edit</Button>
+                <Badge variant="secondary">{t('screens.settings.primary')}</Badge>
+                <Button variant="outline" size="sm">{t('screens.settings.edit')}</Button>
               </div>
             </div>
 
             <Button variant="outline" className="w-full">
               <CreditCard className="w-4 h-4 mr-2" />
-              Add Payment Method
+              {t('screens.settings.addPaymentMethod')}
             </Button>
           </CardContent>
         </Card>
@@ -271,7 +271,7 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              Billing History
+              {t('screens.settings.billingHistory')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -353,7 +353,7 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-yellow-500" />
-                  Points Overview
+                  {t('screens.settings.pointsOverview')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -387,7 +387,7 @@ export default function Billing() {
                 <div className="flex gap-2">
                   <Button className="flex-1">
                     <Coins className="w-4 h-4 mr-2" />
-                    Redeem Points
+                    {t('screens.settings.redeemPoints')}
                   </Button>
                   <Button variant="outline">{t('screens.settings.viewRules')}</Button>
                 </div>
@@ -399,7 +399,7 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5 text-blue-500" />
-                  Earn Points
+                  {t('screens.settings.earnPoints')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -460,7 +460,7 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Gift className="w-5 h-5 text-green-500" />
-                  Redeem Points
+                  {t('screens.settings.redeemPoints')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -470,7 +470,7 @@ export default function Billing() {
                     <Badge variant="outline">{t('screens.settings.text500Points')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Apply $5 credit to your next billing cycle. Maximum 2 credits per month.
+                    {t('screens.settings.apply5CreditYourNextBilling')}
                   </p>
                   <Button>{t('screens.settings.redeemNow')}</Button>
                 </div>
@@ -481,7 +481,7 @@ export default function Billing() {
                     <Badge variant="outline">{t('screens.settings.text1000Points')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Apply $10 credit to your next billing cycle. Maximum 1 credit per month.
+                    {t('screens.settings.apply10CreditYourNextBilling')}
                   </p>
                   <Button>{t('screens.settings.redeemNow')}</Button>
                 </div>
@@ -493,7 +493,7 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Award className="w-5 h-5 text-purple-500" />
-                  Achievements
+                  {t('screens.settings.achievements')}
                 </CardTitle>
               </CardHeader>
               <CardContent>

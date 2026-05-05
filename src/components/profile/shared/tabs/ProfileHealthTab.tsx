@@ -88,12 +88,12 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div>
               <h3 className="text-lg font-semibold mb-2">{t('screens.profile.privacyVisibility')}</h3>
               <p className="text-muted-foreground text-sm">
-                Control who can see your health data and profile information
+                {t('screens.profile.controlWhoCanSeeYourHealth')}
               </p>
             </div>
             <Button variant="outline" onClick={onEditVisibility} className="rounded-full shadow-sm">
               <Settings className="h-4 w-4 mr-2" />
-              Privacy Settings
+              {t('screens.profile.privacySettings')}
             </Button>
           </div>
         </Card>
@@ -138,7 +138,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
                 />
               </div>
               <p className="text-sm text-muted-foreground text-center mt-3">
-                Your overall health and wellness score based on all tracked metrics
+                {t('screens.profile.yourOverallHealthWellnessScoreBased')}
               </p>
             </div>
 
@@ -146,7 +146,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div className="max-w-xl mx-auto mt-8 p-5 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-muted/30 shadow-sm">
               <h4 className="font-medium text-sm flex items-center justify-center gap-2 mb-4 text-muted-foreground">
                 <Users className="h-4 w-4" />
-                Your Wellness Sync
+                {t('screens.profile.yourWellnessSync')}
               </h4>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="space-y-1">
@@ -173,7 +173,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
                 </div>
                 <Button size="sm" variant="ghost" className="gap-2 rounded-full hover:bg-white/50 dark:hover:bg-slate-800/50">
                   <Share2 className="h-3 w-3" />
-                  Share
+                  {t('screens.profile.share')}
                 </Button>
               </div>
             </div>
@@ -231,7 +231,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <span className="text-lg">{t('screens.profile.recentHealthInsights')}</span>
             <Badge variant="outline" className="text-xs rounded-full border-emerald-300 dark:border-emerald-700 bg-emerald-50/80 dark:bg-emerald-950/40">
               <TrendingUp className="h-3 w-3 mr-1 text-emerald-600 dark:text-emerald-400" />
-              Improving
+              {t('screens.profile.improving')}
             </Badge>
           </CardTitle>
         </CardHeader>

@@ -238,7 +238,7 @@ function ConsentShell({ envelope, displayCols, displayRows }: CardRendererProps)
           className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors"
           onClick={() => handleConsentRequest(envelope)}
         >
-          Review Settings
+          {t('screens.layout.reviewSettings')}
         </button>
       </div>
     </div>

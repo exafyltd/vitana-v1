@@ -29,19 +29,19 @@ export function EmptyStatePanel({
           <div>
             <h3 className="font-semibold text-lg mb-2">{t('screens.dev.noBackendConnection')}</h3>
             <p className="text-sm text-muted-foreground">
-              Commands and chat are currently disabled. The backend service is unreachable.
+              {t('screens.dev.commandsChatCurrentlyDisabledBackendService')}
             </p>
           </div>
           <div className="flex gap-2 justify-center">
             {onRetry && (
               <Button onClick={onRetry} size="sm">
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Retry Connection
+                {t('screens.dev.retryConnection')}
               </Button>
             )}
             {onOpenDetails && (
               <Button onClick={onOpenDetails} variant="outline" size="sm">
-                Open Status Details
+                {t('screens.dev.openStatusDetails')}
               </Button>
             )}
           </div>
@@ -60,19 +60,19 @@ export function EmptyStatePanel({
           <div>
             <h3 className="font-semibold text-lg mb-2">{t('screens.dev.streamingUnavailable')}</h3>
             <p className="text-sm text-muted-foreground">
-              Real-time updates are down. Falling back to polling mode (updates every 5s).
+              {t('screens.dev.realtimeUpdatesDownFallingBackPolling')}
             </p>
           </div>
           <div className="flex gap-2 justify-center">
             {onForceReconnect && (
               <Button onClick={onForceReconnect} size="sm">
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Force Reconnect
+                {t('screens.dev.forceReconnect')}
               </Button>
             )}
             {onViewLogs && (
               <Button onClick={onViewLogs} variant="outline" size="sm">
-                View Logs
+                {t('screens.dev.viewLogs')}
               </Button>
             )}
           </div>
@@ -96,7 +96,7 @@ export function EmptyStatePanel({
         </div>
         {onClearFilters && (
           <Button onClick={onClearFilters} variant="outline" size="sm">
-            Clear All Filters
+            {t('screens.dev.clearAllFilters')}
           </Button>
         )}
       </div>

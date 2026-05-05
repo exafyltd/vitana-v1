@@ -110,7 +110,7 @@ function Subscriptions() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setAddSubscriptionOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Subscription
+            {t('screens.wallet.addSubscription')}
           </Button>
         </UtilityActionButton>
 
@@ -201,7 +201,7 @@ function Subscriptions() {
                     <p className="text-sm text-muted-foreground">{sub.description}</p>
                     <p className="text-sm font-medium mt-2">{sub.price}/{sub.billing}</p>
                     <Button size="sm" className="mt-2" onClick={() => console.log('Subscribe to:', sub.id)}>
-                      Subscribe
+                      {t('screens.wallet.subscribe')}
                     </Button>
                   </div>
                 ))}

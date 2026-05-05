@@ -66,10 +66,10 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
               <ShoppingCart className="h-16 w-16 text-muted-foreground/30 mb-4" />
               <h3 className="text-lg font-medium mb-2">{t('screens.cart.yourCartEmpty')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Browse our wellness services and products to get started
+                {t('screens.cart.browseOurWellnessServicesProductsGet')}
               </p>
               <Button onClick={onClose} variant="outline">
-                Continue Shopping
+                {t('screens.cart.continueShopping')}
               </Button>
             </div>
           ) : (
@@ -91,12 +91,12 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
               <div className="border-t border-white/20 p-4 space-y-4 bg-white/5 backdrop-blur-sm">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-muted-foreground">{t('screens.cart.subtotal')}</span>
                     <span className="font-medium">${cartTotal.toFixed(2)}</span>
                   </div>
                   <Separator className="bg-white/10" />
                   <div className="flex justify-between text-base font-semibold">
-                    <span>Total</span>
+                    <span>{t('screens.cart.total')}</span>
                     <span>${cartTotal.toFixed(2)}</span>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
                     className="w-full"
                     size="sm"
                   >
-                    Clear Cart
+                    {t('screens.cart.clearCart')}
                   </Button>
                 </div>
               </div>

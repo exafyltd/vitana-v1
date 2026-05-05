@@ -3,7 +3,7 @@ import { CoachCard } from "./CoachCard";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useNavigate } from "react-router-dom";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export function CoachDirectoryGrid() {
   const navigate = useNavigate();
@@ -24,10 +24,10 @@ export function CoachDirectoryGrid() {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <UserCheck className="w-6 h-6 text-pink-600" />
-            Expert Helpers
+            {t('screens.coaches.expertHelpers')}
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Vetted professionals, tailored to your goals
+            {t('screens.coaches.vettedProfessionalsTailoredYourGoals')}
           </p>
         </div>
       </div>

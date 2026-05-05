@@ -31,7 +31,7 @@ export function VaeaCatalogPanel() {
       <Card className="bg-destructive/10 border-destructive/20">
         <CardContent className="py-4 flex items-center justify-between gap-3">
           <p className="text-sm text-destructive">{error}</p>
-          <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+          <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
         </CardContent>
       </Card>
     );
@@ -61,7 +61,7 @@ export function VaeaCatalogPanel() {
           <CardContent className="py-8 text-center space-y-1">
             <div className="font-medium">{t('screens.business.yourCatalogEmpty')}</div>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Add the products or services Autopilot can recommend on your behalf.
+              {t('screens.business.addProductsServicesAutopilotCanRecommend')}
             </p>
           </CardContent>
         </Card>
@@ -126,7 +126,7 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
       <CardContent className="pt-4 space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-xs space-y-1">
-            <span className="text-muted-foreground">Tier</span>
+            <span className="text-muted-foreground">{t('screens.business.tier')}</span>
             <select
               className="w-full h-11 rounded-md border px-3 text-sm bg-background"
               value={tier}
@@ -138,12 +138,12 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
             </select>
           </label>
           <label className="text-xs space-y-1">
-            <span className="text-muted-foreground">Category</span>
+            <span className="text-muted-foreground">{t('screens.business.category')}</span>
             <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. supplement, coaching" />
           </label>
         </div>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Title</span>
+          <span className="text-muted-foreground">{t('screens.business.title')}</span>
           <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
         </label>
         <label className="text-xs space-y-1 block">

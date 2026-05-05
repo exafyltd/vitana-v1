@@ -82,15 +82,15 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
                 <SelectValue placeholder={t('screens.dev.selectPriority')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="high">{t('screens.dev.high')}</SelectItem>
+                <SelectItem value="medium">{t('screens.dev.medium')}</SelectItem>
+                <SelectItem value="low">{t('screens.dev.low')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="task-assignee">Assignee</Label>
+            <Label htmlFor="task-assignee">{t('screens.dev.assignee')}</Label>
             <Select value={assignee} onValueChange={setAssignee}>
               <SelectTrigger id="task-assignee">
                 <SelectValue placeholder={t('screens.dev.selectAssignee')} />
@@ -99,7 +99,7 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
                 <SelectItem value="agent-1">{t('screens.dev.agentAlpha')}</SelectItem>
                 <SelectItem value="agent-2">{t('screens.dev.agentBeta')}</SelectItem>
                 <SelectItem value="agent-3">{t('screens.dev.agentGamma')}</SelectItem>
-                <SelectItem value="unassigned">Unassigned</SelectItem>
+                <SelectItem value="unassigned">{t('screens.dev.unassigned')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -117,7 +117,7 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleSubmit} 

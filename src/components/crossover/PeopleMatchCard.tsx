@@ -165,7 +165,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const content = (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Suggested based on your profile & recent activity.
+        {t('screens.crossover.suggestedBasedYourProfileRecentActivity')}
       </p>
       
       {matches.length === 0 ? (
@@ -217,7 +217,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
               onClick={() => navigate('/community/people?recommended=1')}
               className="text-xs text-primary"
             >
-              See more →
+              {t('screens.crossover.seeMore')}
             </Button>
           </div>
         </>

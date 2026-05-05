@@ -165,7 +165,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Users2 className="w-5 h-5" />
-              Groups & Communities
+              {t('screens.crossover.groupsCommunities')}
             </h2>
             <p className="text-sm text-muted-foreground">{t('screens.crossover.communitiesThatMatchYourVibe')}</p>
           </div>
@@ -174,7 +174,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
             size="sm" 
             onClick={() => navigate('/comm/groups')}
           >
-            View All
+            {t('screens.crossover.viewAll')}
           </Button>
         </div>
 
@@ -209,7 +209,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
                 onClick={() => navigate('/comm/groups?recommended=1')}
                 className="text-sm"
               >
-                See more →
+                {t('screens.crossover.seeMore')}
               </Button>
             </div>
           </>
@@ -223,7 +223,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
             <div>
               <h3 className="text-lg font-bold flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
-                Upcoming Events
+                {t('screens.crossover.upcomingEvents')}
               </h3>
               <p className="text-sm text-muted-foreground">{t('screens.crossover.eventsHappeningSoon')}</p>
             </div>
@@ -232,7 +232,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
               size="sm" 
               onClick={() => navigate('/community/events')}
             >
-              View All
+              {t('screens.crossover.viewAll')}
             </Button>
           </div>
 

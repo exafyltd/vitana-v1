@@ -133,7 +133,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
 
         <div className="py-4 space-y-4">
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Pillar</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.pillar')}</Label>
             <div className="grid grid-cols-5 gap-1 mt-2">
               {(Object.keys(FEATURES) as PillarKey[]).map((p) => (
                 <button
@@ -153,7 +153,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
           </div>
 
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Metric</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.metric')}</Label>
             <select
               value={featureKey}
               onChange={(e) => setFeatureKey(e.target.value)}
@@ -185,7 +185,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
 
         <DialogFooter className="flex justify-end gap-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t('screens.health.cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={submitting || !value}>
             {submitting ? "Saving…" : "Log data"}

@@ -249,7 +249,7 @@ export function CreatePostDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Send className="w-5 h-5" />
-              Create Post
+              {t('screens.sharing.createPost')}
             </DialogTitle>
             <DialogDescription>
               Create a new post for campaign: <span className="font-medium">{campaignName}</span>
@@ -265,18 +265,18 @@ export function CreatePostDialog({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="event">Event</SelectItem>
-                  <SelectItem value="meetup">Meetup</SelectItem>
-                  <SelectItem value="group">Group</SelectItem>
+                  <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+                  <SelectItem value="meetup">{t('screens.sharing.meetup')}</SelectItem>
+                  <SelectItem value="group">{t('screens.sharing.group')}</SelectItem>
                   <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
-                  <SelectItem value="profile">Profile</SelectItem>
+                  <SelectItem value="profile">{t('screens.sharing.profile')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Content Editor */}
             <div className="space-y-2">
-              <Label>Title</Label>
+              <Label>{t('screens.sharing.title')}</Label>
               <Input
                 placeholder={t('screens.sharing.enterCompellingTitle')}
                 value={title}
@@ -285,7 +285,7 @@ export function CreatePostDialog({
             </div>
 
             <div className="space-y-2">
-              <Label>Description</Label>
+              <Label>{t('screens.sharing.description')}</Label>
               <Textarea
                 placeholder={t('screens.sharing.writeYourMessage')}
                 value={description}

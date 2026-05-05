@@ -144,14 +144,14 @@ export default function Podcasts() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Host</TableHead>
-                  <TableHead>Episode</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Plays</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.host')}</TableHead>
+                  <TableHead>{t('screens.admin.episode')}</TableHead>
+                  <TableHead>{t('screens.admin.duration')}</TableHead>
+                  <TableHead>{t('screens.admin.plays')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

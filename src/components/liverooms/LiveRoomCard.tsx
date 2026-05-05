@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
+import { t } from '@/lib/i18n-toast';
 
 export interface LiveRoom {
   id: string;
@@ -151,7 +152,7 @@ export function LiveRoomCard({
             {room.isLive ? (
               <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
                 <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                LIVE
+                {t('screens.liverooms.live')}
               </Badge>
             ) : isScheduled ? (
               <Badge
@@ -167,7 +168,7 @@ export function LiveRoomCard({
                 variant="outline"
                 className="bg-yellow-500/20 border-yellow-500/50 text-yellow-100 backdrop-blur-sm shadow-lg"
               >
-                Premium
+                {t('screens.liverooms.premium')}
               </Badge>
             )}
           </div>
@@ -196,7 +197,7 @@ export function LiveRoomCard({
                     }}
                   >
                     <Pencil className="w-4 h-4 mr-2" />
-                    Edit
+                    {t('screens.liverooms.edit')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -207,7 +208,7 @@ export function LiveRoomCard({
                     className="text-destructive focus:text-destructive"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
+                    {t('screens.liverooms.delete')}
                   </DropdownMenuItem>
                 </KebabMenu>
               </div>
@@ -272,7 +273,7 @@ export function LiveRoomCard({
               {room.location && (
                 <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm text-white border-0">
                   <MapPin className="w-3 h-3 mr-1" />
-                  Virtual
+                  {t('screens.liverooms.virtual')}
                 </Badge>
               )}
             </div>

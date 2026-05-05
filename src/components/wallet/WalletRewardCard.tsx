@@ -16,6 +16,7 @@ import {
   Award
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletRewardCardProps {
   id: string;
@@ -202,7 +203,7 @@ export function WalletRewardCard({
           {progress !== undefined && maxProgress !== undefined && (
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Progress</span>
+                <span className="text-muted-foreground">{t('screens.wallet.progress')}</span>
                 <span className="font-medium">{progress}/{maxProgress}</span>
               </div>
               <Progress value={progressPercentage} className="h-2" />
@@ -246,7 +247,7 @@ export function WalletRewardCard({
             {type === "referral" && (
               <Button size="sm" variant="outline">
                 <Share className="h-4 w-4 mr-1" />
-                Share
+                {t('screens.wallet.share')}
               </Button>
             )}
           </div>

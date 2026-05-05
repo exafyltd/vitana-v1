@@ -50,7 +50,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <BarChart3 className="w-6 h-6" />
-            Activity Statistics
+            {t('screens.memory.activityStatistics')}
           </DialogTitle>
         </DialogHeader>
 
@@ -127,7 +127,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
             <CardContent className="p-6">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" />
-                Insights
+                {t('screens.memory.insights')}
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Most active category: {categories[0]?.[0] || 'N/A'}</li>

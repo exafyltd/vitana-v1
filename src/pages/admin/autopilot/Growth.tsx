@@ -105,7 +105,7 @@ export default function AutopilotGrowth() {
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardDescription className="text-xs">Period</CardDescription>
+                  <CardDescription className="text-xs">{t('screens.admin.period')}</CardDescription>
                   <CardTitle className="text-2xl">{stats.period_days}d</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
@@ -155,10 +155,10 @@ export default function AutopilotGrowth() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Automation</TableHead>
-                        <TableHead className="text-center">Total</TableHead>
-                        <TableHead className="text-center">Completed</TableHead>
-                        <TableHead className="text-center">Failed</TableHead>
+                        <TableHead>{t('screens.admin.automation')}</TableHead>
+                        <TableHead className="text-center">{t('screens.admin.total')}</TableHead>
+                        <TableHead className="text-center">{t('screens.admin.completed')}</TableHead>
+                        <TableHead className="text-center">{t('screens.admin.failed')}</TableHead>
                         <TableHead className="text-right">{t('screens.admin.avgDuration')}</TableHead>
                       </TableRow>
                     </TableHeader>

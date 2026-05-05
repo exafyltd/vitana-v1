@@ -393,7 +393,7 @@ function DealsOffersInner() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
@@ -411,7 +411,7 @@ function DealsOffersInner() {
                   <Flame className="h-10 w-10 text-red-500 mx-auto mb-3" />
                   <h3 className="font-semibold mb-1">{t('screens.discover.noFlashDealsRightNow')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    When merchants run promotions, they&rsquo;ll show up here. Check back soon.
+                    {t('screens.discover.whenMerchantsRunPromotionsTheyRsquo')}
                   </p>
                 </Card>
               )}
@@ -511,7 +511,7 @@ function DealsOffersInner() {
                           className="flex-1"
                           onClick={() => deal._product && selectProduct(deal._product)}
                         >
-                          View Deal
+                          {t('screens.discover.viewDeal')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -613,7 +613,7 @@ function DealsOffersInner() {
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Book Now
+                          {t('screens.discover.bookNow')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -710,7 +710,7 @@ function DealsOffersInner() {
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Book Consultation
+                          {t('screens.discover.bookConsultation')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -761,7 +761,7 @@ function DealsOffersInner() {
                       {product.priceChange < 0 && (
                         <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                           <TrendingDown className="h-3 w-3" />
-                          Price Drop!
+                          {t('screens.discover.priceDrop')}
                         </div>
                       )}
                     </div>
@@ -824,7 +824,7 @@ function DealsOffersInner() {
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Add to Cart
+                          {t('screens.discover.addCart')}
                         </Button>
                         <Button variant="outline" size="icon">
                           <Package className="h-4 w-4" />

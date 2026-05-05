@@ -35,10 +35,10 @@ const Index = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-6xl font-bold text-foreground mb-4">VITANA</h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Digital Solutions for Your Wellness Journey
+            {t('screens.index.digitalSolutionsForYourWellnessJourney')}
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-            Choose your health platform and experience innovation and excellence with our cutting-edge wellness solutions.
+            {t('screens.index.chooseYourHealthPlatformExperienceInnovation')}
           </p>
           
           {/* Platform Selection */}
@@ -55,7 +55,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Complete healthcare solutions with patient-professional connections and wellness tracking.
+                    {t('screens.index.completeHealthcareSolutionsWithPatientprofessional')}
                   </p>
                 </CardContent>
               </Card>
@@ -68,12 +68,12 @@ const Index = () => {
                   <div className="flex justify-center mb-4">
                     <BookOpen className="h-12 w-12 text-[#3B82F6] group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl">AlKalma</CardTitle>
+                  <CardTitle className="text-xl">{t('screens.index.alkalma')}</CardTitle>
                   <CardDescription>{t('screens.index.culturallyawareHealthSolutions')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Health and wellness services designed with cultural awareness and community values.
+                    {t('screens.index.healthWellnessServicesDesignedWithCultural')}
                   </p>
                 </CardContent>
               </Card>
@@ -86,12 +86,12 @@ const Index = () => {
                   <div className="flex justify-center mb-4">
                     <Leaf className="h-12 w-12 text-[#4ADE80] group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl">Earthlinks</CardTitle>
+                  <CardTitle className="text-xl">{t('screens.index.earthlinks')}</CardTitle>
                   <CardDescription>{t('screens.index.sustainableEcofriendlyWellness')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Nature-focused healthcare and sustainable wellness solutions for conscious living.
+                    {t('screens.index.naturefocusedHealthcareSustainableWellnessSolution')}
                   </p>
                 </CardContent>
               </Card>
@@ -109,7 +109,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Secure access for Exafy administrators to manage tenant environments.
+                    {t('screens.index.secureAccessForExafyAdministratorsManage')}
                   </p>
                 </CardContent>
               </Card>
@@ -134,14 +134,14 @@ const Index = () => {
                     <Terminal className="h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform" />
                   </div>
                   <CardTitle className="text-xl text-blue-700 flex items-center justify-center gap-2">
-                    Vitana DEV
+                    {t('screens.index.vitanaDev')}
                     <ExternalLink className="h-4 w-4 opacity-50" />
                   </CardTitle>
                   <CardDescription>{t('screens.index.developerCommandHub')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Operate the Vitana platform: observe events, issue commands, and review agent activity with VTID governance.
+                    {t('screens.index.operateVitanaPlatformObserveEventsIssue')}
                   </p>
                 </CardContent>
               </Card>

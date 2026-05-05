@@ -168,15 +168,15 @@ function VitanaIndexMiniBase({
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="text-center">
               <div className="font-medium text-foreground">{nutritionScore}</div>
-              <div className="text-muted-foreground">Nutrition</div>
+              <div className="text-muted-foreground">{t('screens.health.nutrition')}</div>
             </div>
             <div className="text-center">
               <div className="font-medium text-foreground">{exerciseScore}</div>
-              <div className="text-muted-foreground">Exercise</div>
+              <div className="text-muted-foreground">{t('screens.health.exercise')}</div>
             </div>
             <div className="text-center">
               <div className="font-medium text-foreground">{sleepScore}</div>
-              <div className="text-muted-foreground">Sleep</div>
+              <div className="text-muted-foreground">{t('screens.health.sleep')}</div>
             </div>
           </div>
         </CardContent>

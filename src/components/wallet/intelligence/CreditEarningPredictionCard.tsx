@@ -79,7 +79,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Credit Earning Forecast
+            {t('screens.wallet.creditEarningForecast')}
           </CardTitle>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
             +{totalPredicted} Credits Expected
@@ -96,7 +96,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
           </div>
           <Progress value={averageConfidence} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            Based on your <span className="font-semibold text-primary">{t('screens.wallet.recentActivityPatterns')}</span>
+            {t('screens.wallet.basedYour')} <span className="font-semibold text-primary">{t('screens.wallet.recentActivityPatterns')}</span>
           </p>
         </div>
 
@@ -104,7 +104,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Target className="h-4 w-4 text-purple-500" />
-            Predicted Earnings
+            {t('screens.wallet.predictedEarnings')}
           </h4>
           
           {mockPredictions.slice(0, 2).map((prediction) => (
@@ -151,7 +151,7 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Zap className="h-4 w-4 mr-2" />
-          Optimize Earning Strategy
+          {t('screens.wallet.optimizeEarningStrategy')}
         </Button>
       </CardContent>
     </Card>

@@ -57,7 +57,7 @@ export function InvoicePreviewDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Invoice #{invoiceData.id}</span>
-            <Badge variant="secondary">Paid</Badge>
+            <Badge variant="secondary">{t('screens.billing.paid')}</Badge>
           </DialogTitle>
           <DialogDescription>
             Invoice date: {invoiceData.date}
@@ -72,8 +72,8 @@ export function InvoicePreviewDialog({
                 <div>
                   <h3 className="font-semibold mb-2">{t('screens.billing.from')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Vitanaland Inc.<br />
-                    123 Wellness Street<br />
+                    {t('screens.billing.vitanalandInc')}<br />
+                    {t('screens.billing.text123WellnessStreet')}<br />
                     Health City, HC 12345
                   </p>
                 </div>
@@ -98,10 +98,10 @@ export function InvoicePreviewDialog({
               <h3 className="font-semibold mb-4">{t('screens.billing.invoiceDetails')}</h3>
               <div className="space-y-2">
                 <div className="grid grid-cols-12 gap-4 text-sm font-medium text-muted-foreground pb-2 border-b">
-                  <div className="col-span-6">Description</div>
-                  <div className="col-span-2 text-right">Quantity</div>
-                  <div className="col-span-2 text-right">Price</div>
-                  <div className="col-span-2 text-right">Amount</div>
+                  <div className="col-span-6">{t('screens.billing.description')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.quantity')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.price')}</div>
+                  <div className="col-span-2 text-right">{t('screens.billing.amount')}</div>
                 </div>
                 {invoiceData.items.map((item, index) => (
                   <div key={index} className="grid grid-cols-12 gap-4 text-sm py-2">
@@ -122,16 +122,16 @@ export function InvoicePreviewDialog({
               {/* Totals */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="text-muted-foreground">{t('screens.billing.subtotal')}</span>
                   <span className="font-medium">${invoiceData.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tax</span>
+                  <span className="text-muted-foreground">{t('screens.billing.tax')}</span>
                   <span className="font-medium">${invoiceData.tax.toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-semibold">
-                  <span>Total</span>
+                  <span>{t('screens.billing.total')}</span>
                   <span>${invoiceData.total.toFixed(2)}</span>
                 </div>
               </div>
@@ -142,11 +142,11 @@ export function InvoicePreviewDialog({
           <div className="flex gap-2 justify-end">
             <Button variant="outline" onClick={handlePrint}>
               <Printer className="w-4 h-4 mr-2" />
-              Print
+              {t('screens.billing.print')}
             </Button>
             <Button variant="outline" onClick={handleDownload}>
               <Download className="w-4 h-4 mr-2" />
-              Download PDF
+              {t('screens.billing.downloadPdf')}
             </Button>
           </div>
         </div>

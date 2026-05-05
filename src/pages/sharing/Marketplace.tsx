@@ -37,13 +37,13 @@ function Marketplace() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Browse Services
+              {t('screens.sharing.browseServices')}
             </Button>
           </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="featured">{t('screens.sharing.featuredIntegrations')}</SplitBarTrigger>
-          <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
+          <SplitBarTrigger value="categories">{t('screens.sharing.categories')}</SplitBarTrigger>
           <SplitBarTrigger value="connected">{t('screens.sharing.myConnections')}</SplitBarTrigger>
         </SplitBarList>
 
@@ -63,7 +63,7 @@ function Marketplace() {
                           <div className="font-medium text-sm">{t('screens.sharing.epicMychartIntegration')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.text48Rating25m')}</div>
                         </div>
-                        <div className="text-green-600 font-bold text-xs">Featured</div>
+                        <div className="text-green-600 font-bold text-xs">{t('screens.sharing.featured')}</div>
                       </div>
                     </div>
                     <div className="p-3 bg-muted rounded-lg">
@@ -72,7 +72,7 @@ function Marketplace() {
                           <div className="font-medium text-sm">{t('screens.sharing.stanfordMedicineAiLab')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.text49RatingResearchOpportunity')}</div>
                         </div>
-                        <div className="text-blue-600 font-bold text-xs">Research</div>
+                        <div className="text-blue-600 font-bold text-xs">{t('screens.sharing.research')}</div>
                       </div>
                     </div>
                   </div>
@@ -120,7 +120,7 @@ function Marketplace() {
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-green-600">18</div>
-                    <div className="text-xs text-muted-foreground">Opportunities</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.opportunities')}</div>
                   </div>
                 }
               />
@@ -317,7 +317,7 @@ function Marketplace() {
                           <div className="font-medium text-sm">{t('screens.sharing.fitbitHealthConnect')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.connected3MonthsAgoRealtime')}</div>
                         </div>
-                        <div className="text-green-600 text-xs font-bold">Active</div>
+                        <div className="text-green-600 text-xs font-bold">{t('screens.sharing.active')}</div>
                       </div>
                     </div>
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
@@ -326,7 +326,7 @@ function Marketplace() {
                           <div className="font-medium text-sm">{t('screens.sharing.stanfordDiabetesStudy')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.participatingSince2MonthsEarning')}</div>
                         </div>
-                        <div className="text-blue-600 text-xs font-bold">Research</div>
+                        <div className="text-blue-600 text-xs font-bold">{t('screens.sharing.research')}</div>
                       </div>
                     </div>
                   </div>

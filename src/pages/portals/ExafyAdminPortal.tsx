@@ -99,7 +99,7 @@ const ExafyAdminPortal = () => {
             </div>
             <h1 className="text-3xl font-bold text-foreground">{t('screens.portals.exafyAdministration')}</h1>
             <p className="text-muted-foreground mt-2">
-              Secure access portal for system administrators
+              {t('screens.portals.secureAccessPortalForSystemAdministrators')}
             </p>
           </div>
 
@@ -108,7 +108,7 @@ const ExafyAdminPortal = () => {
             <CardHeader>
               <CardTitle>{t('screens.portals.administratorSign')}</CardTitle>
               <CardDescription>
-                Access the tenant management dashboard
+                {t('screens.portals.accessTenantManagementDashboard')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -120,7 +120,7 @@ const ExafyAdminPortal = () => {
                 )}
                 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('screens.portals.email')}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -133,7 +133,7 @@ const ExafyAdminPortal = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t('screens.portals.password')}</Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -169,7 +169,7 @@ const ExafyAdminPortal = () => {
                     htmlFor="keep-logged-in"
                     className="text-sm font-normal cursor-pointer"
                   >
-                    Keep me logged in
+                    {t('screens.portals.keepMeLogged')}
                   </Label>
                 </div>
                 
@@ -229,7 +229,7 @@ const ExafyAdminPortal = () => {
           {/* Back to Public Portal */}
           <div className="text-center">
             <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
-              ← Back to Public Portal
+              {t('screens.portals.backPublicPortal')}
             </Link>
           </div>
         </div>

@@ -59,10 +59,10 @@ export function AnalysisHero({
         {/* Header */}
         <div className="text-center">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-amber-600 bg-clip-text text-transparent mb-2">
-            Your Compatibility Overview
+            {t('screens.analysis.yourCompatibilityOverview')}
           </h2>
           <p className="text-sm text-muted-foreground">
-            AI-powered insights based on your profile, interests, and behavior
+            {t('screens.analysis.aipoweredInsightsBasedYourProfileInterests')}
           </p>
         </div>
         
@@ -102,7 +102,7 @@ export function AnalysisHero({
               </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-3">
-              Overall Compatibility
+              {t('screens.analysis.overallCompatibility')}
             </p>
           </div>
           
@@ -178,7 +178,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Users className="w-3 h-3 mr-1" />
-            People
+            {t('screens.analysis.people')}
           </Button>
           <Button 
             variant={activeContext === 'coaches' ? 'default' : 'ghost'}
@@ -187,7 +187,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <UserCheck className="w-3 h-3 mr-1" />
-            Coaches
+            {t('screens.analysis.coaches')}
           </Button>
           <Button 
             variant={activeContext === 'groups' ? 'default' : 'ghost'}
@@ -196,7 +196,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Users className="w-3 h-3 mr-1" />
-            Groups
+            {t('screens.analysis.groups')}
           </Button>
           <Button 
             variant={activeContext === 'events' ? 'default' : 'ghost'}
@@ -205,7 +205,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Calendar className="w-3 h-3 mr-1" />
-            Events
+            {t('screens.analysis.events')}
           </Button>
         </div>
       </div>

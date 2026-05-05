@@ -84,7 +84,7 @@ export default function NotificationPreferences() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <BarChart3 className="h-4 w-4" />
-                Category Opt-In Rates
+                {t('screens.admin.categoryOptinRates')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -99,7 +99,7 @@ export default function NotificationPreferences() {
                 </div>
               ) : totalWithPrefs === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  No users have configured preferences yet.
+                  {t('screens.admin.noUsersHaveConfiguredPreferencesYet')}
                 </p>
               ) : (
                 Object.entries(CATEGORY_LABELS).map(([key, label]) => {
@@ -126,7 +126,7 @@ export default function NotificationPreferences() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <TrendingUp className="h-4 w-4" />
-                30-Day Delivery Summary
+                {t('screens.admin.text30dayDeliverySummary')}
               </CardTitle>
             </CardHeader>
             <CardContent>

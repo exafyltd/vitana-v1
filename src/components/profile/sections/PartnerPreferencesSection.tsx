@@ -88,7 +88,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
       <header className="flex items-center gap-2">
         <Heart className="h-4 w-4 text-rose-500" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Partner preferences
+          {t('screens.profile.partnerPreferences')}
         </h3>
       </header>
 
@@ -134,7 +134,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
       {showDealBreakers && (
         <div>
           <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-            Deal-breakers <span className="opacity-70">{t('screens.profile.onlyYouSeeThis')}</span>
+            {t('screens.profile.dealbreakers')} <span className="opacity-70">{t('screens.profile.onlyYouSeeThis')}</span>
           </div>
           <div className="flex flex-wrap gap-1">
             {prefs.deal_breakers!.map((m, i) => (

@@ -12,6 +12,7 @@ import aiNeuralImage from "@/assets/actions/ai-neural-patterns.jpg";
 import friendsMeetupImage from "@/assets/actions/friends-meetup-selfie.jpg";
 import hydrationBottleImage from "@/assets/actions/hydration-water-bottle.jpg";
 import wellnessYogaImage from "@/assets/actions/wellness-yoga-nature.jpg";
+import { t } from '@/lib/i18n-toast';
 
 interface VisualActionCardProps {
   action: AutopilotAction;
@@ -215,7 +216,7 @@ export function VisualActionCard({
               className="flex-1 text-xs h-8 bg-gradient-to-r from-[hsl(var(--gradient-vitana-start))] to-[hsl(var(--gradient-vitana-end))] hover:from-[hsl(var(--gradient-vitana-start))]/90 hover:to-[hsl(var(--gradient-vitana-end))]/90 text-white border-0 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[hsl(var(--gradient-vitana-end))]/30 active:scale-95 shadow-md"
             >
               <CheckCircle className="w-3 h-3 mr-1" />
-              Do Now
+              {t('screens.actions.doNow')}
             </Button>
             <Button 
               variant="outline" 
@@ -236,7 +237,7 @@ export function VisualActionCard({
               className="text-[10px] h-6 px-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Edit className="w-2.5 h-2.5 mr-1" />
-              Edit
+              {t('screens.actions.edit')}
             </Button>
             <div className="text-[10px] text-muted-foreground/60 font-mono flex items-center">
               {new Date(action.timestamp).toLocaleTimeString('en-GB', { 
@@ -252,7 +253,7 @@ export function VisualActionCard({
               className="text-[10px] h-6 px-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Eye className="w-2.5 h-2.5 mr-1" />
-              Details
+              {t('screens.actions.details')}
             </Button>
           </div>
         </div>

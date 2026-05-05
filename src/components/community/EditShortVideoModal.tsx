@@ -209,7 +209,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.community.description')}</Label>
             <Textarea
               id="description"
               value={description}
@@ -243,7 +243,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 disabled={!tagInput.trim() || tags.length >= 5}
                 variant="outline"
               >
-                Add
+                {t('screens.community.add')}
               </Button>
             </div>
             {tags.length > 0 && (
@@ -325,7 +325,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                   ) : (
                     <>
                       <ImageIcon className="w-4 h-4 mr-2" />
-                      Capture
+                      {t('screens.community.capture')}
                     </>
                   )}
                 </Button>
@@ -336,7 +336,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose} disabled={isSaving}>
-            Cancel
+            {t('screens.community.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving || !title.trim()}>
             {isSaving ? (

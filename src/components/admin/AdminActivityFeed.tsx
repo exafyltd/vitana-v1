@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface ActivityEvent {
   id: string;
@@ -72,9 +73,9 @@ export function AdminActivityFeed() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          Recent Activity
+          {t('screens.admin.recentActivity')}
           <Badge variant="outline" className="font-normal">
-            Live
+            {t('screens.admin.live')}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -98,7 +99,7 @@ export function AdminActivityFeed() {
             </div>
           ) : activities.length === 0 ? (
             <div className="flex h-full items-center justify-center text-muted-foreground">
-              No recent activity
+              {t('screens.admin.noRecentActivity')}
             </div>
           ) : (
             <div className="space-y-4">

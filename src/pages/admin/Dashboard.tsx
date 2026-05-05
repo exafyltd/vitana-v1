@@ -195,7 +195,7 @@ export default function AdminDashboard() {
                       onClick={() => navigate("/admin/dashboard/activity")}
                       className="text-primary underline hover:no-underline"
                     >
-                      Activity Feed
+                      {t('screens.admin.activityFeed')}
                     </button>
                   </p>
                 </div>

@@ -53,7 +53,7 @@ export function GeminiApiKeySetup() {
       <CardHeader>
         <CardTitle>{t('screens.admin.geminiLiveApiConfiguration')}</CardTitle>
         <CardDescription>
-          Set up your Google Gemini API key for voice conversations
+          {t('screens.admin.setUpYourGoogleGeminiApi')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -66,7 +66,7 @@ export function GeminiApiKeySetup() {
             <h3 className="font-semibold">{t('screens.admin.getYourApiKey')}</h3>
           </div>
           <p className="text-sm text-muted-foreground ml-8">
-            Visit Google AI Studio to generate your Gemini API key
+            {t('screens.admin.visitGoogleAiStudioGenerateYour')}
           </p>
           <Button
             variant="outline"
@@ -74,7 +74,7 @@ export function GeminiApiKeySetup() {
             onClick={() => window.open("https://aistudio.google.com/app/apikey", "_blank")}
           >
             <ExternalLink className="h-4 w-4 mr-2" />
-            Open Google AI Studio
+            {t('screens.admin.openGoogleAiStudio')}
           </Button>
         </div>
 
@@ -110,7 +110,7 @@ export function GeminiApiKeySetup() {
               <Alert className="bg-emerald-500/10 border-emerald-500/20">
                 <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                 <AlertDescription className="text-emerald-500">
-                  API key is valid and working!
+                  {t('screens.admin.apiKeyValidWorking')}
                 </AlertDescription>
               </Alert>
             )}
@@ -118,7 +118,7 @@ export function GeminiApiKeySetup() {
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  API key validation failed. Please check your key and try again.
+                  {t('screens.admin.apiKeyValidationFailedPleaseCheck')}
                 </AlertDescription>
               </Alert>
             )}
@@ -135,12 +135,12 @@ export function GeminiApiKeySetup() {
           </div>
           <div className="ml-8 space-y-3">
             <p className="text-sm text-muted-foreground">
-              For security, store your API key in Supabase Edge Function secrets
+              {t('screens.admin.forSecurityStoreYourApiKey')}
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <code className="flex-1 px-3 py-2 bg-muted rounded text-sm">
-                  GOOGLE_GEMINI_API_KEY
+                  {t('screens.admin.google_gemini_api_key')}
                 </code>
                 <Button
                   variant="outline"
@@ -161,7 +161,7 @@ export function GeminiApiKeySetup() {
                 }
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
-                Open Supabase Edge Functions Settings
+                {t('screens.admin.openSupabaseEdgeFunctionsSettings')}
               </Button>
             </div>
           </div>

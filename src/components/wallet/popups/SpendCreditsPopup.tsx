@@ -122,7 +122,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
             </div>
             <div>
               <ResponsiveDialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Spend Credits
+                {t('screens.wallet.spendCredits')}
               </ResponsiveDialogTitle>
               <p className="text-sm text-muted-foreground mt-1">
                 Available: {creditsBalance.toLocaleString()} Credits
@@ -145,7 +145,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                     className="h-12 flex flex-col items-center justify-center"
                   >
                     <span className="font-semibold">{amount}</span>
-                    <span className="text-xs">Credits</span>
+                    <span className="text-xs">{t('screens.wallet.credits')}</span>
                   </Button>
                 ))}
               </div>
@@ -154,7 +154,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
             {/* Custom Amount */}
             <div>
               <Label htmlFor="custom-amount" className="text-base font-semibold mb-2 block">
-                Custom Amount
+                {t('screens.wallet.customAmount')}
               </Label>
               <Input
                 id="custom-amount"
@@ -253,7 +253,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
             {isProcessing ? 'Processing...' : `Spend ${customAmount || 0} Credits`}
           </Button>
           <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1 h-12">
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
         </ResponsiveDialogFooter>
       </ResponsiveDialogContent>

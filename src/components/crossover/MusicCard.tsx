@@ -40,7 +40,7 @@ export function MusicCard() {
       <Music className="absolute top-2 right-2 w-8 h-8 text-purple-400/20" />
       
       <div className="absolute top-2 left-2 z-10">
-        <Badge className="bg-purple-500 text-white text-xs">Music</Badge>
+        <Badge className="bg-purple-500 text-white text-xs">{t('screens.crossover.music')}</Badge>
       </div>
       
       <CardContent className="p-4 relative">

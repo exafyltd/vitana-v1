@@ -88,7 +88,7 @@ export default function MessageComposer({
                 className="h-6 px-2"
               >
                 <Plus className="w-3 h-3 mr-1" />
-                Add
+                {t('screens.messages.add')}
               </Button>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -203,7 +203,7 @@ export default function MessageComposer({
                 className="h-8"
               >
                 <Send className="w-4 h-4 mr-1" />
-                Send
+                {t('screens.messages.send')}
               </Button>
             </div>
           </div>

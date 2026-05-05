@@ -84,7 +84,7 @@ export default function TenantManagement() {
                 <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
                 <CardTitle>{t('screens.admin.accessRestricted')}</CardTitle>
                 <CardDescription>
-                  Only Exafy administrators can manage tenants and organizations.
+                  {t('screens.admin.onlyExafyAdministratorsCanManageTenants')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -111,7 +111,7 @@ export default function TenantManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building className="h-5 w-5" />
-            Current Organization Context
+            {t('screens.admin.currentOrganizationContext')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -132,10 +132,10 @@ export default function TenantManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            Switch Organization
+            {t('screens.admin.switchOrganization')}
           </CardTitle>
           <CardDescription>
-            As an Exafy administrator, you can switch between different tenant organizations.
+            {t('screens.admin.asExafyAdministratorYouCanSwitch')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -172,10 +172,10 @@ export default function TenantManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Available Organizations
+            {t('screens.admin.availableOrganizations')}
           </CardTitle>
           <CardDescription>
-            Organizations you have access to as an Exafy administrator.
+            {t('screens.admin.organizationsYouHaveAccessAsExafy')}
           </CardDescription>
         </CardHeader>
         <CardContent>

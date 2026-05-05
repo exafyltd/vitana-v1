@@ -62,7 +62,7 @@ export default function MediaManagement() {
         <div>
           <h1 className="text-3xl font-bold mb-2">{t('screens.admin.mediaManagement')}</h1>
           <p className="text-muted-foreground">
-            Manage and moderate all platform media content
+            {t('screens.admin.manageModerateAllPlatformMediaContent')}
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default function MediaManagement() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Videos</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.videos')}</CardTitle>
               <Video className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -81,7 +81,7 @@ export default function MediaManagement() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Podcasts</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.podcasts')}</CardTitle>
               <Podcast className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -92,7 +92,7 @@ export default function MediaManagement() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Music</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.music')}</CardTitle>
               <Music className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -124,7 +124,7 @@ export default function MediaManagement() {
               <div className="text-2xl font-bold">{stats?.pending || 0}</div>
               <p className="text-xs text-muted-foreground">{t('screens.admin.awaitingReview')}</p>
               <Button size="sm" className="w-full mt-3" variant="outline">
-                Review Now
+                {t('screens.admin.reviewNow')}
               </Button>
             </CardContent>
           </Card>
@@ -138,14 +138,14 @@ export default function MediaManagement() {
               <div className="text-2xl font-bold">{stats?.flagged || 0}</div>
               <p className="text-xs text-muted-foreground">{t('screens.admin.needsAttention')}</p>
               <Button size="sm" className="w-full mt-3" variant="destructive">
-                Review Flags
+                {t('screens.admin.reviewFlags')}
               </Button>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Approved</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('screens.admin.approved')}</CardTitle>
               <CheckCircle className="w-4 h-4 text-green-500" />
             </CardHeader>
             <CardContent>
@@ -160,13 +160,13 @@ export default function MediaManagement() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              Recent Uploads (24h)
+              {t('screens.admin.recentUploads24h')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold mb-2">{stats?.recent24h || 0}</div>
             <p className="text-sm text-muted-foreground">
-              New media items uploaded in the last 24 hours
+              {t('screens.admin.newMediaItemsUploadedLast24')}
             </p>
           </CardContent>
         </Card>

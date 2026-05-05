@@ -157,21 +157,21 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
                   <Clock className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.duration}</p>
-                    <p className="text-xs text-muted-foreground">Duration</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <CreditCard className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.price}</p>
-                    <p className="text-xs text-muted-foreground">Price</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.price')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium">{serviceDetail.location}</p>
-                    <p className="text-xs text-muted-foreground">Location</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.health.location')}</p>
                   </div>
                 </div>
               </div>
@@ -187,15 +187,15 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           <div className="flex gap-3">
             <Button className="flex-1" size="lg" onClick={() => setShowBookingFlow(true)}>
               <Calendar className="w-4 h-4 mr-2" />
-              Book Now
+              {t('screens.health.bookNow')}
             </Button>
             <Button variant="outline" className="flex-1" size="lg">
               <Bookmark className="w-4 h-4 mr-2" />
-              Add to Plan
+              {t('screens.health.addPlan')}
             </Button>
             <Button variant="outline" size="lg">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Ask AI
+              {t('screens.health.askAi')}
             </Button>
           </div>
 
@@ -204,7 +204,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                What's Included
+                {t('screens.health.whatSIncluded')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -224,7 +224,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Heart className="w-5 h-5 text-red-500" />
-                Health Benefits
+                {t('screens.health.healthBenefits')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -244,7 +244,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Users className="w-5 h-5 text-blue-600" />
-                Available Providers
+                {t('screens.health.availableProviders')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -284,7 +284,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Shield className="w-5 h-5 text-orange-600" />
-                  Requirements & Preparation
+                  {t('screens.health.requirementsPreparation')}
                 </CardTitle>
               </CardHeader>
               <CardContent>

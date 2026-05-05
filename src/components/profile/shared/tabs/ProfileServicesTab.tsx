@@ -32,7 +32,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
           <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-semibold mb-2">{t('screens.profile.noServicesAvailable')}</h3>
           <p className="text-muted-foreground">
-            This user doesn't have any published services yet.
+            {t('screens.profile.thisUserDoesnTHaveAny')}
           </p>
         </CardContent>
       </Card>
@@ -68,7 +68,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                 </div>
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Star className="h-3 w-3" />
-                  Featured
+                  {t('screens.profile.featured')}
                 </Badge>
               </div>
             </CardHeader>
@@ -98,7 +98,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
         {editMode && onEditServices && (
           <Button variant="outline" onClick={onEditServices}>
             <Edit3 className="h-4 w-4 mr-2" />
-            Manage Services
+            {t('screens.profile.manageServices')}
           </Button>
         )}
         {!editMode && (
@@ -108,7 +108,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
               Book Session
             </Button>
             <Button variant="outline">
-              Learn More
+              {t('screens.profile.learnMore')}
             </Button>
           </>
         )}
@@ -139,14 +139,14 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
               {editMode && onEditCompliance && (
                 <Button variant="outline" size="sm" onClick={onEditCompliance}>
                   <Edit3 className="h-4 w-4 mr-2" />
-                  Manage Credentials
+                  {t('screens.profile.manageCredentials')}
                 </Button>
               )}
             </div>
             
             {profile.compliance.specialties && profile.compliance.specialties.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Specialties</h4>
+                <h4 className="font-medium mb-2">{t('screens.profile.specialties')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {profile.compliance.specialties.map((specialty, index) => (
                     <Badge key={index} variant="secondary">

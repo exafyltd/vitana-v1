@@ -332,10 +332,10 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         </div>
         <h3 className="text-lg font-semibold">{t('screens.feedback.reportSent')}</h3>
         <p className="text-sm text-muted-foreground text-center max-w-xs">
-          The Exafy team appreciates your support to make Vitanaland a better experience every day.
+          {t('screens.feedback.exafyTeamAppreciatesYourSupportMake')}
         </p>
         <Button variant="outline" onClick={() => setShowConfirmation(false)}>
-          Send Another Report
+          {t('screens.feedback.sendAnotherReport')}
         </Button>
       </div>
     );
@@ -365,7 +365,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
             </Button>
             <div className="text-center">
               <Badge variant="destructive" className="animate-pulse">
-                Recording
+                {t('screens.feedback.recording')}
               </Badge>
               <div className="text-2xl font-mono font-bold text-destructive mt-1">
                 {formatDuration(recordingDuration)}
@@ -468,7 +468,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           onClick={() => setReportType("bug_report")}
         >
           <Bug className="h-4 w-4" />
-          Bug Report
+          {t('screens.feedback.bugReport')}
         </Button>
         <Button
           variant={reportType === "ux_improvement" ? "default" : "outline"}
@@ -477,23 +477,23 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           onClick={() => setReportType("ux_improvement")}
         >
           <Lightbulb className="h-4 w-4" />
-          UX Improvement
+          {t('screens.feedback.uxImprovement')}
         </Button>
       </div>
 
       {/* Metadata: Severity + Affected Screen */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Severity</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('screens.feedback.severity')}</label>
           <Select value={severity} onValueChange={(v: any) => setSeverity(v)}>
             <SelectTrigger className="h-9">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
+              <SelectItem value="low">{t('screens.feedback.low')}</SelectItem>
+              <SelectItem value="medium">{t('screens.feedback.medium')}</SelectItem>
+              <SelectItem value="high">{t('screens.feedback.high')}</SelectItem>
+              <SelectItem value="critical">{t('screens.feedback.critical')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

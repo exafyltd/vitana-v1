@@ -308,7 +308,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               {isCompleted && (
                 <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
                   <Check className="w-3 h-3 mr-1" />
-                  Erledigt
+                  {t('screens.common.erledigt')}
                 </Badge>
               )}
               {isPending && action.timeEstimate && (
@@ -350,7 +350,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         </div>
         <div>
           <h3 className="text-lg font-bold text-foreground">
-            Erledigt!
+            {t('screens.common.erledigt2')}
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
             {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
@@ -375,7 +375,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       <p className="text-sm font-medium mb-1">{t('screens.common.couldNotLoadRecommendations')}</p>
       <p className="text-xs text-muted-foreground mb-4">{error}</p>
       <Button size="sm" variant="outline" onClick={() => fetchRecommendations()}>
-        Try Again
+        {t('screens.common.tryAgain')}
       </Button>
     </div>
   );

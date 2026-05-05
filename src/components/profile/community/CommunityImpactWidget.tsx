@@ -73,7 +73,7 @@ export function CommunityImpactWidget({
               >
                 <Star className="h-3 w-3" style={{ color: influence.color }} />
               </div>
-              <div className="text-xs text-muted-foreground">Influence</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.influence')}</div>
             </div>
             <div className="text-lg font-semibold" style={{ color: influence.color }}>
               {influence.label}

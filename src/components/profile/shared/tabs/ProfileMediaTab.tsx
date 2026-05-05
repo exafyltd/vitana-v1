@@ -218,10 +218,10 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
           </div>
           <div className="text-center space-y-3">
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              Your Media Studio will grow with your journey
+              {t('screens.profile.yourMediaStudioWillGrowWith')}
             </h3>
             <p className="text-sm text-muted-foreground/80 max-w-sm leading-[1.75] tracking-wide">
-              Upload your first track and start sharing your creative content
+              {t('screens.profile.uploadYourFirstTrackStartSharing')}
             </p>
           </div>
         </div>

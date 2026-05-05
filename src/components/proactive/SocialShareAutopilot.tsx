@@ -134,7 +134,7 @@ export function SocialShareAutopilot() {
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
-            Social Share Autopilot
+            {t('screens.proactive.socialShareAutopilot')}
           </div>
           <Button
             variant={autoShareEnabled ? "default" : "outline"}
@@ -146,7 +146,7 @@ export function SocialShareAutopilot() {
           </Button>
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Automatically share your wellness journey when you hit milestones
+          {t('screens.proactive.automaticallyShareYourWellnessJourneyWhen')}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -178,7 +178,7 @@ export function SocialShareAutopilot() {
         <div className="space-y-3">
           <h4 className="text-sm font-semibold flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            Ready to Share
+            {t('screens.proactive.readyShare')}
           </h4>
           
           <HorizontalCardList

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
+import { t } from '@/lib/i18n-toast';
 
 interface SwipeableProfileCardProps {
   profile: {
@@ -221,7 +222,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
               <div className="flex items-center gap-1.5 mb-2">
                 <Sparkles className="h-4 w-4 text-accent" />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  Interests
+                  {t('screens.discovery.interests')}
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">

@@ -45,7 +45,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Plus className="h-4 w-4" /> Uncovered routes
+                  <Plus className="h-4 w-4" /> {t('screens.admin.uncoveredRoutes')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.missing_in_catalog}
                   </Badge>
@@ -75,7 +75,7 @@ export default function NavigatorCoverage() {
                   <div className="pt-3">
                     <Link to="/admin/navigator">
                       <Button variant="outline" size="sm" className="w-full">
-                        Go to Catalog to add entries
+                        {t('screens.admin.goCatalogAddEntries')}
                       </Button>
                     </Link>
                   </div>
@@ -87,7 +87,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <AlertTriangle className="h-4 w-4 text-destructive" /> Broken catalog routes
+                  <AlertTriangle className="h-4 w-4 text-destructive" /> {t('screens.admin.brokenCatalogRoutes')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.broken_catalog_routes}
                   </Badge>
@@ -113,7 +113,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Ghost className="h-4 w-4 text-amber-600" /> Dead triggers (30d)
+                  <Ghost className="h-4 w-4 text-amber-600" /> {t('screens.admin.deadTriggers30d')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.dead_triggers}
                   </Badge>

@@ -41,7 +41,7 @@ export function OrganizerEventsSection() {
         <Ticket className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
         <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noTicketedEventsYet')}</h3>
         <p className="text-muted-foreground">
-          Create an event with ticket sales to see your sales dashboard here.
+          {t('screens.business.createEventWithTicketSalesSee')}
         </p>
       </div>
     );

@@ -132,7 +132,7 @@ function Settings() {
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setActionPopupOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
-                Quick Setup
+                {t('screens.settings.quickSetup')}
               </Button>
             </div>
           </UtilityActionButton>
@@ -156,12 +156,12 @@ function Settings() {
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4 text-center">
                           <div>
-                            <div className="text-2xl font-bold text-green-600">Protected</div>
+                            <div className="text-2xl font-bold text-green-600">{t('screens.settings.protected')}</div>
                             <div className="text-xs text-muted-foreground">{t('screens.settings.privacyStatus')}</div>
                           </div>
                           <div>
-                            <div className="text-2xl font-bold text-blue-600">Premium</div>
-                            <div className="text-xs text-muted-foreground">Subscription</div>
+                            <div className="text-2xl font-bold text-blue-600">{t('screens.settings.premium')}</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.settings.subscription')}</div>
                           </div>
                         </div>
                         <div className="space-y-2 text-sm">
@@ -231,7 +231,7 @@ function Settings() {
                     icon={CreditCard}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-orange-600">Active</div>
+                        <div className="text-2xl font-bold text-orange-600">{t('screens.settings.active')}</div>
                         <div className="text-xs text-muted-foreground">{t('screens.settings.untilDec2024')}</div>
                       </div>
                     }
@@ -271,7 +271,7 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Smartphone className="w-5 h-5" />
-                        Push Notifications
+                        {t('screens.settings.pushNotifications')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -296,7 +296,7 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Bell className="w-5 h-5" />
-                        Live Rooms
+                        {t('screens.settings.liveRooms')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -321,7 +321,7 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Users className="w-5 h-5" />
-                        Social & Community
+                        {t('screens.settings.socialCommunity')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -357,13 +357,13 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Bell className="w-5 h-5" />
-                        Intelligence
+                        {t('screens.settings.intelligence')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Recommendations</h4>
+                          <h4 className="font-medium">{t('screens.settings.recommendations')}</h4>
                           <p className="text-sm text-muted-foreground">{t('screens.settings.aiRecommendationsSuggestions')}</p>
                         </div>
                         <Switch
@@ -404,7 +404,7 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Moon className="w-5 h-5" />
-                        Quiet Hours
+                        {t('screens.settings.quietHours')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">

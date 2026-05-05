@@ -52,10 +52,10 @@ export function AutoInviteGenerator() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
-          Auto-Generate Invite Messages
+          {t('screens.proactive.autogenerateInviteMessages')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Create personalized invitations that inspire your friends to join Vitana
+          {t('screens.proactive.createPersonalizedInvitationsThatInspireYour')}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -96,7 +96,7 @@ export function AutoInviteGenerator() {
                 className="gap-2"
               >
                 <Copy className="h-4 w-4" />
-                Copy
+                {t('screens.proactive.copy')}
               </Button>
 
               <Button
@@ -109,7 +109,7 @@ export function AutoInviteGenerator() {
                 className="gap-2"
               >
                 <Send className="h-4 w-4" />
-                Send to Contacts
+                {t('screens.proactive.sendContacts')}
               </Button>
             </>
           )}

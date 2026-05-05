@@ -58,7 +58,7 @@ export default function CommunityRoomsAdmin() {
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">Scheduled</CardTitle>
+                  <CardTitle className="text-sm">{t('screens.admin.scheduled')}</CardTitle>
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardHeader>
@@ -71,7 +71,7 @@ export default function CommunityRoomsAdmin() {
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm">Moderation</CardTitle>
+                  <CardTitle className="text-sm">{t('screens.admin.moderation')}</CardTitle>
                   <Shield className="h-4 w-4 text-muted-foreground" />
                 </div>
               </CardHeader>
@@ -87,14 +87,14 @@ export default function CommunityRoomsAdmin() {
             <div className="flex items-center justify-between">
               <TabsList>
                 <TabsTrigger value="active">{t('screens.admin.activeRooms')}</TabsTrigger>
-                <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-                <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                <TabsTrigger value="moderation">Moderation</TabsTrigger>
+                <TabsTrigger value="scheduled">{t('screens.admin.scheduled')}</TabsTrigger>
+                <TabsTrigger value="analytics">{t('screens.admin.analytics')}</TabsTrigger>
+                <TabsTrigger value="moderation">{t('screens.admin.moderation')}</TabsTrigger>
               </TabsList>
               
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
-                Create Room
+                {t('screens.admin.createRoom')}
               </Button>
             </div>
 
@@ -106,7 +106,7 @@ export default function CommunityRoomsAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
-                    No active rooms at the moment
+                    {t('screens.admin.noActiveRoomsAtMoment')}
                   </div>
                 </CardContent>
               </Card>
@@ -120,7 +120,7 @@ export default function CommunityRoomsAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
-                    No scheduled sessions
+                    {t('screens.admin.noScheduledSessions')}
                   </div>
                 </CardContent>
               </Card>
@@ -134,7 +134,7 @@ export default function CommunityRoomsAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
-                    Analytics will appear here
+                    {t('screens.admin.analyticsWillAppearHere')}
                   </div>
                 </CardContent>
               </Card>
@@ -148,7 +148,7 @@ export default function CommunityRoomsAdmin() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
-                    No pending moderation actions
+                    {t('screens.admin.noPendingModerationActions')}
                   </div>
                 </CardContent>
               </Card>

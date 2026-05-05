@@ -131,7 +131,7 @@ function CampaignDetail() {
           <h2 className="text-xl font-semibold mb-2">{t('screens.sharing.campaignNotFound')}</h2>
           <Button onClick={() => navigate('/sharing/campaigns')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Campaigns
+            {t('screens.sharing.backCampaigns')}
           </Button>
         </div>
       </AppLayout>
@@ -156,7 +156,7 @@ function CampaignDetail() {
                 className="mb-4"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Campaigns
+                {t('screens.sharing.backCampaigns')}
               </Button>
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-3xl font-bold">{campaign.name}</h1>
@@ -186,7 +186,7 @@ function CampaignDetail() {
                   disabled={!canActivateCampaign}
                 >
                   <Rocket className="w-4 h-4 mr-2" />
-                  Activate Campaign
+                  {t('screens.sharing.activateCampaign')}
                 </Button>
               )}
               {campaign.status === 'active' && (
@@ -198,7 +198,7 @@ function CampaignDetail() {
                     disabled={pauseCampaign.isPending}
                   >
                     <Pause className="w-4 h-4 mr-2" />
-                    Pause
+                    {t('screens.sharing.pause')}
                   </Button>
                   <Button 
                     variant="outline" 
@@ -207,7 +207,7 @@ function CampaignDetail() {
                     disabled={completeCampaign.isPending}
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    Complete
+                    {t('screens.sharing.complete')}
                   </Button>
                 </>
               )}
@@ -218,7 +218,7 @@ function CampaignDetail() {
                   disabled={activateCampaign.isPending}
                 >
                   <Rocket className="w-4 h-4 mr-2" />
-                  Resume
+                  {t('screens.sharing.resume')}
                 </Button>
               )}
               <Button 
@@ -227,7 +227,7 @@ function CampaignDetail() {
                 onClick={() => setShowEditDialog(true)}
               >
                 <Edit className="w-4 h-4 mr-2" />
-                Edit
+                {t('screens.sharing.edit')}
               </Button>
             </div>
           </div>
@@ -244,7 +244,7 @@ function CampaignDetail() {
             </Card>
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Published</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.published')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-green-600">
@@ -254,7 +254,7 @@ function CampaignDetail() {
             </Card>
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Scheduled</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.scheduled')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-yellow-600">
@@ -264,7 +264,7 @@ function CampaignDetail() {
             </Card>
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Drafts</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{t('screens.sharing.drafts')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold text-gray-600">
@@ -281,7 +281,7 @@ function CampaignDetail() {
                 <CardTitle>{t('screens.sharing.campaignPosts')}</CardTitle>
                 <Button onClick={() => setShowCreatePostDialog(true)}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Post
+                  {t('screens.sharing.createPost')}
                 </Button>
               </div>
             </CardHeader>
@@ -318,14 +318,14 @@ function CampaignDetail() {
                               onClick={() => handleSchedulePost(post.id)}
                             >
                               <Clock className="w-4 h-4 mr-2" />
-                              Schedule
+                              {t('screens.sharing.schedule')}
                             </Button>
                             <Button 
                               size="sm"
                               onClick={() => handlePublishNow(post.id)}
                             >
                               <Rocket className="w-4 h-4 mr-2" />
-                              Publish Now
+                              {t('screens.sharing.publishNow')}
                             </Button>
                           </>
                         )}
@@ -343,11 +343,11 @@ function CampaignDetail() {
                   <Send className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noPostsYet')}</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Create posts and assign them to this campaign
+                    {t('screens.sharing.createPostsAssignThemThisCampaign')}
                   </p>
                   <Button onClick={() => setShowCreatePostDialog(true)}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Create First Post
+                    {t('screens.sharing.createFirstPost')}
                   </Button>
                 </div>
               )}

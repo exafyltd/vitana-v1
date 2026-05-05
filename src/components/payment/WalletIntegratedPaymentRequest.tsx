@@ -95,7 +95,7 @@ export default function WalletIntegratedPaymentRequest({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-blue-600" />
-            Request Payment
+            {t('screens.payment.requestPayment')}
           </DialogTitle>
         </DialogHeader>
 
@@ -138,7 +138,7 @@ export default function WalletIntegratedPaymentRequest({
           {/* Amount & Currency */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -148,7 +148,7 @@ export default function WalletIntegratedPaymentRequest({
               />
             </div>
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -169,7 +169,7 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
               placeholder={t('screens.payment.whatThisPaymentFor')}
@@ -205,7 +205,7 @@ export default function WalletIntegratedPaymentRequest({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleSendRequest} 
@@ -213,7 +213,7 @@ export default function WalletIntegratedPaymentRequest({
               disabled={!effectiveRecipient}
             >
               <Send className="w-4 h-4 mr-2" />
-              Send Request
+              {t('screens.payment.sendRequest')}
             </Button>
           </div>
         </div>

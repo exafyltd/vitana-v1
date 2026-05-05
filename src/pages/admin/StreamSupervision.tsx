@@ -85,9 +85,9 @@ function StreamSupervision() {
           <Tabs defaultValue="live" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="live">{t('screens.admin.liveStreams')}</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
-              <TabsTrigger value="moderation">Moderation</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="reports">{t('screens.admin.reports')}</TabsTrigger>
+              <TabsTrigger value="moderation">{t('screens.admin.moderation')}</TabsTrigger>
+              <TabsTrigger value="analytics">{t('screens.admin.analytics')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="live" className="space-y-6">
@@ -106,7 +106,7 @@ function StreamSupervision() {
                           <div className="w-16 h-12 bg-gradient-to-br from-red-100 to-pink-100 rounded flex items-center justify-center">
                             <Play className="w-6 h-6 text-red-500" />
                           </div>
-                          <Badge variant="destructive" className="absolute -top-1 -right-1 text-xs">LIVE</Badge>
+                          <Badge variant="destructive" className="absolute -top-1 -right-1 text-xs">{t('screens.admin.live2')}</Badge>
                         </div>
                         <div>
                           <p className="font-medium">{stream.title}</p>
@@ -120,7 +120,7 @@ function StreamSupervision() {
                         </div>
                         <Button size="sm" variant="outline">
                           <Eye className="w-4 h-4 mr-2" />
-                          Monitor
+                          {t('screens.admin.monitor')}
                         </Button>
                       </div>
                     </div>

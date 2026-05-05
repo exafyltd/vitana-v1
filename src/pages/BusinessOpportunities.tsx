@@ -47,10 +47,10 @@ export default function BusinessOpportunities() {
     return (
       <div className="container mx-auto px-4 py-12 max-w-3xl space-y-4">
         <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+          <ArrowLeft className="h-4 w-4" /> {t('screens.businessopportunities.backBusinessHub')}
         </Link>
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          Opportunities are available for Pro accounts. Upgrade to access incoming leads.
+          {t('screens.businessopportunities.opportunitiesAvailableForProAccountsUpgrade')}
         </div>
       </div>
     );
@@ -59,13 +59,13 @@ export default function BusinessOpportunities() {
   return (
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+        <ArrowLeft className="h-4 w-4" /> {t('screens.businessopportunities.backBusinessHub')}
       </Link>
 
       <div>
-        <h1 className="text-2xl font-semibold">Opportunities</h1>
+        <h1 className="text-2xl font-semibold">{t('screens.businessopportunities.opportunities')}</h1>
         <p className="text-sm text-muted-foreground">
-          Incoming leads matching your offerings. Express interest to start a conversation.
+          {t('screens.businessopportunities.incomingLeadsMatchingYourOfferingsExpress')}
         </p>
       </div>
 
@@ -75,7 +75,7 @@ export default function BusinessOpportunities() {
         </div>
       ) : matches.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          No leads yet. We'll notify you when matching demand arrives. Make sure you have at least one commercial_sell listing posted under <Link to="/business/listings" className="underline">{t('screens.businessopportunities.myListings')}</Link>.
+          {t('screens.businessopportunities.noLeadsYetWeLlNotify')} <Link to="/business/listings" className="underline">{t('screens.businessopportunities.myListings')}</Link>.
         </div>
       ) : (
         <div className="space-y-3">

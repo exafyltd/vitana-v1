@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ChevronUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 export interface HiddenBreakdown {
   allergies: number;
@@ -67,7 +68,7 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
                   <strong>{count}</strong> {label.text}
                 </span>
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to={label.href}>Adjust</Link>
+                  <Link to={label.href}>{t('screens.discover.adjust')}</Link>
                 </Button>
               </li>
             );

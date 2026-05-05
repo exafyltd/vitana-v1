@@ -81,7 +81,7 @@ export default function InitEvents() {
           <CheckCircle className="w-16 h-16 mx-auto text-primary" />
           <h1 className="text-2xl font-bold text-foreground">{t('screens.admin.generate40SummerEvents')}</h1>
           <p className="text-muted-foreground">
-            Run the SQL script below in your Supabase SQL Editor to instantly create all 40 Maxina Summer 2026 events.
+            {t('screens.admin.runSqlScriptBelowYourSupabase')}
           </p>
         </div>
 

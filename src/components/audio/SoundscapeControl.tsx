@@ -67,7 +67,7 @@ export function SoundscapeControl() {
         </Button>
         
         <div className="flex-1 flex items-center gap-2">
-          <span className="text-sm text-foreground">Soundscape</span>
+          <span className="text-sm text-foreground">{t('screens.audio.soundscape')}</span>
           
           <ResponsivePopover>
             <ResponsivePopoverTrigger asChild>
@@ -87,7 +87,7 @@ export function SoundscapeControl() {
             <ResponsivePopoverContent title={t('screens.audio.volume')} side="right" className="w-48 p-3">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium">Volume</span>
+                  <span className="text-xs font-medium">{t('screens.audio.volume')}</span>
                   <span className="text-xs text-muted-foreground">{Math.round(volume * 100)}%</span>
                 </div>
                 <Slider

@@ -45,15 +45,15 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="json">JSON</SelectItem>
-                <SelectItem value="yaml">YAML</SelectItem>
+                <SelectItem value="yaml">{t('screens.dev.yaml')}</SelectItem>
                 <SelectItem value="csv">CSV</SelectItem>
-                <SelectItem value="xml">XML</SelectItem>
+                <SelectItem value="xml">{t('screens.dev.xml')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="source">Source</Label>
+            <Label htmlFor="source">{t('screens.dev.source')}</Label>
             <Input 
               id="source" 
               value={source}
@@ -85,14 +85,14 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleImport}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Import List
+            {t('screens.dev.importList')}
           </Button>
         </DialogFooter>
       </DialogContent>

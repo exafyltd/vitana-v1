@@ -51,7 +51,7 @@ export default function AlkalmaConfirmed() {
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
             <Button onClick={() => navigate('/alkalma')} variant="outline" className="w-full">
-              Back to AlKalma Portal
+              {t('screens.portals.backAlkalmaPortal')}
             </Button>
           </CardContent>
         </Card>

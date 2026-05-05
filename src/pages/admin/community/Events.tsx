@@ -124,11 +124,11 @@ const EventsModeration = () => {
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="approved">Approved</TabsTrigger>
-                <TabsTrigger value="flagged">Flagged</TabsTrigger>
-                <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                <TabsTrigger value="all">{t('screens.admin.all')}</TabsTrigger>
+                <TabsTrigger value="pending">{t('screens.admin.pending')}</TabsTrigger>
+                <TabsTrigger value="approved">{t('screens.admin.approved')}</TabsTrigger>
+                <TabsTrigger value="flagged">{t('screens.admin.flagged')}</TabsTrigger>
+                <TabsTrigger value="rejected">{t('screens.admin.rejected')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="mt-6">
@@ -144,12 +144,12 @@ const EventsModeration = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Event</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Participants</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{t('screens.admin.event')}</TableHead>
+                          <TableHead>{t('screens.admin.type')}</TableHead>
+                          <TableHead>{t('screens.admin.date')}</TableHead>
+                          <TableHead>{t('screens.admin.participants')}</TableHead>
+                          <TableHead>{t('screens.admin.status')}</TableHead>
+                          <TableHead>{t('screens.admin.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -186,7 +186,7 @@ const EventsModeration = () => {
                                       onClick={() => moderateEvent(event.id, 'approved')}
                                     >
                                       <CheckCircle className="h-4 w-4 mr-1" />
-                                      Approve
+                                      {t('screens.admin.approve')}
                                     </Button>
                                     <Button
                                       size="sm"
@@ -194,7 +194,7 @@ const EventsModeration = () => {
                                       onClick={() => moderateEvent(event.id, 'rejected', 'Does not meet community guidelines')}
                                     >
                                       <XCircle className="h-4 w-4 mr-1" />
-                                      Reject
+                                      {t('screens.admin.reject')}
                                     </Button>
                                   </>
                                 )}
@@ -205,7 +205,7 @@ const EventsModeration = () => {
                                     onClick={() => moderateEvent(event.id, 'flagged', 'Flagged for review')}
                                   >
                                     <Flag className="h-4 w-4 mr-1" />
-                                    Flag
+                                    {t('screens.admin.flag')}
                                   </Button>
                                 )}
                                 <Button size="sm" variant="ghost">

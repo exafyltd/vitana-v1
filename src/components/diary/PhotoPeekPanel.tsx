@@ -184,7 +184,7 @@ export function PhotoPeekPanel({
           className="flex-1 text-sm font-medium"
         >
           <Download className="h-4 w-4 mr-2" />
-          Download
+          {t('screens.diary.download')}
         </Button>
         <Button
           variant="default"
@@ -193,7 +193,7 @@ export function PhotoPeekPanel({
           className="flex-1 text-sm font-medium"
         >
           <Maximize2 className="h-4 w-4 mr-2" />
-          Open full
+          {t('screens.diary.openFull')}
         </Button>
         
         <DropdownMenu>
@@ -212,7 +212,7 @@ export function PhotoPeekPanel({
               }
             }}>
               <Copy className="h-4 w-4 mr-2" />
-              Copy link
+              {t('screens.diary.copyLink')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               if (image && navigator.share) {
@@ -227,7 +227,7 @@ export function PhotoPeekPanel({
               }
             }}>
               <Share2 className="h-4 w-4 mr-2" />
-              Share via...
+              {t('screens.diary.shareVia')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -242,13 +242,13 @@ export function PhotoPeekPanel({
             {onAddToFavorites && (
               <DropdownMenuItem onClick={onAddToFavorites}>
                 <Heart className="h-4 w-4 mr-2" />
-                Add to favorites
+                {t('screens.diary.addFavorites')}
               </DropdownMenuItem>
             )}
             {onEdit && (
               <DropdownMenuItem onClick={onEdit}>
                 <Edit className="h-4 w-4 mr-2" />
-                Edit details
+                {t('screens.diary.editDetails')}
               </DropdownMenuItem>
             )}
             {(onDelete || onReport) && <DropdownMenuSeparator />}
@@ -258,13 +258,13 @@ export function PhotoPeekPanel({
                 className="text-destructive focus:text-destructive"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete photo
+                {t('screens.diary.deletePhoto')}
               </DropdownMenuItem>
             )}
             {onReport && (
               <DropdownMenuItem onClick={onReport}>
                 <Flag className="h-4 w-4 mr-2" />
-                Report
+                {t('screens.diary.report')}
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>

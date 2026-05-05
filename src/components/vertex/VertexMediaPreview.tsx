@@ -28,7 +28,7 @@ export function VertexMediaPreview({
               <span className="font-medium text-sm text-blue-900">{t('screens.vertex.screenSharingActive')}</span>
             </div>
             <p className="text-xs text-blue-700">
-              AI can see your screen at 1 frame per second
+              {t('screens.vertex.aiCanSeeYourScreenAt')}
             </p>
           </div>
         )}
@@ -41,7 +41,7 @@ export function VertexMediaPreview({
               <span className="font-medium text-sm text-green-900">{t('screens.vertex.cameraActive')}</span>
             </div>
             <p className="text-xs text-green-700">
-              AI can see your camera feed at 1 frame per second
+              {t('screens.vertex.aiCanSeeYourCameraFeed')}
             </p>
           </div>
         )}
@@ -54,7 +54,7 @@ export function VertexMediaPreview({
               <span className="font-medium text-sm text-red-900">{t('screens.vertex.microphoneActive')}</span>
             </div>
             <p className="text-xs text-red-700">
-              AI is listening to your voice
+              {t('screens.vertex.aiListeningYourVoice')}
             </p>
           </div>
         )}

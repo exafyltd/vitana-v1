@@ -17,7 +17,7 @@ export function ActiveBenefitsCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Shield className="h-5 w-5 text-blue-500" />
-          Active Benefits
+          {t('screens.wallet.activeBenefits')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.currentSubscriptionPerks')}</CardDescription>
       </CardHeader>
@@ -25,15 +25,15 @@ export function ActiveBenefitsCard() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">{t('screens.wallet.premiumHealthAi')}</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.active')}</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">{t('screens.wallet.dataVaultPro')}</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.active')}</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">{t('screens.wallet.prioritySupport')}</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.active')}</Badge>
           </div>
         </div>
         
@@ -44,7 +44,7 @@ export function ActiveBenefitsCard() {
         
         <Button variant="outline" className="w-full">
           <Settings className="h-4 w-4 mr-2" />
-          Manage Benefits
+          {t('screens.wallet.manageBenefits')}
         </Button>
       </CardContent>
     </Card>

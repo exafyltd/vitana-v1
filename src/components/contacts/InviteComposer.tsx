@@ -128,7 +128,7 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
       {/* Message composer */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-foreground">Message</label>
+          <label className="text-sm font-medium text-foreground">{t('screens.contacts.message')}</label>
           {charLimit && (
             <span className={cn(
               "text-xs",
@@ -155,7 +155,7 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
       {/* Actions */}
       <div className="flex gap-3 pt-2">
         <Button variant="outline" onClick={onCancel} className="flex-1">
-          Cancel
+          {t('screens.contacts.cancel')}
         </Button>
         <Button
           onClick={handleSend}

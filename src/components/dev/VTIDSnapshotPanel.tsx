@@ -26,7 +26,7 @@ export function VTIDSnapshotPanel() {
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('screens.dev.refresh')}
           </Button>
         </div>
       </CardHeader>
@@ -52,11 +52,11 @@ export function VTIDSnapshotPanel() {
               <thead className="border-b">
                 <tr className="text-left">
                   <th className="pb-2 font-medium">{t('screens.dev.vtidLabel')}</th>
-                  <th className="pb-2 font-medium">Color</th>
-                  <th className="pb-2 font-medium">Layer</th>
-                  <th className="pb-2 font-medium">Module</th>
-                  <th className="pb-2 font-medium">Number</th>
-                  <th className="pb-2 font-medium">Created</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.color')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.layer')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.module')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.number')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.created')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y">

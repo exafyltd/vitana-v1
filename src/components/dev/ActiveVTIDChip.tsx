@@ -39,10 +39,10 @@ export function ActiveVTIDChip({ showClear = true, className = "" }: ActiveVTIDC
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={handleCreateNew}>
-            Create New VTID
+            {t('screens.dev.createNewVtid')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleSelect}>
-            Select Existing VTID
+            {t('screens.dev.selectExistingVtid')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

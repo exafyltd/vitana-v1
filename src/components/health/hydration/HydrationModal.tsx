@@ -128,21 +128,21 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-50 to-sky-50 
               dark:from-cyan-950/30 dark:to-sky-950/30 text-center">
               <Droplets className="w-5 h-5 mx-auto mb-1 text-cyan-600 dark:text-cyan-400" />
-              <p className="text-xs text-muted-foreground">Current</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.current')}</p>
               <p className="text-sm font-bold">{(data.currentAmount / 1000).toFixed(1)}L</p>
             </div>
             
             <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 
               dark:from-blue-950/30 dark:to-indigo-950/30 text-center">
               <TrendingUp className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
-              <p className="text-xs text-muted-foreground">Target</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.target')}</p>
               <p className="text-sm font-bold">{(data.targetAmount / 1000).toFixed(1)}L</p>
             </div>
             
             <div className="p-3 rounded-xl bg-gradient-to-br from-sky-50 to-cyan-50 
               dark:from-sky-950/30 dark:to-cyan-950/30 text-center">
               <Clock className="w-5 h-5 mx-auto mb-1 text-sky-600 dark:text-sky-400" />
-              <p className="text-xs text-muted-foreground">Remaining</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.remaining')}</p>
               <p className="text-sm font-bold">
                 {remaining > 0 ? `${(remaining / 1000).toFixed(1)}L` : 'Goal Met!'}
               </p>
@@ -157,7 +157,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               <div>
                 <p className="text-sm font-medium mb-1">{t('screens.health.goalAchieved')}</p>
                 <p className="text-sm text-muted-foreground">
-                  You're perfectly hydrated today. Great consistency!
+                  {t('screens.health.youRePerfectlyHydratedTodayGreat')}
                 </p>
               </div>
             </div>
@@ -193,7 +193,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
               <Droplets className="w-5 h-5 text-cyan-600" />
-              Hydration Timeline
+              {t('screens.health.hydrationTimeline')}
             </h3>
             <div className="space-y-3">
               {data.intakes.map((intake, idx) => (
@@ -252,7 +252,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               onClick={() => notifyInfo('toasts.health.reminderSettingsOpened')}
             >
               <Clock className="w-4 h-4" />
-              Set Reminder
+              {t('screens.health.setReminder')}
             </Button>
             
             <Button 
@@ -261,7 +261,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               onClick={() => notifySuccess('toasts.health.waterIntakeLogged')}
             >
               <Plus className="w-4 h-4" />
-              Log Water
+              {t('screens.health.logWater')}
             </Button>
           </div>
         </SheetFooter>

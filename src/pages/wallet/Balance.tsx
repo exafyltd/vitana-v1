@@ -310,7 +310,7 @@ function Balance() {
           <DialogHeader>
             <DialogTitle>{t('screens.wallet.topUpCredits')}</DialogTitle>
             <DialogDescription>
-              Purchase credits to unlock premium health services and features.
+              {t('screens.wallet.purchaseCreditsUnlockPremiumHealthServices')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -334,7 +334,7 @@ function Balance() {
             </div>
             <Button className="w-full">
               <CreditCard className="h-4 w-4 mr-2" />
-              Purchase Credits
+              {t('screens.wallet.purchaseCredits')}
             </Button>
           </div>
         </DialogContent>
@@ -346,22 +346,22 @@ function Balance() {
           <DialogHeader>
             <DialogTitle>{t('screens.wallet.buystakeVtnaTokens')}</DialogTitle>
             <DialogDescription>
-              Purchase or stake VTNA tokens for governance and staking rewards.
+              {t('screens.wallet.purchaseStakeVtnaTokensForGovernance')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Button variant="outline" className="h-16">
                 <Coins className="h-4 w-4 mr-2" />
-                Buy Tokens
+                {t('screens.wallet.buyTokens')}
               </Button>
               <Button variant="outline" className="h-16">
                 <Shield className="h-4 w-4 mr-2" />
-                Stake Tokens
+                {t('screens.wallet.stakeTokens')}
               </Button>
             </div>
             <Button className="w-full">
-              Continue to Purchase
+              {t('screens.wallet.continuePurchase')}
             </Button>
           </div>
         </DialogContent>
@@ -373,7 +373,7 @@ function Balance() {
           <DialogHeader>
             <DialogTitle>{t('screens.wallet.upgradeMembership')}</DialogTitle>
             <DialogDescription>
-              Upgrade to Platinum tier for 90% coverage and exclusive benefits.
+              {t('screens.wallet.upgradePlatinumTierFor90Coverage')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -391,7 +391,7 @@ function Balance() {
             </div>
             <Button className="w-full">
               <TrendingUp className="h-4 w-4 mr-2" />
-              Upgrade Now
+              {t('screens.wallet.upgradeNow')}
             </Button>
           </div>
         </DialogContent>

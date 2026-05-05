@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { MapPin, Monitor, ArrowRight, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileInventoryCardProps {
   id: string;
@@ -91,7 +92,7 @@ export function MobileInventoryCard({
                   Earn {earningFormatted}
                 </span>
                 <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">
-                  /ticket
+                  {t('screens.reseller.ticket')}
                 </span>
               </div>
             )}

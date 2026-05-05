@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CookModeFullScreenProps {
   steps: string[];
@@ -93,7 +94,7 @@ export function CookModeFullScreen({
             onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
           >
             <ChevronLeft className="w-5 h-5 mr-2" />
-            Previous
+            {t('screens.health.previous')}
           </Button>
           
           {currentStep === steps.length - 1 ? (
@@ -102,7 +103,7 @@ export function CookModeFullScreen({
               className="flex-1 bg-green-500 hover:bg-green-600 text-white border-0"
               onClick={onExit}
             >
-              Done Cooking
+              {t('screens.health.doneCooking')}
             </Button>
           ) : (
             <Button

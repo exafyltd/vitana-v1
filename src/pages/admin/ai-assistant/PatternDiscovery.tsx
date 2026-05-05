@@ -72,7 +72,7 @@ export default function PatternDiscovery() {
             <CardHeader>
               <CardTitle>{t('screens.admin.discoverNewPatterns')}</CardTitle>
               <CardDescription>
-                Analyze system data to automatically discover recurring patterns and automation opportunities
+                {t('screens.admin.analyzeSystemDataAutomaticallyDiscoverRecurring')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -115,9 +115,9 @@ export default function PatternDiscovery() {
                     <SelectContent>
                       <SelectItem value="all">{t('screens.admin.allTypes')}</SelectItem>
                       <SelectItem value="user_behavior">{t('screens.admin.userBehavior')}</SelectItem>
-                      <SelectItem value="temporal">Temporal</SelectItem>
-                      <SelectItem value="communication">Communication</SelectItem>
-                      <SelectItem value="workflow">Workflow</SelectItem>
+                      <SelectItem value="temporal">{t('screens.admin.temporal')}</SelectItem>
+                      <SelectItem value="communication">{t('screens.admin.communication')}</SelectItem>
+                      <SelectItem value="workflow">{t('screens.admin.workflow')}</SelectItem>
                       <SelectItem value="health_metric">{t('screens.admin.healthMetric')}</SelectItem>
                     </SelectContent>
                   </Select>
@@ -129,10 +129,10 @@ export default function PatternDiscovery() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">{t('screens.admin.allStatuses')}</SelectItem>
-                      <SelectItem value="discovered">Discovered</SelectItem>
-                      <SelectItem value="reviewed">Reviewed</SelectItem>
-                      <SelectItem value="implemented">Implemented</SelectItem>
-                      <SelectItem value="dismissed">Dismissed</SelectItem>
+                      <SelectItem value="discovered">{t('screens.admin.discovered')}</SelectItem>
+                      <SelectItem value="reviewed">{t('screens.admin.reviewed')}</SelectItem>
+                      <SelectItem value="implemented">{t('screens.admin.implemented')}</SelectItem>
+                      <SelectItem value="dismissed">{t('screens.admin.dismissed')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -145,7 +145,7 @@ export default function PatternDiscovery() {
             <Card>
               <CardContent className="py-12">
                 <div className="text-center text-muted-foreground">
-                  Loading patterns...
+                  {t('screens.admin.loadingPatterns')}
                 </div>
               </CardContent>
             </Card>
@@ -170,7 +170,7 @@ export default function PatternDiscovery() {
                   <div>
                     <p className="text-lg font-medium">{t('screens.admin.noPatternsDiscoveredYet')}</p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Click "Analyze for Patterns" to start discovering automation opportunities
+                      {t('screens.admin.clickAnalyzeForPatternsStartDiscovering')}
                     </p>
                   </div>
                 </div>

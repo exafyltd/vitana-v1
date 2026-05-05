@@ -143,10 +143,10 @@ const ReportedContent = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="all">{t('screens.admin.allReports')}</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="reviewing">Reviewing</TabsTrigger>
-                <TabsTrigger value="resolved">Resolved</TabsTrigger>
-                <TabsTrigger value="dismissed">Dismissed</TabsTrigger>
+                <TabsTrigger value="pending">{t('screens.admin.pending')}</TabsTrigger>
+                <TabsTrigger value="reviewing">{t('screens.admin.reviewing')}</TabsTrigger>
+                <TabsTrigger value="resolved">{t('screens.admin.resolved')}</TabsTrigger>
+                <TabsTrigger value="dismissed">{t('screens.admin.dismissed')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="mt-6">
@@ -163,11 +163,11 @@ const ReportedContent = () => {
                       <TableHeader>
                         <TableRow>
                           <TableHead>{t('screens.admin.contentType')}</TableHead>
-                          <TableHead>Reason</TableHead>
-                          <TableHead>Description</TableHead>
-                          <TableHead>Reported</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{t('screens.admin.reason')}</TableHead>
+                          <TableHead>{t('screens.admin.description')}</TableHead>
+                          <TableHead>{t('screens.admin.reported')}</TableHead>
+                          <TableHead>{t('screens.admin.status')}</TableHead>
+                          <TableHead>{t('screens.admin.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -228,7 +228,7 @@ const ReportedContent = () => {
                                       onClick={() => setSelectedReport(report.id)}
                                     >
                                       <AlertTriangle className="h-4 w-4 mr-1" />
-                                      Review
+                                      {t('screens.admin.review')}
                                     </Button>
                                   )}
                                 </div>

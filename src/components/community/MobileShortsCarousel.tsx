@@ -157,7 +157,7 @@ export function MobileShortsCarousel({
                           }}
                         >
                           <Edit className="w-4 h-4 mr-2" />
-                          Edit details
+                          {t('screens.community.editDetails')}
                         </DropdownMenuItem>
                       )}
                       {onDelete && (
@@ -169,7 +169,7 @@ export function MobileShortsCarousel({
                           }}
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
+                          {t('screens.community.delete')}
                         </DropdownMenuItem>
                       )}
                     </KebabMenu>

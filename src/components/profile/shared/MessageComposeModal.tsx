@@ -80,7 +80,7 @@ export function MessageComposeModal({
             autoFocus
           />
           <p className="text-xs text-muted-foreground text-center">
-            Press <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">↵</kbd> to send
+            {t('screens.profile.press')} <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">↵</kbd> to send
           </p>
         </ResponsiveDialogBody>
 

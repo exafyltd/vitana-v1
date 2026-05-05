@@ -1,6 +1,7 @@
 import { AlertCircle, RefreshCw, Settings, ShieldX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { t } from '@/lib/i18n-toast';
 
 type ErrorType = "oauth_failed" | "api_unavailable" | "permission_denied" | "rate_limited" | "unknown";
 
@@ -105,7 +106,7 @@ export function ContactSyncErrorState({
             variant="outline"
           >
             <Settings className="w-4 h-4 mr-2" />
-            Open Settings
+            {t('screens.contacts.openSettings')}
           </Button>
         )}
 
@@ -115,7 +116,7 @@ export function ContactSyncErrorState({
           className="w-full bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
-          Try Again
+          {t('screens.contacts.tryAgain')}
         </Button>
 
         <Button
@@ -123,7 +124,7 @@ export function ContactSyncErrorState({
           onClick={onBack}
           className="w-full text-muted-foreground"
         >
-          Go Back
+          {t('screens.contacts.goBack')}
         </Button>
       </div>
     </motion.div>

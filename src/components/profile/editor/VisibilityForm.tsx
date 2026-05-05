@@ -54,9 +54,9 @@ export function VisibilityForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Visibility</h3>
+        <h3 className="text-lg font-medium mb-4">{t('screens.profile.visibility')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Control who can see different parts of your profile and data.
+          {t('screens.profile.controlWhoCanSeeDifferentParts')}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export function VisibilityForm() {
           <div className="space-y-2">
             <Label className="text-base font-medium">{t('screens.profile.profileVisibility')}</Label>
             <p className="text-sm text-muted-foreground">
-              Overall visibility of your profile
+              {t('screens.profile.overallVisibilityYourProfile')}
             </p>
           </div>
           <Select value={profileVisibility} onValueChange={(value: Visibility) => setProfileVisibility(value)}>
@@ -78,7 +78,7 @@ export function VisibilityForm() {
                 <div className="flex items-center gap-2">
                   <Globe className="w-4 h-4" />
                   <div>
-                    <div>Public</div>
+                    <div>{t('screens.profile.public')}</div>
                     <div className="text-xs text-muted-foreground">{t('screens.profile.anyoneCanFindViewYourProfile')}</div>
                   </div>
                 </div>
@@ -96,7 +96,7 @@ export function VisibilityForm() {
                 <div className="flex items-center gap-2">
                   <Lock className="w-4 h-4" />
                   <div>
-                    <div>Private</div>
+                    <div>{t('screens.profile.private')}</div>
                     <div className="text-xs text-muted-foreground">{t('screens.profile.onlyYouCanViewYourProfile')}</div>
                   </div>
                 </div>
@@ -133,19 +133,19 @@ export function VisibilityForm() {
                   <SelectItem value="public">
                     <div className="flex items-center gap-2">
                       <Globe className="w-3 h-3" />
-                      Public
+                      {t('screens.profile.public')}
                     </div>
                   </SelectItem>
                   <SelectItem value="followers">
                     <div className="flex items-center gap-2">
                       <Users className="w-3 h-3" />
-                      Followers
+                      {t('screens.profile.followers')}
                     </div>
                   </SelectItem>
                   <SelectItem value="private">
                     <div className="flex items-center gap-2">
                       <Lock className="w-3 h-3" />
-                      Private
+                      {t('screens.profile.private')}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -162,10 +162,10 @@ export function VisibilityForm() {
             <div className="space-y-1">
               <Label className="text-base font-medium flex items-center gap-2">
                 <Activity className="w-4 h-4" />
-                Health Snapshot Sharing
+                {t('screens.profile.healthSnapshotSharing')}
               </Label>
               <p className="text-sm text-muted-foreground">
-                Share your Vitana Index and health insights publicly
+                {t('screens.profile.shareYourVitanaIndexHealthInsights')}
               </p>
             </div>
             <Switch
@@ -192,7 +192,7 @@ export function VisibilityForm() {
           <div className="flex-1">
             <Label className="text-base">{t('screens.profile.advancedPrivacySettings')}</Label>
             <p className="text-sm text-muted-foreground">
-              Manage additional privacy options, data sharing, and account settings
+              {t('screens.profile.manageAdditionalPrivacyOptionsDataSharing')}
             </p>
           </div>
           <Button variant="outline" asChild>
@@ -216,10 +216,10 @@ export function VisibilityForm() {
               </p>
               <div className="flex gap-2">
                 <Button variant="outline" className="flex-1" onClick={() => setShowConsentDialog(false)}>
-                  Cancel
+                  {t('screens.profile.cancel')}
                 </Button>
                 <Button className="flex-1" onClick={confirmHealthShare}>
-                  Enable Sharing
+                  {t('screens.profile.enableSharing')}
                 </Button>
               </div>
             </div>

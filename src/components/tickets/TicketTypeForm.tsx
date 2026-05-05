@@ -85,7 +85,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
         </div>
         <Button type="button" variant="outline" size="sm" onClick={addTicketType}>
           <Plus className="h-4 w-4 mr-1" />
-          Add Ticket
+          {t('screens.tickets.addTicket')}
         </Button>
       </div>
 
@@ -168,7 +168,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
             </div>
 
             <div>
-              <Label className="text-xs">Description</Label>
+              <Label className="text-xs">{t('screens.tickets.description')}</Label>
               <Textarea
                 value={ticket.description}
                 onChange={(e) => updateTicketType(index, "description", e.target.value)}
@@ -179,7 +179,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <Label className="text-xs">Quantity</Label>
+                <Label className="text-xs">{t('screens.tickets.quantity')}</Label>
                 <Input
                   type="number"
                   min="1"

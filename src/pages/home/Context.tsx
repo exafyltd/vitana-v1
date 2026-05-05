@@ -107,7 +107,7 @@ export default function Context() {
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setContextPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Context
+              {t('screens.home.context')}
             </Button>
           </UtilityActionButton>
 

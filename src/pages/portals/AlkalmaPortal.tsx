@@ -172,9 +172,9 @@ const AlkalmaPortal = () => {
             <div className="flex items-center justify-center mb-4">
               <BookOpen className="h-12 w-12 text-[#3B82F6]" />
             </div>
-            <h1 className="text-4xl font-bold text-foreground">AlKalma</h1>
+            <h1 className="text-4xl font-bold text-foreground">{t('screens.portals.alkalma')}</h1>
             <p className="text-muted-foreground mt-2">
-              Culturally-aware health & wellness solutions
+              {t('screens.portals.culturallyawareHealthWellnessSolutions')}
             </p>
           </div>
 
@@ -200,7 +200,7 @@ const AlkalmaPortal = () => {
                     )}
                     
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{t('screens.portals.email')}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -213,7 +213,7 @@ const AlkalmaPortal = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t('screens.portals.password')}</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -249,7 +249,7 @@ const AlkalmaPortal = () => {
                         htmlFor="keep-logged-in"
                         className="text-sm font-normal cursor-pointer"
                       >
-                        Keep me logged in
+                        {t('screens.portals.keepMeLogged')}
                       </Label>
                     </div>
                     
@@ -314,7 +314,7 @@ const AlkalmaPortal = () => {
                     </div>
                     <h3 className="text-lg font-semibold text-foreground">{t('screens.portals.checkYourEmail')}</h3>
                     <p className="text-sm text-muted-foreground">
-                      We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
+                      {t('screens.portals.weVeSentConfirmationLink')} <span className="font-medium text-foreground">{signupEmail}</span>
                     </p>
                     <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.alkalma)} />
                     <button
@@ -353,7 +353,7 @@ const AlkalmaPortal = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{t('screens.portals.email')}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -366,7 +366,7 @@ const AlkalmaPortal = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t('screens.portals.password')}</Label>
                       <Input
                         id="password"
                         type="password"
@@ -388,7 +388,7 @@ const AlkalmaPortal = () => {
                           onClick={() => setSelectedRole("community")}
                         >
                           <Users className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Community</span>
+                          <span className="text-xs">{t('screens.portals.community')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -397,7 +397,7 @@ const AlkalmaPortal = () => {
                           onClick={() => setSelectedRole("patient")}
                         >
                           <BookOpen className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Patient</span>
+                          <span className="text-xs">{t('screens.portals.patient')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -406,7 +406,7 @@ const AlkalmaPortal = () => {
                           onClick={() => setSelectedRole("professional")}
                         >
                           <Stethoscope className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Professional</span>
+                          <span className="text-xs">{t('screens.portals.professional')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -415,7 +415,7 @@ const AlkalmaPortal = () => {
                           onClick={() => setSelectedRole("admin")}
                         >
                           <Shield className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Admin</span>
+                          <span className="text-xs">{t('screens.portals.admin')}</span>
                         </Button>
                       </div>
                     </div>
@@ -441,13 +441,13 @@ const AlkalmaPortal = () => {
           {/* Navigation Links */}
           <div className="flex justify-center space-x-6 text-sm">
             <Link to="/maxina" className="text-muted-foreground hover:text-primary">
-              Maxina Portal
+              {t('screens.portals.maxinaPortal')}
             </Link>
             <Link to="/earthlinks" className="text-muted-foreground hover:text-primary">
-              Earthlinks Portal
+              {t('screens.portals.earthlinksPortal')}
             </Link>
             <Link to="/" className="text-muted-foreground hover:text-primary">
-              Public Portal
+              {t('screens.portals.publicPortal')}
             </Link>
           </div>
         </div>

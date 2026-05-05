@@ -63,11 +63,11 @@ export default function AuditActions() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Actor</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Target</TableHead>
-                  <TableHead>Changes</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.actor')}</TableHead>
+                  <TableHead>{t('screens.admin.action')}</TableHead>
+                  <TableHead>{t('screens.admin.target')}</TableHead>
+                  <TableHead>{t('screens.admin.changes')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

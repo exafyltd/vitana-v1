@@ -81,7 +81,7 @@ export function DailyMentalCard({ data, onClick }: DailyMentalCardProps) {
         {/* Mindfulness */}
         <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
           <p className="text-xs text-slate-600 dark:text-slate-400">
-            🧘 Mindfulness: <span className="font-semibold">{data.mindfulnessDuration}</span>
+            {t('screens.health.mindfulness')} <span className="font-semibold">{data.mindfulnessDuration}</span>
           </p>
         </div>
 

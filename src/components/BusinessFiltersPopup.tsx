@@ -34,7 +34,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Target className="w-5 h-5" />
-                Service Types
+                {t('screens.common.serviceTypes')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -52,7 +52,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <TrendingUp className="w-5 h-5" />
-                Performance Filters
+                {t('screens.common.performanceFilters')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -104,7 +104,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Clock className="w-5 h-5" />
-                Operations
+                {t('screens.common.operations')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -139,7 +139,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
                     <SelectValue placeholder={t('screens.common.selectPeriod')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="today">Today</SelectItem>
+                    <SelectItem value="today">{t('screens.common.today')}</SelectItem>
                     <SelectItem value="week">{t('screens.common.thisWeek')}</SelectItem>
                     <SelectItem value="month">{t('screens.common.thisMonth')}</SelectItem>
                     <SelectItem value="quarter">{t('screens.common.thisQuarter')}</SelectItem>
@@ -159,7 +159,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Search className="w-5 h-5" />
-                Advanced Search
+                {t('screens.common.advancedSearch')}
               </CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,14 +178,14 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
         {/* Action Buttons */}
         <div className="flex justify-between items-center pt-4 border-t">
           <Button variant="outline" onClick={onClose}>
-            Clear Filters
+            {t('screens.common.clearFilters')}
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button onClick={onClose}>
-              Apply Filters
+              {t('screens.common.applyFilters')}
             </Button>
           </div>
         </div>

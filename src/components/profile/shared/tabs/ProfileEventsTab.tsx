@@ -9,6 +9,7 @@ import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { format, formatDistanceToNow, addDays } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 // TODO: Remove mock data once real events are populated
 const MOCK_EVENTS: CommunityEvent[] = [
@@ -256,7 +257,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
         {isOwnProfile && (
           <Button variant="solid" onClick={() => navigate('/community/meetups')}>
             <Plus className="w-4 h-4 mr-2" />
-            Create Event
+            {t('screens.profile.createEvent')}
           </Button>
         )}
       </div>
@@ -299,7 +300,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                   onClick={() => navigate('/community/meetups')}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Event
+                  {t('screens.profile.createEvent')}
                 </Button>
               )}
             </div>
@@ -370,7 +371,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                 className="rounded-full px-8 py-6 text-base font-medium group"
                 onClick={() => navigate('/community/meetups')}
               >
-                Explore More Events
+                {t('screens.profile.exploreMoreEvents')}
                 <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
@@ -392,7 +393,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                   onClick={() => navigate('/community/meetups')}
                 >
                   <Calendar className="w-4 h-4 mr-2" />
-                  Browse Events
+                  {t('screens.profile.browseEvents')}
                 </Button>
               )}
             </div>
@@ -450,7 +451,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
                 className="rounded-full px-8 py-6 text-base font-medium group"
                 onClick={() => navigate('/community/meetups')}
               >
-                Explore More Events
+                {t('screens.profile.exploreMoreEvents')}
                 <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>

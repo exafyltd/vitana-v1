@@ -46,7 +46,7 @@ export default function EmailConfirmed() {
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
             <Button onClick={() => navigate('/')} variant="outline" className="w-full">
-              Back to Sign In
+              {t('screens.auth.backSign')}
             </Button>
           </CardContent>
         </Card>
@@ -67,27 +67,27 @@ export default function EmailConfirmed() {
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <CardTitle className="text-2xl font-bold text-green-600">
-              Thank you for joining VITANA!
+              {t('screens.auth.thankYouForJoiningVitana')}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-6">
             <div className="space-y-2">
               <p className="text-muted-foreground">
-                Your email has been successfully confirmed.
+                {t('screens.auth.yourEmailHasSuccessfullyConfirmed')}
               </p>
               <p className="text-sm text-muted-foreground">
-                You'll be redirected to your dashboard in a few seconds...
+                {t('screens.auth.youLlRedirectedYourDashboardFew')}
               </p>
             </div>
             
             <div className="space-y-3">
               <Button onClick={handleContinue} className="w-full">
-                Continue to Dashboard
+                {t('screens.auth.continueDashboard')}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               
               <div className="text-xs text-muted-foreground">
-                Welcome to your personalized health intelligence platform
+                {t('screens.auth.welcomeYourPersonalizedHealthIntelligencePlatform')}
               </div>
             </div>
           </CardContent>

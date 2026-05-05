@@ -512,7 +512,7 @@ export default function Messages() {
                 className="w-full justify-start"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Create New Group
+                {t('screens.messages.createNewGroup')}
               </Button>
             </div>
           )}
@@ -523,11 +523,11 @@ export default function Messages() {
                 <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noGroupsYet2')}</h3>
                 <p className="text-muted-foreground mb-4 max-w-sm mx-auto">
-                  Groups help you collaborate with multiple people at once. Perfect for teams, projects, or communities.
+                  {t('screens.messages.groupsHelpYouCollaborateWithMultiple')}
                 </p>
                 <Button onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
-                  Create Your First Group
+                  {t('screens.messages.createYourFirstGroup2')}
                 </Button>
               </div>
             ) : (
@@ -645,7 +645,7 @@ export default function Messages() {
                 <p className="text-muted-foreground mb-4">{t('screens.messages.startConversationWithSomeone')}</p>
                 <Button onClick={() => setShowNewConversation(true)}>
                   <MessageSquareText className="w-4 h-4 mr-2" />
-                  New Message
+                  {t('screens.messages.newMessage')}
                 </Button>
               </div>
             ) : (
@@ -1085,7 +1085,7 @@ export default function Messages() {
           <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
             <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
           <div className="pt-1">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Messages</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('screens.messages.messages')}</h1>
             <p className="text-sm text-muted-foreground">{t('screens.messages.connectWithYourCommunityProfessionalNetwork')}</p>
           </div>
           {/* Utility Action Button */}
@@ -1102,17 +1102,17 @@ export default function Messages() {
               <DropdownMenuTrigger asChild>
                 <Button size="sm">
                   <Plus className="w-4 h-4 mr-2" />
-                  New
+                  {t('screens.messages.new')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
                   <MessageSquareText className="w-4 h-4 mr-2" />
-                  New Message
+                  {t('screens.messages.newMessage')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
-                  Create Group
+                  {t('screens.messages.createGroup')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -1122,10 +1122,10 @@ export default function Messages() {
           <SplitBar value={messageContext} onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }} className="flex flex-1 min-h-0 flex-col overflow-hidden">
             <SplitBarList>
             <SplitBarTrigger value="global">
-              🌍 Global Community
+              {t('screens.messages.globalCommunity')}
             </SplitBarTrigger>
             <SplitBarTrigger value="tenant">
-              🏢 Professional Network
+              {t('screens.messages.professionalNetwork')}
             </SplitBarTrigger>
             </SplitBarList>
 

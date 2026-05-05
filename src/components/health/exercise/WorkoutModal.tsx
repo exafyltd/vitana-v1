@@ -113,21 +113,21 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 
                 dark:from-blue-950/30 dark:to-cyan-950/30 text-center">
                 <Clock className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
-                <p className="text-xs text-muted-foreground">Duration</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
                 <p className="text-sm font-bold">{workout.duration} min</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 
                 dark:from-amber-950/30 dark:to-orange-950/30 text-center">
                 <Flame className="w-5 h-5 mx-auto mb-1 text-amber-600 dark:text-amber-400" />
-                <p className="text-xs text-muted-foreground">Calories</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.calories')}</p>
                 <p className="text-sm font-bold">{workout.caloriesBurned} kcal</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-violet-50 to-purple-50 
                 dark:from-violet-950/30 dark:to-purple-950/30 text-center">
                 <Dumbbell className="w-5 h-5 mx-auto mb-1 text-violet-600 dark:text-violet-400" />
-                <p className="text-xs text-muted-foreground">Exercises</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.exercises')}</p>
                 <p className="text-sm font-bold">{workout.exercises.length}</p>
               </div>
             </div>
@@ -175,7 +175,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           <Separator />
           
           <div>
-            <h3 className="text-lg font-bold mb-4">Exercises</h3>
+            <h3 className="text-lg font-bold mb-4">{t('screens.health.exercises')}</h3>
             <div className="space-y-3">
               {workout.exercises.map((exercise, idx) => (
                 <div 
@@ -236,7 +236,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               disabled={isRestDay}
             >
               <Play className="w-5 h-5" />
-              Start Workout
+              {t('screens.health.startWorkout')}
             </Button>
           ) : (
             <div className="flex gap-2 w-full">
@@ -255,14 +255,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   onClick={handleCompleteWorkout}
                 >
                   <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Complete
+                  {t('screens.health.complete')}
                 </Button>
               ) : (
                 <Button 
                   className="flex-1"
                   onClick={() => setCurrentExercise(currentExercise + 1)}
                 >
-                  Next Exercise
+                  {t('screens.health.nextExercise')}
                 </Button>
               )}
             </div>

@@ -10,7 +10,7 @@ export default function PatientDashboard() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('screens.patient.patientDashboard')}</h1>
         <p className="text-muted-foreground">
-          Your personalized health management center
+          {t('screens.patient.yourPersonalizedHealthManagementCenter')}
         </p>
       </div>
 
@@ -21,9 +21,9 @@ export default function PatientDashboard() {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">Tomorrow</div>
+            <div className="text-2xl font-bold">{t('screens.patient.tomorrow')}</div>
             <p className="text-xs text-muted-foreground">
-              Dr. Smith at 2:00 PM
+              {t('screens.patient.drSmithAt200Pm')}
             </p>
           </CardContent>
         </Card>
@@ -49,7 +49,7 @@ export default function PatientDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">2</div>
             <p className="text-xs text-muted-foreground">
-              Blood work & X-ray
+              {t('screens.patient.bloodWorkXray')}
             </p>
           </CardContent>
         </Card>
@@ -62,7 +62,7 @@ export default function PatientDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">7/10</div>
             <p className="text-xs text-muted-foreground">
-              Weekly goals completed
+              {t('screens.patient.weeklyGoalsCompleted')}
             </p>
           </CardContent>
         </Card>
@@ -86,7 +86,7 @@ export default function PatientDashboard() {
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t('screens.patient.bloodPressureRecorded')}</p>
-                <p className="text-xs text-muted-foreground">Yesterday</p>
+                <p className="text-xs text-muted-foreground">{t('screens.patient.yesterday')}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -107,15 +107,15 @@ export default function PatientDashboard() {
           <CardContent className="space-y-3">
             <Button className="w-full justify-start" variant="outline">
               <Calendar className="mr-2 h-4 w-4" />
-              Schedule Appointment
+              {t('screens.patient.scheduleAppointment')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <TestTube className="mr-2 h-4 w-4" />
-              View Test Results
+              {t('screens.patient.viewTestResults')}
             </Button>
             <Button className="w-full justify-start" variant="outline">
               <Heart className="mr-2 h-4 w-4" />
-              Log Health Data
+              {t('screens.patient.logHealthData')}
             </Button>
           </CardContent>
         </Card>

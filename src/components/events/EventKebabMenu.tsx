@@ -90,7 +90,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             }}
           >
             <Pencil className="h-4 w-4 mr-2" />
-            Edit
+            {t('screens.events.edit')}
           </DropdownMenuItem>
         )}
         {onShare && (
@@ -101,7 +101,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             }}
           >
             <Share2 className="h-4 w-4 mr-2" />
-            Share
+            {t('screens.events.share')}
           </DropdownMenuItem>
         )}
         {canDelete && (
@@ -115,7 +115,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
               }}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Delete
+              {t('screens.events.delete')}
             </DropdownMenuItem>
           </>
         )}
@@ -131,7 +131,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('screens.events.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

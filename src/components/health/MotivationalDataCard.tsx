@@ -23,11 +23,11 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
       <CardContent className="space-y-4">
         <div className="space-y-3">
           <p className="text-base font-medium text-foreground">
-            I need your blood test results to give you better guidance on improving your health! 🩸
+            {t('screens.health.iNeedYourBloodTestResults')}
           </p>
           
           <p className="text-sm text-muted-foreground">
-            With your biomarker data, I can provide personalized insights and actionable recommendations tailored just for you.
+            {t('screens.health.withYourBiomarkerDataICan')}
           </p>
 
           {/* Progress indicator */}
@@ -51,19 +51,19 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
             onClick={() => navigate('/health/biomarker-results')}
           >
             <Upload className="w-4 h-4 mr-2" />
-            Upload Blood Test
+            {t('screens.health.uploadBloodTest')}
           </Button>
           <Button 
             variant="outline" 
             className="w-full"
             onClick={() => navigate('/health/services-hub')}
           >
-            Order Blood Test
+            {t('screens.health.orderBloodTest')}
           </Button>
         </div>
 
         <p className="text-xs text-center text-muted-foreground">
-          Don't worry, your data is private and secure 🔒
+          {t('screens.health.donTWorryYourDataPrivate')}
         </p>
       </CardContent>
     </Card>

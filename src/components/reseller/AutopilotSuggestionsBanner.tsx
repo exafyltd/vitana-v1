@@ -11,6 +11,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { useResellerEventStats } from "@/hooks/useResellerEvents";
 import { differenceInDays } from "date-fns";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 interface Suggestion {
   id: string;
@@ -126,7 +127,7 @@ export function AutopilotSuggestionsBanner() {
         <div className="flex-1 min-w-0 pr-8">
           {/* Label */}
           <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-1 block">
-            Autopilot Suggestion
+            {t('screens.reseller.autopilotSuggestion')}
           </span>
           
           {/* Title with icon */}

@@ -94,7 +94,7 @@ export default withScreenId(function Consent() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Manage Consent
+              {t('screens.sharing.manageConsent')}
             </Button>
           </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
@@ -117,7 +117,7 @@ export default withScreenId(function Consent() {
                           <CardTitle className="text-lg">{consent.organization}</CardTitle>
                           <CardDescription>{consent.purpose}</CardDescription>
                         </div>
-                        <Badge variant="secondary">Active</Badge>
+                        <Badge variant="secondary">{t('screens.sharing.active')}</Badge>
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -147,16 +147,16 @@ export default withScreenId(function Consent() {
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm">
                             <Eye className="h-4 w-4 mr-2" />
-                            View Details
+                            {t('screens.sharing.viewDetails')}
                           </Button>
                           {consent.canRevoke ? (
                             <Button variant="outline" size="sm">
                               <AlertTriangle className="h-4 w-4 mr-2" />
-                              Revoke Access
+                              {t('screens.sharing.revokeAccess')}
                             </Button>
                           ) : (
                             <Button variant="outline" size="sm" disabled>
-                              Cannot Revoke
+                              {t('screens.sharing.cannotRevoke')}
                             </Button>
                           )}
                         </div>
@@ -182,7 +182,7 @@ export default withScreenId(function Consent() {
                           <CardTitle className="text-lg">{request.organization}</CardTitle>
                           <CardDescription>{request.purpose}</CardDescription>
                         </div>
-                        <Badge variant="outline">Pending</Badge>
+                        <Badge variant="outline">{t('screens.sharing.pending')}</Badge>
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -209,14 +209,14 @@ export default withScreenId(function Consent() {
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm">
                             <Eye className="h-4 w-4 mr-2" />
-                            Review Details
+                            {t('screens.sharing.reviewDetails')}
                           </Button>
                           <Button size="sm">
                             <CheckCircle className="h-4 w-4 mr-2" />
-                            Approve
+                            {t('screens.sharing.approve')}
                           </Button>
                           <Button variant="outline" size="sm">
-                            Decline
+                            {t('screens.sharing.decline')}
                           </Button>
                         </div>
                       </div>
@@ -236,7 +236,7 @@ export default withScreenId(function Consent() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-green-600" />
-                    Privacy Protection Status
+                    {t('screens.sharing.privacyProtectionStatus')}
                   </CardTitle>
                   <CardDescription>{t('screens.sharing.yourDataSecurityConsentOverview')}</CardDescription>
                 </CardHeader>
@@ -299,11 +299,11 @@ export default withScreenId(function Consent() {
                   <div className="flex flex-wrap gap-4">
                     <Button>
                       <Settings className="h-4 w-4 mr-2" />
-                      Privacy Settings
+                      {t('screens.sharing.privacySettings')}
                     </Button>
                     <Button variant="outline">
                       <Eye className="h-4 w-4 mr-2" />
-                      View All Activity
+                      {t('screens.sharing.viewAllActivity')}
                     </Button>
                     <Button variant="outline">{t('screens.sharing.downloadConsentHistory')}</Button>
                   </div>

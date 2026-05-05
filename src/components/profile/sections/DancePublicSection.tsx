@@ -58,7 +58,7 @@ export function DancePublicSection({ userId, isOwn = false }: Props) {
   return (
     <div className="rounded-xl border border-border bg-card p-4 my-4">
       <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-        💃 Dance preferences
+        {t('screens.profile.dancePreferences')}
       </h3>
       <div className="space-y-3">
         <div className="flex flex-wrap gap-1.5">

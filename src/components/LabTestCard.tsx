@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Droplets, Building2, Star } from 'lucide-react';
 import { withCardId } from '@/lib/withCardId';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import { t } from '@/lib/i18n-toast';
 
 interface LabTest {
   id: string;
@@ -126,7 +127,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
             className="flex-1"
             size="sm"
           >
-            Order Now
+            {t('screens.common.orderNow')}
           </Button>
         </div>
       </CardContent>

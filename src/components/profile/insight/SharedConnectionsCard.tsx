@@ -35,7 +35,7 @@ export function SharedConnectionsCard({
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-semibold flex items-center gap-2">
           <Users className="h-4 w-4 text-[hsl(var(--domain-community-accent))]" />
-          Shared Connections
+          {t('screens.profile.sharedConnections')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

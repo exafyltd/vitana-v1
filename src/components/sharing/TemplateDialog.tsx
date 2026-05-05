@@ -55,7 +55,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
             />
           </div>
           <div>
-            <Label htmlFor="template-content">Content</Label>
+            <Label htmlFor="template-content">{t('screens.sharing.content')}</Label>
             <Textarea
               id="template-content"
               value={content}
@@ -66,7 +66,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
             />
           </div>
           <div>
-            <Label htmlFor="category">Category</Label>
+            <Label htmlFor="category">{t('screens.sharing.category')}</Label>
             <Input
               id="category"
               value={category}
@@ -76,7 +76,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
           </div>
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit" disabled={createTemplate.isPending}>
               {createTemplate.isPending ? "Saving..." : "Save Template"}

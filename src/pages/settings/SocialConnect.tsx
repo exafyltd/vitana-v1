@@ -53,7 +53,7 @@ export default function SocialConnect() {
           />
 
           <p className="text-sm text-muted-foreground">
-            Paste your social profile URL and we'll use AI to enrich your Vitana profile — no OAuth needed!
+            {t('screens.settings.pasteYourSocialProfileUrlWe')}
           </p>
 
           <div className="space-y-3">
@@ -87,7 +87,7 @@ export default function SocialConnect() {
                         {platform.connected ? (
                           <>
                             <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                              Connected
+                              {t('screens.settings.connected')}
                             </Badge>
                             <Button
                               variant="outline"
@@ -95,7 +95,7 @@ export default function SocialConnect() {
                               onClick={() => handleOpenDialog(platform.id, platform.name, platform.icon)}
                             >
                               <ExternalLink className="w-4 h-4 mr-1" />
-                              Reconnect
+                              {t('screens.settings.reconnect')}
                             </Button>
                           </>
                         ) : (
@@ -104,7 +104,7 @@ export default function SocialConnect() {
                             onClick={() => handleOpenDialog(platform.id, platform.name, platform.icon)}
                           >
                             <LinkIcon className="w-4 h-4 mr-1" />
-                            Connect
+                            {t('screens.settings.connect')}
                           </Button>
                         )}
                       </div>

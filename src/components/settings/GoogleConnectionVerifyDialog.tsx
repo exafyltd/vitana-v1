@@ -127,14 +127,14 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle>{t('screens.settings.googleConnectionLiveCheck')}</DialogTitle>
           <DialogDescription>
-            Calls Gmail, Calendar, Contacts and YouTube with your stored OAuth token and reports what came back.
+            {t('screens.settings.callsGmailCalendarContactsYoutubeWith')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto min-h-0">
           {isFetching && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground py-6">
-              <Loader2 className="h-4 w-4 animate-spin" /> Probing Google APIs…
+              <Loader2 className="h-4 w-4 animate-spin" /> {t('screens.settings.probingGoogleApis')}
             </div>
           )}
 
@@ -176,10 +176,10 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
           {/* VTID-01939: Play-a-song panel — proves the capability framework end-to-end. */}
           <div className="mt-6 rounded-md border p-3 space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <Music className="h-4 w-4" /> Play a song (music.play capability)
+              <Music className="h-4 w-4" /> {t('screens.settings.playSongMusicPlayCapability')}
             </div>
             <div className="text-xs text-muted-foreground">
-              Calls <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>. Gateway searches YouTube with your token and returns a <code>{t('screens.settings.musicYoutubeCom')}</code> URL — opens in YouTube Music on Android or the web player on desktop.
+              {t('screens.settings.calls')} <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>. Gateway searches YouTube with your token and returns a <code>{t('screens.settings.musicYoutubeCom')}</code> URL — opens in YouTube Music on Android or the web player on desktop.
             </div>
             <div className="flex gap-2">
               <Input
@@ -208,7 +208,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
                   <>
                     {" "}
                     <a href={lastPlay.url} target="_blank" rel="noreferrer" className="underline">
-                      Open again
+                      {t('screens.settings.openAgain')}
                     </a>
                     .
                   </>
@@ -225,9 +225,9 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
             onClick={() => refetch()}
             disabled={isFetching}
           >
-            Re-run check
+            {t('screens.settings.rerunCheck')}
           </Button>
-          <Button size="sm" onClick={() => onOpenChange(false)}>Close</Button>
+          <Button size="sm" onClick={() => onOpenChange(false)}>{t('screens.settings.close')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

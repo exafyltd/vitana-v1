@@ -197,7 +197,7 @@ const RemoteVideo = ({ peer }: RemoteVideoProps) => {
         className="w-full h-full object-cover"
       />
       <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">
-        Participant
+        {t('screens.common.participant')}
       </div>
     </Card>
   );

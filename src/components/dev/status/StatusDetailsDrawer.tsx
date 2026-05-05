@@ -76,7 +76,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
         <SheetHeader>
           <SheetTitle>{t('screens.dev.systemStatusDetails')}</SheetTitle>
           <SheetDescription>
-            Real-time backend connectivity and diagnostic information
+            {t('screens.dev.realtimeBackendConnectivityDiagnosticInformation')}
           </SheetDescription>
         </SheetHeader>
 
@@ -184,7 +184,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 onClick={onRetryAll}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Retry All Connections
+                {t('screens.dev.retryAllConnections')}
               </Button>
               <Button
                 variant="outline"
@@ -192,7 +192,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 onClick={copyDiagnostics}
               >
                 <Copy className="w-4 h-4 mr-2" />
-                Copy Diagnostic Info
+                {t('screens.dev.copyDiagnosticInfo')}
               </Button>
               <Button
                 variant="outline"
@@ -205,7 +205,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                   rel="noopener noreferrer"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Open Documentation
+                  {t('screens.dev.openDocumentation')}
                 </a>
               </Button>
             </div>

@@ -193,7 +193,7 @@ export function ResellerAvailableEventsTab() {
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Ticket className="h-12 w-12 text-muted-foreground/50 mb-4" />
         <p className="text-sm text-muted-foreground max-w-md">
-          Activate reseller mode to access your inventory of events available for commission-based selling.
+          {t('screens.reseller.activateResellerModeAccessYourInventory')}
         </p>
       </div>
     );
@@ -217,7 +217,7 @@ export function ResellerAvailableEventsTab() {
         </p>
         <Button onClick={() => setIsCreateEventOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
-          Add first event
+          {t('screens.reseller.addFirstEvent')}
         </Button>
         <CreateEventPopup
           isOpen={isCreateEventOpen}

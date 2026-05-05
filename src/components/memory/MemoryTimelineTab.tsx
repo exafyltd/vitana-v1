@@ -165,7 +165,7 @@ export function MemoryTimelineTab() {
   return (
     <div className="mt-6 space-y-4">
       <div className="text-sm text-muted-foreground mb-4">
-        Chronological view of your knowledge base updates
+        {t('screens.memory.chronologicalViewYourKnowledgeBaseUpdates')}
       </div>
 
       {knowledgeItems.length === 0 ? (
@@ -194,10 +194,10 @@ export function MemoryTimelineTab() {
               <CardContent className="p-12 text-center">
                 <Calendar className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
                 <p className="text-muted-foreground mb-3">
-                  No activity history yet. Start using the system to see your activity!
+                  {t('screens.memory.noActivityHistoryYetStartUsing')}
                 </p>
                 <Button variant="outline" size="sm">
-                  Add Memory
+                  {t('screens.memory.addMemory')}
                 </Button>
               </CardContent>
             </Card>

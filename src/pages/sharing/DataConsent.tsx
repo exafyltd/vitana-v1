@@ -53,7 +53,7 @@ export default withScreenId(function DataConsent() {
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="default">
                   <Plus className="w-4 h-4 mr-2" />
-                  Manage Access
+                  {t('screens.sharing.manageAccess')}
                   <ChevronDown className="w-4 h-4 ml-2" />
                 </Button>
               </DropdownMenuTrigger>
@@ -92,12 +92,12 @@ export default withScreenId(function DataConsent() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Shield className="w-5 h-5" />
-                    Active Permissions
+                    {t('screens.sharing.activePermissions')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Coming soon: View and manage granted permissions
+                    {t('screens.sharing.comingSoonViewManageGrantedPermissions')}
                   </p>
                 </CardContent>
               </Card>
@@ -108,12 +108,12 @@ export default withScreenId(function DataConsent() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <AlertCircle className="w-5 h-5" />
-                    Pending Requests
+                    {t('screens.sharing.pendingRequests')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Coming soon: Review pending consent requests
+                    {t('screens.sharing.comingSoonReviewPendingConsentRequests')}
                   </p>
                 </CardContent>
               </Card>
@@ -124,12 +124,12 @@ export default withScreenId(function DataConsent() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Database className="w-5 h-5" />
-                    Privacy
+                    {t('screens.sharing.privacy')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Status overview
+                    {t('screens.sharing.statusOverview')}
                   </p>
                 </CardContent>
               </Card>
@@ -140,12 +140,12 @@ export default withScreenId(function DataConsent() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="w-5 h-5" />
-                    Packages
+                    {t('screens.sharing.packages')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Data packages
+                    {t('screens.sharing.dataPackages')}
                   </p>
                 </CardContent>
               </Card>

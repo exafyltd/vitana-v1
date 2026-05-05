@@ -374,7 +374,7 @@ export default function GroupMembersModal({
                 onClick={leaveGroup}
                 className="text-destructive hover:text-destructive"
               >
-                Leave Group
+                {t('screens.messages.leaveGroup')}
               </Button>
             )}
           </DialogTitle>

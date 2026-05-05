@@ -95,7 +95,7 @@ export default function WalletIntegratedSendFunds({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-green-600" />
-            Send Funds
+            {t('screens.payment.sendFunds')}
           </DialogTitle>
         </DialogHeader>
 
@@ -108,13 +108,13 @@ export default function WalletIntegratedSendFunds({
             </Avatar>
             <div>
               <p className="font-medium text-sm">{effectiveRecipient.name}</p>
-              <p className="text-xs text-muted-foreground">Recipient</p>
+              <p className="text-xs text-muted-foreground">{t('screens.payment.recipient')}</p>
             </div>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
             <div className="flex gap-2">
               <Input
                 id="amount"
@@ -179,7 +179,7 @@ export default function WalletIntegratedSendFunds({
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span>{t('screens.payment.fee')}</span>
-                <span className="text-muted-foreground">Free</span>
+                <span className="text-muted-foreground">{t('screens.payment.free')}</span>
               </div>
               <div className="border-t pt-2">
                 <div className="flex items-center justify-between text-sm font-medium">
@@ -200,7 +200,7 @@ export default function WalletIntegratedSendFunds({
               onClick={onClose}
               className="flex-1"
             >
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleSend}
@@ -213,7 +213,7 @@ export default function WalletIntegratedSendFunds({
               }
             >
               <Send className="w-4 h-4 mr-2" />
-              Send Funds
+              {t('screens.payment.sendFunds')}
             </Button>
           </div>
         </div>

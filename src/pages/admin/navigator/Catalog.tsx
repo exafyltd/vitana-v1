@@ -118,7 +118,7 @@ export default function NavigatorCatalog() {
           rightAction={
             <Button onClick={openNew}>
               <Plus className="mr-2 h-4 w-4" />
-              New screen
+              {t('screens.admin.newScreen')}
             </Button>
           }
         />
@@ -167,7 +167,7 @@ export default function NavigatorCatalog() {
           <Card className="h-fit">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center justify-between text-base">
-                Catalog
+                {t('screens.admin.catalog')}
                 <Button size="icon" variant="ghost" onClick={() => catalogQuery.refetch()}>
                   <RefreshCw className={`h-4 w-4 ${catalogQuery.isFetching ? "animate-spin" : ""}`} />
                 </Button>

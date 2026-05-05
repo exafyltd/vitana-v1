@@ -132,11 +132,11 @@ export default function NavigatorTelemetry() {
                             <div className="mb-1 italic text-muted-foreground">"{nm.utterance}"</div>
                             <div className="flex items-center justify-between text-xs">
                               <span>
-                                picked <span className="font-mono">{picked?.screen_id}</span>{" "}
+                                {t('screens.admin.picked')} <span className="font-mono">{picked?.screen_id}</span>{" "}
                                 <span className="text-muted-foreground">({picked?.score})</span>
                               </span>
                               <span>
-                                runner-up <span className="font-mono">{runnerUp?.screen_id}</span>{" "}
+                                {t('screens.admin.runnerup')} <span className="font-mono">{runnerUp?.screen_id}</span>{" "}
                                 <span className="text-muted-foreground">({runnerUp?.score})</span>
                               </span>
                               <Badge variant="outline">δ {nm.delta}</Badge>

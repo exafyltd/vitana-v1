@@ -119,7 +119,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
       <DialogHeader>
         <DialogTitle className="flex items-center gap-2">
           <Wallet className="h-5 w-5 text-primary" />
-          Wallet Actions
+          {t('screens.wallet.walletActions')}
         </DialogTitle>
       </DialogHeader>
 
@@ -144,7 +144,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <div className="font-medium">{t('screens.wallet.buyCredits')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.add100CreditsYourAccount')}</div>
               </div>
-              <Badge variant="secondary" className="ml-auto">Popular</Badge>
+              <Badge variant="secondary" className="ml-auto">{t('screens.wallet.popular')}</Badge>
             </Button>
             
             <Button 
@@ -208,7 +208,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <div className="font-medium text-purple-700">{t('screens.wallet.exchangeSend')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.convertCurrencySendOneStep')}</div>
               </div>
-              <Badge variant="secondary" className="ml-auto bg-purple-100 text-purple-700">Quick</Badge>
+              <Badge variant="secondary" className="ml-auto bg-purple-100 text-purple-700">{t('screens.wallet.quick')}</Badge>
             </Button>
           </div>
         </div>
@@ -253,7 +253,7 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
                 <div className="font-medium">{t('screens.wallet.claimRewards')}</div>
                 <div className="text-xs text-muted-foreground">{t('screens.wallet.claim25VtnaPendingRewards')}</div>
               </div>
-              <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">Ready</Badge>
+              <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">{t('screens.wallet.ready')}</Badge>
             </Button>
           </div>
         </div>

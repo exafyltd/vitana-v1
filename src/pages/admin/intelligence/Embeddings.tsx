@@ -120,7 +120,7 @@ export default function IntelligenceEmbeddings() {
                 </div>
                 <div className="rounded-lg border p-4 text-center">
                   <p className="text-2xl font-bold">{facts.total - facts.active}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Superseded</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.superseded')}</p>
                 </div>
               </div>
               <div className="space-y-1">

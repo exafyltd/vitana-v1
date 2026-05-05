@@ -149,7 +149,7 @@ export default function MakePaymentPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Wallet className="w-5 h-5 text-green-600" />
-            Make Payment
+            {t('screens.payment.makePayment')}
           </DialogTitle>
         </DialogHeader>
 
@@ -216,7 +216,7 @@ export default function MakePaymentPopup({
                       ))
                     ) : (
                       <div className="p-3 text-center text-sm text-muted-foreground">
-                        No members found
+                        {t('screens.payment.noMembersFound')}
                       </div>
                     )}
                   </div>
@@ -245,7 +245,7 @@ export default function MakePaymentPopup({
           {/* Amount & Currency */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -255,7 +255,7 @@ export default function MakePaymentPopup({
               />
             </div>
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -286,7 +286,7 @@ export default function MakePaymentPopup({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
               placeholder={t('screens.payment.whatThisPaymentFor')}
@@ -329,7 +329,7 @@ export default function MakePaymentPopup({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleMakePayment} 
@@ -344,7 +344,7 @@ export default function MakePaymentPopup({
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Payment
+                  {t('screens.payment.sendPayment')}
                 </>
               )}
             </Button>

@@ -21,7 +21,7 @@ export const VisualContextControls = () => {
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Eye className="h-5 w-5" />
-          Visual Context Awareness
+          {t('screens.common.visualContextAwareness')}
         </h3>
         <Button
           variant="ghost"
@@ -37,7 +37,7 @@ export const VisualContextControls = () => {
           <div className="flex items-center justify-between">
             <Label htmlFor="screen-share" className="flex items-center gap-2">
               <Monitor className="h-4 w-4" />
-              Screen Sharing
+              {t('screens.common.screenSharing')}
             </Label>
             <Switch
               id="screen-share"
@@ -50,7 +50,7 @@ export const VisualContextControls = () => {
           <div className="flex items-center justify-between">
             <Label htmlFor="camera" className="flex items-center gap-2">
               <Camera className="h-4 w-4" />
-              Camera
+              {t('screens.common.camera')}
             </Label>
             <Switch
               id="camera"
@@ -89,12 +89,12 @@ export const VisualContextControls = () => {
             className="flex-1"
           >
             <Eye className="h-4 w-4 mr-2" />
-            Start Context Capture
+            {t('screens.common.startContextCapture')}
           </Button>
         ) : (
           <Button onClick={stopCapture} variant="destructive" className="flex-1">
             <EyeOff className="h-4 w-4 mr-2" />
-            Stop Context Capture
+            {t('screens.common.stopContextCapture')}
           </Button>
         )}
       </div>
@@ -102,12 +102,12 @@ export const VisualContextControls = () => {
       {isCapturing && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          Active - Analyzing your visual context
+          {t('screens.common.activeAnalyzingYourVisualContext')}
         </div>
       )}
 
       <p className="text-xs text-muted-foreground">
-        Visual context helps your AI assistant provide more relevant and timely suggestions based on what you're viewing.
+        {t('screens.common.visualContextHelpsYourAiAssistant')}
       </p>
     </Card>
   );

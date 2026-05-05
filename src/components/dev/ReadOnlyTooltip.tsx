@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 import { Lock } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ReadOnlyTooltipProps {
   children: ReactElement;
@@ -39,7 +40,7 @@ export function ReadOnlyTooltip({
             <div className="text-sm">
               <p className="font-medium">{message}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Phase 1: Read-only mode enabled
+                {t('screens.dev.phase1ReadonlyModeEnabled')}
               </p>
             </div>
           </div>

@@ -61,7 +61,7 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
             />
           </div>
           <div>
-            <Label htmlFor="rule-description">Description</Label>
+            <Label htmlFor="rule-description">{t('screens.sharing.description')}</Label>
             <Textarea
               id="rule-description"
               value={description}
@@ -77,9 +77,9 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="schedule">Schedule</SelectItem>
-                <SelectItem value="event">Event</SelectItem>
-                <SelectItem value="condition">Condition</SelectItem>
+                <SelectItem value="schedule">{t('screens.sharing.schedule')}</SelectItem>
+                <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+                <SelectItem value="condition">{t('screens.sharing.condition')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -98,7 +98,7 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
           </div>
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit" disabled={createRule.isPending}>
               {createRule.isPending ? "Creating..." : "Create Rule"}

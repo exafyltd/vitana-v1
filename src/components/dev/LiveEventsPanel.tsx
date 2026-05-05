@@ -41,7 +41,7 @@ export function LiveEventsPanel({ tenant = 'system', status = 'all' }: LiveEvent
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('screens.dev.refresh')}
           </Button>
         </div>
       </CardHeader>

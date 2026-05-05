@@ -37,14 +37,14 @@ function SmartPackage() {
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Package
+              {t('screens.sharing.createPackage')}
             </Button>
           </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="recommendations">{t('screens.sharing.aiRecommendations')}</SplitBarTrigger>
           <SplitBarTrigger value="builder">{t('screens.sharing.customBuilder')}</SplitBarTrigger>
-          <SplitBarTrigger value="templates">Templates</SplitBarTrigger>
+          <SplitBarTrigger value="templates">{t('screens.sharing.templates')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="recommendations">
@@ -194,7 +194,7 @@ function SmartPackage() {
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Description</label>
+                        <label className="text-sm font-medium">{t('screens.sharing.description')}</label>
                         <textarea 
                           className="w-full mt-1 p-2 border rounded-lg" 
                           rows={2}
@@ -319,7 +319,7 @@ function SmartPackage() {
                           <div className="font-medium text-sm">{t('screens.sharing.generalHealthCheckup')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.completeHealthOverviewForAnnualVisits')}</div>
                         </div>
-                        <Button size="sm" variant="outline">Use</Button>
+                        <Button size="sm" variant="outline">{t('screens.sharing.use')}</Button>
                       </div>
                     </div>
                     <div className="p-3 border rounded-lg">
@@ -328,7 +328,7 @@ function SmartPackage() {
                           <div className="font-medium text-sm">{t('screens.sharing.specialistConsultation')}</div>
                           <div className="text-xs text-muted-foreground">{t('screens.sharing.targetedDataForSpecialistAppointments')}</div>
                         </div>
-                        <Button size="sm" variant="outline">Use</Button>
+                        <Button size="sm" variant="outline">{t('screens.sharing.use')}</Button>
                       </div>
                     </div>
                   </div>

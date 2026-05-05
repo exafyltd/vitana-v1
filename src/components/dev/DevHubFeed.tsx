@@ -272,17 +272,17 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             )}
             {connectionState === "LIVE" && (
               <Badge variant="default" className="text-xs bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30">
-                LIVE
+                {t('screens.dev.live')}
               </Badge>
             )}
             {connectionState === "CONNECTING" && (
               <Badge variant="secondary" className="text-xs bg-amber-500/20 text-amber-700 dark:text-amber-400 border-amber-500/30">
-                CONNECTING...
+                {t('screens.dev.connecting')}
               </Badge>
             )}
             {connectionState === "MOCK MODE" && (
               <Badge variant="secondary" className="text-xs bg-muted text-muted-foreground border-border">
-                MOCK MODE
+                {t('screens.dev.mockMode')}
               </Badge>
             )}
           </div>
@@ -301,7 +301,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             ) : (
               <>
                 <Pause className="h-3 w-3" />
-                <span className="text-xs">Pause</span>
+                <span className="text-xs">{t('screens.dev.pause')}</span>
               </>
             )}
           </Button>

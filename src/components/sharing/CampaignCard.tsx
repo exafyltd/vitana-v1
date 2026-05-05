@@ -310,7 +310,7 @@ export function CampaignCard({
                     )}
                   >
                     <Sparkles className="w-3 h-3" />
-                    Smart
+                    {t('screens.sharing.smart')}
                   </Badge>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -374,7 +374,7 @@ export function CampaignCard({
       {selectedChannels.length > 0 && (
         <div className="mb-4">
           <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80 mb-2">
-            Publishing To
+            {t('screens.sharing.publishing')}
           </h4>
           <div className="flex flex-wrap gap-2">
             {selectedChannels.slice(0, 4).map((channelKey) => {
@@ -424,11 +424,11 @@ export function CampaignCard({
           <div className="flex items-center gap-1.5 mb-2">
             <Clock className="w-3.5 h-3.5 text-gray-500/70" />
             <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80">
-              Scheduled Sweet Spots
+              {t('screens.sharing.scheduledSweetSpots')}
             </h4>
           </div>
           <p className="text-[10px] text-gray-500/70 mb-2 ml-5">
-            🕒 AI-recommended posting times
+            {t('screens.sharing.airecommendedPostingTimes')}
           </p>
           <TooltipProvider>
             <Tooltip>
@@ -548,7 +548,7 @@ export function CampaignCard({
                     {stats.total}
                   </span>
                   <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
-                    Posts
+                    {t('screens.sharing.posts')}
                   </span>
                 </div>
               </div>
@@ -573,7 +573,7 @@ export function CampaignCard({
                     {stats.published}
                   </span>
                   <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
-                    Live
+                    {t('screens.sharing.live')}
                   </span>
                 </div>
               </div>
@@ -595,7 +595,7 @@ export function CampaignCard({
                     2.4K
                   </span>
                   <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
-                    Reach
+                    {t('screens.sharing.reach')}
                   </span>
                 </div>
               </div>
@@ -681,7 +681,7 @@ export function CampaignCard({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Edit</p>
+                <p className="text-xs">{t('screens.sharing.edit')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -744,7 +744,7 @@ export function CampaignCard({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Delete</p>
+                <p className="text-xs">{t('screens.sharing.delete')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

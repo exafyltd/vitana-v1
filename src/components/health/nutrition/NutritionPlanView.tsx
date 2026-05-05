@@ -71,11 +71,11 @@ export function NutritionPlanView() {
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start bg-muted/50">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="breakfast">Breakfast</TabsTrigger>
-            <TabsTrigger value="lunch">Lunch</TabsTrigger>
-            <TabsTrigger value="dinner">Dinner</TabsTrigger>
-            <TabsTrigger value="snacks">Snacks</TabsTrigger>
+            <TabsTrigger value="all">{t('screens.health.all')}</TabsTrigger>
+            <TabsTrigger value="breakfast">{t('screens.health.breakfast')}</TabsTrigger>
+            <TabsTrigger value="lunch">{t('screens.health.lunch')}</TabsTrigger>
+            <TabsTrigger value="dinner">{t('screens.health.dinner')}</TabsTrigger>
+            <TabsTrigger value="snacks">{t('screens.health.snacks')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value={activeTab} className="mt-6">

@@ -65,7 +65,7 @@ function EnvironmentalContextCardBase({
 
       <div className="p-2 bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 rounded-lg">
         <p className="text-xs text-muted-foreground">
-          Perfect conditions for outdoor activities! 🌤️
+          {t('screens.crossover.perfectConditionsForOutdoorActivities')}
         </p>
       </div>
     </div>

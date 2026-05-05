@@ -78,7 +78,7 @@ export function ViewModeIntelligence({
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Eye className="h-5 w-5 text-[hsl(var(--util-profile-accent))]" />
-            Profile Analytics
+            {t('screens.profile.profileAnalytics')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -93,13 +93,13 @@ export function ViewModeIntelligence({
               <div className="text-2xl font-bold text-[hsl(var(--domain-community-accent))]">
                 {insights.profileCompleteness}%
               </div>
-              <div className="text-xs text-muted-foreground">Complete</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.complete')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-[hsl(var(--pill-mental-accent))]">
                 {insights.engagementRate}%
               </div>
-              <div className="text-xs text-muted-foreground">Engagement</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.engagement')}</div>
             </div>
           </div>
           
@@ -107,7 +107,7 @@ export function ViewModeIntelligence({
             className="w-full bg-gradient-to-r from-[hsl(var(--util-profile-accent))] to-[hsl(var(--domain-community-accent))] hover:from-[hsl(var(--util-profile-accent)/0.9)] hover:to-[hsl(var(--domain-community-accent)/0.9)] text-white border-0"
           >
             <TrendingUp className="h-4 w-4 mr-2" />
-            Boost Profile Visibility
+            {t('screens.profile.boostProfileVisibility')}
           </Button>
         </CardContent>
       </Card>
@@ -120,11 +120,11 @@ export function ViewModeIntelligence({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Sparkles className="h-5 w-5 text-[hsl(var(--pill-mental-accent))]" />
-          People You Might Like
+          {t('screens.profile.peopleYouMightLike')}
         </CardTitle>
         {viewerCompatibility >= 70 && (
           <Badge className="w-fit bg-gradient-to-r from-[hsl(var(--domain-community-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white border-0">
-            Based on your compatibility with Sarah
+            {t('screens.profile.basedYourCompatibilityWithSarah')}
           </Badge>
         )}
       </CardHeader>
@@ -165,7 +165,7 @@ export function ViewModeIntelligence({
           variant="ghost" 
           className="w-full mt-4 text-[hsl(var(--pill-mental-accent))] hover:bg-[hsl(var(--pill-mental-accent)/0.1)]"
         >
-          See More Recommendations
+          {t('screens.profile.seeMoreRecommendations')}
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       </CardContent>

@@ -48,7 +48,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
             </div>
             <CardTitle>{t('screens.business.startSellingEventTickets')}</CardTitle>
             <CardDescription>
-              Become a reseller to earn commissions by promoting and selling tickets for events.
+              {t('screens.business.becomeResellerEarnCommissionsByPromoting')}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">

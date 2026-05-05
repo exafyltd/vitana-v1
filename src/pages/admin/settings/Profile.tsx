@@ -79,7 +79,7 @@ export default function SettingsProfile() {
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="My Organization" />
               </div>
               <div>
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">{t('screens.admin.description')}</label>
                 <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Short description of your organization" rows={3} />
               </div>
               <div>

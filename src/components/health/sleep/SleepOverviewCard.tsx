@@ -25,12 +25,12 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
             <h2 className="text-xl font-bold">{t('screens.health.yourSleepPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Smart sleep guidance tuned to your circadian rhythm, recovery needs, and daily performance
+            {t('screens.health.smartSleepGuidanceTunedYourCircadian')}
           </p>
         </div>
         <Badge variant="secondary" className="gap-1">
           <Sparkles className="w-3 h-3" />
-          AI Optimized
+          {t('screens.health.aiOptimized')}
         </Badge>
       </div>
       
@@ -49,7 +49,7 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
         <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Schedule</span>
+            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
             {planData.schedule}
@@ -63,7 +63,7 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
         <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="w-4 h-4 text-sky-600 dark:text-sky-400" />
-            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Progress</span>
+            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.progress')}</span>
           </div>
           <p className="text-lg font-bold">
             Week {planData.currentWeek} of {planData.totalWeeks}
@@ -78,7 +78,7 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
-            Tracking your average sleep quality over time...
+            {t('screens.health.trackingYourAverageSleepQualityOver')}
           </span>
           <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
             {planData.completionPercentage}%
@@ -117,12 +117,12 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
         onClick={onRecalibrate}
       >
         <Sparkles className="w-4 h-4 mr-2" />
-        Recalibrate Plan
+        {t('screens.health.recalibratePlan')}
       </Button>
       
       {/* Helper Text */}
       <p className="text-xs text-center text-slate-500/90 dark:text-slate-400/80 mt-2">
-        Recalibration adjusts your sleep goals based on fatigue, activity, and circadian patterns
+        {t('screens.health.recalibrationAdjustsYourSleepGoalsBased')}
       </p>
     </Card>
   );

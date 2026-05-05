@@ -78,10 +78,10 @@ export default function AssistantSessions() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>{t('screens.admin.sessionId')}</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Started</TableHead>
-                    <TableHead>Duration</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('screens.admin.user')}</TableHead>
+                    <TableHead>{t('screens.admin.started')}</TableHead>
+                    <TableHead>{t('screens.admin.duration')}</TableHead>
+                    <TableHead>{t('screens.admin.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

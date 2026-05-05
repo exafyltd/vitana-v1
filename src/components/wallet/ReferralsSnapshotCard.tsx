@@ -11,7 +11,7 @@ export function ReferralsSnapshotCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <Users className="h-5 w-5 text-indigo-500" />
-          Referrals
+          {t('screens.wallet.referrals')}
         </CardTitle>
         <CardDescription>{t('screens.wallet.shareEarnTogether')}</CardDescription>
       </CardHeader>
@@ -19,11 +19,11 @@ export function ReferralsSnapshotCard() {
         <div className="grid grid-cols-3 gap-3 text-center">
           <div>
             <div className="text-2xl font-bold text-indigo-600">12</div>
-            <div className="text-xs text-muted-foreground">Referred</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.referred')}</div>
           </div>
           <div>
             <div className="text-2xl font-bold text-green-600">8</div>
-            <div className="text-xs text-muted-foreground">Active</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
           </div>
           <div>
             <div className="text-2xl font-bold text-amber-600">247</div>
@@ -40,7 +40,7 @@ export function ReferralsSnapshotCard() {
         <div className="flex gap-2">
           <Button size="sm" className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600">
             <Share2 className="h-4 w-4 mr-1" />
-            Share Link
+            {t('screens.wallet.shareLink')}
           </Button>
           <Button size="sm" variant="outline">
             <Gift className="h-4 w-4" />

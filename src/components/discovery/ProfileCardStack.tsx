@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SwipeableProfileCard } from "./SwipeableProfileCard";
 import { AnimatePresence } from "framer-motion";
+import { t } from '@/lib/i18n-toast';
 
 interface Profile {
   user_id: string;
@@ -61,10 +62,10 @@ export function ProfileCardStack({
         <div className="text-center space-y-4 backdrop-blur-xl bg-card/60 rounded-3xl border border-border/20 shadow-2xl p-8">
           <div className="text-6xl mb-4">🎉</div>
           <h3 className="text-2xl font-bold text-foreground">
-            You've discovered everyone!
+            {t('screens.discovery.youVeDiscoveredEveryone')}
           </h3>
           <p className="text-muted-foreground mb-4">
-            Great connections are built daily
+            {t('screens.discovery.greatConnectionsBuiltDaily')}
           </p>
           <p className="text-sm text-muted-foreground">
             Check back tomorrow for 10 new fresh matches ✨

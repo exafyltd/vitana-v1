@@ -105,12 +105,12 @@ export default function AutopilotRuns() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Automation</TableHead>
-                  <TableHead>Trigger</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>VTID</TableHead>
-                  <TableHead className="text-right">Started</TableHead>
+                  <TableHead>{t('screens.admin.automation')}</TableHead>
+                  <TableHead>{t('screens.admin.trigger')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.duration')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.started')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

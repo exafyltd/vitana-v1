@@ -490,7 +490,7 @@ const Events = () => {
               />
               <Button size="sm" onClick={() => setCreateEventOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                Create Event
+                {t('screens.community.createEvent')}
               </Button>
             </UtilityActionButton>
 

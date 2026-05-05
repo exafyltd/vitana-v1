@@ -346,7 +346,7 @@ export default function UserManagement() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Search className="h-5 w-5" />
-                Search & Filter Users
+                {t('screens.admin.searchFilterUsers')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -364,7 +364,7 @@ export default function UserManagement() {
                   <ResponsiveDialogTrigger asChild>
                     <Button>
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Assign Role
+                      {t('screens.admin.assignRole')}
                     </Button>
                   </ResponsiveDialogTrigger>
                   <ResponsiveDialogContent>
@@ -437,7 +437,7 @@ export default function UserManagement() {
                             variant="outline" 
                             onClick={() => setAssignDialogOpen(false)}
                           >
-                            Cancel
+                            {t('screens.admin.cancel')}
                           </Button>
                           <Button 
                             onClick={handleAssignRole}
@@ -532,7 +532,7 @@ export default function UserManagement() {
                                           </ResponsiveConfirmDialogDescription>
                                         </ResponsiveConfirmDialogHeader>
                                         <ResponsiveConfirmDialogFooter>
-                                          <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                                          <ResponsiveConfirmDialogCancel>{t('screens.admin.cancel')}</ResponsiveConfirmDialogCancel>
                                           <ResponsiveConfirmDialogAction 
                                             onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
                                             className="bg-destructive text-destructive-foreground"

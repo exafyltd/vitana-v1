@@ -49,10 +49,10 @@ export default function CheckoutSuccess() {
 
               <div className="my-8 space-y-4">
                 <p className="text-muted-foreground">
-                  Your order has been successfully placed and is being processed.
+                  {t('screens.checkoutsuccess.yourOrderHasSuccessfullyPlacedProcessed')}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  You'll receive a confirmation email with your order details and tracking information shortly.
+                  {t('screens.checkoutsuccess.youLlReceiveConfirmationEmailWith')}
                 </p>
               </div>
 
@@ -74,7 +74,7 @@ export default function CheckoutSuccess() {
                   size="lg"
                   onClick={() => navigate('/discover/orders')}
                 >
-                  View My Orders
+                  {t('screens.checkoutsuccess.viewMyOrders')}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
                 <Button 
@@ -82,7 +82,7 @@ export default function CheckoutSuccess() {
                   size="lg"
                   onClick={() => navigate('/discover')}
                 >
-                  Continue Shopping
+                  {t('screens.checkoutsuccess.continueShopping')}
                 </Button>
               </div>
             </CardContent>
@@ -92,10 +92,10 @@ export default function CheckoutSuccess() {
             <CardContent className="p-6">
               <h3 className="font-semibold mb-4">{t('screens.checkoutsuccess.needHelp')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                If you have any questions about your order, our support team is here to help.
+                {t('screens.checkoutsuccess.ifYouHaveAnyQuestionsAbout')}
               </p>
               <Button variant="outline" onClick={() => navigate('/settings/support')}>
-                Contact Support
+                {t('screens.checkoutsuccess.contactSupport')}
               </Button>
             </CardContent>
           </Card>

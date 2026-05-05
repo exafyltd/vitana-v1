@@ -25,10 +25,10 @@ export function VisibilityDrawer({ open, onOpenChange }: VisibilityDrawerProps) 
               className="flex-1"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button className="flex-1">
-              Save Changes
+              {t('screens.profile.saveChanges')}
             </Button>
           </div>
         </div>

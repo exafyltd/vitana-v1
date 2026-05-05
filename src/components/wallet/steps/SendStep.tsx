@@ -108,7 +108,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <Send className="h-5 w-5 text-primary" />
-          Send Funds
+          {t('screens.wallet.sendFunds')}
         </DialogTitle>
       </DialogHeader>
 
@@ -196,7 +196,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
 
         {/* Amount and Currency */}
         <div className="space-y-2">
-          <Label htmlFor="amount">Amount</Label>
+          <Label htmlFor="amount">{t('screens.wallet.amount')}</Label>
           <div className="flex gap-2">
             <Input
               id="amount"
@@ -249,7 +249,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
               </div>
               <div className="flex justify-between text-sm text-green-600">
                 <span>{t('screens.wallet.transferFees')}</span>
-                <span>FREE</span>
+                <span>{t('screens.wallet.free')}</span>
               </div>
               <div className="border-t pt-2 flex justify-between text-sm font-medium">
                 <span>{t('screens.wallet.totalDeducted2')}</span>
@@ -262,7 +262,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="outline" onClick={onBack} className="flex-1">
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleSend}

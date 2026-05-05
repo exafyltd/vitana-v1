@@ -66,10 +66,10 @@ export default function AssistantRouting() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Surface</TableHead>
+                    <TableHead>{t('screens.admin.surface')}</TableHead>
                     <TableHead>{t('screens.admin.effectiveModel')}</TableHead>
-                    <TableHead>Override</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('screens.admin.override')}</TableHead>
+                    <TableHead>{t('screens.admin.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -88,14 +88,14 @@ export default function AssistantRouting() {
                           {override ? (
                             <code className="text-xs bg-muted px-2 py-0.5 rounded">{override}</code>
                           ) : (
-                            <span className="text-xs text-muted-foreground">None</span>
+                            <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>
                           )}
                         </TableCell>
                         <TableCell>
                           {surface.has_tenant_override ? (
                             <AdminStatusBadge variant="active">Custom</AdminStatusBadge>
                           ) : (
-                            <AdminStatusBadge variant="inactive">Global</AdminStatusBadge>
+                            <AdminStatusBadge variant="inactive">{t('screens.admin.global')}</AdminStatusBadge>
                           )}
                         </TableCell>
                       </TableRow>

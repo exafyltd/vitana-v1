@@ -388,7 +388,7 @@ export default withScreenId(function Health() {
               onClick={() => setHealthActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Health Actions
+              {t('screens.health.healthActions')}
             </Button>
           </UtilityActionButton>
 
@@ -420,7 +420,7 @@ export default withScreenId(function Health() {
               onClick={() => navigate('/autopilot')}
               className="text-sm"
             >
-              View My Journey
+              {t('screens.health.viewMyJourney')}
               <ChevronRight className="w-4 h-4 ml-0.5" />
             </Button>
           </div>
@@ -450,7 +450,7 @@ export default withScreenId(function Health() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  📋 Today's Actions
+                  {t('screens.health.todaySActions')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -474,7 +474,7 @@ export default withScreenId(function Health() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  📅 Upcoming Schedule
+                  {t('screens.health.upcomingSchedule')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -523,7 +523,7 @@ export default withScreenId(function Health() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                👥 Community Activity
+                {t('screens.health.communityActivity')}
               </CardTitle>
             </CardHeader>
             <CardContent>

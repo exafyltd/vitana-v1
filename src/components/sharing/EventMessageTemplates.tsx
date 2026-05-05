@@ -47,7 +47,7 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Mail className="w-4 h-4" />
-              Email Template
+              {t('screens.sharing.emailTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -91,7 +91,7 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Phone className="w-4 h-4" />
-              SMS Template
+              {t('screens.sharing.smsTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -128,7 +128,7 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <MessageSquare className="w-4 h-4" />
-              WhatsApp Template
+              {t('screens.sharing.whatsappTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">

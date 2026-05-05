@@ -169,7 +169,7 @@ export default function Home() {
           <p className="text-lg text-muted-foreground">{t('screens.home.noNewsArticlesYet')}</p>
           <p className="text-sm text-muted-foreground mt-1">{t('screens.home.articlesWillAppearOnceFeedSources')}</p>
           <Button variant="outline" className="mt-4" onClick={handleRefresh}>
-            <RefreshCw className="h-4 w-4 mr-2" />Refresh
+            <RefreshCw className="h-4 w-4 mr-2" />{t('screens.home.refresh')}
           </Button>
         </div>
       )}
@@ -264,9 +264,9 @@ export default function Home() {
             <div className="mt-5">
               <SplitBar value={activeTab} onValueChange={(v) => setActiveTab(v as FilterTab)} className="w-full">
                 <SplitBarList>
-                  <SplitBarTrigger value="all">All</SplitBarTrigger>
-                  <SplitBarTrigger value="longevity">Longevity</SplitBarTrigger>
-                  <SplitBarTrigger value="community">Community</SplitBarTrigger>
+                  <SplitBarTrigger value="all">{t('screens.home.all')}</SplitBarTrigger>
+                  <SplitBarTrigger value="longevity">{t('screens.home.longevity')}</SplitBarTrigger>
+                  <SplitBarTrigger value="community">{t('screens.home.community')}</SplitBarTrigger>
                 </SplitBarList>
                 <SplitBarContent value={activeTab}>{renderFeedContent()}</SplitBarContent>
               </SplitBar>

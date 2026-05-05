@@ -114,7 +114,7 @@ export default function Actions() {
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setManageActionsOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Actions
+              {t('screens.home.actions')}
             </Button>
           </UtilityActionButton>
 
@@ -137,7 +137,7 @@ export default function Actions() {
                 <div className="mb-6 px-1">
                   <p className="text-sm text-muted-foreground/80 flex items-center gap-2">
                     <span className="text-base">🤖</span>
-                    <span>Autopilot analyzed your routines and found <strong className="text-foreground font-semibold">{pendingActions.length} optimized actions</strong> {t('screens.home.forToday')}</span>
+                    <span>{t('screens.home.autopilotAnalyzedYourRoutinesFound')} <strong className="text-foreground font-semibold">{pendingActions.length} optimized actions</strong> {t('screens.home.forToday')}</span>
                   </p>
                 </div>
                 
@@ -251,7 +251,7 @@ export default function Actions() {
                                   Execute All {category.label.split(' ')[0]}
                                 </Button>
                                 <Button variant="ghost" size="sm">
-                                  Configure Category
+                                  {t('screens.home.configureCategory')}
                                 </Button>
                               </div>
                             </>

@@ -189,10 +189,10 @@ export function IntentShareSheet({
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="flex items-center gap-2">
-            <Share2 className="h-5 w-5" /> Share this post
+            <Share2 className="h-5 w-5" /> {t('screens.intents.shareThisPost')}
           </DrawerTitle>
           <DrawerDescription>
-            Send a direct invite to friends, or copy the link to share anywhere.
+            {t('screens.intents.sendDirectInviteFriendsCopyLink')}
           </DrawerDescription>
         </DrawerHeader>
 
@@ -200,7 +200,7 @@ export function IntentShareSheet({
           {/* In-app DM */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Direct invite to Vitana friends
+              {t('screens.intents.directInviteVitanaFriends')}
             </p>
             <Textarea
               placeholder={t('screens.intents.dragan1Maria3Daniel4PasteTypeUp')}
@@ -236,7 +236,7 @@ export function IntentShareSheet({
           {/* Public link */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Public link
+              {t('screens.intents.publicLink')}
             </p>
             <div className="flex gap-2">
               <Input value={publicLink} readOnly className="flex-1 font-mono text-xs" />
@@ -252,16 +252,16 @@ export function IntentShareSheet({
           {/* External channels */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Share elsewhere
+              {t('screens.intents.shareElsewhere')}
             </p>
             <div className="grid grid-cols-3 gap-2">
               <Button variant="outline" onClick={handleWhatsApp} className="flex-col h-auto py-3">
                 <MessageCircle className="h-4 w-4 mb-1" />
-                <span className="text-xs">WhatsApp</span>
+                <span className="text-xs">{t('screens.intents.whatsapp')}</span>
               </Button>
               <Button variant="outline" onClick={handleEmail} className="flex-col h-auto py-3">
                 <Mail className="h-4 w-4 mb-1" />
-                <span className="text-xs">Email</span>
+                <span className="text-xs">{t('screens.intents.email')}</span>
               </Button>
               {nativeShareAvailable && (
                 <Button variant="outline" onClick={handleNativeShare} className="flex-col h-auto py-3">
@@ -275,7 +275,7 @@ export function IntentShareSheet({
 
         <DrawerFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Close
+            {t('screens.intents.close')}
           </Button>
         </DrawerFooter>
       </DrawerContent>

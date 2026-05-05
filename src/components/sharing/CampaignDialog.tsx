@@ -450,7 +450,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                   </div>
                   
                   <div>
-                    <Label htmlFor="description">Description</Label>
+                    <Label htmlFor="description">{t('screens.sharing.description')}</Label>
                     <Textarea
                       id="description"
                       value={description}
@@ -482,7 +482,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       </SelectContent>
                     </Select>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Helps Autopilot optimize your posting strategy
+                      {t('screens.sharing.helpsAutopilotOptimizeYourPostingStrategy')}
                     </p>
                   </div>
 
@@ -517,10 +517,10 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         >
                           <Image className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
                           <p className="text-sm text-muted-foreground mb-1">
-                            Click to upload campaign cover image
+                            {t('screens.sharing.clickUploadCampaignCoverImage')}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            PNG, JPG, WebP up to 5MB
+                            {t('screens.sharing.pngJpgWebpUp5mb')}
                           </p>
                         </div>
                       )}
@@ -591,7 +591,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                 {isConnected ? (
                                   <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
                                     <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
+                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">{t('screens.sharing.connected')}</span>
                                   </div>
                                 ) : (
                                   <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
@@ -629,7 +629,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
                                   <p className="text-xs">
-                                    Connect to schedule posts automatically
+                                    {t('screens.sharing.connectSchedulePostsAutomatically')}
                                   </p>
                                 </TooltipContent>
                               </Tooltip>
@@ -695,7 +695,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                                   {isConnected ? (
                                     <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
                                       <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
-                                      <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
+                                      <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">{t('screens.sharing.connected')}</span>
                                     </div>
                                   ) : (
                                     <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
@@ -733,7 +733,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                             Some audience members may not have given promotional consent for{" "}
                             {selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS"}.
                             <Button variant="link" className="h-auto p-0 ml-1 text-foreground underline">
-                              Request consent →
+                              {t('screens.sharing.requestConsent')}
                             </Button>
                           </AlertDescription>
                         </Alert>
@@ -775,7 +775,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       ))}
                     </div>
                     <p className="text-xs text-muted-foreground pl-4">
-                      Opens your personal apps to share with friends – no account setup needed.
+                      {t('screens.sharing.opensYourPersonalAppsShareWith')}
                     </p>
                   </div>
                 </div>
@@ -832,7 +832,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 <div>
                   <Label>{t('screens.sharing.aipoweredSmartScheduling')}</Label>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Automatically suggest best posting times based on channel analytics
+                    {t('screens.sharing.automaticallySuggestBestPostingTimesBased')}
                   </p>
                 </div>
                 <Switch
@@ -871,7 +871,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                         After creating the campaign, you can review and schedule each post individually from the Campaign Detail page.
                       </p>
                       <p className="text-xs text-muted-foreground/80">
-                        📍 Go to <span className="font-medium">{t('screens.sharing.campaignsYourCampaign')}</span> to manage posts
+                        {t('screens.sharing.go')} <span className="font-medium">{t('screens.sharing.campaignsYourCampaign')}</span> to manage posts
                       </p>
                     </div>
                   </div>
@@ -880,7 +880,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
               <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <p className="text-sm">
-                  ✨ Posts will be created as <strong>{t('screens.sharing.drafts')}</strong> and require manual approval before publishing.
+                  {t('screens.sharing.postsWillCreatedAs')} <strong>{t('screens.sharing.drafts')}</strong> and require manual approval before publishing.
                 </p>
               </div>
             </div>
@@ -904,7 +904,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
               ) : (
                 <>
                   <ChevronLeft className="w-4 h-4 mr-2" />
-                  Back
+                  {t('screens.sharing.back')}
                 </>
               )}
             </Button>

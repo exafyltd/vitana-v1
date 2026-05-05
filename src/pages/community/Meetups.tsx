@@ -533,17 +533,17 @@ export default function Meetups() {
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Meetup
+            {t('screens.community.meetup')}
           </Button>
         </UtilityActionButton>
         
         <SplitBar defaultValue="today" className="w-full">
           <SplitBarList className="grid-cols-2 mb-6">
             <SplitBarTrigger value="today" className="rounded-l-lg">
-              Today
+              {t('screens.community.today')}
             </SplitBarTrigger>
             <SplitBarTrigger value="upcoming" className="rounded-r-lg">
-              Upcoming
+              {t('screens.community.upcoming')}
             </SplitBarTrigger>
           </SplitBarList>
           

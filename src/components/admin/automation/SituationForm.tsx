@@ -31,10 +31,10 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
-          Describe Your Situation
+          {t('screens.admin.describeYourSituation')}
         </CardTitle>
         <CardDescription>
-          Tell us what you want to automate, and AI will suggest the best approach
+          {t('screens.admin.tellUsWhatYouWantAutomate')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -79,7 +79,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
           ) : (
             <>
               <Sparkles className="h-4 w-4 mr-2" />
-              Analyze Situation
+              {t('screens.admin.analyzeSituation')}
             </>
           )}
         </Button>

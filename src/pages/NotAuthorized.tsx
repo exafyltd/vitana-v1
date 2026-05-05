@@ -23,24 +23,24 @@ export default function NotAuthorized() {
             </div>
             <CardTitle className="text-2xl">{t('screens.notauthorized.accessDenied')}</CardTitle>
             <CardDescription>
-              You don't have permission to access this resource. This area is restricted to authorized personnel only.
+              {t('screens.notauthorized.youDonTHavePermissionAccess')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-4">
-                Error 403: Forbidden
+                {t('screens.notauthorized.error403Forbidden')}
               </p>
               <div className="space-y-2">
                 <Button asChild className="w-full">
                   <Link to="/">
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    Return to Dashboard
+                    {t('screens.notauthorized.returnDashboard')}
                   </Link>
                 </Button>
                 <Button variant="outline" asChild className="w-full">
                   <Link to="/settings">
-                    Contact Support
+                    {t('screens.notauthorized.contactSupport')}
                   </Link>
                 </Button>
               </div>
