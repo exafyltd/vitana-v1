@@ -54,6 +54,11 @@ export interface IntentMatch {
   partner_display_name?: string | null;
   partner_avatar_url?: string | null;
   partner_gender?: 'male' | 'female' | null;
+  // E6 — Find a Match cover image. Distinct from the avatar: this is
+  // a landscape cover photo the user uploads (or an AI-generated
+  // themed dance/fitness image) sized for the match preview card.
+  // Optional — when absent, the card renders a themed gradient fallback.
+  partner_match_cover_url?: string | null;
 }
 
 export interface IntentCategory {
