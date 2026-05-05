@@ -21,7 +21,7 @@ import { Loader2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
-import { lookup, notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -182,7 +182,7 @@ export function VitanaIdOnboardingCard() {
         data-vtid-onboarding-card
         className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 backdrop-blur-md shadow-lg"
         role="dialog"
-        aria-label="Pick your Vitana ID"
+        aria-label={t('screens.onboarding.pickYourVitanaId')}
       >
         <div className="max-w-xl mx-auto p-4 space-y-3">
           <div className="text-center space-y-1">
@@ -198,7 +198,7 @@ export function VitanaIdOnboardingCard() {
                 size="icon"
                 className="h-8 w-8"
                 onClick={handleCopy}
-                aria-label="Copy Vitana ID"
+                aria-label={t('screens.onboarding.copyVitanaId')}
               >
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
@@ -232,7 +232,7 @@ export function VitanaIdOnboardingCard() {
       <Dialog open={pickerOpen} onOpenChange={(open) => !submitting && setPickerOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Pick the name part of your Vitana ID</DialogTitle>
+            <DialogTitle>{t('screens.onboarding.pickNamePartYourVitanaId')}</DialogTitle>
             <DialogDescription>
               The number ({seqDigits}) is your registration rank — locked, can't be changed.
               You can change the name. Once you confirm, your Vitana ID is permanent.

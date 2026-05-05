@@ -8,6 +8,7 @@ import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 export default function IntelligenceEmbeddings() {
   // Count memory items (total and those with embeddings)
@@ -64,20 +65,20 @@ export default function IntelligenceEmbeddings() {
     <AppLayout>
       <SubNavigation items={adminIntelligenceNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Embeddings" description="Embedding pipeline status and memory distribution" />
+        <AdminHeader title={t('screens.admin.embeddings')} description="Embedding pipeline status and memory distribution" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Memory Items" value={totalItems} icon={Database} loading={isLoading} />
-          <AdminStatsCard title="Total Facts" value={facts.total} icon={Layers} loading={isLoading} />
-          <AdminStatsCard title="Active Facts" value={facts.active} icon={CheckCircle2} loading={isLoading} variant="success" />
-          <AdminStatsCard title="Superseded" value={facts.total - facts.active} icon={AlertCircle} loading={isLoading} variant={facts.total - facts.active > 0 ? "warning" : "default"} />
+          <AdminStatsCard title={t('screens.admin.totalMemoryItems')} value={totalItems} icon={Database} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalFacts')} value={facts.total} icon={Layers} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.activeFacts')} value={facts.active} icon={CheckCircle2} loading={isLoading} variant="success" />
+          <AdminStatsCard title={t('screens.admin.superseded')} value={facts.total - facts.active} icon={AlertCircle} loading={isLoading} variant={facts.total - facts.active > 0 ? "warning" : "default"} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Category distribution */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Memory Items by Category</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.memoryItemsByCategory')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {categoriesQuery.isLoading ? (
@@ -88,7 +89,7 @@ export default function IntelligenceEmbeddings() {
                   </div>
                 ))
               ) : sortedCategories.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">No memory items yet</p>
+                <p className="text-sm text-muted-foreground text-center py-4">{t('screens.admin.noMemoryItemsYet')}</p>
               ) : (
                 sortedCategories.map(([key, count]) => {
                   const pct = totalItems > 0 ? Math.round(((count as number) / totalItems) * 100) : 0;
@@ -109,13 +110,13 @@ export default function IntelligenceEmbeddings() {
           {/* Fact supersession stats */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Fact Lifecycle</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.factLifecycle')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-lg border p-4 text-center">
                   <p className="text-2xl font-bold">{facts.active}</p>
-                  <p className="text-xs text-muted-foreground mt-1">Active Facts</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.activeFacts')}</p>
                 </div>
                 <div className="rounded-lg border p-4 text-center">
                   <p className="text-2xl font-bold">{facts.total - facts.active}</p>
@@ -124,7 +125,7 @@ export default function IntelligenceEmbeddings() {
               </div>
               <div className="space-y-1">
                 <div className="flex justify-between text-sm">
-                  <span>Active Rate</span>
+                  <span>{t('screens.admin.activeRate')}</span>
                   <span className="font-medium">
                     {facts.total > 0 ? Math.round((facts.active / facts.total) * 100) : 0}%
                   </span>

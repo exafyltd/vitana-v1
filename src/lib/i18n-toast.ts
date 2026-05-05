@@ -32,6 +32,12 @@ export function lookup(key: string, params?: Record<string, string | number>): s
   return applyParams(lookupRaw(key), params);
 }
 
+// Short alias for JSX use: <Button>{t('screens.foo.save')}</Button>
+// Singleton-style: works in components AND non-components. Re-render on
+// language change happens via LanguageProvider re-rendering its tree on
+// selectedLanguage state change.
+export const t = lookup;
+
 function lookupRaw(key: string): string {
   const parts = key.split('.');
   const fallbackCatalog = catalogs['de-DE'];

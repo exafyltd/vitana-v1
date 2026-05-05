@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { listMyIntents, type UserIntent, type IntentKind } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -56,8 +56,8 @@ export default function MyIntents() {
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">My intents</h1>
-          <p className="text-sm text-muted-foreground">Your open requests, listings, and partner searches.</p>
+          <h1 className="text-2xl font-semibold">{t('screens.myintents.myIntents')}</h1>
+          <p className="text-sm text-muted-foreground">{t('screens.myintents.yourOpenRequestsListingsPartnerSearches')}</p>
           {!loading && (
             tab === "all" ? (
               <p className="text-xs text-muted-foreground mt-1">
@@ -121,7 +121,7 @@ export default function MyIntents() {
       />
 
       <p className="text-xs text-muted-foreground text-center">
-        Browse what others are looking for: <Link to="/intents/board" className="underline">Community board</Link>
+        Browse what others are looking for: <Link to="/intents/board" className="underline">{t('screens.myintents.communityBoard')}</Link>
       </p>
     </div>
   );

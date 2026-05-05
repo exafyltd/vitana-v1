@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileInterestTagsProps {
   interests?: string[];
@@ -43,7 +44,7 @@ export function ProfileInterestTags({ interests, className }: ProfileInterestTag
     <div className={`space-y-3 ${className}`}>
       <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
         <Sparkles className="h-4 w-4" />
-        <span>Interests & Expertise</span>
+        <span>{t('screens.profile.interestsExpertise')}</span>
       </div>
       <div className="flex flex-wrap gap-2">
         {displayInterests.map((interest, index) => (

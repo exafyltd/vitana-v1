@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { TrendingUp, Zap, Clock, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningOpportunity {
   id: string;
@@ -108,12 +109,12 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         {/* Weekly Progress */}
         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Weekly Goal Progress</span>
+            <span className="text-sm font-medium">{t('screens.wallet.weeklyGoalProgress')}</span>
             <span className="text-sm text-muted-foreground">{completionProgress}%</span>
           </div>
           <Progress value={completionProgress} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            On track to earn <span className="font-semibold text-primary">150 VTNA</span> this week
+            On track to earn <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span> this week
           </p>
         </div>
 

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Clock, DollarSign, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface OfferItem {
   id: string;
@@ -144,8 +145,8 @@ const OfferCardBase = React.forwardRef<HTMLDivElement, OfferCardProps>(
             
             {displayOffers.length === 0 && (
               <div className="text-center py-6 text-muted-foreground">
-                <p className="text-sm">No offers available right now.</p>
-                <p className="text-xs mt-1">Check back later for new recommendations!</p>
+                <p className="text-sm">{t('screens.templates.noOffersAvailableRightNow')}</p>
+                <p className="text-xs mt-1">{t('screens.templates.checkBackLaterForNewRecommendations')}</p>
               </div>
             )}
           </CardContent>
@@ -168,8 +169,8 @@ const OfferCardBase = React.forwardRef<HTMLDivElement, OfferCardProps>(
           
           {displayOffers.length === 0 && (
             <div className="text-center py-8 text-muted-foreground">
-              <p className="text-sm">No offers available right now.</p>
-              <p className="text-xs mt-1">Check back later for new recommendations!</p>
+              <p className="text-sm">{t('screens.templates.noOffersAvailableRightNow')}</p>
+              <p className="text-xs mt-1">{t('screens.templates.checkBackLaterForNewRecommendations')}</p>
             </div>
           )}
         </CardContent>

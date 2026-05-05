@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -123,7 +123,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Log a data point</DialogTitle>
+          <DialogTitle>{t('screens.health.logDataPoint')}</DialogTitle>
           <DialogDescription>
             Add a single health data point today. The corresponding pillar agent will
             see it within a second and the Connected Data segment on that pillar's

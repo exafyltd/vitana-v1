@@ -6,7 +6,7 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CoachMatchCardProps {
   className?: string;
@@ -77,7 +77,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
 
       <div className="mt-4 p-3 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-medium text-foreground">Expert help available</span>
+          <span className="font-medium text-foreground">{t('screens.crossover.expertHelpAvailable')}</span>
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
         </div>
       </div>
@@ -88,7 +88,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
     <CrossoverCard
       icon={UserCheck}
       category="health"
-      title="Expert Helpers 🧑‍⚕️"
+      title={t('screens.crossover.expertHelpers')}
       subtitle="Professional support when you need it"
       content={content}
       buttonText="Book Now"

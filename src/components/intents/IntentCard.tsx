@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import type { UserIntent } from "@/lib/intentApi";
 import { IntentShareSheet } from "./IntentShareSheet";
+import { t } from '@/lib/i18n-toast';
 
 const KIND_LABEL: Record<string, string> = {
   commercial_buy: "I'm buying",
@@ -154,7 +155,7 @@ export function IntentCard({
               size="sm"
               className="h-7 w-7 p-0"
               onClick={handleShareClick}
-              aria-label="Share post"
+              aria-label={t('screens.intents.sharePost')}
             >
               <Share2 className="h-3.5 w-3.5" />
             </Button>

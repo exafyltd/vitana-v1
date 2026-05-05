@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Crown, TrendingUp, Calculator, Calendar, DollarSign, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ROIMetric {
   id: string;
@@ -101,11 +102,11 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">${totalSaved}</div>
-              <div className="text-xs text-muted-foreground">Total Saved</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.totalSaved')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{totalROI}%</div>
-              <div className="text-xs text-muted-foreground">Avg ROI</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.avgRoi')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-purple-600">{avgUsage}%</div>
@@ -113,7 +114,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your membership is <span className="font-semibold text-emerald-600">highly profitable</span> based on usage
+            Your membership is <span className="font-semibold text-emerald-600">{t('screens.wallet.highlyProfitable')}</span> based on usage
           </p>
         </div>
 
@@ -140,7 +141,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
               
               <div className="mb-2">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">Usage Rate</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.wallet.usageRate')}</span>
                   <span className="text-xs text-muted-foreground">{metric.usage}%</span>
                 </div>
                 <Progress value={metric.usage} className="h-1.5" />
@@ -153,7 +154,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/5 to-pink-500/5 border border-purple-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Crown className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium">Upgrade Analysis</span>
+            <span className="text-sm font-medium">{t('screens.wallet.upgradeAnalysis')}</span>
             <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600 ml-auto">
               {upgradeRecommendation.confidence}% confidence
             </Badge>
@@ -165,11 +166,11 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
-                <span className="text-muted-foreground">Additional cost:</span>
+                <span className="text-muted-foreground">{t('screens.wallet.additionalCost')}</span>
                 <span className="font-semibold ml-1">${upgradeRecommendation.costIncrease}/mo</span>
               </div>
               <div>
-                <span className="text-muted-foreground">Break-even:</span>
+                <span className="text-muted-foreground">{t('screens.wallet.breakeven')}</span>
                 <span className="font-semibold ml-1">{upgradeRecommendation.breakEven}</span>
               </div>
             </div>
@@ -186,7 +187,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
 
           <div className="flex items-center justify-between">
             <div className="text-xs">
-              <span className="text-muted-foreground">Projected monthly savings:</span>
+              <span className="text-muted-foreground">{t('screens.wallet.projectedMonthlySavings')}</span>
               <span className="font-semibold text-emerald-600 ml-1">
                 ${upgradeRecommendation.projectedSavings}
               </span>
@@ -202,7 +203,7 @@ export function MembershipROIAnalyticsCard({ className }: MembershipROIAnalytics
         <div className="p-3 rounded-lg border bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border-blue-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-4 w-4 text-blue-600" />
-            <span className="text-sm font-medium">Usage Optimization</span>
+            <span className="text-sm font-medium">{t('screens.wallet.usageOptimization')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
             You're underutilizing Advanced Analytics (67% usage). Increase usage to maximize ROI.

@@ -15,6 +15,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Podcasts() {
   const { toast } = useToast();
@@ -94,7 +95,7 @@ export default function Podcasts() {
   return (
     <AppLayout>
       <SEO 
-        title="Podcasts | Media Management" 
+        title={t('screens.admin.podcastsMediaManagement')} 
         description="Manage podcast content"
         canonical={window.location.href}
       />

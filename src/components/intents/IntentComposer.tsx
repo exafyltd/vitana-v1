@@ -28,7 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { postIntent, type IntentKind } from "@/lib/intentApi";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntentComposerProps {
   open: boolean;
@@ -108,7 +108,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Post to the community</DialogTitle>
+          <DialogTitle>{t('screens.intents.postCommunity')}</DialogTitle>
           <DialogDescription>
             Tell the community what you need or what you're offering — the system will match you with the right people.
           </DialogDescription>
@@ -134,13 +134,13 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         {mode === "voice" ? (
           <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
             <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
-            <p className="text-sm font-medium">Open ORB and just say it</p>
+            <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
             <p className="text-xs text-muted-foreground">
               Examples:
               <br />
-              <em>"I need a kitchen contractor in Vienna, budget 8 to 12 thousand."</em>
+              <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
               <br />
-              <em>"I'm looking for someone to play tennis Tuesday evenings."</em>
+              <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
               <br />
               ORB will read it back to you and post on confirmation.
             </p>

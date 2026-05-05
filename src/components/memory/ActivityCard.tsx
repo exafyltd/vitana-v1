@@ -15,6 +15,7 @@ import {
   ResponsiveConfirmDialogTitle,
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface ActivityCardProps {
   activity: ActivityHistoryItem;
@@ -82,7 +83,7 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                     </ResponsiveConfirmDialogTrigger>
                     <ResponsiveConfirmDialogContent>
                       <ResponsiveConfirmDialogHeader>
-                        <ResponsiveConfirmDialogTitle>Delete Activity</ResponsiveConfirmDialogTitle>
+                        <ResponsiveConfirmDialogTitle>{t('screens.memory.deleteActivity')}</ResponsiveConfirmDialogTitle>
                         <ResponsiveConfirmDialogDescription>
                           Are you sure you want to delete this activity? This action cannot be undone.
                         </ResponsiveConfirmDialogDescription>

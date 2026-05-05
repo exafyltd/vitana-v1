@@ -10,6 +10,7 @@ import {
   Sparkles,
   ArrowRight
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ViewModeIntelligenceProps {
   isOwnProfile?: boolean;
@@ -86,7 +87,7 @@ export function ViewModeIntelligence({
               <div className="text-2xl font-bold text-[hsl(var(--sys-vitana-accent))]">
                 {insights.viewsThisWeek}
               </div>
-              <div className="text-xs text-muted-foreground">Views this week</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.viewsThisWeek')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-[hsl(var(--domain-community-accent))]">

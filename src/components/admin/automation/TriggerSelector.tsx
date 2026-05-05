@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bell, Calendar, MessageSquare, User, Activity, Heart } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const TRIGGER_TYPES = [
   { value: "user_signup", label: "User Signs Up", icon: User, description: "When a new user creates an account" },
@@ -23,15 +24,15 @@ export default function TriggerSelector({ value, onChange }: TriggerSelectorProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle>1. Select Trigger</CardTitle>
-        <CardDescription>Choose what event starts this automation</CardDescription>
+        <CardTitle>{t('screens.admin.text1SelectTrigger')}</CardTitle>
+        <CardDescription>{t('screens.admin.chooseWhatEventStartsThisAutomation')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label>Trigger Event</Label>
+          <Label>{t('screens.admin.triggerEvent')}</Label>
           <Select value={value} onValueChange={onChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Select a trigger event..." />
+              <SelectValue placeholder={t('screens.admin.selectTriggerEvent')} />
             </SelectTrigger>
             <SelectContent>
               {TRIGGER_TYPES.map(trigger => {

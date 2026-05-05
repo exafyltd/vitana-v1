@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Linkedin } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface LinkedInImportDialogProps {
   open: boolean;
@@ -69,7 +69,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
         <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
             <Linkedin className="h-5 w-5 text-blue-600" />
-            <ResponsiveDialogTitle>Import from LinkedIn</ResponsiveDialogTitle>
+            <ResponsiveDialogTitle>{t('screens.profile.importFromLinkedin')}</ResponsiveDialogTitle>
           </div>
           <ResponsiveDialogDescription>
             Import your professional profile to enrich your Vitana profile
@@ -79,20 +79,20 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
         <ResponsiveDialogBody>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="linkedin-url">LinkedIn Profile URL *</Label>
+              <Label htmlFor="linkedin-url">{t('screens.profile.linkedinProfileUrl')}</Label>
               <Input
                 id="linkedin-url"
-                placeholder="https://linkedin.com/in/yourname"
+                placeholder={t('screens.profile.httpslinkedinCominyourname')}
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bio-text">About Section (Optional)</Label>
+              <Label htmlFor="bio-text">{t('screens.profile.aboutSectionOptional')}</Label>
               <Textarea
                 id="bio-text"
-                placeholder="Paste your LinkedIn 'About' section here for AI to parse and enrich your profile..."
+                placeholder={t('screens.profile.pasteYourLinkedinAboutSectionHere')}
                 value={bioText}
                 onChange={(e) => setBioText(e.target.value)}
                 rows={6}

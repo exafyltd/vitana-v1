@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex } from "@/lib/diary-index-sync";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface TextDiaryEditorProps {
   onSaveComplete?: () => void;
@@ -76,7 +76,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
     <div className="space-y-4">
       <div className="relative">
         <Textarea
-          placeholder="Type your today's entry..."
+          placeholder={t('screens.diary.typeYourTodaySEntry')}
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={6}

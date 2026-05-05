@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { VisibilityForm } from "../editor/VisibilityForm";
+import { t } from '@/lib/i18n-toast';
 
 interface VisibilityDrawerProps {
   open: boolean;
@@ -12,7 +13,7 @@ export function VisibilityDrawer({ open, onOpenChange }: VisibilityDrawerProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Privacy & Visibility</DialogTitle>
+          <DialogTitle>{t('screens.profile.privacyVisibility')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">

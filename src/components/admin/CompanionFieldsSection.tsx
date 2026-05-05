@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 interface Props {
   effectiveConfig: Record<string, unknown>;
@@ -103,7 +103,7 @@ export default function CompanionFieldsSection({
             {hasTenantOverride && (effectiveConfig as any)?._has_extra_override ? (
               <Badge variant="default" className="text-xs">Overridden</Badge>
             ) : (
-              <Badge variant="outline" className="text-xs">Using defaults</Badge>
+              <Badge variant="outline" className="text-xs">{t('screens.admin.usingDefaults')}</Badge>
             )}
           </CardTitle>
           <Button
@@ -130,7 +130,7 @@ export default function CompanionFieldsSection({
         {jsonOpen && (
           <div className="border-t pt-4 mt-4 space-y-2">
             <label className="text-xs font-medium text-muted-foreground block">
-              Tenant <code>extra_config</code> override (JSON object). Keys listed above will
+              Tenant <code>{t('screens.admin.extra_config')}</code> override (JSON object). Keys listed above will
               override the defaults; unlisted keys fall back to global defaults.
             </label>
             <Textarea
@@ -180,7 +180,7 @@ function CompanionFieldRow({
     <div className="border-l-2 border-muted pl-3 py-1">
       <div className="flex items-center gap-2 mb-1">
         <span className="text-xs font-mono font-medium">{fieldKey}</span>
-        {overridden && <Badge variant="default" className="text-[10px] h-4 px-1">custom</Badge>}
+        {overridden && <Badge variant="default" className="text-[10px] h-4 px-1">{t('screens.admin.custom')}</Badge>}
       </div>
       <p className="text-[11px] text-muted-foreground mb-1">{doc}</p>
       <div className="text-xs font-mono bg-muted/40 rounded p-2 max-h-40 overflow-y-auto whitespace-pre-wrap break-words">

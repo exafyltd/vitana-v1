@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Calendar, TrendingUp, Target, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface PlanDetailViewProps {
   plan: any;
@@ -12,7 +13,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
   if (!plan) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-muted-foreground">Select a plan to view details</p>
+        <p className="text-muted-foreground">{t('screens.health.selectPlanViewDetails')}</p>
       </div>
     );
   }
@@ -39,7 +40,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Overall Progress</span>
+              <span className="text-sm font-medium">{t('screens.health.overallProgress')}</span>
               <span className="text-sm font-bold">{plan.adherence_score}%</span>
             </div>
             <Progress value={plan.adherence_score} className="h-2" />
@@ -79,7 +80,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
       {/* Daily Plan */}
       {planData.dailyPlan && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Daily Plan</h3>
+          <h3 className="font-semibold text-lg mb-4">{t('screens.health.dailyPlan')}</h3>
           <pre className="text-sm whitespace-pre-wrap text-muted-foreground">
             {JSON.stringify(planData.dailyPlan, null, 2)}
           </pre>
@@ -89,7 +90,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
       {/* Weekly Plan */}
       {planData.weeklyPlan && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Weekly Plan</h3>
+          <h3 className="font-semibold text-lg mb-4">{t('screens.health.weeklyPlan')}</h3>
           <pre className="text-sm whitespace-pre-wrap text-muted-foreground">
             {JSON.stringify(planData.weeklyPlan, null, 2)}
           </pre>
@@ -99,7 +100,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
       {/* Recommendations */}
       {planData.recommendations && (
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Key Recommendations</h3>
+          <h3 className="font-semibold text-lg mb-4">{t('screens.health.keyRecommendations')}</h3>
           <ul className="space-y-3">
             {planData.recommendations.map((rec: string, idx: number) => (
               <li key={idx} className="flex items-start gap-2">

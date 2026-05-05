@@ -26,7 +26,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -177,7 +177,7 @@ export default function LiveRoomViewer() {
       <AppLayout>
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <p className="text-xl mb-4">Room not found</p>
+            <p className="text-xl mb-4">{t('screens.community.roomNotFound')}</p>
             <Button onClick={() => navigate('/comm/live-rooms')}>
               Back to Live Rooms
             </Button>
@@ -191,18 +191,18 @@ export default function LiveRoomViewer() {
   if (hasEnded) {
     return (
       <>
-        <SEO title="Room Ended" />
+        <SEO title={t('screens.community.roomEnded')} />
         <AppLayout>
           {!isMobile && <SubNavigation items={communityNavigation} />}
           <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
             <Card className="p-8 text-center max-w-md">
-              <h2 className="text-2xl font-bold mb-4">This room has ended</h2>
+              <h2 className="text-2xl font-bold mb-4">{t('screens.community.thisRoomHasEnded')}</h2>
               <p className="text-muted-foreground mb-6">
                 The session "{streamTitle}" has concluded.
               </p>
               {recordingData && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold mb-3">Stream Replay</h3>
+                  <h3 className="text-lg font-semibold mb-3">{t('screens.community.streamReplay')}</h3>
                   <StreamRecordingPlayer recording={recordingData} />
                 </div>
               )}
@@ -271,7 +271,7 @@ export default function LiveRoomViewer() {
               <div className="flex-1 flex items-center justify-center bg-muted/50">
               {isHostResolving ? (
                 <Card className="p-8 text-center max-w-md">
-                  <div className="animate-pulse text-muted-foreground">Loading...</div>
+                  <div className="animate-pulse text-muted-foreground">{t('screens.community.loading')}</div>
                 </Card>
               ) : (
                 <Card className="p-8 text-center max-w-md">
@@ -316,7 +316,7 @@ export default function LiveRoomViewer() {
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center text-muted-foreground">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                        <p>Setting up video room...</p>
+                        <p>{t('screens.community.settingUpVideoRoom')}</p>
                       </div>
                     </div>
                   )}

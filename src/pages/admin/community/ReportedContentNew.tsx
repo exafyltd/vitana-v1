@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useModerationReports } from "@/hooks/useAdminCommunity";
+import { t } from '@/lib/i18n-toast';
 
 export default function ReportedContentNew() {
   const { data: reports = [], isLoading } = useModerationReports();
@@ -23,7 +24,7 @@ export default function ReportedContentNew() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="🚩"
-          title="Reported Content"
+          title={t('screens.admin.reportedContent')}
           description="Review and resolve user-submitted content reports"
         />
 
@@ -41,10 +42,10 @@ export default function ReportedContentNew() {
         </div>
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading reports...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingReports')}</p>
         ) : filtered.length === 0 ? (
           <AdminEmptyState
-            title="No reports found"
+            title={t('screens.admin.noReportsFound')}
             description="There are no content reports matching the current filter."
           />
         ) : (
@@ -52,7 +53,7 @@ export default function ReportedContentNew() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Content Type</TableHead>
+                  <TableHead>{t('screens.admin.contentType')}</TableHead>
                   <TableHead>Reason</TableHead>
                   <TableHead>Reporter</TableHead>
                   <TableHead>Status</TableHead>

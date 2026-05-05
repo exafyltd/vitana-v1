@@ -23,7 +23,7 @@ import { Copy, ExternalLink, Share2, Megaphone, Check } from "lucide-react";
 import { getResellerShareUrl } from "@/lib/shareUrl";
 import { useNavigate } from "react-router-dom";
 import { siWhatsapp, siInstagram } from "simple-icons";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface SellEventModalProps {
   open: boolean;
@@ -119,7 +119,7 @@ export function SellEventModal({
 
           {/* Share Link Input */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Your Unique Reseller Link</label>
+            <label className="text-sm font-medium">{t('screens.reseller.yourUniqueResellerLink')}</label>
             <div className="flex gap-2">
               <Input
                 readOnly
@@ -144,7 +144,7 @@ export function SellEventModal({
 
           {/* Quick Share Buttons */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Quick Share</label>
+            <label className="text-sm font-medium">{t('screens.reseller.quickShare')}</label>
             <div className="grid grid-cols-2 gap-2">
               <Button 
                 variant="outline" 

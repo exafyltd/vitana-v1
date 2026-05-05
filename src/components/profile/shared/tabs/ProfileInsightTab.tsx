@@ -31,6 +31,7 @@ import { FeaturedContentCarousel } from "@/components/profile/insight/FeaturedCo
 import { ContextualCTAs } from "@/components/profile/engagement/ContextualCTAs";
 import { ViewModeIntelligence } from "@/components/profile/engagement/ViewModeIntelligence";
 import { AutopilotSuggestions } from "@/components/profile/AutopilotSuggestions";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileInsightTabProps {
   profile: UserProfile;
@@ -282,7 +283,7 @@ export function ProfileInsightTab({
                 <div className="text-5xl font-bold bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
                   {profile.vitanaIndex}
                 </div>
-                <p className="text-xs text-muted-foreground">VITANA Index</p>
+                <p className="text-xs text-muted-foreground">{t('screens.profile.vitanaIndex2')}</p>
               </div>
               {profile.vitanaPercentile && (
                 <Badge className="w-full justify-center bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full py-2">
@@ -298,7 +299,7 @@ export function ProfileInsightTab({
         {socialNetworks.length > 0 && (
           <Card className="rounded-2xl shadow-sm border-muted/40">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Connected Networks</CardTitle>
+              <CardTitle className="text-sm font-semibold">{t('screens.profile.connectedNetworks')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-3">
@@ -324,7 +325,7 @@ export function ProfileInsightTab({
         {/* Recent Activity Highlights */}
         <Card className="rounded-2xl shadow-sm border-muted/40">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Recent Activity</CardTitle>
+            <CardTitle className="text-sm font-semibold">{t('screens.profile.recentActivity')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {recentActivity.map((activity) => (

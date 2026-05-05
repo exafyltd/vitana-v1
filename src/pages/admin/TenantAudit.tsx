@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Filter } from "lucide-react";
 import { adminTenantManagementNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 const mockTenantAuditLogs = [
   { id: 1, tenant: "Maxina", action: "Settings Updated", admin: "Admin User", timestamp: "2025-01-09 11:20 AM", status: "success" },
@@ -18,7 +19,7 @@ export default function TenantAudit() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - Tenant Audit Logs" 
+        title={t('screens.admin.adminTenantAuditLogs')} 
         description="Track tenant-level changes and configurations" 
         canonical={window.location.href} 
       />
@@ -27,7 +28,7 @@ export default function TenantAudit() {
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Tenant Audit Logs"
+            title={t('screens.admin.tenantAuditLogs')}
             description="Track tenant configuration changes, feature toggles, and administrative actions"
             emoji="📋"
           />

@@ -8,6 +8,7 @@ import { Bell, Pencil, Trash2 } from 'lucide-react';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu-kebab';
 import { format } from 'date-fns';
+import { t } from '@/lib/i18n-toast';
 
 interface MobileLiveRoomCarouselProps {
   rooms: LiveRoom[];
@@ -208,8 +209,8 @@ export function MobileLiveRoomCarousel({
         {emptyState || (
           <div className="text-center">
             <Radio className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Live Rooms</h3>
-            <p className="text-muted-foreground">Check back soon or go live yourself!</p>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.community.noLiveRooms')}</h3>
+            <p className="text-muted-foreground">{t('screens.community.checkBackSoonGoLiveYourself')}</p>
           </div>
         )}
       </div>
@@ -220,7 +221,7 @@ export function MobileLiveRoomCarousel({
     <div 
       className="relative w-full" 
       role="feed" 
-      aria-label="Live rooms feed"
+      aria-label={t('screens.community.liveRoomsFeed')}
     >
       {/* Vertical scroll container with snap */}
       <div 

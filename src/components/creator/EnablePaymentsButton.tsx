@@ -6,6 +6,7 @@
 import { Button } from '@/components/ui/button';
 import { useCreatorStatus, useCreatorOnboard } from '@/hooks/useCreator';
 import { CreditCard, CheckCircle, Loader2 } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 export function EnablePaymentsButton() {
   const { data: status, isLoading } = useCreatorStatus();
@@ -25,7 +26,7 @@ export function EnablePaymentsButton() {
     return (
       <div className="flex items-center gap-2 text-green-600 text-sm">
         <CheckCircle className="w-4 h-4" />
-        <span className="font-medium">Payments Enabled</span>
+        <span className="font-medium">{t('screens.creator.paymentsEnabled')}</span>
       </div>
     );
   }

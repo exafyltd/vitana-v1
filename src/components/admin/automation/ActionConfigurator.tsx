@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Mail, MessageSquare, Bell, Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Action {
   type: string;
@@ -49,13 +50,13 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
   return (
     <Card>
       <CardHeader>
-        <CardTitle>3. Configure Actions</CardTitle>
-        <CardDescription>Define what happens when the automation runs</CardDescription>
+        <CardTitle>{t('screens.admin.text3ConfigureActions')}</CardTitle>
+        <CardDescription>{t('screens.admin.defineWhatHappensWhenAutomationRuns')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {actions.length === 0 ? (
           <div className="text-center py-8 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground mb-4">No actions configured yet</p>
+            <p className="text-muted-foreground mb-4">{t('screens.admin.noActionsConfiguredYet')}</p>
             <Button onClick={addAction} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
               Add First Action
@@ -84,13 +85,13 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Action Type</Label>
+                    <Label>{t('screens.admin.actionType')}</Label>
                     <Select 
                       value={action.type} 
                       onValueChange={(value) => updateAction(index, { type: value })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select action type..." />
+                        <SelectValue placeholder={t('screens.admin.selectActionType')} />
                       </SelectTrigger>
                       <SelectContent>
                         {ACTION_TYPES.map(type => {

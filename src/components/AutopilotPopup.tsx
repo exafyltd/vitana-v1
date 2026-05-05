@@ -40,7 +40,7 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -301,7 +301,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   {completingId === action.id ? (
                     <Loader2 className="w-3 h-3 animate-spin" />
                   ) : (
-                    <>Complete ✓</>
+                    <>{t('screens.common.complete')}</>
                   )}
                 </Button>
               )}
@@ -364,7 +364,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderLoading = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-      <p className="text-sm text-muted-foreground">Loading recommendations…</p>
+      <p className="text-sm text-muted-foreground">{t('screens.common.loadingRecommendations')}</p>
     </div>
   );
 
@@ -372,7 +372,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderError = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <WifiOff className="w-10 h-10 text-destructive mb-4" />
-      <p className="text-sm font-medium mb-1">Could not load recommendations</p>
+      <p className="text-sm font-medium mb-1">{t('screens.common.couldNotLoadRecommendations')}</p>
       <p className="text-xs text-muted-foreground mb-4">{error}</p>
       <Button size="sm" variant="outline" onClick={() => fetchRecommendations()}>
         Try Again
@@ -384,8 +384,8 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderEmpty = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <PartyPopper className="w-10 h-10 text-primary mb-4" />
-      <p className="text-sm font-medium mb-1">All caught up!</p>
-      <p className="text-xs text-muted-foreground">No new recommendations right now. Check back later.</p>
+      <p className="text-sm font-medium mb-1">{t('screens.common.allCaughtUp')}</p>
+      <p className="text-xs text-muted-foreground">{t('screens.common.noNewRecommendationsRightNowCheck')}</p>
     </div>
   );
 

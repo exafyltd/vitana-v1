@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Shield, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PrivacyControlsDialogProps {
   open: boolean;
@@ -75,7 +75,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
         <div className="space-y-6">
           {/* Activity Tracking by Category */}
           <div className="space-y-3">
-            <h3 className="font-semibold">Activity Tracking</h3>
+            <h3 className="font-semibold">{t('screens.memory.activityTracking')}</h3>
             <p className="text-sm text-muted-foreground">
               Choose which activities to track in your history
             </p>
@@ -103,17 +103,17 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
 
           {/* Auto-Delete Settings */}
           <div className="space-y-2">
-            <Label htmlFor="auto-delete">Automatic Deletion</Label>
+            <Label htmlFor="auto-delete">{t('screens.memory.automaticDeletion')}</Label>
             <Select value={autoDeleteDays} onValueChange={setAutoDeleteDays}>
               <SelectTrigger id="auto-delete">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="never">Never (Keep Forever)</SelectItem>
-                <SelectItem value="30">After 30 days</SelectItem>
-                <SelectItem value="90">After 90 days</SelectItem>
-                <SelectItem value="180">After 180 days</SelectItem>
-                <SelectItem value="365">After 1 year</SelectItem>
+                <SelectItem value="never">{t('screens.memory.neverKeepForever')}</SelectItem>
+                <SelectItem value="30">{t('screens.memory.after30Days')}</SelectItem>
+                <SelectItem value="90">{t('screens.memory.after90Days')}</SelectItem>
+                <SelectItem value="180">{t('screens.memory.after180Days')}</SelectItem>
+                <SelectItem value="365">{t('screens.memory.after1Year')}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
@@ -123,15 +123,15 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
 
           {/* Data Export Options */}
           <div className="space-y-2">
-            <Label htmlFor="export-option">Data Export Format</Label>
+            <Label htmlFor="export-option">{t('screens.memory.dataExportFormat')}</Label>
             <Select value={exportDataOption} onValueChange={setExportDataOption}>
               <SelectTrigger id="export-option">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="encrypted">Encrypted (Recommended)</SelectItem>
-                <SelectItem value="plain">Plain Text</SelectItem>
-                <SelectItem value="json">JSON Format</SelectItem>
+                <SelectItem value="encrypted">{t('screens.memory.encryptedRecommended')}</SelectItem>
+                <SelectItem value="plain">{t('screens.memory.plainText')}</SelectItem>
+                <SelectItem value="json">{t('screens.memory.jsonFormat')}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
@@ -144,7 +144,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
             <div className="flex gap-3">
               <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
               <div>
-                <p className="font-medium text-sm">Privacy Notice</p>
+                <p className="font-medium text-sm">{t('screens.memory.privacyNotice')}</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   Disabling activity tracking will prevent certain features from working properly. Historical data will be retained but new activities won't be recorded.
                 </p>

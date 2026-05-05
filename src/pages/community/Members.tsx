@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, MapPin, Users } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -127,7 +128,7 @@ export default function Members() {
     <div className="container max-w-3xl mx-auto px-4 py-6 space-y-4">
       <div className="flex items-center gap-3">
         <Users className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-semibold">Community members</h1>
+        <h1 className="text-2xl font-semibold">{t('screens.community.communityMembers')}</h1>
       </div>
 
       <p className="text-sm text-muted-foreground">
@@ -137,7 +138,7 @@ export default function Members() {
 
       <div className="space-y-3">
         <Input
-          placeholder="Search by name or @vitana-id"
+          placeholder={t('screens.community.searchByNameVitanaid')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search members"

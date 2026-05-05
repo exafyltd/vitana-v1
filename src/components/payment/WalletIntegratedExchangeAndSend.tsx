@@ -13,7 +13,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { ArrowRight, ArrowUpDown, Send, Zap } from "lucide-react";
 import { calculateExchange, formatCurrency } from "@/lib/exchangeRates";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface WalletIntegratedExchangeAndSendProps {
   isOpen: boolean;
@@ -138,7 +138,7 @@ export default function WalletIntegratedExchangeAndSend({
               </Avatar>
               <div className="flex-1">
                 <p className="font-medium">{recipient.name}</p>
-                <p className="text-sm text-muted-foreground">Will receive the exchanged amount</p>
+                <p className="text-sm text-muted-foreground">{t('screens.payment.willReceiveExchangedAmount')}</p>
               </div>
             </div>
           )}
@@ -147,7 +147,7 @@ export default function WalletIntegratedExchangeAndSend({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourBalance2')}</span>
                 <div className="flex items-center gap-3">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
@@ -162,7 +162,7 @@ export default function WalletIntegratedExchangeAndSend({
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Amount to Exchange</Label>
+            <Label htmlFor="amount">{t('screens.payment.amountExchange')}</Label>
             <Input
               id="amount"
               type="number"
@@ -175,7 +175,7 @@ export default function WalletIntegratedExchangeAndSend({
           {/* Currency Selection */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>From Currency</Label>
+              <Label>{t('screens.payment.fromCurrency')}</Label>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -194,7 +194,7 @@ export default function WalletIntegratedExchangeAndSend({
             </div>
 
             <div>
-              <Label>To Currency</Label>
+              <Label>{t('screens.payment.currency')}</Label>
               <div className="flex gap-1">
                 <Select value={toCurrency} onValueChange={setToCurrency}>
                   <SelectTrigger className="flex-1">
@@ -230,14 +230,14 @@ export default function WalletIntegratedExchangeAndSend({
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm mb-3">
                   <div className="text-center">
-                    <p className="text-muted-foreground">You exchange</p>
+                    <p className="text-muted-foreground">{t('screens.payment.youExchange')}</p>
                     <p className="font-bold text-purple-600">
                       {formatCurrency(calculation.fromAmount, fromCurrency)}
                     </p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-purple-500" />
                   <div className="text-center">
-                    <p className="text-muted-foreground">They receive</p>
+                    <p className="text-muted-foreground">{t('screens.payment.theyReceive2')}</p>
                     <p className="font-bold text-green-600">
                       {formatCurrency(calculation.total, toCurrency)}
                     </p>
@@ -262,7 +262,7 @@ export default function WalletIntegratedExchangeAndSend({
             <Label htmlFor="description">Message</Label>
             <Textarea
               id="description"
-              placeholder="What is this exchange for?"
+              placeholder={t('screens.payment.whatThisExchangeFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}

@@ -12,7 +12,7 @@ import { Download, Copy, Check, Loader2, Smartphone, Square, Share2, ExternalLin
 import { ShareableEventCard } from "./ShareableEventCard";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface InstagramShareModalProps {
   open: boolean;
@@ -303,18 +303,18 @@ export function InstagramShareModal({
             <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
               {isMobile ? (
                 <>
-                  <li>Tap "Share to Instagram" to open your share menu</li>
-                  <li>Select Instagram from the apps</li>
-                  <li>Add a Link Sticker with the copied link</li>
-                  <li>Share with your followers!</li>
+                  <li>{t('screens.sharing.tapShareInstagramOpenYourShare')}</li>
+                  <li>{t('screens.sharing.selectInstagramFromApps')}</li>
+                  <li>{t('screens.sharing.addLinkStickerWithCopiedLink')}</li>
+                  <li>{t('screens.sharing.shareWithYourFollowers')}</li>
                 </>
               ) : (
                 <>
-                  <li>Download the image above</li>
-                  <li>Open Instagram and create a Story or Post</li>
-                  <li>Select the downloaded image</li>
-                  <li>Add a Link Sticker with the copied link</li>
-                  <li>Share with your followers!</li>
+                  <li>{t('screens.sharing.downloadImageAbove')}</li>
+                  <li>{t('screens.sharing.openInstagramCreateStoryPost')}</li>
+                  <li>{t('screens.sharing.selectDownloadedImage')}</li>
+                  <li>{t('screens.sharing.addLinkStickerWithCopiedLink')}</li>
+                  <li>{t('screens.sharing.shareWithYourFollowers')}</li>
                 </>
               )}
             </ol>

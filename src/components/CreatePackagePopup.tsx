@@ -14,7 +14,7 @@ import { Package, Calendar as CalendarIcon, Users, Shield, FileText } from "luci
 import { useToast } from '@/hooks/use-toast';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CreatePackagePopupProps {
   isOpen: boolean;
@@ -116,7 +116,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Package Name *</Label>
+                  <Label htmlFor="name">{t('screens.common.packageName')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
@@ -138,7 +138,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Quick Start Templates</Label>
+                  <Label className="text-base font-medium">{t('screens.common.quickStartTemplates')}</Label>
                   <div className="grid gap-3 mt-2">
                     {templates.map((template) => (
                       <div key={template.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -162,7 +162,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="data" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Select Data Types</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.selectDataTypes')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -189,12 +189,12 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="timeline" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Date Range</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.dateRange')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>From Date</Label>
+                    <Label>{t('screens.common.fromDate')}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -220,7 +220,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                   </div>
 
                   <div>
-                    <Label>To Date</Label>
+                    <Label>{t('screens.common.date2')}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -247,7 +247,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Quick Date Ranges</Label>
+                  <Label className="text-base font-medium">{t('screens.common.quickDateRanges')}</Label>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {[
                       { label: "Last 30 days", days: 30 },
@@ -279,7 +279,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="sharing" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Sharing Settings</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.sharingSettings')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -294,22 +294,22 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                 </div>
 
                 <div>
-                  <Label htmlFor="privacy">Privacy Level</Label>
+                  <Label htmlFor="privacy">{t('screens.common.privacyLevel')}</Label>
                   <Select value={formData.privacy} onValueChange={(value) => setFormData({...formData, privacy: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="healthcare-provider">Healthcare Provider Only</SelectItem>
-                      <SelectItem value="research">Research Institution</SelectItem>
-                      <SelectItem value="anonymized">Anonymized Research</SelectItem>
-                      <SelectItem value="personal">Personal Use</SelectItem>
+                      <SelectItem value="healthcare-provider">{t('screens.common.healthcareProviderOnly')}</SelectItem>
+                      <SelectItem value="research">{t('screens.common.researchInstitution')}</SelectItem>
+                      <SelectItem value="anonymized">{t('screens.common.anonymizedResearch')}</SelectItem>
+                      <SelectItem value="personal">{t('screens.common.personalUse')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2">Privacy Notice</h4>
+                  <h4 className="font-medium text-blue-900 mb-2">{t('screens.common.privacyNotice')}</h4>
                   <p className="text-sm text-blue-800">
                     Your health data will be encrypted and shared only with the specified recipient. 
                     You can revoke access at any time through your sharing dashboard.

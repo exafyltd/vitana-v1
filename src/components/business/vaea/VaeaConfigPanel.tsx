@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useVaeaConfig, type AutonomyMode, type VaeaConfig } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 export function VaeaConfigPanel() {
   const { config, loading, error, update } = useVaeaConfig();
@@ -45,28 +46,28 @@ export function VaeaConfigPanel() {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Your three switches</CardTitle>
+          <CardTitle>{t('screens.business.yourThreeSwitches')}</CardTitle>
           <CardDescription>
             These decide what Autopilot can do on your behalf for community referrals. Flip any of them any time.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <SwitchRow
-            title="Receive recommendations"
+            title={t('screens.business.receiveRecommendations')}
             description="Autopilot can query peers when you ask questions."
             checked={c?.receive_recommendations ?? true}
             onChange={(v) => setField("receive_recommendations", v)}
             saving={saving === "receive_recommendations"}
           />
           <SwitchRow
-            title="Give recommendations (earn)"
+            title={t('screens.business.giveRecommendationsEarn')}
             description="Autopilot may offer your catalog to other members. Off by default — opt in when you're ready."
             checked={c?.give_recommendations ?? false}
             onChange={(v) => setField("give_recommendations", v)}
             saving={saving === "give_recommendations"}
           />
           <SwitchRow
-            title="Goal: make money"
+            title={t('screens.business.goalMakeMoney')}
             description="Promotes earn from propose-and-approve to autonomous. Only flip this when you trust your catalog and disclosure."
             checked={c?.make_money_goal ?? false}
             onChange={(v) => setField("make_money_goal", v)}
@@ -79,12 +80,12 @@ export function VaeaConfigPanel() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Autonomy & voice</CardTitle>
-          <CardDescription>How Autopilot phrases referral replies when it does draft one.</CardDescription>
+          <CardTitle>{t('screens.business.autonomyVoice')}</CardTitle>
+          <CardDescription>{t('screens.business.howAutopilotPhrasesReferralRepliesWhen')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>Default autonomy</Label>
+            <Label>{t('screens.business.defaultAutonomy')}</Label>
             <Select
               value={c?.autonomy_default ?? "draft_to_user"}
               onValueChange={(v) => setField("autonomy_default", v as AutonomyMode)}
@@ -94,10 +95,10 @@ export function VaeaConfigPanel() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="silent">Silent — log only</SelectItem>
-                <SelectItem value="draft_to_user">Draft to me (default)</SelectItem>
-                <SelectItem value="one_tap_approve">One-tap approve</SelectItem>
-                <SelectItem value="auto_post">Auto-post</SelectItem>
+                <SelectItem value="silent">{t('screens.business.silentLogOnly')}</SelectItem>
+                <SelectItem value="draft_to_user">{t('screens.business.draftMeDefault')}</SelectItem>
+                <SelectItem value="one_tap_approve">{t('screens.business.onetapApprove')}</SelectItem>
+                <SelectItem value="auto_post">{t('screens.business.autopost')}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
@@ -155,10 +156,10 @@ function DisclosureField({ value, onSave, saving }: { value: string; onSave: (v:
   const dirty = draft !== value;
   return (
     <div className="space-y-2">
-      <Label>Disclosure text</Label>
+      <Label>{t('screens.business.disclosureText')}</Label>
       <Input className="h-11" value={draft} onChange={(e) => setDraft(e.target.value)} />
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-muted-foreground">Appended to every draft with an affiliate link.</p>
+        <p className="text-xs text-muted-foreground">{t('screens.business.appendedEveryDraftWithAffiliateLink')}</p>
         {dirty && (
           <Button
             type="button"
@@ -183,7 +184,7 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
   const dirty = draft !== current;
   return (
     <div className="space-y-2">
-      <Label>Expertise zones</Label>
+      <Label>{t('screens.business.expertiseZones')}</Label>
       <Input
         className="h-11"
         value={draft}
@@ -191,7 +192,7 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
         placeholder="e.g. longevity, sleep, supplements"
       />
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-muted-foreground">Comma-separated. Messages outside these topics get lower match scores.</p>
+        <p className="text-xs text-muted-foreground">{t('screens.business.commaseparatedMessagesOutsideTheseTopicsGet')}</p>
         {dirty && (
           <Button
             type="button"

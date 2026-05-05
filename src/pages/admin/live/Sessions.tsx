@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminLiveNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   live: "default",
@@ -87,13 +88,13 @@ export default function LiveSessions() {
     <AppLayout>
       <SubNavigation items={adminLiveNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Sessions" description="History of all live room sessions" />
+        <AdminHeader title={t('screens.admin.sessions')} description="History of all live room sessions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Sessions" value={total} icon={CalendarDays} loading={isLoading} />
-          <AdminStatsCard title="Live Now" value={liveCount} icon={PlayCircle} loading={isLoading} variant="success" />
-          <AdminStatsCard title="Ended" value={endedCount} icon={CheckCircle2} loading={isLoading} />
-          <AdminStatsCard title="On This Page" value={sessions.length} icon={XCircle} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalSessions')} value={total} icon={CalendarDays} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.liveNow')} value={liveCount} icon={PlayCircle} loading={isLoading} variant="success" />
+          <AdminStatsCard title={t('screens.admin.ended')} value={endedCount} icon={CheckCircle2} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.thisPage')} value={sessions.length} icon={XCircle} loading={isLoading} />
         </div>
 
         <AdminTable

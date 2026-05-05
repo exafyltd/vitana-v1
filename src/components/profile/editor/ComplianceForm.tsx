@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Plus, X, Upload, FileText, AlertCircle, CheckCircle } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
+import { t } from '@/lib/i18n-toast';
 
 export function ComplianceForm() {
   const { profile } = useProfile();
@@ -41,7 +42,7 @@ export function ComplianceForm() {
     return (
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-medium mb-4">Professional & Compliance</h3>
+          <h3 className="text-lg font-medium mb-4">{t('screens.profile.professionalCompliance')}</h3>
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
@@ -59,7 +60,7 @@ export function ComplianceForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Professional & Compliance</h3>
+        <h3 className="text-lg font-medium mb-4">{t('screens.profile.professionalCompliance')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
           Manage your professional credentials and specialties. License verification is required before publishing services.
         </p>
@@ -70,7 +71,7 @@ export function ComplianceForm() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="text-base font-medium">License Verification</Label>
+              <Label className="text-base font-medium">{t('screens.profile.licenseVerification')}</Label>
               <p className="text-sm text-muted-foreground">
                 Upload your professional licenses for verification
               </p>
@@ -100,7 +101,7 @@ export function ComplianceForm() {
           )}
 
           <div className="space-y-2">
-            <Label>License Files</Label>
+            <Label>{t('screens.profile.licenseFiles')}</Label>
             <div className="space-y-2">
               {licenseFiles.map((file, index) => (
                 <div key={index} className="flex items-center gap-2 p-2 border rounded">
@@ -142,7 +143,7 @@ export function ComplianceForm() {
 
         <div className="flex gap-2">
           <Input
-            placeholder="Add a specialty"
+            placeholder={t('screens.profile.addSpecialty')}
             value={newSpecialty}
             onChange={(e) => setNewSpecialty(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && addSpecialty()}
@@ -158,7 +159,7 @@ export function ComplianceForm() {
       </div>
 
       <div className="pt-4 border-t">
-        <Button className="w-full">Save Changes</Button>
+        <Button className="w-full">{t('screens.profile.saveChanges')}</Button>
       </div>
     </div>
   );

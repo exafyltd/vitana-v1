@@ -85,6 +85,7 @@ const overviewCards = [
 ];
 
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Health() {
   const navigate = useNavigate();
@@ -217,7 +218,7 @@ export default withScreenId(function Health() {
   if (isMobile) {
     return (
       <AppLayout>
-        <SEO title="Health" description="Your personal health dashboard" canonical={window.location.href} />
+        <SEO title={t('screens.health.health')} description="Your personal health dashboard" canonical={window.location.href} />
         <VitanaBaselineSurveyModal />
 
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
@@ -367,19 +368,19 @@ export default withScreenId(function Health() {
   // Desktop layout (unchanged)
   return (
     <AppLayout>
-      <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
+      <SEO title={t('screens.health.health')} description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <VitanaBaselineSurveyModal />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Let's improve quality of life!"
+            title={t('screens.health.letSImproveQualityLife')}
             description="Discover health services, programs, and educational resources to enhance your wellness journey."
             emoji="🌱"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchHealthServicesArticlesCommunity')} />
             <UniversalCalendarButton />
             <Button
               variant="default"
@@ -427,7 +428,7 @@ export default withScreenId(function Health() {
           {/* Pillar agents — what each pillar is doing right now */}
           <Card className="mb-6 rounded-2xl border ring-1 ring-border/60 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg">Your pillars right now</CardTitle>
+              <CardTitle className="text-lg">{t('screens.health.yourPillarsRightNow')}</CardTitle>
             </CardHeader>
             <CardContent>
               <VitanaPillarAgentsPanel />
@@ -499,7 +500,7 @@ export default withScreenId(function Health() {
           {/* AI Health Insights */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>AI Health Insights</CardTitle>
+              <CardTitle>{t('screens.health.aiHealthInsights')}</CardTitle>
             </CardHeader>
             <CardContent>
               <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({

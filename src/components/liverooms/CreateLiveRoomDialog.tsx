@@ -15,6 +15,7 @@ import { EnablePaymentsButton } from '@/components/creator/EnablePaymentsButton'
 import { useState } from 'react';
 import { Plus, AlertCircle } from 'lucide-react';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 export function CreateLiveRoomDialog() {
   const [open, setOpen] = useState(false);
@@ -57,12 +58,12 @@ export function CreateLiveRoomDialog() {
 
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Live Room</DialogTitle>
+          <DialogTitle>{t('screens.liverooms.createLiveRoom')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="title">Title *</Label>
+            <Label htmlFor="title">{t('screens.liverooms.title')}</Label>
             <Input
               id="title"
               value={title}
@@ -84,15 +85,15 @@ export function CreateLiveRoomDialog() {
 
           {!isIAPRestricted() && (
             <div>
-              <Label>Access Level *</Label>
+              <Label>{t('screens.liverooms.accessLevel')}</Label>
               <RadioGroup value={accessLevel} onValueChange={(v) => setAccessLevel(v as any)}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="public" id="public" />
-                  <Label htmlFor="public">Free (Public)</Label>
+                  <Label htmlFor="public">{t('screens.liverooms.freePublic')}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="group" id="group" />
-                  <Label htmlFor="group">Paid (Group)</Label>
+                  <Label htmlFor="group">{t('screens.liverooms.paidGroup')}</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -119,7 +120,7 @@ export function CreateLiveRoomDialog() {
               )}
 
               <div>
-                <Label htmlFor="price">Price (USD) *</Label>
+                <Label htmlFor="price">{t('screens.liverooms.priceUsd')}</Label>
                 <Input
                   id="price"
                   type="number"

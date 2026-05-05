@@ -18,6 +18,7 @@ import { MemoryEducationTab } from "@/components/memory/MemoryEducationTab";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
+import { t } from '@/lib/i18n-toast';
 
 // Mock data for Memory Overview - Recent Memories
 const recentMemories = [
@@ -130,20 +131,20 @@ export default withScreenId(function Memory() {
 
   return (
     <AppLayout>
-      <SEO title="Memory Hub | VITANA" description="Track and review your wellness journey through AI-driven insights and memory tracking." />
+      <SEO title={t('screens.memory.memoryHubVitana')} description="Track and review your wellness journey through AI-driven insights and memory tracking." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader 
-          title="Memory Hub"
+          title={t('screens.memory.memoryHub')}
           description="Track and review your wellness journey through AI-driven insights."
           emoji="🧠"
           syncTimestamp={`Last synced ${mockSyncTimestamp}`}
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search memories, insights, or timeline..." />
+          <ExpandableSearchButton placeholder={t('screens.memory.searchMemoriesInsightsTimeline')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -153,9 +154,9 @@ export default withScreenId(function Memory() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="categories">📂 Categories</SplitBarTrigger>
-            <SplitBarTrigger value="timeline">📅 Timeline</SplitBarTrigger>
-            <SplitBarTrigger value="education">📚 Education</SplitBarTrigger>
+            <SplitBarTrigger value="categories">{t('screens.memory.categories')}</SplitBarTrigger>
+            <SplitBarTrigger value="timeline">{t('screens.memory.timeline')}</SplitBarTrigger>
+            <SplitBarTrigger value="education">{t('screens.memory.education')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="categories">

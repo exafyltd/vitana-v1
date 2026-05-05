@@ -19,7 +19,7 @@ import ConditionBuilder from "@/components/admin/automation/ConditionBuilder";
 import ActionConfigurator from "@/components/admin/automation/ActionConfigurator";
 import { useAutomationRules } from "@/hooks/useAutomationRules";
 import { useToast } from "@/hooks/use-toast";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function AutomationBuilder() {
   const navigate = useNavigate();
@@ -144,7 +144,7 @@ export default function AutomationBuilder() {
   return (
     <AppLayout>
       <SEO 
-        title="Automation Builder | AI Assistant | Admin" 
+        title={t('screens.admin.automationBuilderAiAssistantAdmin')} 
         description="Create and configure automation rules" 
         canonical={window.location.href} 
       />
@@ -177,12 +177,12 @@ export default function AutomationBuilder() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>Give your automation a name and description</CardDescription>
+              <CardTitle>{t('screens.admin.basicInformation')}</CardTitle>
+              <CardDescription>{t('screens.admin.giveYourAutomationNameDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Automation Name *</Label>
+                <Label htmlFor="name">{t('screens.admin.automationName')}</Label>
                 <Input 
                   id="name"
                   value={name}
@@ -204,7 +204,7 @@ export default function AutomationBuilder() {
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>Enable Immediately</Label>
+                  <Label>{t('screens.admin.enableImmediately')}</Label>
                   <p className="text-sm text-muted-foreground">
                     Automation will start running once saved
                   </p>

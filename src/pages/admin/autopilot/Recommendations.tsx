@@ -19,6 +19,7 @@ import {
   useAutopilotRecommendations,
   useRecommendationsSummary,
 } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   new: "info",
@@ -66,7 +67,7 @@ export default function AutopilotRecommendations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🤖"
-          title="Recommendations"
+          title={t('screens.admin.recommendations')}
           description={`${recsQuery.data?.total || 0} recommendations visible for your tenant`}
         />
 
@@ -120,7 +121,7 @@ export default function AutopilotRecommendations() {
         />
 
         {recsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading recommendations...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingRecommendations')}</p>
         )}
 
         {recsQuery.isError && (
@@ -131,7 +132,7 @@ export default function AutopilotRecommendations() {
 
         {!recsQuery.isLoading && filtered.length === 0 && (
           <AdminEmptyState
-            title="No recommendations"
+            title={t('screens.admin.noRecommendations')}
             description={search || statusFilter !== "all" ? "Try different filters." : "Recommendations will appear as the autopilot analyzes your community."}
           />
         )}

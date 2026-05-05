@@ -13,7 +13,7 @@ import {
 import { Download, Maximize2, Share2, X, MoreHorizontal, ChevronLeft, ChevronRight, Heart, Copy, Edit, Trash2, Flag } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect } from "react";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface PhotoPeekPanelProps {
   open: boolean;
@@ -278,7 +278,7 @@ export function PhotoPeekPanel({
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className="h-[80vh] mt-0 bg-card/95 backdrop-blur-sm border-white/10">
           <DrawerHeader className="relative shrink-0">
-            <DrawerTitle>Photo Preview</DrawerTitle>
+            <DrawerTitle>{t('screens.diary.photoPreview')}</DrawerTitle>
             <Button
               variant="ghost"
               size="icon"
@@ -301,7 +301,7 @@ export function PhotoPeekPanel({
         className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-white/10 shadow-xl p-0 overflow-hidden flex flex-col"
       >
         <SheetHeader className="p-6 pb-0 shrink-0">
-          <SheetTitle className="text-left">Photo Preview</SheetTitle>
+          <SheetTitle className="text-left">{t('screens.diary.photoPreview')}</SheetTitle>
         </SheetHeader>
         {content}
       </SheetContent>

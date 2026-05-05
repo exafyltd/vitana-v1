@@ -24,6 +24,7 @@ import {
   Volume2,
   VolumeX
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 // Remove react-i18next import - not available
 
 interface LiveRoomViewerProps {
@@ -158,7 +159,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
             <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
             <Badge variant="destructive" className="text-xs">LIVE</Badge>
           </div>
-          <h2 className="font-semibold">Morning Meditation & Mindfulness</h2>
+          <h2 className="font-semibold">{t('screens.community.morningMeditationMindfulness')}</h2>
           <Badge variant="secondary" className="text-xs">
             <Users className="w-3 h-3 mr-1" />
             {participants.length}
@@ -205,7 +206,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
                     <Mic className="w-4 h-4" />
                   </div>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground">Dr. Emma Wilson</h3>
+                <h3 className="text-xl font-semibold text-foreground">{t('screens.community.drEmmaWilson')}</h3>
                 <Badge className="mt-2">Host</Badge>
               </div>
             </div>

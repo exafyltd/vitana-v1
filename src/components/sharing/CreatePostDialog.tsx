@@ -36,7 +36,7 @@ import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 // Static channel definitions - no database setup required
 const STATIC_CHANNELS = [
@@ -259,7 +259,7 @@ export function CreatePostDialog({
           <div className="space-y-4 py-4">
             {/* Entity Type Selector */}
             <div className="space-y-2">
-              <Label>What are you sharing?</Label>
+              <Label>{t('screens.sharing.whatYouSharing')}</Label>
               <Select value={entityType} onValueChange={setEntityType}>
                 <SelectTrigger>
                   <SelectValue />
@@ -268,7 +268,7 @@ export function CreatePostDialog({
                   <SelectItem value="event">Event</SelectItem>
                   <SelectItem value="meetup">Meetup</SelectItem>
                   <SelectItem value="group">Group</SelectItem>
-                  <SelectItem value="live-room">Live Room</SelectItem>
+                  <SelectItem value="live-room">{t('screens.sharing.liveRoom')}</SelectItem>
                   <SelectItem value="profile">Profile</SelectItem>
                 </SelectContent>
               </Select>
@@ -278,7 +278,7 @@ export function CreatePostDialog({
             <div className="space-y-2">
               <Label>Title</Label>
               <Input
-                placeholder="Enter a compelling title..."
+                placeholder={t('screens.sharing.enterCompellingTitle')}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -287,7 +287,7 @@ export function CreatePostDialog({
             <div className="space-y-2">
               <Label>Description</Label>
               <Textarea
-                placeholder="Write your message..."
+                placeholder={t('screens.sharing.writeYourMessage')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
@@ -296,7 +296,7 @@ export function CreatePostDialog({
 
             {/* Static Channel Selector */}
             <div className="space-y-2">
-              <Label>Select Channels</Label>
+              <Label>{t('screens.sharing.selectChannels')}</Label>
               <div className="grid grid-cols-3 gap-2">
                 {STATIC_CHANNELS.map((channel) => {
                   const isSelected = selectedChannels.has(channel.key);
@@ -358,7 +358,7 @@ export function CreatePostDialog({
               size="icon"
               onClick={handleSaveDraft}
               disabled={createPost.isPending}
-              title="Save as draft"
+              title={t('screens.sharing.saveAsDraft')}
             >
               {createPost.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

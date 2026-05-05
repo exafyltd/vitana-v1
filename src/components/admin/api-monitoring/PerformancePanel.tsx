@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { Activity, TrendingUp, TrendingDown, Zap, AlertTriangle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface PerformanceMetrics {
   avgResponseTime: number;
@@ -46,14 +47,14 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription className="text-xs">Avg Response Time</CardDescription>
+            <CardDescription className="text-xs">{t('screens.admin.avgResponseTime')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
               <span className={`text-3xl font-bold ${getLatencyColor(metrics.avgResponseTime)}`}>
                 {metrics.avgResponseTime}
               </span>
-              <span className="text-sm text-muted-foreground">ms</span>
+              <span className="text-sm text-muted-foreground">{t('screens.admin.ms')}</span>
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
               <Zap className="w-3 h-3" />
@@ -64,7 +65,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
 
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription className="text-xs">Success Rate</CardDescription>
+            <CardDescription className="text-xs">{t('screens.admin.successRate')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
@@ -96,7 +97,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
           <CardContent>
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold">{metrics.throughput}</span>
-              <span className="text-sm text-muted-foreground">req/min</span>
+              <span className="text-sm text-muted-foreground">{t('screens.admin.reqmin')}</span>
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
               <Activity className="w-3 h-3" />
@@ -107,7 +108,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
 
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription className="text-xs">Error Rate</CardDescription>
+            <CardDescription className="text-xs">{t('screens.admin.errorRate')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-baseline gap-2">
@@ -131,8 +132,8 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
         {/* Response Time Chart */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Response Time Trend</CardTitle>
-            <CardDescription>Average response time over time</CardDescription>
+            <CardTitle className="text-base">{t('screens.admin.responseTimeTrend')}</CardTitle>
+            <CardDescription>{t('screens.admin.averageResponseTimeOverTime')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={200}>
@@ -164,8 +165,8 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
         {/* Request Volume Chart */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Request Volume</CardTitle>
-            <CardDescription>Requests and errors over time</CardDescription>
+            <CardTitle className="text-base">{t('screens.admin.requestVolume')}</CardTitle>
+            <CardDescription>{t('screens.admin.requestsErrorsOverTime')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={200}>
@@ -193,13 +194,13 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
       {/* Latency Distribution */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Latency Percentiles</CardTitle>
-          <CardDescription>Response time distribution</CardDescription>
+          <CardTitle className="text-base">{t('screens.admin.latencyPercentiles')}</CardTitle>
+          <CardDescription>{t('screens.admin.responseTimeDistribution')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">P50 (Median)</span>
+              <span className="text-sm text-muted-foreground">{t('screens.admin.p50Median')}</span>
               <div className="flex items-center gap-2">
                 <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
                   <div 

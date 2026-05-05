@@ -26,6 +26,7 @@ import { useMarketplaceFeed, formatPrice, type MarketplaceProduct } from '@/hook
 import { ProductImage } from '@/components/discover/ProductImage';
 import { ProductDetailsDrawer } from '@/components/discover/ProductDetailsDrawer';
 import { ProductSelectionProvider, useProductSelection } from '@/context/ProductSelectionContext';
+import { t } from '@/lib/i18n-toast';
 
 interface AIRecommendation {
   id: string;
@@ -246,7 +247,7 @@ function AIPicksInner() {
   return (
     <AppLayout>
       <SEO 
-        title="AI Picks | VITANA" 
+        title={t('screens.discover.aiPicksVitana')} 
         description="Personalized AI-powered recommendations based on your health data and goals"
         canonical={window.location.href} 
       />

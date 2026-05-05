@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { SlidersHorizontal } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface RecipeFiltersProps {
   filters: {
@@ -38,12 +39,12 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
           )}
         </Button>
       </ResponsivePopoverTrigger>
-      <ResponsivePopoverContent title="Filter Recipes" className="w-80" align="end">
+      <ResponsivePopoverContent title={t('screens.health.filterRecipes')} className="w-80" align="end">
         <div className="space-y-4">
           
           {/* Diet Type */}
           <div>
-            <Label className="mb-2 block">Diet Type</Label>
+            <Label className="mb-2 block">{t('screens.health.dietType')}</Label>
             <div className="flex flex-wrap gap-2">
               {['vegan', 'vegetarian', 'gluten-free', 'dairy-free', 'paleo'].map(diet => (
                 <Badge

@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { TransferToWalletDialog } from "./TransferToWalletDialog";
+import { t } from '@/lib/i18n-toast';
 
 type TimeRange = "all" | "30d" | "7d";
 
@@ -151,7 +152,7 @@ export function ResellerSalesTab() {
       <div className="space-y-6">
         <div className="text-center py-16">
           <Ticket className="h-12 w-12 mx-auto text-muted-foreground/40 mb-4" />
-          <h3 className="text-lg font-medium mb-2">No sales yet</h3>
+          <h3 className="text-lg font-medium mb-2">{t('screens.reseller.noSalesYet')}</h3>
           <p className="text-sm text-muted-foreground mb-8 max-w-sm mx-auto">
             Share your reseller links or create a promotion to start earning commissions.
           </p>
@@ -180,8 +181,8 @@ export function ResellerSalesTab() {
         <Dialog open={showEventPicker} onOpenChange={setShowEventPicker}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Select an event to share</DialogTitle>
-              <DialogDescription>Pick an event to generate your reseller link</DialogDescription>
+              <DialogTitle>{t('screens.reseller.selectEventShare')}</DialogTitle>
+              <DialogDescription>{t('screens.reseller.pickEventGenerateYourResellerLink')}</DialogDescription>
             </DialogHeader>
             <div className="space-y-2 max-h-[400px] overflow-y-auto">
               {isLoadingEvents ? (
@@ -254,7 +255,7 @@ export function ResellerSalesTab() {
                 <Award className="h-5 w-5 text-accent" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">Commission Earned</p>
+                <p className="text-xs text-muted-foreground font-medium">{t('screens.reseller.commissionEarned')}</p>
                 <p className="text-2xl font-semibold tracking-tight text-accent">{formatCurrency(filteredTotals.commission)}</p>
               </div>
             </div>
@@ -265,7 +266,7 @@ export function ResellerSalesTab() {
                 <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">Pending Payout</p>
+                <p className="text-xs text-muted-foreground font-medium">{t('screens.reseller.pendingPayout')}</p>
                 <p className="text-2xl font-semibold tracking-tight text-amber-600 dark:text-amber-400">
                   {formatCurrency(activeSales?.commissionPendingPayout || 0)}
                 </p>
@@ -278,7 +279,7 @@ export function ResellerSalesTab() {
                 <Wallet className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">In Wallet</p>
+                <p className="text-xs text-muted-foreground font-medium">{t('screens.reseller.wallet')}</p>
                 <p className="text-2xl font-semibold tracking-tight text-emerald-600 dark:text-emerald-400">
                   {formatCurrency(activeSales?.commissionPaidToWallet || 0)}
                 </p>
@@ -291,7 +292,7 @@ export function ResellerSalesTab() {
                 <ArrowDownToLine className="h-5 w-5 text-muted-foreground" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">Last Payout</p>
+                <p className="text-xs text-muted-foreground font-medium">{t('screens.reseller.lastPayout')}</p>
                 {activeSales?.lastPayout ? (
                   <>
                     <p className="text-lg font-semibold tracking-tight">
@@ -302,7 +303,7 @@ export function ResellerSalesTab() {
                     </p>
                   </>
                 ) : (
-                  <p className="text-lg font-medium text-muted-foreground/60">No payouts yet</p>
+                  <p className="text-lg font-medium text-muted-foreground/60">{t('screens.reseller.noPayoutsYet')}</p>
                 )}
               </div>
             </div>
@@ -372,7 +373,7 @@ export function ResellerSalesTab() {
                   <Settings2 className="h-4 w-4 text-muted-foreground" />
                 </Button>
               </ResponsivePopoverTrigger>
-              <ResponsivePopoverContent title="Info" align="end" className="w-auto p-2">
+              <ResponsivePopoverContent title={t('screens.reseller.info')} align="end" className="w-auto p-2">
                 <div className="flex items-center gap-2 text-xs text-amber-600">
                   <Badge variant="outline" className="gap-1 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
                     Mock data active
@@ -386,12 +387,12 @@ export function ResellerSalesTab() {
 
       {/* Attributed Sales by Event */}
       <div className="space-y-3">
-        <h3 className="text-sm font-medium text-muted-foreground">Attributed Sales by Event</h3>
+        <h3 className="text-sm font-medium text-muted-foreground">{t('screens.reseller.attributedSalesByEvent')}</h3>
         
         {filteredSales.length === 0 ? (
           <Card className="bg-card/50 rounded-2xl">
             <CardContent className="py-8 text-center">
-              <p className="text-sm text-muted-foreground">No sales match the current filters</p>
+              <p className="text-sm text-muted-foreground">{t('screens.reseller.noSalesMatchCurrentFilters')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -468,7 +469,7 @@ export function ResellerSalesTab() {
                                 <Share2 className="h-4 w-4" />
                               </Button>
                             </TooltipTrigger>
-                            <TooltipContent>Share reseller link</TooltipContent>
+                            <TooltipContent>{t('screens.reseller.shareResellerLink')}</TooltipContent>
                           </Tooltip>
 
                           <Button 
@@ -503,8 +504,8 @@ export function ResellerSalesTab() {
       <Dialog open={showEventPicker} onOpenChange={setShowEventPicker}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Select an event to share</DialogTitle>
-            <DialogDescription>Pick an event to generate your reseller link</DialogDescription>
+            <DialogTitle>{t('screens.reseller.selectEventShare')}</DialogTitle>
+            <DialogDescription>{t('screens.reseller.pickEventGenerateYourResellerLink')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-2 max-h-[400px] overflow-y-auto">
             {isLoadingEvents ? (

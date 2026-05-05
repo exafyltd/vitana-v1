@@ -40,6 +40,7 @@ import {
 } from "@/hooks/useAdminNavigator";
 import { TriggerEditor } from "./components/TriggerEditor";
 import { SimulatorPanel } from "./components/SimulatorPanel";
+import { t } from '@/lib/i18n-toast';
 
 const CATEGORY_LABELS: Record<string, string> = {
   public: "Public",
@@ -112,7 +113,7 @@ export default function NavigatorCatalog() {
       <div className="space-y-6 p-6">
         <AdminHeader
           emoji="🧭"
-          title="Vitana Navigator"
+          title={t('screens.admin.vitanaNavigator')}
           description="Manage the catalog of screens and trigger phrases that drive Vitana's in-conversation redirects. Edit a screen's when-to-visit text, add override phrases for exact matches, and test your changes in the live simulator before saving."
           rightAction={
             <Button onClick={openNew}>
@@ -129,31 +130,31 @@ export default function NavigatorCatalog() {
           <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Catalog entries</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.catalogEntries')}</div>
                 <div className="text-2xl font-bold">{coverage.summary.catalog_size}</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">SPA routes</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.spaRoutes')}</div>
                 <div className="text-2xl font-bold">{coverage.summary.spa_route_count}</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Uncovered routes</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.uncoveredRoutes')}</div>
                 <div className="text-2xl font-bold text-amber-600">{coverage.summary.missing_in_catalog}</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Broken catalog routes</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.brokenCatalogRoutes')}</div>
                 <div className="text-2xl font-bold text-destructive">{coverage.summary.broken_catalog_routes}</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Dead triggers (30d)</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.deadTriggers30d')}</div>
                 <div className="text-2xl font-bold">{coverage.summary.dead_triggers}</div>
               </CardContent>
             </Card>
@@ -187,15 +188,15 @@ export default function NavigatorCatalog() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="shared">Shared (all tenants)</SelectItem>
-                    <SelectItem value="all">All tenants (shared + per-tenant)</SelectItem>
+                    <SelectItem value="shared">{t('screens.admin.sharedAllTenants')}</SelectItem>
+                    <SelectItem value="all">{t('screens.admin.allTenantsSharedPertenant')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </CardHeader>
             <CardContent className="max-h-[calc(100vh-400px)] overflow-y-auto p-2">
               {catalogQuery.isLoading && (
-                <p className="p-4 text-sm text-muted-foreground">Loading catalog…</p>
+                <p className="p-4 text-sm text-muted-foreground">{t('screens.admin.loadingCatalog')}</p>
               )}
               {catalogQuery.isError && (
                 <p className="p-4 text-sm text-destructive">
@@ -203,7 +204,7 @@ export default function NavigatorCatalog() {
                 </p>
               )}
               {!catalogQuery.isLoading && entries.length === 0 && (
-                <p className="p-4 text-sm text-muted-foreground italic">No entries match.</p>
+                <p className="p-4 text-sm text-muted-foreground italic">{t('screens.admin.noEntriesMatch')}</p>
               )}
               {Object.entries(grouped).map(([cat, list]) => (
                 <div key={cat} className="mb-2">
@@ -267,7 +268,7 @@ export default function NavigatorCatalog() {
                 />
               ) : (
                 <p className="py-12 text-center text-sm text-muted-foreground">
-                  Pick a screen from the list or click <strong>New screen</strong> to create one.
+                  Pick a screen from the list or click <strong>{t('screens.admin.newScreen')}</strong> to create one.
                 </p>
               )}
             </CardContent>

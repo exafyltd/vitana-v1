@@ -11,6 +11,7 @@ import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useOverviewActivity } from "@/hooks/useAdminOverview";
+import { t } from '@/lib/i18n-toast';
 
 export default function AuditOasisEvents() {
   const activityQuery = useOverviewActivity(100);
@@ -22,7 +23,7 @@ export default function AuditOasisEvents() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📡"
-          title="OASIS Events"
+          title={t('screens.admin.oasisEvents')}
           description="All OASIS telemetry events for audit and compliance review"
           rightAction={
             <Button variant="outline" size="sm" onClick={() => activityQuery.refetch()} disabled={activityQuery.isFetching}>
@@ -33,11 +34,11 @@ export default function AuditOasisEvents() {
         />
 
         {activityQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading events...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingEvents')}</p>
         )}
 
         {!activityQuery.isLoading && events.length === 0 && (
-          <AdminEmptyState title="No OASIS events" description="OASIS events for your tenant will appear here as they occur." />
+          <AdminEmptyState title={t('screens.admin.noOasisEvents')} description="OASIS events for your tenant will appear here as they occur." />
         )}
 
         {events.length > 0 && (

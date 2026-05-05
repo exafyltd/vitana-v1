@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Leaf, Clock, TrendingUp, Settings } from "lucide-react";
 import { MentalPlanData } from "@/types/mental";
 import { Progress } from "@/components/ui/progress";
+import { t } from '@/lib/i18n-toast';
 
 interface MentalOverviewCardProps {
   planData: MentalPlanData;
@@ -35,7 +36,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
           <div className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-4 border border-slate-200/60 dark:border-slate-800/50 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
               <Leaf className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Goal Focus</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.goalFocus')}</span>
             </div>
             <p className="text-base font-semibold">{planData.goal}</p>
           </div>
@@ -51,7 +52,7 @@ export function MentalOverviewCard({ planData, onRecalibrate }: MentalOverviewCa
           <div className="bg-white/70 dark:bg-slate-900/50 backdrop-blur-md rounded-xl p-4 border border-slate-200/60 dark:border-slate-800/50 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-teal-500" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Program Progress</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.programProgress')}</span>
             </div>
             <p className="text-base font-semibold">{planData.progressText} · {planData.completion}% complete</p>
           </div>

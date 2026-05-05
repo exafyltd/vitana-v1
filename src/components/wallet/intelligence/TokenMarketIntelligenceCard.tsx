@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, TrendingDown, BarChart3, Shield, AlertTriangle, Clock } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface MarketInsight {
   id: string;
@@ -110,15 +111,15 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/5 to-blue-500/5 border border-purple-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Shield className="h-4 w-4 text-purple-600" />
-            <span className="text-sm font-medium">Staking Optimization</span>
+            <span className="text-sm font-medium">{t('screens.wallet.stakingOptimization')}</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-2">
             <div>
-              <div className="text-xs text-muted-foreground">Current APY</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.currentApy')}</div>
               <div className="text-lg font-bold text-blue-600">{stakingData.currentAPY}%</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Optimized APY</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.optimizedApy')}</div>
               <div className="text-lg font-bold text-emerald-600">{stakingData.optimizedAPY}%</div>
             </div>
           </div>
@@ -175,13 +176,13 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
         <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <span className="text-sm font-medium">Governance Alert</span>
+            <span className="text-sm font-medium">{t('screens.wallet.governanceAlert')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
             New proposal available: "Community Fund Allocation" - voting ends in 3 days
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600 font-medium">Bonus APY: +1.2%</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.bonusApy12')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               Vote Now
             </Button>

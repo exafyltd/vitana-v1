@@ -6,7 +6,7 @@ import { Link2, MessageCircle, Mail, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getShareUrl } from "@/lib/shareUrl";
 import { cn } from "@/lib/utils";
-import { lookup, notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { lookup, notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface ManualShareActionsProps {
   campaignId: string;
@@ -201,7 +201,7 @@ export function ManualShareActions({
 
             {copying && option.key === 'copy_link' && (
               <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
-                <span className="text-sm font-medium text-primary">Copied!</span>
+                <span className="text-sm font-medium text-primary">{t('screens.sharing.copied')}</span>
               </div>
             )}
           </Card>

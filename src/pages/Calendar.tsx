@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -50,10 +51,10 @@ export default function Calendar() {
 
   return (
     <AppLayout>
-      <SEO title="Calendar Overview | VITANA" description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
+      <SEO title={t('screens.calendar.calendarOverviewVitana')} description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
       
       <StandardHeader
-        title="Calendar Overview"
+        title={t('screens.calendar.calendarOverview')}
         description="Your comprehensive calendar and scheduling hub with AI-powered insights and reminders."
         emoji="📅"
       />
@@ -64,7 +65,7 @@ export default function Calendar() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Today's Events</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.todaySEvents')}</CardTitle>
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -77,7 +78,7 @@ export default function Calendar() {
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Pending Reminders</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.pendingReminders')}</CardTitle>
                 <Bell className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -90,7 +91,7 @@ export default function Calendar() {
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Week Completion</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.weekCompletion')}</CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -140,7 +141,7 @@ export default function Calendar() {
                   <Bell className="h-5 w-5" />
                   Active Reminders
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">Upcoming notifications</p>
+                <p className="text-sm text-muted-foreground">{t('screens.calendar.upcomingNotifications')}</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 {upcomingReminders.map((reminder, index) => (
@@ -171,7 +172,7 @@ export default function Calendar() {
                   <TrendingUp className="h-5 w-5" />
                   Weekly Progress
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">Your goal achievements this week</p>
+                <p className="text-sm text-muted-foreground">{t('screens.calendar.yourGoalAchievementsThisWeek')}</p>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -198,8 +199,8 @@ export default function Calendar() {
           {/* Quick Access */}
           <Card className="mt-8">
             <CardHeader>
-              <CardTitle>Quick Access</CardTitle>
-              <p className="text-sm text-muted-foreground">Jump to different calendar views</p>
+              <CardTitle>{t('screens.calendar.quickAccess')}</CardTitle>
+              <p className="text-sm text-muted-foreground">{t('screens.calendar.jumpDifferentCalendarViews')}</p>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -233,7 +234,7 @@ export default function Calendar() {
                   onClick={() => navigate('/ai/insights')}
                 >
                   <TrendingUp className="h-6 w-6" />
-                  <span>AI Insights</span>
+                  <span>{t('screens.calendar.aiInsights')}</span>
                 </Button>
               </div>
             </CardContent>

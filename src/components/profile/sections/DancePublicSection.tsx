@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   userId: string;        // profile being viewed
@@ -79,14 +80,14 @@ export function DancePublicSection({ userId, isOwn = false }: Props) {
 
         {Array.isArray(prefs.roles) && prefs.roles.length > 0 && (
           <div className="text-sm">
-            <span className="text-muted-foreground">Role:</span>{" "}
+            <span className="text-muted-foreground">{t('screens.profile.role')}</span>{" "}
             <span className="capitalize">{prefs.roles.join(" / ")}</span>
           </div>
         )}
 
         {Array.isArray(prefs.looking_for) && prefs.looking_for.length > 0 && (
           <div className="text-sm">
-            <span className="text-muted-foreground">Looking for:</span>{" "}
+            <span className="text-muted-foreground">{t('screens.profile.lookingFor2')}</span>{" "}
             {prefs.looking_for.join(" · ")}
           </div>
         )}
@@ -99,7 +100,7 @@ export function DancePublicSection({ userId, isOwn = false }: Props) {
 
         {Array.isArray(prefs.venue_prefs) && prefs.venue_prefs.length > 0 && (
           <div className="text-sm">
-            <span className="text-muted-foreground">Where:</span>{" "}
+            <span className="text-muted-foreground">{t('screens.profile.where')}</span>{" "}
             {prefs.venue_prefs.join(" · ")}
           </div>
         )}

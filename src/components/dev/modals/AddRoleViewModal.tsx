@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface AddRoleViewModalProps {
   open: boolean;
@@ -34,7 +34,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Add Role View</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.addRoleView')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
@@ -42,7 +42,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
             <Label htmlFor="role">Role</Label>
             <Select value={role} onValueChange={setRole}>
               <SelectTrigger id="role">
-                <SelectValue placeholder="Select role" />
+                <SelectValue placeholder={t('screens.dev.selectRole')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="patient">Patient</SelectItem>
@@ -54,7 +54,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="view-name">View Name</Label>
+            <Label htmlFor="view-name">{t('screens.dev.viewName')}</Label>
             <Input 
               id="view-name" 
               value={viewName}

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Brain, Calendar, Clock, TrendingUp, Sparkles } from "lucide-react";
 import { ExercisePlanData } from "@/types/exercise";
+import { t } from '@/lib/i18n-toast';
 
 interface ExerciseOverviewCardProps {
   planData: ExercisePlanData;
@@ -20,7 +21,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-xl font-bold">Your Exercise Plan, Powered by Autopilot</h2>
+            <h2 className="text-xl font-bold">{t('screens.health.yourExercisePlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
             AI-optimized workouts tailored to your fitness level and recovery
@@ -36,7 +37,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs font-medium text-muted-foreground">Goal Focus</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus}</p>
         </div>
@@ -85,7 +86,7 @@ export function ExerciseOverviewCard({ planData, onRecalibrate }: ExerciseOvervi
         dark:from-blue-500/20 dark:to-cyan-500/20 border border-blue-200/30 dark:border-blue-700/30 mb-4">
         <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
-          <p className="text-sm font-medium mb-1">AI Insight</p>
+          <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
           <p className="text-sm text-muted-foreground italic">
             "{planData.aiInsight}"
           </p>

@@ -3,6 +3,7 @@ import { Clock, MapPin, Users, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface PrioritySessionCardProps {
   className?: string;
@@ -75,7 +76,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         
         {/* Bottom Info */}
         <div className="flex justify-between items-center pt-2 border-t border-white/20">
-          <span className="text-xs text-white/80">Starting in 2 hours</span>
+          <span className="text-xs text-white/80">{t('screens.crossover.starting2Hours')}</span>
           <span className="text-xs text-primary font-medium">{session.duration}</span>
         </div>
       </div>

@@ -35,7 +35,7 @@ import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -145,12 +145,12 @@ export default function AIFeed() {
 
   return (
     <AppLayout>
-      <SEO title="AI Feed | Dashboard" description="AI Feed & Automations" canonical={window.location.href} />
+      <SEO title={t('screens.home.aiFeedDashboard')} description="AI Feed & Automations" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
           <StandardHeader
-            title="AI Feed & Automations"
+            title={t('screens.home.aiFeedAutomations')}
             description="The magic window – where Autopilot shows its work."
             emoji="⚡"
             className="mb-4 xl:mb-3"
@@ -159,7 +159,7 @@ export default function AIFeed() {
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
             <ExpandableSearchButton 
-              placeholder="Search feed, routines, ideas, or history…"
+              placeholder={t('screens.home.searchFeedRoutinesIdeasHistory')}
               onSearch={(query) => console.log('Search AI Feed:', query)}
             />
             <UniversalCalendarButton />
@@ -172,10 +172,10 @@ export default function AIFeed() {
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="feed" className="w-full">
             <SplitBarList className="grid w-full grid-cols-4">
-              <SplitBarTrigger value="feed">📰 Feed</SplitBarTrigger>
-              <SplitBarTrigger value="routines">🔄 Routines</SplitBarTrigger>
-              <SplitBarTrigger value="ideas">💡 Ideas</SplitBarTrigger>
-              <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
+              <SplitBarTrigger value="feed">{t('screens.home.feed')}</SplitBarTrigger>
+              <SplitBarTrigger value="routines">{t('screens.home.routines')}</SplitBarTrigger>
+              <SplitBarTrigger value="ideas">{t('screens.home.ideas')}</SplitBarTrigger>
+              <SplitBarTrigger value="history">{t('screens.home.history')}</SplitBarTrigger>
             </SplitBarList>
 
             {/* Activity Feed Tab */}
@@ -194,8 +194,8 @@ export default function AIFeed() {
                         <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">Activity Feed 🏃</h2>
-                        <p className="text-sm text-muted-foreground">Real-time AI actions and insights</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.activityFeed')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.realtimeAiActionsInsights')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -245,8 +245,8 @@ export default function AIFeed() {
                         <Repeat className="w-6 h-6 text-blue-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">My Routines 🔁</h2>
-                        <p className="text-sm text-muted-foreground">Automated habits building your best self</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.myRoutines')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.automatedHabitsBuildingYourBestSelf')}</p>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -302,8 +302,8 @@ export default function AIFeed() {
                         <Lightbulb className="w-6 h-6 text-purple-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">AI Ideas 💡</h2>
-                        <p className="text-sm text-muted-foreground">Experimental suggestions from your AI companion</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.aiIdeas')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.experimentalSuggestionsFromYourAiCompanion')}</p>
                       </div>
                     </div>
                     <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
@@ -336,8 +336,8 @@ export default function AIFeed() {
                         <History className="w-6 h-6 text-gray-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">Your Journey 📚</h2>
-                        <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.yourJourney')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.milestonesAchievementsGrowthOverTime')}</p>
                       </div>
                     </div>
                     <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
@@ -359,7 +359,7 @@ export default function AIFeed() {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
                     <Zap className="w-5 h-5 text-yellow-600 animate-pulse" />
-                    <span className="font-medium">Autopilot Status:</span>
+                    <span className="font-medium">{t('screens.home.autopilotStatus')}</span>
                     <Badge variant="default">Active</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">

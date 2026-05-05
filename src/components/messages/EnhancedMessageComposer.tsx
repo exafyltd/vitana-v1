@@ -15,6 +15,7 @@ import {
 import { AttachmentMenu } from './AttachmentMenu';
 import { useRecipientData } from '@/hooks/useRecipientData';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface Attachment {
   id: string;
@@ -153,7 +154,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
         {isOffline && (
           <div className="mb-3 flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4" />
-            <span>Queued... tap to retry</span>
+            <span>{t('screens.messages.queuedTapRetry')}</span>
           </div>
         )}
 
@@ -171,7 +172,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                   <Smile className="w-5 h-5" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Add emoji</TooltipContent>
+              <TooltipContent>{t('screens.messages.addEmoji')}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -253,7 +254,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
                     <Mic className="w-5 h-5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Voice message</TooltipContent>
+                <TooltipContent>{t('screens.messages.voiceMessage')}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           )}
@@ -263,7 +264,7 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
         {showHint && (
           <div className="mt-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1 rounded-lg animate-in fade-in slide-in-from-bottom-2">
             Press <kbd className="px-1 py-0.5 bg-background rounded text-xs">Enter</kbd> to send, 
-            <kbd className="px-1 py-0.5 bg-background rounded text-xs ml-1">Shift+Enter</kbd> for new line
+            <kbd className="px-1 py-0.5 bg-background rounded text-xs ml-1">{t('screens.messages.shiftEnter')}</kbd> for new line
           </div>
         )}
       </div>

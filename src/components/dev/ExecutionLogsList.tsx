@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { ChevronDown, ChevronRight, Download, Play, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface ExecutionLog {
   id: string;
@@ -108,10 +109,10 @@ export function ExecutionLogsList() {
             <label className="text-sm font-medium mb-2 block">Status</label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="All statuses" />
+                <SelectValue placeholder={t('screens.dev.allStatuses2')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="all">{t('screens.dev.allStatuses')}</SelectItem>
                 <SelectItem value="success">Success</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>
                 <SelectItem value="running">Running</SelectItem>
@@ -124,10 +125,10 @@ export function ExecutionLogsList() {
             <label className="text-sm font-medium mb-2 block">Agent</label>
             <Select value={agentFilter} onValueChange={setAgentFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="All agents" />
+                <SelectValue placeholder={t('screens.dev.allAgents2')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Agents</SelectItem>
+                <SelectItem value="all">{t('screens.dev.allAgents')}</SelectItem>
                 <SelectItem value="system">System</SelectItem>
                 <SelectItem value="user">User</SelectItem>
                 <SelectItem value="autopilot">Autopilot</SelectItem>
@@ -255,7 +256,7 @@ export function ExecutionLogsList() {
 
         {filteredLogs.length === 0 && (
           <div className="p-12 text-center text-muted-foreground">
-            <p>No execution logs match your filters.</p>
+            <p>{t('screens.dev.noExecutionLogsMatchYourFilters')}</p>
           </div>
         )}
       </Card>

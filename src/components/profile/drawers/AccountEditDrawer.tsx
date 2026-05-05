@@ -19,7 +19,7 @@ import { useProfile } from "@/context/ProfileProvider";
 import { AccountInfo } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { AvatarUploadField } from "@/components/profile/editor/AvatarUploadField";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface AccountEditDrawerProps {
   open: boolean;
@@ -152,11 +152,11 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit account details</DialogTitle>
+          <DialogTitle>{t('screens.profile.editAccountDetails')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
-          <Section title="Public profile">
+          <Section title={t('screens.profile.publicProfile')}>
             <Field label="Profile picture">
               <AvatarUploadField
                 value={{
@@ -205,7 +205,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
           </Section>
 
-          <Section title="Basic Personal Information">
+          <Section title={t('screens.profile.basicPersonalInformation')}>
             <Field label="First name">
               <Input value={form.firstName} onChange={(e) => set("firstName", e.target.value)} />
             </Field>
@@ -220,7 +220,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
             <Field label="Gender">
               <Select value={form.gender} onValueChange={(v) => set("gender", v)}>
-                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('screens.profile.select')} /></SelectTrigger>
                 <SelectContent>
                   {GENDER_OPTIONS.map((o) => (
                     <SelectItem key={o} value={o}>{o}</SelectItem>
@@ -230,7 +230,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
             <Field label="Marital status">
               <Select value={form.maritalStatus} onValueChange={(v) => set("maritalStatus", v)}>
-                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('screens.profile.select')} /></SelectTrigger>
                 <SelectContent>
                   {MARITAL_OPTIONS.map((o) => (
                     <SelectItem key={o} value={o}>{o}</SelectItem>
@@ -240,7 +240,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
           </Section>
 
-          <Section title="Contact Information">
+          <Section title={t('screens.profile.contactInformation')}>
             <Field label="Email">
               <Input
                 type="email"

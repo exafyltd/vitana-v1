@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface TicketSale {
   id: string;
@@ -152,7 +153,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <Ticket className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Tickets Sold</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.ticketsSold')}</p>
                 <p className="text-2xl font-bold">{totalTicketsSold}</p>
               </div>
             </div>
@@ -180,7 +181,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                 <CheckCircle className="h-5 w-5 text-orange-600" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Checked In</p>
+                <p className="text-sm text-muted-foreground">{t('screens.tickets.checked')}</p>
                 <p className="text-2xl font-bold">{checkedInCount}</p>
               </div>
             </div>
@@ -285,7 +286,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
               {completedSales.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground">
                   <Ticket className="h-12 w-12 mx-auto mb-2 opacity-30" />
-                  <p>No ticket sales yet</p>
+                  <p>{t('screens.tickets.noTicketSalesYet')}</p>
                 </div>
               )}
             </div>

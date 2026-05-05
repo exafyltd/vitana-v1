@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EventTicket, TicketTenant } from "@/components/tickets/EventTicket";
+import { t } from '@/lib/i18n-toast';
 
 const TENANT_OPTIONS: { value: TicketTenant; label: string; color: string }[] = [
   { value: "vitana", label: "VITANA", color: "#E8CFAF" },
@@ -42,7 +43,7 @@ export default function TicketDemo() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-xl font-bold">Ticket Preview</h1>
+            <h1 className="text-xl font-bold">{t('screens.ticketdemo.ticketPreview')}</h1>
             <p className="text-sm text-muted-foreground">
               Multi-tenant boarding pass design
             </p>
@@ -51,7 +52,7 @@ export default function TicketDemo() {
 
         {/* Tenant Selector */}
         <div className="mb-6">
-          <p className="text-sm text-muted-foreground mb-2">Select Tenant Brand:</p>
+          <p className="text-sm text-muted-foreground mb-2">{t('screens.ticketdemo.selectTenantBrand')}</p>
           <div className="flex flex-wrap gap-2">
             {TENANT_OPTIONS.map((tenant) => (
               <button
@@ -87,17 +88,17 @@ export default function TicketDemo() {
 
         {/* Info */}
         <div className="mt-8 space-y-4 text-sm text-muted-foreground">
-          <h3 className="font-medium text-foreground">Ticket Features:</h3>
+          <h3 className="font-medium text-foreground">{t('screens.ticketdemo.ticketFeatures')}</h3>
           <ul className="space-y-2 list-disc list-inside">
-            <li>Multi-tenant branding (logo, colors, hologram)</li>
-            <li>Washed-out event image background</li>
-            <li>Tenant accent underline and badge glow</li>
-            <li>Event details with date, time, and location</li>
-            <li>Ticket type badge (VIP, General, etc.)</li>
-            <li>Attendee name and quantity</li>
-            <li>Scannable QR code for check-in</li>
-            <li>Tenant-specific serial metadata</li>
-            <li>Download as PNG or Share options</li>
+            <li>{t('screens.ticketdemo.multitenantBrandingLogoColorsHologram')}</li>
+            <li>{t('screens.ticketdemo.washedoutEventImageBackground')}</li>
+            <li>{t('screens.ticketdemo.tenantAccentUnderlineBadgeGlow')}</li>
+            <li>{t('screens.ticketdemo.eventDetailsWithDateTimeLocation')}</li>
+            <li>{t('screens.ticketdemo.ticketTypeBadgeVipGeneralEtc')}</li>
+            <li>{t('screens.ticketdemo.attendeeNameQuantity')}</li>
+            <li>{t('screens.ticketdemo.scannableQrCodeForCheckin')}</li>
+            <li>{t('screens.ticketdemo.tenantspecificSerialMetadata')}</li>
+            <li>{t('screens.ticketdemo.downloadAsPngShareOptions')}</li>
           </ul>
         </div>
       </div>

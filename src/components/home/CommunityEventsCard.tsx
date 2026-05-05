@@ -7,6 +7,7 @@ import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { useEventSelection } from "@/context/EventSelectionContext";
+import { t } from '@/lib/i18n-toast';
 
 interface CommunityEventsCardProps {
   maxEvents?: number;
@@ -55,7 +56,7 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
         <CardContent>
           <div className="text-center py-8 text-muted-foreground">
             <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p className="text-sm">No upcoming events</p>
+            <p className="text-sm">{t('screens.home.noUpcomingEvents')}</p>
             <Button 
               variant="outline" 
               size="sm" 

@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Shield, Eye, Settings, Clock, AlertTriangle, CheckCircle } from "lucide-react";
 import ManageConsentPopup from "@/components/ManageConsentPopup";
+import { t } from '@/lib/i18n-toast';
 
 const consentData = {
   activeConsents: [
@@ -78,13 +79,13 @@ export default withScreenId(function Consent() {
 
   return (
     <AppLayout>
-      <SEO title="Consent Dashboard | Sharing" description="Manage your data sharing consents, view active permissions, and control how your health data is used." />
+      <SEO title={t('screens.sharing.consentDashboardSharing')} description="Manage your data sharing consents, view active permissions, and control how your health data is used." />
       <SubNavigation items={sharingNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Data Consent Control 🛡️"
+            title={t('screens.sharing.dataConsentControl')}
             description="Manage permissions and control how your health data is shared securely"
           />
 
@@ -98,9 +99,9 @@ export default withScreenId(function Consent() {
           </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
-          <SplitBarTrigger value="active">Active Consents</SplitBarTrigger>
-          <SplitBarTrigger value="pending">Pending Requests</SplitBarTrigger>
-          <SplitBarTrigger value="overview">Privacy Overview</SplitBarTrigger>
+          <SplitBarTrigger value="active">{t('screens.sharing.activeConsents')}</SplitBarTrigger>
+          <SplitBarTrigger value="pending">{t('screens.sharing.pendingRequests')}</SplitBarTrigger>
+          <SplitBarTrigger value="overview">{t('screens.sharing.privacyOverview')}</SplitBarTrigger>
         </SplitBarList>
         
         <SplitBarContent value="active">
@@ -122,7 +123,7 @@ export default withScreenId(function Consent() {
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Data Types Shared</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.dataTypesShared')}</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {consent.dataTypes.map((type, index) => (
                               <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
@@ -130,7 +131,7 @@ export default withScreenId(function Consent() {
                           </div>
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Access Period</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.accessPeriod')}</div>
                           <div className="text-sm">{consent.grantedDate} to {consent.expiryDate}</div>
                         </div>
                       </div>
@@ -139,7 +140,7 @@ export default withScreenId(function Consent() {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-2">
                             <Switch disabled={!consent.canRevoke} />
-                            <span className="text-sm">Data sharing enabled</span>
+                            <span className="text-sm">{t('screens.sharing.dataSharingEnabled')}</span>
                           </div>
                         </div>
                         
@@ -187,7 +188,7 @@ export default withScreenId(function Consent() {
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Requested Data Types</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.requestedDataTypes')}</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {request.dataTypes.map((type, index) => (
                               <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
@@ -195,7 +196,7 @@ export default withScreenId(function Consent() {
                           </div>
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Proposed Access Period</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.proposedAccessPeriod')}</div>
                           <div className="text-sm">{request.requestedDate} to {request.expiryDate}</div>
                         </div>
                       </div>
@@ -237,23 +238,23 @@ export default withScreenId(function Consent() {
                     <Shield className="h-5 w-5 text-green-600" />
                     Privacy Protection Status
                   </CardTitle>
-                  <CardDescription>Your data security and consent overview</CardDescription>
+                  <CardDescription>{t('screens.sharing.yourDataSecurityConsentOverview')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-3xl font-bold text-green-600">100%</div>
-                  <p className="text-sm text-muted-foreground">All data encrypted & secured</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.sharing.allDataEncryptedSecured')}</p>
                   
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Active Consents</span>
+                      <span>{t('screens.sharing.activeConsents')}</span>
                       <span className="font-medium">{consentData.activeConsents.length}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Pending Requests</span>
+                      <span>{t('screens.sharing.pendingRequests')}</span>
                       <span className="font-medium text-orange-600">{consentData.pendingRequests.length}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Revoked Access</span>
+                      <span>{t('screens.sharing.revokedAccess')}</span>
                       <span className="font-medium">0</span>
                     </div>
                   </div>
@@ -264,12 +265,12 @@ export default withScreenId(function Consent() {
             <div className="col-span-12 sm:col-span-6 lg:col-span-3">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Consents</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('screens.sharing.activeConsents')}</CardTitle>
                   <Shield className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{consentData.activeConsents.length}</div>
-                  <p className="text-xs text-muted-foreground">Organizations with access</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.organizationsWithAccess')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -277,12 +278,12 @@ export default withScreenId(function Consent() {
             <div className="col-span-12 sm:col-span-6 lg:col-span-3">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Pending Requests</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('screens.sharing.pendingRequests')}</CardTitle>
                   <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{consentData.pendingRequests.length}</div>
-                  <p className="text-xs text-muted-foreground">Awaiting your decision</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.awaitingYourDecision')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -291,8 +292,8 @@ export default withScreenId(function Consent() {
             <div className="col-span-12">
               <Card>
                 <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>Manage your privacy settings and consent history</CardDescription>
+                  <CardTitle>{t('screens.sharing.quickActions')}</CardTitle>
+                  <CardDescription>{t('screens.sharing.manageYourPrivacySettingsConsentHistory')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-4">
@@ -304,7 +305,7 @@ export default withScreenId(function Consent() {
                       <Eye className="h-4 w-4 mr-2" />
                       View All Activity
                     </Button>
-                    <Button variant="outline">Download Consent History</Button>
+                    <Button variant="outline">{t('screens.sharing.downloadConsentHistory')}</Button>
                   </div>
                 </CardContent>
               </Card>

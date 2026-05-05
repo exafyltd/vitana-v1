@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ComplianceForm } from "../editor/ComplianceForm";
+import { t } from '@/lib/i18n-toast';
 
 interface ComplianceDrawerProps {
   open: boolean;
@@ -12,7 +13,7 @@ export function ComplianceDrawer({ open, onOpenChange }: ComplianceDrawerProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Professional & Compliance</DialogTitle>
+          <DialogTitle>{t('screens.profile.professionalCompliance')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">

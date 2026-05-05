@@ -14,7 +14,7 @@ import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import { adminTenantManagementNavigation } from "@/config/navigation";
 import { GeminiApiKeySetup } from "@/components/admin/GeminiApiKeySetup";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
@@ -48,17 +48,17 @@ export default function TenantManagement() {
   if (authLoading) {
     return (
       <AppLayout>
-        <SEO title="Tenant Management | Admin" description="Organization and tenant management" canonical={window.location.href} />
+        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
         <SubNavigation items={adminTenantManagementNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Tenant Management"
+              title={t('screens.admin.tenantManagement')}
               description="Loading..."
               emoji="🏢"
             />
             <div className="flex items-center justify-center py-12">
-              <div className="text-muted-foreground">Loading...</div>
+              <div className="text-muted-foreground">{t('screens.admin.loading')}</div>
             </div>
           </div>
         </div>
@@ -69,12 +69,12 @@ export default function TenantManagement() {
   if (!isExafyAdmin) {
     return (
       <AppLayout>
-        <SEO title="Tenant Management | Admin" description="Organization and tenant management" canonical={window.location.href} />
+        <SEO title={t('screens.admin.tenantManagementAdmin')} description="Organization and tenant management" canonical={window.location.href} />
         <SubNavigation items={adminTenantManagementNavigation} />
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Tenant Management"
+              title={t('screens.admin.tenantManagement')}
               description="Organization and tenant management"
               emoji="🏢"
             />
@@ -82,7 +82,7 @@ export default function TenantManagement() {
             <Card className="max-w-md mx-auto">
               <CardHeader className="text-center">
                 <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                <CardTitle>Access Restricted</CardTitle>
+                <CardTitle>{t('screens.admin.accessRestricted')}</CardTitle>
                 <CardDescription>
                   Only Exafy administrators can manage tenants and organizations.
                 </CardDescription>
@@ -96,12 +96,12 @@ export default function TenantManagement() {
 
   return (
     <AppLayout>
-      <SEO title="Tenant Management | Admin" description="Switch between organizations and manage tenant access" canonical={window.location.href} />
+      <SEO title={t('screens.admin.tenantManagementAdmin')} description="Switch between organizations and manage tenant access" canonical={window.location.href} />
       <SubNavigation items={adminTenantManagementNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
       <AdminHeader
-        title="Tenant Management"
+        title={t('screens.admin.tenantManagement')}
         description="Switch between organizations and manage tenant access"
         emoji="🏢"
       />
@@ -118,7 +118,7 @@ export default function TenantManagement() {
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">{tenant?.name}</p>
-              <p className="text-sm text-muted-foreground">Active Tenant</p>
+              <p className="text-sm text-muted-foreground">{t('screens.admin.activeTenant')}</p>
             </div>
             <Badge className={TENANT_CONFIGS[tenant?.slug as keyof typeof TENANT_CONFIGS]?.color}>
               {tenant?.slug}
@@ -141,10 +141,10 @@ export default function TenantManagement() {
         <CardContent className="space-y-4">
           <div className="grid gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Select Organization</label>
+              <label className="text-sm font-medium">{t('screens.admin.selectOrganization')}</label>
               <Select value={selectedTenant} onValueChange={setSelectedTenant}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose an organization" />
+                  <SelectValue placeholder={t('screens.admin.chooseOrganization')} />
                 </SelectTrigger>
                 <SelectContent>
                   {memberships?.map(membership => (

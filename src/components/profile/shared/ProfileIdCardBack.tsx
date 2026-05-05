@@ -13,6 +13,7 @@ import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
@@ -365,7 +366,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                       Connect
                     </Button>
                   ) : (
-                    <span className="text-xs text-muted-foreground/40 italic">Not linked</span>
+                    <span className="text-xs text-muted-foreground/40 italic">{t('screens.profile.notLinked')}</span>
                   )}
                 </div>
               </div>
@@ -378,7 +379,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                     {cardContent}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Not connected yet</p>
+                    <p>{t('screens.profile.notConnectedYet')}</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
@@ -393,7 +394,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
           <div className="w-full max-w-md mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <div className="flex items-center gap-2 mb-2">
               <LinkedInIcon className="h-4 w-4" connected={true} />
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">LinkedIn Profile Data</span>
+              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{t('screens.profile.linkedinProfileData')}</span>
             </div>
             {profile.linkedin_headline && (
               <p className="text-sm font-medium text-foreground mb-1">{profile.linkedin_headline}</p>

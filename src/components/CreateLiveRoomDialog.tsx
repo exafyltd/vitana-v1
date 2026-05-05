@@ -16,7 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useCreatorStatus } from '@/hooks/useCreator';
 import { Link } from 'react-router-dom';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreateLiveRoomDialogProps {
   userId: string;
@@ -95,10 +95,10 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
         <ResponsiveDialogBody>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="room-name">Room Name</Label>
+              <Label htmlFor="room-name">{t('screens.common.roomName')}</Label>
               <Input
                 id="room-name"
-                placeholder="e.g., Weekly Health Coaching"
+                placeholder={t('screens.common.eGWeeklyHealthCoaching')}
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
               />
@@ -107,8 +107,8 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
             {!isIAPRestricted() && (
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="paid-toggle">Paid Room</Label>
-                  <p className="text-xs text-muted-foreground">Charge participants to join</p>
+                  <Label htmlFor="paid-toggle">{t('screens.common.paidRoom')}</Label>
+                  <p className="text-xs text-muted-foreground">{t('screens.common.chargeParticipantsJoin')}</p>
                 </div>
                 <Switch
                   id="paid-toggle"
@@ -122,7 +122,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
               <div className="flex items-start gap-2 rounded-md border border-yellow-300 bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-700 p-3">
                 <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5 shrink-0" />
                 <div className="text-sm">
-                  <p className="font-medium text-yellow-800 dark:text-yellow-300">Payment setup required</p>
+                  <p className="font-medium text-yellow-800 dark:text-yellow-300">{t('screens.common.paymentSetupRequired')}</p>
                   <p className="text-yellow-700 dark:text-yellow-400 text-xs mt-1">
                     <Link to="/settings/billing" className="underline" onClick={() => setIsOpen(false)}>
                       Enable Payments
@@ -135,7 +135,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
 
             {!isIAPRestricted() && isPaid && canCreatePaidRoom && (
               <div className="space-y-2">
-                <Label htmlFor="room-price">Price ($)</Label>
+                <Label htmlFor="room-price">{t('screens.common.price')}</Label>
                 <Input
                   id="room-price"
                   type="number"

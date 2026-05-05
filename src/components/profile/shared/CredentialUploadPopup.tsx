@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CoachingSpecialty, Certification } from "@/types/profile";
 import { useState } from "react";
 import { Upload, Plus, X, Trophy, Award, Users, Star, Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CredentialUploadPopupProps {
   open: boolean;
@@ -111,7 +112,7 @@ export function CredentialUploadPopup({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Manage Professional Credentials</DialogTitle>
+          <DialogTitle>{t('screens.profile.manageProfessionalCredentials')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -126,7 +127,7 @@ export function CredentialUploadPopup({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div>
-                    <Label>Specialty Title</Label>
+                    <Label>{t('screens.profile.specialtyTitle')}</Label>
                     <Input
                       value={newSpecialtyTitle}
                       onChange={(e) => setNewSpecialtyTitle(e.target.value)}
@@ -141,7 +142,7 @@ export function CredentialUploadPopup({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="fitness">Fitness</SelectItem>
-                        <SelectItem value="mental">Mental Health</SelectItem>
+                        <SelectItem value="mental">{t('screens.profile.mentalHealth')}</SelectItem>
                         <SelectItem value="nutrition">Nutrition</SelectItem>
                         <SelectItem value="wellness">Wellness</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
@@ -153,7 +154,7 @@ export function CredentialUploadPopup({
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label>Sessions Held</Label>
+                      <Label>{t('screens.profile.sessionsHeld')}</Label>
                       <Input
                         type="number"
                         value={newSessions}
@@ -185,7 +186,7 @@ export function CredentialUploadPopup({
                       />
                     </div>
                     <div>
-                      <Label>Total Ratings</Label>
+                      <Label>{t('screens.profile.totalRatings')}</Label>
                       <Input
                         type="number"
                         value={newTotalRatings}

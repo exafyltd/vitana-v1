@@ -5,6 +5,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { Plane } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface CommunityHeaderProps {
   title: string;
@@ -64,7 +65,7 @@ export function CommunityHeader({ title, description, emoji = "✨" }: Community
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
             <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-              <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+              <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
               {latestActions.map((action, index) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                   <span>{action.icon}</span>

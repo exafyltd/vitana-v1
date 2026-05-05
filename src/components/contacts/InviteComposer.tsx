@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 type InviteChannel = "sms" | "email" | "whatsapp" | "share";
 
@@ -85,7 +86,7 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
 
       {/* Channel selector */}
       <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Send via</label>
+        <label className="text-sm font-medium text-foreground">{t('screens.contacts.sendVia')}</label>
         <div className="flex gap-2">
           {channels.map((channel) => {
             const recipientCount = getChannelRecipientsCount(channel.id);

@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
@@ -129,7 +129,7 @@ export default function ProviderProfile() {
     return (
       <AppLayout>
         <div className="p-8 text-center">
-          <h1 className="text-2xl font-bold mb-4">Provider Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('screens.discover.providerNotFound')}</h1>
           <Button onClick={() => navigate('/discover/doctors-coaches')}>
             Back to Providers
           </Button>
@@ -260,7 +260,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-green-500" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Next Available</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.nextAvailable')}</p>
                   <p className="font-medium text-green-600">{provider.nextAvailable}</p>
                 </div>
               </div>
@@ -300,12 +300,12 @@ export default function ProviderProfile() {
                 <div className="mt-6 space-y-3">
                   <div className="flex items-center gap-2">
                     <GraduationCap className="h-5 w-5 text-muted-foreground" />
-                    <span className="font-medium">Specialty:</span>
+                    <span className="font-medium">{t('screens.discover.specialty2')}</span>
                     <span className="text-muted-foreground">{provider.specialty}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-muted-foreground" />
-                    <span className="font-medium">Experience:</span>
+                    <span className="font-medium">{t('screens.discover.experience')}</span>
                     <span className="text-muted-foreground">{provider.experience}</span>
                   </div>
                 </div>
@@ -316,19 +316,19 @@ export default function ProviderProfile() {
           <TabsContent value="services" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Services & Pricing</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.servicesPricing')}</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-4 border border-border rounded-lg">
                     <div>
-                      <p className="font-medium">Initial Consultation</p>
-                      <p className="text-sm text-muted-foreground">60 minutes</p>
+                      <p className="font-medium">{t('screens.discover.initialConsultation')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.discover.text60Minutes')}</p>
                     </div>
                     <p className="text-lg font-bold">{provider.priceRange.split('-')[0].trim()}</p>
                   </div>
                   <div className="flex justify-between items-center p-4 border border-border rounded-lg">
                     <div>
-                      <p className="font-medium">Follow-up Session</p>
-                      <p className="text-sm text-muted-foreground">30 minutes</p>
+                      <p className="font-medium">{t('screens.discover.followupSession')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.discover.text30Minutes')}</p>
                     </div>
                     <p className="text-lg font-bold">$150</p>
                   </div>
@@ -340,8 +340,8 @@ export default function ProviderProfile() {
           <TabsContent value="reviews" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Patient Reviews</h3>
-                <p className="text-muted-foreground">Reviews feature coming soon...</p>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.patientReviews')}</h3>
+                <p className="text-muted-foreground">{t('screens.discover.reviewsFeatureComingSoon')}</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -350,7 +350,7 @@ export default function ProviderProfile() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold mb-4">Availability</h3>
-                <p className="text-muted-foreground">Calendar integration coming soon...</p>
+                <p className="text-muted-foreground">{t('screens.discover.calendarIntegrationComingSoon')}</p>
               </CardContent>
             </Card>
           </TabsContent>

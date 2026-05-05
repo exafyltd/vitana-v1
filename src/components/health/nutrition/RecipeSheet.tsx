@@ -31,7 +31,7 @@ import { scaleQuantity } from "@/lib/recipeUtils";
 import { toast } from "sonner";
 import { MacroRings } from "./MacroRings";
 import { CookModeFullScreen } from "./CookModeFullScreen";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface RecipeSheetProps {
   recipe: Recipe | null;
@@ -354,10 +354,10 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
           
               {/* Notes */}
               <div>
-                <Label htmlFor="notes">Personal Notes</Label>
+                <Label htmlFor="notes">{t('screens.health.personalNotes')}</Label>
                 <Textarea
                   id="notes"
-                  placeholder="Add your cooking notes..."
+                  placeholder={t('screens.health.addYourCookingNotes')}
                   className="mt-2"
                 />
               </div>

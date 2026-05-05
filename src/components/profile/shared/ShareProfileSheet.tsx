@@ -2,7 +2,7 @@ import { QrCode, Share2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ShareProfileSheetProps {
   isOpen: boolean;
@@ -62,7 +62,7 @@ export function ShareProfileSheet({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Share profile</DialogTitle>
+          <DialogTitle>{t('screens.profile.shareProfile2')}</DialogTitle>
         </DialogHeader>
 
         <div className="mt-2 space-y-2">
@@ -91,7 +91,7 @@ export function ShareProfileSheet({
               <QrCode className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium">Show QR code</div>
+              <div className="text-sm font-medium">{t('screens.profile.showQrCode')}</div>
               <div className="text-xs text-muted-foreground">
                 Let someone scan to open your profile
               </div>

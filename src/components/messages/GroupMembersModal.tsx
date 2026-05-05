@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface Participant {
   id: string;
@@ -456,7 +456,7 @@ export default function GroupMembersModal({
                           <p className="font-medium truncate">
                             {displayName}
                             {isCurrentUser && (
-                              <span className="text-muted-foreground text-sm ml-1">(You)</span>
+                              <span className="text-muted-foreground text-sm ml-1">{t('screens.messages.you')}</span>
                             )}
                           </p>
                           {getRoleIcon(participant.role)}

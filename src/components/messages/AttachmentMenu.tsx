@@ -17,6 +17,7 @@ import {
   Send
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface AttachmentMenuProps {
   onFileAttach: () => void;
@@ -71,16 +72,16 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
           className="w-full justify-start h-10 px-3"
         >
           <Calendar className="w-5 h-5 mr-3 text-blue-500" />
-          <span className="text-sm">Send Calendar Invite</span>
+          <span className="text-sm">{t('screens.messages.sendCalendarInvite')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Send Calendar Invite</DialogTitle>
+          <DialogTitle>{t('screens.messages.sendCalendarInvite')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="title">Event Title</Label>
+            <Label htmlFor="title">{t('screens.messages.eventTitle')}</Label>
             <Input
               id="title"
               value={title}
@@ -90,7 +91,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
             />
           </div>
           <div>
-            <Label htmlFor="datetime">Date & Time</Label>
+            <Label htmlFor="datetime">{t('screens.messages.dateTime')}</Label>
             <Input
               id="datetime"
               type="datetime-local"
@@ -100,7 +101,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
             />
           </div>
           <div>
-            <Label htmlFor="location">Location (optional)</Label>
+            <Label htmlFor="location">{t('screens.messages.locationOptional')}</Label>
             <Input
               id="location"
               value={location}
@@ -109,7 +110,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
             />
           </div>
           <div>
-            <Label htmlFor="description">Description (optional)</Label>
+            <Label htmlFor="description">{t('screens.messages.descriptionOptional')}</Label>
             <Input
               id="description"
               value={description}
@@ -177,7 +178,7 @@ export function AttachmentMenu({
         </Button>
       </ResponsivePopoverTrigger>
       <ResponsivePopoverContent 
-        title="Attach"
+        title={t('screens.messages.attach')}
         side="top" 
         align="start"
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
@@ -202,7 +203,7 @@ export function AttachmentMenu({
             title="Send funds"
           >
             <Send className="w-5 h-5 mr-3 text-green-600" />
-            <span className="text-sm font-medium">Send Funds</span>
+            <span className="text-sm font-medium">{t('screens.messages.sendFunds')}</span>
           </Button>
           
           {/* Request Payment */}
@@ -224,7 +225,7 @@ export function AttachmentMenu({
             title="Request payment"
           >
             <DollarSign className="w-5 h-5 mr-3 text-green-500" />
-            <span className="text-sm">Request Payment</span>
+            <span className="text-sm">{t('screens.messages.requestPayment')}</span>
           </Button>
           
           <CalendarDialog onCalendarInvite={onCalendarInvite} />
@@ -238,7 +239,7 @@ export function AttachmentMenu({
             }}
           >
             <FileText className="w-5 h-5 mr-3 text-purple-500" />
-            <span className="text-sm">Attach File</span>
+            <span className="text-sm">{t('screens.messages.attachFile')}</span>
           </Button>
         </div>
         

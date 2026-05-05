@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ExchangeAndSendStepProps {
   onBack: () => void;
@@ -151,13 +151,13 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
       <div className="space-y-4">
         {/* Recipient Selection */}
         <div className="space-y-2">
-          <Label htmlFor="recipient">Send to</Label>
+          <Label htmlFor="recipient">{t('screens.wallet.send')}</Label>
           <div className="space-y-2">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="recipient"
-                placeholder="Search community members..."
+                placeholder={t('screens.wallet.searchCommunityMembers')}
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-9"
@@ -226,7 +226,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
         {/* Exchange Setup */}
         <div className="space-y-3">
-          <Label>Exchange & Send Amount</Label>
+          <Label>{t('screens.wallet.exchangeSendAmount')}</Label>
           
           {/* From Currency */}
           <div className="flex gap-2">
@@ -271,7 +271,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
           {/* To Currency */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">They'll receive:</span>
+            <span className="text-sm text-muted-foreground">{t('screens.wallet.theyLlReceive')}</span>
             <Select value={toCurrency} onValueChange={(value: any) => setToCurrency(value)}>
               <SelectTrigger className="w-32">
                 <SelectValue />
@@ -292,10 +292,10 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
         {/* Description */}
         <div className="space-y-2">
-          <Label htmlFor="description">Description (optional)</Label>
+          <Label htmlFor="description">{t('screens.wallet.descriptionOptional')}</Label>
           <Textarea
             id="description"
-            placeholder="What's this for?"
+            placeholder={t('screens.wallet.whatSThisFor')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
@@ -307,19 +307,19 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           <Card className="bg-gradient-to-r from-purple-50/30 to-blue-50/30 border-purple-200/50">
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>You send:</span>
+                <span>{t('screens.wallet.youSend2')}</span>
                 <span className="font-medium">{parseFloat(amount).toFixed(2)} {fromCurrency}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>They receive:</span>
+                <span>{t('screens.wallet.theyReceive')}</span>
                 <span className="font-medium text-purple-700">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Exchange rate:</span>
+                <span>{t('screens.wallet.exchangeRate')}</span>
                 <span>1 {fromCurrency} = {calculation.rate} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Total fees:</span>
+                <span>{t('screens.wallet.totalFees')}</span>
                 <span>{(calculation.fees + calculation.toAmount * 0.005).toFixed(3)} {fromCurrency}</span>
               </div>
             </CardContent>

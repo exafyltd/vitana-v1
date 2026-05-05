@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Search, Filter, DollarSign, Calendar, MapPin, Clock, Users, Target, TrendingUp } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface BusinessFiltersPopupProps {
   isOpen: boolean;
@@ -23,8 +24,8 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
             <Filter className="w-8 h-8 text-white" />
           </div>
-          <DialogTitle className="text-2xl font-bold">Business Hub Filters</DialogTitle>
-          <p className="text-muted-foreground">Customize your business management view with advanced filters</p>
+          <DialogTitle className="text-2xl font-bold">{t('screens.common.businessHubFilters')}</DialogTitle>
+          <p className="text-muted-foreground">{t('screens.common.customizeYourBusinessManagementViewWith')}</p>
         </DialogHeader>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 py-6">
@@ -56,7 +57,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-sm font-medium mb-2 block">Revenue Range (Monthly)</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.revenueRangeMonthly')}</Label>
                 <div className="px-2">
                   <Slider defaultValue={[500]} max={5000} step={100} className="w-full" />
                   <div className="flex justify-between text-xs text-muted-foreground mt-1">
@@ -67,31 +68,31 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
               </div>
               
               <div>
-                <Label className="text-sm font-medium mb-2 block">Client Count</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.clientCount')}</Label>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select range" />
+                    <SelectValue placeholder={t('screens.common.selectRange')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="1-10">1-10 clients</SelectItem>
-                    <SelectItem value="11-50">11-50 clients</SelectItem>
-                    <SelectItem value="51-100">51-100 clients</SelectItem>
-                    <SelectItem value="100+">100+ clients</SelectItem>
+                    <SelectItem value="1-10">{t('screens.common.text110Clients')}</SelectItem>
+                    <SelectItem value="11-50">{t('screens.common.text1150Clients')}</SelectItem>
+                    <SelectItem value="51-100">{t('screens.common.text51100Clients')}</SelectItem>
+                    <SelectItem value="100+">{t('screens.common.text100Clients')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-2 block">Rating Filter</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.ratingFilter')}</Label>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Minimum rating" />
+                    <SelectValue placeholder={t('screens.common.minimumRating')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="4.5+">4.5+ stars</SelectItem>
-                    <SelectItem value="4.0+">4.0+ stars</SelectItem>
-                    <SelectItem value="3.5+">3.5+ stars</SelectItem>
-                    <SelectItem value="any">Any rating</SelectItem>
+                    <SelectItem value="4.5+">{t('screens.common.text45Stars')}</SelectItem>
+                    <SelectItem value="4.0+">{t('screens.common.text40Stars')}</SelectItem>
+                    <SelectItem value="3.5+">{t('screens.common.text35Stars')}</SelectItem>
+                    <SelectItem value="any">{t('screens.common.anyRating')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -108,7 +109,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-sm font-medium mb-2 block">Service Status</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.serviceStatus')}</Label>
                 <div className="space-y-2">
                   {['Active', 'Scheduled', 'Completed', 'Cancelled'].map((status) => (
                     <div key={status} className="flex items-center space-x-2">
@@ -120,7 +121,7 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-2 block">Delivery Method</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.deliveryMethod')}</Label>
                 <div className="space-y-2">
                   {['In-Person', 'Virtual', 'Hybrid'].map((method) => (
                     <div key={method} className="flex items-center space-x-2">
@@ -132,17 +133,17 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-2 block">Time Period</Label>
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.timePeriod')}</Label>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select period" />
+                    <SelectValue placeholder={t('screens.common.selectPeriod')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="today">Today</SelectItem>
-                    <SelectItem value="week">This Week</SelectItem>
-                    <SelectItem value="month">This Month</SelectItem>
-                    <SelectItem value="quarter">This Quarter</SelectItem>
-                    <SelectItem value="year">This Year</SelectItem>
+                    <SelectItem value="week">{t('screens.common.thisWeek')}</SelectItem>
+                    <SelectItem value="month">{t('screens.common.thisMonth')}</SelectItem>
+                    <SelectItem value="quarter">{t('screens.common.thisQuarter')}</SelectItem>
+                    <SelectItem value="year">{t('screens.common.thisYear')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -163,12 +164,12 @@ export default function BusinessFiltersPopup({ isOpen, onClose }: BusinessFilter
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium mb-2 block">Client Name or Service</Label>
-                <Input placeholder="Search by client name, service title..." />
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.clientNameService')}</Label>
+                <Input placeholder={t('screens.common.searchByClientNameServiceTitle')} />
               </div>
               <div>
-                <Label className="text-sm font-medium mb-2 block">Location/Venue</Label>
-                <Input placeholder="Search by location or venue..." />
+                <Label className="text-sm font-medium mb-2 block">{t('screens.common.locationvenue')}</Label>
+                <Input placeholder={t('screens.common.searchByLocationVenue')} />
               </div>
             </CardContent>
           </Card>

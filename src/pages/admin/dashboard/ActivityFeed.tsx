@@ -10,6 +10,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 const PAGE_SIZE = 20;
 
@@ -135,7 +136,7 @@ export default function ActivityFeed() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Activity Feed"
+            title={t('screens.admin.activityFeed')}
             description="Full OASIS event log"
             emoji="📡"
           />
@@ -143,10 +144,10 @@ export default function ActivityFeed() {
           {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="type-filter">Event Type</Label>
+              <Label htmlFor="type-filter">{t('screens.admin.eventType')}</Label>
               <Input
                 id="type-filter"
-                placeholder="e.g. vtid.lifecycle"
+                placeholder={t('screens.admin.eGVtidLifecycle')}
                 value={typeFilter}
                 onChange={(e) => {
                   setTypeFilter(e.target.value);
@@ -158,7 +159,7 @@ export default function ActivityFeed() {
               <Label htmlFor="source-filter">Source</Label>
               <Input
                 id="source-filter"
-                placeholder="e.g. gateway"
+                placeholder={t('screens.admin.eGGateway')}
                 value={sourceFilter}
                 onChange={(e) => {
                   setSourceFilter(e.target.value);
@@ -167,12 +168,12 @@ export default function ActivityFeed() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="date-from">Date From</Label>
-              <Input id="date-from" type="date" disabled placeholder="Coming soon" />
+              <Label htmlFor="date-from">{t('screens.admin.dateFrom')}</Label>
+              <Input id="date-from" type="date" disabled placeholder={t('screens.admin.comingSoon2')} />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="date-to">Date To</Label>
-              <Input id="date-to" type="date" disabled placeholder="Coming soon" />
+              <Label htmlFor="date-to">{t('screens.admin.date')}</Label>
+              <Input id="date-to" type="date" disabled placeholder={t('screens.admin.comingSoon2')} />
             </div>
           </div>
 

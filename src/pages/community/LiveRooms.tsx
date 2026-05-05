@@ -44,7 +44,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
-import { lookup, notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -532,7 +532,7 @@ export default function LiveRooms() {
   return (
     <AppLayout>
       <SEO
-        title="Live Rooms | Community"
+        title={t('screens.community.liveRoomsCommunity')}
         description="Join live conversations and discussions"
         canonical={window.location.href}
       />
@@ -583,7 +583,7 @@ export default function LiveRooms() {
         >
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder="Search Live Rooms…"
+              placeholder={t('screens.community.searchLiveRooms')}
               onSearch={(query) => setSearchQuery(query)}
             />
             
@@ -625,7 +625,7 @@ export default function LiveRooms() {
                   <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                     {filteredLiveRooms.length}
                     {liveStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -636,7 +636,7 @@ export default function LiveRooms() {
                   <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                     {filteredScheduledRooms.length}
                     {scheduledStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -650,7 +650,7 @@ export default function LiveRooms() {
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading live rooms...</p>
+                <p className="text-muted-foreground">{t('screens.community.loadingLiveRooms')}</p>
               </div>
             ) : filteredLiveRooms.length > 0 ? (
               isMobile ? (
@@ -702,7 +702,7 @@ export default function LiveRooms() {
           <SplitBarContent value="scheduled" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingScheduled ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading scheduled rooms...</p>
+                <p className="text-muted-foreground">{t('screens.community.loadingScheduledRooms')}</p>
               </div>
             ) : filteredScheduledRooms.length > 0 ? (
               isMobile ? (
@@ -737,7 +737,7 @@ export default function LiveRooms() {
               )
             ) : (
               <div className="text-center py-6">
-                <p className="text-muted-foreground">No scheduled rooms</p>
+                <p className="text-muted-foreground">{t('screens.community.noScheduledRooms')}</p>
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -753,7 +753,7 @@ export default function LiveRooms() {
 
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
             <div className="text-center py-6">
-              <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
+              <p className="text-muted-foreground">{t('screens.community.pastSessionsWillAppearHereOnce')}</p>
               <p className="text-sm text-muted-foreground mt-2">
                 View summaries, highlights, and recordings from completed sessions.
               </p>
@@ -803,7 +803,7 @@ export default function LiveRooms() {
       <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Live Room</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.community.deleteLiveRoom')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
               Are you sure you want to delete this live room? This action cannot be undone.
             </ResponsiveConfirmDialogDescription>

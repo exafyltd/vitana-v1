@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sheet'
 import { supabase } from '@/integrations/supabase/client'
 import { useQueryClient } from '@tanstack/react-query'
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface DiaryQuickEntryProps {
   open: boolean
@@ -109,7 +109,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
         <SheetHeader className="flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <SheetTitle>Quick Diary Entry</SheetTitle>
+              <SheetTitle>{t('screens.diary.quickDiaryEntry')}</SheetTitle>
               <SheetDescription>
                 {(text || initialContent) ? 'Voice transcript captured. Edit and save your entry.' : 'Write your thoughts...'}
               </SheetDescription>
@@ -118,7 +118,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
               variant="ghost"
               size="icon"
               onClick={handleCancel}
-              aria-label="Close diary"
+              aria-label={t('screens.diary.closeDiary')}
             >
               <X className="h-4 w-4" />
             </Button>

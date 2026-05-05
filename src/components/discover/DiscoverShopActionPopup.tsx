@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Zap, RotateCcw, CreditCard, Package, Bell, Heart, Tag } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface DiscoverShopActionPopupProps {
   open: boolean;
@@ -32,7 +32,7 @@ export const DiscoverShopActionPopup = ({ open, onOpenChange }: DiscoverShopActi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Quick Shop Actions</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('screens.discover.quickShopActions')}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4 mt-4">
           {actions.map((action) => {

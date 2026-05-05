@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
+import { t } from '@/lib/i18n-toast';
 
 interface ServiceProvider {
   id: string;
@@ -148,7 +149,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           {/* Quick Info */}
           <Card>
             <CardHeader className="pb-4">
-              <CardTitle className="text-lg">Service Details</CardTitle>
+              <CardTitle className="text-lg">{t('screens.health.serviceDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-3 gap-4">

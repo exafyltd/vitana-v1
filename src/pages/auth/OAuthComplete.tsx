@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { isAppilixWebView } from "@/lib/webview";
+import { t } from '@/lib/i18n-toast';
 
 type Status = "processing" | "success" | "error";
 
@@ -189,8 +190,8 @@ export default function OAuthComplete() {
         {status === "processing" && (
           <>
             <Loader2 className="h-12 w-12 mx-auto animate-spin text-primary" />
-            <h1 className="text-xl font-semibold">Finishing sign-in…</h1>
-            <p className="text-muted-foreground">Please wait a moment.</p>
+            <h1 className="text-xl font-semibold">{t('screens.auth.finishingSignin')}</h1>
+            <p className="text-muted-foreground">{t('screens.auth.pleaseWaitMoment')}</p>
           </>
         )}
 
@@ -211,7 +212,7 @@ export default function OAuthComplete() {
         {status === "error" && (
           <>
             <XCircle className="h-12 w-12 mx-auto text-destructive" />
-            <h1 className="text-xl font-semibold">Sign-in couldn't complete</h1>
+            <h1 className="text-xl font-semibold">{t('screens.auth.signinCouldnTComplete')}</h1>
             <p className="text-muted-foreground break-words">{message}</p>
             <div className="flex flex-col gap-2">
               <Button variant="secondary" onClick={() => window.history.back()}>

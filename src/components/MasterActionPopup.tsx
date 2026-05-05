@@ -27,6 +27,7 @@ import { GoLivePopup } from "./GoLivePopup";
 import { MediaUploadPopup } from "./MediaUploadPopup";
 import LabTestOrderPopup from "./LabTestOrderPopup";
 import { usePopupCoordination } from "@/hooks/usePopupCoordination";
+import { t } from '@/lib/i18n-toast';
 
 interface MasterActionPopupProps {
   open: boolean;
@@ -143,11 +144,11 @@ export function MasterActionPopup({ open, onOpenChange }: MasterActionPopupProps
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl max-h-[80vh]">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold mb-4">Master Actions</DialogTitle>
+            <DialogTitle className="text-2xl font-bold mb-4">{t('screens.common.masterActions')}</DialogTitle>
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Search actions..."
+                placeholder={t('screens.common.searchActions')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"

@@ -13,7 +13,7 @@ import { SCREEN_IDS } from "@/lib/screen-id";
 import { useEffect, useState } from "react";
 import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
 import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
@@ -120,7 +120,7 @@ export function MemoryTimelineTab() {
     expandedContent: item.source === 'ai' ? (
       <div className="space-y-2 transition-opacity duration-150">
         <div className="text-sm text-muted-foreground/80">
-          <span className="font-medium">Type:</span> {item.memoryType || "insight"}
+          <span className="font-medium">{t('screens.memory.type')}</span> {item.memoryType || "insight"}
         </div>
         {item.confidenceScore && (
           <div className="text-sm text-amber-600 dark:text-amber-500">
@@ -172,8 +172,8 @@ export function MemoryTimelineTab() {
         <Card>
           <CardContent className="pt-6 text-center text-muted-foreground">
             <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No knowledge base entries yet</p>
-            <p className="text-sm mt-1">Start adding memories to see them here</p>
+            <p>{t('screens.memory.noKnowledgeBaseEntriesYet')}</p>
+            <p className="text-sm mt-1">{t('screens.memory.startAddingMemoriesSeeThemHere')}</p>
           </CardContent>
         </Card>
       ) : useNewCards ? (

@@ -18,6 +18,7 @@ import { ChannelConnector } from "@/components/sharing/ChannelConnector";
 import { AnalyticsDashboard } from "@/components/sharing/AnalyticsDashboard";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { SocialShareAutopilot } from "@/components/proactive/SocialShareAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 function Sharing() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
@@ -25,7 +26,7 @@ function Sharing() {
   return (
     <AppLayout>
       <SEO
-        title="Sharing - Distribution & Growth | VITANA"
+        title={t('screens.sharing.sharingDistributionGrowthVitana')}
         description="Distribute your content across multiple channels and grow your wellness community"
         canonical={window.location.href}
       />
@@ -34,12 +35,12 @@ function Sharing() {
       <div className="p-6 min-h-screen pb-24">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Distribution & Sharing 🚀"
+            title={t('screens.sharing.distributionSharing')}
             description="Share your content across multiple channels and manage your data sharing"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search sharing activities..." />
+            <ExpandableSearchButton placeholder={t('screens.sharing.searchSharingActivities')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
@@ -73,7 +74,7 @@ function Sharing() {
 
           {/* Analytics Dashboard */}
           <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-4">Performance Analytics</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('screens.sharing.performanceAnalytics')}</h2>
             <AnalyticsDashboard />
           </div>
         </div>

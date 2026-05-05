@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 import { ExternalLink, LinkIcon } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 type Platform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -41,12 +42,12 @@ export default function SocialConnect() {
 
   return (
     <AppLayout>
-      <SEO title="Social Accounts" />
+      <SEO title={t('screens.settings.socialAccounts')} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
-            title="Social Accounts"
+            title={t('screens.settings.socialAccounts')}
             description="Connect your accounts to auto-fill your profile"
             emoji="🔗"
           />
@@ -78,7 +79,7 @@ export default function SocialConnect() {
                               {platform.url}
                             </a>
                           ) : (
-                            <p className="text-xs text-muted-foreground">Not connected</p>
+                            <p className="text-xs text-muted-foreground">{t('screens.settings.notConnected')}</p>
                           )}
                         </div>
                       </div>

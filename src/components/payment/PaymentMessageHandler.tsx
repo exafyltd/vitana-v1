@@ -17,7 +17,7 @@ import {
   Receipt
 } from 'lucide-react';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PaymentMessageHandlerProps {
   message: any;
@@ -403,7 +403,7 @@ export function PaymentMessageHandler({
           {!isCurrentUser && effectiveStatus === 'pending' && (
             <div className="space-y-2 mb-3">
               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Your balance:</span>
+                <span>{t('screens.payment.yourBalance3')}</span>
                 <div className="flex items-center gap-2">
                   <span className="flex items-center gap-1">
                     {getCurrencyIcon(currency)}
@@ -501,7 +501,7 @@ export function PaymentMessageHandler({
           <div className="flex items-start justify-between mb-3">
             <div className="text-sm">
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-medium">Exchange & Send</span>
+                <span className="font-medium">{t('screens.payment.exchangeSend')}</span>
                 <Badge variant="secondary" className="text-xs">
                   Rate: {exchangeRate.toFixed(3)}
                 </Badge>
@@ -564,7 +564,7 @@ export function PaymentMessageHandler({
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            <span className="font-medium text-green-800">Payment Completed</span>
+            <span className="font-medium text-green-800">{t('screens.payment.paymentCompleted')}</span>
           </div>
           <div className="flex items-center gap-2 mb-2">
             {getCurrencyIcon(currency)}

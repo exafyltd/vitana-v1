@@ -42,6 +42,7 @@ import {
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { t } from '@/lib/i18n-toast';
 
 type FilterTab = "all" | "longevity" | "community";
 
@@ -160,13 +161,13 @@ export default function Home() {
       {isLoading && articles.length === 0 && (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <span className="ml-3 text-muted-foreground">Loading news…</span>
+          <span className="ml-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
         </div>
       )}
       {!isLoading && articles.length === 0 && (
         <div className="text-center py-20 px-4">
-          <p className="text-lg text-muted-foreground">No news articles yet.</p>
-          <p className="text-sm text-muted-foreground mt-1">Articles will appear once the feed sources are fetched.</p>
+          <p className="text-lg text-muted-foreground">{t('screens.home.noNewsArticlesYet')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('screens.home.articlesWillAppearOnceFeedSources')}</p>
           <Button variant="outline" className="mt-4" onClick={handleRefresh}>
             <RefreshCw className="h-4 w-4 mr-2" />Refresh
           </Button>
@@ -222,28 +223,28 @@ export default function Home() {
       {isFetchingNextPage && (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">Loading more…</span>
+          <span className="ml-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
         </div>
       )}
       {!hasNextPage && !isFetchingNextPage && articles.length > 0 && activeTab !== "community" && (
-        <p className="text-center text-sm text-muted-foreground py-8">You're all caught up.</p>
+        <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
     </>
   );
 
   return (
     <AppLayout>
-      <SEO title="News | MAXINA" description="Longevity science & community updates" canonical={window.location.href} />
+      <SEO title={t('screens.home.newsMaxina')} description="Longevity science & community updates" canonical={window.location.href} />
       <div className={isMobile
         ? "px-4 pt-2 pb-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
         : "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen"
       }>
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
-          <StandardHeader title="News" description="Longevity science & community updates" emoji="📰" />
+          <StandardHeader title={t('screens.home.news')} description="Longevity science & community updates" emoji="📰" />
           <UtilityActionButton className="min-w-0" compact={isMobile}
             afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={0} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
             trailingElement={!isMobile ? (
-              <Button variant="ghost" size="icon" className="rounded-full" onClick={handleRefresh} title="Refresh news" disabled={isLoading}>
+              <Button variant="ghost" size="icon" className="rounded-full" onClick={handleRefresh} title={t('screens.home.refreshNews')} disabled={isLoading}>
                 <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
               </Button>
             ) : undefined}

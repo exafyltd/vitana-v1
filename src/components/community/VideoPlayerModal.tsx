@@ -4,7 +4,7 @@ import { useTrackMediaEvent } from "@/hooks/useShorts";
 import { getShareUrl } from "@/lib/shareUrl";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
@@ -357,7 +357,7 @@ export const VideoPlayerModal = ({
         <div className="fixed top-6 right-6 z-[9999] pointer-events-none">
           <DialogClose asChild>
             <button
-              aria-label="Close"
+              aria-label={t('screens.community.close')}
               onClick={onClose}
               className="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 
                 flex items-center justify-center shadow-lg transition-all duration-300 
@@ -378,7 +378,7 @@ export const VideoPlayerModal = ({
           {/* Left navigation arrow */}
           {hasPrevious && onPrevious && (
             <button
-              aria-label="Previous video"
+              aria-label={t('screens.community.previousVideo')}
               onClick={() => {
                 handleNavigation(onPrevious);
                 handleInteraction();
@@ -396,7 +396,7 @@ export const VideoPlayerModal = ({
           {/* Right navigation arrow */}
           {hasNext && onNext && (
             <button
-              aria-label="Next video"
+              aria-label={t('screens.community.nextVideo')}
               onClick={() => {
                 handleNavigation(onNext);
                 handleInteraction();

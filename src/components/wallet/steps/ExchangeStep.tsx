@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface ExchangeStepProps {
   onBack: () => void;
@@ -171,16 +171,16 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
           <Card>
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>You'll receive:</span>
+                <span>{t('screens.wallet.youLlReceive')}</span>
                 <span className="font-medium">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Exchange rate:</span>
+                <span>{t('screens.wallet.exchangeRate')}</span>
                 <span>1 {fromCurrency} = {calculation.rate} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>No fees:</span>
-                <span>Free exchange</span>
+                <span>{t('screens.wallet.noFees2')}</span>
+                <span>{t('screens.wallet.freeExchange')}</span>
               </div>
             </CardContent>
           </Card>

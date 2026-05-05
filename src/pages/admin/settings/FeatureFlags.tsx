@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 const KNOWN_FLAGS = [
   { key: "enable_voice_widget", label: "Voice Widget", description: "Enable the ORB voice assistant widget" },
@@ -40,12 +41,12 @@ export default function SettingsFeatureFlags() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🚩"
-          title="Feature Flags"
+          title={t('screens.admin.featureFlags')}
           description="Toggle features on or off for your tenant"
         />
 
         {settingsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading feature flags...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingFeatureFlags')}</p>
         )}
 
         {settingsQuery.data && (

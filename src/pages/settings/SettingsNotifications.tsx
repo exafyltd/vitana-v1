@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2 } from "lucide-react";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const settingsSubItems = [
   { id: "overview", name: "Overview", path: "/settings" },
@@ -62,7 +62,7 @@ export default function SettingsNotifications() {
   if (loading) {
     return (
       <AppLayout>
-        <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
+        <SEO title={t('screens.settings.notificationsSettings')} description="Configure your notification preferences" canonical={window.location.href} />
         <SubNavigation items={settingsSubItems} />
         <div className="p-6 max-w-4xl mx-auto flex items-center justify-center min-h-[400px]">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -73,11 +73,11 @@ export default function SettingsNotifications() {
 
   return (
     <AppLayout>
-      <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
+      <SEO title={t('screens.settings.notificationsSettings')} description="Configure your notification preferences" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
         <StandardHeader
-          title="Customize your alerts!"
+          title={t('screens.settings.customizeYourAlerts')}
           description="Configure your notification preferences"
           emoji="🔕"
         />
@@ -93,8 +93,8 @@ export default function SettingsNotifications() {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">Enable Push Notifications</h4>
-                <p className="text-sm text-muted-foreground">Receive notifications on your device</p>
+                <h4 className="font-medium">{t('screens.settings.enablePushNotifications')}</h4>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.receiveNotificationsYourDevice')}</p>
               </div>
               <Switch
                 checked={prefs.push_enabled}
@@ -152,8 +152,8 @@ export default function SettingsNotifications() {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">Enable Quiet Hours</h4>
-                <p className="text-sm text-muted-foreground">Pause non-urgent notifications during specified times</p>
+                <h4 className="font-medium">{t('screens.settings.enableQuietHours')}</h4>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.pauseNonurgentNotificationsDuringSpecifiedTimes')}</p>
               </div>
               <Switch
                 checked={prefs.dnd_enabled}
@@ -163,40 +163,40 @@ export default function SettingsNotifications() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium mb-2 block">Start Time</label>
+                <label className="text-sm font-medium mb-2 block">{t('screens.settings.startTime')}</label>
                 <Select
                   value={prefs.dnd_start_time || undefined}
                   onValueChange={(value) => handleTimeChange('dnd_start_time', value)}
                   disabled={!prefs.dnd_enabled}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select time" />
+                    <SelectValue placeholder={t('screens.settings.selectTime')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="20:00">8:00 PM</SelectItem>
-                    <SelectItem value="21:00">9:00 PM</SelectItem>
-                    <SelectItem value="22:00">10:00 PM</SelectItem>
-                    <SelectItem value="23:00">11:00 PM</SelectItem>
-                    <SelectItem value="00:00">12:00 AM</SelectItem>
+                    <SelectItem value="20:00">{t('screens.settings.text800Pm')}</SelectItem>
+                    <SelectItem value="21:00">{t('screens.settings.text900Pm')}</SelectItem>
+                    <SelectItem value="22:00">{t('screens.settings.text1000Pm')}</SelectItem>
+                    <SelectItem value="23:00">{t('screens.settings.text1100Pm')}</SelectItem>
+                    <SelectItem value="00:00">{t('screens.settings.text1200Am')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <label className="text-sm font-medium mb-2 block">End Time</label>
+                <label className="text-sm font-medium mb-2 block">{t('screens.settings.endTime')}</label>
                 <Select
                   value={prefs.dnd_end_time || undefined}
                   onValueChange={(value) => handleTimeChange('dnd_end_time', value)}
                   disabled={!prefs.dnd_enabled}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select time" />
+                    <SelectValue placeholder={t('screens.settings.selectTime')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="05:00">5:00 AM</SelectItem>
-                    <SelectItem value="06:00">6:00 AM</SelectItem>
-                    <SelectItem value="07:00">7:00 AM</SelectItem>
-                    <SelectItem value="08:00">8:00 AM</SelectItem>
-                    <SelectItem value="09:00">9:00 AM</SelectItem>
+                    <SelectItem value="05:00">{t('screens.settings.text500Am')}</SelectItem>
+                    <SelectItem value="06:00">{t('screens.settings.text600Am')}</SelectItem>
+                    <SelectItem value="07:00">{t('screens.settings.text700Am')}</SelectItem>
+                    <SelectItem value="08:00">{t('screens.settings.text800Am')}</SelectItem>
+                    <SelectItem value="09:00">{t('screens.settings.text900Am')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

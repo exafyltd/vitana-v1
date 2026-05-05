@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Shield, CheckCircle, AlertCircle, XCircle, Eye, Lock, Users, Database } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface PrivacyAuditPopupProps {
   isOpen: boolean;
@@ -40,7 +41,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <div className="flex items-center gap-4">
                 <div className="flex-1">
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Overall Privacy Health</span>
+                    <span>{t('screens.common.overallPrivacyHealth')}</span>
                     <span className="font-medium">7/10</span>
                   </div>
                   <Progress value={70} className="h-3" />
@@ -65,7 +66,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-lg">
                 <XCircle className="w-5 h-5 text-orange-600 mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-medium text-orange-900">Public Profile Visibility</h4>
+                  <h4 className="font-medium text-orange-900">{t('screens.common.publicProfileVisibility')}</h4>
                   <p className="text-sm text-orange-800 mb-3">
                     Your profile is currently visible to all users. Consider limiting visibility to friends only.
                   </p>
@@ -81,7 +82,7 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
               <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
                 <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-medium text-yellow-900">Location Data Sharing</h4>
+                  <h4 className="font-medium text-yellow-900">{t('screens.common.locationDataSharing')}</h4>
                   <p className="text-sm text-yellow-800 mb-3">
                     Location data is being shared with third-party services. Review sharing settings.
                   </p>
@@ -174,15 +175,15 @@ export function PrivacyAuditPopup({ isOpen, onClose }: PrivacyAuditPopupProps) {
             <CardContent className="space-y-3">
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
-                <p className="text-sm">Enable two-factor authentication for added security</p>
+                <p className="text-sm">{t('screens.common.enableTwofactorAuthenticationForAddedSecurity')}</p>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
-                <p className="text-sm">Review and update your connected apps permissions</p>
+                <p className="text-sm">{t('screens.common.reviewUpdateYourConnectedAppsPermissions')}</p>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
-                <p className="text-sm">Consider using a VPN for additional privacy protection</p>
+                <p className="text-sm">{t('screens.common.considerUsingVpnForAdditionalPrivacy')}</p>
               </div>
             </CardContent>
           </Card>

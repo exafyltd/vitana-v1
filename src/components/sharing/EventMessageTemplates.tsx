@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Mail, MessageSquare, Phone } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventMessageTemplatesProps {
   templates: {
@@ -51,7 +52,7 @@ export function EventMessageTemplates({
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="email-subject">Subject Line</Label>
+              <Label htmlFor="email-subject">{t('screens.sharing.subjectLine')}</Label>
               <Input
                 id="email-subject"
                 value={emailSubject}
@@ -64,7 +65,7 @@ export function EventMessageTemplates({
               />
             </div>
             <div>
-              <Label htmlFor="email-body">Message Body</Label>
+              <Label htmlFor="email-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="email-body"
                 value={emailBody}
@@ -95,7 +96,7 @@ export function EventMessageTemplates({
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="sms-body">Message Body</Label>
+              <Label htmlFor="sms-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="sms-body"
                 value={smsBody}
@@ -132,7 +133,7 @@ export function EventMessageTemplates({
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="whatsapp-body">Message Body</Label>
+              <Label htmlFor="whatsapp-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="whatsapp-body"
                 value={whatsappBody}

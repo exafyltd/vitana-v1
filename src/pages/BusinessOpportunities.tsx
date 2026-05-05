@@ -16,7 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { getIncomingMatches, type IntentMatch } from "@/lib/intentApi";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 export default function BusinessOpportunities() {
   const { toast } = useToast();
@@ -75,7 +75,7 @@ export default function BusinessOpportunities() {
         </div>
       ) : matches.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          No leads yet. We'll notify you when matching demand arrives. Make sure you have at least one commercial_sell listing posted under <Link to="/business/listings" className="underline">My Listings</Link>.
+          No leads yet. We'll notify you when matching demand arrives. Make sure you have at least one commercial_sell listing posted under <Link to="/business/listings" className="underline">{t('screens.businessopportunities.myListings')}</Link>.
         </div>
       ) : (
         <div className="space-y-3">

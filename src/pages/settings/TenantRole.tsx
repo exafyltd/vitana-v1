@@ -14,7 +14,7 @@ import { useMemberships } from "@/hooks/useMemberships";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function TenantRole() {
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
@@ -121,12 +121,12 @@ export default function TenantRole() {
 
   return (
     <AppLayout>
-      <SEO title="Tenant & Role Switcher | Settings" description="Switch between roles and tenants" canonical={window.location.href} />
+      <SEO title={t('screens.settings.tenantRoleSwitcherSettings')} description="Switch between roles and tenants" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader 
-            title="Switch roles & tenants!"
+            title={t('screens.settings.switchRolesTenants')}
             description="Manage your context and permissions"
             emoji="🔄"
           />
@@ -177,10 +177,10 @@ export default function TenantRole() {
               {roles && roles.length > 0 ? (
                 <>
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Available Roles</label>
+                    <label className="text-sm font-medium mb-2 block">{t('screens.settings.availableRoles')}</label>
                     <Select value={selectedRole} onValueChange={setSelectedRole}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
+                        <SelectValue placeholder={t('screens.settings.selectRole')} />
                       </SelectTrigger>
                       <SelectContent>
                         {roles.map((role) => (
@@ -255,10 +255,10 @@ export default function TenantRole() {
                 {memberships && memberships.length > 0 ? (
                   <>
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Available Organizations</label>
+                      <label className="text-sm font-medium mb-2 block">{t('screens.settings.availableOrganizations')}</label>
                       <Select value={selectedTenant} onValueChange={setSelectedTenant}>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select an organization" />
+                          <SelectValue placeholder={t('screens.settings.selectOrganization')} />
                         </SelectTrigger>
                         <SelectContent>
                           {memberships.map((membership) => (
@@ -325,7 +325,7 @@ export default function TenantRole() {
           {/* Role Permissions */}
           <Card>
             <CardHeader>
-              <CardTitle>Current Role Permissions</CardTitle>
+              <CardTitle>{t('screens.settings.currentRolePermissions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -343,7 +343,7 @@ export default function TenantRole() {
                         ) : (
                           <>
                             <XCircle className="w-4 h-4 text-gray-400" />
-                            <Badge className="bg-gray-100 text-gray-700">Not Available</Badge>
+                            <Badge className="bg-gray-100 text-gray-700">{t('screens.settings.notAvailable')}</Badge>
                           </>
                         )}
                       </div>

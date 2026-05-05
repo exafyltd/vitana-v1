@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Users, Search, Plus, Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function ProfessionalPatients() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">My Patients</h1>
+          <h1 className="text-3xl font-bold">{t('screens.professional.myPatients')}</h1>
           <p className="text-muted-foreground">
             Manage your patient roster and care plans
           </p>
@@ -25,7 +26,7 @@ export default function ProfessionalPatients() {
         <div className="flex-1">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search patients..." className="pl-10" />
+            <Input placeholder={t('screens.professional.searchPatients')} className="pl-10" />
           </div>
         </div>
       </div>
@@ -38,27 +39,27 @@ export default function ProfessionalPatients() {
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-lg">John Doe</CardTitle>
-                <CardDescription>Age 45 • Male</CardDescription>
+                <CardTitle className="text-lg">{t('screens.professional.johnDoe')}</CardTitle>
+                <CardDescription>{t('screens.professional.age45Male')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Last Visit</span>
-                <span className="text-sm">2 weeks ago</span>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.lastVisit')}</span>
+                <span className="text-sm">{t('screens.professional.text2WeeksAgo')}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Next Appointment</span>
-                <Badge variant="outline">Tomorrow 9:00 AM</Badge>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.nextAppointment')}</span>
+                <Badge variant="outline">{t('screens.professional.tomorrow900Am')}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Condition</span>
                 <Badge variant="secondary">Hypertension</Badge>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button size="sm" className="flex-1">View Chart</Button>
+                <Button size="sm" className="flex-1">{t('screens.professional.viewChart')}</Button>
                 <Button size="sm" variant="outline">
                   <Calendar className="h-4 w-4" />
                 </Button>
@@ -74,27 +75,27 @@ export default function ProfessionalPatients() {
                 <AvatarFallback>SJ</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-lg">Sarah Johnson</CardTitle>
-                <CardDescription>Age 32 • Female</CardDescription>
+                <CardTitle className="text-lg">{t('screens.professional.sarahJohnson')}</CardTitle>
+                <CardDescription>{t('screens.professional.age32Female')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Last Visit</span>
-                <span className="text-sm">1 week ago</span>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.lastVisit')}</span>
+                <span className="text-sm">{t('screens.professional.text1WeekAgo')}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Next Appointment</span>
-                <Badge variant="outline">Friday 2:30 PM</Badge>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.nextAppointment')}</span>
+                <Badge variant="outline">{t('screens.professional.friday230Pm')}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Condition</span>
-                <Badge variant="secondary">Follow-up</Badge>
+                <Badge variant="secondary">{t('screens.professional.followup')}</Badge>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button size="sm" className="flex-1">View Chart</Button>
+                <Button size="sm" className="flex-1">{t('screens.professional.viewChart')}</Button>
                 <Button size="sm" variant="outline">
                   <Calendar className="h-4 w-4" />
                 </Button>
@@ -110,27 +111,27 @@ export default function ProfessionalPatients() {
                 <AvatarFallback>MW</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-lg">Mike Wilson</CardTitle>
-                <CardDescription>Age 28 • Male</CardDescription>
+                <CardTitle className="text-lg">{t('screens.professional.mikeWilson')}</CardTitle>
+                <CardDescription>{t('screens.professional.age28Male')}</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Last Visit</span>
-                <span className="text-sm">3 days ago</span>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.lastVisit')}</span>
+                <span className="text-sm">{t('screens.professional.text3DaysAgo')}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Next Appointment</span>
-                <Badge variant="outline">Next Week</Badge>
+                <span className="text-sm text-muted-foreground">{t('screens.professional.nextAppointment')}</span>
+                <Badge variant="outline">{t('screens.professional.nextWeek')}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-muted-foreground">Condition</span>
-                <Badge variant="secondary">Lab Review</Badge>
+                <Badge variant="secondary">{t('screens.professional.labReview')}</Badge>
               </div>
               <div className="flex gap-2 pt-2">
-                <Button size="sm" className="flex-1">View Chart</Button>
+                <Button size="sm" className="flex-1">{t('screens.professional.viewChart')}</Button>
                 <Button size="sm" variant="outline">
                   <Calendar className="h-4 w-4" />
                 </Button>

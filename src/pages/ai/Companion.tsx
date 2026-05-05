@@ -17,6 +17,7 @@ import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
+import { t } from '@/lib/i18n-toast';
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -101,7 +102,7 @@ export default function Companion() {
 
   return (
     <AppLayout>
-      <SEO title="AI Companion | AI Intelligence" description="Your personal AI wellness companion" canonical={window.location.href} />
+      <SEO title={t('screens.ai.aiCompanionAiIntelligence')} description="Your personal AI wellness companion" canonical={window.location.href} />
       <SubNavigation items={aiSubItems} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
@@ -111,8 +112,8 @@ export default function Companion() {
             {/* Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">AI Companion ✨</h1>
-                <p className="text-muted-foreground">Your personal AI wellness companion for guidance and support.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.ai.aiCompanion')}</h1>
+                <p className="text-muted-foreground">{t('screens.ai.yourPersonalAiWellnessCompanionFor')}</p>
               </div>
             </div>
             
@@ -179,7 +180,7 @@ export default function Companion() {
               <CrossoverCard
                 icon={Zap}
                 category="autopilot"
-                title="Autopilot Activity Log"
+                title={t('screens.ai.autopilotActivityLog')}
                 subtitle="Recent AI actions on your behalf"
                 buttonText="View Full Log"
                 onButtonClick={() => handleAutopilotClick('view-all')}

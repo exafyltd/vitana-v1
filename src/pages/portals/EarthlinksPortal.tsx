@@ -18,6 +18,7 @@ import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationBu
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -161,7 +162,7 @@ const EarthlinksPortal = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
       <SEO 
-        title="Earthlinks Health Platform - VITANA" 
+        title={t('screens.portals.earthlinksHealthPlatformVitana')} 
         description="Join Earthlinks' sustainable health and wellness community. Connect with nature-focused healthcare and eco-friendly wellness solutions."
         canonical={window.location.href} 
       />
@@ -183,14 +184,14 @@ const EarthlinksPortal = () => {
           <Card>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Join Earthlinks</TabsTrigger>
+                <TabsTrigger value="signin">{t('screens.portals.sign')}</TabsTrigger>
+                <TabsTrigger value="signup">{t('screens.portals.joinEarthlinks')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 <CardHeader>
-                  <CardTitle>Welcome Back</CardTitle>
-                  <CardDescription>Sign in to your Earthlinks account</CardDescription>
+                  <CardTitle>{t('screens.portals.welcomeBack')}</CardTitle>
+                  <CardDescription>{t('screens.portals.signYourEarthlinksAccount')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignIn} className="space-y-4">
@@ -205,7 +206,7 @@ const EarthlinksPortal = () => {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder={t('screens.portals.yourEmailCom')}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -270,7 +271,7 @@ const EarthlinksPortal = () => {
                         <div className="w-full border-t border-border/50" />
                       </div>
                       <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                        <span className="bg-card px-2 text-muted-foreground">{t('screens.portals.continueWith')}</span>
                       </div>
                     </div>
 
@@ -313,7 +314,7 @@ const EarthlinksPortal = () => {
                     <div className="mx-auto w-14 h-14 rounded-full bg-[#4ADE80]/10 flex items-center justify-center">
                       <MailCheck className="h-7 w-7 text-[#4ADE80]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground">Check your email</h3>
+                    <h3 className="text-lg font-semibold text-foreground">{t('screens.portals.checkYourEmail')}</h3>
                     <p className="text-sm text-muted-foreground">
                       We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
                     </p>
@@ -329,8 +330,8 @@ const EarthlinksPortal = () => {
                 ) : (
                 <>
                 <CardHeader>
-                  <CardTitle>Join Earthlinks</CardTitle>
-                  <CardDescription>Create your account and choose your role</CardDescription>
+                  <CardTitle>{t('screens.portals.joinEarthlinks')}</CardTitle>
+                  <CardDescription>{t('screens.portals.createYourAccountChooseYourRole')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
@@ -341,11 +342,11 @@ const EarthlinksPortal = () => {
                     )}
                     
                     <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name</Label>
+                      <Label htmlFor="fullName">{t('screens.portals.fullName')}</Label>
                       <Input
                         id="fullName"
                         type="text"
-                        placeholder="Your full name"
+                        placeholder={t('screens.portals.yourFullName')}
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required
@@ -358,7 +359,7 @@ const EarthlinksPortal = () => {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder={t('screens.portals.yourEmailCom')}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -380,7 +381,7 @@ const EarthlinksPortal = () => {
 
                     {/* Role Selection */}
                     <div className="space-y-3">
-                      <Label>I am joining as:</Label>
+                      <Label>{t('screens.portals.iAmJoiningAs')}</Label>
                       <div className="grid grid-cols-2 gap-2">
                         <Button
                           type="button"

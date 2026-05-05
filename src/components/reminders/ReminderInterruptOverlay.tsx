@@ -19,6 +19,7 @@ import { useReminderStream, ReminderFirePayload } from "@/hooks/useReminderStrea
 import { ackReminder, completeReminder, snoozeReminder, deleteReminder } from "@/lib/reminders-api";
 import { Button } from "@/components/ui/button";
 import { Bell, Check, Clock, X } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 let sharedCtx: AudioContext | null = null;
 function getCtx(): AudioContext | null {
@@ -154,7 +155,7 @@ export const ReminderInterruptOverlay: React.FC = () => {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Reminder"
+      aria-label={t('screens.reminders.reminder')}
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
     >
       <div className="w-full max-w-md rounded-2xl bg-background p-6 shadow-2xl border-2 border-primary">

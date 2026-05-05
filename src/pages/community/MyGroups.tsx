@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function MyGroups() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function MyGroups() {
 
   return (
     <AppLayout>
-      <SEO title="My Groups & Feed | Community" description="Your personalized community feed and group updates" canonical={window.location.href} />
+      <SEO title={t('screens.community.myGroupsFeedCommunity')} description="Your personalized community feed and group updates" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -56,8 +57,8 @@ export default function MyGroups() {
             {/* Shortened Header Bar - Welcome Message */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">My Groups & Feed ✨</h1>
-                <p className="text-muted-foreground">Stay connected with your groups and discover what's happening.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.community.myGroupsFeed')}</h1>
+                <p className="text-muted-foreground">{t('screens.community.stayConnectedWithYourGroupsDiscover')}</p>
               </div>
             </div>
             
@@ -86,7 +87,7 @@ export default function MyGroups() {
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.community.latestActions')}</div>
                   {latestActions.map((action, index) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -118,7 +119,7 @@ export default function MyGroups() {
           {/* Utility Action Button */}
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search Groups…"
+              placeholder={t('screens.community.searchGroups')}
               onSearch={(query) => console.log('Search Groups:', query)}
             />
             <UniversalCalendarButton />
@@ -131,8 +132,8 @@ export default function MyGroups() {
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="my-groups">👥 My Groups</SplitBarTrigger>
-              <SplitBarTrigger value="recommended">✨ Recommended Groups</SplitBarTrigger>
+              <SplitBarTrigger value="my-groups">{t('screens.community.myGroups2')}</SplitBarTrigger>
+              <SplitBarTrigger value="recommended">{t('screens.community.recommendedGroups')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="my-groups">
@@ -189,7 +190,7 @@ export default function MyGroups() {
                       <p className="text-sm text-muted-foreground mb-2">{group.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-muted-foreground">{group.members} members</span>
-                        <Button size="sm">Join Group</Button>
+                        <Button size="sm">{t('screens.community.joinGroup')}</Button>
                       </div>
                     </div>
                   ))}
@@ -251,16 +252,16 @@ export default function MyGroups() {
                 </h3>
                 <div className="space-y-3">
                   <div className="p-3 bg-muted/50 rounded-lg">
-                    <p className="font-medium text-sm">#MorningMotivation</p>
-                    <p className="text-xs text-muted-foreground">143 posts today</p>
+                    <p className="font-medium text-sm">{t('screens.community.morningmotivation')}</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.community.text143PostsToday')}</p>
                   </div>
                   <div className="p-3 bg-muted/50 rounded-lg">
-                    <p className="font-medium text-sm">#HealthyMealPrep</p>
-                    <p className="text-xs text-muted-foreground">89 posts today</p>
+                    <p className="font-medium text-sm">{t('screens.community.healthymealprep')}</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.community.text89PostsToday')}</p>
                   </div>
                   <div className="p-3 bg-muted/50 rounded-lg">
-                    <p className="font-medium text-sm">#WeekendWorkouts</p>
-                    <p className="text-xs text-muted-foreground">67 posts today</p>
+                    <p className="font-medium text-sm">{t('screens.community.weekendworkouts')}</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.community.text67PostsToday')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -268,11 +269,11 @@ export default function MyGroups() {
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Suggested Post</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.community.suggestedPost')}</h3>
                 <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border">
-                  <p className="text-sm font-medium mb-2">💧 Share your hydration tip today!</p>
-                  <p className="text-xs text-muted-foreground mb-3">Help your community stay healthy and motivated</p>
-                  <Button size="sm" className="w-full">Create Post</Button>
+                  <p className="text-sm font-medium mb-2">{t('screens.community.shareYourHydrationTipToday')}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{t('screens.community.helpYourCommunityStayHealthyMotivated')}</p>
+                  <Button size="sm" className="w-full">{t('screens.community.createPost')}</Button>
                 </div>
               </CardContent>
             </Card>
@@ -283,8 +284,8 @@ export default function MyGroups() {
             <SplitBarContent value="recommended">
               <div className="text-center py-12">
                 <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">Discover Groups</h3>
-                <p className="text-muted-foreground">Recommended groups based on your interests will appear here.</p>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.community.discoverGroups')}</h3>
+                <p className="text-muted-foreground">{t('screens.community.recommendedGroupsBasedYourInterestsWill')}</p>
               </div>
             </SplitBarContent>
           </SplitBar>

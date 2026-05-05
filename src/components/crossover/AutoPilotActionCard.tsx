@@ -1,6 +1,7 @@
 import { CrossoverCard } from "./CrossoverCard";
 import { Zap, Clock, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface AutoPilotActionCardProps {
   action?: string;
@@ -56,7 +57,7 @@ export function AutoPilotActionCard({
     <CrossoverCard
       icon={Zap}
       category="autopilot"
-      title="AutoPilot Recommendation"
+      title={t('screens.crossover.autopilotRecommendation')}
       subtitle="AI-powered next best action based on your patterns"
       content={content}
       buttonText="Complete Action"

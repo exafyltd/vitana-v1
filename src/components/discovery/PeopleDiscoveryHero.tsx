@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import confetti from "canvas-confetti";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface DailyMatch {
   id: string;
@@ -459,15 +459,15 @@ export function PeopleDiscoveryHero() {
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-[10px] font-medium text-muted-foreground">Filters:</span>
+              <span className="text-[10px] font-medium text-muted-foreground">{t('screens.discovery.filters')}</span>
             </div>
             
             <Select value={interestFilter} onValueChange={setInterestFilter}>
               <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-                <SelectValue placeholder="Interests ▾" />
+                <SelectValue placeholder={t('screens.discovery.interests')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Interests</SelectItem>
+                <SelectItem value="all">{t('screens.discovery.allInterests')}</SelectItem>
                 <SelectItem value="yoga">Yoga</SelectItem>
                 <SelectItem value="nutrition">Nutrition</SelectItem>
                 <SelectItem value="biohacking">Biohacking</SelectItem>
@@ -478,13 +478,13 @@ export function PeopleDiscoveryHero() {
             
             <Select value={regionFilter} onValueChange={setRegionFilter}>
               <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-                <SelectValue placeholder="Region ▾" />
+                <SelectValue placeholder={t('screens.discovery.region')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Regions</SelectItem>
-                <SelectItem value="san francisco">San Francisco</SelectItem>
-                <SelectItem value="los angeles">Los Angeles</SelectItem>
-                <SelectItem value="new york">New York</SelectItem>
+                <SelectItem value="all">{t('screens.discovery.allRegions')}</SelectItem>
+                <SelectItem value="san francisco">{t('screens.discovery.sanFrancisco')}</SelectItem>
+                <SelectItem value="los angeles">{t('screens.discovery.losAngeles')}</SelectItem>
+                <SelectItem value="new york">{t('screens.discovery.newYork')}</SelectItem>
                 <SelectItem value="austin">Austin</SelectItem>
                 <SelectItem value="seattle">Seattle</SelectItem>
               </SelectContent>

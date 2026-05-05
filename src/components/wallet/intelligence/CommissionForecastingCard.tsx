@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, DollarSign, Calendar, Clock, AlertTriangle, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CommissionForecast {
   id: string;
@@ -252,13 +253,13 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Target className="h-4 w-4 text-amber-600" />
-            <span className="text-sm font-medium">Market Intelligence</span>
+            <span className="text-sm font-medium">{t('screens.wallet.marketIntelligence')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
             Commission rates are 8% higher than average due to increased health service demand
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600 font-medium">Optimal earning window: Next 2 weeks</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.optimalEarningWindowNext2Weeks')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               Maximize Now
             </Button>

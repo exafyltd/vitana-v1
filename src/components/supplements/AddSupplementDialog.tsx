@@ -32,6 +32,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { getCategoryGroups } from './supplementCategories';
+import { t } from '@/lib/i18n-toast';
 
 const supplementSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
@@ -125,10 +126,10 @@ export function AddSupplementDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Supplement Name*</FormLabel>
+                  <FormLabel>{t('screens.supplements.supplementName')}</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="e.g., Vitamin D3, Omega-3" 
+                      placeholder={t('screens.supplements.eGVitaminD3Omega3')} 
                       {...field} 
                     />
                   </FormControl>
@@ -142,11 +143,11 @@ export function AddSupplementDialog({
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category*</FormLabel>
+                  <FormLabel>{t('screens.supplements.category')}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder={t('screens.supplements.selectCategory')} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[300px]">
@@ -175,7 +176,7 @@ export function AddSupplementDialog({
                   <FormLabel>Dosage</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="e.g., 1000 IU, 500mg" 
+                      placeholder={t('screens.supplements.eG1000Iu500mg')} 
                       {...field} 
                     />
                   </FormControl>
@@ -192,7 +193,7 @@ export function AddSupplementDialog({
                   <FormLabel>Frequency</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="e.g., Once daily, Twice daily" 
+                      placeholder={t('screens.supplements.eGOnceDailyTwiceDaily')} 
                       {...field} 
                     />
                   </FormControl>
@@ -206,7 +207,7 @@ export function AddSupplementDialog({
               name="start_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Start Date</FormLabel>
+                  <FormLabel>{t('screens.supplements.startDate')}</FormLabel>
                   <FormControl>
                     <Input 
                       type="date" 
@@ -226,7 +227,7 @@ export function AddSupplementDialog({
                   <FormLabel>Notes</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Any additional information..." 
+                      placeholder={t('screens.supplements.anyAdditionalInformation')} 
                       className="resize-none"
                       rows={3}
                       {...field} 

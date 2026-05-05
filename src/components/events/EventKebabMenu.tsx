@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface EventKebabMenuProps {
   event: any;
@@ -70,7 +70,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
         variant="ghost"
         size="sm"
         className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
-        aria-label="Share event"
+        aria-label={t('screens.events.shareEvent')}
         onClick={(e) => { e.stopPropagation(); onShare(event); }}
         onPointerDown={(e) => e.stopPropagation()}
       >
@@ -124,7 +124,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Event</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.events.deleteEvent')}</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete "{event.title}"? This action cannot be undone.
               All participants, tickets, and associated data will be permanently removed.

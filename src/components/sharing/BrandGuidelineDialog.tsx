@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface BrandGuidelineDialogProps {
   open: boolean;
@@ -47,7 +47,7 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className="sm:max-w-[500px]">
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Create Brand Guideline</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle>{t('screens.sharing.createBrandGuideline')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             Define channel-specific rules and best practices
           </ResponsiveDialogDescription>
@@ -59,40 +59,40 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
                 <Label htmlFor="channel">Channel</Label>
                 <Select value={channel} onValueChange={setChannel}>
                   <SelectTrigger id="channel">
-                    <SelectValue placeholder="Select channel" />
+                    <SelectValue placeholder={t('screens.sharing.selectChannel')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="instagram">Instagram</SelectItem>
                     <SelectItem value="linkedin">LinkedIn</SelectItem>
-                    <SelectItem value="twitter">Twitter/X</SelectItem>
+                    <SelectItem value="twitter">{t('screens.sharing.twitterx')}</SelectItem>
                     <SelectItem value="facebook">Facebook</SelectItem>
                     <SelectItem value="tiktok">TikTok</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="imageSpecs">Image Specifications</Label>
+                <Label htmlFor="imageSpecs">{t('screens.sharing.imageSpecifications')}</Label>
                 <Input
                   id="imageSpecs"
-                  placeholder="e.g., 1080x1080px, JPG/PNG"
+                  placeholder={t('screens.sharing.eG1080x1080pxJpgpng')}
                   value={imageSpecs}
                   onChange={(e) => setImageSpecs(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="bestTimes">Best Posting Times</Label>
+                <Label htmlFor="bestTimes">{t('screens.sharing.bestPostingTimes')}</Label>
                 <Input
                   id="bestTimes"
-                  placeholder="e.g., Tue-Thu 9-11am EST"
+                  placeholder={t('screens.sharing.eGTuethu911amEst')}
                   value={bestTimes}
                   onChange={(e) => setBestTimes(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="guidelines">Guidelines & Notes</Label>
+                <Label htmlFor="guidelines">{t('screens.sharing.guidelinesNotes')}</Label>
                 <Textarea
                   id="guidelines"
-                  placeholder="Add hashtag rules, tone of voice, character limits..."
+                  placeholder={t('screens.sharing.addHashtagRulesToneVoiceCharacter')}
                   value={guidelines}
                   onChange={(e) => setGuidelines(e.target.value)}
                   rows={4}
@@ -104,7 +104,7 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit">Save Guideline</Button>
+            <Button type="submit">{t('screens.sharing.saveGuideline')}</Button>
           </ResponsiveDialogFooter>
         </form>
       </ResponsiveDialogContent>

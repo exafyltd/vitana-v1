@@ -1,5 +1,6 @@
 import { useRealtimeConnection } from '@/hooks/useRealtimeConnection';
 import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 export function ConnectionStatus() {
   const { isConnected, reconnecting } = useRealtimeConnection();
@@ -17,7 +18,7 @@ export function ConnectionStatus() {
     return (
       <div className="flex items-center gap-1.5 text-xs text-yellow-600 dark:text-yellow-400">
         <RefreshCw className="w-3 h-3 animate-spin" />
-        <span>Reconnecting...</span>
+        <span>{t('screens.ui.reconnecting')}</span>
       </div>
     );
   }

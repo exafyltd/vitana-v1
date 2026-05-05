@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { AlertCircle, WifiOff, Filter, RefreshCw } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EmptyStatePanelProps {
   type: "offline" | "degraded" | "quiet";
@@ -26,7 +27,7 @@ export function EmptyStatePanel({
             <WifiOff className="w-8 h-8 text-destructive" />
           </div>
           <div>
-            <h3 className="font-semibold text-lg mb-2">No Backend Connection</h3>
+            <h3 className="font-semibold text-lg mb-2">{t('screens.dev.noBackendConnection')}</h3>
             <p className="text-sm text-muted-foreground">
               Commands and chat are currently disabled. The backend service is unreachable.
             </p>
@@ -57,7 +58,7 @@ export function EmptyStatePanel({
             <AlertCircle className="w-8 h-8 text-yellow-600" />
           </div>
           <div>
-            <h3 className="font-semibold text-lg mb-2">Streaming Unavailable</h3>
+            <h3 className="font-semibold text-lg mb-2">{t('screens.dev.streamingUnavailable')}</h3>
             <p className="text-sm text-muted-foreground">
               Real-time updates are down. Falling back to polling mode (updates every 5s).
             </p>
@@ -88,7 +89,7 @@ export function EmptyStatePanel({
           <Filter className="w-8 h-8 text-muted-foreground" />
         </div>
         <div>
-          <h3 className="font-semibold text-lg mb-2">No Events Match Filters</h3>
+          <h3 className="font-semibold text-lg mb-2">{t('screens.dev.noEventsMatchFilters')}</h3>
           <p className="text-sm text-muted-foreground">
             Try adjusting your filters or wait for new events to arrive.
           </p>

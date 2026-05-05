@@ -15,7 +15,7 @@ import { Loader2, Flag } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { transitionMatch, declineMatch, type IntentMatch } from "@/lib/intentApi";
 import { DisputeModal } from "./DisputeModal";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntentMatchCardProps {
   match: IntentMatch;
@@ -146,7 +146,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
         <div className="text-right shrink-0">
           <p className="text-sm font-semibold">{scorePct}%</p>
           {match.compass_aligned && (
-            <p className="text-xs text-amber-600 mt-0.5">⭐ compass-aligned</p>
+            <p className="text-xs text-amber-600 mt-0.5">{t('screens.intents.compassaligned')}</p>
           )}
         </div>
       </div>

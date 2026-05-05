@@ -14,6 +14,7 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { communityFetch } from "@/lib/community-gateway";
 import { Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function AutopilotSettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
@@ -33,7 +34,7 @@ export default function AutopilotSettings() {
   return (
     <AppLayout>
       <SEO 
-        title="Autopilot & Automation Settings" 
+        title={t('screens.settings.autopilotAutomationSettings')} 
         description="Configure your personal autopilot and automation preferences" 
         canonical={window.location.href} 
       />
@@ -42,7 +43,7 @@ export default function AutopilotSettings() {
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
-            title="Autopilot & Automation"
+            title={t('screens.settings.autopilotAutomation')}
             description="Manage your personal autopilot settings and automation rules"
             emoji="🤖"
           />
@@ -50,14 +51,14 @@ export default function AutopilotSettings() {
           {/* Master Switch */}
           <Card>
             <CardHeader>
-              <CardTitle>Enable Autopilot</CardTitle>
+              <CardTitle>{t('screens.settings.enableAutopilot')}</CardTitle>
               <CardDescription>
                 Turn on autopilot to receive automated suggestions and actions
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <Label htmlFor="autopilot-enabled">Autopilot Active</Label>
+                <Label htmlFor="autopilot-enabled">{t('screens.settings.autopilotActive')}</Label>
                 <Switch
                   id="autopilot-enabled"
                   checked={preferences.autopilot_enabled}
@@ -73,14 +74,14 @@ export default function AutopilotSettings() {
           {/* Action Categories */}
           <Card>
             <CardHeader>
-              <CardTitle>Action Categories</CardTitle>
+              <CardTitle>{t('screens.settings.actionCategories')}</CardTitle>
               <CardDescription>
                 Choose which types of autopilot actions you want to receive
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label htmlFor="health-actions">Health Actions</Label>
+                <Label htmlFor="health-actions">{t('screens.settings.healthActions')}</Label>
                 <Switch
                   id="health-actions"
                   checked={preferences.autopilot_categories.health}
@@ -96,7 +97,7 @@ export default function AutopilotSettings() {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="community-actions">Community Actions</Label>
+                <Label htmlFor="community-actions">{t('screens.settings.communityActions')}</Label>
                 <Switch
                   id="community-actions"
                   checked={preferences.autopilot_categories.community}
@@ -112,7 +113,7 @@ export default function AutopilotSettings() {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="discovery-actions">Discovery Actions</Label>
+                <Label htmlFor="discovery-actions">{t('screens.settings.discoveryActions')}</Label>
                 <Switch
                   id="discovery-actions"
                   checked={preferences.autopilot_categories.discovery}
@@ -128,7 +129,7 @@ export default function AutopilotSettings() {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="memory-actions">Memory Actions</Label>
+                <Label htmlFor="memory-actions">{t('screens.settings.memoryActions')}</Label>
                 <Switch
                   id="memory-actions"
                   checked={preferences.autopilot_categories.memory}
@@ -149,14 +150,14 @@ export default function AutopilotSettings() {
           {/* Frequency & Timing */}
           <Card>
             <CardHeader>
-              <CardTitle>Frequency & Timing</CardTitle>
+              <CardTitle>{t('screens.settings.frequencyTiming')}</CardTitle>
               <CardDescription>
                 Control when and how often you receive autopilot suggestions
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="max-actions">Maximum Actions Per Day</Label>
+                <Label htmlFor="max-actions">{t('screens.settings.maximumActionsPerDay')}</Label>
                 <Input
                   id="max-actions"
                   type="number"
@@ -174,7 +175,7 @@ export default function AutopilotSettings() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="quiet-start">Quiet Hours Start</Label>
+                  <Label htmlFor="quiet-start">{t('screens.settings.quietHoursStart')}</Label>
                   <Input
                     id="quiet-start"
                     type="time"
@@ -188,7 +189,7 @@ export default function AutopilotSettings() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="quiet-end">Quiet Hours End</Label>
+                  <Label htmlFor="quiet-end">{t('screens.settings.quietHoursEnd')}</Label>
                   <Input
                     id="quiet-end"
                     type="time"
@@ -204,7 +205,7 @@ export default function AutopilotSettings() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="priority-filter">Priority Filter</Label>
+                <Label htmlFor="priority-filter">{t('screens.settings.priorityFilter')}</Label>
                 <Select
                   value={preferences.autopilot_priority_filter}
                   onValueChange={(value: any) => 
@@ -216,9 +217,9 @@ export default function AutopilotSettings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Priorities</SelectItem>
-                    <SelectItem value="high_medium">High & Medium Only</SelectItem>
-                    <SelectItem value="high">High Priority Only</SelectItem>
+                    <SelectItem value="all">{t('screens.settings.allPriorities')}</SelectItem>
+                    <SelectItem value="high_medium">{t('screens.settings.highMediumOnly')}</SelectItem>
+                    <SelectItem value="high">{t('screens.settings.highPriorityOnly')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -284,14 +285,14 @@ function AutoShareCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Auto-Share</CardTitle>
+        <CardTitle>{t('screens.settings.autoshare')}</CardTitle>
         <CardDescription>
           Automatically share your milestones and achievements
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
-          <Label htmlFor="auto-share-enabled">Auto-share enabled</Label>
+          <Label htmlFor="auto-share-enabled">{t('screens.settings.autoshareEnabled')}</Label>
           <Switch
             id="auto-share-enabled"
             checked={prefs?.auto_share_enabled ?? false}
@@ -300,7 +301,7 @@ function AutoShareCard() {
           />
         </div>
         <div className="flex items-center justify-between">
-          <Label htmlFor="share-milestones">Share milestones</Label>
+          <Label htmlFor="share-milestones">{t('screens.settings.shareMilestones')}</Label>
           <Switch
             id="share-milestones"
             checked={prefs?.share_milestones ?? false}
@@ -310,7 +311,7 @@ function AutoShareCard() {
         </div>
 
         <div className="space-y-2">
-          <Label>Share to providers</Label>
+          <Label>{t('screens.settings.shareProviders')}</Label>
           {providerOptions.map((p) => (
             <div key={p} className="flex items-center space-x-2">
               <Checkbox
@@ -336,7 +337,7 @@ function AutoShareCard() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="public">Public</SelectItem>
-              <SelectItem value="connections">Connections Only</SelectItem>
+              <SelectItem value="connections">{t('screens.settings.connectionsOnly')}</SelectItem>
               <SelectItem value="private">Private</SelectItem>
             </SelectContent>
           </Select>

@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
+import { t } from '@/lib/i18n-toast';
 
 export default function MyTickets() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function MyTickets() {
               <Ticket className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">My Tickets</h1>
+              <h1 className="text-2xl font-bold text-foreground">{t('screens.mytickets.myTickets')}</h1>
               <p className="text-muted-foreground">
                 {tickets.length} ticket{tickets.length !== 1 ? "s" : ""} purchased
               </p>
@@ -52,7 +53,7 @@ export default function MyTickets() {
         {tickets.length === 0 ? (
           <div className="text-center py-16 space-y-4">
             <Ticket className="h-16 w-16 text-muted-foreground/30 mx-auto" />
-            <h2 className="text-xl font-semibold text-foreground">No tickets yet</h2>
+            <h2 className="text-xl font-semibold text-foreground">{t('screens.mytickets.noTicketsYet')}</h2>
             <p className="text-muted-foreground">
               When you purchase event tickets, they'll appear here.
             </p>

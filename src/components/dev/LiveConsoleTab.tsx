@@ -6,6 +6,7 @@ import { OpenTasksList } from "./OpenTasksList";
 import { useSplitFocus } from "@/hooks/dev/useSplitFocus";
 import { Card } from "@/components/ui/card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 export function LiveConsoleTab() {
   const [nestedTab, setNestedTab] = useState("command-center");
@@ -38,8 +39,8 @@ export function LiveConsoleTab() {
       <div className="border-b bg-muted/30">
         <SplitBar value={nestedTab} onValueChange={setNestedTab}>
           <SplitBarList className="w-full p-1">
-            <SplitBarTrigger value="command-center">Command Center</SplitBarTrigger>
-            <SplitBarTrigger value="open-tasks">Open Tasks</SplitBarTrigger>
+            <SplitBarTrigger value="command-center">{t('screens.dev.commandCenter')}</SplitBarTrigger>
+            <SplitBarTrigger value="open-tasks">{t('screens.dev.openTasks')}</SplitBarTrigger>
           </SplitBarList>
         </SplitBar>
       </div>

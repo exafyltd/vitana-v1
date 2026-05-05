@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Users, Send, UserPlus, Settings, Filter, Calendar, Bell } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface InboxMasterActionPopupProps {
   open: boolean;
@@ -41,7 +42,7 @@ export function InboxMasterActionPopup({ open, onOpenChange, trigger }: InboxMas
               onClick={() => handleAction("compose")}
             >
               <Send className="w-5 h-5" />
-              <span className="text-sm">Compose Message</span>
+              <span className="text-sm">{t('screens.messages.composeMessage')}</span>
             </Button>
             
             <Button 
@@ -50,7 +51,7 @@ export function InboxMasterActionPopup({ open, onOpenChange, trigger }: InboxMas
               onClick={() => handleAction("new-group")}
             >
               <Users className="w-5 h-5" />
-              <span className="text-sm">New Group Chat</span>
+              <span className="text-sm">{t('screens.messages.newGroupChat')}</span>
             </Button>
             
             <Button 
@@ -59,7 +60,7 @@ export function InboxMasterActionPopup({ open, onOpenChange, trigger }: InboxMas
               onClick={() => handleAction("invite-contact")}
             >
               <UserPlus className="w-5 h-5" />
-              <span className="text-sm">Invite Contact</span>
+              <span className="text-sm">{t('screens.messages.inviteContact')}</span>
             </Button>
             
             <Button 
@@ -68,7 +69,7 @@ export function InboxMasterActionPopup({ open, onOpenChange, trigger }: InboxMas
               onClick={() => handleAction("schedule-message")}
             >
               <Calendar className="w-5 h-5" />
-              <span className="text-sm">Schedule Message</span>
+              <span className="text-sm">{t('screens.messages.scheduleMessage')}</span>
             </Button>
             
             <Button 
@@ -86,7 +87,7 @@ export function InboxMasterActionPopup({ open, onOpenChange, trigger }: InboxMas
               onClick={() => handleAction("message-filters")}
             >
               <Filter className="w-5 h-5" />
-              <span className="text-sm">Message Filters</span>
+              <span className="text-sm">{t('screens.messages.messageFilters')}</span>
             </Button>
           </div>
         </ResponsiveDialogBody>

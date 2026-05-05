@@ -16,6 +16,7 @@ import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
+import { t } from '@/lib/i18n-toast';
 
 interface DatabaseProfile {
   user_id: string;
@@ -259,7 +260,7 @@ export default function PublicProfilePage() {
       <AppLayout>
         <div className="p-6 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading profile...</p>
+          <p className="mt-2 text-muted-foreground">{t('screens.publicprofilepage.loadingProfile')}</p>
         </div>
       </AppLayout>
     );
@@ -269,7 +270,7 @@ export default function PublicProfilePage() {
     return (
       <AppLayout>
         <div className="p-6 text-center">
-          <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('screens.publicprofilepage.userNotFound')}</h1>
           <p className="text-muted-foreground mb-4">
             {error || "The profile you're looking for doesn't exist."}
           </p>

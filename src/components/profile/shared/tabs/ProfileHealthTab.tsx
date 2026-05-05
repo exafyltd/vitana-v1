@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, Heart, Moon, Apple, Droplets, Zap, Settings, Share2, Trophy, TrendingUp, Users } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileHealthTabProps {
   profile: UserProfile;
@@ -85,7 +86,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
         <Card className="p-6 border border-dashed border-muted-foreground/20 rounded-2xl shadow-sm bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold mb-2">Privacy & Visibility</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('screens.profile.privacyVisibility')}</h3>
               <p className="text-muted-foreground text-sm">
                 Control who can see your health data and profile information
               </p>
@@ -109,7 +110,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center gap-3 mb-3">
                 <Activity className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="text-lg font-semibold text-foreground">Overall Health Score</h3>
+                <h3 className="text-lg font-semibold text-foreground">{t('screens.profile.overallHealthScore')}</h3>
               </div>
               
               {/* Animated glowing number */}
@@ -149,16 +150,16 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               </h4>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">Age Group</div>
-                  <Badge variant="secondary" className="text-xs rounded-full">+15 avg</Badge>
+                  <div className="text-xs text-muted-foreground">{t('screens.profile.ageGroup')}</div>
+                  <Badge variant="secondary" className="text-xs rounded-full">{t('screens.profile.text15Avg')}</Badge>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">Similar Goals</div>
-                  <Badge variant="secondary" className="text-xs rounded-full">Top 12%</Badge>
+                  <div className="text-xs text-muted-foreground">{t('screens.profile.similarGoals')}</div>
+                  <Badge variant="secondary" className="text-xs rounded-full">{t('screens.profile.top12')}</Badge>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">Activity Level</div>
-                  <Badge variant="secondary" className="text-xs rounded-full">Above avg</Badge>
+                  <div className="text-xs text-muted-foreground">{t('screens.profile.activityLevel')}</div>
+                  <Badge variant="secondary" className="text-xs rounded-full">{t('screens.profile.aboveAvg')}</Badge>
                 </div>
               </div>
             </div>
@@ -167,8 +168,8 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
             <div className="max-w-xl mx-auto mt-6 p-4 rounded-2xl bg-gradient-to-r from-violet-50/80 to-purple-50/80 dark:from-violet-950/40 dark:to-purple-950/40 border border-violet-200/40 dark:border-violet-800/30 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="font-medium text-sm text-foreground">🎉 Latest Achievement</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">30-day wellness streak completed!</div>
+                  <div className="font-medium text-sm text-foreground">{t('screens.profile.latestAchievement')}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{t('screens.profile.text30dayWellnessStreakCompleted')}</div>
                 </div>
                 <Button size="sm" variant="ghost" className="gap-2 rounded-full hover:bg-white/50 dark:hover:bg-slate-800/50">
                   <Share2 className="h-3 w-3" />
@@ -227,7 +228,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
       <Card className="rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.06)] border-muted/40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span className="text-lg">Recent Health Insights</span>
+            <span className="text-lg">{t('screens.profile.recentHealthInsights')}</span>
             <Badge variant="outline" className="text-xs rounded-full border-emerald-300 dark:border-emerald-700 bg-emerald-50/80 dark:bg-emerald-950/40">
               <TrendingUp className="h-3 w-3 mr-1 text-emerald-600 dark:text-emerald-400" />
               Improving
@@ -241,10 +242,10 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               <div className="p-5 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 bg-gradient-to-br from-indigo-50/80 to-purple-50/60 dark:from-indigo-950/40 dark:to-purple-950/30 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <Moon className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                  <span className="font-semibold text-sm text-foreground">Sleep Consistency</span>
+                  <span className="font-semibold text-sm text-foreground">{t('screens.profile.sleepConsistency')}</span>
                 </div>
-                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">21 days</div>
-                <div className="text-xs text-muted-foreground mb-3">Current streak</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">{t('screens.profile.text21Days')}</div>
+                <div className="text-xs text-muted-foreground mb-3">{t('screens.profile.currentStreak')}</div>
                 <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden shadow-inner">
                   <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" style={{ width: '70%' }} />
                 </div>
@@ -253,10 +254,10 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               <div className="p-5 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 bg-gradient-to-br from-orange-50/80 to-rose-50/60 dark:from-orange-950/40 dark:to-rose-950/30 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <Activity className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-                  <span className="font-semibold text-sm text-foreground">Workout Goals</span>
+                  <span className="font-semibold text-sm text-foreground">{t('screens.profile.workoutGoals')}</span>
                 </div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-rose-600 dark:from-orange-400 dark:to-rose-400 bg-clip-text text-transparent">4/5</div>
-                <div className="text-xs text-muted-foreground mb-3">This week</div>
+                <div className="text-xs text-muted-foreground mb-3">{t('screens.profile.thisWeek')}</div>
                 <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden shadow-inner">
                   <div className="h-full bg-gradient-to-r from-orange-500 to-rose-500 rounded-full" style={{ width: '80%' }} />
                 </div>
@@ -268,19 +269,19 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               <div className="p-4 bg-gradient-to-br from-orange-50/90 to-rose-50/80 dark:from-orange-950/50 dark:to-rose-950/40 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">🎉</span>
-                  <strong className="text-orange-700 dark:text-orange-400">Great progress!</strong> Your exercise consistency has improved by 12% this month.
+                  <strong className="text-orange-700 dark:text-orange-400">{t('screens.profile.greatProgress')}</strong> Your exercise consistency has improved by 12% this month.
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-indigo-50/90 to-purple-50/80 dark:from-indigo-950/50 dark:to-purple-950/40 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">😴</span>
-                  <strong className="text-indigo-700 dark:text-indigo-400">Sleep quality:</strong> You're averaging 7.5 hours of quality sleep. Keep it up!
+                  <strong className="text-indigo-700 dark:text-indigo-400">{t('screens.profile.sleepQuality')}</strong> You're averaging 7.5 hours of quality sleep. Keep it up!
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-green-50/90 to-emerald-50/80 dark:from-green-950/50 dark:to-emerald-950/40 rounded-2xl border border-green-200/50 dark:border-green-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">🥗</span>
-                  <strong className="text-green-700 dark:text-green-400">Nutrition tip:</strong> Consider adding more leafy greens to boost your nutrition score.
+                  <strong className="text-green-700 dark:text-green-400">{t('screens.profile.nutritionTip')}</strong> Consider adding more leafy greens to boost your nutrition score.
                 </p>
               </div>
             </div>

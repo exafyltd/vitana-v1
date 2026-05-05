@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAssistantSurfaces } from "@/hooks/useAdminAssistant";
+import { t } from '@/lib/i18n-toast';
 
 const SURFACE_LABELS: Record<string, string> = {
   voice_live: "Voice Live (ORB)",
@@ -40,12 +41,12 @@ export default function AssistantTools() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔧"
-          title="Tool Configuration"
+          title={t('screens.admin.toolConfiguration')}
           description="Overview of available tools per assistant surface. Tool toggling will be available in a future release."
         />
 
         {surfacesQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading surfaces...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSurfaces')}</p>
         )}
 
         {surfaces.length > 0 && (
@@ -73,7 +74,7 @@ export default function AssistantTools() {
                             {tools.length > 0 ? tools.map((t) => (
                               <AdminStatusBadge key={t} variant="info">{t}</AdminStatusBadge>
                             )) : (
-                              <span className="text-xs text-muted-foreground">No tools configured</span>
+                              <span className="text-xs text-muted-foreground">{t('screens.admin.noToolsConfigured')}</span>
                             )}
                           </div>
                         </TableCell>

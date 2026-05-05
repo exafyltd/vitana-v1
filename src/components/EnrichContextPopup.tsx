@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { MapPin, Smile, Heart, Users, Target, Activity, Brain, Clock } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EnrichContextPopupProps {
   open: boolean;
@@ -93,8 +94,8 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="add-signal">Add New Signal</TabsTrigger>
-            <TabsTrigger value="adjust-snapshot">Adjust Current Snapshot</TabsTrigger>
+            <TabsTrigger value="add-signal">{t('screens.common.addNewSignal')}</TabsTrigger>
+            <TabsTrigger value="adjust-snapshot">{t('screens.common.adjustCurrentSnapshot')}</TabsTrigger>
           </TabsList>
 
           <ScrollArea className="h-[60vh] pr-4">
@@ -109,24 +110,24 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label htmlFor="location">Current Location</Label>
+                    <Label htmlFor="location">{t('screens.common.currentLocation')}</Label>
                     <Select value={location} onValueChange={setLocation}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select location" />
+                        <SelectValue placeholder={t('screens.common.selectLocation')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="home">At Home</SelectItem>
-                        <SelectItem value="work">At Work</SelectItem>
+                        <SelectItem value="home">{t('screens.common.atHome')}</SelectItem>
+                        <SelectItem value="work">{t('screens.common.atWork')}</SelectItem>
                         <SelectItem value="traveling">Traveling</SelectItem>
                         <SelectItem value="outdoors">Outdoors</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="location-detail">Add detail (optional)</Label>
+                    <Label htmlFor="location-detail">{t('screens.common.addDetailOptional')}</Label>
                     <Input
                       id="location-detail"
-                      placeholder="e.g., kitchen, coffee shop, park..."
+                      placeholder={t('screens.common.eGKitchenCoffeeShopPark')}
                       value={locationDetail}
                       onChange={(e) => setLocationDetail(e.target.value)}
                     />
@@ -144,7 +145,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label>Current Mood</Label>
+                    <Label>{t('screens.common.currentMood')}</Label>
                     <div className="flex gap-2 mt-2">
                       {moodOptions.map((option) => (
                         <Button
@@ -182,7 +183,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Label>How are you feeling?</Label>
+                  <Label>{t('screens.common.howYouFeeling')}</Label>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {wellnessTags.map((tag) => (
                       <Button
@@ -207,10 +208,10 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Label htmlFor="social-input">Tag a friend, group, or event</Label>
+                  <Label htmlFor="social-input">{t('screens.common.tagFriendGroupEvent')}</Label>
                   <Input
                     id="social-input"
-                    placeholder="Type to search people, groups, events..."
+                    placeholder={t('screens.common.typeSearchPeopleGroupsEvents')}
                     value={socialInput}
                     onChange={(e) => setSocialInput(e.target.value)}
                     className="mt-2"
@@ -236,7 +237,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label>Override Mood</Label>
+                    <Label>{t('screens.common.overrideMood')}</Label>
                     <div className="flex gap-2 mt-2">
                       {moodOptions.map((option) => (
                         <Button
@@ -276,7 +277,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="step-count">Step Count</Label>
+                      <Label htmlFor="step-count">{t('screens.common.stepCount')}</Label>
                       <Input
                         id="step-count"
                         type="number"
@@ -286,7 +287,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                       />
                     </div>
                     <div>
-                      <Label htmlFor="heart-rate">Heart Rate (BPM)</Label>
+                      <Label htmlFor="heart-rate">{t('screens.common.heartRateBpm')}</Label>
                       <Input
                         id="heart-rate"
                         type="number"
@@ -319,7 +320,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Label>What's your current intent?</Label>
+                  <Label>{t('screens.common.whatSYourCurrentIntent')}</Label>
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     {intentOptions.map((intent) => (
                       <Button

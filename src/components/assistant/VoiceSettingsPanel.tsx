@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Volume2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from '@/lib/i18n-toast';
 
 interface VoiceSettingsPanelProps {
   preferences: any;
@@ -252,8 +253,8 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Voice Output Settings</CardTitle>
-        <CardDescription>Configure how the AI speaks to you</CardDescription>
+        <CardTitle>{t('screens.assistant.voiceOutputSettings')}</CardTitle>
+        <CardDescription>{t('screens.assistant.configureHowAiSpeaksYou')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
@@ -267,16 +268,16 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="en-US">English (US)</SelectItem>
-              <SelectItem value="de-DE">German (DE)</SelectItem>
-              <SelectItem value="sr-RS">Serbian (RS)</SelectItem>
-              <SelectItem value="es-ES">Spanish (ES)</SelectItem>
-              <SelectItem value="ar-XA">Arabic (XA)</SelectItem>
-              <SelectItem value="ru-RU">Russian (RU)</SelectItem>
-              <SelectItem value="zh-CN">Chinese (CN)</SelectItem>
-              <SelectItem value="fr-FR">French (FR)</SelectItem>
-              <SelectItem value="pt-PT">Portuguese (PT)</SelectItem>
-              <SelectItem value="pl-PL">Polish (PL)</SelectItem>
+              <SelectItem value="en-US">{t('screens.assistant.englishUs')}</SelectItem>
+              <SelectItem value="de-DE">{t('screens.assistant.germanDe')}</SelectItem>
+              <SelectItem value="sr-RS">{t('screens.assistant.serbianRs')}</SelectItem>
+              <SelectItem value="es-ES">{t('screens.assistant.spanishEs')}</SelectItem>
+              <SelectItem value="ar-XA">{t('screens.assistant.arabicXa')}</SelectItem>
+              <SelectItem value="ru-RU">{t('screens.assistant.russianRu')}</SelectItem>
+              <SelectItem value="zh-CN">{t('screens.assistant.chineseCn')}</SelectItem>
+              <SelectItem value="fr-FR">{t('screens.assistant.frenchFr')}</SelectItem>
+              <SelectItem value="pt-PT">{t('screens.assistant.portuguesePt')}</SelectItem>
+              <SelectItem value="pl-PL">{t('screens.assistant.polishPl')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -300,7 +301,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             disabled={isUpdating}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a voice" />
+              <SelectValue placeholder={t('screens.assistant.selectVoice')} />
             </SelectTrigger>
             <SelectContent>
               {currentCloudVoices.length > 0 && (

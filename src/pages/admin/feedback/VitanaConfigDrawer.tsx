@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface VitanaPersona {
   id: string;
@@ -163,8 +163,8 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       >
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
-            <h2 className="text-xl font-bold">Loading Vitana…</h2>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <h2 className="text-xl font-bold">{t('screens.admin.loadingVitana')}</h2>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
         </div>
       </div>
@@ -183,14 +183,14 @@ export function VitanaConfigDrawer({ onClose }: Props) {
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold">Couldn't load Vitana</h2>
+              <h2 className="text-xl font-bold">{t('screens.admin.couldnTLoadVitana')}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{errMsg}</p>
               <p className="mt-2 text-xs text-muted-foreground">
                 Possible causes: the gateway hasn't redeployed the new admin endpoints (PR forwarding-rules-gateway-VTID-02660),
                 your role isn't permitted, or the migration that adds the phrase columns hasn't applied yet.
               </p>
             </div>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => personaQuery.refetch()}>Retry</Button>
@@ -214,11 +214,11 @@ export function VitanaConfigDrawer({ onClose }: Props) {
             <h2 className="text-xl font-bold">{p.display_name} — Forwarding Rules</h2>
             <p className="text-sm text-muted-foreground">{p.role}</p>
             <div className="mt-2 flex gap-2 text-xs">
-              <Badge variant="outline">always on</Badge>
+              <Badge variant="outline">{t('screens.admin.always')}</Badge>
               <Badge variant="outline">v{p.version}</Badge>
             </div>
           </div>
-          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+          <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
         </div>
 
         {/* Rulebook header — frames the rules so admins read the philosophy first. */}
@@ -229,7 +229,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
 
         {/* Gate A — forward triggers */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Forward triggers</h3>
+          <h3 className="font-semibold">{t('screens.admin.forwardTriggers')}</h3>
           <p className="text-xs text-muted-foreground">
             Phrases that signal the user EXPLICITLY wants to be connected to a customer-support colleague.
             Without one of these, Vitana stays inline. Lowercase, partial-match — "talk to support" matches
@@ -248,7 +248,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 </button>
               </Badge>
             ))}
-            {forwardPhrases.length === 0 && <span className="text-xs text-muted-foreground">(none — Vitana will never forward)</span>}
+            {forwardPhrases.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.noneVitanaWillNeverForward')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
@@ -278,7 +278,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
 
         {/* Gate A override — stay-inline */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Stay-inline overrides</h3>
+          <h3 className="font-semibold">{t('screens.admin.stayinlineOverrides')}</h3>
           <p className="text-xs text-muted-foreground">
             Phrases that force the conversation to stay with Vitana even if a forward trigger would otherwise fire.
             Covers life-companion question patterns ("I have a question", "how does this work?",
@@ -297,7 +297,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 </button>
               </Badge>
             ))}
-            {stayInlinePhrases.length === 0 && <span className="text-xs text-muted-foreground">(none — every forward trigger fires)</span>}
+            {stayInlinePhrases.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.noneEveryForwardTriggerFires')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
@@ -327,7 +327,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
 
         {/* Test sandbox */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Test sandbox</h3>
+          <h3 className="font-semibold">{t('screens.admin.testSandbox')}</h3>
           <p className="text-xs text-muted-foreground">
             Paste a sentence the user might say. The router runs both gates and shows the decision so you can
             verify a rule change before it goes live.

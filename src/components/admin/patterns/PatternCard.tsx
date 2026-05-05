@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, CheckCircle, Wand2, X } from "lucide-react";
 import { Pattern } from "@/hooks/usePatternDiscovery";
+import { t } from '@/lib/i18n-toast';
 
 interface PatternCardProps {
   pattern: Pattern;
@@ -74,7 +75,7 @@ export default function PatternCard({
 
         {/* Expected Impact */}
         <div className="text-sm">
-          <span className="font-medium">Expected Impact: </span>
+          <span className="font-medium">{t('screens.admin.expectedImpact2')} </span>
           <span className="text-muted-foreground">{pattern.expected_impact}</span>
         </div>
 

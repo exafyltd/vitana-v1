@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Condition {
   field: string;
@@ -51,13 +52,13 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
   return (
     <Card>
       <CardHeader>
-        <CardTitle>2. Add Conditions (Optional)</CardTitle>
-        <CardDescription>Define when this automation should run</CardDescription>
+        <CardTitle>{t('screens.admin.text2AddConditionsOptional')}</CardTitle>
+        <CardDescription>{t('screens.admin.defineWhenThisAutomationShouldRun')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {conditions.length === 0 ? (
           <div className="text-center py-8 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground mb-4">No conditions set - automation will always run</p>
+            <p className="text-muted-foreground mb-4">{t('screens.admin.noConditionsSetAutomationWill')}</p>
             <Button onClick={addCondition} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
               Add First Condition
@@ -74,7 +75,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                     onValueChange={(value) => updateCondition(index, { field: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select field..." />
+                      <SelectValue placeholder={t('screens.admin.selectField')} />
                     </SelectTrigger>
                     <SelectContent>
                       {FIELD_OPTIONS.map(opt => (
@@ -91,7 +92,7 @@ export default function ConditionBuilder({ conditions, onChange }: ConditionBuil
                     onValueChange={(value) => updateCondition(index, { operator: value })}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select operator..." />
+                      <SelectValue placeholder={t('screens.admin.selectOperator')} />
                     </SelectTrigger>
                     <SelectContent>
                       {OPERATOR_OPTIONS.map(opt => (

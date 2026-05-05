@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RotateCcw, Copy } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CompletedTask {
   id: string;
@@ -85,8 +86,8 @@ export function CompletedTasksTable() {
           <div className="min-w-full">
             {/* Table Header */}
             <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b bg-muted/30 text-sm font-medium text-muted-foreground">
-              <div className="col-span-4">Task Name</div>
-              <div className="col-span-2">Completed Date</div>
+              <div className="col-span-4">{t('screens.dev.taskName')}</div>
+              <div className="col-span-2">{t('screens.dev.completedDate')}</div>
               <div className="col-span-2">Result</div>
               <div className="col-span-2">Assignee</div>
               <div className="col-span-2 text-right">Actions</div>

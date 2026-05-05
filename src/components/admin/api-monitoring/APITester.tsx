@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { PlayCircle, Copy, Check, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface APITesterProps {
   integrationId?: string;
@@ -174,7 +174,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
               </SelectContent>
             </Select>
             <Input
-              placeholder="/api/endpoint"
+              placeholder={t('screens.admin.apiendpoint')}
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
               className="flex-1"
@@ -196,11 +196,11 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="headers">Headers</TabsTrigger>
               <TabsTrigger value="body">Body</TabsTrigger>
-              <TabsTrigger value="params">Query Params</TabsTrigger>
+              <TabsTrigger value="params">{t('screens.admin.queryParams')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="headers" className="space-y-2">
-              <Label>Request Headers (JSON)</Label>
+              <Label>{t('screens.admin.requestHeadersJson')}</Label>
               <Textarea
                 value={headers}
                 onChange={(e) => setHeaders(e.target.value)}
@@ -210,7 +210,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
             </TabsContent>
 
             <TabsContent value="body" className="space-y-2">
-              <Label>Request Body (JSON)</Label>
+              <Label>{t('screens.admin.requestBodyJson')}</Label>
               <Textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
@@ -221,9 +221,9 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
             </TabsContent>
 
             <TabsContent value="params" className="space-y-2">
-              <Label>Query Parameters</Label>
+              <Label>{t('screens.admin.queryParameters')}</Label>
               <Input
-                placeholder="key=value&another=value"
+                placeholder={t('screens.admin.keyValueAnotherValue')}
                 value={queryParams}
                 onChange={(e) => setQueryParams(e.target.value)}
               />

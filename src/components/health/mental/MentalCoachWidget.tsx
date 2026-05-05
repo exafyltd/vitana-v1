@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Quote } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface MentalCoachWidgetProps {
   message: string;
@@ -13,7 +14,7 @@ export function MentalCoachWidget({ message }: MentalCoachWidgetProps) {
           <span className="text-xl">🧘‍♀️</span>
         </div>
         <div className="flex-1">
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Mind Coach says</p>
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">{t('screens.health.mindCoachSays')}</p>
           <div className="flex items-start gap-2">
             <Quote className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm italic text-slate-700 dark:text-slate-300">

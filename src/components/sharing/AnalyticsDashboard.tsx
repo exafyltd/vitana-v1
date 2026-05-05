@@ -23,6 +23,7 @@ import {
   Loader2
 } from "lucide-react";
 import { usePostAnalytics } from "@/hooks/usePostAnalytics";
+import { t } from '@/lib/i18n-toast';
 
 const COLORS = ["#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444"];
 
@@ -44,7 +45,7 @@ export function AnalyticsDashboard() {
       <Card>
         <CardContent className="flex flex-col justify-center items-center h-64">
           <TrendingUp className="w-12 h-12 text-muted-foreground mb-3" />
-          <p className="text-sm text-muted-foreground">No analytics data yet</p>
+          <p className="text-sm text-muted-foreground">{t('screens.sharing.noAnalyticsDataYet')}</p>
           <p className="text-xs text-muted-foreground mt-1">
             Start blasting posts to see your performance metrics
           </p>
@@ -108,7 +109,7 @@ export function AnalyticsDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Delivery Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.sharing.deliveryRate')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-green-600">{deliveryRate}%</p>
@@ -120,7 +121,7 @@ export function AnalyticsDashboard() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Open Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.sharing.openRate')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-purple-600">{openRate}%</p>
@@ -132,7 +133,7 @@ export function AnalyticsDashboard() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Click Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('screens.sharing.clickRate')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-orange-600">{clickRate}%</p>
@@ -147,7 +148,7 @@ export function AnalyticsDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Channel Performance</CardTitle>
+            <CardTitle className="text-base">{t('screens.sharing.channelPerformance')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -167,7 +168,7 @@ export function AnalyticsDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Distribution by Channel</CardTitle>
+            <CardTitle className="text-base">{t('screens.sharing.distributionByChannel')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>

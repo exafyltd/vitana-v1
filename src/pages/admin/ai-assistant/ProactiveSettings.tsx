@@ -9,12 +9,13 @@ import { EngagementRules } from "@/components/admin/proactive/EngagementRules";
 import { GreetingTemplates } from "@/components/admin/proactive/GreetingTemplates";
 import { EngagementAnalytics } from "@/components/admin/proactive/EngagementAnalytics";
 import { Bot, Settings, MessageSquare, BarChart3 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function ProactiveSettings() {
   return (
     <AppLayout>
       <SEO 
-        title="Proactive Assistant Settings | AI Assistant | Admin | VITANA"
+        title={t('screens.admin.proactiveAssistantSettingsAiAssistantAdmin')}
         description="Configure system-wide proactive assistant behavior, personality, and engagement rules"
         canonical={window.location.href}
       />
@@ -25,7 +26,7 @@ export default function ProactiveSettings() {
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <Bot className="h-8 w-8 text-primary" />
-              <h1 className="text-3xl font-bold">Proactive Assistant Settings</h1>
+              <h1 className="text-3xl font-bold">{t('screens.admin.proactiveAssistantSettings')}</h1>
             </div>
             <p className="text-muted-foreground">
               Configure system-wide AI assistant behavior, personality, engagement rules, and greeting templates.

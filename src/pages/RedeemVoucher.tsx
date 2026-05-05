@@ -7,6 +7,7 @@ import { RedemptionConfirm } from "@/components/voucher/RedemptionConfirm";
 import { Loader2, Gift, AlertCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
+import { t } from '@/lib/i18n-toast';
 
 export default function RedeemVoucher() {
   const [searchParams] = useSearchParams();
@@ -56,7 +57,7 @@ export default function RedeemVoucher() {
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-destructive" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Invalid Link</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.invalidLink')}</h1>
           <p className="text-muted-foreground mb-6">
             This redemption link is missing the voucher code. Please check your email for the correct link.
           </p>
@@ -81,7 +82,7 @@ export default function RedeemVoucher() {
           className="text-center"
         >
           <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading your gift voucher...</p>
+          <p className="text-muted-foreground">{t('screens.redeemvoucher.loadingYourGiftVoucher')}</p>
         </motion.div>
       </div>
     );
@@ -99,7 +100,7 @@ export default function RedeemVoucher() {
           <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-destructive" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Voucher Not Found</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherNotFound')}</h1>
           <p className="text-muted-foreground mb-6">
             We couldn't find a voucher with this code. It may have been redeemed already or the link is incorrect.
           </p>
@@ -126,7 +127,7 @@ export default function RedeemVoucher() {
           <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
             <Gift className="w-8 h-8 text-amber-500" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Already Redeemed</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.alreadyRedeemed')}</h1>
           <p className="text-muted-foreground mb-6">
             This voucher has already been claimed. If you believe this is an error, please contact support.
           </p>
@@ -153,7 +154,7 @@ export default function RedeemVoucher() {
           <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
             <Gift className="w-8 h-8 text-muted-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Voucher Expired</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherExpired')}</h1>
           <p className="text-muted-foreground mb-6">
             This voucher has expired and can no longer be redeemed. Contact support if you need assistance.
           </p>
@@ -180,7 +181,7 @@ export default function RedeemVoucher() {
           <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-10 h-10 text-emerald-500" />
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Voucher Claimed!</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">{t('screens.redeemvoucher.voucherClaimed')}</h1>
           <p className="text-muted-foreground mb-6">
             Your {voucherData.order?.tierName || "wellness"} voucher has been added to your account. 
             Explore events and experiences to use your benefits.

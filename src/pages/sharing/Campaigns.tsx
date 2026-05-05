@@ -18,7 +18,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Plus, FileText, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Campaigns() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
@@ -125,7 +125,7 @@ export default withScreenId(function Campaigns() {
   return (
     <AppLayout>
       <SEO
-        title="Campaign Manager | VITANA"
+        title={t('screens.sharing.campaignManagerVitana')}
         description="Plan, execute, and track multi-post campaigns"
         canonical={window.location.href}
       />
@@ -134,12 +134,12 @@ export default withScreenId(function Campaigns() {
       <div className="p-6 min-h-screen pb-24">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Campaign Manager 📊"
+            title={t('screens.sharing.campaignManager')}
             description="Plan, execute, and track multi-post campaigns"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search campaigns..." />
+            <ExpandableSearchButton placeholder={t('screens.sharing.searchCampaigns')} />
             <UniversalCalendarButton />
             
             {campaigns && campaigns.length >= 2 && (
@@ -209,7 +209,7 @@ export default withScreenId(function Campaigns() {
             <Card>
               <CardContent className="text-center py-12">
                 <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No campaigns yet</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noCampaignsYet')}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Create your first campaign to organize and track your content distribution
                 </p>

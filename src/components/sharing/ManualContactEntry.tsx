@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import type { ExternalContact } from "@/types/audience";
+import { t } from '@/lib/i18n-toast';
 
 interface ManualContactEntryProps {
   contacts: ExternalContact[];
@@ -45,7 +46,7 @@ export function ManualContactEntry({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-semibold">Manual Entry</h3>
+          <h3 className="font-semibold">{t('screens.sharing.manualEntry')}</h3>
           <p className="text-sm text-muted-foreground">
             Add up to {maxContacts} contacts manually
           </p>
@@ -90,7 +91,7 @@ export function ManualContactEntry({
                   </Label>
                   <Input
                     id={`name-${idx}`}
-                    placeholder="John Doe"
+                    placeholder={t('screens.sharing.johnDoe')}
                     value={contact.name}
                     onChange={(e) => updateContact(idx, 'name', e.target.value)}
                     className="h-9"
@@ -105,7 +106,7 @@ export function ManualContactEntry({
                     <Input
                       id={`email-${idx}`}
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder={t('screens.sharing.johnExampleCom')}
                       value={contact.email || ''}
                       onChange={(e) => updateContact(idx, 'email', e.target.value)}
                       className="h-9"

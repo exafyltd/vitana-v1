@@ -18,7 +18,7 @@ import {
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 interface WorkoutModalProps {
   workout: Workout | null;
@@ -135,7 +135,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           {workout.muscleGroups.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-2">Target Muscles</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('screens.health.targetMuscles')}</h3>
               <div className="flex flex-wrap gap-2">
                 {workout.muscleGroups.map(muscle => (
                   <Badge key={muscle} variant="outline">
@@ -148,7 +148,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           {workout.equipment.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-2">Equipment Needed</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('screens.health.equipmentNeeded')}</h3>
               <div className="flex flex-wrap gap-2">
                 {workout.equipment.map(eq => (
                   <Badge key={eq} variant="secondary" className="capitalize">
@@ -164,7 +164,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               dark:from-blue-500/20 dark:to-cyan-500/20 border border-blue-200/30 dark:border-blue-700/30">
               <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Autopilot Adjustment</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.autopilotAdjustment')}</p>
                 <p className="text-sm text-muted-foreground italic">
                   {workout.aiNote}
                 </p>
@@ -209,14 +209,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   
                   <div className="flex gap-4 text-xs text-muted-foreground ml-11">
                     <span>
-                      <strong>Sets:</strong> {exercise.sets}
+                      <strong>{t('screens.health.sets')}</strong> {exercise.sets}
                     </span>
                     <span>
-                      <strong>Reps:</strong> {exercise.reps}
+                      <strong>{t('screens.health.reps')}</strong> {exercise.reps}
                     </span>
                     {exercise.restSeconds > 0 && (
                       <span>
-                        <strong>Rest:</strong> {exercise.restSeconds}s
+                        <strong>{t('screens.health.rest')}</strong> {exercise.restSeconds}s
                       </span>
                     )}
                   </div>

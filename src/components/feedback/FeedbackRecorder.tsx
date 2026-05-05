@@ -16,7 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -330,7 +330,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
             <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
-        <h3 className="text-lg font-semibold">Report Sent!</h3>
+        <h3 className="text-lg font-semibold">{t('screens.feedback.reportSent')}</h3>
         <p className="text-sm text-muted-foreground text-center max-w-xs">
           The Exafy team appreciates your support to make Vitanaland a better experience every day.
         </p>
@@ -392,7 +392,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         </button>
       </div>
 
-      <p className="text-xs text-muted-foreground text-center">Tap the mic to describe the issue</p>
+      <p className="text-xs text-muted-foreground text-center">{t('screens.feedback.tapMicDescribeIssue')}</p>
 
       {/* Audio Visualization - matching VoiceDiaryRecorder */}
       {isRecording && (
@@ -498,10 +498,10 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Affected Screen</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('screens.feedback.affectedScreen')}</label>
           <Select value={affectedScreen} onValueChange={setAffectedScreen}>
             <SelectTrigger className="h-9">
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder={t('screens.feedback.select')} />
             </SelectTrigger>
             <SelectContent>
               {SCREEN_OPTIONS.map(s => (

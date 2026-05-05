@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface StandardHeaderProps {
   title: string;
@@ -87,7 +88,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
             <div className="absolute top-full left-0 mt-2 w-64 bg-card border rounded-lg shadow-xl p-3 z-10">
-              <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+              <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.common.latestActions')}</div>
               {latestActions.map((action, index) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                   <span>{action.icon}</span>

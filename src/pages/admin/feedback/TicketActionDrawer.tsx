@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
-import { lookup, notifyError } from '@/lib/i18n-toast';
+import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntakeMessage {
   agent?: string;
@@ -200,7 +200,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
         <div className="flex items-center gap-3">
           <span className="text-2xl">⚙️</span>
           <div className="flex-1 min-w-0">
-            <div className="font-semibold">Dispatched to dev autopilot</div>
+            <div className="font-semibold">{t('screens.admin.dispatchedDevAutopilot')}</div>
             <div className="text-xs text-muted-foreground">
               Recommendation <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
             </div>
@@ -584,7 +584,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   );
 
   if (detailQuery.isLoading) {
-    return renderShell(<p className="text-sm text-muted-foreground">Loading ticket…</p>);
+    return renderShell(<p className="text-sm text-muted-foreground">{t('screens.admin.loadingTicket')}</p>);
   }
   if (detailQuery.error || !detailQuery.data) {
     const err = detailQuery.error instanceof Error ? detailQuery.error.message : "Couldn't load this ticket.";
@@ -655,7 +655,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               }}
             >
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Reclassify…" />
+                <SelectValue placeholder={t('screens.admin.reclassify')} />
               </SelectTrigger>
               <SelectContent>
                 {KIND_OPTIONS.map(opt => (
@@ -670,7 +670,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             </Select>
           </div>
           {reclassify.isPending && (
-            <p className="text-xs text-muted-foreground">Reclassifying — this clears any existing draft.</p>
+            <p className="text-xs text-muted-foreground">{t('screens.admin.reclassifyingThisClearsAnyExistingDraft')}</p>
           )}
         </Card>
       )}
@@ -693,7 +693,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         return (
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
-              <div className="text-sm font-semibold">Process this ticket</div>
+              <div className="text-sm font-semibold">{t('screens.admin.processThisTicket')}</div>
               <p className="text-xs text-muted-foreground">
                 You're the domain expert. Add your instructions below — they take priority over the user's words when the AI drafts the {cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item"}. Then generate, review, and activate.
               </p>
@@ -702,7 +702,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             {/* Step 1 — supervisor instructions */}
             <div>
               <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                1. Your instructions <span className="font-normal normal-case opacity-70">(takes priority over the user's report)</span>
+                1. Your instructions <span className="font-normal normal-case opacity-70">{t('screens.admin.takesPriorityOverUserSReport')}</span>
               </label>
               <Textarea
                 value={supervisorInstructions}
@@ -723,7 +723,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 className="text-sm"
               />
               <p className="mt-1 text-[11px] text-muted-foreground">
-                Persisted as <code>supervisor_notes</code>. Saved with the next Generate.
+                Persisted as <code>{t('screens.admin.supervisor_notes')}</code>. Saved with the next Generate.
               </p>
             </div>
 
@@ -800,7 +800,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               {activate.isPending && (
                 <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  <span>Activating + dispatching to dev autopilot — atomic, takes a few seconds.</span>
+                  <span>{t('screens.admin.activatingDispatchingDevAutopilotAtomicTakes')}</span>
                 </div>
               )}
               {/* VTID-02669: violations from /activate 409. Surfaces pre-flight
@@ -834,7 +834,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Customer report — what they actually said */}
       {t.raw_transcript && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Customer report</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.customerReport')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.raw_transcript}</Card>
         </section>
       )}
@@ -867,7 +867,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Handoff timeline — Vitana → specialist */}
       {handoffs.length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Handoff timeline</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.handoffTimeline')}</h3>
           <div className="flex flex-col gap-1 text-xs">
             {handoffs.map(h => (
               <div key={h.id} className="flex flex-wrap items-center gap-2">
@@ -883,19 +883,19 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Specialist drafts (when present — useful context for Activate decision) */}
       {t.spec_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Devon spec</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.devonSpec')}</h3>
           <Card className="whitespace-pre-wrap p-3 font-mono text-xs">{t.spec_md}</Card>
         </section>
       )}
       {t.draft_answer_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sage draft answer</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.sageDraftAnswer')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.draft_answer_md}</Card>
         </section>
       )}
       {t.resolution_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Resolution draft</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.resolutionDraft')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.resolution_md}</Card>
         </section>
       )}
@@ -903,7 +903,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Structured fields the specialist captured during intake */}
       {t.structured_fields && Object.keys(t.structured_fields).length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Structured fields</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.structuredFields')}</h3>
           <Card className="overflow-x-auto p-3">
             <pre className="text-xs">{JSON.stringify(t.structured_fields, null, 2)}</pre>
           </Card>

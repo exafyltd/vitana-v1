@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface MotivationalDataCardProps {
   userName?: string;
@@ -32,7 +33,7 @@ export default function MotivationalDataCard({ userName = "there", dataCompleten
           {/* Progress indicator */}
           <div className="bg-white/60 rounded-lg p-3 space-y-2">
             <div className="flex justify-between text-xs font-medium">
-              <span>Health Profile</span>
+              <span>{t('screens.health.healthProfile')}</span>
               <span className="text-purple-600">{dataCompleteness}% Complete</span>
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">

@@ -6,6 +6,7 @@ import { Task } from "@/types/task";
 import { TaskCard } from "./TaskCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Library } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CatalogPaneProps {
   tasks: Task[];
@@ -32,8 +33,8 @@ export function CatalogPane({ tasks, onTaskClick }: CatalogPaneProps) {
           {catalogTasks.length === 0 ? (
             <div className="col-span-full text-center py-12 text-muted-foreground">
               <Library className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>No pending tasks.</p>
-              <p className="text-sm mt-1">Create a task or wait for AI suggestions.</p>
+              <p>{t('screens.dev.noPendingTasks')}</p>
+              <p className="text-sm mt-1">{t('screens.dev.createTaskWaitForAiSuggestions')}</p>
             </div>
           ) : (
             catalogTasks.map((task) => (

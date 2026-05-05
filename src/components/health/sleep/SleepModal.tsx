@@ -21,7 +21,7 @@ import {
   Bed
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface SleepModalProps {
   data: DailySleepData | null;
@@ -146,7 +146,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
               dark:from-emerald-500/20 dark:to-green-500/20 border border-emerald-200/30 dark:border-emerald-700/30">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Excellent Sleep! 🌙</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.excellentSleep')}</p>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   Your sleep quality was outstanding. Keep maintaining this routine!
                 </p>
@@ -158,7 +158,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                 dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-200/30 dark:border-indigo-700/30">
                 <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium mb-1">AI Insight</p>
+                  <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400 italic">
                     {data.aiNote}
                   </p>

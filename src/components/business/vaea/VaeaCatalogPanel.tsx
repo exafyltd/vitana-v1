@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Trash2, ExternalLink, Plus } from "lucide-react";
 import { useVaeaCatalog, type VaeaCatalogItem } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const TIER_BADGE: Record<VaeaCatalogItem["tier"], string> = {
   own: "bg-emerald-100 text-emerald-800",
@@ -40,8 +41,8 @@ export function VaeaCatalogPanel() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-medium text-sm">Your referral catalog</h3>
-          <p className="text-xs text-muted-foreground">Own products rank above vetted partners rank above affiliate networks.</p>
+          <h3 className="font-medium text-sm">{t('screens.business.yourReferralCatalog')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.business.ownProductsRankAboveVettedPartners')}</p>
         </div>
         <Button size="sm" onClick={() => setShowForm((v) => !v)}>
           <Plus className="h-4 w-4 mr-1" />
@@ -58,7 +59,7 @@ export function VaeaCatalogPanel() {
       {items.length === 0 && !showForm ? (
         <Card className="bg-white/50 backdrop-blur-sm border-white/20 border-dashed">
           <CardContent className="py-8 text-center space-y-1">
-            <div className="font-medium">Your catalog is empty</div>
+            <div className="font-medium">{t('screens.business.yourCatalogEmpty')}</div>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               Add the products or services Autopilot can recommend on your behalf.
             </p>
@@ -131,9 +132,9 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
               value={tier}
               onChange={(e) => setTier(e.target.value as VaeaCatalogItem["tier"])}
             >
-              <option value="own">Own — my product/service</option>
-              <option value="vetted_partner">Vetted partner</option>
-              <option value="affiliate_network">Affiliate network</option>
+              <option value="own">{t('screens.business.ownMyProductservice')}</option>
+              <option value="vetted_partner">{t('screens.business.vettedPartner')}</option>
+              <option value="affiliate_network">{t('screens.business.affiliateNetwork')}</option>
             </select>
           </label>
           <label className="text-xs space-y-1">
@@ -146,11 +147,11 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
           <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
         </label>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Affiliate / product URL</span>
+          <span className="text-muted-foreground">{t('screens.business.affiliateProductUrl')}</span>
           <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
         </label>
         <label className="text-xs space-y-1 block">
-          <span className="text-muted-foreground">Personal note (optional)</span>
+          <span className="text-muted-foreground">{t('screens.business.personalNoteOptional')}</span>
           <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why you trust it" />
         </label>
         {err && <p className="text-xs text-destructive">{err}</p>}

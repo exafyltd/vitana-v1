@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { CartItem } from "./CartItem";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface CartSidebarProps {
   open: boolean;
@@ -46,7 +47,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
           <div className="flex items-center justify-between p-4 border-b border-white/20">
             <div className="flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 text-primary" />
-              <h2 className="text-lg font-semibold">Your Cart</h2>
+              <h2 className="text-lg font-semibold">{t('screens.cart.yourCart')}</h2>
               <span className="text-sm text-muted-foreground">({cartCount})</span>
             </div>
             <Button
@@ -63,7 +64,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
           {cartItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
               <ShoppingCart className="h-16 w-16 text-muted-foreground/30 mb-4" />
-              <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
+              <h3 className="text-lg font-medium mb-2">{t('screens.cart.yourCartEmpty')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Browse our wellness services and products to get started
               </p>

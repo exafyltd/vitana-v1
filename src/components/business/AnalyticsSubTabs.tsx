@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useResellerSales } from "@/hooks/useResellerSales";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { VaeaDetectionsCard } from "@/components/business/vaea/VaeaDetectionsCard";
+import { t } from '@/lib/i18n-toast';
 
 export function AnalyticsSubTabs() {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ export function AnalyticsSubTabs() {
   return (
     <SplitBar defaultValue="performance" className="w-full">
       <SplitBarList>
-        <SplitBarTrigger value="performance">📊 Performance</SplitBarTrigger>
-        <SplitBarTrigger value="earnings">💵 Earnings</SplitBarTrigger>
-        <SplitBarTrigger value="growth">📈 Growth</SplitBarTrigger>
+        <SplitBarTrigger value="performance">{t('screens.business.performance')}</SplitBarTrigger>
+        <SplitBarTrigger value="earnings">{t('screens.business.earnings')}</SplitBarTrigger>
+        <SplitBarTrigger value="growth">{t('screens.business.growth')}</SplitBarTrigger>
       </SplitBarList>
 
       <SplitBarContent value="performance" className="space-y-4 mt-4">
@@ -72,7 +73,7 @@ export function AnalyticsSubTabs() {
                   <DollarSign className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Services & Events</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.business.servicesEvents')}</p>
                   <p className="text-2xl font-bold">$2,450</p>
                 </div>
               </div>
@@ -87,7 +88,7 @@ export function AnalyticsSubTabs() {
                     <TrendingUp className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Reseller Commission</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.business.resellerCommission')}</p>
                     <p className="text-2xl font-bold">{formatCurrency(resellerSales.totalCommissionEarned)}</p>
                   </div>
                 </div>
@@ -102,7 +103,7 @@ export function AnalyticsSubTabs() {
                   <Wallet className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Wallet Balance</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.business.walletBalance')}</p>
                   <Button 
                     variant="link" 
                     className="p-0 h-auto text-lg font-semibold"

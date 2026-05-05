@@ -11,6 +11,7 @@ import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 
 const providers = [
@@ -152,13 +153,13 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
           <form onSubmit={handleSubmit} className="grid gap-4">
             {isRegister && (
               <div className="grid gap-2">
-                <Label htmlFor="name">Full name</Label>
-                <Input id="name" name="name" placeholder="Your full name" />
+                <Label htmlFor="name">{t('screens.authpages.fullName')}</Label>
+                <Input id="name" name="name" placeholder={t('screens.authpages.yourFullName')} />
               </div>
             )}
             <div className="grid gap-2">
-              <Label htmlFor="email">Your Email Address</Label>
-              <Input id="email" name="email" type="email" placeholder="Your Email Address" required />
+              <Label htmlFor="email">{t('screens.authpages.yourEmailAddress')}</Label>
+              <Input id="email" name="email" type="email" placeholder={t('screens.authpages.yourEmailAddress')} required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>

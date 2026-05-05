@@ -14,7 +14,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreateGroupPopupProps {
   isOpen: boolean;
@@ -133,11 +133,11 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Group Details</CardTitle>
+              <CardTitle className="text-lg">{t('screens.common.groupDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="name">Group Name *</Label>
+                <Label htmlFor="name">{t('screens.common.groupName')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -163,15 +163,15 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                   <Label htmlFor="category">Category</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t('screens.common.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fitness">Fitness & Exercise</SelectItem>
-                      <SelectItem value="nutrition">Nutrition & Diet</SelectItem>
-                      <SelectItem value="mental-health">Mental Health</SelectItem>
-                      <SelectItem value="support">Support Groups</SelectItem>
-                      <SelectItem value="learning">Learning & Education</SelectItem>
-                      <SelectItem value="social">Social & Community</SelectItem>
+                      <SelectItem value="fitness">{t('screens.common.fitnessExercise')}</SelectItem>
+                      <SelectItem value="nutrition">{t('screens.common.nutritionDiet')}</SelectItem>
+                      <SelectItem value="mental-health">{t('screens.common.mentalHealth')}</SelectItem>
+                      <SelectItem value="support">{t('screens.common.supportGroups')}</SelectItem>
+                      <SelectItem value="learning">{t('screens.common.learningEducation')}</SelectItem>
+                      <SelectItem value="social">{t('screens.common.socialCommunity')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -221,13 +221,13 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Location & Settings</CardTitle>
+              <CardTitle className="text-lg">{t('screens.common.locationSettings')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Virtual Group</Label>
-                  <p className="text-sm text-muted-foreground">This group meets online</p>
+                  <Label>{t('screens.common.virtualGroup')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('screens.common.thisGroupMeetsOnline')}</p>
                 </div>
                 <Switch 
                   checked={formData.isVirtual}
@@ -249,7 +249,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
               )}
 
               <div>
-                <Label htmlFor="rules">Group Rules (Optional)</Label>
+                <Label htmlFor="rules">{t('screens.common.groupRulesOptional')}</Label>
                 <Textarea
                   id="rules"
                   value={formData.rules}

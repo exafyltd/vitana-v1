@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, Calendar, Target, Clock, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningPrediction {
   id: string;
@@ -90,12 +91,12 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         {/* Prediction Confidence */}
         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Prediction Confidence</span>
+            <span className="text-sm font-medium">{t('screens.wallet.predictionConfidence')}</span>
             <span className="text-sm text-muted-foreground">{averageConfidence}%</span>
           </div>
           <Progress value={averageConfidence} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            Based on your <span className="font-semibold text-primary">recent activity patterns</span>
+            Based on your <span className="font-semibold text-primary">{t('screens.wallet.recentActivityPatterns')}</span>
           </p>
         </div>
 
@@ -135,15 +136,15 @@ export function CreditEarningPredictionCard({ className }: CreditEarningPredicti
         <div className="p-3 rounded-lg border bg-gradient-to-r from-emerald-500/5 to-green-500/5 border-emerald-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-medium">Weekly Earning Goal</span>
+            <span className="text-sm font-medium">{t('screens.wallet.weeklyEarningGoal')}</span>
           </div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-muted-foreground">425 / 500 credits</span>
-            <span className="text-xs text-emerald-600">85% complete</span>
+            <span className="text-xs text-muted-foreground">{t('screens.wallet.text425500Credits')}</span>
+            <span className="text-xs text-emerald-600">{t('screens.wallet.text85Complete')}</span>
           </div>
           <Progress value={85} className="h-1.5 mb-2" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">75 credits</span> needed to reach goal
+            <span className="font-semibold text-emerald-600">{t('screens.wallet.text75Credits')}</span> needed to reach goal
           </p>
         </div>
 

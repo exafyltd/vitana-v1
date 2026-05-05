@@ -27,6 +27,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface PublicProfileLandingProps {
   profile: UserProfile;
@@ -57,7 +58,7 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
         {/* Cover */}
         <div className="h-48 sm:h-64 md:h-80 w-full overflow-hidden">
           {profile.coverUrl ? (
-            <img src={profile.coverUrl} alt="Cover" className="w-full h-full object-cover" />
+            <img src={profile.coverUrl} alt={t('screens.profile.cover')} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/30 via-primary/10 to-secondary/20" />
           )}

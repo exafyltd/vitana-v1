@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { t } from '@/lib/i18n-toast';
 
 export function DidYouKnowCard() {
   const navigate = useNavigate();
@@ -59,13 +60,13 @@ export function DidYouKnowCard() {
         <DropdownMenu>
           <DropdownMenuTrigger
             className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-            aria-label="More options"
+            aria-label={t('screens.proactive.moreOptions')}
           >
             <MoreVertical className="w-4 h-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => decline('today')}>Not today</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => decline('stop')}>Stop the tour</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => decline('today')}>{t('screens.proactive.notToday')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => decline('stop')}>{t('screens.proactive.stopTour')}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <button

@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { t } from '@/lib/i18n-toast';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function Cart() {
   return (
     <AppLayout>
       <SEO 
-        title="Shopping Cart | VITANA"
+        title={t('screens.cart.shoppingCartVitana')}
         description="Review your cart and complete your purchase"
         canonical={window.location.href}
       />
@@ -47,7 +48,7 @@ export default function Cart() {
           </Button>
 
           <StandardHeader
-            title="Shopping Cart"
+            title={t('screens.cart.shoppingCart')}
             description={`${cartCount} ${cartCount === 1 ? 'item' : 'items'} in your cart`}
             emoji="🛒"
           />
@@ -56,7 +57,7 @@ export default function Cart() {
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardContent className="p-12 text-center">
                 <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-xl font-semibold mb-2">Your cart is empty</h3>
+                <h3 className="text-xl font-semibold mb-2">{t('screens.cart.yourCartEmpty')}</h3>
                 <p className="text-muted-foreground mb-6">
                   Start adding items from the Discover marketplace
                 </p>
@@ -147,7 +148,7 @@ export default function Cart() {
               <div className="lg:col-span-1">
                 <Card className="bg-white/80 backdrop-blur-sm sticky top-6">
                   <CardContent className="p-6 space-y-4">
-                    <h3 className="text-xl font-semibold">Order Summary</h3>
+                    <h3 className="text-xl font-semibold">{t('screens.cart.orderSummary')}</h3>
                     <Separator />
                     
                     <div className="space-y-2">
@@ -161,7 +162,7 @@ export default function Cart() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Tax</span>
-                        <span>Calculated at checkout</span>
+                        <span>{t('screens.cart.calculatedAtCheckout')}</span>
                       </div>
                     </div>
 

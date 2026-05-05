@@ -19,6 +19,7 @@ import {
   useToggleWave,
   type WaveDefinition,
 } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const WAVE_ICONS: Record<string, React.ElementType> = {
   rocket: Rocket,
@@ -42,14 +43,14 @@ function TimelineBar({ waves }: { waves: WaveDefinition[] }) {
   return (
     <Card className="mb-6">
       <CardContent className="p-4">
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">Journey Timeline</h3>
+        <h3 className="text-sm font-medium text-muted-foreground mb-3">{t('screens.admin.journeyTimeline')}</h3>
         {/* Day markers */}
         <div className="relative mb-2">
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Day 0</span>
-            <span>Day 30</span>
-            <span>Day 60</span>
-            <span>Day 90</span>
+            <span>{t('screens.admin.day0')}</span>
+            <span>{t('screens.admin.day30')}</span>
+            <span>{t('screens.admin.day60')}</span>
+            <span>{t('screens.admin.day90')}</span>
           </div>
           <div className="h-px bg-border mt-1" />
         </div>
@@ -204,7 +205,7 @@ export default function AutopilotPlanning() {
       <AdminTabs sectionKey="autopilot" />
       <div className="p-6">
         <AdminHeader
-          title="Autopilot Planning"
+          title={t('screens.admin.autopilotPlanning')}
           description={`Configure autopilot waves — ${activeCount}/${waves.length} active, ${enabledAP}/${totalAP} automations enabled`}
         />
 

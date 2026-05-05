@@ -17,7 +17,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useContacts } from "@/hooks/useContacts";
 import useContactSync from "@/hooks/useContactSync";
 import { Upload, Smartphone, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface LocalContact {
   name: string;
@@ -207,11 +207,11 @@ export default function InviteFriends() {
 
   return (
     <AppLayout>
-      <SEO title="Invite Friends" />
+      <SEO title={t('screens.invitefriends.inviteFriends')} />
       <div className={`min-h-screen bg-gradient-subtle ${isMobile ? "p-4 pb-24" : "p-6"}`}>
         <div className={isMobile ? "" : "max-w-3xl mx-auto"}>
           <StandardHeader
-            title="Invite Friends"
+            title={t('screens.invitefriends.inviteFriends')}
             description="Import your contacts and invite them to Vitana"
             emoji="🎯"
           />
@@ -227,8 +227,8 @@ export default function InviteFriends() {
                       <Smartphone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">Phone Contacts</CardTitle>
-                      <CardDescription className="text-xs">Import from your phone</CardDescription>
+                      <CardTitle className="text-sm">{t('screens.invitefriends.phoneContacts')}</CardTitle>
+                      <CardDescription className="text-xs">{t('screens.invitefriends.importFromYourPhone')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -260,8 +260,8 @@ export default function InviteFriends() {
                     <Upload className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <CardTitle className="text-sm">Upload CSV</CardTitle>
-                    <CardDescription className="text-xs">Upload a contacts file</CardDescription>
+                    <CardTitle className="text-sm">{t('screens.invitefriends.uploadCsv')}</CardTitle>
+                    <CardDescription className="text-xs">{t('screens.invitefriends.uploadContactsFile')}</CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -298,16 +298,16 @@ export default function InviteFriends() {
                   </div>
                   <Button variant="ghost" size="sm" onClick={toggleAll}>
                     {contacts.every(c => c.selected) ? (
-                      <><X className="w-3 h-3 mr-1" /> Deselect All</>
+                      <><X className="w-3 h-3 mr-1" /> {t('screens.invitefriends.deselectAll')}</>
                     ) : (
-                      <><Check className="w-3 h-3 mr-1" /> Select All</>
+                      <><Check className="w-3 h-3 mr-1" /> {t('screens.invitefriends.selectAll')}</>
                     )}
                   </Button>
                 </div>
                 <div className="relative mt-2">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search contacts..."
+                    placeholder={t('screens.invitefriends.searchContacts')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     className="pl-8 h-9 text-sm"
@@ -388,13 +388,13 @@ export default function InviteFriends() {
               <Card className="mt-2">
                 <CardContent className="p-4 space-y-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="manual-name">Name *</Label>
-                    <Input id="manual-name" placeholder="Contact name" value={manualName} onChange={e => setManualName(e.target.value)} />
+                    <Label htmlFor="manual-name">{t('screens.invitefriends.name')}</Label>
+                    <Input id="manual-name" placeholder={t('screens.invitefriends.contactName')} value={manualName} onChange={e => setManualName(e.target.value)} />
                   </div>
                   <div className={`grid gap-3 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
                     <div className="space-y-1.5">
                       <Label htmlFor="manual-email">Email</Label>
-                      <Input id="manual-email" type="email" placeholder="email@example.com" value={manualEmail} onChange={e => setManualEmail(e.target.value)} />
+                      <Input id="manual-email" type="email" placeholder={t('screens.invitefriends.emailExampleCom')} value={manualEmail} onChange={e => setManualEmail(e.target.value)} />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="manual-phone">Phone</Label>

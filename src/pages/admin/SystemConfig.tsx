@@ -13,6 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { useVitanaIndexConfig } from "@/hooks/useVitanaIndexConfig";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export default function SystemConfig() {
   const { config, isLoading, updateConfig, isUpdating } = useVitanaIndexConfig();
@@ -48,7 +49,7 @@ export default function SystemConfig() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - System Configuration" 
+        title={t('screens.admin.adminSystemConfiguration')} 
         description="Global system settings and configurations" 
         canonical={window.location.href} 
       />
@@ -57,7 +58,7 @@ export default function SystemConfig() {
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="System Configuration"
+            title={t('screens.admin.systemConfiguration')}
             description="Configure global system settings, integrations, and API keys"
             emoji="⚙️"
           />
@@ -65,7 +66,7 @@ export default function SystemConfig() {
           <Tabs defaultValue="general" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="general">General</TabsTrigger>
-              <TabsTrigger value="vitana">Vitana Index</TabsTrigger>
+              <TabsTrigger value="vitana">{t('screens.admin.vitanaIndex')}</TabsTrigger>
               <TabsTrigger value="autopilot">Autopilot</TabsTrigger>
               <TabsTrigger value="integrations">Integrations</TabsTrigger>
             </TabsList>
@@ -81,7 +82,7 @@ export default function SystemConfig() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">Connection and backup settings</p>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.connectionBackupSettings')}</p>
                     <Button variant="outline" size="sm">Configure</Button>
                   </CardContent>
                 </Card>
@@ -94,7 +95,7 @@ export default function SystemConfig() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">SMTP and notification settings</p>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.smtpNotificationSettings')}</p>
                     <Button variant="outline" size="sm">Configure</Button>
                   </CardContent>
                 </Card>
@@ -107,7 +108,7 @@ export default function SystemConfig() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">Third-party integrations</p>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.thirdpartyIntegrations')}</p>
                     <Button variant="outline" size="sm">Manage</Button>
                   </CardContent>
                 </Card>
@@ -205,7 +206,7 @@ export default function SystemConfig() {
                     <p className="text-sm text-muted-foreground">
                       Total Weight: {(Object.values(weights).reduce((sum, val) => sum + val, 0) * 100).toFixed(0)}%
                       {Object.values(weights).reduce((sum, val) => sum + val, 0) !== 1 && (
-                        <span className="text-destructive ml-2">(Warning: Should equal 100%)</span>
+                        <span className="text-destructive ml-2">{t('screens.admin.warningShouldEqual100')}</span>
                       )}
                     </p>
                   </div>
@@ -214,7 +215,7 @@ export default function SystemConfig() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Scoring Tiers Configuration</CardTitle>
+                  <CardTitle>{t('screens.admin.scoringTiersConfiguration')}</CardTitle>
                   <CardDescription>
                     Define the score ranges and labels for the Vitana Index tiers
                   </CardDescription>
@@ -225,7 +226,7 @@ export default function SystemConfig() {
                       Current tiers: Very Poor (0-99), Poor (100-299), Fair (300-499), 
                       Improving (500-699), Good (700-849), Excellent (850-999)
                     </p>
-                    <Button variant="outline" size="sm">Edit Tiers</Button>
+                    <Button variant="outline" size="sm">{t('screens.admin.editTiers')}</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -245,7 +246,7 @@ export default function SystemConfig() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="default-max-actions">Default Max Actions Per Day</Label>
+                    <Label htmlFor="default-max-actions">{t('screens.admin.defaultMaxActionsPerDay')}</Label>
                     <Input
                       id="default-max-actions"
                       type="number"
@@ -257,7 +258,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Global Quiet Hours</Label>
+                    <Label>{t('screens.admin.globalQuietHours')}</Label>
                     <div className="grid grid-cols-2 gap-4">
                       <Input type="time" defaultValue="22:00" />
                       <Input type="time" defaultValue="08:00" />
@@ -275,7 +276,7 @@ export default function SystemConfig() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Automation Rule Templates</CardTitle>
+                  <CardTitle>{t('screens.admin.automationRuleTemplates')}</CardTitle>
                   <CardDescription>
                     Create reusable rule templates that users can enable
                   </CardDescription>
@@ -292,7 +293,7 @@ export default function SystemConfig() {
             <TabsContent value="integrations" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Third-Party Integrations</CardTitle>
+                  <CardTitle>{t('screens.admin.thirdpartyIntegrations2')}</CardTitle>
                   <CardDescription>
                     Manage API keys and configurations for external services
                   </CardDescription>

@@ -8,6 +8,7 @@ import { mockTransactionsByEventId } from "@/lib/mocks/mockResellerSales";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface SalesDetailDrawerProps {
   open: boolean;
@@ -146,7 +147,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md overflow-y-auto">
         <SheetHeader className="pb-4 border-b border-border/40">
-          <SheetTitle className="text-left">Sales Details</SheetTitle>
+          <SheetTitle className="text-left">{t('screens.reseller.salesDetails')}</SheetTitle>
         </SheetHeader>
 
         <div className="py-6 space-y-6">
@@ -165,7 +166,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="bg-muted/50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Info className="h-4 w-4 text-muted-foreground" />
-              <span>Commission Logic</span>
+              <span>{t('screens.reseller.commissionLogic')}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               You earn <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
@@ -177,7 +178,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           <div className="bg-muted/50 rounded-xl p-4 space-y-2">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Wallet className="h-4 w-4 text-muted-foreground" />
-              <span>Payout Status</span>
+              <span>{t('screens.reseller.payoutStatus')}</span>
             </div>
             {payoutInfo.isPaid ? (
               <div className="flex items-center gap-2">
@@ -197,7 +198,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
                   <Clock className="h-3 w-3 mr-1" />
                   Pending
                 </Badge>
-                <span className="text-xs text-muted-foreground">Included in next payout cycle</span>
+                <span className="text-xs text-muted-foreground">{t('screens.reseller.includedNextPayoutCycle')}</span>
               </div>
             )}
             <Button
@@ -256,11 +257,11 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
             <h4 className="text-sm font-medium">Summary</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-muted-foreground">Total tickets</p>
+                <p className="text-xs text-muted-foreground">{t('screens.reseller.totalTickets')}</p>
                 <p className="text-lg font-semibold">{event.ticketsSold}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Total commission</p>
+                <p className="text-xs text-muted-foreground">{t('screens.reseller.totalCommission')}</p>
                 <p className="text-lg font-semibold text-accent">{formatCurrency(event.commissionAmount)}</p>
               </div>
             </div>

@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { devConfig } from "@/config/dev-config";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CreateCommandModalProps {
   open: boolean;
@@ -51,38 +51,38 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle>Create Command</DialogTitle>
+          <DialogTitle>{t('screens.dev.createCommand')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="command-type">Command Type *</Label>
+            <Label htmlFor="command-type">{t('screens.dev.commandType')}</Label>
             <Select value={commandType} onValueChange={setCommandType}>
               <SelectTrigger id="command-type">
-                <SelectValue placeholder="Select command type" />
+                <SelectValue placeholder={t('screens.dev.selectCommandType')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="deploy">Deploy</SelectItem>
-                <SelectItem value="restart">Restart Service</SelectItem>
-                <SelectItem value="backup">Backup Data</SelectItem>
-                <SelectItem value="sync">Sync Resources</SelectItem>
-                <SelectItem value="custom">Custom Command</SelectItem>
+                <SelectItem value="restart">{t('screens.dev.restartService')}</SelectItem>
+                <SelectItem value="backup">{t('screens.dev.backupData')}</SelectItem>
+                <SelectItem value="sync">{t('screens.dev.syncResources')}</SelectItem>
+                <SelectItem value="custom">{t('screens.dev.customCommand')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="target-vtid">Target VTID *</Label>
+            <Label htmlFor="target-vtid">{t('screens.dev.targetVtid')}</Label>
             <Input
               id="target-vtid"
-              placeholder="Enter VTID..."
+              placeholder={t('screens.dev.enterVtid')}
               value={targetVTID}
               onChange={(e) => setTargetVTID(e.target.value)}
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="schedule-toggle">Schedule for later</Label>
+            <Label htmlFor="schedule-toggle">{t('screens.dev.scheduleForLater')}</Label>
             <Switch
               id="schedule-toggle"
               checked={scheduled}
@@ -92,7 +92,7 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
 
           {scheduled && (
             <div className="space-y-2">
-              <Label htmlFor="schedule-time">Schedule Time</Label>
+              <Label htmlFor="schedule-time">{t('screens.dev.scheduleTime')}</Label>
               <Input
                 id="schedule-time"
                 type="datetime-local"
@@ -103,10 +103,10 @@ export function CreateCommandModal({ open, onOpenChange, onSuccess }: CreateComm
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes (optional)</Label>
+            <Label htmlFor="notes">{t('screens.dev.notesOptional')}</Label>
             <Textarea
               id="notes"
-              placeholder="Add any additional notes..."
+              placeholder={t('screens.dev.addAnyAdditionalNotes')}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface UploadDocumentModalProps {
   open: boolean;
@@ -33,20 +33,20 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Upload Document</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.uploadDocument')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="doc-type">Document Type</Label>
+            <Label htmlFor="doc-type">{t('screens.dev.documentType')}</Label>
             <Select value={docType} onValueChange={setDocType}>
               <SelectTrigger id="doc-type">
-                <SelectValue placeholder="Select type" />
+                <SelectValue placeholder={t('screens.dev.selectType')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="schema">Schema</SelectItem>
-                <SelectItem value="api">API Documentation</SelectItem>
-                <SelectItem value="design">Design Spec</SelectItem>
+                <SelectItem value="api">{t('screens.dev.apiDocumentation')}</SelectItem>
+                <SelectItem value="design">{t('screens.dev.designSpec')}</SelectItem>
                 <SelectItem value="guide">Guide</SelectItem>
               </SelectContent>
             </Select>
@@ -63,11 +63,11 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="file">File Upload</Label>
+            <Label htmlFor="file">{t('screens.dev.fileUpload')}</Label>
             <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
               <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-              <p className="text-xs text-muted-foreground mt-1">PDF, DOCX, MD up to 10MB</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.clickUploadDragDrop')}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.dev.pdfDocxMdUp10mb')}</p>
             </div>
           </div>
 

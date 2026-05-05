@@ -5,6 +5,7 @@ import { Bot, Calendar, TrendingUp, Zap } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import SEO from '@/components/SEO';
 import StandardHeader from '@/components/StandardHeader';
+import { t } from '@/lib/i18n-toast';
 
 export default function PersonalAITimeline() {
   const timelineItems = [
@@ -55,13 +56,13 @@ export default function PersonalAITimeline() {
   return (
     <AppLayout>
       <SEO 
-        title="Personal AI Timeline | VITANA" 
+        title={t('screens.ai.personalAiTimelineVitana')} 
         description="Your personalized AI activity timeline and insights"
         canonical={window.location.href}
       />
       <div className="p-6 space-y-6">
         <StandardHeader
-          title="Personal AI Timeline"
+          title={t('screens.ai.personalAiTimeline')}
           description="Track your AI assistant's activities, insights, and recommendations"
           emoji="🤖"
         />
@@ -108,7 +109,7 @@ export default function PersonalAITimeline() {
           <Card className="mt-6 border-dashed">
             <CardContent className="p-6 text-center">
               <Bot className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">AI Intelligence Hub - Phase 5</h3>
+              <h3 className="text-lg font-medium mb-2">{t('screens.ai.aiIntelligenceHubPhase5')}</h3>
               <p className="text-muted-foreground">
                 This is a read-only placeholder for the Personal AI Timeline. 
                 Future phases will connect to real AI activity data and provide interactive insights.

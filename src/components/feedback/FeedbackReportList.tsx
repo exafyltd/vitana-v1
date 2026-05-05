@@ -16,7 +16,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface FeedbackReport {
   id: string;
@@ -128,8 +128,8 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
           <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-2">
             <Bug className="h-5 w-5 text-destructive" />
           </div>
-          <p>No reports sent yet</p>
-          <p className="text-sm mt-1">Use the recorder above to report bugs or suggest improvements</p>
+          <p>{t('screens.feedback.noReportsSentYet')}</p>
+          <p className="text-sm mt-1">{t('screens.feedback.useRecorderAboveReportBugsSuggest')}</p>
         </CardContent>
       </Card>
     );
@@ -225,7 +225,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
       <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <ResponsiveConfirmDialogContent className="max-w-sm">
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Report?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.feedback.deleteReport')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
               This feedback report will be permanently deleted. This action cannot be undone.
             </ResponsiveConfirmDialogDescription>

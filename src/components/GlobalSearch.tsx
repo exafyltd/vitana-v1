@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
+import { t } from '@/lib/i18n-toast';
 
 interface SearchSuggestion {
   id: string;
@@ -230,7 +231,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Search members, groups, content…"
+              placeholder={t('screens.common.searchMembersGroupsContent')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => {

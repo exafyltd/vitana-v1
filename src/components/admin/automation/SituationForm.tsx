@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SituationFormProps {
   onAnalyze: (situation: string) => Promise<void>;
@@ -38,7 +39,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="situation">What would you like to automate?</Label>
+          <Label htmlFor="situation">{t('screens.admin.whatWouldYouLikeAutomate')}</Label>
           <Textarea
             id="situation"
             value={situation}
@@ -50,7 +51,7 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Example scenarios:</Label>
+          <Label className="text-sm text-muted-foreground">{t('screens.admin.exampleScenarios')}</Label>
           <div className="grid gap-2">
             {exampleSituations.map((example, index) => (
               <button

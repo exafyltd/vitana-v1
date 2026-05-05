@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, TrendingUp, Clock, Calendar } from "lucide-react";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
+import { t } from '@/lib/i18n-toast';
 
 interface ViewStatisticsDialogProps {
   open: boolean;
@@ -62,7 +63,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <Calendar className="w-8 h-8 text-primary" />
                   <div>
                     <div className="text-2xl font-bold">{totalItems}</div>
-                    <div className="text-sm text-muted-foreground">Total Items</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.totalItems')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <TrendingUp className="w-8 h-8 text-accent" />
                   <div>
                     <div className="text-2xl font-bold">{last7Days}</div>
-                    <div className="text-sm text-muted-foreground">Last 7 Days</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.last7Days')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -86,7 +87,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <Clock className="w-8 h-8 text-secondary" />
                   <div>
                     <div className="text-2xl font-bold">{last30Days}</div>
-                    <div className="text-sm text-muted-foreground">Last 30 Days</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.last30Days')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -96,7 +97,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
           {/* Category Breakdown */}
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Activity by Category</h3>
+              <h3 className="font-semibold mb-4">{t('screens.memory.activityByCategory')}</h3>
               <div className="space-y-3">
                 {categories.map(([category, count]) => {
                   const percentage = ((count / totalItems) * 100).toFixed(1);

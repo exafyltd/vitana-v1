@@ -1,6 +1,7 @@
 import { Lightbulb, TrendingUp, Heart, Zap, Brain, Apple } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 const educationalContent = [
   {
@@ -118,7 +119,7 @@ export function MemoryEducationTab() {
         <CardContent className="pt-6">
           <div className="flex items-center gap-3 mb-2">
             <Lightbulb className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-primary">Personalized Insights Coming Soon</h3>
+            <h3 className="font-semibold text-primary">{t('screens.memory.personalizedInsightsComingSoon')}</h3>
           </div>
           <p className="text-sm text-muted-foreground">
             As you track more memories and data, this section will provide AI-generated insights 

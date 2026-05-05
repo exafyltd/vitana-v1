@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Target, ChevronRight, Zap, Users, Calendar } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileAchievementsStripProps {
   achievements: string[];
@@ -66,7 +67,7 @@ export function ProfileAchievementsStrip({
                     <Zap className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-foreground">Next Milestone</h4>
+                    <h4 className="text-sm font-semibold text-foreground">{t('screens.profile.nextMilestone')}</h4>
                     <p className="text-xs text-muted-foreground">{nextMilestone.title}</p>
                   </div>
                 </div>

@@ -15,6 +15,7 @@ import {
 } from "@/hooks/useVitanaIndex";
 import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
 import VitanaLogDataDialog from "@/components/health/VitanaLogDataDialog";
+import { t } from '@/lib/i18n-toast';
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
   nutrition: "What and how you eat — meals, macro balance, biomarkers",
@@ -33,7 +34,7 @@ const SUBSCORE_MAX: VitanaPillarSubscores = {
 
 function Sparkline({ history }: { history: Array<{ date: string; score: number }> }) {
   if (history.length === 0) {
-    return <div className="text-xs text-muted-foreground">No history yet — check back tomorrow.</div>;
+    return <div className="text-xs text-muted-foreground">{t('screens.health.noHistoryYetCheckBackTomorrow')}</div>;
   }
   const max = Math.max(...history.map((h) => h.score), 1);
   const min = Math.min(...history.map((h) => h.score), 0);
@@ -133,7 +134,7 @@ export default function VitanaIndexDetail() {
   return (
     <AppLayout>
       <SEO
-        title="Vitana Index"
+        title={t('screens.health.vitanaIndex')}
         description="Your single number for longevity across the five pillars: Nutrition, Hydration, Exercise, Sleep, Mental."
         canonical={window.location.href}
       />
@@ -142,7 +143,7 @@ export default function VitanaIndexDetail() {
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-1">Your Vitana Index</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-1">{t('screens.health.yourVitanaIndex')}</h1>
               <p className="text-muted-foreground">
                 One number. Five pillars. Ninety days to lift it — balanced, honest, aspirational.
               </p>
@@ -166,7 +167,7 @@ export default function VitanaIndexDetail() {
                     <Activity className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">Current Score</CardTitle>
+                    <CardTitle className="text-lg">{t('screens.health.currentScore')}</CardTitle>
                     <p className="text-sm text-muted-foreground">
                       {index?.lastUpdated ? `Last updated ${index.lastUpdated}` : "Waiting for first compute"}
                     </p>
@@ -193,7 +194,7 @@ export default function VitanaIndexDetail() {
                   </div>
                   <div className="flex items-center gap-4">
                     <Sparkline history={index.history} />
-                    <div className="text-xs text-muted-foreground">7-day trend</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.health.text7dayTrend')}</div>
                   </div>
                 </>
               )}
@@ -203,7 +204,7 @@ export default function VitanaIndexDetail() {
                 </div>
               )}
               {isError && (
-                <div className="text-sm text-destructive">Could not load your Index. Try refresh.</div>
+                <div className="text-sm text-destructive">{t('screens.health.couldNotLoadYourIndexTry')}</div>
               )}
             </CardContent>
           </Card>
@@ -213,12 +214,12 @@ export default function VitanaIndexDetail() {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Target className="w-5 h-5 text-calendar-primary" />
-                <CardTitle className="text-base">Your 90-day goal</CardTitle>
+                <CardTitle className="text-base">{t('screens.health.your90dayGoal')}</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                <strong>{milestoneGoal}+</strong> is the <em>really good</em> zone — the "thriving" tier most focused 90-day pushes reach.
+                <strong>{milestoneGoal}+</strong> is the <em>{t('screens.health.reallyGood')}</em> zone — the "thriving" tier most focused 90-day pushes reach.
                 <br />
                 <strong>{stretchGoal}+</strong> is elite territory — sustained excellence across all five pillars over months, not days.
               </p>
@@ -253,7 +254,7 @@ export default function VitanaIndexDetail() {
           {/* Pillar breakdown — stacked segments */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Five pillars — how each one climbs</CardTitle>
+              <CardTitle className="text-base">{t('screens.health.fivePillarsHowEachOneClimbs')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
               <StackLegend />
@@ -279,16 +280,16 @@ export default function VitanaIndexDetail() {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Info className="w-5 h-5 text-calendar-primary" />
-                <CardTitle className="text-base">How your Index moves</CardTitle>
+                <CardTitle className="text-base">{t('screens.health.howYourIndexMoves')}</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="text-sm space-y-2 text-muted-foreground">
               <p>
                 Each of the five pillars (max 200 each) is the sum of four sub-scores:
-                a small <strong>baseline</strong> from your onboarding survey, <strong>completions</strong>
-                of journey actions in the last 30 days, <strong>connected data</strong> from wearables and logs,
-                and a <strong>streak bonus</strong> for consistency. We sum the five pillars, apply a
-                <strong> balance factor</strong> (it dampens when one pillar is far ahead of another),
+                a small <strong>{t('screens.health.baseline')}</strong> from your onboarding survey, <strong>{t('screens.health.completions')}</strong>
+                of journey actions in the last 30 days, <strong>{t('screens.health.connectedData')}</strong> from wearables and logs,
+                and a <strong>{t('screens.health.streakBonus')}</strong> for consistency. We sum the five pillars, apply a
+                <strong> {t('screens.health.balanceFactor')}</strong> (it dampens when one pillar is far ahead of another),
                 and cap at 999.
               </p>
               <p>

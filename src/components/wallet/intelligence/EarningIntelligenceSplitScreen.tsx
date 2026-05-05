@@ -8,6 +8,7 @@ import { Brain, Zap, Target, TrendingUp, Globe, Layers } from "lucide-react";
 import { EarningStreaksAnalyticsCard } from "./EarningStreaksAnalyticsCard";
 import { CommissionForecastingCard } from "./CommissionForecastingCard";
 import { SocialEarningIntelligenceCard } from "./SocialEarningIntelligenceCard";
+import { t } from '@/lib/i18n-toast';
 
 interface CrossPlatformOpportunity {
   id: string;
@@ -151,11 +152,11 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
             <div className="grid grid-cols-3 gap-3 mb-2">
               <div className="text-center">
                 <div className="text-lg font-bold text-primary">{totalCrossPlatformPotential}</div>
-                <div className="text-xs text-muted-foreground">VTN Potential</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnPotential')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-purple-600">{avgSynergy}%</div>
-                <div className="text-xs text-muted-foreground">Avg Synergy</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgSynergy')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">{avgConfidence}%</div>
@@ -163,7 +164,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
               </div>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              <span className="font-semibold text-primary">Cross-platform strategies</span> unlock highest earning potential
+              <span className="font-semibold text-primary">{t('screens.wallet.crossplatformStrategies')}</span> unlock highest earning potential
             </p>
           </div>
 
@@ -265,13 +266,13 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Target className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Master Strategy</span>
+              <span className="text-sm font-medium">{t('screens.wallet.masterStrategy')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
               Combine all three insights for a potential 725% earning multiplier
             </p>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-amber-600 font-medium">Estimated monthly impact: +$2,400</span>
+              <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.estimatedMonthlyImpact2400')}</span>
               <Button size="sm" variant="outline" className="text-xs h-6 px-2">
                 <Zap className="h-3 w-3 mr-1" />
                 Activate All
@@ -281,15 +282,15 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
 
           {/* Performance Tracking */}
           <div className="p-3 rounded-lg bg-muted/50">
-            <div className="text-sm font-medium mb-2">Intelligence Performance</div>
+            <div className="text-sm font-medium mb-2">{t('screens.wallet.intelligencePerformance')}</div>
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center">
                 <div className="text-lg font-bold text-emerald-600">87%</div>
-                <div className="text-xs text-muted-foreground">Prediction Accuracy</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.predictionAccuracy')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">+340%</div>
-                <div className="text-xs text-muted-foreground">Avg User Improvement</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgUserImprovement')}</div>
               </div>
             </div>
           </div>

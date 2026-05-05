@@ -15,6 +15,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Archived() {
   const [activeTab, setActiveTab] = useState("all");
@@ -32,13 +33,13 @@ export default function Archived() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
-      <SEO title="Archived | Messages" description="View archived conversations and messages" canonical={window.location.href} />
+      <SEO title={t('screens.messages.archivedMessages2')} description="View archived conversations and messages" canonical={window.location.href} />
       <AppLayout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-6 lg:space-y-8">
             <SubNavigation items={messagesNavigation} />
             <StandardHeader 
-              title="Never lose important conversations!"
+              title={t('screens.messages.neverLoseImportantConversations')}
               description="View archived conversations and messages"
               emoji="📦"
             />
@@ -76,10 +77,10 @@ export default function Archived() {
                   {/* Left Sidebar - Archive Categories */}
                   <Card className="w-80 flex flex-col">
                     <CardHeader className="border-b">
-                      <h2 className="font-semibold mb-3">Archived Messages</h2>
+                      <h2 className="font-semibold mb-3">{t('screens.messages.archivedMessages')}</h2>
                       <div className="relative mb-4">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input placeholder="Search archives..." className="pl-10" />
+                        <Input placeholder={t('screens.messages.searchArchives')} className="pl-10" />
                       </div>
                       <div className="space-y-1">
                         {categories.map((category) => (
@@ -95,7 +96,7 @@ export default function Archived() {
                   <Card className="flex-1 flex flex-col">
                     <CardHeader className="border-b">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-medium">All Archived Conversations</h3>
+                        <h3 className="font-medium">{t('screens.messages.allArchivedConversations')}</h3>
                         <div className="flex gap-2">
                           <Button variant="ghost" size="sm">
                             Export
@@ -148,11 +149,11 @@ export default function Archived() {
                   {/* Right Sidebar - Archive Actions */}
                   <Card className="w-80">
                     <CardContent className="p-6">
-                      <h3 className="font-semibold mb-4">Archive Management</h3>
+                      <h3 className="font-semibold mb-4">{t('screens.messages.archiveManagement')}</h3>
                       
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-medium mb-2">Quick Actions</h4>
+                          <h4 className="font-medium mb-2">{t('screens.messages.quickActions')}</h4>
                           <div className="space-y-2">
                             <Button variant="outline" className="w-full justify-start">
                               <Archive className="h-4 w-4 mr-2" />
@@ -168,32 +169,32 @@ export default function Archived() {
                         </div>
                         
                         <div>
-                          <h4 className="font-medium mb-2">Archive Statistics</h4>
+                          <h4 className="font-medium mb-2">{t('screens.messages.archiveStatistics')}</h4>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">Total Archived</span>
-                              <span className="text-sm font-medium">42 conversations</span>
+                              <span className="text-sm text-muted-foreground">{t('screens.messages.totalArchived')}</span>
+                              <span className="text-sm font-medium">{t('screens.messages.text42Conversations')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">This Month</span>
-                              <span className="text-sm font-medium">5 conversations</span>
+                              <span className="text-sm text-muted-foreground">{t('screens.messages.thisMonth')}</span>
+                              <span className="text-sm font-medium">{t('screens.messages.text5Conversations')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">Storage Used</span>
-                              <span className="text-sm font-medium">12.5 MB</span>
+                              <span className="text-sm text-muted-foreground">{t('screens.messages.storageUsed')}</span>
+                              <span className="text-sm font-medium">{t('screens.messages.text125Mb')}</span>
                             </div>
                           </div>
                         </div>
                         
                         <div>
-                          <h4 className="font-medium mb-2">Auto-Archive Settings</h4>
+                          <h4 className="font-medium mb-2">{t('screens.messages.autoarchiveSettings')}</h4>
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-sm">Auto-archive after 30 days</span>
+                              <span className="text-sm">{t('screens.messages.autoarchiveAfter30Days')}</span>
                               <input type="checkbox" defaultChecked className="rounded" />
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="text-sm">Keep important chats</span>
+                              <span className="text-sm">{t('screens.messages.keepImportantChats')}</span>
                               <input type="checkbox" defaultChecked className="rounded" />
                             </div>
                           </div>
@@ -206,19 +207,19 @@ export default function Archived() {
 
               <SplitBarContent value="recent">
                 <Card className="p-6">
-                  <p className="text-muted-foreground">Recently archived conversations will appear here.</p>
+                  <p className="text-muted-foreground">{t('screens.messages.recentlyArchivedConversationsWillAppearHere')}</p>
                 </Card>
               </SplitBarContent>
 
               <SplitBarContent value="category">
                 <Card className="p-6">
-                  <p className="text-muted-foreground">Category-based archive view will appear here.</p>
+                  <p className="text-muted-foreground">{t('screens.messages.categorybasedArchiveViewWillAppearHere')}</p>
                 </Card>
               </SplitBarContent>
 
               <SplitBarContent value="settings">
                 <Card className="p-6">
-                  <p className="text-muted-foreground">Archive settings will appear here.</p>
+                  <p className="text-muted-foreground">{t('screens.messages.archiveSettingsWillAppearHere')}</p>
                 </Card>
               </SplitBarContent>
             </SplitBar>

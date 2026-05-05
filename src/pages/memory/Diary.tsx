@@ -24,6 +24,7 @@ import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface SelectedEntry {
   images: string[];
@@ -64,18 +65,18 @@ function Diary() {
 
   return (
     <AppLayout>
-      <SEO title="Wellness Diary | VITANA Memory" description="Record and review your wellness journey through voice entries, photos, and personal reflections." />
+      <SEO title={t('screens.memory.wellnessDiaryVitanaMemory')} description="Record and review your wellness journey through voice entries, photos, and personal reflections." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Wellness Diary"
+          title={t('screens.memory.wellnessDiary')}
           description="Record and review your wellness journey through multimedia entries."
           emoji="📔"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search diary entries and reflections..." />
+          <ExpandableSearchButton placeholder={t('screens.memory.searchDiaryEntriesReflections')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -85,9 +86,9 @@ function Diary() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
           <SplitBarList>
-            <SplitBarTrigger value="voice">🎤 Voice</SplitBarTrigger>
-            <SplitBarTrigger value="photos">📸 Photos</SplitBarTrigger>
-            <SplitBarTrigger value="text">✍️ Text</SplitBarTrigger>
+            <SplitBarTrigger value="voice">{t('screens.memory.voice')}</SplitBarTrigger>
+            <SplitBarTrigger value="photos">{t('screens.memory.photos')}</SplitBarTrigger>
+            <SplitBarTrigger value="text">{t('screens.memory.text')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="voice">

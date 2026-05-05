@@ -21,7 +21,7 @@ import { Calendar as CalendarIcon, Clock, MapPin, CreditCard, CheckCircle } from
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface LabTest {
   id: string;
@@ -101,7 +101,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Order Lab Test</DialogTitle>
+          <DialogTitle className="text-2xl">{t('screens.common.orderLabTest')}</DialogTitle>
           <DialogDescription>
             Complete your order for {labTest.name}
           </DialogDescription>
@@ -112,7 +112,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Order Summary</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.orderSummary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -126,7 +126,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                 <Separator />
                 
                 <div>
-                  <h5 className="font-medium mb-2">Biomarkers Tested:</h5>
+                  <h5 className="font-medium mb-2">{t('screens.common.biomarkersTested')}</h5>
                   <div className="flex flex-wrap gap-1">
                     {labTest.biomarkers.map((biomarker, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
@@ -140,15 +140,15 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                 
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span>Sample Type:</span>
+                    <span>{t('screens.common.sampleType')}</span>
                     <span className="font-medium">{labTest.sample_type}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Results Time:</span>
+                    <span>{t('screens.common.resultsTime')}</span>
                     <span className="font-medium">{labTest.turnaround_days} days</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold">
-                    <span>Total:</span>
+                    <span>{t('screens.common.total')}</span>
                     <span>${labTest.price.toFixed(2)}</span>
                   </div>
                 </div>
@@ -162,8 +162,8 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
               {/* Collection Method */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Collection Method</CardTitle>
-                  <CardDescription>Choose how you'd like to collect your sample</CardDescription>
+                  <CardTitle className="text-lg">{t('screens.common.collectionMethod')}</CardTitle>
+                  <CardDescription>{t('screens.common.chooseHowYouDLikeCollect')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <RadioGroup value={collectionMethod} onValueChange={(value: any) => setCollectionMethod(value)}>
@@ -173,8 +173,8 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                         <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4" />
                           <div>
-                            <div className="font-medium">Home Collection Kit</div>
-                            <div className="text-sm text-muted-foreground">Kit shipped to your address</div>
+                            <div className="font-medium">{t('screens.common.homeCollectionKit')}</div>
+                            <div className="text-sm text-muted-foreground">{t('screens.common.kitShippedYourAddress')}</div>
                           </div>
                         </div>
                       </Label>
@@ -185,8 +185,8 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4" />
                           <div>
-                            <div className="font-medium">Lab Facility Visit</div>
-                            <div className="text-sm text-muted-foreground">Visit a nearby lab location</div>
+                            <div className="font-medium">{t('screens.common.labFacilityVisit')}</div>
+                            <div className="text-sm text-muted-foreground">{t('screens.common.visitNearbyLabLocation')}</div>
                           </div>
                         </div>
                       </Label>
@@ -199,12 +199,12 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
               {collectionMethod === 'home_kit' ? (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Shipping Address</CardTitle>
-                    <CardDescription>Where should we send your collection kit?</CardDescription>
+                    <CardTitle className="text-lg">{t('screens.common.shippingAddress')}</CardTitle>
+                    <CardDescription>{t('screens.common.whereShouldWeSendYourCollection')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="street">Street Address</Label>
+                      <Label htmlFor="street">{t('screens.common.streetAddress')}</Label>
                       <Input
                         id="street"
                         value={shippingAddress.street}
@@ -233,7 +233,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="zipCode">ZIP Code</Label>
+                      <Label htmlFor="zipCode">{t('screens.common.zipCode')}</Label>
                       <Input
                         id="zipCode"
                         value={shippingAddress.zipCode}
@@ -246,12 +246,12 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
               ) : (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Lab Appointment</CardTitle>
-                    <CardDescription>Schedule your lab visit</CardDescription>
+                    <CardTitle className="text-lg">{t('screens.common.labAppointment')}</CardTitle>
+                    <CardDescription>{t('screens.common.scheduleYourLabVisit')}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="date">Preferred Date</Label>
+                      <Label htmlFor="date">{t('screens.common.preferredDate')}</Label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
@@ -276,10 +276,10 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                       </Popover>
                     </div>
                     <div>
-                      <Label htmlFor="facility">Preferred Lab Location</Label>
+                      <Label htmlFor="facility">{t('screens.common.preferredLabLocation')}</Label>
                       <Input
                         id="facility"
-                        placeholder="Enter lab facility address or name"
+                        placeholder={t('screens.common.enterLabFacilityAddressName')}
                         value={facilityAddress}
                         onChange={(e) => setFacilityAddress(e.target.value)}
                         required
@@ -292,12 +292,12 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
               {/* Special Instructions */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Special Instructions</CardTitle>
-                  <CardDescription>Any additional notes or requirements</CardDescription>
+                  <CardTitle className="text-lg">{t('screens.common.specialInstructions')}</CardTitle>
+                  <CardDescription>{t('screens.common.anyAdditionalNotesRequirements')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Textarea
-                    placeholder="Enter any special instructions, medical conditions, or requirements..."
+                    placeholder={t('screens.common.enterAnySpecialInstructionsMedicalConditions')}
                     value={specialInstructions}
                     onChange={(e) => setSpecialInstructions(e.target.value)}
                     rows={3}
@@ -312,7 +312,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                 </Button>
                 <Button type="submit" disabled={isSubmitting} className="flex-1">
                   {isSubmitting ? (
-                    <>Processing...</>
+                    <>{t('screens.common.processing')}</>
                   ) : (
                     <>
                       <CreditCard className="mr-2 h-4 w-4" />

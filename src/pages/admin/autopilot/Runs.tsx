@@ -16,6 +16,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { useAutopilotRuns } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   running: "info",
@@ -57,7 +58,7 @@ export default function AutopilotRuns() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📋"
-          title="Execution Runs"
+          title={t('screens.admin.executionRuns')}
           description={`${runsQuery.data?.total || 0} total runs`}
         />
 
@@ -83,7 +84,7 @@ export default function AutopilotRuns() {
         />
 
         {runsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading runs...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingRuns')}</p>
         )}
 
         {runsQuery.isError && (
@@ -94,7 +95,7 @@ export default function AutopilotRuns() {
 
         {!runsQuery.isLoading && filtered.length === 0 && (
           <AdminEmptyState
-            title="No runs yet"
+            title={t('screens.admin.noRunsYet')}
             description="Execution history will appear once automations start running."
           />
         )}

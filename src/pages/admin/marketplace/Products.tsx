@@ -21,7 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { Search, Loader2, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -157,12 +157,12 @@ export default function MarketplaceProducts() {
 
   return (
     <AppLayout>
-      <SEO title="Products | Marketplace Admin" description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.admin.productsMarketplaceAdmin')} description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={adminMarketplaceCatalogNavigation} />
       <div className="p-6 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-4">
           <StandardHeader
-            title="Products"
+            title={t('screens.admin.products')}
             description="Review queue for products the analyzer flagged. Catalog ingestion is handled by Claude Code scraping — you tune the rules and clear the anomaly queue."
           />
 

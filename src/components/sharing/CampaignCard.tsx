@@ -46,6 +46,7 @@ import { CampaignAnalyticsExpanded } from "./CampaignAnalyticsExpanded";
 import { ShareCampaignModal } from "./ShareCampaignModal";
 import { ActivateCampaignDialog } from "./ActivateCampaignDialog";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -313,7 +314,7 @@ export function CampaignCard({
                   </Badge>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-xs">AI scheduling active</p>
+                  <p className="text-xs">{t('screens.sharing.aiSchedulingActive')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -358,7 +359,7 @@ export function CampaignCard({
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Based on your campaign template</p>
+                <p className="text-xs">{t('screens.sharing.basedYourCampaignTemplate')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -508,7 +509,7 @@ export function CampaignCard({
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">AI-suggested best times</p>
+                <p className="text-xs">{t('screens.sharing.aisuggestedBestTimes')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -553,7 +554,7 @@ export function CampaignCard({
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Total prepared posts</p>
+              <p className="text-xs">{t('screens.sharing.totalPreparedPosts')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -578,7 +579,7 @@ export function CampaignCard({
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Currently active posts</p>
+              <p className="text-xs">{t('screens.sharing.currentlyActivePosts')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -600,7 +601,7 @@ export function CampaignCard({
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Estimated audience reach</p>
+              <p className="text-xs">{t('screens.sharing.estimatedAudienceReach')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -637,7 +638,7 @@ export function CampaignCard({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-xs">Activate Campaign</p>
+                  <p className="text-xs">{t('screens.sharing.activateCampaign')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

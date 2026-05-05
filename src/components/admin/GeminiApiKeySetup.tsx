@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, Copy, ExternalLink, AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function GeminiApiKeySetup() {
   const [apiKey, setApiKey] = useState("");
@@ -51,7 +51,7 @@ export function GeminiApiKeySetup() {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
-        <CardTitle>Gemini Live API Configuration</CardTitle>
+        <CardTitle>{t('screens.admin.geminiLiveApiConfiguration')}</CardTitle>
         <CardDescription>
           Set up your Google Gemini API key for voice conversations
         </CardDescription>
@@ -63,7 +63,7 @@ export function GeminiApiKeySetup() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-semibold">
               1
             </div>
-            <h3 className="font-semibold">Get Your API Key</h3>
+            <h3 className="font-semibold">{t('screens.admin.getYourApiKey')}</h3>
           </div>
           <p className="text-sm text-muted-foreground ml-8">
             Visit Google AI Studio to generate your Gemini API key
@@ -84,13 +84,13 @@ export function GeminiApiKeySetup() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-semibold">
               2
             </div>
-            <h3 className="font-semibold">Test Your API Key</h3>
+            <h3 className="font-semibold">{t('screens.admin.testYourApiKey')}</h3>
           </div>
           <div className="ml-8 space-y-3">
             <div className="flex gap-2">
               <Input
                 type="password"
-                placeholder="Paste your API key here to test..."
+                placeholder={t('screens.admin.pasteYourApiKeyHereTest')}
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 className="flex-1"
@@ -131,7 +131,7 @@ export function GeminiApiKeySetup() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-semibold">
               3
             </div>
-            <h3 className="font-semibold">Add to Supabase Secrets</h3>
+            <h3 className="font-semibold">{t('screens.admin.addSupabaseSecrets')}</h3>
           </div>
           <div className="ml-8 space-y-3">
             <p className="text-sm text-muted-foreground">
@@ -173,7 +173,7 @@ export function GeminiApiKeySetup() {
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-semibold">
               4
             </div>
-            <h3 className="font-semibold">Test the Integration</h3>
+            <h3 className="font-semibold">{t('screens.admin.testIntegration')}</h3>
           </div>
           <p className="text-sm text-muted-foreground ml-8">
             Once you've added the secret, click the "Start Stream" button in the sidebar to test the
@@ -184,7 +184,7 @@ export function GeminiApiKeySetup() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>Important:</strong> Never commit API keys to your code repository. Always use
+            <strong>{t('screens.admin.important')}</strong> Never commit API keys to your code repository. Always use
             environment variables or secure secret management.
           </AlertDescription>
         </Alert>

@@ -21,6 +21,7 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 // Category configuration
 const CATEGORIES = [
@@ -253,7 +254,7 @@ function Timeline() {
             <div className="text-sm text-foreground">{item.userMessage?.content}</div>
           </div>
           <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
-            <div className="text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">AI Assistant</div>
+            <div className="text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">{t('screens.memory.aiAssistant')}</div>
             <div className="text-sm text-foreground">{item.aiMessage?.content}</div>
           </div>
         </div>
@@ -284,7 +285,7 @@ function Timeline() {
   return (
     <AppLayout>
       <SEO 
-        title="Activity Timeline | VITANA" 
+        title={t('screens.memory.activityTimelineVitana')} 
         description="Track your activity history across all system interactions in chronological order." 
       />
       <SubNavigation items={memoryNavigation} />
@@ -292,7 +293,7 @@ function Timeline() {
       <div className="p-6">
         <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
         <StandardHeader 
-          title="Activity Timeline"
+          title={t('screens.memory.activityTimeline')}
           description="Track your activity history across all system interactions"
           emoji="📜"
           className="mb-4 xl:mb-3"
@@ -311,7 +312,7 @@ function Timeline() {
             className="rounded-full"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            title="Refresh timeline"
+            title={t('screens.memory.refreshTimeline')}
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </Button>
@@ -332,7 +333,7 @@ function Timeline() {
           <TabsContent value="all" className="mt-6">
             <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                📜 <strong>Activity History:</strong> A read-only chronological record of your system usage. This data is NOT used by AI for context.
+                📜 <strong>{t('screens.memory.activityHistory')}</strong> A read-only chronological record of your system usage. This data is NOT used by AI for context.
               </p>
             </div>
 
@@ -368,7 +369,7 @@ function Timeline() {
           <TabsContent value="by-category" className="mt-6">
             <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
               <p className="text-sm text-purple-700 dark:text-purple-300">
-                📊 <strong>By Category:</strong> Browse your activity organized by system area. Expand any section to view details.
+                📊 <strong>{t('screens.memory.byCategory')}</strong> Browse your activity organized by system area. Expand any section to view details.
               </p>
             </div>
 

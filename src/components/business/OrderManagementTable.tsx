@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrderManagement, TicketOrder } from "@/hooks/useOrderManagement";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from '@/lib/i18n-toast';
 
 interface OrderManagementTableProps {
   eventId: string;
@@ -80,7 +81,7 @@ export function OrderManagementTable({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
-          placeholder="Search by order #, name, or email..."
+          placeholder={t('screens.business.searchByOrderNameEmail')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
@@ -97,9 +98,9 @@ export function OrderManagementTable({
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold">Order #</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.order')}</TableHead>
                 <TableHead className="font-semibold">Buyer</TableHead>
-                <TableHead className="font-semibold">Ticket Type</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.ticketType')}</TableHead>
                 <TableHead className="font-semibold">Date</TableHead>
                 <TableHead className="font-semibold text-right">Total</TableHead>
                 <TableHead className="font-semibold">Status</TableHead>

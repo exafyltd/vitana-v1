@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { t } from '@/lib/i18n-toast';
 
 interface TimelineMemory {
   id: string;
@@ -125,14 +126,14 @@ export function MemoryEditDialog({
           {/* Source Type (only for new memories) */}
           {!memory && (
             <div className="space-y-2">
-              <Label htmlFor="source">Source Type</Label>
+              <Label htmlFor="source">{t('screens.memory.sourceType')}</Label>
               <Select value={source} onValueChange={(v: "ai" | "diary") => setSource(v)}>
                 <SelectTrigger id="source">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ai">AI Insight</SelectItem>
-                  <SelectItem value="diary">Diary Entry</SelectItem>
+                  <SelectItem value="ai">{t('screens.memory.aiInsight')}</SelectItem>
+                  <SelectItem value="diary">{t('screens.memory.diaryEntry')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -141,7 +142,7 @@ export function MemoryEditDialog({
           {/* Memory Type (for AI insights) */}
           {(source === "ai" || memory?.source === "ai") && !isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="memoryType">Memory Type</Label>
+              <Label htmlFor="memoryType">{t('screens.memory.memoryType')}</Label>
               <Select value={memoryType} onValueChange={setMemoryType}>
                 <SelectTrigger id="memoryType">
                   <SelectValue />
@@ -177,7 +178,7 @@ export function MemoryEditDialog({
           {/* Tags */}
           {!isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="tags">Tags (comma-separated)</Label>
+              <Label htmlFor="tags">{t('screens.memory.tagsCommaseparated')}</Label>
               <Input
                 id="tags"
                 value={tags}

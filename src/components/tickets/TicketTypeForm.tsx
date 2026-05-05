@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Ticket } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export interface TicketTypeInput {
   name: string;
@@ -80,7 +81,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Ticket className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold">Ticket Types</h3>
+          <h3 className="font-semibold">{t('screens.tickets.ticketTypes')}</h3>
         </div>
         <Button type="button" variant="outline" size="sm" onClick={addTicketType}>
           <Plus className="h-4 w-4 mr-1" />
@@ -91,7 +92,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
       {ticketTypes.length === 0 && (
         <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
           <Ticket className="h-10 w-10 mx-auto text-muted-foreground mb-3" />
-          <p className="text-muted-foreground mb-4">No ticket types added yet</p>
+          <p className="text-muted-foreground mb-4">{t('screens.tickets.noTicketTypesAddedYet')}</p>
           <div className="flex flex-wrap gap-2 justify-center">
             {DEFAULT_TICKET_TEMPLATES.map((template) => (
               <Button
@@ -128,7 +129,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <Label className="text-xs">Ticket Name *</Label>
+                <Label className="text-xs">{t('screens.tickets.ticketName')}</Label>
                 <Input
                   value={ticket.name}
                   onChange={(e) => updateTicketType(index, "name", e.target.value)}
@@ -158,8 +159,8 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="USD">$ USD</SelectItem>
-                      <SelectItem value="EUR">€ EUR</SelectItem>
+                      <SelectItem value="USD">{t('screens.tickets.usd')}</SelectItem>
+                      <SelectItem value="EUR">{t('screens.tickets.eur')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -188,7 +189,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                 />
               </div>
               <div>
-                <Label className="text-xs">Sale Start</Label>
+                <Label className="text-xs">{t('screens.tickets.saleStart')}</Label>
                 <Input
                   type="date"
                   value={ticket.saleStartDate}
@@ -197,7 +198,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                 />
               </div>
               <div>
-                <Label className="text-xs">Sale End</Label>
+                <Label className="text-xs">{t('screens.tickets.saleEnd')}</Label>
                 <Input
                   type="date"
                   value={ticket.saleEndDate}
@@ -212,7 +213,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
 
       {ticketTypes.length > 0 && ticketTypes.length < 5 && (
         <div className="flex gap-2 flex-wrap">
-          <span className="text-xs text-muted-foreground self-center">Quick add:</span>
+          <span className="text-xs text-muted-foreground self-center">{t('screens.tickets.quickAdd')}</span>
           {DEFAULT_TICKET_TEMPLATES.filter(
             (t) => !ticketTypes.some((existing) => existing.name === t.name)
           ).map((template) => (

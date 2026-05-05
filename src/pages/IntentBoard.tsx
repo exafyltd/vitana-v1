@@ -15,7 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { getIntentBoard, type BoardResponse, type IntentKind } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const KIND_FILTERS: { value: IntentKind | "all" | "dance"; label: string }[] = [
   { value: "all", label: "All (compass-aware)" },
@@ -83,10 +83,10 @@ export default function IntentBoard() {
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">Community board</h1>
+          <h1 className="text-2xl font-semibold">{t('screens.intentboard.communityBoard')}</h1>
           <p className="text-sm text-muted-foreground">
             What others are looking for. {data?.compass && (
-              <>Surfaced for your <span className="font-medium">{data.compass}</span> focus.</>
+              <>Surfaced for your <span className="font-medium">{data.compass}</span> {t('screens.intentboard.focus')}</>
             )}
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function IntentBoard() {
       />
 
       <p className="text-xs text-muted-foreground text-center">
-        Looking for your own intents? <Link to="/intents/mine" className="underline">View My Intents</Link>
+        Looking for your own intents? <Link to="/intents/mine" className="underline">{t('screens.intentboard.viewMyIntents')}</Link>
       </p>
     </div>
   );

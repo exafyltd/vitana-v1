@@ -55,7 +55,7 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { XIcon } from "@/components/icons/XIcon";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 type SocialPlatform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -348,7 +348,7 @@ export function MobileConnectedAppsView() {
           {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
           {(activeCategory === 'all' || activeCategory === 'ai') && filteredAi.length > 0 && (
             <MobileIntegrationSection
-              title="AI Assistants"
+              title={t('screens.settings.aiAssistants')}
               emoji="✨"
               integrations={filteredAi}
               onSelect={setSelectedApp}

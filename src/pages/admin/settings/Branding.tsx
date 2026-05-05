@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -60,26 +60,26 @@ export default function SettingsBranding() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🎨"
-          title="Branding"
+          title={t('screens.admin.branding')}
           description="Customize colors and logo for your tenant"
         />
 
         {settingsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading branding...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingBranding')}</p>
         )}
 
         {settingsQuery.data && (
           <>
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Brand Colors</CardTitle>
+                <CardTitle className="text-base">{t('screens.admin.brandColors')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <ColorField label="Accent Color" value={accent} onChange={setAccent} />
                 <ColorField label="Background Color" value={bg} onChange={setBg} />
                 <ColorField label="Foreground Color" value={fg} onChange={setFg} />
                 <div>
-                  <label className="text-sm font-medium">Logo URL</label>
+                  <label className="text-sm font-medium">{t('screens.admin.logoUrl')}</label>
                   <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." className="mt-1" />
                 </div>
               </CardContent>

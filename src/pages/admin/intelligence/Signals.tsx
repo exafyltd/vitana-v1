@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -75,10 +76,10 @@ export default function IntelligenceSignals() {
       <AppLayout>
         <SubNavigation items={adminIntelligenceNavigation} />
         <div className="p-6 space-y-6">
-          <AdminHeader title="Predictive Signals" description="D44 predictive intervention signals" />
+          <AdminHeader title={t('screens.admin.predictiveSignals')} description="D44 predictive intervention signals" />
           <div className="rounded-xl border bg-card p-8 text-center">
             <Zap className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Signals Not Active</h3>
+            <h3 className="text-lg font-medium mb-2">{t('screens.admin.signalsNotActive')}</h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               The predictive signals engine has not been activated yet.
               Signals will appear here once the D44 pipeline is enabled.
@@ -93,13 +94,13 @@ export default function IntelligenceSignals() {
     <AppLayout>
       <SubNavigation items={adminIntelligenceNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Predictive Signals" description="D44 predictive intervention signals" />
+        <AdminHeader title={t('screens.admin.predictiveSignals')} description="D44 predictive intervention signals" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Signals" value={total} icon={Zap} loading={isLoading} />
-          <AdminStatsCard title="Critical" value={signals.filter((s: any) => s.severity === "critical").length} icon={AlertTriangle} loading={isLoading} variant="error" />
-          <AdminStatsCard title="High" value={signals.filter((s: any) => s.severity === "high").length} icon={TrendingUp} loading={isLoading} variant="warning" />
-          <AdminStatsCard title="On Page" value={signals.length} icon={Activity} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalSignals')} value={total} icon={Zap} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.critical')} value={signals.filter((s: any) => s.severity === "critical").length} icon={AlertTriangle} loading={isLoading} variant="error" />
+          <AdminStatsCard title={t('screens.admin.high')} value={signals.filter((s: any) => s.severity === "high").length} icon={TrendingUp} loading={isLoading} variant="warning" />
+          <AdminStatsCard title={t('screens.admin.page')} value={signals.length} icon={Activity} loading={isLoading} />
         </div>
 
         <AdminTable

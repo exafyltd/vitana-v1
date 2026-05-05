@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 import { EditMemoryDialog } from "./EditMemoryDialog";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 const QUICK_CATEGORY_OPTIONS = [
   { id: "personal-identity", label: "Personal Identity" },
@@ -147,8 +148,8 @@ export function CategoryDetailDialog({
             </div>
           ) : filteredMemories.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
-              <p>No memories yet in this category.</p>
-              <p className="text-sm mt-2">Click "Add Memory" to get started.</p>
+              <p>{t('screens.memory.noMemoriesYetThisCategory')}</p>
+              <p className="text-sm mt-2">{t('screens.memory.clickAddMemoryGetStarted')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -167,7 +168,7 @@ export function CategoryDetailDialog({
                         </div>
                         {category.id === "general" && (
                           <div className="mt-3 pt-3 border-t">
-                            <p className="text-xs text-muted-foreground mb-2">Quick categorize:</p>
+                            <p className="text-xs text-muted-foreground mb-2">{t('screens.memory.quickCategorize')}</p>
                             <div className="flex flex-wrap gap-1">
                               {QUICK_CATEGORY_OPTIONS.map((cat) => (
                                 <Badge

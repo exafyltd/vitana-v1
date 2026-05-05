@@ -23,6 +23,7 @@ import {
   resolveNotificationRoute,
   type NotificationCategory,
 } from '@/lib/notification-types';
+import { t } from '@/lib/i18n-toast';
 
 type FilterValue = 'all' | 'unread' | NotificationCategory;
 
@@ -142,8 +143,8 @@ export function NotificationsPanel({
               size="icon"
               onClick={markAllAsRead}
               className="h-8 w-8"
-              title="Mark all as read"
-              aria-label="Mark all as read"
+              title={t('screens.notifications.markAllAsRead')}
+              aria-label={t('screens.notifications.markAllAsRead')}
             >
               <Check className="h-4 w-4" />
             </Button>

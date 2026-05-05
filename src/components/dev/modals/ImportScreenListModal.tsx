@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ImportScreenListModalProps {
   open: boolean;
@@ -33,15 +33,15 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Import Screen List</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.importScreenList')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="format">Import Format</Label>
+            <Label htmlFor="format">{t('screens.dev.importFormat')}</Label>
             <Select value={importFormat} onValueChange={setImportFormat}>
               <SelectTrigger id="format">
-                <SelectValue placeholder="Select format" />
+                <SelectValue placeholder={t('screens.dev.selectFormat')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="json">JSON</SelectItem>
@@ -63,16 +63,16 @@ export function ImportScreenListModal({ open, onOpenChange }: ImportScreenListMo
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="file">File Upload</Label>
+            <Label htmlFor="file">{t('screens.dev.fileUpload')}</Label>
             <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
               <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-              <p className="text-xs text-muted-foreground mt-1">JSON, YAML, CSV, XML up to 5MB</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.clickUploadDragDrop')}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.dev.jsonYamlCsvXmlUp5mb')}</p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Import Notes</Label>
+            <Label htmlFor="notes">{t('screens.dev.importNotes')}</Label>
             <Textarea 
               id="notes" 
               value={notes}

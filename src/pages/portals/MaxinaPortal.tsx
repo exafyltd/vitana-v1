@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationButton";
+import { t } from '@/lib/i18n-toast';
 
 const MaxinaPortal = () => {
   const { translate } = useTranslation();
@@ -396,7 +397,7 @@ const MaxinaPortal = () => {
         <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
           {isProcessingOAuth && (
-            <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
+            <p className="text-white/70 text-sm animate-pulse">{t('screens.portals.signingYou')}</p>
           )}
         </div>
       </div>
@@ -412,8 +413,8 @@ const MaxinaPortal = () => {
         )}
         <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
         <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
-          <p className="text-white text-lg font-medium">Something went wrong</p>
-          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
+          <p className="text-white text-lg font-medium">{t('screens.portals.somethingWentWrong')}</p>
+          <p className="text-white/70 text-sm text-center">{t('screens.portals.signinTakingLongerThanExpected')}</p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
             <Button
               onClick={async () => {
@@ -459,7 +460,7 @@ const MaxinaPortal = () => {
     <div className="min-h-screen relative overflow-hidden">
       <WebViewDiagBadge />
       <SEO
-        title="Maxina Health Platform - VITANA"
+        title={t('screens.portals.maxinaHealthPlatformVitana')}
         description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey."
         canonical={window.location.href}
       />
@@ -517,7 +518,7 @@ const MaxinaPortal = () => {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="you@example.com"
+                          placeholder={t('screens.portals.youExampleCom')}
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           onFocus={ensureSoundscapePlaying}
@@ -644,7 +645,7 @@ const MaxinaPortal = () => {
                     <div className="mx-auto w-14 h-14 rounded-full bg-[#FF7BAC]/10 flex items-center justify-center">
                       <MailCheck className="h-7 w-7 text-[#FF7BAC]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground">Check your email</h3>
+                    <h3 className="text-lg font-semibold text-foreground">{t('screens.portals.checkYourEmail')}</h3>
                     <p className="text-sm text-muted-foreground">
                       We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
                     </p>
@@ -694,7 +695,7 @@ const MaxinaPortal = () => {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="you@example.com"
+                        placeholder={t('screens.portals.youExampleCom')}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required

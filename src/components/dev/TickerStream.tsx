@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface TickerEvent {
   ts: string;
@@ -190,7 +191,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
       >
         {events.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-xs text-muted-foreground">No events yet...</p>
+            <p className="text-xs text-muted-foreground">{t('screens.dev.noEventsYet')}</p>
           </div>
         ) : (
           <div className="inline-flex items-center gap-3">

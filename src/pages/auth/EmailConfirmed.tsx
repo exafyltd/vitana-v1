@@ -6,6 +6,7 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 import { useEmailConfirmation } from "@/hooks/useEmailConfirmation";
 import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
+import { t } from '@/lib/i18n-toast';
 
 export default function EmailConfirmed() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function EmailConfirmed() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-destructive">Confirmation Error</CardTitle>
+            <CardTitle className="text-destructive">{t('screens.auth.confirmationError')}</CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
@@ -56,7 +57,7 @@ export default function EmailConfirmed() {
   return (
     <>
       <SEO 
-        title="Email Confirmed - VITANA Health Platform"
+        title={t('screens.auth.emailConfirmedVitanaHealthPlatform')}
         description="Your email has been successfully confirmed. Welcome to VITANA!"
       />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">

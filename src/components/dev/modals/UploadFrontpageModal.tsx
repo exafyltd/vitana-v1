@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface UploadFrontpageModalProps {
   open: boolean;
@@ -33,7 +33,7 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Upload Frontpage</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.uploadFrontpage')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
@@ -41,7 +41,7 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
             <Label htmlFor="portal">Portal</Label>
             <Select value={portal} onValueChange={setPortal}>
               <SelectTrigger id="portal">
-                <SelectValue placeholder="Select portal" />
+                <SelectValue placeholder={t('screens.dev.selectPortal')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="maxina">Maxina</SelectItem>
@@ -63,11 +63,11 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="file">Frontpage Document</Label>
+            <Label htmlFor="file">{t('screens.dev.frontpageDocument')}</Label>
             <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
               <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-              <p className="text-xs text-muted-foreground mt-1">PDF, Figma file, or design spec</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.clickUploadDragDrop')}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.dev.pdfFigmaFileDesignSpec')}</p>
             </div>
           </div>
 

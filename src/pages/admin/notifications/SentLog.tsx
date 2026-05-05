@@ -15,6 +15,7 @@ import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { adminNotificationsNavigation } from "@/config/navigation";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
+import { t } from '@/lib/i18n-toast';
 
 const TYPE_FILTER_OPTIONS = [
   { value: "all", label: "All Types" },
@@ -122,21 +123,21 @@ export default function SentLog() {
       <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Sent Notifications"
+          title={t('screens.admin.sentNotifications')}
           description="View delivery history and engagement for all notifications"
         />
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <AdminStatsCard
-            title="Total Sent"
+            title={t('screens.admin.totalSent')}
             value={total}
             subtitle={`Last ${days} days`}
             icon={Send}
             loading={isLoading}
           />
           <AdminStatsCard
-            title="Read"
+            title={t('screens.admin.read')}
             value={readCount}
             subtitle={`of ${notifications.length} on this page`}
             icon={Eye}
@@ -144,7 +145,7 @@ export default function SentLog() {
             variant="success"
           />
           <AdminStatsCard
-            title="Unread"
+            title={t('screens.admin.unread')}
             value={notifications.length - readCount}
             subtitle="On this page"
             icon={Bell}
@@ -152,7 +153,7 @@ export default function SentLog() {
             variant={notifications.length - readCount > 10 ? "warning" : "default"}
           />
           <AdminStatsCard
-            title="Read Rate"
+            title={t('screens.admin.readRate')}
             value={notifications.length ? `${Math.round((readCount / notifications.length) * 100)}%` : "N/A"}
             subtitle="This page"
             icon={Clock}
@@ -164,7 +165,7 @@ export default function SentLog() {
         <div className="flex items-center gap-3">
           <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(0); }}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by type" />
+              <SelectValue placeholder={t('screens.admin.filterByType2')} />
             </SelectTrigger>
             <SelectContent>
               {TYPE_FILTER_OPTIONS.map((o) => (

@@ -9,6 +9,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -107,7 +108,7 @@ export default function AdminDashboard() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Admin Dashboard"
+            title={t('screens.admin.adminDashboard')}
             description="Real-time system management and oversight center"
             emoji="📊"
           />
@@ -115,14 +116,14 @@ export default function AdminDashboard() {
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AdminStatsCard
-              title="Total Users"
+              title={t('screens.admin.totalUsers')}
               value={totalUsers ?? 0}
               subtitle="All registered users"
               icon={Users}
               loading={loadingUsers}
             />
             <AdminStatsCard
-              title="New This Week"
+              title={t('screens.admin.newThisWeek')}
               value={newThisWeek ?? 0}
               subtitle="Joined in the last 7 days"
               icon={TrendingUp}
@@ -130,7 +131,7 @@ export default function AdminDashboard() {
               variant="success"
             />
             <AdminStatsCard
-              title="Pending Signups"
+              title={t('screens.admin.pendingSignups')}
               value={pendingSignups ?? 0}
               subtitle="Status: started"
               icon={UserPlus}
@@ -138,7 +139,7 @@ export default function AdminDashboard() {
               variant="warning"
             />
             <AdminStatsCard
-              title="Active Notifications"
+              title={t('screens.admin.activeNotifications')}
               value={activeNotifications ?? 0}
               subtitle="Unread notifications"
               icon={Bell}
@@ -149,7 +150,7 @@ export default function AdminDashboard() {
 
           {/* Quick Access */}
           <div>
-            <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('screens.admin.quickAccess')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {quickAccessCards.map((card) => (
                 <Card
@@ -181,13 +182,13 @@ export default function AdminDashboard() {
             <AdminActivityFeed />
             <Card>
               <CardHeader>
-                <CardTitle>OASIS Events</CardTitle>
-                <CardDescription>Recent system state transitions</CardDescription>
+                <CardTitle>{t('screens.admin.oasisEvents')}</CardTitle>
+                <CardDescription>{t('screens.admin.recentSystemStateTransitions')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col items-center justify-center h-[360px] text-muted-foreground">
                   <TrendingUp className="h-12 w-12 mb-4 opacity-30" />
-                  <p className="text-sm">Recent OASIS events will appear here</p>
+                  <p className="text-sm">{t('screens.admin.recentOasisEventsWillAppearHere')}</p>
                   <p className="text-xs mt-1">
                     View the full log in{" "}
                     <button

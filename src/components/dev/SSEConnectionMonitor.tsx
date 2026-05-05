@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { t } from '@/lib/i18n-toast';
 
 export function SSEConnectionMonitor() {
   const [activeCount, setActiveCount] = useState(0);
@@ -115,7 +116,7 @@ export function SSEConnectionMonitor() {
         ) : (
           <div className="text-center py-8 text-muted-foreground">
             <Activity className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No active SSE connections</p>
+            <p>{t('screens.dev.noActiveSseConnections')}</p>
           </div>
         )}
       </CardContent>

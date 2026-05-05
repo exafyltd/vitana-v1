@@ -44,6 +44,7 @@ import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
+import { t } from '@/lib/i18n-toast';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -237,7 +238,7 @@ function AppSidebar({
               {/* Calendar Button - Today's Overview */}
               <div
                 className="relative shrink-0 transition-all duration-200"
-                title="Calendar & Events - Today's overview"
+                title={t('screens.common.calendarEventsTodaySOverview')}
               >
                 <UniversalCalendarButton
                   variant="ghost" 

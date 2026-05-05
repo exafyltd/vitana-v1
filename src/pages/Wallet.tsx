@@ -46,6 +46,7 @@ import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWa
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
+import { t } from '@/lib/i18n-toast';
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -460,13 +461,13 @@ export default function Wallet() {
   // Desktop Layout (unchanged)
   return (
     <AppLayout>
-      <SEO title="Vitana Wallet | VITANA" description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
+      <SEO title={t('screens.wallet.vitanaWalletVitana')} description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader
-          title="Vitana Wallet"
+          title={t('screens.wallet.vitanaWallet')}
           description="Your digital bank account for health rewards and benefits"
           emoji="🏦"
         />
@@ -474,7 +475,7 @@ export default function Wallet() {
         {/* Utility Action Button */}
         <UtilityActionButton>
           <ExpandableSearchButton 
-            placeholder="Search transactions, rewards, or benefits..."
+            placeholder={t('screens.wallet.searchTransactionsRewardsBenefits')}
             onSearch={(query) => console.log('Search:', query)}
           />
           <UniversalCalendarButton />
@@ -487,9 +488,9 @@ export default function Wallet() {
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="balance-overview">💰 Balance Overview</SplitBarTrigger>
-            <SplitBarTrigger value="recent-activity">📊 Recent Activity</SplitBarTrigger>
-            <SplitBarTrigger value="quick-actions">⚡ Smart Actions</SplitBarTrigger>
+            <SplitBarTrigger value="balance-overview">{t('screens.wallet.balanceOverview')}</SplitBarTrigger>
+            <SplitBarTrigger value="recent-activity">{t('screens.wallet.recentActivity2')}</SplitBarTrigger>
+            <SplitBarTrigger value="quick-actions">{t('screens.wallet.smartActions')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="balance-overview">
@@ -500,7 +501,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="tokens"
-                    title="VTNA Tokens"
+                    title={t('screens.wallet.vtnaTokens')}
                     balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
                     subBalance="Staked: 25%"
                     change="+5.7%"
@@ -542,7 +543,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="cash"
-                    title="USD Balance"
+                    title={t('screens.wallet.usdBalance')}
                     balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+2.3%"
@@ -584,7 +585,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="credits"
-                    title="Credits Balance"
+                    title={t('screens.wallet.creditsBalance')}
                     balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"

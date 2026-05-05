@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, ArrowRight, MapPin, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface RecommendationItem {
   id: string;
@@ -168,8 +169,8 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
           
           {displayItems.length === 0 && (
             <div className="text-center py-6 text-muted-foreground">
-              <p className="text-sm">No recommendations available right now.</p>
-              <p className="text-xs mt-1">Check back later for personalized suggestions!</p>
+              <p className="text-sm">{t('screens.templates.noRecommendationsAvailableRightNow')}</p>
+              <p className="text-xs mt-1">{t('screens.templates.checkBackLaterForPersonalizedSuggestions')}</p>
             </div>
           )}
           

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Pause, Play, ChevronDown, ChevronRight } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from "date-fns";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface FeedEvent {
   ts: string;
@@ -264,7 +264,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
         <div className="flex flex-col gap-2 px-3 py-2 border-b bg-card">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-sm tracking-wide">Live Console</h3>
+            <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.liveConsole')}</h3>
             {hasUnread && !isFocused && (
               <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
                 •
@@ -348,7 +348,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
         <div className="flex-1 overflow-auto feed-container" ref={scrollRef}>
           {shownItems.length === 0 ? (
             <div className="flex items-center justify-center h-24">
-              <p className="text-xs text-muted-foreground">No events yet...</p>
+              <p className="text-xs text-muted-foreground">{t('screens.dev.noEventsYet')}</p>
             </div>
           ) : (
             <div className="divide-y divide-border">

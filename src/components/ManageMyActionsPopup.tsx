@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Plus, Star, CheckCircle, Edit, X, Zap } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 interface ManageMyActionsPopupProps {
   open: boolean;
@@ -183,13 +184,13 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
             {/* New Action Tab */}
             <TabsContent value="new" className="space-y-4 mt-4">
-              <h3 className="text-lg font-medium">Add New Action</h3>
+              <h3 className="text-lg font-medium">{t('screens.common.addNewAction')}</h3>
               
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Action Title</label>
+                  <label className="text-sm font-medium mb-2 block">{t('screens.common.actionTitle')}</label>
                   <Input 
-                    placeholder="e.g., Evening Walk, Call Doctor"
+                    placeholder={t('screens.common.eGEveningWalkCallDoctor')}
                     value={newActionTitle}
                     onChange={(e) => setNewActionTitle(e.target.value)}
                   />
@@ -234,17 +235,17 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="time-based">Time-based</SelectItem>
-                      <SelectItem value="context-based">Context-based</SelectItem>
+                      <SelectItem value="time-based">{t('screens.common.timebased')}</SelectItem>
+                      <SelectItem value="context-based">{t('screens.common.contextbased')}</SelectItem>
                       <SelectItem value="manual">Manual</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Optional Notes</label>
+                  <label className="text-sm font-medium mb-2 block">{t('screens.common.optionalNotes')}</label>
                   <Textarea 
-                    placeholder="Additional details or context..."
+                    placeholder={t('screens.common.additionalDetailsContext')}
                     value={newActionNotes}
                     onChange={(e) => setNewActionNotes(e.target.value)}
                   />
@@ -259,7 +260,7 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
             {/* Prioritize Tab */}
             <TabsContent value="prioritize" className="space-y-4 mt-4">
-              <h3 className="text-lg font-medium">Prioritize Actions</h3>
+              <h3 className="text-lg font-medium">{t('screens.common.prioritizeActions')}</h3>
               
               <div className="space-y-3">
                 {prioritizedActions.map((action, index) => (
@@ -291,7 +292,7 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
               <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
                 <div className="flex items-center gap-2 text-blue-700">
                   <Zap className="w-4 h-4" />
-                  <span className="text-sm font-medium">Autopilot Suggestion</span>
+                  <span className="text-sm font-medium">{t('screens.common.autopilotSuggestion')}</span>
                 </div>
                 <p className="text-sm text-blue-600 mt-1">
                   Recommended order based on your current context and energy levels.

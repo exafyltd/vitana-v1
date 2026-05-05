@@ -8,6 +8,7 @@ import { useVitanaIndex, pillarLabel, weakestPillar, type VitanaPillarKey } from
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import type { AutopilotAction } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
@@ -101,7 +102,7 @@ export default function NextBestActionCard({ weakestPillar: override }: NextBest
           <div className="flex items-center gap-3">
             <div className="text-4xl">{focus.icon}</div>
             <div className="flex-1">
-              <div className="text-sm font-medium text-muted-foreground">Weakest pillar</div>
+              <div className="text-sm font-medium text-muted-foreground">{t('screens.health.weakestPillar')}</div>
               <div className="text-lg font-bold text-foreground">{focus.name}</div>
             </div>
             <div className="text-right">

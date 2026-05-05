@@ -15,6 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from "react";
 import { communityNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Challenges() {
   const [activeTab, setActiveTab] = useState("active");
@@ -25,12 +26,12 @@ export default function Challenges() {
 
   return (
     <AppLayout>
-      <SEO title="Challenges | Community" description="Participate in wellness challenges" canonical={window.location.href} />
+      <SEO title={t('screens.community.challengesCommunity')} description="Participate in wellness challenges" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
-            title="Challenge yourself, achieve greatness!"
+            title={t('screens.community.challengeYourselfAchieveGreatness')}
             description="Join community wellness challenges and compete with others to achieve your goals."
             emoji="🏆"
           />
@@ -69,32 +70,32 @@ export default function Challenges() {
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
-              <SplitBarTrigger value="active">🔥 Active</SplitBarTrigger>
-              <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
-              <SplitBarTrigger value="completed">✅ Completed</SplitBarTrigger>
+              <SplitBarTrigger value="active">{t('screens.community.active')}</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">{t('screens.community.upcoming')}</SplitBarTrigger>
+              <SplitBarTrigger value="completed">{t('screens.community.completed')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="active">
               <div className="text-center py-12">
                 <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No active challenges</h3>
-                <p className="text-muted-foreground">Join a challenge to start your wellness journey!</p>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.community.noActiveChallenges')}</h3>
+                <p className="text-muted-foreground">{t('screens.community.joinChallengeStartYourWellnessJourney')}</p>
               </div>
             </SplitBarContent>
 
             <SplitBarContent value="upcoming">
               <div className="text-center py-12">
                 <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">Upcoming challenges</h3>
-                <p className="text-muted-foreground">New challenges will appear here soon.</p>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.community.upcomingChallenges')}</h3>
+                <p className="text-muted-foreground">{t('screens.community.newChallengesWillAppearHereSoon')}</p>
               </div>
             </SplitBarContent>
 
             <SplitBarContent value="completed">
               <div className="text-center py-12">
                 <Trophy className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No completed challenges</h3>
-                <p className="text-muted-foreground">Complete challenges to see your achievements here.</p>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.community.noCompletedChallenges')}</h3>
+                <p className="text-muted-foreground">{t('screens.community.completeChallengesSeeYourAchievementsHere')}</p>
               </div>
             </SplitBarContent>
           </SplitBar>

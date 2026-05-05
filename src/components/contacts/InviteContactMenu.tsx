@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Send, Mail, MessageSquare, Share2 } from "lucide-react";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 interface InviteContactMenuProps {
   contact: Contact;
@@ -43,7 +44,7 @@ export default function InviteContactMenu({ contact, onInvite }: InviteContactMe
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Send Invite Via</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('screens.contacts.sendInviteVia')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         
         {contact.contact_phone && (

@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, ExternalLink } from "lucide-react";
 import { CHANNEL_INFO } from "@/lib/campaign-templates";
-import { notifyError, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface InlineChannelConnectorProps {
   open: boolean;
@@ -188,7 +188,7 @@ export function InlineChannelConnector({
           {/* Social Media URL Input */}
           {isSocialMedia && (
             <div>
-              <Label htmlFor="url">Profile URL</Label>
+              <Label htmlFor="url">{t('screens.sharing.profileUrl')}</Label>
               <Input
                 id="url"
                 type="url"
@@ -207,11 +207,11 @@ export function InlineChannelConnector({
           {channelKey === 'email' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="sender-name">Sender Name</Label>
+                <Label htmlFor="sender-name">{t('screens.sharing.senderName')}</Label>
                 <Input
                   id="sender-name"
                   type="text"
-                  placeholder="Your Name or Business"
+                  placeholder={t('screens.sharing.yourNameBusiness')}
                   value={formData.senderName}
                   onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
                   className="mt-1"
@@ -222,11 +222,11 @@ export function InlineChannelConnector({
               </div>
               
               <div>
-                <Label htmlFor="email">Sender Email Address</Label>
+                <Label htmlFor="email">{t('screens.sharing.senderEmailAddress')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="hello@yourdomain.com"
+                  placeholder={t('screens.sharing.helloYourdomainCom')}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="mt-1"
@@ -238,7 +238,7 @@ export function InlineChannelConnector({
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">Domain Verification</p>
+                  <p className="font-medium">{t('screens.sharing.domainVerification')}</p>
                   <p className="text-xs text-muted-foreground">
                     Verify your domain in Resend to send emails
                   </p>
@@ -271,11 +271,11 @@ export function InlineChannelConnector({
           {channelKey === 'sms' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="twilio-sid">Twilio Account SID</Label>
+                <Label htmlFor="twilio-sid">{t('screens.sharing.twilioAccountSid')}</Label>
                 <Input
                   id="twilio-sid"
                   type="text"
-                  placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  placeholder={t('screens.sharing.acxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')}
                   value={formData.twilioAccountSid}
                   onChange={(e) => setFormData({ ...formData, twilioAccountSid: e.target.value })}
                   className="mt-1"
@@ -283,11 +283,11 @@ export function InlineChannelConnector({
               </div>
 
               <div>
-                <Label htmlFor="twilio-token">Twilio Auth Token</Label>
+                <Label htmlFor="twilio-token">{t('screens.sharing.twilioAuthToken')}</Label>
                 <Input
                   id="twilio-token"
                   type="password"
-                  placeholder="Your Auth Token"
+                  placeholder={t('screens.sharing.yourAuthToken')}
                   value={formData.twilioAuthToken}
                   onChange={(e) => setFormData({ ...formData, twilioAuthToken: e.target.value })}
                   className="mt-1"
@@ -295,7 +295,7 @@ export function InlineChannelConnector({
               </div>
 
               <div>
-                <Label htmlFor="twilio-from">From Phone Number</Label>
+                <Label htmlFor="twilio-from">{t('screens.sharing.fromPhoneNumber')}</Label>
                 <Input
                   id="twilio-from"
                   type="tel"
@@ -311,7 +311,7 @@ export function InlineChannelConnector({
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">Twilio Setup</p>
+                  <p className="font-medium">{t('screens.sharing.twilioSetup')}</p>
                   <p className="text-xs text-muted-foreground">
                     Get your credentials from Twilio Console
                   </p>
@@ -344,11 +344,11 @@ export function InlineChannelConnector({
           {channelKey === 'whatsapp' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="meta-token">Meta Business API Token</Label>
+                <Label htmlFor="meta-token">{t('screens.sharing.metaBusinessApiToken')}</Label>
                 <Input
                   id="meta-token"
                   type="password"
-                  placeholder="Your Business API Token"
+                  placeholder={t('screens.sharing.yourBusinessApiToken')}
                   value={formData.metaApiToken}
                   onChange={(e) => setFormData({ ...formData, metaApiToken: e.target.value })}
                   className="mt-1"
@@ -359,7 +359,7 @@ export function InlineChannelConnector({
               </div>
 
               <div>
-                <Label htmlFor="phone-id">Phone Number ID</Label>
+                <Label htmlFor="phone-id">{t('screens.sharing.phoneNumberId')}</Label>
                 <Input
                   id="phone-id"
                   type="text"
@@ -375,7 +375,7 @@ export function InlineChannelConnector({
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">WhatsApp Business Setup</p>
+                  <p className="font-medium">{t('screens.sharing.whatsappBusinessSetup')}</p>
                   <p className="text-xs text-muted-foreground">
                     Configure in Meta Business Suite
                   </p>

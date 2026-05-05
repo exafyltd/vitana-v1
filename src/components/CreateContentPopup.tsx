@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Image, Video, FileText, X, Upload } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CreateContentPopupProps {
   isOpen: boolean;
@@ -80,11 +80,11 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
           <TabsContent value="post" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Share Your Thoughts</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.shareYourThoughts')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="content">What's on your mind?</Label>
+                  <Label htmlFor="content">{t('screens.common.whatSYourMind')}</Label>
                   <Textarea
                     id="content"
                     value={formData.content}
@@ -99,14 +99,14 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                     <Label htmlFor="category">Category</Label>
                     <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                       <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={t('screens.common.selectCategory')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="general">General</SelectItem>
                         <SelectItem value="fitness">Fitness</SelectItem>
                         <SelectItem value="nutrition">Nutrition</SelectItem>
-                        <SelectItem value="mental-health">Mental Health</SelectItem>
-                        <SelectItem value="progress">Progress Update</SelectItem>
+                        <SelectItem value="mental-health">{t('screens.common.mentalHealth')}</SelectItem>
+                        <SelectItem value="progress">{t('screens.common.progressUpdate')}</SelectItem>
                         <SelectItem value="question">Question</SelectItem>
                       </SelectContent>
                     </Select>
@@ -120,8 +120,8 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="public">Public</SelectItem>
-                        <SelectItem value="friends">Friends Only</SelectItem>
-                        <SelectItem value="groups">Groups Only</SelectItem>
+                        <SelectItem value="friends">{t('screens.common.friendsOnly')}</SelectItem>
+                        <SelectItem value="groups">{t('screens.common.groupsOnly')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -150,11 +150,11 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
           <TabsContent value="article" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Write an Article</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.writeArticle')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="title">Article Title *</Label>
+                  <Label htmlFor="title">{t('screens.common.articleTitle')}</Label>
                   <Input
                     id="title"
                     value={formData.title}
@@ -179,13 +179,13 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
                   <Label htmlFor="category">Category</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t('screens.common.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="wellness-tips">Wellness Tips</SelectItem>
-                      <SelectItem value="personal-story">Personal Story</SelectItem>
-                      <SelectItem value="how-to">How-To Guide</SelectItem>
-                      <SelectItem value="research">Research & Studies</SelectItem>
+                      <SelectItem value="wellness-tips">{t('screens.common.wellnessTips')}</SelectItem>
+                      <SelectItem value="personal-story">{t('screens.common.personalStory')}</SelectItem>
+                      <SelectItem value="how-to">{t('screens.common.howtoGuide')}</SelectItem>
+                      <SelectItem value="research">{t('screens.common.researchStudies')}</SelectItem>
                       <SelectItem value="recipes">Recipes</SelectItem>
                       <SelectItem value="workouts">Workouts</SelectItem>
                     </SelectContent>
@@ -198,13 +198,13 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
           <TabsContent value="media" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Share Media</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.shareMedia')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                   <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-lg font-medium mb-2">Upload Media</p>
-                  <p className="text-muted-foreground mb-4">Drag and drop or click to select files</p>
+                  <p className="text-lg font-medium mb-2">{t('screens.common.uploadMedia')}</p>
+                  <p className="text-muted-foreground mb-4">{t('screens.common.dragDropClickSelectFiles')}</p>
                   <Button variant="outline">
                     Choose Files
                   </Button>

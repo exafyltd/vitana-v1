@@ -9,6 +9,7 @@ import { ExternalLink, Clock, Activity, ChevronDown } from "lucide-react";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface CommandChatProps {
   isFocused?: boolean;
@@ -123,7 +124,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b bg-card">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm tracking-wide">COMMAND CHAT</h3>
+          <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.commandChat')}</h3>
           {hasUnread && !isFocused && (
             <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
               •

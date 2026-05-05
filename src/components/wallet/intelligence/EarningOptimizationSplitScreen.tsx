@@ -8,6 +8,7 @@ import { TrendingUp, Zap, Brain, Target, Calendar, DollarSign } from "lucide-rea
 import { SmartEarningsForecastCard } from "./SmartEarningsForecastCard";
 import { IntelligentSpendingCard } from "./IntelligentSpendingCard";
 import { DynamicRewardOpportunityCard } from "./DynamicRewardOpportunityCard";
+import { t } from '@/lib/i18n-toast';
 
 interface OptimizationStrategy {
   id: string;
@@ -103,7 +104,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           {/* Strategy Implementation Progress */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Strategy Implementation</span>
+              <span className="text-sm font-medium">{t('screens.wallet.strategyImplementation')}</span>
               <span className="text-sm text-muted-foreground">
                 {implementedStrategies}/{mockStrategies.length} complete
               </span>
@@ -170,7 +171,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-primary">{totalImpact}</div>
-              <div className="text-xs text-muted-foreground">VTN Potential</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnPotential')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-emerald-600">{implementedStrategies}</div>

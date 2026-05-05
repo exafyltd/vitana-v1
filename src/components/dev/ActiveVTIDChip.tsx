@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from '@/hooks/use-toast';
-import { notify } from '@/lib/i18n-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ActiveVTIDChipProps {
   showClear?: boolean;
@@ -33,7 +33,7 @@ export function ActiveVTIDChip({ showClear = true, className = "" }: ActiveVTIDC
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" className={className}>
-            <span className="text-muted-foreground">No VTID Selected</span>
+            <span className="text-muted-foreground">{t('screens.dev.noVtidSelected')}</span>
             <ChevronDown className="ml-2 h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>

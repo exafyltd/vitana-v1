@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
 import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletIntegratedPaymentRequestProps {
   isOpen: boolean;
@@ -112,7 +113,7 @@ export default function WalletIntegratedPaymentRequest({
                 <p className="font-medium text-sm">
                   {effectiveRecipient.name}
                 </p>
-                <p className="text-xs text-muted-foreground">Will receive your request</p>
+                <p className="text-xs text-muted-foreground">{t('screens.payment.willReceiveYourRequest')}</p>
               </div>
             </div>
           )}
@@ -121,7 +122,7 @@ export default function WalletIntegratedPaymentRequest({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Current Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourCurrentBalance')}</span>
                 <div className="flex items-center gap-3">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
@@ -171,7 +172,7 @@ export default function WalletIntegratedPaymentRequest({
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -180,7 +181,7 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Due Date (Optional) */}
           <div>
-            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Label htmlFor="dueDate">{t('screens.payment.dueDateOptional')}</Label>
             <Input
               id="dueDate"
               type="date"

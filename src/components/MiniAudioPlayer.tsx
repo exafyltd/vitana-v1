@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAudioPlayer, updateAudioTime, updateAudioDuration, globalState, notifyListeners } from '@/hooks/useAudioPlayer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@/lib/i18n-toast';
 
 export function MiniAudioPlayer() {
   const {
@@ -107,7 +108,7 @@ export function MiniAudioPlayer() {
         {/* Expanded drawer */}
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerContent className="pb-safe">
-            <DrawerTitle className="sr-only">Audio Player</DrawerTitle>
+            <DrawerTitle className="sr-only">{t('screens.common.audioPlayer')}</DrawerTitle>
             <div className="px-6 pt-2 pb-6 space-y-6">
               {/* Cover art + info */}
               <div className="flex flex-col items-center text-center gap-3">

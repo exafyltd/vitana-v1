@@ -23,7 +23,7 @@ import { TicketActionDrawer } from "./TicketActionDrawer";
 // the global Gate A phrase lists + a test sandbox.
 import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
 import { Switch } from "@/components/ui/switch";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -213,10 +213,10 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
   };
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   }
   if (error) {
-    return <p className="text-sm text-destructive">Failed to load tickets.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.failedLoadTickets')}</p>;
   }
   if (tickets.length === 0) {
     return (
@@ -565,9 +565,9 @@ export default function AdminFeedback() {
 
   return (
     <AppLayout>
-      <SEO title="Feedback — Admin" description="Tenant feedback tickets and the AI specialist team" />
+      <SEO title={t('screens.admin.feedbackAdmin')} description="Tenant feedback tickets and the AI specialist team" />
       <StandardHeader
-        title="Feedback"
+        title={t('screens.admin.feedback')}
         description="Tickets your members submitted to Vitana. AI specialists handle them — humans approve before any action applies."
       />
 
@@ -660,11 +660,11 @@ export default function AdminFeedback() {
         {activeTab === "specialists" && (
           <>
             <p className="text-sm text-muted-foreground">
-              <strong>Vitana is your members' life companion.</strong> Almost every conversation stays with her. The
+              <strong>{t('screens.admin.vitanaYourMembersLifeCompanion')}</strong> Almost every conversation stays with her. The
               colleagues below take over only when a member explicitly asks to be connected for a corporate /
               organizational issue (bug, refund, account, support escalation). Click any card to customize.
             </p>
-            {personasQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+            {personasQuery.isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>}
             <div className="grid gap-3 sm:grid-cols-2">
               {sortedPersonasWithVitanaFirst(personasQuery.data ?? []).map(p => {
                 const isVitana = p.key === "vitana";

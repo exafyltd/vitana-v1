@@ -24,7 +24,7 @@ import type { Campaign } from "@/hooks/useCampaigns";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCampaignAnalytics } from "@/hooks/useCampaignAnalytics";
-import { notifySuccess } from '@/lib/i18n-toast';
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CampaignAnalyticsExpandedProps {
   campaign: Campaign;
@@ -271,7 +271,7 @@ export function CampaignAnalyticsExpanded({
             <Card className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Click Rate</p>
+                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.clickRate')}</p>
                   <p className="text-2xl font-bold text-purple-700">
                     {displayData.ctr.toFixed(1)}%
                   </p>
@@ -286,7 +286,7 @@ export function CampaignAnalyticsExpanded({
             <Card className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Clicks</p>
+                  <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.totalClicks')}</p>
                   <p className="text-2xl font-bold text-green-700">
                     {displayData.conversions}
                   </p>

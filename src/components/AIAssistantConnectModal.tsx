@@ -25,6 +25,7 @@ import {
   useVerifyAIProvider,
   type AIProviderId,
 } from "@/hooks/useAIAssistants";
+import { t } from '@/lib/i18n-toast';
 
 const PROVIDER_META: Record<
   AIProviderId,
@@ -147,7 +148,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="ai-key-input">API key</Label>
+            <Label htmlFor="ai-key-input">{t('screens.common.apiKey')}</Label>
             <Input
               id="ai-key-input"
               type="password"
@@ -169,7 +170,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Shield className="h-3 w-3" />
-            <span>Encrypted in transit (TLS) and at rest (AES-256-GCM).</span>
+            <span>{t('screens.common.encryptedTransitTlsAtRestAes256gcm')}</span>
           </div>
 
           <div className="flex gap-2">

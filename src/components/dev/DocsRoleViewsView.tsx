@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function DocsRoleViewsView() {
   const roleViews = [
@@ -27,7 +28,7 @@ export function DocsRoleViewsView() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                <span className="font-medium">Permissions:</span> {roleView.permissions}
+                <span className="font-medium">{t('screens.dev.permissions')}</span> {roleView.permissions}
               </p>
             </CardContent>
           </Card>

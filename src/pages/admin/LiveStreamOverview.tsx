@@ -8,6 +8,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminLiveStreamNavigation } from "@/config/navigation";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
+import { t } from '@/lib/i18n-toast';
 
 export default function LiveStreamOverview() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function LiveStreamOverview() {
   return (
     <AppLayout>
       <SEO 
-        title="Live & Stream | Admin | VITANA" 
+        title={t('screens.admin.liveStreamAdminVitana')} 
         description="Manage Vertex AI streaming, community live rooms, and telemedicine sessions" 
         canonical={window.location.href} 
       />
@@ -24,7 +25,7 @@ export default function LiveStreamOverview() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Live & Stream Management"
+            title={t('screens.admin.liveStreamManagement')}
             description="Manage Vertex AI streaming, community live rooms, and telemedicine sessions"
             emoji="📡"
           />
@@ -32,14 +33,14 @@ export default function LiveStreamOverview() {
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AdminStatsCard
-              title="Active Vertex Sessions"
+              title={t('screens.admin.activeVertexSessions')}
               value={0}
               subtitle="Connected streams"
               icon={Radio}
             />
 
             <AdminStatsCard
-              title="Live Community Rooms"
+              title={t('screens.admin.liveCommunityRooms')}
               value={0}
               subtitle="Total viewers: 0"
               icon={Users}
@@ -47,14 +48,14 @@ export default function LiveStreamOverview() {
             />
 
             <AdminStatsCard
-              title="Scheduled Sessions"
+              title={t('screens.admin.scheduledSessions')}
               value={0}
               subtitle="Next in: --"
               icon={Calendar}
             />
 
             <AdminStatsCard
-              title="Total Stream Time Today"
+              title={t('screens.admin.totalStreamTimeToday')}
               value="0h"
               subtitle="vs yesterday: 0h"
               icon={Clock}
@@ -63,7 +64,7 @@ export default function LiveStreamOverview() {
 
           {/* Quick Actions */}
           <div>
-            <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('screens.admin.quickActions')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card 
                 className="hover:shadow-lg transition-shadow cursor-pointer border-2 border-transparent hover:border-primary/20" 
@@ -75,8 +76,8 @@ export default function LiveStreamOverview() {
                       <TestTube className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">Test Vertex AI</CardTitle>
-                      <CardDescription className="text-xs">Debug stream</CardDescription>
+                      <CardTitle className="text-sm">{t('screens.admin.testVertexAi')}</CardTitle>
+                      <CardDescription className="text-xs">{t('screens.admin.debugStream')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -97,8 +98,8 @@ export default function LiveStreamOverview() {
                       <Plus className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">Create Room</CardTitle>
-                      <CardDescription className="text-xs">Community live</CardDescription>
+                      <CardTitle className="text-sm">{t('screens.admin.createRoom')}</CardTitle>
+                      <CardDescription className="text-xs">{t('screens.admin.communityLive')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -119,7 +120,7 @@ export default function LiveStreamOverview() {
                       <Calendar className="h-5 w-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">Schedule Session</CardTitle>
+                      <CardTitle className="text-sm">{t('screens.admin.scheduleSession')}</CardTitle>
                       <CardDescription className="text-xs">Telemedicine</CardDescription>
                     </div>
                   </div>
@@ -141,7 +142,7 @@ export default function LiveStreamOverview() {
                       <TrendingUp className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">View Reports</CardTitle>
+                      <CardTitle className="text-sm">{t('screens.admin.viewReports')}</CardTitle>
                       <CardDescription className="text-xs">Analytics</CardDescription>
                     </div>
                   </div>
@@ -158,14 +159,14 @@ export default function LiveStreamOverview() {
           {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest streaming events across all platforms</CardDescription>
+              <CardTitle>{t('screens.admin.recentActivity')}</CardTitle>
+              <CardDescription>{t('screens.admin.latestStreamingEventsAcrossAllPlatforms')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <Activity className="h-4 w-4" />
-                  <span>No recent activity</span>
+                  <span>{t('screens.admin.noRecentActivity')}</span>
                 </div>
               </div>
             </CardContent>

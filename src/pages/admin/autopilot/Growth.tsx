@@ -17,6 +17,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { useRunsStats } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 function formatMinutes(mins: number): string {
   if (mins < 60) return `${mins}m`;
@@ -36,7 +37,7 @@ export default function AutopilotGrowth() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📈"
-          title="Growth & Impact"
+          title={t('screens.admin.growthImpact')}
           description="Measure the value autopilot delivers to your community"
         />
 
@@ -54,7 +55,7 @@ export default function AutopilotGrowth() {
         </div>
 
         {statsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading stats...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingStats')}</p>
         )}
 
         {statsQuery.isError && (
@@ -65,7 +66,7 @@ export default function AutopilotGrowth() {
 
         {stats && stats.total_runs === 0 && (
           <AdminEmptyState
-            title="No runs in this period"
+            title={t('screens.admin.noRunsThisPeriod')}
             description={`No autopilot runs recorded in the last ${days} days. Enable automations to start seeing impact data.`}
           />
         )}
@@ -76,13 +77,13 @@ export default function AutopilotGrowth() {
             <div className="grid gap-4 md:grid-cols-4">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardDescription className="text-xs">Total Runs</CardDescription>
+                  <CardDescription className="text-xs">{t('screens.admin.totalRuns')}</CardDescription>
                   <CardTitle className="text-2xl">{stats.total_runs}</CardTitle>
                 </CardHeader>
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardDescription className="text-xs">Success Rate</CardDescription>
+                  <CardDescription className="text-xs">{t('screens.admin.successRate')}</CardDescription>
                   <CardTitle className="text-2xl">
                     {stats.success_rate}%
                   </CardTitle>
@@ -95,11 +96,11 @@ export default function AutopilotGrowth() {
               </Card>
               <Card>
                 <CardHeader className="pb-2">
-                  <CardDescription className="text-xs">Time Saved</CardDescription>
+                  <CardDescription className="text-xs">{t('screens.admin.timeSaved')}</CardDescription>
                   <CardTitle className="text-2xl">{formatMinutes(stats.time_saved_minutes)}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <span className="text-xs text-muted-foreground">est. ~15 min per automation</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.admin.est15MinPerAutomation')}</span>
                 </CardContent>
               </Card>
               <Card>
@@ -119,7 +120,7 @@ export default function AutopilotGrowth() {
             {stats.daily_trend.length > 0 && (
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm">Daily Activity</CardTitle>
+                  <CardTitle className="text-sm">{t('screens.admin.dailyActivity')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-end gap-1 h-24">
@@ -147,7 +148,7 @@ export default function AutopilotGrowth() {
             {/* Per-automation breakdown */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm">By Automation</CardTitle>
+                <CardTitle className="text-sm">{t('screens.admin.byAutomation')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="rounded-md border">
@@ -158,7 +159,7 @@ export default function AutopilotGrowth() {
                         <TableHead className="text-center">Total</TableHead>
                         <TableHead className="text-center">Completed</TableHead>
                         <TableHead className="text-center">Failed</TableHead>
-                        <TableHead className="text-right">Avg Duration</TableHead>
+                        <TableHead className="text-right">{t('screens.admin.avgDuration')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

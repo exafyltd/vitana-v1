@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { messagesNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 const inspirationTemplates = [
   {
@@ -55,7 +56,7 @@ export default function Inspiration() {
   return (
     <AppLayout>
       <SEO 
-        title="Communication Inspiration | Messages" 
+        title={t('screens.messages.communicationInspirationMessages')} 
         description="Get inspired with pre-written messages and templates for your wellness community"
         canonical={window.location.href}
       />
@@ -64,14 +65,14 @@ export default function Inspiration() {
       <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Communication Inspiration"
+            title={t('screens.messages.communicationInspiration')}
             description="Pre-written messages and templates to inspire your wellness community"
             emoji="💡"
           />
 
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search message templates..."
+              placeholder={t('screens.messages.searchMessageTemplates')}
               onSearch={(query) => console.log('Search:', query)}
             />
             <UniversalCalendarButton />
@@ -150,7 +151,7 @@ export default function Inspiration() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-center py-8">Your saved favorite templates will appear here.</p>
+                  <p className="text-muted-foreground text-center py-8">{t('screens.messages.yourSavedFavoriteTemplatesWillAppear')}</p>
                 </CardContent>
               </Card>
             </SplitBarContent>
@@ -165,7 +166,7 @@ export default function Inspiration() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-center py-8">Templates you've used recently will appear here.</p>
+                  <p className="text-muted-foreground text-center py-8">{t('screens.messages.templatesYouVeUsedRecentlyWill')}</p>
                 </CardContent>
               </Card>
             </SplitBarContent>
@@ -180,7 +181,7 @@ export default function Inspiration() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-center py-8">Your custom created messages will appear here.</p>
+                  <p className="text-muted-foreground text-center py-8">{t('screens.messages.yourCustomCreatedMessagesWillAppear')}</p>
                 </CardContent>
               </Card>
             </SplitBarContent>

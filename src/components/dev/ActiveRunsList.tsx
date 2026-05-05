@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FileText, StopCircle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ActiveRun {
   id: string;
@@ -68,7 +69,7 @@ export function ActiveRunsList() {
             </div>
 
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Current Step</p>
+              <p className="text-xs text-muted-foreground mb-1">{t('screens.dev.currentStep')}</p>
               <p className="text-sm font-medium">{run.currentStep}</p>
             </div>
 

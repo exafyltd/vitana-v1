@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { playSound } from "@/lib/playSound";
+import { t } from '@/lib/i18n-toast';
 
 export function VitanaButton() {
   const [isPulsing, setIsPulsing] = useState(false);
@@ -40,7 +41,7 @@ export function VitanaButton() {
             size="icon"
             className="rounded-full relative overflow-visible"
             onClick={handleOrbClick}
-            aria-label="Enter VITANALAND (Cmd+K)"
+            aria-label={t('screens.vitanaland.enterVitanalandCmdK')}
           >
             <motion.div
               className="relative"
@@ -161,7 +162,7 @@ export function VitanaButton() {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Enter Vitanaland (⌘K)</p>
+          <p>{t('screens.vitanaland.enterVitanalandK')}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

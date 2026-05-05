@@ -2,6 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   children: ReactNode;
@@ -52,7 +53,7 @@ export class DevErrorBoundary extends Component<Props, State> {
               <div className="flex items-center gap-3">
                 <AlertTriangle className="h-6 w-6 text-destructive" />
                 <div>
-                  <CardTitle>Something went wrong</CardTitle>
+                  <CardTitle>{t('screens.dev.somethingWentWrong')}</CardTitle>
                   <CardDescription>
                     The Dev Hub encountered an unexpected error
                   </CardDescription>

@@ -4,6 +4,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useOverviewSummary } from "@/hooks/useAdminOverview";
 import { useMembers } from "@/hooks/useAdminMembers";
+import { t } from '@/lib/i18n-toast';
 
 export default function Engagement() {
   const summaryQuery = useOverviewSummary();
@@ -18,32 +19,32 @@ export default function Engagement() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="💬"
-          title="Engagement"
+          title={t('screens.admin.engagement')}
           description="Member activity and engagement metrics"
         />
 
         {(summaryQuery.isLoading || membersQuery.isLoading) && (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading engagement data...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingEngagementData')}</p>
         )}
 
         {kpi && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Total Members</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.totalMembers')}</div>
                 <div className="text-3xl font-bold mt-1">{kpi.total_members}</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">Members in Directory</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.membersDirectory')}</div>
                 <div className="text-3xl font-bold mt-1">{members.length}</div>
-                <span className="text-xs text-muted-foreground">loaded from member list</span>
+                <span className="text-xs text-muted-foreground">{t('screens.admin.loadedFromMemberList')}</span>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs uppercase text-muted-foreground">New Signups (7d)</div>
+                <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.newSignups7d')}</div>
                 <div className="text-3xl font-bold mt-1">{kpi.new_signups_7d}</div>
               </CardContent>
             </Card>
@@ -52,7 +53,7 @@ export default function Engagement() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Deep Engagement Analytics</CardTitle>
+            <CardTitle className="text-base">{t('screens.admin.deepEngagementAnalytics')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center py-6">

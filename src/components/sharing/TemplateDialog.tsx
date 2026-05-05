@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useTemplates } from "@/hooks/useTemplates";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface TemplateDialogProps {
   open: boolean;
@@ -40,11 +41,11 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Save as Template</DialogTitle>
+          <DialogTitle>{t('screens.sharing.saveAsTemplate')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="template-name">Template Name</Label>
+            <Label htmlFor="template-name">{t('screens.sharing.templateName')}</Label>
             <Input
               id="template-name"
               value={name}

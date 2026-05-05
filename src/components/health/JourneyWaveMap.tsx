@@ -1,5 +1,6 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { JOURNEY_WAVES, type JourneyWave } from "@/config/journeyWaves";
+import { t } from '@/lib/i18n-toast';
 
 interface JourneyWaveMapProps {
   /** Day number relative to registration. Pass `dayNumber` from the page; the
@@ -45,7 +46,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
         <div
           className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
           role="list"
-          aria-label="90-day journey waves"
+          aria-label={t('screens.health.text90dayJourneyWaves')}
         >
           {JOURNEY_WAVES.map((w) => {
             const isCurrent = w.id === currentId;

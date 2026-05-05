@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSimulateNavigator } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 interface SimulatorPanelProps {
   tenantId?: string | null;
@@ -108,7 +109,7 @@ export function SimulatorPanel({
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="sim-current">Current route</Label>
+            <Label htmlFor="sim-current">{t('screens.admin.currentRoute')}</Label>
             <Input
               id="sim-current"
               value={currentRoute}
@@ -125,7 +126,7 @@ export function SimulatorPanel({
             onChange={(e) => setIsAnonymous(e.target.checked)}
             className="rounded border-input"
           />
-          <span>Simulate anonymous session</span>
+          <span>{t('screens.admin.simulateAnonymousSession')}</span>
         </label>
 
         <Button
@@ -167,7 +168,7 @@ export function SimulatorPanel({
 
             {result.primary && (
               <div className="rounded-md border bg-muted/30 p-3">
-                <div className="text-xs text-muted-foreground">Primary pick</div>
+                <div className="text-xs text-muted-foreground">{t('screens.admin.primaryPick')}</div>
                 <div className="font-mono text-sm">{result.primary.screen_id}</div>
                 <div className="text-sm">{result.primary.title}</div>
                 <div className="text-xs text-muted-foreground">{result.primary.route}</div>
@@ -210,14 +211,14 @@ export function SimulatorPanel({
 
             {result.explanation && (
               <div className="text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">Vitana would say:</span>{" "}
+                <span className="font-medium text-foreground">{t('screens.admin.vitanaWouldSay')}</span>{" "}
                 {result.explanation}
               </div>
             )}
 
             {result.kb_excerpts.length > 0 && (
               <div className="text-xs">
-                <div className="mb-1 font-medium">KB excerpts</div>
+                <div className="mb-1 font-medium">{t('screens.admin.kbExcerpts')}</div>
                 <ul className="list-disc space-y-0.5 pl-4 text-muted-foreground">
                   {result.kb_excerpts.map((x, i) => (
                     <li key={i}>{x}</li>

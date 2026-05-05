@@ -8,6 +8,7 @@ import { withCardId } from "@/lib/withCardId";
 import { useVitanaIndexConfig } from "@/hooks/useVitanaIndexConfig";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface VitanaIndexMiniProps {
   score?: number;
@@ -105,7 +106,7 @@ function VitanaIndexMiniBase({
             <Activity className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="font-semibold text-foreground">Vitana Index</p>
+            <p className="font-semibold text-foreground">{t('screens.health.vitanaIndex')}</p>
             <p className="text-sm text-muted-foreground">{isComputing ? "computing…" : getScoreLabel(score)}</p>
           </div>
         </div>
@@ -143,7 +144,7 @@ function VitanaIndexMiniBase({
             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
               <Activity className="w-4 h-4 text-white" />
             </div>
-            <CardTitle className="text-lg">Vitana Index</CardTitle>
+            <CardTitle className="text-lg">{t('screens.health.vitanaIndex')}</CardTitle>
           </div>
           <div className="flex items-center gap-1">
             <span className="text-2xl font-bold text-foreground">{isComputing ? "…" : score}</span>
@@ -156,7 +157,7 @@ function VitanaIndexMiniBase({
         <CardContent className="space-y-3">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Overall Health</span>
+              <span className="text-muted-foreground">{t('screens.health.overallHealth')}</span>
               <span className="font-medium text-foreground">{isComputing ? "computing…" : getScoreLabel(score)}</span>
             </div>
             <Progress

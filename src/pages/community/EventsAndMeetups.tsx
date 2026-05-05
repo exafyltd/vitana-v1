@@ -42,7 +42,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -897,7 +897,7 @@ const EventsAndMeetups = () => {
                     emptyState={
                       <div className="text-center py-12">
                         <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-semibold mb-2">No Upcoming Events</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noUpcomingEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
                           There are no events scheduled. Be the first to create one!
                         </p>
@@ -978,7 +978,7 @@ const EventsAndMeetups = () => {
                     emptyState={
                       <div className="text-center py-12">
                         <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-semibold mb-2">No Recommended Events</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noRecommendedEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
                           Check back soon for curated events.
                         </p>

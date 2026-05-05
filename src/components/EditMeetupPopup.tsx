@@ -13,7 +13,7 @@ import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -478,7 +478,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               </div>
 
               <div>
-                <Label htmlFor="detailedDescription">Detailed Description (Optional)</Label>
+                <Label htmlFor="detailedDescription">{t('screens.common.detailedDescriptionOptional')}</Label>
                 <Textarea
                   id="detailedDescription"
                   value={formData.detailedDescription}
@@ -497,15 +497,15 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   <Label htmlFor="category">Category</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t('screens.common.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fitness">Fitness & Exercise</SelectItem>
-                      <SelectItem value="outdoor">Outdoor Activities</SelectItem>
-                      <SelectItem value="wellness">Wellness & Mindfulness</SelectItem>
-                      <SelectItem value="social">Social & Networking</SelectItem>
-                      <SelectItem value="learning">Learning & Workshops</SelectItem>
-                      <SelectItem value="support">Support & Community</SelectItem>
+                      <SelectItem value="fitness">{t('screens.common.fitnessExercise')}</SelectItem>
+                      <SelectItem value="outdoor">{t('screens.common.outdoorActivities')}</SelectItem>
+                      <SelectItem value="wellness">{t('screens.common.wellnessMindfulness')}</SelectItem>
+                      <SelectItem value="social">{t('screens.common.socialNetworking')}</SelectItem>
+                      <SelectItem value="learning">{t('screens.common.learningWorkshops')}</SelectItem>
+                      <SelectItem value="support">{t('screens.common.supportCommunity')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -514,26 +514,26 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   <Label htmlFor="duration">Duration</Label>
                   <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select duration" />
+                      <SelectValue placeholder={t('screens.common.selectDuration')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="30min">30 minutes</SelectItem>
-                      <SelectItem value="1hour">1 hour</SelectItem>
-                      <SelectItem value="2hour">2 hours</SelectItem>
-                      <SelectItem value="3hour">3 hours</SelectItem>
-                      <SelectItem value="4hour">4 hours</SelectItem>
-                      <SelectItem value="5hour">5 hours</SelectItem>
-                      <SelectItem value="6hour">6 hours</SelectItem>
-                      <SelectItem value="8hour">8 hours</SelectItem>
-                      <SelectItem value="half-day">Half day</SelectItem>
-                      <SelectItem value="full-day">Full day</SelectItem>
+                      <SelectItem value="30min">{t('screens.common.text30Minutes')}</SelectItem>
+                      <SelectItem value="1hour">{t('screens.common.text1Hour')}</SelectItem>
+                      <SelectItem value="2hour">{t('screens.common.text2Hours')}</SelectItem>
+                      <SelectItem value="3hour">{t('screens.common.text3Hours')}</SelectItem>
+                      <SelectItem value="4hour">{t('screens.common.text4Hours')}</SelectItem>
+                      <SelectItem value="5hour">{t('screens.common.text5Hours')}</SelectItem>
+                      <SelectItem value="6hour">{t('screens.common.text6Hours')}</SelectItem>
+                      <SelectItem value="8hour">{t('screens.common.text8Hours')}</SelectItem>
+                      <SelectItem value="half-day">{t('screens.common.halfDay')}</SelectItem>
+                      <SelectItem value="full-day">{t('screens.common.fullDay')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label>Meetup Image</Label>
+                <Label>{t('screens.common.meetupImage')}</Label>
                 <div className="mt-2 space-y-4">
                   <Button 
                     type="button" 
@@ -564,7 +564,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-px bg-border" />
-                    <span className="text-xs text-muted-foreground">or</span>
+                    <span className="text-xs text-muted-foreground">{t('screens.common.text')}</span>
                     <div className="flex-1 h-px bg-border" />
                   </div>
                   
@@ -602,7 +602,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                       </div>
                       <img 
                         src={formData.imageUrl} 
-                        alt="Preview" 
+                        alt={t('screens.common.preview')} 
                         className="w-full h-48 object-cover rounded"
                       />
                       {generatedImagePreview === formData.imageUrl && (
@@ -635,7 +635,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="date">Date *</Label>
+                  <Label htmlFor="date">{t('screens.common.date')}</Label>
                   <Input
                     id="date"
                     type="date"
@@ -652,7 +652,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                 </div>
 
                 <div>
-                  <Label htmlFor="time">Time *</Label>
+                  <Label htmlFor="time">{t('screens.common.time')}</Label>
                   <Input
                     id="time"
                     type="time"
@@ -682,7 +682,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
               {!formData.isVirtual && (
                 <div>
-                  <Label htmlFor="location">Location *</Label>
+                  <Label htmlFor="location">{t('screens.common.location')}</Label>
                   <Input
                     id="location"
                     value={formData.location}
@@ -700,7 +700,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               )}
 
               <div>
-                <Label htmlFor="capacity">Max Participants</Label>
+                <Label htmlFor="capacity">{t('screens.common.maxParticipants')}</Label>
                 <Input
                   id="capacity"
                   type="number"
@@ -725,7 +725,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="enableTicketSales">Enable Ticket Sales</Label>
+                    <Label htmlFor="enableTicketSales">{t('screens.common.enableTicketSales')}</Label>
                     <p className="text-sm text-muted-foreground">
                       Set up different ticket types with individual prices
                     </p>
@@ -760,12 +760,12 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                         onChange={(e) => setFormData({...formData, isPaid: e.target.checked})}
                         className="rounded"
                       />
-                      <Label htmlFor="isPaid">Paid Event</Label>
+                      <Label htmlFor="isPaid">{t('screens.common.paidEvent')}</Label>
                     </div>
 
                     {formData.isPaid && (
                       <div>
-                        <Label htmlFor="price">Display Price</Label>
+                        <Label htmlFor="price">{t('screens.common.displayPrice')}</Label>
                         <div className="flex gap-2 mt-1">
                           <Select
                             value={formData.displayCurrency}
@@ -775,8 +775,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="USD">$ USD</SelectItem>
-                              <SelectItem value="EUR">€ EUR</SelectItem>
+                              <SelectItem value="USD">{t('screens.common.usd')}</SelectItem>
+                              <SelectItem value="EUR">{t('screens.common.eur')}</SelectItem>
                             </SelectContent>
                           </Select>
                           <Input
@@ -810,7 +810,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>Allow Resellers to Sell Tickets</Label>
+                    <Label>{t('screens.common.allowResellersSellTickets')}</Label>
                     <p className="text-sm text-muted-foreground">
                       Let other resellers promote and sell tickets for this event
                     </p>
@@ -824,20 +824,20 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                 {resellable && (
                   <>
                     <div>
-                      <Label>Resale Visibility</Label>
+                      <Label>{t('screens.common.resaleVisibility')}</Label>
                       <Select value={resaleScope} onValueChange={(v) => setResaleScope(v as typeof resaleScope)}>
                         <SelectTrigger className="mt-1">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="public">Public (All resellers)</SelectItem>
-                          <SelectItem value="tenant">Tenant only</SelectItem>
+                          <SelectItem value="public">{t('screens.common.publicAllResellers')}</SelectItem>
+                          <SelectItem value="tenant">{t('screens.common.tenantOnly')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div>
-                      <Label>Default Commission Rate (%)</Label>
+                      <Label>{t('screens.common.defaultCommissionRate')}</Label>
                       <Input
                         type="number"
                         min="0"

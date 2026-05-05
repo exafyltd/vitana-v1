@@ -32,6 +32,7 @@ import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
 import { getShareUrl } from "@/lib/shareUrl";
+import { t } from '@/lib/i18n-toast';
 
 export function ProductDetailsDrawer() {
   const { selectedProduct, clearSelection } = useProductSelection();
@@ -172,7 +173,7 @@ function DrawerBody() {
         {/* Description (prefer the long-form if the sync populated it) */}
         {(p.description_long || p.description) && (
           <section>
-            <h3 className="text-sm font-semibold mb-2">About this product</h3>
+            <h3 className="text-sm font-semibold mb-2">{t('screens.discover.aboutThisProduct')}</h3>
             <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
               {p.description_long || p.description}
             </p>

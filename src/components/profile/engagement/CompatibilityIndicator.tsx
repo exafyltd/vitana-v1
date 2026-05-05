@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Target, Users, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CompatibilityMatch {
   type: 'wellness' | 'interests' | 'goals' | 'lifestyle';
@@ -101,7 +102,7 @@ export function CompatibilityIndicator({
         </div>
 
         <div className="space-y-2">
-          <div className="text-xs text-muted-foreground">Shared interests:</div>
+          <div className="text-xs text-muted-foreground">{t('screens.profile.sharedInterests')}</div>
           <div className="flex flex-wrap gap-1">
             {topMatch.sharedItems.slice(0, 3).map((item, index) => (
               <Badge 

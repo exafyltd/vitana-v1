@@ -9,6 +9,7 @@ import {
   Brain,
   Activity
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SleepDashboardProps {
   progress: SleepProgress;
@@ -32,7 +33,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
         <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Moon className="w-6 h-6 mx-auto mb-2 text-indigo-600 dark:text-indigo-400" />
           <p className="text-2xl font-bold">{progress.avgDuration}</p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">Avg Duration</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.avgDuration')}</p>
         </div>
         
         {/* Consistency Score */}
@@ -78,14 +79,14 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
         <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Activity className="w-6 h-6 mx-auto mb-2 text-sky-600 dark:text-sky-400" />
           <p className="text-2xl font-bold">{progress.deepSleepPercentage}%</p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">Deep Sleep</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.deepSleep')}</p>
         </div>
         
         {/* Streak Days */}
         <div className="text-center p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200/60 dark:border-slate-800/50 shadow-sm shadow-indigo-100/30 dark:shadow-indigo-900/20">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.streakDays}</p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">Day Streak</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.dayStreak')}</p>
         </div>
       </div>
       
@@ -95,7 +96,7 @@ export function SleepDashboard({ progress, aiSummary }: SleepDashboardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-sm font-medium">Recovery Impact</span>
+            <span className="text-sm font-medium">{t('screens.health.recoveryImpact')}</span>
           </div>
           <Badge className="bg-emerald-500 hover:bg-emerald-600">
             {progress.recoveryImpact}

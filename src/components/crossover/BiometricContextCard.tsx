@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Activity, Heart, Droplets, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface BiometricContextCardProps {
   heartRate?: number;
@@ -27,7 +28,7 @@ function BiometricContextCardBase({
           <Heart className="w-4 h-4 text-red-500" />
           <div>
             <div className="font-medium">{heartRate} BPM</div>
-            <div className="text-xs text-muted-foreground">Resting HR</div>
+            <div className="text-xs text-muted-foreground">{t('screens.crossover.restingHr')}</div>
           </div>
         </div>
         
@@ -35,7 +36,7 @@ function BiometricContextCardBase({
           <Activity className="w-4 h-4 text-blue-600" />
           <div>
             <div className="font-medium">{steps.toLocaleString()}</div>
-            <div className="text-xs text-muted-foreground">Steps today</div>
+            <div className="text-xs text-muted-foreground">{t('screens.crossover.stepsToday')}</div>
           </div>
         </div>
       </div>
@@ -74,7 +75,7 @@ function BiometricContextCardBase({
     <CrossoverCard
       icon={Activity}
       category="health"
-      title="Biometric Context 📊"
+      title={t('screens.crossover.biometricContext')}
       subtitle="Real-time health metrics"
       content={content}
       buttonText="Track More"

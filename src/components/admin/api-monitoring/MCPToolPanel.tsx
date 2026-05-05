@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Server, PlayCircle, Code, FileJson, AlertCircle } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface MCPTool {
   name: string;
@@ -121,7 +121,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
             <Server className="w-5 h-5" />
             MCP Tools
           </CardTitle>
-          <CardDescription>No tools available for this MCP server</CardDescription>
+          <CardDescription>{t('screens.admin.noToolsAvailableForThisMcp')}</CardDescription>
         </CardHeader>
         <CardContent className="text-center py-12">
           <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -202,7 +202,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
                   {/* Output Schema */}
                   {tool.outputSchema && (
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Expected Output</h4>
+                      <h4 className="text-sm font-medium">{t('screens.admin.expectedOutput')}</h4>
                       <div className="bg-muted rounded-lg p-3">
                         <pre className="text-xs font-mono overflow-x-auto">
                           {JSON.stringify(tool.outputSchema, null, 2)}

@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function PersonalitySettings() {
   const { toast } = useToast();
@@ -90,7 +90,7 @@ export function PersonalitySettings() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>System Personality</CardTitle>
+        <CardTitle>{t('screens.admin.systemPersonality')}</CardTitle>
         <CardDescription>
           Configure the overall personality and communication style of the proactive assistant
         </CardDescription>
@@ -141,7 +141,7 @@ export function PersonalitySettings() {
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Empathy Level</Label>
+              <Label>{t('screens.admin.empathyLevel')}</Label>
               <span className="text-sm text-muted-foreground">
                 {empathy <= 25 ? 'Low' : empathy <= 62 ? 'Medium' : empathy <= 87 ? 'High' : 'Very High'}
               </span>
@@ -156,7 +156,7 @@ export function PersonalitySettings() {
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>Low</span>
-              <span>Very High</span>
+              <span>{t('screens.admin.veryHigh')}</span>
             </div>
           </div>
         </div>

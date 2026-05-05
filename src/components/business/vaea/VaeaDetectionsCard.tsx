@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Radio } from "lucide-react";
 import { useVaeaSummary } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 export function VaeaDetectionsCard() {
   const { data, loading, error } = useVaeaSummary();
@@ -17,7 +18,7 @@ export function VaeaDetectionsCard() {
         {loading ? (
           <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
         ) : error ? (
-          <p className="text-sm text-muted-foreground">No data yet.</p>
+          <p className="text-sm text-muted-foreground">{t('screens.business.noDataYet')}</p>
         ) : data ? (
           <div className="grid grid-cols-2 gap-3">
             <Stat label="Questions scanned" value={data.counts.questions_last_7d} />

@@ -23,7 +23,7 @@ import { ArrowDown, CreditCard, Building2, Clock, DollarSign, Loader2 } from "lu
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface WithdrawPopupProps {
   open: boolean;
@@ -129,7 +129,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
           {/* Available Balance */}
           <div className="bg-muted/50 p-4 rounded-lg">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Available Balance</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.availableBalance')}</span>
               <div className="flex items-center gap-1">
                 <DollarSign className="h-4 w-4 text-green-600" />
                 <span className="font-semibold text-lg">${usdBalance.toFixed(2)}</span>
@@ -139,7 +139,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Quick Amount Buttons */}
           <div>
-            <Label className="text-sm font-medium">Quick Select</Label>
+            <Label className="text-sm font-medium">{t('screens.wallet.quickSelect')}</Label>
             <div className="grid grid-cols-4 gap-2 mt-2">
               {quickAmounts.map((amount) => (
                 <Button
@@ -158,7 +158,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Custom Amount */}
           <div>
-            <Label htmlFor="amount">Withdrawal Amount</Label>
+            <Label htmlFor="amount">{t('screens.wallet.withdrawalAmount')}</Label>
             <Input
               id="amount"
               type="number"
@@ -173,10 +173,10 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
 
           {/* Withdrawal Method */}
           <div>
-            <Label>Withdrawal Method</Label>
+            <Label>{t('screens.wallet.withdrawalMethod')}</Label>
             <Select value={selectedMethod} onValueChange={setSelectedMethod}>
               <SelectTrigger>
-                <SelectValue placeholder="Select withdrawal method" />
+                <SelectValue placeholder={t('screens.wallet.selectWithdrawalMethod')} />
               </SelectTrigger>
               <SelectContent>
                 {withdrawalMethods.map((method) => {
@@ -212,17 +212,17 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
               <Separator />
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span>Withdrawal Amount</span>
+                  <span>{t('screens.wallet.withdrawalAmount')}</span>
                   <span>${withdrawAmountNum.toFixed(2)}</span>
                 </div>
                 {selectedMethodData.fee > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span>Processing Fee</span>
+                    <span>{t('screens.wallet.processingFee')}</span>
                     <span>${selectedMethodData.fee.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between font-medium border-t pt-2">
-                  <span>Total Deducted</span>
+                  <span>{t('screens.wallet.totalDeducted')}</span>
                   <span>${totalCost.toFixed(2)}</span>
                 </div>
               </div>

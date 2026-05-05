@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { t } from '@/lib/i18n-toast';
 
 export function MusicCard() {
   const { currentMedia, isPlaying, playMedia, pause } = useAudioPlayer();
@@ -80,8 +81,8 @@ export function MusicCard() {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm text-foreground leading-tight">Peaceful Morning</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">Nature Sounds Collective</p>
+            <h3 className="font-semibold text-sm text-foreground leading-tight">{t('screens.crossover.peacefulMorning')}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{t('screens.crossover.natureSoundsCollective')}</p>
           </div>
         </div>
 

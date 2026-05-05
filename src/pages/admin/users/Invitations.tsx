@@ -16,6 +16,7 @@ import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { adminUsersNavigation } from "@/config/navigation";
 import { useSignupInvitations } from "@/hooks/useSignupFunnel";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_OPTIONS = [
   { value: "all", label: "All Statuses" },
@@ -118,7 +119,7 @@ export default function Invitations() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Invitations"
+            title={t('screens.admin.invitations')}
             description="Manage onboarding invitations sent to users who need help completing signup."
             emoji="📬"
           />
@@ -126,13 +127,13 @@ export default function Invitations() {
           {/* Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <AdminStatsCard
-              title="Total Sent"
+              title={t('screens.admin.totalSent')}
               value={total}
               icon={Send}
               loading={isLoading}
             />
             <AdminStatsCard
-              title="Pending"
+              title={t('screens.admin.pending')}
               value={pendingCount}
               subtitle="Sent, opened, or clicked"
               icon={Clock}
@@ -140,7 +141,7 @@ export default function Invitations() {
               variant="warning"
             />
             <AdminStatsCard
-              title="Converted"
+              title={t('screens.admin.converted')}
               value={convertedCount}
               subtitle="Successfully onboarded"
               icon={UserCheck}
@@ -153,7 +154,7 @@ export default function Invitations() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Invitation Log</CardTitle>
+                <CardTitle>{t('screens.admin.invitationLog')}</CardTitle>
                 <Select
                   value={statusFilter}
                   onValueChange={(v) => {
@@ -162,7 +163,7 @@ export default function Invitations() {
                   }}
                 >
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by status" />
+                    <SelectValue placeholder={t('screens.admin.filterByStatus2')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STATUS_OPTIONS.map((opt) => (

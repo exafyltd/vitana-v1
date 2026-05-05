@@ -15,7 +15,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from '@/hooks/use-toast';
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function Videos() {
   const [searchParams] = useSearchParams();
@@ -96,7 +96,7 @@ export default function Videos() {
   return (
     <AppLayout>
       <SEO 
-        title="Videos | Media Management" 
+        title={t('screens.admin.videosMediaManagement')} 
         description="Manage video content"
         canonical={window.location.href}
       />
@@ -104,8 +104,8 @@ export default function Videos() {
       
       <div className="p-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Video Management</h1>
-          <p className="text-muted-foreground">Review and moderate video uploads</p>
+          <h1 className="text-3xl font-bold mb-2">{t('screens.admin.videoManagement')}</h1>
+          <p className="text-muted-foreground">{t('screens.admin.reviewModerateVideoUploads')}</p>
         </div>
 
         {/* Filters */}
@@ -116,7 +116,7 @@ export default function Videos() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
-                    placeholder="Search videos..." 
+                    placeholder={t('screens.admin.searchVideos')} 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9"
@@ -125,10 +125,10 @@ export default function Videos() {
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t('screens.admin.filterByStatus2')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="all">{t('screens.admin.allStatus')}</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="approved">Approved</SelectItem>
                   <SelectItem value="rejected">Rejected</SelectItem>

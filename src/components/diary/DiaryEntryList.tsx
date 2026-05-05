@@ -20,7 +20,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
-import { notify, notifyError } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
@@ -195,7 +195,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
             {getIconForSource(entryType)}
           </div>
           <p>No {entryType || ''} entries yet</p>
-          <p className="text-sm mt-1">Start recording your wellness journey</p>
+          <p className="text-sm mt-1">{t('screens.diary.startRecordingYourWellnessJourney')}</p>
         </CardContent>
       </Card>
     );
@@ -313,7 +313,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <ResponsiveConfirmDialogContent className="max-w-sm">
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Entry?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.diary.deleteEntry')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
               This diary entry will be permanently deleted. This action cannot be undone.
             </ResponsiveConfirmDialogDescription>

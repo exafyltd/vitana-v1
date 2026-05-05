@@ -15,6 +15,7 @@ import {
   ResponsiveConfirmDialogTitle,
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface ContactListItemProps {
   contact: Contact;
@@ -119,7 +120,7 @@ export default function ContactListItem({
               </ResponsiveConfirmDialogTrigger>
               <ResponsiveConfirmDialogContent>
                 <ResponsiveConfirmDialogHeader>
-                  <ResponsiveConfirmDialogTitle>Delete Contact</ResponsiveConfirmDialogTitle>
+                  <ResponsiveConfirmDialogTitle>{t('screens.contacts.deleteContact')}</ResponsiveConfirmDialogTitle>
                   <ResponsiveConfirmDialogDescription>
                     Are you sure you want to delete {displayName}? This action cannot be undone.
                   </ResponsiveConfirmDialogDescription>

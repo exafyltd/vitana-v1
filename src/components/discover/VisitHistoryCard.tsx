@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface VisitHistoryCardProps {
   visit: {
@@ -65,8 +66,8 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
         )}
 
         <div className="flex gap-2">
-          <Button size="sm" variant="outline">Book Follow-up</Button>
-          <Button size="sm" variant="outline">View Details</Button>
+          <Button size="sm" variant="outline">{t('screens.discover.bookFollowup')}</Button>
+          <Button size="sm" variant="outline">{t('screens.discover.viewDetails')}</Button>
         </div>
       </CardContent>
     </Card>

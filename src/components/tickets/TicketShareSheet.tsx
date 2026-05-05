@@ -10,7 +10,7 @@ import {
 import { Mail, MessageSquare, Download, Link2, Check, Calendar, MapPin, Ticket } from "lucide-react";
 import { siWhatsapp, siViber } from "simple-icons";
 import { cn } from "@/lib/utils";
-import { notifyError, notifyInfo, notifySuccess } from '@/lib/i18n-toast';
+import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface TicketShareSheetProps {
   open: boolean;
@@ -236,7 +236,7 @@ export function TicketShareSheet({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share your ticket</DialogTitle>
+          <DialogTitle>{t('screens.tickets.shareYourTicket')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
             Send your ticket to friends or save for easy access.
           </p>
@@ -282,7 +282,7 @@ export function TicketShareSheet({
 
         {/* Share Buttons Grid */}
         <div className="space-y-3">
-          <p className="text-xs font-medium text-muted-foreground">Quick share</p>
+          <p className="text-xs font-medium text-muted-foreground">{t('screens.tickets.quickShare')}</p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {buttons.map((btn) => (
               <Button

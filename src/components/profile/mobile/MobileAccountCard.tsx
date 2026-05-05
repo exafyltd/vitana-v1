@@ -11,6 +11,7 @@ import {
   VISIBILITY_META,
   useAccountVisibility,
 } from "../shared/useAccountVisibility";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileAccountCardProps {
   profile: UserProfile;
@@ -42,7 +43,7 @@ export function MobileAccountCard({
         {isOwner && editMode && onEdit && (
           <button
             onClick={onEdit}
-            aria-label="Edit account details"
+            aria-label={t('screens.profile.editAccountDetails')}
             className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10 flex items-center justify-center transition-colors"
           >
             <Pencil className="h-4 w-4" />
@@ -58,7 +59,7 @@ export function MobileAccountCard({
                 Account
               </span>
             </div>
-            <h2 className="text-lg font-semibold text-white">Personal data vault</h2>
+            <h2 className="text-lg font-semibold text-white">{t('screens.profile.personalDataVault')}</h2>
             <p className="text-xs text-white/50 mt-1">
               Each field has a value and a visibility rule.
             </p>
@@ -223,7 +224,7 @@ function AccountRow({
         <div
           className="flex items-center gap-1 h-7 px-2 rounded-full"
           style={{ color: "hsl(0, 0%, 50%)" }}
-          title="Private"
+          title={t('screens.profile.private')}
         >
           <EyeOff className="h-3 w-3" />
         </div>

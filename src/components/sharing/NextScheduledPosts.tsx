@@ -5,6 +5,7 @@ import { Calendar, Pause, Play, MoreVertical, Loader2, X } from "lucide-react";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { t } from '@/lib/i18n-toast';
 
 export function NextScheduledPosts() {
   const { scheduledPosts, isLoading, pauseScheduled, resumeScheduled, cancelScheduled } = useScheduledPosts();
@@ -80,7 +81,7 @@ export function NextScheduledPosts() {
           <Calendar className="w-5 h-5" />
           Automation Queue
         </CardTitle>
-        <p className="text-sm text-muted-foreground">Next scheduled posts</p>
+        <p className="text-sm text-muted-foreground">{t('screens.sharing.nextScheduledPosts')}</p>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -97,7 +98,7 @@ export function NextScheduledPosts() {
             emptyState={
               <div className="text-center py-8">
                 <Calendar className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-                <p className="text-sm text-muted-foreground">No scheduled posts yet</p>
+                <p className="text-sm text-muted-foreground">{t('screens.sharing.noScheduledPostsYet')}</p>
               </div>
             }
           />

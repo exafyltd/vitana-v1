@@ -23,6 +23,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 export default function DealsOffers() {
   return (
@@ -360,12 +361,12 @@ function DealsOffersInner() {
 
   return (
     <AppLayout>
-      <SEO title="Deals & Offers | Discover" description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
+      <SEO title={t('screens.discover.dealsOffersDiscover')} description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
       <div className="p-6 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Deals & Offers"
+            title={t('screens.discover.dealsOffers')}
             description="Limited-time deals, trending services, AI recommendations, and saved items"
             emoji="🔥"
           />
@@ -384,7 +385,7 @@ function DealsOffersInner() {
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search deals and offers…"
+              placeholder={t('screens.discover.searchDealsOffers')}
             />
             <UniversalCalendarButton />
             <Button 
@@ -398,17 +399,17 @@ function DealsOffersInner() {
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="flash">🔥 Flash Deals</SplitBarTrigger>
-              <SplitBarTrigger value="trending">⭐ Trending</SplitBarTrigger>
-              <SplitBarTrigger value="ai">💡 AI Picks</SplitBarTrigger>
-              <SplitBarTrigger value="saved">🔖 Saved</SplitBarTrigger>
+              <SplitBarTrigger value="flash">{t('screens.discover.flashDeals')}</SplitBarTrigger>
+              <SplitBarTrigger value="trending">{t('screens.discover.trending')}</SplitBarTrigger>
+              <SplitBarTrigger value="ai">{t('screens.discover.aiPicks')}</SplitBarTrigger>
+              <SplitBarTrigger value="saved">{t('screens.discover.saved')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="flash" className="space-y-6">
               {flashDeals.length === 0 && (
                 <Card className="p-8 text-center bg-white/70 backdrop-blur-sm">
                   <Flame className="h-10 w-10 text-red-500 mx-auto mb-3" />
-                  <h3 className="font-semibold mb-1">No flash deals right now</h3>
+                  <h3 className="font-semibold mb-1">{t('screens.discover.noFlashDealsRightNow')}</h3>
                   <p className="text-sm text-muted-foreground">
                     When merchants run promotions, they&rsquo;ll show up here. Check back soon.
                   </p>
@@ -607,7 +608,7 @@ function DealsOffersInner() {
 
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold">${service.price}</span>
-                        <span className="text-sm text-muted-foreground">per session</span>
+                        <span className="text-sm text-muted-foreground">{t('screens.discover.perSession')}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2">

@@ -9,6 +9,7 @@ import { useTenant } from "@/hooks/useTenant";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
+import { t } from '@/lib/i18n-toast';
 
 export default function MaxinaConfirmed() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function MaxinaConfirmed() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-500/10 via-background to-rose-500/10 p-4">
         <Card className="w-full max-w-md border-pink-200">
           <CardHeader className="text-center">
-            <CardTitle className="text-destructive">Confirmation Error</CardTitle>
+            <CardTitle className="text-destructive">{t('screens.portals.confirmationError')}</CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">{error}</p>
@@ -63,7 +64,7 @@ export default function MaxinaConfirmed() {
   return (
     <>
       <SEO 
-        title="Welcome to Maxina! - Email Confirmed"
+        title={t('screens.portals.welcomeMaxinaEmailConfirmed')}
         description="Your email has been confirmed. Welcome to Maxina - your women's health companion."
       />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-500/10 via-background to-rose-500/10 p-4">

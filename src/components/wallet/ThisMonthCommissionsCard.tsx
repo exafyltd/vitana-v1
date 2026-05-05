@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { DollarSign, TrendingUp, Eye } from "lucide-react";
 import { RewardDot } from "@/components/ui/reward-dot";
+import { t } from '@/lib/i18n-toast';
 
 export function ThisMonthCommissionsCard() {
   return (
@@ -12,7 +13,7 @@ export function ThisMonthCommissionsCard() {
           <DollarSign className="h-5 w-5 text-green-500" />
           This Month Commissions
         </CardTitle>
-        <CardDescription>January 2024 earnings</CardDescription>
+        <CardDescription>{t('screens.wallet.january2024Earnings')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="text-center py-2">
@@ -25,21 +26,21 @@ export function ThisMonthCommissionsCard() {
         
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span>Referral bonuses</span>
+            <span>{t('screens.wallet.referralBonuses')}</span>
             <span className="font-medium text-green-600">$184.50</span>
           </div>
           <div className="flex justify-between">
-            <span>Data sharing</span>
+            <span>{t('screens.wallet.dataSharing')}</span>
             <span className="font-medium text-green-600">$63.30</span>
           </div>
         </div>
         
         <div className="pt-2 border-t">
-          <div className="text-xs text-muted-foreground mb-1">Progress to next tier</div>
+          <div className="text-xs text-muted-foreground mb-1">{t('screens.wallet.progressNextTier')}</div>
           <div className="w-full bg-muted rounded-full h-2">
             <div className="bg-green-500 h-2 rounded-full" style={{width: '68%'}}></div>
           </div>
-          <div className="text-xs text-muted-foreground mt-1">$753/$1,000 monthly</div>
+          <div className="text-xs text-muted-foreground mt-1">{t('screens.wallet.text7531000Monthly')}</div>
         </div>
         
         <Button variant="outline" size="sm" className="w-full">

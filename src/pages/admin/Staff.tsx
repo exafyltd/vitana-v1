@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Calendar, Clock, UserPlus, Settings } from "lucide-react";
 import { adminUserManagementNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 const mockStaff = [
   { id: "1", name: "Dr. Sarah Wilson", role: "Physician", department: "Internal Medicine", status: "active", shift: "Morning" },
@@ -19,13 +20,13 @@ const mockStaff = [
 function Staff() {
   return (
     <AppLayout>
-      <SEO title="Staff Directory | Admin" description="Manage staff directory and scheduling" canonical={window.location.href} />
+      <SEO title={t('screens.admin.staffDirectoryAdmin')} description="Manage staff directory and scheduling" canonical={window.location.href} />
       <SubNavigation items={adminUserManagementNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Staff Directory & Scheduling"
+            title={t('screens.admin.staffDirectoryScheduling')}
             description="Manage team members, schedules, and workforce planning"
             emoji="👥"
           />
@@ -38,7 +39,7 @@ function Staff() {
                   <Users className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">47</p>
-                    <p className="text-sm text-muted-foreground">Total Staff</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.totalStaff')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -50,7 +51,7 @@ function Staff() {
                   <Clock className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">32</p>
-                    <p className="text-sm text-muted-foreground">On Duty</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.duty')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -62,7 +63,7 @@ function Staff() {
                   <Calendar className="w-8 h-8 text-purple-500" />
                   <div>
                     <p className="text-2xl font-bold">156</p>
-                    <p className="text-sm text-muted-foreground">Scheduled Hours</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.scheduledHours')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ function Staff() {
                   <UserPlus className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">3</p>
-                    <p className="text-sm text-muted-foreground">New Hires</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.newHires')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -83,7 +84,7 @@ function Staff() {
 
           <Tabs defaultValue="directory" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="directory">Staff Directory</TabsTrigger>
+              <TabsTrigger value="directory">{t('screens.admin.staffDirectory')}</TabsTrigger>
               <TabsTrigger value="scheduling">Scheduling</TabsTrigger>
               <TabsTrigger value="availability">Availability</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -91,7 +92,7 @@ function Staff() {
 
             <TabsContent value="directory" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Active Staff Members</h3>
+                <h3 className="text-lg font-semibold">{t('screens.admin.activeStaffMembers')}</h3>
                 <Button>
                   <UserPlus className="w-4 h-4 mr-2" />
                   Add Staff
@@ -132,10 +133,10 @@ function Staff() {
             <TabsContent value="scheduling" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Schedule Management</CardTitle>
+                  <CardTitle>{t('screens.admin.scheduleManagement')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Shift scheduling and workforce planning tools.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.shiftSchedulingWorkforcePlanningTools')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -143,10 +144,10 @@ function Staff() {
             <TabsContent value="availability" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Staff Availability</CardTitle>
+                  <CardTitle>{t('screens.admin.staffAvailability')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Real-time availability tracking and time-off management.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.realtimeAvailabilityTrackingTimeoffManagement')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -154,10 +155,10 @@ function Staff() {
             <TabsContent value="reports" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Workforce Reports</CardTitle>
+                  <CardTitle>{t('screens.admin.workforceReports')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Staffing analytics and performance metrics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.staffingAnalyticsPerformanceMetrics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

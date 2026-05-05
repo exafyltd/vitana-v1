@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { adminFetch } from "@/lib/admin-api";
+import { t } from '@/lib/i18n-toast';
 
 interface Message {
   role: "user" | "assistant";
@@ -57,7 +58,7 @@ export default function AssistantPlayground() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🧪"
-          title="Playground"
+          title={t('screens.admin.playground')}
           description="Test your assistant with the live tenant configuration. Messages use the same pipeline as production."
         />
 

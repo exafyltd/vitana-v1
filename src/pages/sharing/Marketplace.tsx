@@ -14,6 +14,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { BrowseServicesPopup } from "@/components/BrowseServicesPopup";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
+import { t } from '@/lib/i18n-toast';
 
 function Marketplace() {
   const [activeTab, setActiveTab] = useState("featured");
@@ -21,18 +22,18 @@ function Marketplace() {
 
   return (
     <AppLayout>
-      <SEO title="Integration Marketplace | Sharing" description="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data." />
+      <SEO title={t('screens.sharing.integrationMarketplaceSharing')} description="Discover and connect with healthcare platforms, research studies, and wellness apps to maximize the value of your health data." />
       <SubNavigation items={sharingNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Integration Marketplace 🛒"
+            title={t('screens.sharing.integrationMarketplace')}
             description="Discover verified integrations to share your health data with trusted healthcare platforms and research studies"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search integrations, research studies, healthcare platforms..." />
+            <ExpandableSearchButton placeholder={t('screens.sharing.searchIntegrationsResearchStudiesHealthcarePlatfor')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
@@ -41,9 +42,9 @@ function Marketplace() {
           </UtilityActionButton>
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
-          <SplitBarTrigger value="featured">Featured Integrations</SplitBarTrigger>
+          <SplitBarTrigger value="featured">{t('screens.sharing.featuredIntegrations')}</SplitBarTrigger>
           <SplitBarTrigger value="categories">Categories</SplitBarTrigger>
-          <SplitBarTrigger value="connected">My Connections</SplitBarTrigger>
+          <SplitBarTrigger value="connected">{t('screens.sharing.myConnections')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="featured">
@@ -51,7 +52,7 @@ function Marketplace() {
             {/* Row 1: Big + Small + Small (6+3+3) */}
             <div className="col-span-12 md:col-span-6">
               <StandardCard
-                title="Premium Healthcare Integrations"
+                title={t('screens.sharing.premiumHealthcareIntegrations')}
                 subtitle="Top-Rated Platforms"
                 icon={Building}
                 content={
@@ -59,8 +60,8 @@ function Marketplace() {
                     <div className="p-3 bg-muted rounded-lg">
                       <div className="flex justify-between items-center">
                         <div>
-                          <div className="font-medium text-sm">Epic MyChart Integration</div>
-                          <div className="text-xs text-muted-foreground">4.8★ rating - 2.5M+ users - HIPAA compliant</div>
+                          <div className="font-medium text-sm">{t('screens.sharing.epicMychartIntegration')}</div>
+                          <div className="text-xs text-muted-foreground">{t('screens.sharing.text48Rating25m')}</div>
                         </div>
                         <div className="text-green-600 font-bold text-xs">Featured</div>
                       </div>
@@ -68,8 +69,8 @@ function Marketplace() {
                     <div className="p-3 bg-muted rounded-lg">
                       <div className="flex justify-between items-center">
                         <div>
-                          <div className="font-medium text-sm">Stanford Medicine AI Lab</div>
-                          <div className="text-xs text-muted-foreground">4.9★ rating - Research opportunity - Earn $50-200</div>
+                          <div className="font-medium text-sm">{t('screens.sharing.stanfordMedicineAiLab')}</div>
+                          <div className="text-xs text-muted-foreground">{t('screens.sharing.text49RatingResearchOpportunity')}</div>
                         </div>
                         <div className="text-blue-600 font-bold text-xs">Research</div>
                       </div>
@@ -80,26 +81,26 @@ function Marketplace() {
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Available Apps"
+                title={t('screens.sharing.availableApps')}
                 subtitle="Total Integrations"
                 icon={Store}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-blue-600">127</div>
-                    <div className="text-xs text-muted-foreground">Ready to connect</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.readyConnect')}</div>
                   </div>
                 }
               />
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Avg. Rating"
+                title={t('screens.sharing.avgRating')}
                 subtitle="User Satisfaction"
                 icon={Star}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-yellow-600">4.7★</div>
-                    <div className="text-xs text-muted-foreground">Highly rated</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.highlyRated')}</div>
                   </div>
                 }
               />
@@ -113,7 +114,7 @@ function Marketplace() {
             {/* Row 3: Small + Small + Big (3+3+6) */}
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Research Studies"
+                title={t('screens.sharing.researchStudies2')}
                 subtitle="Active Programs"
                 icon={Users}
                 content={
@@ -126,35 +127,35 @@ function Marketplace() {
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Healthcare Platforms"
+                title={t('screens.sharing.healthcarePlatforms')}
                 subtitle="Medical Systems"
                 icon={Shield}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-purple-600">24</div>
-                    <div className="text-xs text-muted-foreground">HIPAA compliant</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.hipaaCompliant')}</div>
                   </div>
                 }
               />
             </div>
             <div className="col-span-12 md:col-span-6">
               <StandardCard
-                title="Trending Integrations"
+                title={t('screens.sharing.trendingIntegrations')}
                 subtitle="Most Popular This Month"
                 icon={Zap}
                 content={
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span>Fitbit Health Connect - Real-time sync active</span>
+                      <span>{t('screens.sharing.fitbitHealthConnectRealtimeSync')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>Apple Health Integration - Seamless data flow</span>
+                      <span>{t('screens.sharing.appleHealthIntegrationSeamlessData')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span>Mayo Clinic Connect - Premium partnership</span>
+                      <span>{t('screens.sharing.mayoClinicConnectPremiumPartnership')}</span>
                     </div>
                   </div>
                 }
@@ -168,42 +169,42 @@ function Marketplace() {
             {/* Row 1: Single Full Row (12) */}
             <div className="col-span-12">
               <StandardCard
-                title="Integration Categories"
+                title={t('screens.sharing.integrationCategories')}
                 subtitle="Explore by Type"
                 icon={Globe}
                 content={
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <div className="font-medium text-sm mb-3">Healthcare & Medical</div>
+                      <div className="font-medium text-sm mb-3">{t('screens.sharing.healthcareMedical')}</div>
                       <div className="space-y-2">
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Healthcare Platforms</span>
-                          <span className="text-xs text-muted-foreground">24 apps</span>
+                          <span className="text-sm">{t('screens.sharing.healthcarePlatforms')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text24Apps')}</span>
                         </div>
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Electronic Health Records</span>
-                          <span className="text-xs text-muted-foreground">12 apps</span>
+                          <span className="text-sm">{t('screens.sharing.electronicHealthRecords')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text12Apps')}</span>
                         </div>
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Telemedicine Platforms</span>
-                          <span className="text-xs text-muted-foreground">8 apps</span>
+                          <span className="text-sm">{t('screens.sharing.telemedicinePlatforms')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text8Apps')}</span>
                         </div>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="font-medium text-sm mb-3">Research & Studies</div>
+                      <div className="font-medium text-sm mb-3">{t('screens.sharing.researchStudies')}</div>
                       <div className="space-y-2">
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Medical Research</span>
-                          <span className="text-xs text-muted-foreground">18 studies</span>
+                          <span className="text-sm">{t('screens.sharing.medicalResearch')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text18Studies')}</span>
                         </div>
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Clinical Trials</span>
-                          <span className="text-xs text-muted-foreground">7 studies</span>
+                          <span className="text-sm">{t('screens.sharing.clinicalTrials')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text7Studies')}</span>
                         </div>
                         <div className="flex justify-between p-2 bg-muted rounded">
-                          <span className="text-sm">Population Health</span>
-                          <span className="text-xs text-muted-foreground">5 studies</span>
+                          <span className="text-sm">{t('screens.sharing.populationHealth')}</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.sharing.text5Studies')}</span>
                         </div>
                       </div>
                     </div>
@@ -220,26 +221,26 @@ function Marketplace() {
             {/* Row 3: Big + Small + Small (6+3+3) */}
             <div className="col-span-12 md:col-span-6">
               <StandardCard
-                title="Popular Categories"
+                title={t('screens.sharing.popularCategories')}
                 subtitle="Most Connected This Month"
                 icon={Star}
                 content={
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span>Fitness & Activity Trackers (45% of users)</span>
+                      <span>{t('screens.sharing.fitnessActivityTrackers45Users')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>Electronic Health Records (38% of users)</span>
+                      <span>{t('screens.sharing.electronicHealthRecords38Users')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span>Research Participation (22% of users)</span>
+                      <span>{t('screens.sharing.researchParticipation22Users')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <span>Wellness Apps (31% of users)</span>
+                      <span>{t('screens.sharing.wellnessApps31Users')}</span>
                     </div>
                   </div>
                 }
@@ -247,26 +248,26 @@ function Marketplace() {
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Total Categories"
+                title={t('screens.sharing.totalCategories')}
                 subtitle="Available Types"
                 icon={Store}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-purple-600">8</div>
-                    <div className="text-xs text-muted-foreground">Different categories</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.differentCategories')}</div>
                   </div>
                 }
               />
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="New This Month"
+                title={t('screens.sharing.newThisMonth')}
                 subtitle="Fresh Integrations"
                 icon={Zap}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-green-600">5</div>
-                    <div className="text-xs text-muted-foreground">Recently added</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.recentlyAdded')}</div>
                   </div>
                 }
               />
@@ -279,33 +280,33 @@ function Marketplace() {
             {/* Row 1: Small + Small + Big (3+3+6) */}
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Active Connections"
+                title={t('screens.sharing.activeConnections')}
                 subtitle="Currently Connected"
                 icon={Users}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-green-600">2</div>
-                    <div className="text-xs text-muted-foreground">Apps connected</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.appsConnected')}</div>
                   </div>
                 }
               />
             </div>
             <div className="col-span-12 md:col-span-3">
               <StandardCard
-                title="Monthly Earnings"
+                title={t('screens.sharing.monthlyEarnings')}
                 subtitle="Research Participation"
                 icon={Star}
                 content={
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-green-600">$125</div>
-                    <div className="text-xs text-muted-foreground">This month</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.thisMonth')}</div>
                   </div>
                 }
               />
             </div>
             <div className="col-span-12 md:col-span-6">
               <StandardCard
-                title="My Active Connections"
+                title={t('screens.sharing.myActiveConnections')}
                 subtitle="Currently Connected Platforms"
                 icon={Globe}
                 content={
@@ -313,8 +314,8 @@ function Marketplace() {
                     <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                       <div className="flex justify-between items-center">
                         <div>
-                          <div className="font-medium text-sm">Fitbit Health Connect</div>
-                          <div className="text-xs text-muted-foreground">Connected 3 months ago - Real-time sync active</div>
+                          <div className="font-medium text-sm">{t('screens.sharing.fitbitHealthConnect')}</div>
+                          <div className="text-xs text-muted-foreground">{t('screens.sharing.connected3MonthsAgoRealtime')}</div>
                         </div>
                         <div className="text-green-600 text-xs font-bold">Active</div>
                       </div>
@@ -322,8 +323,8 @@ function Marketplace() {
                     <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                       <div className="flex justify-between items-center">
                         <div>
-                          <div className="font-medium text-sm">Stanford Diabetes Study</div>
-                          <div className="text-xs text-muted-foreground">Participating since 2 months - Earning rewards</div>
+                          <div className="font-medium text-sm">{t('screens.sharing.stanfordDiabetesStudy')}</div>
+                          <div className="text-xs text-muted-foreground">{t('screens.sharing.participatingSince2MonthsEarning')}</div>
                         </div>
                         <div className="text-blue-600 text-xs font-bold">Research</div>
                       </div>
@@ -341,42 +342,42 @@ function Marketplace() {
             {/* Row 3: Single Full Row (12) */}
             <div className="col-span-12">
               <StandardCard
-                title="Connection Management & Analytics"
+                title={t('screens.sharing.connectionManagementAnalytics')}
                 subtitle="Monitor Your Data Sharing"
                 icon={Shield}
                 content={
                   <div className="grid grid-cols-2 gap-6 text-sm">
                     <div className="space-y-3">
-                      <div className="font-medium">Data Sharing Summary</div>
+                      <div className="font-medium">{t('screens.sharing.dataSharingSummary')}</div>
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Total Data Shared</span>
-                          <span className="font-medium">5.2 GB</span>
+                          <span className="text-muted-foreground">{t('screens.sharing.totalDataShared')}</span>
+                          <span className="font-medium">{t('screens.sharing.text52Gb')}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Sync Frequency</span>
-                          <span className="font-medium">Real-time</span>
+                          <span className="text-muted-foreground">{t('screens.sharing.syncFrequency')}</span>
+                          <span className="font-medium">{t('screens.sharing.realtime')}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Last Activity</span>
-                          <span className="font-medium">2 hours ago</span>
+                          <span className="text-muted-foreground">{t('screens.sharing.lastActivity')}</span>
+                          <span className="font-medium">{t('screens.sharing.text2HoursAgo')}</span>
                         </div>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="font-medium">Connection Health</div>
+                      <div className="font-medium">{t('screens.sharing.connectionHealth')}</div>
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span>All connections secure and encrypted</span>
+                          <span>{t('screens.sharing.allConnectionsSecureEncrypted')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Data sync operating normally</span>
+                          <span>{t('screens.sharing.dataSyncOperatingNormally')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span>Research participation on track</span>
+                          <span>{t('screens.sharing.researchParticipationTrack')}</span>
                         </div>
                       </div>
                     </div>
