@@ -141,15 +141,20 @@ export function LifeCompassPopup({ open, onOpenChange }: LifeCompassPopupProps) 
       <DialogContent
         className="w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] sm:w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 rounded-lg"
       >
-        {/* Explicit close button — always visible top-right, outside the scroll
-            area. The framework's default Close is hidden by [&>button]:sr-only
-            on DialogContent, so render our own with a clear target and z-index. */}
-        <DialogClose
-          aria-label={translate('lifeCompass.closeAria', 'Close')}
-          className="absolute right-3 top-3 z-10 rounded-full p-1.5 bg-muted/80 hover:bg-muted text-foreground opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary/60"
-        >
-          <X className="h-4 w-4" />
-        </DialogClose>
+        {/* Standard unframed X close, top-right. Wrapped in a span so it isn't
+            a direct <button> child of DialogContent — that's what the framework's
+            [&>button]:sr-only selector hides (which is why the previous, direct
+            DialogClose was invisible). boxShadow:'none' defeats the WebView/Radix
+            auto-focus ring. */}
+        <span className="absolute right-3 top-3 z-10">
+          <DialogClose
+            aria-label={translate('lifeCompass.closeAria', 'Close')}
+            style={{ boxShadow: 'none' }}
+            className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
+          >
+            <X className="h-4 w-4" />
+          </DialogClose>
+        </span>
 
         <DialogHeader className="pr-8">
           <div className="flex items-center gap-2 mb-1">
