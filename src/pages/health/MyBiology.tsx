@@ -53,6 +53,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { notifyError } from '@/lib/i18n-toast';
 
 // Report type display config
 const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
@@ -131,7 +132,7 @@ export default function MyBiology() {
 
   const handleViewReport = async (filePath: string | null) => {
     if (!filePath) {
-      toast({ title: "No file available", variant: "destructive" });
+      notifyError('toasts.health.noFileAvailable');
       return;
     }
     const { data, error } = await supabase.storage
@@ -139,7 +140,7 @@ export default function MyBiology() {
       .createSignedUrl(filePath, 3600);
     
     if (error || !data?.signedUrl) {
-      toast({ title: "Could not load file", description: error?.message, variant: "destructive" });
+      notifyError('toasts.health.couldNotLoadFile');
       return;
     }
     window.open(data.signedUrl, '_blank');

@@ -28,7 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { MobileInventoryCard } from "./MobileInventoryCard";
 import { SellEventModal } from "./SellEventModal";
-import { toast } from "sonner";
+import { notifyInfo } from '@/lib/i18n-toast';
 
 // Format currency for earnings display
 const formatEarning = (amount: number): string => {
@@ -156,7 +156,7 @@ export function ResellerAvailableEventsTab() {
   const handleStartSelling = async (event: any) => {
     // If not a reseller yet, activate first
     if (!resellerProfile?.reseller_code) {
-      toast.info("Activating your reseller profile...");
+      notifyInfo('toasts.reseller.activatingYourResellerProfile');
       const success = await activateResellerForCurrentUser({ showToast: true, redirectAfter: false });
       if (!success) return;
     }

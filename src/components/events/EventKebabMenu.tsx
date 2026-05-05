@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface EventKebabMenuProps {
   event: any;
@@ -50,20 +50,13 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
 
       if (error) throw error;
 
-      toast({
-        title: "Event deleted",
-        description: `"${event.title}" has been permanently removed.`,
-      });
+      notify('toasts.events.eventDeleted');
 
       setDeleteDialogOpen(false);
       onDelete?.(event.id);
     } catch (error) {
       console.error("Failed to delete event:", error);
-      toast({
-        title: "Failed to delete event",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      notifyError('toasts.events.failedDeleteEvent', 'toasts.events.pleaseTryAgainLater');
     } finally {
       setIsDeleting(false);
     }

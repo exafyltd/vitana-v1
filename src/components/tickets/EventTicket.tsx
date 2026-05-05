@@ -4,8 +4,8 @@ import { format } from "date-fns";
 import { Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
-import { toast } from "sonner";
 import { TicketShareSheet } from "./TicketShareSheet";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 // Tenant Types
 export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
@@ -128,9 +128,9 @@ export function EventTicket({
       link.href = canvas.toDataURL("image/png");
       link.click();
       
-      toast.success("Ticket downloaded!");
+      notifySuccess('toasts.tickets.ticketDownloaded');
     } catch (error) {
-      toast.error("Failed to download ticket");
+      notifyError('toasts.tickets.failedDownloadTicket');
     }
   };
 

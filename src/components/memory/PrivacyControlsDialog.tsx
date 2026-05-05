@@ -5,7 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Shield, AlertTriangle } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface PrivacyControlsDialogProps {
   open: boolean;
@@ -46,10 +47,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
   };
 
   const handleSave = () => {
-    toast({
-      title: "Privacy Settings Saved",
-      description: "Your privacy preferences have been updated.",
-    });
+    notify('toasts.memory.privacySettingsSaved', 'toasts.memory.yourPrivacyPreferencesHaveUpdated');
     onOpenChange(false);
   };
 

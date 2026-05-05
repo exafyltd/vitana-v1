@@ -23,6 +23,7 @@ import { TicketActionDrawer } from "./TicketActionDrawer";
 // the global Gate A phrase lists + a test sandbox.
 import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
 import { Switch } from "@/components/ui/switch";
+import { notifyError } from '@/lib/i18n-toast';
 
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
@@ -205,11 +206,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
       });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     } catch (err) {
-      toast({
-        title: "Approve all failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.approveAllFailed');
     } finally {
       setApproving(s => ({ ...s, [g.customer_key]: false }));
     }
@@ -482,11 +479,7 @@ function SpecialistEnableToggle({
       });
       onChanged();
     } catch (err) {
-      toast({
-        title: "Toggle failed",
-        description: err instanceof Error ? err.message : "Try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.toggleFailed');
     } finally {
       setPending(false);
     }

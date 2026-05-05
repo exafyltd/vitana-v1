@@ -7,8 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { VoiceRecorder } from "@/components/ui/voice-recorder";
 import { Mic, Type, Camera, X, Loader2 } from "lucide-react";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface AddMemoryDialogProps {
   open: boolean;
@@ -63,10 +64,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     // Auto-generate content placeholder
     setContent(`Voice recording (${Math.round(duration)}s) - Transcription pending...`);
     
-    toast({
-      title: "Voice Recorded",
-      description: `${Math.round(duration)} seconds captured. Add details or save now.`
-    });
+    notify('toasts.memory.voiceRecorded');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +72,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid File",
-        description: "Please select an image file",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.invalidFile', 'toasts.memory.pleaseSelectImageFile');
       return;
     }
 
@@ -93,11 +87,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
   const handleSubmit = async () => {
     if (!content.trim() && !audioFile && !imageFile) {
-      toast({
-        title: "Empty Memory",
-        description: "Please add some content to your memory",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.emptyMemory', 'toasts.memory.pleaseAddSomeContentYourMemory');
       return;
     }
 
@@ -153,17 +143,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
       setInputMode("text");
       onOpenChange(false);
 
-      toast({
-        title: "Memory Saved",
-        description: "Your memory has been added to your knowledge base"
-      });
+      notify('toasts.memory.memorySaved', 'toasts.memory.yourMemoryHasAddedYourKnowledge');
     } catch (error) {
       console.error("Error saving memory:", error);
-      toast({
-        title: "Save Failed",
-        description: error instanceof Error ? error.message : "Failed to save memory",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.saveFailed');
     }
   };
 

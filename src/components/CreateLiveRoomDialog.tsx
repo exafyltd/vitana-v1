@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useCreatorStatus } from '@/hooks/useCreator';
 import { Link } from 'react-router-dom';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CreateLiveRoomDialogProps {
   userId: string;
@@ -35,31 +36,19 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
-      toast({
-        title: "Room name required",
-        description: "Please enter a name for your live room",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.roomNameRequired', 'toasts.common.pleaseEnterNameForYourLive');
       return;
     }
 
     const effectiveIsPaid = isPaid && !isIAPRestricted();
 
     if (effectiveIsPaid && !canCreatePaidRoom) {
-      toast({
-        title: "Payment setup required",
-        description: "Please enable payments in Settings before creating paid rooms",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.paymentSetupRequired', 'toasts.common.pleaseEnablePaymentsSettingsBeforeCreating');
       return;
     }
 
     if (effectiveIsPaid && (!price || parseFloat(price) < 1)) {
-      toast({
-        title: "Price required",
-        description: "Please enter a price of at least $1.00",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.priceRequired', 'toasts.common.pleaseEnterPriceAtLeast1');
       return;
     }
 
@@ -79,16 +68,9 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       setIsPaid(false);
       setPrice('');
       
-      toast({
-        title: "Live room created",
-        description: `${roomName} is ready for participants`,
-      });
+      notify('toasts.common.liveRoomCreated');
     } catch (error) {
-      toast({
-        title: "Failed to create room",
-        description: "Please try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.failedCreateRoom', 'toasts.common.pleaseTryAgain');
     } finally {
       setIsLoading(false);
     }

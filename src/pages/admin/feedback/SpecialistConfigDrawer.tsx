@@ -17,9 +17,10 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface Persona {
   id: string;
@@ -143,7 +144,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
     try {
       parsedExtras = JSON.parse(intakeExtras || "{}");
     } catch {
-      toast({ title: "Intake schema must be valid JSON", variant: "destructive" });
+      notifyError('toasts.admin.intakeSchemaMustValidJson');
       return;
     }
     try {
@@ -152,27 +153,27 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
         intake_schema_extras: parsedExtras,
         notes: notes || null,
       });
-      toast({ title: "Saved", description: `${personaKey} configuration updated.` });
+      notify('toasts.admin.saved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
   const saveKb = async () => {
     try {
       await kbMutation.mutateAsync(kbScopes);
-      toast({ title: "KB bindings saved" });
+      notify('toasts.admin.kbBindingsSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
   const saveKeywords = async () => {
     try {
       await keywordsMutation.mutateAsync(keywords);
-      toast({ title: "Routing keywords saved" });
+      notify('toasts.admin.routingKeywordsSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 

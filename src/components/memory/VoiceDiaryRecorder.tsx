@@ -17,6 +17,7 @@ import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
@@ -155,11 +156,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
 
   const startBackendRecording = async () => {
     if (!DiaryAudioRecorder.isSupported()) {
-      toast({
-        title: "Not Supported",
-        description: "Microphone recording is not supported on this device.",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.notSupported', 'toasts.memory.microphoneRecordingNotSupportedThisDevice');
       return;
     }
 
@@ -182,10 +179,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         setRecordingDuration(prev => prev + 1);
       }, 1000);
 
-      toast({
-        title: "Recording Started",
-        description: "Speak now — your audio will be transcribed when you stop.",
-      });
+      notify('toasts.memory.recordingStarted', 'toasts.memory.speakNowYourAudioWillTranscribed');
     } catch (error: any) {
       console.error('[Voice Diary] MediaRecorder start failed:', error);
       audioRecorderRef.current?.cancel();
@@ -195,11 +189,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       const description = error?.name === 'NotAllowedError'
         ? "Microphone permission was denied. Enable it in Settings to record diary entries."
         : "Could not start recording. Please try again.";
-      toast({
-        title: "Recording Error",
-        description,
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.recordingError');
     }
   };
 
@@ -209,11 +199,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
     }
 
     if (!ClientSTT.isSupported()) {
-      toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in this browser.",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.notSupported', 'toasts.memory.speechRecognitionNotSupportedThisBrowser');
       return;
     }
 
@@ -267,11 +253,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
           if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
             return;
           }
-          toast({
-            title: "Recognition Error",
-            description: "Speech recognition encountered an error. Please try again.",
-            variant: "destructive",
-          });
+          notifyError('toasts.memory.recognitionError', 'toasts.memory.speechRecognitionEncounteredErrorPleaseTry');
           stopRecording();
         },
         onEnd: () => {
@@ -316,16 +298,9 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
         setRecordingDuration(prev => prev + 1);
       }, 1000);
       
-      toast({
-        title: "Recording Started",
-        description: "Speak clearly - you'll see your words appear in real-time",
-      });
+      notify('toasts.memory.recordingStarted', 'toasts.memory.speakClearlyYouLlSee');
     } catch (error) {
-      toast({
-        title: "Recording Error",
-        description: "Could not start speech recognition. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.recordingError', 'toasts.memory.couldNotStartSpeechRecognitionPlease');
     }
   };
 
@@ -354,36 +329,21 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       try {
         const blob = await recorder.stop();
         if (!blob || blob.size === 0) {
-          toast({
-            title: "No Audio Captured",
-            description: "We didn't capture any audio. Please try again.",
-            variant: "destructive",
-          });
+          notifyError('toasts.memory.noAudioCaptured', 'toasts.memory.weDidnTCaptureAnyAudio');
           return;
         }
 
         const transcript = await transcribeAudioBlob(blob, resolveLanguage());
         if (!transcript) {
-          toast({
-            title: "No Speech Detected",
-            description: "We couldn't hear any speech. Please try again.",
-            variant: "destructive",
-          });
+          notifyError('toasts.memory.noSpeechDetected', 'toasts.memory.weCouldnTHearAnySpeech');
           return;
         }
 
         setTranscribedText(prev => prev ? `${prev} ${transcript}`.trim() : transcript);
-        toast({
-          title: "Recording Stopped",
-          description: "Review and edit your transcription before saving.",
-        });
+        notify('toasts.memory.recordingStopped', 'toasts.memory.reviewEditYourTranscriptionBeforeSaving');
       } catch (error: any) {
         console.error('[Voice Diary] Backend transcription failed:', error);
-        toast({
-          title: "Transcription Failed",
-          description: error?.message || "Could not transcribe the recording. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.memory.transcriptionFailed');
       } finally {
         setIsTranscribing(false);
       }
@@ -395,10 +355,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       setIsRecording(false);
       setInterimText('');
 
-      toast({
-        title: "Recording Stopped",
-        description: "Review and edit your transcription before saving.",
-      });
+      notify('toasts.memory.recordingStopped', 'toasts.memory.reviewEditYourTranscriptionBeforeSaving');
     }
   };
 
@@ -411,11 +368,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       return;
     }
     if (!transcribedText.trim()) {
-      toast({
-        title: "No Content",
-        description: "Please record or enter some content before saving.",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.noContent', 'toasts.memory.pleaseRecordEnterSomeContentBefore');
       return;
     }
 
@@ -457,17 +410,10 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
             : `${sync.health_features_written} health signals logged.`,
         });
       } else {
-        toast({
-          title: "Entry Saved",
-          description: "Your diary entry has been added to your memory timeline.",
-        });
+        notify('toasts.memory.entrySaved', 'toasts.memory.yourDiaryEntryHasAddedYour');
       }
     } catch (error) {
-      toast({
-        title: "Save Failed",
-        description: "Could not save your diary entry. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.saveFailed', 'toasts.memory.couldNotSaveYourDiaryEntry');
     } finally {
       setIsSaving(false);
     }

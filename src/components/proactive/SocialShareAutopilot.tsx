@@ -7,6 +7,7 @@ import { Zap, TrendingUp, Calendar, Sparkles, Trophy } from "lucide-react";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { notify } from '@/lib/i18n-toast';
 
 interface ShareableMoment {
   id: string;
@@ -51,18 +52,12 @@ export function SocialShareAutopilot() {
   const handleAutoShare = (momentId: string) => {
     const moment = shareableMoments.find(m => m.id === momentId);
     if (moment) {
-      toast({
-        title: "Auto-Share Scheduled!",
-        description: `Your post will be shared to ${moment.suggestedPlatforms.length} platforms at ${moment.optimalTime}`,
-      });
+      notify('toasts.proactive.autoshareScheduled');
     }
   };
 
   const handleEditPost = (momentId: string) => {
-    toast({
-      title: "Edit Post",
-      description: "Post editor coming soon!",
-    });
+    notify('toasts.proactive.editPost', 'toasts.proactive.postEditorComingSoon');
   };
 
   // Transform ShareableMoment to StandardHorizontalCardProps

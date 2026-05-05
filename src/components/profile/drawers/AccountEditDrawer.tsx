@@ -14,11 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useProfile } from "@/context/ProfileProvider";
 import { AccountInfo } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { AvatarUploadField } from "@/components/profile/editor/AvatarUploadField";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface AccountEditDrawerProps {
   open: boolean;
@@ -131,17 +132,10 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
         city: form.city.trim() || undefined,
       };
       await updateAccount(patch);
-      toast({
-        title: "Account updated",
-        description: "Your personal details have been saved.",
-      });
+      notify('toasts.profile.accountUpdated', 'toasts.profile.yourPersonalDetailsHaveSaved');
       onOpenChange(false);
     } catch (error: any) {
-      toast({
-        title: "Could not save",
-        description: error?.message ?? "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.couldNotSave');
     } finally {
       setSaving(false);
     }

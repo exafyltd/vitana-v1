@@ -13,7 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { format } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function Music() {
   const { toast } = useToast();
@@ -48,9 +49,9 @@ export default function Music() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedUpdateStatus');
     } else {
-      toast({ title: "Success", description: `Music ${newStatus}` });
+      notify('toasts.admin.success');
       refetch();
     }
   };
@@ -62,9 +63,9 @@ export default function Music() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to delete music", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedDeleteMusic');
     } else {
-      toast({ title: "Success", description: "Music deleted" });
+      notify('toasts.admin.success', 'toasts.admin.musicDeleted');
       refetch();
     }
   };

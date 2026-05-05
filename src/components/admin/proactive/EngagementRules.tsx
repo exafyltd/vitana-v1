@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Clock, Moon } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function EngagementRules() {
   const { toast } = useToast();
@@ -59,17 +60,10 @@ export function EngagementRules() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-proactive-settings'] });
-      toast({
-        title: "Rules Updated",
-        description: "Engagement rules have been saved successfully.",
-      });
+      notify('toasts.admin.rulesUpdated', 'toasts.admin.engagementRulesHaveSavedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.updateFailed');
     }
   });
 

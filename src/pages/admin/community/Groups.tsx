@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface CommunityGroup {
   id: string;
@@ -71,7 +72,7 @@ const GroupsModeration = () => {
       setGroups((data || []) as CommunityGroup[]);
     } catch (error) {
       console.error('Error fetching groups:', error);
-      toast.error('Failed to load groups');
+      notifyError('toasts.admin.failedLoadGroups');
     } finally {
       setLoading(false);
     }
@@ -93,7 +94,7 @@ const GroupsModeration = () => {
       fetchGroups();
     } catch (error) {
       console.error('Error moderating group:', error);
-      toast.error('Failed to moderate group');
+      notifyError('toasts.admin.failedModerateGroup');
     }
   };
 

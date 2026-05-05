@@ -2,7 +2,7 @@ import { Play, Pause, Heart, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { useBookmarks } from '@/hooks/useBookmarks';
-import { toast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface MusicTrack {
   id: string;
@@ -69,11 +69,7 @@ export function MobileMusicList({ tracks }: MobileMusicListProps) {
       }
     } else {
       await navigator.clipboard.writeText(shareData.url);
-      toast({
-        title: "Link copied",
-        description: "Music link copied to clipboard",
-        duration: 2000,
-      });
+      notify('toasts.community.linkCopied', 'toasts.community.musicLinkCopiedClipboard');
     }
   };
 

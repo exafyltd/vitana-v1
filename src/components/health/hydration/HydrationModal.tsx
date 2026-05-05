@@ -18,7 +18,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyInfo, notifySuccess } from '@/lib/i18n-toast';
 
 interface HydrationModalProps {
   data: DailyHydrationData | null;
@@ -249,7 +249,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             <Button 
               variant="outline" 
               className="flex-1 gap-2"
-              onClick={() => toast.info('Reminder settings opened')}
+              onClick={() => notifyInfo('toasts.health.reminderSettingsOpened')}
             >
               <Clock className="w-4 h-4" />
               Set Reminder
@@ -258,7 +258,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             <Button 
               className="flex-1 gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 
                 hover:from-cyan-600 hover:to-blue-600"
-              onClick={() => toast.success('Water intake logged! 💧')}
+              onClick={() => notifySuccess('toasts.health.waterIntakeLogged')}
             >
               <Plus className="w-4 h-4" />
               Log Water

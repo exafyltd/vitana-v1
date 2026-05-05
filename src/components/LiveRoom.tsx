@@ -5,6 +5,7 @@ import { useWebRTC } from '@/hooks/useWebRTC';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Monitor, Maximize, Minimize } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface LiveRoomProps {
   roomId: string;
@@ -36,11 +37,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
     if (joinedRef.current) return;
     joinedRef.current = true;
     joinRoom().catch(error => {
-      toast({
-        title: "Failed to join room",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.common.failedJoinRoom');
     });
 
     return () => {

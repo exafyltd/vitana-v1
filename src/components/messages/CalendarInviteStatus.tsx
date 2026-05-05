@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { InviteResponseSummary } from './InviteResponseSummary';
+import { notify } from '@/lib/i18n-toast';
 
 interface CalendarInviteStatusProps {
   messageId: string;
@@ -74,10 +75,7 @@ export const CalendarInviteStatus: React.FC<CalendarInviteStatusProps> = ({
         if (isMessageSender && payload.eventType === 'INSERT') {
           const newResponse = payload.new as any;
           if (newResponse.user_id !== user?.id) {
-            toast({
-              title: '🎉 New Response!',
-              description: `Someone ${newResponse.response} your calendar invite`,
-            });
+            notify('toasts.messages.newResponse');
           }
         }
         

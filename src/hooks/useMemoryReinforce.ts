@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 type ReinforcementAction = 'confirm' | 'reference' | 'contradict';
 
@@ -26,17 +27,10 @@ export function useMemoryReinforce() {
         ? 'marked as incorrect'
         : 'referenced';
 
-      toast({
-        title: "Memory Updated",
-        description: `Memory ${actionText}. Confidence adjusted.`
-      });
+      notify('toasts.hooks.memoryUpdated');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.updateFailed');
     }
   });
 

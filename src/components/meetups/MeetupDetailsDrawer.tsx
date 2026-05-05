@@ -93,6 +93,7 @@ import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -477,11 +478,7 @@ export function MeetupDetailsDrawer({
     
     try {
       if (!user) {
-        toast({
-          title: "Sign in required",
-          description: "Please sign in to join events",
-          variant: "destructive",
-        });
+        notifyError('toasts.meetups.signRequired', 'toasts.meetups.pleaseSignJoinEvents');
         setIsJoining(false);
         return;
       }
@@ -545,10 +542,7 @@ export function MeetupDetailsDrawer({
               setIsJoined(false);
               setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
               invalidateEventsCache();
-              toast({
-                title: "Removed from calendar",
-                description: "You've left this meetup.",
-              });
+              notify('toasts.meetups.removedFromCalendar', 'toasts.meetups.youVeLeftThisMeetup');
             }}
           >
             Undo
@@ -558,11 +552,7 @@ export function MeetupDetailsDrawer({
     } catch (error) {
       console.error('Failed to add event to calendar:', error);
       setIsJoining(false);
-      toast({
-        title: "Failed to add event",
-        description: "Please try again or check your calendar permissions.",
-        variant: "destructive",
-      });
+      notifyError('toasts.meetups.failedAddEvent', 'toasts.meetups.pleaseTryAgainCheckYourCalendar');
     }
   };
 
@@ -636,22 +626,13 @@ export function MeetupDetailsDrawer({
     if (type === 'google') {
       const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
-      toast({
-        title: "Opening calendar",
-        description: `Add the event to ${calendarName}`,
-      });
+      notify('toasts.meetups.openingCalendar');
     } else if (type === 'outlook') {
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(event.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || event.virtual_link || '')}`;
       window.open(url, '_blank');
-      toast({
-        title: "Opening calendar",
-        description: `Add the event to ${calendarName}`,
-      });
+      notify('toasts.meetups.openingCalendar');
     } else if (type === 'apple' || type === 'ics') {
-      toast({
-        title: "Calendar export",
-        description: "iCal file downloaded",
-      });
+      notify('toasts.meetups.calendarExport', 'toasts.meetups.icalFileDownloaded');
     }
   };
 
@@ -785,11 +766,7 @@ export function MeetupDetailsDrawer({
       });
     } catch (error) {
       console.error('Failed to send message:', error);
-      toast({
-        title: "Failed to send message",
-        description: "Please try again later",
-        variant: "destructive"
-      });
+      notifyError('toasts.meetups.failedSendMessage', 'toasts.meetups.pleaseTryAgainLater');
     } finally {
       setIsCreatingThread(false);
     }

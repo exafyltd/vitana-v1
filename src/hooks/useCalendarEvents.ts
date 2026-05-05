@@ -6,6 +6,7 @@ import { measurePerformance } from '@/utils/performanceLogger';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
 import { useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 // Global event bus constant
 const CALENDAR_REFRESH_EVENT = 'calendar-events:refresh';
@@ -210,10 +211,7 @@ export function useCalendarEvents() {
       setEvents(prev => [data as CalendarEvent, ...prev]);
       
       if (options?.showToast !== false) {
-        toast({
-          title: 'Event Added',
-          description: `"${eventData.title}" has been added to your calendar`,
-        });
+        notify('toasts.hooks.eventAdded');
       }
 
       // Log activity
@@ -237,11 +235,7 @@ export function useCalendarEvents() {
       return data;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to add calendar event';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error');
       throw err;
     }
   };
@@ -290,11 +284,7 @@ export function useCalendarEvents() {
       return data;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update calendar event';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error');
       throw err;
     }
   };
@@ -312,10 +302,7 @@ export function useCalendarEvents() {
       const deletedEvent = events.find(e => e.id === eventId);
       setEvents(prev => prev.filter(event => event.id !== eventId));
       
-      toast({
-        title: 'Event Removed',
-        description: 'Event has been removed from your calendar',
-      });
+      notify('toasts.hooks.eventRemoved', 'toasts.hooks.eventHasRemovedFromYourCalendar');
 
       // Log activity
       if (deletedEvent) {
@@ -335,11 +322,7 @@ export function useCalendarEvents() {
       window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to remove calendar event';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error');
       throw err;
     }
   };
@@ -602,11 +585,7 @@ export function useCalendarEvents() {
           console.log('🔄 Optimistic event removed due to error');
           
           // Event creation failed, but response was already recorded
-          toast({
-            title: 'Partial Success',
-            description: 'Response recorded, but failed to update your calendar. You can add it manually.',
-            variant: 'destructive',
-          });
+          notifyError('toasts.hooks.partialSuccess', 'toasts.hooks.responseRecordedButFailedUpdateYour');
           
           // Don't throw - we want to return success for the response part
           return { eventId: undefined, response, error: eventError };
@@ -621,11 +600,7 @@ export function useCalendarEvents() {
     } catch (err) {
       console.error('❌ Failed to respond to invite:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to respond to invite';
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.error');
       
       perf.end({ response, success: false, error: errorMessage });
       throw err;

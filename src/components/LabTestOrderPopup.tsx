@@ -21,6 +21,7 @@ import { Calendar as CalendarIcon, Clock, MapPin, CreditCard, CheckCircle } from
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface LabTest {
   id: string;
@@ -63,11 +64,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to place an order.",
-          variant: "destructive"
-        });
+        notifyError('toasts.common.authenticationRequired', 'toasts.common.pleaseSignPlaceOrder');
         return;
       }
 
@@ -88,18 +85,11 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
 
       if (error) throw error;
 
-      toast({
-        title: "Order Placed Successfully!",
-        description: `Your ${labTest.name} order has been submitted. You'll receive confirmation via email.`,
-      });
+      notify('toasts.common.orderPlacedSuccessfully');
 
       onClose();
     } catch (error: any) {
-      toast({
-        title: "Order Failed",
-        description: error.message || "Failed to place order. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.common.orderFailed');
     } finally {
       setIsSubmitting(false);
     }

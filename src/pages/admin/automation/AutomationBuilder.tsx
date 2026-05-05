@@ -19,6 +19,7 @@ import ConditionBuilder from "@/components/admin/automation/ConditionBuilder";
 import ActionConfigurator from "@/components/admin/automation/ActionConfigurator";
 import { useAutomationRules } from "@/hooks/useAutomationRules";
 import { useToast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function AutomationBuilder() {
   const navigate = useNavigate();
@@ -72,18 +73,11 @@ export default function AutomationBuilder() {
           setActions(pattern.suggested_actions as any[]);
         }
 
-        toast({
-          title: "Pattern Loaded",
-          description: "Automation pre-filled from discovered pattern",
-        });
+        notify('toasts.admin.patternLoaded', 'toasts.admin.automationPrefilledFromDiscoveredPattern');
       }
     } catch (error) {
       console.error("Error loading pattern:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load pattern data",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error', 'toasts.admin.failedLoadPatternData');
     } finally {
       setLoadingPattern(false);
     }
@@ -91,40 +85,24 @@ export default function AutomationBuilder() {
 
   const handleSave = async (isDraft = false) => {
     if (!name.trim()) {
-      toast({
-        title: "Name Required",
-        description: "Please enter a name for this automation",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.nameRequired', 'toasts.admin.pleaseEnterNameForThisAutomation');
       return;
     }
 
     if (!trigger) {
-      toast({
-        title: "Trigger Required",
-        description: "Please select a trigger event",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.triggerRequired', 'toasts.admin.pleaseSelectTriggerEvent');
       return;
     }
 
     if (actions.length === 0) {
-      toast({
-        title: "Actions Required",
-        description: "Please configure at least one action",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.actionsRequired', 'toasts.admin.pleaseConfigureAtLeastOneAction');
       return;
     }
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to create automations",
-          variant: "destructive",
-        });
+        notifyError('toasts.admin.authenticationRequired', 'toasts.admin.pleaseSignCreateAutomations');
         return;
       }
 
@@ -159,11 +137,7 @@ export default function AutomationBuilder() {
 
       navigate("/admin/automation");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save automation rule",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error', 'toasts.admin.failedSaveAutomationRule');
     }
   };
 

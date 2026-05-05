@@ -11,6 +11,7 @@ import { useTenant } from '@/hooks/useTenant';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Search, DollarSign, Users } from 'lucide-react';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface GlobalPaymentRequestProps {
   isOpen: boolean;
@@ -88,11 +89,7 @@ export default function GlobalPaymentRequest({
       }
     } catch (error) {
       console.error('Search error:', error);
-      toast({
-        title: "Search Error",
-        description: "Failed to search users. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.searchError', 'toasts.payment.failedSearchUsersPleaseTryAgain');
     } finally {
       setIsSearching(false);
     }
@@ -100,21 +97,13 @@ export default function GlobalPaymentRequest({
 
   const handleSendRequest = async () => {
     if (!selectedRecipient || !amount || !currency) {
-      toast({
-        title: "Missing Information",
-        description: "Please select a recipient, enter an amount, and choose a currency.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseSelectRecipientEnterAmountChoose');
       return;
     }
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount greater than 0.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.invalidAmount', 'toasts.payment.pleaseEnterValidAmountGreaterThan');
       return;
     }
 
@@ -139,11 +128,7 @@ export default function GlobalPaymentRequest({
       onClose();
     } catch (error) {
       console.error('Request error:', error);
-      toast({
-        title: "Request Failed",
-        description: "Failed to send payment request. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.requestFailed', 'toasts.payment.failedSendPaymentRequestPleaseTry');
     } finally {
       setIsLoading(false);
     }

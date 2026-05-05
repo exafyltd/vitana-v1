@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Image, Video, FileText, X, Upload } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface CreateContentPopupProps {
   isOpen: boolean;
@@ -38,10 +39,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
 
   const handleSubmit = () => {
     const contentTypeText = contentType === "post" ? "Post" : contentType === "article" ? "Article" : "Media";
-    toast({
-      title: "Content Created! 🎉",
-      description: `Your ${contentTypeText.toLowerCase()} has been published successfully.`
-    });
+    notify('toasts.common.contentCreated');
     onClose();
     setFormData({
       title: "",

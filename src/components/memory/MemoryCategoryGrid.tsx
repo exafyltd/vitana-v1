@@ -20,7 +20,7 @@ import { AddMemoryDialog } from "./AddMemoryDialog";
 import { CategoryDetailDialog } from "./CategoryDetailDialog";
 import { Button } from "@/components/ui/button";
 import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
-import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
   "personal-identity": ["Name", "Languages", "Personality", "Strengths", "Life Vision", "Values", "Goals", "Decision Style", "Roles"],
@@ -163,7 +163,7 @@ export function MemoryCategoryGrid() {
 
   const handleRefresh = async () => {
     await refreshMetadata();
-    toast.success("Memory garden updated!");
+    notifySuccess('toasts.memory.memoryGardenUpdated');
   };
 
   const selectedCategoryData = MEMORY_CATEGORIES.find(

@@ -6,6 +6,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { liveRoomService } from '@/services/liveRoomService';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function useDailyRoom(roomId: string) {
   const { toast } = useToast();
@@ -14,25 +15,22 @@ export function useDailyRoom(roomId: string) {
   const createDailyRoomMutation = useMutation({
     mutationFn: () => liveRoomService.createDailyRoom(roomId),
     onSuccess: (data) => {
-      toast({
-        title: 'Video room ready!',
-        description: data.already_existed ? 'Using existing room' : 'Created new video room',
-      });
+      notify('toasts.hooks.videoRoomReady');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to create video room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedCreateVideoRoom');
     },
   });
 
   const deleteDailyRoomMutation = useMutation({
     mutationFn: () => liveRoomService.deleteDailyRoom(roomId),
     onSuccess: () => {
-      toast({ title: 'Video room deleted' });
+      notify('toasts.hooks.videoRoomDeleted');
       queryClient.invalidateQueries({ queryKey: ['live-room', roomId] });
     },
     onError: (error: Error) => {
-      toast({ title: 'Failed to delete video room', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.failedDeleteVideoRoom');
     },
   });
 

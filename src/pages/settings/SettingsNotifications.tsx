@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2 } from "lucide-react";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
-import { toast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const settingsSubItems = [
   { id: "overview", name: "Overview", path: "/settings" },
@@ -35,30 +35,27 @@ export default function SettingsNotifications() {
   const handleToggle = async (field: keyof typeof prefs, value: boolean) => {
     try {
       await updatePref(field, value);
-      toast({ title: "Settings updated", description: "Your notification preferences have been saved" });
+      notify('toasts.settings.settingsUpdated2', 'toasts.settings.yourNotificationPreferencesHaveSaved2');
     } catch {
-      toast({ title: "Error", description: "Failed to update settings", variant: "destructive" });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateSettings');
     }
   };
 
   const handleCategoryToggle = async (cat: CategoryPreference) => {
     try {
       await toggleCategory(cat.id, !cat.enabled);
-      toast({
-        title: "Settings updated",
-        description: `${cat.display_name} notifications ${cat.enabled ? "disabled" : "enabled"}`,
-      });
+      notify('toasts.settings.settingsUpdated2');
     } catch {
-      toast({ title: "Error", description: "Failed to update settings", variant: "destructive" });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateSettings');
     }
   };
 
   const handleTimeChange = async (field: 'dnd_start_time' | 'dnd_end_time', value: string) => {
     try {
       await updatePref(field, value);
-      toast({ title: "Settings updated", description: "Your quiet hours have been updated" });
+      notify('toasts.settings.settingsUpdated2', 'toasts.settings.yourQuietHoursHaveUpdated');
     } catch {
-      toast({ title: "Error", description: "Failed to update quiet hours", variant: "destructive" });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateQuietHours');
     }
   };
 

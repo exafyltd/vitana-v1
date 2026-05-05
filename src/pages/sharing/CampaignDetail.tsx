@@ -16,6 +16,7 @@ import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle
 import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
@@ -88,12 +89,12 @@ function CampaignDetail() {
     
     setShowScheduleDialog(false);
     setSelectedPostId(null);
-    toast.success("Post scheduled successfully");
+    notifySuccess('toasts.sharing.postScheduledSuccessfully');
   };
 
   const handlePublishNow = async (postId: string) => {
     await blastNow.mutateAsync(postId);
-    toast.success("Post published!");
+    notifySuccess('toasts.sharing.postPublished');
   };
 
   const getStatusColor = (status: string) => {

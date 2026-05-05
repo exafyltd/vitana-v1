@@ -36,7 +36,7 @@ import { useBusinessPackages, PackageItem, dollarsToCents, formatCents } from "@
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface CreatePackageDialogProps {
   open: boolean;
@@ -151,7 +151,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
       if (uploadError) {
         // Show clear error - no fallback to avatars bucket
         console.error('Image upload failed:', uploadError);
-        toast.error("Failed to upload image. Please ensure the package-images storage bucket exists.");
+        notifyError('toasts.sharing.failedUploadImagePleaseEnsurePackageimages');
         return;
       }
 
@@ -159,10 +159,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         .from('package-images')
         .getPublicUrl(filePath);
       setImageUrl(publicUrl);
-      toast.success("Image uploaded");
+      notifySuccess('toasts.sharing.imageUploaded');
     } catch (error) {
       console.error('Image upload failed:', error);
-      toast.error("Failed to upload image");
+      notifyError('toasts.sharing.failedUploadImage');
     } finally {
       setUploadingImage(false);
     }

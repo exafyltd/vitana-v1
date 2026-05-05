@@ -1,7 +1,8 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useEffect } from "react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface ActivityHistoryItem {
   id: string;
@@ -526,11 +527,7 @@ export function useActivityHistory(filterType?: string) {
   ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   if (error) {
-    toast({
-      title: "Error loading activity history",
-      description: error.message,
-      variant: "destructive",
-    });
+    notifyError('toasts.hooks.errorLoadingActivityHistory');
   }
 
   // Delete mutation
@@ -570,17 +567,10 @@ export function useActivityHistory(filterType?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['activity-history'] });
-      toast({
-        title: "Activity deleted",
-        description: "The activity item has been removed from your history.",
-      });
+      notify('toasts.hooks.activityDeleted', 'toasts.hooks.activityItemHasRemovedFromYour');
     },
     onError: (error: Error) => {
-      toast({
-        title: "Failed to delete activity",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedDeleteActivity');
     },
   });
 

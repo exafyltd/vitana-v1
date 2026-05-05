@@ -11,8 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { notify } from '@/lib/i18n-toast';
 
 export default function StreamSettings() {
   const { toast } = useToast();
@@ -23,10 +24,7 @@ export default function StreamSettings() {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsSaving(false);
-    toast({
-      title: "Settings Saved",
-      description: "Stream settings have been updated successfully",
-    });
+    notify('toasts.admin.settingsSaved', 'toasts.admin.streamSettingsHaveUpdatedSuccessfully');
   };
 
   return (

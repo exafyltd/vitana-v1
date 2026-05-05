@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
+import { notifyError } from '@/lib/i18n-toast';
 
 const VARIETIES = [
   { key: "salsa", label: "Salsa" },
@@ -155,7 +156,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
       .eq("user_id", user.id);
     setSaving(false);
     if (error) {
-      toast({ title: "Could not save preferences", description: error.message, variant: "destructive" });
+      notifyError('toasts.profile.couldNotSavePreferences');
       return;
     }
     toast({

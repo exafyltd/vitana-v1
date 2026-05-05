@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
+import { notify } from '@/lib/i18n-toast';
 
 interface UploadDocumentModalProps {
   open: boolean;
@@ -21,10 +22,7 @@ export function UploadDocumentModal({ open, onOpenChange }: UploadDocumentModalP
   const [description, setDescription] = useState("");
 
   const handleUpload = () => {
-    toast({
-      title: "Document uploaded",
-      description: `${title} has been added to the documentation library.`,
-    });
+    notify('toasts.dev.documentUploaded');
     onOpenChange(false);
     setDocType("");
     setTitle("");

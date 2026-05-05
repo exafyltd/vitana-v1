@@ -21,6 +21,7 @@ import { Loader2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
+import { notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -151,11 +152,7 @@ export function VitanaIdOnboardingCard() {
       setPickerOpen(false);
       refreshProfile();
     } catch (err: any) {
-      toast({
-        title: "Network error",
-        description: err?.message || "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.onboarding.networkError');
     } finally {
       setSubmitting(false);
     }

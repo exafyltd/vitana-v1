@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Search, Send, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface GlobalSendFundsProps {
   isOpen: boolean;
@@ -96,11 +97,7 @@ export default function GlobalSendFunds({
       }
     } catch (error) {
       console.error('Search error:', error);
-      toast({
-        title: "Search Error",
-        description: "Failed to search users. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.searchError', 'toasts.payment.failedSearchUsersPleaseTryAgain');
     } finally {
       setIsSearching(false);
     }
@@ -108,21 +105,13 @@ export default function GlobalSendFunds({
 
   const handleSendFunds = async () => {
     if (!selectedRecipient || !amount || !currency) {
-      toast({
-        title: "Missing Information",
-        description: "Please select a recipient, enter an amount, and choose a currency.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseSelectRecipientEnterAmountChoose');
       return;
     }
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount greater than 0.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.invalidAmount', 'toasts.payment.pleaseEnterValidAmountGreaterThan');
       return;
     }
 
@@ -146,11 +135,7 @@ export default function GlobalSendFunds({
       }
     } catch (error) {
       console.error('Transfer error:', error);
-      toast({
-        title: "Transfer Failed",
-        description: error instanceof Error ? error.message : "Failed to send funds. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.transferFailed');
     } finally {
       setIsLoading(false);
     }

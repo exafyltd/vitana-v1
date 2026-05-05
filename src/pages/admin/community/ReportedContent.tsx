@@ -14,6 +14,7 @@ import { CheckCircle, XCircle, AlertTriangle, Flag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface ContentReport {
   id: string;
@@ -64,7 +65,7 @@ const ReportedContent = () => {
       setReports(data || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
-      toast.error('Failed to load reports');
+      notifyError('toasts.admin.failedLoadReports');
     } finally {
       setLoading(false);
     }
@@ -93,7 +94,7 @@ const ReportedContent = () => {
       fetchReports();
     } catch (error) {
       console.error('Error resolving report:', error);
-      toast.error('Failed to resolve report');
+      notifyError('toasts.admin.failedResolveReport');
     }
   };
 

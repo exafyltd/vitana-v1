@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
+import { notify } from '@/lib/i18n-toast';
 
 interface AddRoleViewModalProps {
   open: boolean;
@@ -21,10 +22,7 @@ export function AddRoleViewModal({ open, onOpenChange }: AddRoleViewModalProps) 
   const [description, setDescription] = useState("");
 
   const handleAdd = () => {
-    toast({
-      title: "Role view added",
-      description: `${viewName} configuration for ${role} has been created.`,
-    });
+    notify('toasts.dev.roleViewAdded');
     onOpenChange(false);
     setRole("");
     setViewName("");

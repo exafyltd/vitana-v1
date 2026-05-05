@@ -21,7 +21,7 @@ import {
   CheckCircle2,
   Share2,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
@@ -30,6 +30,7 @@ import { getShareUrl } from "@/lib/shareUrl";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { PersonalShareButtons } from "./PersonalShareButtons";
 import type { ShareableContent } from "@/types/sharing";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -97,10 +98,7 @@ export function UniversalShareDialog({
           : [...prev, channel.id]
       );
     } else {
-      toast({
-        title: "Connect account",
-        description: `Connect your ${channel.name} account to share content`,
-      });
+      notify('toasts.sharing.connectAccount');
     }
   };
 
@@ -115,11 +113,7 @@ export function UniversalShareDialog({
     );
 
     if (distributionChannels.length === 0) {
-      toast({
-        title: "Select distribution channels",
-        description: "Please select at least one channel for distribution",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.selectDistributionChannels', 'toasts.sharing.pleaseSelectAtLeastOneChannel3');
       return;
     }
 
@@ -154,20 +148,13 @@ export function UniversalShareDialog({
 
       if (campaignError) throw campaignError;
 
-      toast({
-        title: "🚀 Blast Successful!",
-        description: `Your ${content.type} is being shared across ${distributionChannels.length} channel(s)`,
-      });
+      notify('toasts.sharing.blastSuccessful');
 
       analytics.trackShare('share_completed', 'universal', content.id, content.type);
       onOpenChange(false);
     } catch (error) {
       console.error("Share error:", error);
-      toast({
-        title: "Share failed",
-        description: "Failed to share content. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.shareFailed2', 'toasts.sharing.failedShareContentPleaseTryAgain');
     } finally {
       setIsSharing(false);
     }

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type DistributionChannel = Database["public"]["Tables"]["distribution_channels"]["Row"];
 export type DistributionChannelInsert = Database["public"]["Tables"]["distribution_channels"]["Insert"];
@@ -38,7 +39,7 @@ export function useChannels() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_channels"] });
-      toast.success("Channel connected successfully");
+      notifySuccess('toasts.hooks.channelConnectedSuccessfully');
     },
     onError: (error: Error) => {
       toast.error(`Failed to connect channel: ${error.message}`);
@@ -56,7 +57,7 @@ export function useChannels() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["distribution_channels"] });
-      toast.success("Channel disconnected");
+      notifySuccess('toasts.hooks.channelDisconnected');
     },
     onError: (error: Error) => {
       toast.error(`Failed to disconnect: ${error.message}`);

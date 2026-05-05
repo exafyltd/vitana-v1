@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface UseStreamRecordingProps {
   streamId: string;
@@ -66,7 +66,7 @@ export const useStreamRecording = ({
       mediaRecorder.onerror = (event) => {
         console.error('MediaRecorder error:', event);
         setRecordingError('Recording failed');
-        toast.error('Recording error occurred');
+        notifyError('toasts.hooks.recordingErrorOccurred');
       };
 
       mediaRecorder.start(10000); // Collect data every 10 seconds
@@ -79,11 +79,11 @@ export const useStreamRecording = ({
         .update({ recording_status: 'recording' })
         .eq('id', streamId);
 
-      toast.success('Recording started');
+      notifySuccess('toasts.hooks.recordingStarted');
     } catch (error) {
       console.error('Failed to start recording:', error);
       setRecordingError(error instanceof Error ? error.message : 'Failed to start recording');
-      toast.error('Could not start recording');
+      notifyError('toasts.hooks.couldNotStartRecording');
     }
   };
 
@@ -152,7 +152,7 @@ export const useStreamRecording = ({
             .update({ recording_status: 'ready' })
             .eq('id', streamId);
 
-          toast.success('Recording saved successfully');
+          notifySuccess('toasts.hooks.recordingSavedSuccessfully');
         } catch (error) {
           console.error('Failed to save recording:', error);
           setRecordingError('Failed to save recording');
@@ -163,7 +163,7 @@ export const useStreamRecording = ({
             .update({ recording_status: 'failed' })
             .eq('id', streamId);
 
-          toast.error('Failed to save recording');
+          notifyError('toasts.hooks.failedSaveRecording');
         } finally {
           recordedChunksRef.current = [];
           mediaRecorderRef.current = null;

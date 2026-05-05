@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface ExportLogsModalProps {
   open: boolean;
@@ -24,7 +25,7 @@ export function ExportLogsModal({ open, onOpenChange, onSuccess }: ExportLogsMod
 
   const handleSubmit = async () => {
     if (!dateFrom || !dateTo) {
-      toast.error("Please select a date range");
+      notifyError('toasts.dev.pleaseSelectDateRange');
       return;
     }
 

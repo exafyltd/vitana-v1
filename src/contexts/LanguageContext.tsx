@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode, useState, useEffect, useRef } fro
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
+import { setI18nLocale } from '@/lib/i18n-toast';
 
 interface LanguageContextType {
   selectedLanguage: string;
@@ -41,8 +42,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { preferences, updatePreferences, isLoading } = useUserPreferences();
   
-  const [selectedLanguage, setLocalLanguage] = useState<string>(getInitialLanguage);
-  
+  const [selectedLanguage, setLocalLanguage] = useState<string>(() => {
+    const initial = getInitialLanguage();
+    setI18nLocale(initial); // sync the i18n-toast singleton at boot
+    return initial;
+  });
+
+  // Keep i18n-toast singleton in sync with React state.
+  useEffect(() => {
+    setI18nLocale(selectedLanguage);
+  }, [selectedLanguage]);
+
   // Tracks a pending language change until server confirms it
   const pendingLanguageRef = useRef<string | null>(null);
   

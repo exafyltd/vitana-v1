@@ -24,7 +24,7 @@ import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { cn } from "@/lib/utils";
 import { Plus, Calendar as CalendarIcon, Brain, Users, Megaphone, Plane } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
@@ -42,6 +42,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
+import { notifyError } from '@/lib/i18n-toast';
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -580,11 +581,7 @@ const EventsAndMeetups = () => {
     const event = freshEvents.find(e => e.id === eventId);
     
     if (!event) {
-      toast({
-        title: "Event Created",
-        description: "Your event was created but couldn't be displayed. Please refresh the page.",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.eventCreated', 'toasts.community.yourEventCreatedButCouldnT');
       return;
     }
     

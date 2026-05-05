@@ -15,8 +15,9 @@ import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
@@ -97,18 +98,11 @@ export default function ProviderProfile() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['provider-appointments', 'upcoming'] });
-      toast({
-        title: "Appointment Booked! 🎉",
-        description: "Your appointment has been confirmed"
-      });
+      notify('toasts.discover.appointmentBooked', 'toasts.discover.yourAppointmentHasConfirmed');
     },
     onError: (error) => {
       console.error('Error saving appointment:', error);
-      toast({
-        title: "Booking Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.discover.bookingFailed', 'toasts.discover.pleaseTryAgain');
     }
   });
 

@@ -6,6 +6,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { liveRoomService } from '@/services/liveRoomService';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 export function useStripePayment(roomId: string, userId: string) {
   const { toast } = useToast();
@@ -13,7 +14,7 @@ export function useStripePayment(roomId: string, userId: string) {
   const purchaseMutation = useMutation({
     mutationFn: () => liveRoomService.purchaseAccess(roomId, userId),
     onError: (error: Error) => {
-      toast({ title: 'Payment failed', description: error.message, variant: 'destructive' });
+      notifyError('toasts.hooks.paymentFailed');
     },
   });
 

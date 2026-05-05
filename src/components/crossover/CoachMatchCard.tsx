@@ -5,7 +5,8 @@ import { withCardId } from "@/lib/withCardId";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface CoachMatchCardProps {
   className?: string;
@@ -26,11 +27,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
 
   const handleBookCoach = (coachId: string, coachName: string) => {
     if (coachId.startsWith('demo-')) {
-      toast({
-        title: "📅 Booking started",
-        description: `Opening booking for ${coachName}...`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.bookingStarted');
       return;
     }
     navigate(`/discover/doctors-coaches/${coachId}`);

@@ -8,6 +8,7 @@ import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { useRequestDeduplication } from './usePerformanceOptimization';
 import { measurePerformance } from '@/utils/performanceLogger';
 import { useActivityLogger } from '@/hooks/useActivityLogger';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface UserBalance {
   currency_type: 'USD' | 'VTNA' | 'CREDITS';
@@ -216,11 +217,7 @@ export function useWallet() {
       return data;
     } catch (err) {
       console.error('Error updating balance:', err);
-      toast({
-        title: 'Balance Update Failed',
-        description: err instanceof Error ? err.message : 'Failed to update balance',
-        variant: 'destructive'
-      });
+      notifyError('toasts.hooks.balanceUpdateFailed');
       throw err;
     }
   };
@@ -254,11 +251,7 @@ export function useWallet() {
       const result = data[0];
       const convertedAmount = amount * exchangeRate;
 
-      toast({
-        title: 'Exchange Completed! ✅',
-        description: `Converted ${amount} ${fromCurrency} to ${convertedAmount.toFixed(2)} ${toCurrency} (No fees!)`,
-        duration: 5000
-      });
+      notify('toasts.hooks.exchangeCompleted');
       
       // Log activity
       logActivity({
@@ -293,11 +286,7 @@ export function useWallet() {
       };
     } catch (err) {
       console.error('Error processing exchange:', err);
-      toast({
-        title: 'Exchange Failed',
-        description: err instanceof Error ? err.message : 'Exchange transaction failed',
-        variant: 'destructive'
-      });
+      notifyError('toasts.hooks.exchangeFailed');
       throw err;
     }
   };
@@ -324,10 +313,7 @@ export function useWallet() {
     ));
     
     // Show success toast immediately
-    toast({
-      title: "Transfer Successful! 💸",
-      description: `${amount.toLocaleString()} ${currency} sent successfully`
-    });
+    notify('toasts.hooks.transferSuccessful');
     
     try {
       // Process actual transfer in background
@@ -393,11 +379,7 @@ export function useWallet() {
           : b
       ));
       
-      toast({
-        title: "Transfer Failed",
-        description: error.message || "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.transferFailed');
       
       perf.end({ currency, amount, success: false, error: error.message });
       return null;
@@ -427,11 +409,7 @@ export function useWallet() {
     ));
     
     // Show success toast immediately
-    toast({
-      title: "Exchange & Send Successful! ✨",
-      description: `Converted and sent ${convertedAmount.toLocaleString()} ${toCurrency}`,
-      duration: 6000
-    });
+    notify('toasts.hooks.exchangeSendSuccessful');
     
     try {
       // Process actual exchange and send in background
@@ -516,11 +494,7 @@ export function useWallet() {
           : b
       ));
       
-      toast({
-        title: "Exchange & Send Failed",
-        description: error.message || "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.exchangeSendFailed');
       return null;
     }
   };

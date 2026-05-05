@@ -26,8 +26,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { postIntent, type IntentKind } from "@/lib/intentApi";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface IntentComposerProps {
   open: boolean;
@@ -66,11 +67,11 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
   const submit = async () => {
     if (!title.trim() || title.trim().length < 3) {
-      toast({ title: "Title required", description: "3-140 characters.", variant: "destructive" });
+      notifyError('toasts.intents.titleRequired', 'toasts.intents.message3140Characters');
       return;
     }
     if (!scope.trim() || scope.trim().length < 20) {
-      toast({ title: "Scope too short", description: "Minimum 20 characters.", variant: "destructive" });
+      notifyError('toasts.intents.scopeTooShort', 'toasts.intents.minimum20Characters');
       return;
     }
 
@@ -92,17 +93,12 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         scope: scope.trim(),
         kind_payload: kindPayload,
       });
-      toast({
-        title: "Posted to community",
-        description: result.match_count
-          ? `Found ${result.match_count} match${result.match_count === 1 ? "" : "es"} already.`
-          : "We'll notify you when matches arrive.",
-      });
+      notify('toasts.intents.postedCommunity');
       reset();
       onPosted?.(result.intent_id);
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Could not post", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotPost');
     } finally {
       setSubmitting(false);
     }

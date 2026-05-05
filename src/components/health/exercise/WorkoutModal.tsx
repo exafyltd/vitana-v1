@@ -18,7 +18,7 @@ import {
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 interface WorkoutModalProps {
   workout: Workout | null;
@@ -43,11 +43,11 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
   const handleStartWorkout = () => {
     setTimerMode(true);
     setCurrentExercise(0);
-    toast.success('Workout started! 💪');
+    notifySuccess('toasts.health.workoutStarted');
   };
   
   const handleCompleteWorkout = () => {
-    toast.success('Workout completed! Great job! 🎉');
+    notifySuccess('toasts.health.workoutCompletedGreatJob');
     onOpenChange(false);
   };
   

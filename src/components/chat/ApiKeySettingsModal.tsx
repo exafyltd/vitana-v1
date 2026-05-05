@@ -11,8 +11,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ApiKeySettingsModalProps {
   open: boolean;
@@ -26,11 +27,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
   const handleSave = async () => {
     if (!apiKey.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter an API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.chat.error', 'toasts.chat.pleaseEnterApiKey');
       return;
     }
 
@@ -69,20 +66,13 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
       if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "API key saved securely with encryption",
-      });
+      notify('toasts.chat.success', 'toasts.chat.apiKeySavedSecurelyWithEncryption');
       
       onOpenChange(false);
       setApiKey("");
     } catch (error) {
       console.error("Error saving API key:", error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.chat.error');
     } finally {
       setIsSaving(false);
     }

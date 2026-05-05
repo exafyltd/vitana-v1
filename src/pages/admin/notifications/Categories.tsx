@@ -37,6 +37,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 // BOOTSTRAP-NOTIF-CATEGORIES: Admin notification category management page.
 // Deploy timestamp: 2026-04-16T08:30Z (retry after billing/auth fix)
@@ -123,7 +124,7 @@ export default function Categories() {
           default_enabled: form.default_enabled,
           mapped_types: mappedTypesArray,
         });
-        toast({ title: "Category updated", description: `"${form.display_name}" has been updated.` });
+        notify('toasts.admin.categoryUpdated');
       } else {
         await createMutation.mutateAsync({
           type: dialogType,
@@ -133,11 +134,11 @@ export default function Categories() {
           default_enabled: form.default_enabled,
           mapped_types: mappedTypesArray,
         });
-        toast({ title: "Category created", description: `"${form.display_name}" has been added.` });
+        notify('toasts.admin.categoryCreated');
       }
       setDialogOpen(false);
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -145,19 +146,19 @@ export default function Categories() {
     if (!deleteTarget) return;
     try {
       await deleteMutation.mutateAsync(deleteTarget.id);
-      toast({ title: "Category removed", description: `"${deleteTarget.display_name}" has been deactivated.` });
+      notify('toasts.admin.categoryRemoved');
       setDeleteTarget(null);
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 
   const handleSendTest = async (category: NotificationCategory) => {
     try {
       await testMutation.mutateAsync(category.id);
-      toast({ title: "Test sent", description: `Test notification sent for "${category.display_name}".` });
+      notify('toasts.admin.testSent');
     } catch (err: any) {
-      toast({ title: "Send failed", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.sendFailed');
     }
   };
 
@@ -172,7 +173,7 @@ export default function Categories() {
         description: `"${category.display_name}" is now ${category.is_active ? "inactive" : "active"}.`,
       });
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { X, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface EditShortVideoModalProps {
   isOpen: boolean;
@@ -119,17 +119,10 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
         videoElement.src = video.src_url;
       });
       
-      toast({
-        title: 'Thumbnail captured',
-        description: 'Preview the new thumbnail below.',
-      });
+      notify('toasts.community.thumbnailCaptured', 'toasts.community.previewNewThumbnailBelow');
     } catch (error) {
       console.error('Thumbnail capture error:', error);
-      toast({
-        title: 'Capture failed',
-        description: 'Could not capture thumbnail from video. Try uploading a custom image instead.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.captureFailed', 'toasts.community.couldNotCaptureThumbnailFromVideo');
     } finally {
       setIsRegenerating(false);
     }
@@ -137,11 +130,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
   const handleSave = async () => {
     if (!title.trim()) {
-      toast({
-        title: 'Validation error',
-        description: 'Title is required',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.validationError', 'toasts.community.titleRequired');
       return;
     }
 
@@ -186,20 +175,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
       if (updateError) throw updateError;
 
-      toast({
-        title: 'Success',
-        description: 'Video updated successfully',
-      });
+      notify('toasts.community.success', 'toasts.community.videoUpdatedSuccessfully');
 
       onSave();
       onClose();
     } catch (error) {
       console.error('Save error:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update video. Please try again.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.error', 'toasts.community.failedUpdateVideoPleaseTryAgain');
     } finally {
       setIsSaving(false);
     }

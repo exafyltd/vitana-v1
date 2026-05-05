@@ -12,10 +12,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { getIncomingMatches, type IntentMatch } from "@/lib/intentApi";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
+import { notifyError } from '@/lib/i18n-toast';
 
 export default function BusinessOpportunities() {
   const { toast } = useToast();
@@ -34,7 +35,7 @@ export default function BusinessOpportunities() {
       );
       setMatches(commercial);
     } catch (err: any) {
-      toast({ title: "Could not load opportunities", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.businessopportunities.couldNotLoadOpportunities');
     } finally {
       setLoading(false);
     }

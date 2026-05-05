@@ -3,6 +3,7 @@ import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 type Status = "idle" | "recording" | "stopping";
 
@@ -47,11 +48,7 @@ export default function DiaryButton() {
     
     if (!SR) {
       setIsSupported(false);
-      toast({
-        title: "Not Supported",
-        description: "Voice dictation isn't supported in this browser.",
-        variant: "destructive"
-      });
+      notifyError('toasts.diary.notSupported', 'toasts.diary.voiceDictationIsnTSupportedThis');
       return;
     }
 
@@ -94,11 +91,7 @@ export default function DiaryButton() {
         ? "No speech detected."
         : "Recording issue.";
       
-      toast({
-        title: "Recording Error",
-        description: msg,
-        variant: "destructive"
-      });
+      notifyError('toasts.diary.recordingError');
     };
 
     r.onend = async () => {
@@ -115,11 +108,7 @@ export default function DiaryButton() {
           { label: "Undo", onClick: () => undoLastDiary() }
         ]);
       } else {
-        toast({
-          title: "No Speech",
-          description: "No speech detected. Try again closer to the mic.",
-          variant: "destructive"
-        });
+        notifyError('toasts.diary.noSpeech', 'toasts.diary.noSpeechDetectedTryAgainCloser');
       }
     };
 
@@ -173,11 +162,7 @@ export default function DiaryButton() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Not Authenticated",
-          description: "Please log in to save diary entries",
-          variant: "destructive"
-        });
+        notifyError('toasts.diary.notAuthenticated', 'toasts.diary.pleaseLogSaveDiaryEntries');
         return;
       }
 
@@ -196,11 +181,7 @@ export default function DiaryButton() {
       }
     } catch (error) {
       console.error("Error saving diary entry:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save diary entry",
-        variant: "destructive"
-      });
+      notifyError('toasts.diary.error', 'toasts.diary.failedSaveDiaryEntry');
     }
   }
 
@@ -244,18 +225,11 @@ export default function DiaryButton() {
 
       if (error) throw error;
       
-      toast({
-        title: "Success",
-        description: "Diary entry deleted"
-      });
+      notify('toasts.diary.success', 'toasts.diary.diaryEntryDeleted');
       lastEntryIdRef.current = null;
     } catch (error) {
       console.error("Error deleting diary entry:", error);
-      toast({
-        title: "Error", 
-        description: "Failed to delete diary entry",
-        variant: "destructive"
-      });
+      notifyError('toasts.diary.error', 'toasts.diary.failedDeleteDiaryEntry');
     }
   }
 

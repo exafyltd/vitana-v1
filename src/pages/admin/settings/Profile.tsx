@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export default function SettingsProfile() {
   const settingsQuery = useTenantSettings();
@@ -36,7 +37,7 @@ export default function SettingsProfile() {
     updateMutation.mutate(
       { profile: { name, description, support_email: supportEmail, logo_url: logoUrl } },
       {
-        onSuccess: () => toast.success("Profile saved"),
+        onSuccess: () => notifySuccess('toasts.admin.profileSaved'),
         onError: (err) => toast.error((err as Error).message || "Failed to save"),
       }
     );

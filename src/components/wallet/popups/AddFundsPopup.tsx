@@ -14,6 +14,7 @@ import { DollarSign, CreditCard, Banknote, Loader2, Shield } from "lucide-react"
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface AddFundsPopupProps {
   open: boolean;
@@ -38,11 +39,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
 
   const handleAddFunds = async (paymentMethod: string) => {
     if (!fundAmount || parseFloat(fundAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid amount to add',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidAmountAdd');
       return;
     }
 
@@ -51,19 +48,12 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
     try {
       await updateBalance('USD', parseFloat(fundAmount), 'add');
       
-      toast({
-        title: '✅ Funds Added Successfully!',
-        description: `Added $${fundAmount} to your USD balance`,
-      });
+      notify('toasts.wallet.fundsAddedSuccessfully');
       
       onOpenChange(false);
       setFundAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Transaction Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.transactionFailed');
     } finally {
       setLoading(false);
     }

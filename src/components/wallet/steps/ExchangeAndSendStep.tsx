@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ExchangeAndSendStepProps {
   onBack: () => void;
@@ -66,11 +67,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
 
   const handleExchangeAndSend = async () => {
     if (!selectedRecipient || !amount || parseFloat(amount) <= 0) {
-      toast({
-        title: 'Missing Information',
-        description: 'Please select a recipient and enter an amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseSelectRecipientEnterAmount');
       return;
     }
 
@@ -78,11 +75,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
     const currentBalance = getBalance(fromCurrency) || 0;
 
     if (exchangeAmount > currentBalance) {
-      toast({
-        title: 'Insufficient Balance',
-        description: `You only have ${currentBalance} ${fromCurrency}`,
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 
@@ -118,10 +111,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
         );
 
         // Success toast
-        toast({
-          title: '✅ Exchange & Send Complete!',
-          description: `Converted ${exchangeAmount} ${fromCurrency} to ${result.netAmount.toFixed(2)} ${toCurrency} and sent successfully`,
-        });
+        notify('toasts.wallet.exchangeSendComplete');
       }
 
       onClose();

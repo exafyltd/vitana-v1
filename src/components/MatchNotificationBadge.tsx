@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 export function MatchNotificationBadge() {
   const [unreadCount, setUnreadCount] = useState(0);
@@ -25,11 +26,7 @@ export function MatchNotificationBadge() {
           const notification = payload.new as any;
           if (notification.user_id === supabase.auth.getUser()) {
             setUnreadCount(prev => prev + 1);
-            toast({
-              title: "🎉 New Match!",
-              description: "You've matched with someone! Check your matches.",
-              duration: 5000,
-            });
+            notify('toasts.common.newMatch', 'toasts.common.youVeMatchedWithSomeoneCheck');
           }
         }
       )

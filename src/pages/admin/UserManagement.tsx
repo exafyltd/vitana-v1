@@ -8,7 +8,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminUserManagementNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +36,7 @@ import {
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
 import { Users, UserPlus, Shield, Trash2, Search, Filter } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface User {
   id: string;
@@ -218,10 +219,7 @@ export default function UserManagement() {
         // Auto-create reseller profile removed - reseller is now self-service capability
       }
       
-      toast({
-        title: "Role Assigned",
-        description: `Successfully assigned ${selectedRole} role to ${assigningTo.email}`,
-      });
+      notify('toasts.admin.roleAssigned');
       
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
       setAssignDialogOpen(false);
@@ -241,11 +239,7 @@ export default function UserManagement() {
         errorMessage = error.message;
       }
       
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     } finally {
       setIsAssigning(false);
     }
@@ -260,18 +254,11 @@ export default function UserManagement() {
         
       if (error) throw error;
       
-      toast({
-        title: "Role Revoked",
-        description: `Successfully revoked ${role} role from ${userEmail}`,
-      });
+      notify('toasts.admin.roleRevoked');
       
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to revoke role",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -316,18 +303,11 @@ export default function UserManagement() {
 
       // Reseller profile auto-creation removed - now self-service capability
 
-      toast({
-        title: "Role Updated",
-        description: `${userEmail} is now ${newRole}`,
-      });
+      notify('toasts.admin.roleUpdated');
 
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update role",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error');
     }
   };
 

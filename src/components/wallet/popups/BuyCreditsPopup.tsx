@@ -14,6 +14,7 @@ import { CreditCard, Gift, Zap, Loader2, Star } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface BuyCreditsPopupProps {
   open: boolean;
@@ -40,11 +41,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
   const handleBuyCredits = async (credits: number, cost: number, bonus: number) => {
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
     }
 
@@ -55,18 +52,11 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('CREDITS', credits + bonus, 'add');
       
-      toast({
-        title: '✅ Credits Purchased Successfully!',
-        description: `Purchased ${credits} credits${bonus > 0 ? ` + ${bonus} bonus credits` : ''} for $${cost}`,
-      });
+      notify('toasts.wallet.creditsPurchasedSuccessfully');
       
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -74,11 +64,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
   const handleCustomPurchase = async () => {
     if (!creditAmount || parseFloat(creditAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid number of credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidNumberCredits');
       return;
     }
 
@@ -86,11 +72,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
     const cost = Math.round(credits * 0.25); // $0.25 per credit
     
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
     }
 
@@ -100,19 +82,12 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('CREDITS', credits, 'add');
       
-      toast({
-        title: '✅ Credits Purchased Successfully!',
-        description: `Purchased ${credits} credits for $${cost}`,
-      });
+      notify('toasts.wallet.creditsPurchasedSuccessfully');
       
       onOpenChange(false);
       setCreditAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }

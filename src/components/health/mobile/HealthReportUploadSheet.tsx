@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ import {
   Droplets, Dna, FlaskConical, Bug, AlertTriangle, 
   Heart, Scan, ImageIcon, MoreHorizontal 
 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const REPORT_CATEGORIES = [
   { value: 'blood_panel', label: 'Blood Panel', icon: Droplets, color: 'bg-red-500/10 text-red-600 border-red-500/20' },
@@ -63,7 +64,7 @@ export function HealthReportUploadSheet({
 
     // Validate size (20MB)
     if (file.size > 20 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Maximum file size is 20MB", variant: "destructive" });
+      notifyError('toasts.health.fileTooLarge', 'toasts.health.maximumFileSize20mb');
       return;
     }
 
@@ -123,12 +124,12 @@ export function HealthReportUploadSheet({
 
       if (dbError) throw dbError;
 
-      toast({ title: "Report uploaded", description: "Your health report has been saved successfully." });
+      notify('toasts.health.reportUploaded', 'toasts.health.yourHealthReportHasSavedSuccessfully');
       onUploadComplete?.();
       handleOpenChange(false);
     } catch (error: any) {
       console.error('[HealthReportUpload] Error:', error);
-      toast({ title: "Upload failed", description: error.message || "Please try again", variant: "destructive" });
+      notifyError('toasts.health.uploadFailed');
     } finally {
       setIsUploading(false);
     }

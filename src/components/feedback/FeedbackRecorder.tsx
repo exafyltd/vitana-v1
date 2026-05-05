@@ -11,11 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
+import { notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -130,11 +131,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
 
   const startRecording = () => {
     if (!ClientSTT.isSupported()) {
-      toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in this browser.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.notSupported', 'toasts.feedback.speechRecognitionNotSupportedThisBrowser');
       return;
     }
 
@@ -176,11 +173,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
           return;
         }
-        toast({
-          title: "Recognition Error",
-          description: "Speech recognition encountered an error. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.feedback.recognitionError', 'toasts.feedback.speechRecognitionEncounteredErrorPleaseTry');
         stopRecording();
       },
       onEnd: () => {
@@ -264,11 +257,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
 
   const handleSend = async () => {
     if (!transcript.trim()) {
-      toast({
-        title: "No Content",
-        description: "Please record or type your feedback before sending.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.noContent', 'toasts.feedback.pleaseRecordTypeYourFeedbackBefore');
       return;
     }
 
@@ -326,11 +315,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
       onSubmitted?.();
     } catch (error) {
       console.error('[FeedbackRecorder] Send error:', error);
-      toast({
-        title: "Send Failed",
-        description: "Could not send your feedback. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.sendFailed', 'toasts.feedback.couldNotSendYourFeedbackPlease');
     } finally {
       setIsSending(false);
     }

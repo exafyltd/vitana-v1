@@ -8,7 +8,7 @@ import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useState } from "react";
 import { useFollow } from "@/hooks/useFollow";
 import { useProfileShare } from "@/hooks/useProfileShare";
@@ -18,6 +18,7 @@ import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -73,20 +74,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
 
   const handleMessageClick = () => {
     if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to send messages",
-        variant: "destructive"
-      });
+      notifyError('toasts.profile.authenticationRequired', 'toasts.profile.pleaseSignSendMessages');
       return;
     }
 
     if (isOwner) {
-      toast({
-        title: "Can't message yourself",
-        description: "You cannot send messages to your own profile",
-        variant: "destructive"
-      });
+      notifyError('toasts.profile.canTMessageYourself', 'toasts.profile.youCannotSendMessagesYourOwn');
       return;
     }
 
@@ -114,21 +107,14 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
       logMessageSend(thread.id, 'text', 'global');
       
       // 4. Show success and navigate to inbox
-      toast({
-        title: "Message sent",
-        description: "Your message has been sent successfully"
-      });
+      notify('toasts.profile.messageSent', 'toasts.profile.yourMessageHasSentSuccessfully');
       
       // 5. Navigate to inbox with thread selected
       navigate('/inbox', { 
         state: { selectedThreadId: thread.id } 
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.profile.error', 'toasts.profile.failedSendMessagePleaseTryAgain');
       throw error;
     } finally {
       setIsCreatingThread(false);

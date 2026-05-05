@@ -1,10 +1,10 @@
 import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
-import { toast } from "@/hooks/use-toast";
 import { getShareUrl } from "@/lib/shareUrl";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
@@ -213,18 +213,9 @@ export const VideoPlayerModal = ({
 
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast({
-        title: 'Link copied',
-        description: 'Short link copied to clipboard',
-        duration: 2000,
-      });
+      notify('toasts.community.linkCopied', 'toasts.community.shortLinkCopiedClipboard');
     } catch {
-      toast({
-        title: 'Could not share',
-        description: 'Please try again.',
-        variant: 'destructive',
-        duration: 2000,
-      });
+      notifyError('toasts.community.couldNotShare', 'toasts.community.pleaseTryAgain');
     }
   };
 

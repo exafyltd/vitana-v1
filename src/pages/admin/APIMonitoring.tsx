@@ -23,10 +23,11 @@ import {
   RefreshCw,
   ExternalLink
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from "date-fns";
 import { useRealtimeAPIMonitoring } from "@/hooks/useRealtimeAPIMonitoring";
 import { RecentActivityFeed } from "@/components/admin/api-monitoring/RecentActivityFeed";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function APIMonitoring() {
   const { toast } = useToast();
@@ -102,10 +103,7 @@ export default function APIMonitoring() {
   };
 
   const handleDiscoverIntegrations = async () => {
-    toast({
-      title: "Discovering integrations",
-      description: "Scanning system for APIs and edge functions...",
-    });
+    notify('toasts.admin.discoveringIntegrations', 'toasts.admin.scanningSystemForApisEdgeFunctions');
 
     try {
       const { data, error } = await supabase.functions.invoke("integration-discovery");
@@ -113,33 +111,19 @@ export default function APIMonitoring() {
 
       const hadErrors = Array.isArray((data as any)?.errors) && (data as any).errors.length > 0;
       if (hadErrors || (data as any)?.success === false) {
-        toast({
-          title: "Discovery completed with errors",
-          description: `Processed ${data.count}. Errors: ${(data as any).errors?.length || 0}`,
-          variant: "destructive"
-        });
+        notifyError('toasts.admin.discoveryCompletedWithErrors');
       } else {
-        toast({
-          title: "Discovery complete",
-          description: `Found ${data.count} integrations`,
-        });
+        notify('toasts.admin.discoveryComplete');
       }
 
       refetchIntegrations();
     } catch (error) {
-      toast({
-        title: "Discovery failed",
-        description: "Could not scan integrations",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.discoveryFailed', 'toasts.admin.couldNotScanIntegrations');
     }
   };
 
   const handleTestIntegration = async (integrationId: string) => {
-    toast({
-      title: "Testing integration",
-      description: "Running health check...",
-    });
+    notify('toasts.admin.testingIntegration', 'toasts.admin.runningHealthCheck');
 
     try {
       const { data, error } = await supabase.functions.invoke("test-api-integration", {
@@ -148,19 +132,11 @@ export default function APIMonitoring() {
 
       if (error) throw error;
 
-      toast({
-        title: "Test completed",
-        description: data.success ? "Integration is healthy ✓" : "Test failed",
-        variant: data.success ? "default" : "destructive"
-      });
+      notify('toasts.admin.testCompleted');
 
       refetchIntegrations();
     } catch (error) {
-      toast({
-        title: "Test failed",
-        description: "Could not complete health check",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.testFailed', 'toasts.admin.couldNotCompleteHealthCheck');
     }
   };
 

@@ -10,6 +10,7 @@ import { toast } from '@/components/ui/use-toast';
 import sunriseRoutineImg from '@/assets/ai-feed/sunrise-routine.jpg';
 import hydrationTrackingImg from '@/assets/ai-feed/hydration-tracking.jpg';
 import eveningWinddownImg from '@/assets/ai-feed/evening-winddown.jpg';
+import { notify } from '@/lib/i18n-toast';
 
 interface ActivityItem {
   id: string;
@@ -158,10 +159,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
       label: ctaConfig.primary.label,
       onClick: () => {
         console.log('[AI Feed] Saving activity to memory:', activity.id);
-        toast({
-          title: 'Activity saved to Memory',
-          description: 'Added to your knowledge base.',
-        });
+        notify('toasts.common.activitySavedMemory', 'toasts.common.addedYourKnowledgeBase');
       },
       variant: ctaConfig.primary.variant,
       icon: ctaConfig.primary.icon
@@ -172,10 +170,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
         label: 'Improve',
         onClick: () => {
           console.log('[AI Feed] Requesting improvement:', activity.id);
-          toast({
-            title: 'Improvement requested',
-            description: 'We’ll analyze and update suggestions shortly.',
-          });
+          notify('toasts.common.improvementRequested', 'toasts.common.weLlAnalyzeUpdateSuggestionsShortly');
         },
         icon: createElement(TrendingUp, { className: 'w-3 h-3 mr-1' })
       },
@@ -183,7 +178,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
         label: 'Hide',
         onClick: () => {
           console.log('[AI Feed] Hiding activity:', activity.id);
-          toast({ title: 'Activity hidden' });
+          notify('toasts.common.activityHidden');
         },
         icon: createElement(EyeOff, { className: 'w-3 h-3 mr-1' })
       }

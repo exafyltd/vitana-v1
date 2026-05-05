@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type AutomationRule = Database["public"]["Tables"]["automation_rules"]["Row"];
 export type AutomationRuleInsert = Database["public"]["Tables"]["automation_rules"]["Insert"];
@@ -35,7 +36,7 @@ export function useAutomationRules() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["automation_rules"] });
-      toast.success("Automation rule created");
+      notifySuccess('toasts.hooks.automationRuleCreated');
     },
     onError: (error: Error) => {
       toast.error(`Failed to create rule: ${error.message}`);
@@ -56,7 +57,7 @@ export function useAutomationRules() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["automation_rules"] });
-      toast.success("Rule updated");
+      notifySuccess('toasts.hooks.ruleUpdated');
     },
     onError: (error: Error) => {
       toast.error(`Failed to update rule: ${error.message}`);

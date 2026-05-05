@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface ExchangeStepProps {
   onBack: () => void;
@@ -56,11 +57,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
 
   const handleExchange = async () => {
     if (!amount || parseFloat(amount) <= 0) {
-      toast({
-        title: 'Invalid Amount',
-        description: 'Please enter a valid amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidAmount');
       return;
     }
 
@@ -68,11 +65,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
     const currentBalance = getBalance(fromCurrency) || 0;
 
     if (exchangeAmount > currentBalance) {
-      toast({
-        title: 'Insufficient Balance',
-        description: `You only have ${currentBalance} ${fromCurrency}`,
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 

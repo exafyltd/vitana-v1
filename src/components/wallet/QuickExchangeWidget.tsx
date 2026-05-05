@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface QuickExchangeWidgetProps {
   onExchange?: (fromAmount: number, fromCurrency: string, toCurrency: string, toAmount: number) => void;
@@ -49,11 +50,7 @@ export function QuickExchangeWidget({
 
   const handleExchange = async () => {
     if (!calculation || parseFloat(fromAmount) <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount to exchange",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidAmountExchange');
       return;
     }
 
@@ -62,20 +59,12 @@ export function QuickExchangeWidget({
     try {
       await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
       
-      toast({
-        title: "Exchange Completed! ✅",
-        description: `Converted ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)}`,
-        duration: 5000
-      });
+      notify('toasts.wallet.exchangeCompleted');
 
       onExchange?.(calculation.fromAmount, fromCurrency, toCurrency, calculation.total);
       setFromAmount('');
     } catch (error) {
-      toast({
-        title: "Exchange Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.exchangeFailed', 'toasts.wallet.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }
@@ -91,11 +80,7 @@ export function QuickExchangeWidget({
       onExchangeAndSend?.(calculation.fromAmount, fromCurrency, toCurrency, calculation.total);
       setFromAmount('');
     } catch (error) {
-      toast({
-        title: "Action Failed", 
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.actionFailed', 'toasts.wallet.pleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }

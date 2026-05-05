@@ -40,6 +40,7 @@ import { format, isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -506,10 +507,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       // Show instant feedback for calendar invites and process in background
       if (newMessage && messageType === 'calendar_invite' && contentData && user?.id) {
         // Immediate success feedback
-        toast({
-          title: 'Calendar Invite Sent',
-          description: 'Processing calendar event...',
-        });
+        notify('toasts.messages.calendarInviteSent', 'toasts.messages.processingCalendarEvent');
 
         // Background calendar processing (non-blocking)
         setTimeout(async () => {
@@ -556,27 +554,18 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
             await addEvent(senderEventData as any, { showToast: false });
             
-            toast({
-              title: 'Calendar Updated',
-              description: `Added "${senderEventData.title}" to your calendar`,
-            });
+            notify('toasts.messages.calendarUpdated');
             
             console.log('📅 Successfully created sender calendar event:', senderEventData.title);
           } catch (error: any) {
             console.error('📅 Failed to create sender calendar event:', error);
             
             // Event will be processed by background processor
-            toast({
-              title: 'Calendar Event Queued',
-              description: 'Event will be added to your calendar shortly',
-            });
+            notify('toasts.messages.calendarEventQueued', 'toasts.messages.eventWillAddedYourCalendarShortly');
           }
         }, 0); // Process immediately after current call stack
       } else if (messageType === 'calendar_invite' && contentData && !user?.id) {
-        toast({
-          title: 'Invite Sent',
-          description: 'Sign in to add the event to your calendar.',
-        });
+        notify('toasts.messages.inviteSent', 'toasts.messages.signAddEventYourCalendar');
       }
 
       if (onMessageSent && threadId && newMessage) {
@@ -728,7 +717,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             const isValidUUID = (v?: string) => !!v && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
             const safeMessageId = action.messageId;
             if (!isValidUUID(safeMessageId)) {
-              toast({ title: 'Please wait', description: 'Still syncing this message. Try again in a moment.', variant: 'default' });
+              notify('toasts.messages.pleaseWait', 'toasts.messages.stillSyncingThisMessageTryAgain');
               return;
             }
 
@@ -752,11 +741,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             // Trigger calendar refresh to ensure immediate UI sync
             window.dispatchEvent(new Event('calendar-events:refresh'));
             
-            toast({
-              title: 'Response Sent',
-              description: responseMessages[response as keyof typeof responseMessages],
-              variant: 'default',
-            });
+            notify('toasts.messages.responseSent');
 
           } catch (error) {
             console.error('❌ Error responding to calendar invite:', error);
@@ -775,11 +760,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
               }
             }
             
-            toast({
-              title: 'Calendar Invite Error',
-              description: errorMessage,
-              variant: 'destructive',
-            });
+            notifyError('toasts.messages.calendarInviteError');
           }
           break;
         }
@@ -793,11 +774,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       }
     } catch (error) {
       console.error('Error handling action:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to process action',
-        variant: 'destructive',
-      });
+      notifyError('toasts.messages.error', 'toasts.messages.failedProcessAction');
     }
   };
 
@@ -1121,11 +1098,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                             }
                           } catch (error) {
                             console.error('Failed to update message:', error);
-                            toast({
-                              title: "Update Failed",
-                              description: "Failed to update message. Please try again.",
-                              variant: "destructive"
-                            });
+                            notifyError('toasts.messages.updateFailed', 'toasts.messages.failedUpdateMessagePleaseTryAgain');
                             throw error;
                           }
                         }}
@@ -1147,7 +1120,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                               throw error;
                             }
                             console.log('[Delete] Mutation succeeded for message:', messageId, 'table:', table);
-                            toast({ title: "Message deleted" });
+                            notify('toasts.messages.messageDeleted');
                             if (fetchMessages) {
                               console.log('[Delete] Triggering refetch for threadId:', threadId);
                               await fetchMessages(threadId);
@@ -1157,11 +1130,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                             }
                           } catch (error) {
                             console.error('Failed to delete message:', error);
-                            toast({
-                              title: "Delete Failed",
-                              description: "Failed to delete message. Please try again.",
-                              variant: "destructive"
-                            });
+                            notifyError('toasts.messages.deleteFailed', 'toasts.messages.failedDeleteMessagePleaseTryAgain');
                           }
                         }}
                         onSendReply={handleSendMessage}

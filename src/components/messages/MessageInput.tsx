@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { 
   validateFile, 
@@ -31,6 +31,7 @@ import {
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
@@ -200,11 +201,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       
       const errorMessage = error instanceof Error ? error.message : "unknown";
       
-      toast({
-        title: "Message failed",
-        description: `Message failed: ${errorMessage}`,
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.messageFailed');
       
       console.error({
         stage: "send", 
@@ -250,11 +247,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     for (const file of files) {
       const validation = validateFile(file);
       if (!validation.valid) {
-        toast({
-          title: "File not allowed",
-          description: `${file.name}: ${validation.error}`,
-          variant: "destructive"
-        });
+        notifyError('toasts.messages.fileNotAllowed');
         if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
@@ -262,11 +255,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     // Ensure we have a thread to attach to
     if (!threadId) {
-      toast({
-        title: 'Open a conversation',
-        description: 'Select or open a conversation before attaching files.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.messages.openConversation', 'toasts.messages.selectOpenConversationBeforeAttachingFiles');
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
@@ -315,11 +304,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         });
       } catch (error) {
         console.error('Upload error:', error);
-        toast({
-          title: "Upload failed",
-          description: error instanceof Error ? error.message : "Failed to upload file",
-          variant: "destructive"
-        });
+        notifyError('toasts.messages.uploadFailed');
         setUploadProgress(prev => {
           const newProgress = { ...prev };
           delete newProgress[uploadId];
@@ -375,11 +360,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     } catch (error) {
       console.error('Voice message error:', error);
-      toast({
-        title: "Failed to send voice message",
-        description: "There was an error sending your voice message",
-        variant: "destructive",
-      });
+      notifyError('toasts.messages.failedSendVoiceMessage', 'toasts.messages.thereErrorSendingYourVoiceMessage');
     } finally {
       setIsUploading(false);
     }

@@ -26,12 +26,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Trash2, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   getProfilePrefs,
   patchServiceOfferings,
   type ServiceOffering,
 } from "@/lib/profilePrefsApi";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ServiceOfferingsDrawerProps {
   open: boolean;
@@ -63,7 +64,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
         setOffers(Array.isArray(s.offers) ? s.offers : []);
       })
       .catch((e) => {
-        toast({ title: "Could not load offerings", description: e?.message ?? "", variant: "destructive" });
+        notifyError('toasts.profile.couldNotLoadOfferings');
       })
       .finally(() => setLoading(false));
   }, [open, toast]);
@@ -87,11 +88,11 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
       // Filter out empty offers (must have category + title at minimum).
       const cleanOffers = offers.filter((o) => o.category.trim() && o.title.trim());
       const saved = await patchServiceOfferings({ offers: cleanOffers });
-      toast({ title: "Service offerings saved" });
+      notify('toasts.profile.serviceOfferingsSaved');
       onSaved?.(saved.offers ?? []);
       onOpenChange(false);
     } catch (e: any) {
-      toast({ title: "Save failed", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.profile.saveFailed');
     } finally {
       setSaving(false);
     }

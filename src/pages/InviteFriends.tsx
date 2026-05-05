@@ -17,6 +17,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useContacts } from "@/hooks/useContacts";
 import useContactSync from "@/hooks/useContactSync";
 import { Upload, Smartphone, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface LocalContact {
   name: string;
@@ -128,8 +129,8 @@ export default function InviteFriends() {
   }, [addContact]);
 
   const handleManualAdd = useCallback(async () => {
-    if (!manualName.trim()) { toast.error("Name is required"); return; }
-    if (!manualEmail.trim() && !manualPhone.trim()) { toast.error("Please provide email or phone"); return; }
+    if (!manualName.trim()) { notifyError('toasts.invitefriends.nameRequired'); return; }
+    if (!manualEmail.trim() && !manualPhone.trim()) { notifyError('toasts.invitefriends.pleaseProvideEmailPhone'); return; }
 
     await addContact({
       contact_name: manualName.trim(),
@@ -146,7 +147,7 @@ export default function InviteFriends() {
     setManualName("");
     setManualEmail("");
     setManualPhone("");
-    toast.success("Contact added");
+    notifySuccess('toasts.invitefriends.contactAdded');
   }, [manualName, manualEmail, manualPhone, addContact]);
 
   const toggleSelect = (idx: number) => {
@@ -195,10 +196,10 @@ export default function InviteFriends() {
         toast.success(`${sentCount} invites sent!`);
         setContacts([]);
       } else {
-        toast.error("Failed to send invites");
+        notifyError('toasts.invitefriends.failedSendInvites');
       }
     } catch {
-      toast.error("Failed to send invites");
+      notifyError('toasts.invitefriends.failedSendInvites');
     } finally {
       setSending(false);
     }

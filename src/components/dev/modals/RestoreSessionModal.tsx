@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Clock, Trash2 } from "lucide-react";
 import { useSessionRestore } from "@/hooks/dev/useSessionRestore";
-import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface RestoreSessionModalProps {
   open: boolean;
@@ -24,7 +24,7 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
     const session = sessions.find((s) => s.id === sessionId);
     
     if (!session) {
-      toast.error("Session not found");
+      notifyError('toasts.dev.sessionNotFound');
       return;
     }
 
@@ -35,15 +35,15 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
     onOpenChange(false);
     
     if (isAlreadyOnPath) {
-      toast.success("Session restored successfully");
+      notifySuccess('toasts.dev.sessionRestoredSuccessfully');
     } else {
-      toast.success("Restoring session...");
+      notifySuccess('toasts.dev.restoringSession');
     }
   };
 
   const handleClearAll = () => {
     clearAllSessions();
-    toast.success("All sessions cleared");
+    notifySuccess('toasts.dev.allSessionsCleared');
   };
 
   const formatDuration = (minutes: number) => {

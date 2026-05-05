@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Building, Users, Shield, AlertCircle } from "lucide-react";
 import { useTenant } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import AdminHeader from "@/components/admin/AdminHeader";
 import AppLayout from "@/components/AppLayout";
@@ -14,6 +14,7 @@ import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import { adminTenantManagementNavigation } from "@/config/navigation";
 import { GeminiApiKeySetup } from "@/components/admin/GeminiApiKeySetup";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const TENANT_CONFIGS = {
   maxina: { name: "Maxina", color: "bg-pink-100 text-pink-800" },
@@ -35,16 +36,9 @@ export default function TenantManagement() {
     setSwitching(true);
     try {
       await setActiveTenant(selectedTenant);
-      toast({
-        title: "Tenant switched successfully",
-        description: "You are now managing the selected organization.",
-      });
+      notify('toasts.admin.tenantSwitchedSuccessfully', 'toasts.admin.youNowManagingSelectedOrganization');
     } catch (error) {
-      toast({
-        title: "Failed to switch tenant",
-        description: "You don't have permission to access this organization.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.failedSwitchTenant', 'toasts.admin.youDonTHavePermissionAccess');
     } finally {
       setSwitching(false);
     }

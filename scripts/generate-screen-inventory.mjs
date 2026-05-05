@@ -32,6 +32,8 @@ function walk(dir) {
 
 const TRANSLATE_CALL_RX = /\btranslate\s*\(\s*['"`]([^'"`)]+)['"`]/g;
 const T_DOT_RX = /\bt\.(?!toString|valueOf|hasOwnProperty)([a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)+)/g;
+// Wave 2: notify('toasts.x.y'), notifyError('toasts.x.y'), etc.
+const NOTIFY_CALL_RX = /\bnotify(?:Error|Success|Info|Warning)?\s*\(\s*['"`]([^'"`)]+)['"`](?:\s*,\s*['"`]([^'"`)]+)['"`])?/g;
 
 // Heuristic for hardcoded JSX text. Cheap and intentionally narrow — the
 // authoritative check is the ESLint rule.
@@ -82,6 +84,10 @@ for (const file of files) {
   const keysUsed = new Set();
   for (const m of src.matchAll(TRANSLATE_CALL_RX)) keysUsed.add(m[1]);
   for (const m of src.matchAll(T_DOT_RX)) keysUsed.add(m[1]);
+  for (const m of src.matchAll(NOTIFY_CALL_RX)) {
+    keysUsed.add(m[1]);
+    if (m[2]) keysUsed.add(m[2]);
+  }
 
   const namespacesUsed = new Set([...keysUsed].map(extractNamespacesFromKey));
 

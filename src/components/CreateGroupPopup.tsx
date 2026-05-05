@@ -9,11 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Globe, Lock, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CreateGroupPopupProps {
   isOpen: boolean;
@@ -47,11 +48,11 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
   const handleSubmit = async () => {
     if (!formData.name.trim()) {
-      toast({ title: "Name required", description: "Please enter a group name.", variant: "destructive" });
+      notifyError('toasts.common.nameRequired', 'toasts.common.pleaseEnterGroupName');
       return;
     }
     if (!user?.id) {
-      toast({ title: "Not logged in", description: "Please log in to create a group.", variant: "destructive" });
+      notifyError('toasts.common.notLogged', 'toasts.common.pleaseLogCreateGroup');
       return;
     }
 
@@ -105,10 +106,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       // Refresh inbox so the new group chat thread appears
       queryClient.invalidateQueries({ queryKey: ['global-threads'] });
 
-      toast({
-        title: "Group Created! 🎉",
-        description: `${formData.name} has been created successfully.`
-      });
+      notify('toasts.common.groupCreated');
 
       onClose();
       setFormData({ name: "", description: "", category: "", privacy: "public", location: "", isVirtual: false, rules: "" });
@@ -116,7 +114,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       navigate(`/comm/groups/${newGroup.id}`);
     } catch (err: any) {
       console.error('[CreateGroup] error:', err);
-      toast({ title: "Error", description: err.message || "Could not create group.", variant: "destructive" });
+      notifyError('toasts.common.error');
     } finally {
       setIsSubmitting(false);
     }

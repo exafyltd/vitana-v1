@@ -20,8 +20,9 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { QuickSetupPopup } from "@/components/QuickSetupPopup";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useNotificationPreferences, NotificationPreferences } from "@/hooks/useNotifications";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from "@/hooks/useTranslation";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 function Settings() {
   const navigate = useNavigate();
@@ -39,16 +40,9 @@ function Settings() {
   const handleToggle = async (key: keyof NotificationPreferences, value: boolean) => {
     try {
       await updatePref(key, value);
-      toast({
-        title: "✅ Settings updated",
-        description: "Your notification preferences have been saved.",
-      });
+      notify('toasts.settings.settingsUpdated', 'toasts.settings.yourNotificationPreferencesHaveSaved');
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to update settings",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateSettings');
     }
   };
 
@@ -56,16 +50,9 @@ function Settings() {
   const handleTimeChange = async (key: 'dnd_start_time' | 'dnd_end_time', value: string) => {
     try {
       await updatePref(key, value);
-      toast({
-        title: "✅ Settings updated",
-        description: "Your quiet hours have been saved.",
-      });
+      notify('toasts.settings.settingsUpdated', 'toasts.settings.yourQuietHoursHaveSaved');
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to update quiet hours",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateQuietHours');
     }
   };
   const categoryCards = [

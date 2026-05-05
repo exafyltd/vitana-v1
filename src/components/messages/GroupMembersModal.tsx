@@ -7,9 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface Participant {
   id: string;
@@ -122,11 +123,7 @@ export default function GroupMembersModal({
       setParticipants(participantsWithProfiles);
     } catch (error) {
       console.error('Error fetching participants:', error);
-      toast({
-        title: "Failed to load members",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedLoadMembers', 'toasts.messages.pleaseTryAgain');
     } finally {
       setIsLoading(false);
     }
@@ -215,10 +212,7 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Member added",
-        description: `${newUser.display_name || newUser.full_name} has been added to the group.`
-      });
+      notify('toasts.messages.memberAdded');
 
       setSearchTerm("");
       setSearchResults([]);
@@ -226,11 +220,7 @@ export default function GroupMembersModal({
 
     } catch (error) {
       console.error('Error adding member:', error);
-      toast({
-        title: "Failed to add member",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedAddMember', 'toasts.messages.pleaseTryAgain');
     }
   };
 
@@ -280,20 +270,13 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Member removed",
-        description: `${userName} has been removed from the group.`
-      });
+      notify('toasts.messages.memberRemoved');
 
       fetchParticipants();
 
     } catch (error) {
       console.error('Error removing member:', error);
-      toast({
-        title: "Failed to remove member",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedRemoveMember', 'toasts.messages.pleaseTryAgain');
     }
   };
 
@@ -343,20 +326,13 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Left group",
-        description: "You have left the group. You can still view the message history."
-      });
+      notify('toasts.messages.leftGroup', 'toasts.messages.youHaveLeftGroupYouCan');
 
       onOpenChange(false);
 
     } catch (error) {
       console.error('Error leaving group:', error);
-      toast({
-        title: "Failed to leave group",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedLeaveGroup', 'toasts.messages.pleaseTryAgain');
     }
   };
 

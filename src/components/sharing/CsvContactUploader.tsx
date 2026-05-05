@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import type { ExternalContact, CsvValidationResult } from "@/types/audience";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface CsvContactUploaderProps {
   onContactsImported: (contacts: ExternalContact[]) => void;
@@ -96,7 +97,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
     if (!file) return;
 
     if (!file.name.endsWith('.csv')) {
-      toast.error('Please upload a CSV file');
+      notifyError('toasts.sharing.pleaseUploadCsvFile');
       return;
     }
 
@@ -109,7 +110,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
       setValidationResult(result);
 
       if (result.valid.length === 0) {
-        toast.error('No valid contacts found in CSV');
+        notifyError('toasts.sharing.noValidContactsFoundCsv');
       } else {
         toast.success(`${result.valid.length} contacts imported successfully`);
         onContactsImported(result.valid);
@@ -127,7 +128,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
   const handleClearImport = () => {
     setValidationResult(null);
     onContactsImported([]);
-    toast.success('Import cleared');
+    notifySuccess('toasts.sharing.importCleared');
   };
 
   const hasImportedContacts = currentContacts.length > 0;

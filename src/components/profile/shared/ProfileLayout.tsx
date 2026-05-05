@@ -46,10 +46,11 @@ import { useFollow } from "@/hooks/useFollow";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from "react-router-dom";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -163,7 +164,7 @@ export function ProfileLayout({
 
   const handleMessageClick = () => {
     if (!user) {
-      toast({ title: "Authentication required", description: "Please sign in to send messages", variant: "destructive" });
+      notifyError('toasts.profile.authenticationRequired', 'toasts.profile.pleaseSignSendMessages');
       return;
     }
     setMessageModalOpen(true);
@@ -176,10 +177,10 @@ export function ProfileLayout({
       if (!thread?.id) throw new Error('Failed to create thread');
       await sendMessage({ context: 'global', threadId: thread.id, content: message, type: 'text' });
       logMessageSend(thread.id, 'text', 'global');
-      toast({ title: "Message sent", description: "Your message has been sent successfully" });
+      notify('toasts.profile.messageSent', 'toasts.profile.yourMessageHasSentSuccessfully');
       navigate('/inbox', { state: { selectedThreadId: thread.id } });
     } catch (error) {
-      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+      notifyError('toasts.profile.error', 'toasts.profile.failedSendMessagePleaseTryAgain');
       throw error;
     } finally {
       setIsCreatingThread(false);

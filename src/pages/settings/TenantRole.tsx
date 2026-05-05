@@ -12,8 +12,9 @@ import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function TenantRole() {
   const { activeTenantId, tenant, isExafyAdmin, setActiveTenant } = useTenant();
@@ -31,17 +32,10 @@ export default function TenantRole() {
     setSwitching(true);
     try {
       await setRole(selectedRole as any);
-      toast({
-        title: "Role switched",
-        description: `Successfully switched to ${selectedRole} role`,
-      });
+      notify('toasts.settings.roleSwitched');
       setSelectedRole("");
     } catch (error) {
-      toast({
-        title: "Error switching role",
-        description: "Failed to switch role. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.errorSwitchingRole', 'toasts.settings.failedSwitchRolePleaseTryAgain');
     } finally {
       setSwitching(false);
     }
@@ -53,17 +47,10 @@ export default function TenantRole() {
     setSwitching(true);
     try {
       await setActiveTenant(selectedTenant);
-      toast({
-        title: "Organization switched",
-        description: `Successfully switched to new organization`,
-      });
+      notify('toasts.settings.organizationSwitched');
       setSelectedTenant("");
     } catch (error) {
-      toast({
-        title: "Error switching organization",
-        description: "Failed to switch organization. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.errorSwitchingOrganization', 'toasts.settings.failedSwitchOrganizationPleaseTryAgain');
     } finally {
       setSwitching(false);
     }

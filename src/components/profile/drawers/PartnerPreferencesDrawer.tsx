@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Lock, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   getProfilePrefs,
   patchPartnerPreferences,
@@ -38,6 +38,7 @@ import {
   type GenderPref,
   type RelationshipIntent,
 } from "@/lib/profilePrefsApi";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface PartnerPreferencesDrawerProps {
   open: boolean;
@@ -74,7 +75,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
         setDealBreakersText((p.deal_breakers ?? []).join(", "));
       })
       .catch((e) => {
-        toast({ title: "Could not load preferences", description: e?.message ?? "", variant: "destructive" });
+        notifyError('toasts.profile.couldNotLoadPreferences');
       })
       .finally(() => setLoading(false));
   }, [open, toast]);
@@ -101,11 +102,11 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
       if (db.length > 0) payload.deal_breakers = db;
 
       const saved = await patchPartnerPreferences(payload);
-      toast({ title: "Partner preferences saved" });
+      notify('toasts.profile.partnerPreferencesSaved');
       onSaved?.(saved);
       onOpenChange(false);
     } catch (e: any) {
-      toast({ title: "Save failed", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.profile.saveFailed');
     } finally {
       setSaving(false);
     }

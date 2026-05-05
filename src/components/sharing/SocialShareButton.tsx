@@ -15,7 +15,7 @@ import {
   CheckCircle2,
   Plus,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
@@ -23,6 +23,7 @@ import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons"
 import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNativeShare } from "@/hooks/useNativeShare";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
@@ -90,10 +91,7 @@ export default function SocialShareButton({
   const handlePlatformClick = (platform: SocialPlatform) => {
     try {
       if (platform.id === 'messenger') {
-        toast({
-          title: "Opening Messenger...",
-          description: "Share via Vitana Messenger"
-        });
+        notify('toasts.sharing.openingMessenger', 'toasts.sharing.shareViaVitanaMessenger');
         navigate('/messenger');
         setIsOpen(false);
         return;
@@ -109,19 +107,13 @@ export default function SocialShareButton({
         
         if (shareUrls[platform.id]) {
           window.open(shareUrls[platform.id], '_blank', 'width=600,height=400');
-          toast({
-            title: "Share opened",
-            description: `Complete your share on ${platform.name}`,
-          });
+          notify('toasts.sharing.shareOpened');
         }
         return;
       }
 
       if (!platform.connected) {
-        toast({
-          title: "Connect account",
-          description: `Connect your ${platform.name} account to share content`,
-        });
+        notify('toasts.sharing.connectAccount');
         return;
       }
 
@@ -136,11 +128,11 @@ export default function SocialShareButton({
         },
         youtube: async () => {
           await navigator.clipboard.writeText(shareLink);
-          toast({ title: "YouTube", description: "Link copied! Share on YouTube" });
+          notify('toasts.sharing.youtube', 'toasts.sharing.linkCopiedShareYoutube');
         },
         tiktok: async () => {
           await navigator.clipboard.writeText(shareLink);
-          toast({ title: "TikTok", description: "Link copied! Share on TikTok" });
+          notify('toasts.sharing.tiktok', 'toasts.sharing.linkCopiedShareTiktok');
         },
       };
 
@@ -148,11 +140,7 @@ export default function SocialShareButton({
       setIsOpen(false);
     } catch (error) {
       console.error('Share error:', error);
-      toast({
-        title: "Share Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.sharing.shareFailed', 'toasts.sharing.pleaseTryAgain');
     }
   };
 

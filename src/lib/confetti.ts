@@ -1,5 +1,5 @@
 // Confetti Animation System for Wallet Success Events
-import { toast } from "@/hooks/use-toast";
+import { notify } from '@/lib/i18n-toast';
 
 export interface ConfettiConfig {
   particleCount?: number;
@@ -203,11 +203,7 @@ export function celebrateSuccess(event: SuccessEvent) {
     subscription_activated: `Subscription activated!`
   };
 
-  toast({
-    title: "Success! 🎉",
-    description: event.message || defaultMessages[event.type],
-    duration: 3000,
-  });
+  notify('toasts.common.success');
 
   // Trigger any additional refresh logic
   setTimeout(() => {

@@ -31,7 +31,7 @@ import {
   User
 } from "lucide-react";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { toast } from "sonner";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 interface ClientInfo {
   name?: string;
@@ -98,7 +98,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
 
   const handleExportCSV = () => {
     if (attendees.length === 0) {
-      toast.error("No attendees to export");
+      notifyError('toasts.business.noAttendeesExport');
       return;
     }
 
@@ -127,7 +127,7 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
     a.click();
     URL.revokeObjectURL(url);
 
-    toast.success("Attendee list exported!");
+    notifySuccess('toasts.business.attendeeListExported');
   };
 
   const handleOpenCheckIn = () => {

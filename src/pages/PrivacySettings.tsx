@@ -29,6 +29,7 @@ import {
   DEFAULT_ACCOUNT_VISIBILITY,
   FieldVisibility,
 } from "@/types/profile";
+import { notifyError } from '@/lib/i18n-toast';
 
 const NEXT_TIER: Record<FieldVisibility, FieldVisibility> = {
   private: "connections",
@@ -172,7 +173,7 @@ export default function PrivacySettings() {
       await setFieldVisibility(key, next);
       toast({ title: `${key} → ${TIER_LABEL[next]}` });
     } catch (e: any) {
-      toast({ title: "Could not save", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.privacysettings.couldNotSave');
     }
   };
 

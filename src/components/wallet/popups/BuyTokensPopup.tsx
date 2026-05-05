@@ -15,6 +15,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface BuyTokensPopupProps {
   open: boolean;
@@ -46,11 +47,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
   const handleBuyTokens = async (tokens: number, cost: number, bonus: number) => {
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd2');
       return;
     }
 
@@ -61,18 +58,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('VTNA', tokens + bonus, 'add');
       
-      toast({
-        title: '✅ VTNA Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTNA${bonus > 0 ? ` + ${bonus} bonus tokens` : ''} for $${cost}`,
-      });
+      notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
       
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -80,11 +70,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
   const handleCustomPurchase = async () => {
     if (!tokenAmount || parseFloat(tokenAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid number of tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidNumberTokens');
       return;
     }
 
@@ -92,11 +78,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     const cost = Math.round(tokens * vtnPriceInUSD * 100) / 100; // Use actual exchange rate
     
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd2');
       return;
     }
 
@@ -106,19 +88,12 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('VTNA', tokens, 'add');
       
-      toast({
-        title: '✅ VTNA Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTNA for $${cost}`,
-      });
+      notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
       
       onOpenChange(false);
       setTokenAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }

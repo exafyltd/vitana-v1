@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronRight, RefreshCw } from 'lucide-react';
 import { initializePushNotifications } from '@/lib/pushNotifications';
 import { toast } from 'sonner';
+import { notifySuccess } from '@/lib/i18n-toast';
 
 interface DiagnosticItem {
   label: string;
@@ -175,7 +176,7 @@ export default function PushDiagnostics() {
     setRefreshing(true);
     try {
       await initializePushNotifications();
-      toast.success('Push notifications re-initialized');
+      notifySuccess('toasts.common.pushNotificationsReinitialized');
       await runDiagnostics();
     } catch (err: any) {
       toast.error('Re-init failed: ' + (err?.message || 'unknown error'));

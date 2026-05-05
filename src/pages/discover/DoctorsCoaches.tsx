@@ -27,8 +27,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -93,18 +94,11 @@ export default function DoctorsCoaches() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['provider-appointments', 'upcoming'] });
-      toast({
-        title: "Appointment Booked! 🎉",
-        description: "Your appointment has been confirmed"
-      });
+      notify('toasts.discover.appointmentBooked', 'toasts.discover.yourAppointmentHasConfirmed');
     },
     onError: (error) => {
       console.error('Error saving appointment:', error);
-      toast({
-        title: "Booking Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.discover.bookingFailed', 'toasts.discover.pleaseTryAgain');
     }
   });
 

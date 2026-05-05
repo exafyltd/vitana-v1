@@ -10,9 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2, DollarSign, Share } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CommunityEvent {
   id: string;
@@ -211,10 +212,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         setGeneratedImagePreview(data.imageUrl);
         setFormData({...formData, imageUrl: data.imageUrl});
         
-        toast({
-          title: "Image Generated! ✨",
-          description: "AI has created a custom image for your event.",
-        });
+        notify('toasts.common.imageGenerated', 'toasts.common.aiHasCreatedCustomImageFor');
       }
     } catch (err: any) {
       console.error('Image generation failed:', err);
@@ -244,11 +242,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       
       setGenerationError(errorMessage);
       
-      toast({
-        title: "Generation Failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      notifyError('toasts.common.generationFailed');
     } finally {
       setIsGeneratingImage(false);
     }
@@ -284,11 +278,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast({
-        title: "Form Incomplete",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.formIncomplete', 'toasts.common.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -337,11 +327,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
           uploadedImageUrl = pub.publicUrl;
         } catch (e) {
           console.error('Image upload failed:', e);
-          toast({
-            title: "Image upload failed",
-            description: "We'll keep the existing image.",
-            variant: "default",
-          });
+          notify('toasts.common.imageUploadFailed', 'toasts.common.weLlKeepExistingImage');
         }
       }
 
@@ -432,26 +418,15 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
           }
         } catch (syncErr) {
           console.error('Ticket type sync failed:', syncErr);
-          toast({
-            title: "Warning",
-            description: "Event updated but ticket sync failed. Please re-edit to retry.",
-            variant: "destructive",
-          });
+          notifyError('toasts.common.warning', 'toasts.common.eventUpdatedButTicketSyncFailed');
         }
 
-        toast({
-          title: "Meetup Updated!",
-          description: "Your meetup has been successfully updated.",
-        });
+        notify('toasts.common.meetupUpdated', 'toasts.common.yourMeetupHasSuccessfullyUpdated');
         onUpdated?.(); // Trigger parent to refetch events
         onClose();
         setErrors({});
       } else {
-        toast({
-          title: "Error Updating Meetup",
-          description: "There was an issue updating your meetup. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.errorUpdatingMeetup', 'toasts.common.thereIssueUpdatingYourMeetupPlease');
       }
     } finally {
       setLoading(false);

@@ -14,7 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useSearchParams } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function Videos() {
   const [searchParams] = useSearchParams();
@@ -65,9 +66,9 @@ export default function Videos() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedUpdateStatus');
     } else {
-      toast({ title: "Success", description: `Video ${newStatus}` });
+      notify('toasts.admin.success');
       refetch();
     }
   };
@@ -79,9 +80,9 @@ export default function Videos() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to delete video", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedDeleteVideo');
     } else {
-      toast({ title: "Success", description: "Video deleted" });
+      notify('toasts.admin.success', 'toasts.admin.videoDeleted');
       refetch();
     }
   };

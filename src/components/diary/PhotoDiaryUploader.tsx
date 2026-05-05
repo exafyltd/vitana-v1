@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface PhotoDiaryUploaderProps {
   onUploadComplete?: () => void;
@@ -44,11 +45,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
 
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
-      toast({
-        title: "No photos selected",
-        description: "Please select at least one photo to upload",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.noPhotosSelected', 'toasts.diary.pleaseSelectAtLeastOnePhoto');
       return;
     }
 
@@ -133,10 +130,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
             : `${sync.health_features_written} health signals logged from your caption.`,
         });
       } else {
-        toast({
-          title: "Photos uploaded!",
-          description: "Your photo diary entry has been saved successfully.",
-        });
+        notify('toasts.diary.photosUploaded', 'toasts.diary.yourPhotoDiaryEntryHasSaved');
       }
 
       // Reset form
@@ -146,11 +140,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       onUploadComplete?.();
     } catch (error) {
       console.error('Error uploading photos:', error);
-      toast({
-        title: "Upload failed",
-        description: "Failed to save your photo entry. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.uploadFailed', 'toasts.diary.failedSaveYourPhotoEntryPlease');
     } finally {
       setIsUploading(false);
     }

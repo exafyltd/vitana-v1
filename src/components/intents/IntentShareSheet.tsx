@@ -27,6 +27,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { Copy, Check, Share2, MessageCircle, Mail, Loader2 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -89,7 +90,7 @@ export function IntentShareSheet({
   const handleSendInApp = async () => {
     if (!session?.access_token) return;
     if (recipients.length === 0) {
-      toast({ title: "Add at least one @vitana-id", variant: "destructive" });
+      notifyError('toasts.intents.addAtLeastOneVitanaid');
       return;
     }
     if (recipientsExceeded) {
@@ -146,7 +147,7 @@ export function IntentShareSheet({
       setNote("");
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Network error", description: err?.message || "Try again", variant: "destructive" });
+      notifyError('toasts.intents.networkError');
     } finally {
       setSubmitting(false);
     }
@@ -157,9 +158,9 @@ export function IntentShareSheet({
       await navigator.clipboard.writeText(publicLink);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-      toast({ title: "Link copied" });
+      notify('toasts.intents.linkCopied');
     } catch {
-      toast({ title: "Could not copy", variant: "destructive" });
+      notifyError('toasts.intents.couldNotCopy');
     }
   };
 

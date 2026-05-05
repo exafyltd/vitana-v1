@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Package, Mail, Undo2, Star, FileText, AlertCircle, CreditCard } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify } from '@/lib/i18n-toast';
 
 interface DiscoverOrderActionPopupProps {
   open: boolean;
@@ -12,10 +13,7 @@ export const DiscoverOrderActionPopup = ({ open, onOpenChange }: DiscoverOrderAc
   const { toast } = useToast();
 
   const handleAction = (action: string) => {
-    toast({
-      title: "Action Selected",
-      description: `${action} feature coming soon!`,
-    });
+    notify('toasts.discover.actionSelected');
     onOpenChange(false);
   };
 

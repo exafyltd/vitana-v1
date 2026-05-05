@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { listMyIntents, type UserIntent } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
+import { notifyError } from '@/lib/i18n-toast';
 
 export default function BusinessListings() {
   const { toast } = useToast();
@@ -29,7 +30,7 @@ export default function BusinessListings() {
       const result = await listMyIntents({ kind: "commercial_sell" });
       setListings(result);
     } catch (err: any) {
-      toast({ title: "Could not load listings", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.businesslistings.couldNotLoadListings');
     } finally {
       setLoading(false);
     }

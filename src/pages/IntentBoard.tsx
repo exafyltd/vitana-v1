@@ -11,10 +11,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { getIntentBoard, type BoardResponse, type IntentKind } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
+import { notifyError } from '@/lib/i18n-toast';
 
 const KIND_FILTERS: { value: IntentKind | "all" | "dance"; label: string }[] = [
   { value: "all", label: "All (compass-aware)" },
@@ -57,7 +58,7 @@ export default function IntentBoard() {
       const result = await getIntentBoard(params);
       setData(result);
     } catch (err: any) {
-      toast({ title: "Could not load board", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentboard.couldNotLoadBoard');
     } finally {
       setLoading(false);
     }

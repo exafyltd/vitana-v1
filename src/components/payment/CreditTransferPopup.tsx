@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { 
   Send, 
@@ -17,6 +17,7 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface CreditTransferPopupProps {
   isOpen: boolean;
@@ -49,11 +50,7 @@ export default function CreditTransferPopup({
 
   const handleTransfer = async () => {
     if (!canTransfer) {
-      toast({
-        title: "Invalid Transfer",
-        description: "Please enter a valid amount within your balance",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.invalidTransfer', 'toasts.payment.pleaseEnterValidAmountWithinYour');
       return;
     }
 
@@ -80,21 +77,14 @@ export default function CreditTransferPopup({
         transferData
       );
 
-      toast({
-        title: "Transfer Completed! ✨",
-        description: `${transferAmount} credits sent to ${recipient?.name || 'recipient'}`
-      });
+      notify('toasts.payment.transferCompleted');
 
       onClose();
       setAmount('');
       setNote('');
     } catch (error) {
       console.error('Transfer error:', error);
-      toast({
-        title: "Transfer Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.transferFailed', 'toasts.payment.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }

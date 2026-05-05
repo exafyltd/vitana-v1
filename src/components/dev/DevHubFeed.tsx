@@ -8,8 +8,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { Pause, Play, ChevronDown, ChevronRight } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from "date-fns";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface FeedEvent {
   ts: string;
@@ -197,11 +198,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           const mockData = await response.json();
           setEvents(mockData.events || []);
           setConnectionState("MOCK MODE");
-          toast({
-            title: "Connection Failed",
-            description: "Using mock data. Live feed unavailable.",
-            variant: "destructive",
-          });
+          notifyError('toasts.dev.connectionFailed', 'toasts.dev.usingMockDataLiveFeedUnavailable');
         } catch (err) {
           console.error("Failed to load mock data:", err);
           setConnectionState("MOCK MODE");

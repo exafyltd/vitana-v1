@@ -47,6 +47,7 @@ import {
   transformEventRankingToCard,
   transformCreatorRankingToCard
 } from '@/lib/rankingsCardTransformers';
+import { notifyError, notifyInfo } from '@/lib/i18n-toast';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -719,12 +720,12 @@ const renderEventGrid = (
         const targetUserId = event.authorId || event.id;
         
         if (targetUserId?.startsWith('demo-')) {
-          toast.info("This is a demo profile. Follow functionality available for real users.");
+          notifyInfo('toasts.community.thisDemoProfileFollowFunctionalityAvailable');
           return;
         }
         
         if (!followContext.user) {
-          toast.error("Please sign in to follow users");
+          notifyError('toasts.community.pleaseSignFollowUsers');
           return;
         }
         
@@ -759,7 +760,7 @@ const renderEventGrid = (
         } catch (error) {
           followContext.setFollowStatus(prev => new Map(prev).set(targetUserId, isCurrentlyFollowing));
           console.error('Error toggling follow:', error);
-          toast.error("Failed to update follow status. Please try again.");
+          notifyError('toasts.community.failedUpdateFollowStatusPleaseTry');
         } finally {
           followContext.setFollowLoading(prev => {
             const next = new Set(prev);

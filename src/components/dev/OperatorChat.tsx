@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useCommandHub } from "@/state/commandHubStore";
 import { fetchThread, postChat } from "@/lib/commandHubApi";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export default function OperatorChat() {
   const { activeVTID, threads, upsertThread, appendChat, setActiveVTID } = useCommandHub();
@@ -26,7 +26,7 @@ export default function OperatorChat() {
           if (err.message?.includes("404")) {
             console.log("No thread history for", activeVTID);
           } else if (err.message?.includes("401")) {
-            toast({ title: "Session expired", description: "Please sign in." });
+            notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
           }
         });
     }
@@ -78,7 +78,7 @@ export default function OperatorChat() {
       appendChat(useVTID, { role: "operator", ts: new Date().toISOString(), text: res.reply, links: res.links });
     } catch (err) {
       console.error("Chat error:", err);
-      toast({ title: "Failed to send message", description: String(err), variant: "destructive" });
+      notifyError('toasts.dev.failedSendMessage');
     } finally {
       setIsLoading(false);
     }

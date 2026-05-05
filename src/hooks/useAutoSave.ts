@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface UseAutoSaveOptions<T> {
   data: T;
@@ -27,19 +28,10 @@ export function useAutoSave<T>({
       await onSave(dataToSave);
       lastSavedRef.current = dataToSave;
       
-      toast({
-        title: "Auto-saved",
-        description: "Your changes have been saved automatically",
-        duration: 2000,
-      });
+      notify('toasts.hooks.autosaved', 'toasts.hooks.yourChangesHaveSavedAutomatically');
     } catch (error) {
       console.error('Auto-save failed:', error);
-      toast({
-        title: "Auto-save failed",
-        description: "Your changes couldn't be saved. Please try again.",
-        variant: "destructive",
-        duration: 4000,
-      });
+      notifyError('toasts.hooks.autosaveFailed', 'toasts.hooks.yourChangesCouldnTSavedPlease');
     } finally {
       isSavingRef.current = false;
     }

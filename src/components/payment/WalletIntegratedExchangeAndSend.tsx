@@ -8,11 +8,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
 import { ArrowRight, ArrowUpDown, Send, Zap } from "lucide-react";
 import { calculateExchange, formatCurrency } from "@/lib/exchangeRates";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface WalletIntegratedExchangeAndSendProps {
   isOpen: boolean;
@@ -65,29 +66,17 @@ export default function WalletIntegratedExchangeAndSend({
 
   const handleExchangeAndSend = async () => {
     if (!amount || !description || !recipient) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAllRequiredFields');
       return;
     }
 
     if (!canAfford()) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You don't have enough ${fromCurrency}`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
     if (!calculation) {
-      toast({
-        title: "Exchange Error", 
-        description: "Unable to calculate exchange rate",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.exchangeError', 'toasts.payment.unableCalculateExchangeRate');
       return;
     }
 
@@ -116,22 +105,14 @@ export default function WalletIntegratedExchangeAndSend({
         exchangeData
       );
 
-      toast({
-        title: "Exchange & Send Request Sent! ✨",
-        description: `Request to convert ${formatCurrency(parseFloat(amount), fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} sent to ${recipient.name}`,
-        duration: 6000
-      });
+      notify('toasts.payment.exchangeSendRequestSent');
 
       onClose();
       setAmount('');
       setDescription('');
     } catch (error) {
       console.error('Exchange and send error:', error);
-      toast({
-        title: "Request Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.requestFailed', 'toasts.payment.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }

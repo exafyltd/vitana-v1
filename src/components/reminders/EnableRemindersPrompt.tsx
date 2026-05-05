@@ -23,6 +23,7 @@ import { Bell, BellOff, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { isAppilix } from "@/lib/appilix";
 import { pushNotificationManager } from "@/lib/pushNotifications";
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 type PermissionState = "default" | "granted" | "denied" | "unsupported";
 
@@ -79,7 +80,7 @@ export const EnableRemindersPrompt: React.FC = () => {
       // registers the FCM token with the gateway. Single user gesture.
       const ok = await pushNotificationManager.initialize();
       if (!ok) {
-        toast.error("Notifications aren't supported in this browser.");
+        notifyError('toasts.reminders.notificationsArenTSupportedThisBrowser');
         setPermission("unsupported");
         return;
       }
@@ -87,11 +88,11 @@ export const EnableRemindersPrompt: React.FC = () => {
       const newPerm = readPermission();
       setPermission(newPerm);
       if (token) {
-        toast.success("Reminders enabled — you'll get notified even when the app is closed.");
+        notifySuccess('toasts.reminders.remindersEnabledYouLlGetNotified');
       } else if (newPerm === "denied") {
-        toast.error("Notifications were blocked. You can re-enable them in browser settings.");
+        notifyError('toasts.reminders.notificationsBlockedYouCanReenableThem');
       } else {
-        toast.error("Couldn't enable notifications. Try again in a moment.");
+        notifyError('toasts.reminders.couldnTEnableNotificationsTryAgain');
       }
     } catch (err: any) {
       toast.error(err?.message || "Couldn't enable notifications.");

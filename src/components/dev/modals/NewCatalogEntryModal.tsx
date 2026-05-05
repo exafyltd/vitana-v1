@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
+import { notify } from '@/lib/i18n-toast';
 
 interface NewCatalogEntryModalProps {
   open: boolean;
@@ -21,10 +22,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
   const [description, setDescription] = useState("");
 
   const handleCreate = () => {
-    toast({
-      title: "Catalog entry created",
-      description: `${entryName} has been added to ${catalog}.`,
-    });
+    notify('toasts.dev.catalogEntryCreated');
     onOpenChange(false);
     setCatalog("");
     setEntryName("");

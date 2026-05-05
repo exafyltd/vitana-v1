@@ -13,6 +13,7 @@ import { useMessages } from '@/hooks/useMessages';
 import { useToast } from '@/hooks/use-toast';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface SendStepProps {
   onBack: () => void;
@@ -46,11 +47,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
 
   const handleSend = async () => {
     if (!selectedRecipient || !amount || parseFloat(amount) <= 0) {
-      toast({
-        title: 'Missing Information',
-        description: 'Please select a recipient and enter an amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.missingInformation', 'toasts.wallet.pleaseSelectRecipientEnterAmount');
       return;
     }
 
@@ -58,11 +55,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
     const currentBalance = getBalance(currency) || 0;
 
     if (sendAmount > currentBalance) {
-      toast({
-        title: 'Insufficient Balance',
-        description: `You only have ${currentBalance} ${currency}`,
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 
