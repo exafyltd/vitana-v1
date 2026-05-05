@@ -7,9 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PeopleMatch {
   user_id: string;
@@ -128,11 +129,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const handleChatClick = (match: PeopleMatch) => {
     // Check if it's a demo user (DiceBear avatar URLs or demo- prefix)
     if (match.user_id.startsWith('demo-') || match.avatar_url?.includes('dicebear.com')) {
-      toast({
-        title: "💬 Chat started",
-        description: `Opening conversation with ${match.display_name}...`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.chatStarted');
       return;
     }
     
@@ -151,7 +148,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
       <CrossoverCard
         icon={Users}
         category="mental"
-        title="Top People 👋"
+        title={t('screens.crossover.topPeople')}
         subtitle="Finding your perfect matches..."
         content={
           <div className="flex items-center justify-center py-8">
@@ -168,7 +165,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const content = (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Suggested based on your profile & recent activity.
+        {t('screens.crossover.suggestedBasedYourProfileRecentActivity')}
       </p>
       
       {matches.length === 0 ? (
@@ -203,15 +200,14 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
                 size="sm"
                 onClick={() => handleChatClick(match)}
                 className="bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                💬 Chat
+              >{t('screens.crossover.chat')}
               </Button>
             </div>
           ))}
           
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center gap-2 text-xs">
-              <span className="font-medium text-foreground">Ready for meaningful connections</span>
+              <span className="font-medium text-foreground">{t('screens.crossover.readyForMeaningfulConnections')}</span>
               <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.5)]" />
             </div>
             <Button 
@@ -220,7 +216,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
               onClick={() => navigate('/community/people?recommended=1')}
               className="text-xs text-primary"
             >
-              See more →
+              {t('screens.crossover.seeMore')}
             </Button>
           </div>
         </>
@@ -232,7 +228,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
     <CrossoverCard
       icon={Users}
       category="mental"
-      title="Top People 👋"
+      title={t('screens.crossover.topPeople')}
       subtitle="High compatibility matches"
       content={content}
       buttonText="💬 Start Chat"

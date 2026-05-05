@@ -13,6 +13,7 @@ import SmartSuggestions from "@/components/health/SmartSuggestions";
 import { Progress } from "@/components/ui/progress";
 import { healthNavigation } from "@/config/navigation";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 
 const overviewCards = [
@@ -105,7 +106,7 @@ export default function HealthTracker() {
 
   return (
     <AppLayout>
-      <SEO title="Health Tracker" description="Track your personal health data and monitor wellness progress" canonical={window.location.href} />
+      <SEO title={t('screens.healthtracker.healthTracker')} description="Track your personal health data and monitor wellness progress" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
@@ -114,8 +115,8 @@ export default function HealthTracker() {
             {/* Shortened Header Bar - Welcome Message Only */}
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Let's track your progress together! 📊</h1>
-                <p className="text-muted-foreground">Monitor your personal health data, track progress, and gain insights from your wellness journey.</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">{t('screens.healthtracker.letSTrackYourProgressTogether')}</h1>
+                <p className="text-muted-foreground">{t('screens.healthtracker.monitorYourPersonalHealthDataTrack')}</p>
               </div>
             </div>
             
@@ -137,7 +138,7 @@ export default function HealthTracker() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="w-5 h-5 text-calendar-primary" />
-                Health Pillars Progress
+                {t('screens.healthtracker.healthPillarsProgress')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -163,7 +164,7 @@ export default function HealthTracker() {
             <div className="lg:col-span-2">
               <SmartSuggestions 
                 suggestions={trackerInsights}
-                title="Tracking Insights & Patterns"
+                title={t('screens.healthtracker.trackingInsightsPatterns')}
                 variant="list"
               />
             </div>
@@ -192,7 +193,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("nutrition")}
                 >
                   <Apple className="w-4 h-4 mr-2" />
-                  Nutrition
+                  {t('screens.healthtracker.nutrition')}
                 </Button>
                 <Button
                   variant={activePanel === "sleep" ? "default" : "ghost"}
@@ -200,7 +201,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("sleep")}
                 >
                   <Moon className="w-4 h-4 mr-2" />
-                  Sleep
+                  {t('screens.healthtracker.sleep')}
                 </Button>
                 <Button
                   variant={activePanel === "exercise" ? "default" : "ghost"}
@@ -208,7 +209,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("exercise")}
                 >
                   <Dumbbell className="w-4 h-4 mr-2" />
-                  Exercise
+                  {t('screens.healthtracker.exercise')}
                 </Button>
                 <Button
                   variant={activePanel === "mental" ? "default" : "ghost"}
@@ -216,7 +217,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("mental")}
                 >
                   <Brain className="w-4 h-4 mr-2" />
-                  Mental
+                  {t('screens.healthtracker.mental')}
                 </Button>
                 <Button
                   variant={activePanel === "index" ? "default" : "ghost"}
@@ -224,7 +225,7 @@ export default function HealthTracker() {
                   onClick={() => setActivePanel("index")}
                 >
                   <Activity className="w-4 h-4 mr-2" />
-                  Vitana Index
+                  {t('screens.healthtracker.vitanaIndex')}
                 </Button>
               </div>
             }
@@ -237,34 +238,34 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Apple className="w-5 h-5 text-green-500" />
-                            Daily Nutrition
+                            {t('screens.healthtracker.dailyNutrition')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex justify-between text-sm">
-                              <span>Calories</span>
+                              <span>{t('screens.healthtracker.calories')}</span>
                               <span>1,847 / 2,200</span>
                             </div>
                             <Progress value={84} className="h-2" />
                             <div className="grid grid-cols-3 gap-2 text-xs">
-                              <div>Protein: 127g</div>
-                              <div>Carbs: 203g</div>
-                              <div>Fat: 67g</div>
+                              <div>{t('screens.healthtracker.protein127g')}</div>
+                              <div>{t('screens.healthtracker.carbs203g')}</div>
+                              <div>{t('screens.healthtracker.fat67g')}</div>
                             </div>
                           </div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-lg">Quick Log</CardTitle>
+                          <CardTitle className="text-lg">{t('screens.healthtracker.quickLog')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-2 gap-2">
-                            <Button size="sm" variant="outline">Breakfast</Button>
-                            <Button size="sm" variant="outline">Lunch</Button>
-                            <Button size="sm" variant="outline">Dinner</Button>
-                            <Button size="sm" variant="outline">Snack</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.breakfast')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.lunch')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.dinner')}</Button>
+                            <Button size="sm" variant="outline">{t('screens.healthtracker.snack')}</Button>
                           </div>
                         </CardContent>
                       </Card>
@@ -279,34 +280,34 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Moon className="w-5 h-5 text-purple-500" />
-                            Sleep Quality
+                            {t('screens.healthtracker.sleepQuality')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="text-center space-y-2">
                             <div className="text-3xl font-bold text-purple-500">7.5h</div>
-                            <p className="text-sm text-muted-foreground">Last night</p>
+                            <p className="text-sm text-muted-foreground">{t('screens.healthtracker.lastNight')}</p>
                             <Progress value={81} className="h-2" />
-                            <div className="text-xs text-muted-foreground">Sleep Score: 81/100</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.healthtracker.sleepScore81100')}</div>
                           </div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-lg">Sleep Pattern</CardTitle>
+                          <CardTitle className="text-lg">{t('screens.healthtracker.sleepPattern')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span>Bedtime avg:</span>
-                              <span>10:30 PM</span>
+                              <span>{t('screens.healthtracker.bedtimeAvg')}</span>
+                              <span>{t('screens.healthtracker.text1030Pm')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Wake time avg:</span>
-                              <span>6:15 AM</span>
+                              <span>{t('screens.healthtracker.wakeTimeAvg')}</span>
+                              <span>{t('screens.healthtracker.text615Am')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Deep sleep:</span>
+                              <span>{t('screens.healthtracker.deepSleep')}</span>
                               <span>23%</span>
                             </div>
                           </div>
@@ -323,36 +324,36 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Dumbbell className="w-5 h-5 text-orange-500" />
-                            Weekly Activity
+                            {t('screens.healthtracker.weeklyActivity')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex justify-between text-sm">
-                              <span>Active Days</span>
-                              <span>4/5 goal</span>
+                              <span>{t('screens.healthtracker.activeDays')}</span>
+                              <span>{t('screens.healthtracker.text45Goal')}</span>
                             </div>
                             <Progress value={80} className="h-2" />
-                            <div className="text-xs text-muted-foreground">68% improvement from last week</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.healthtracker.text68ImprovementFromLastWeek')}</div>
                           </div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-lg">Today's Activity</CardTitle>
+                          <CardTitle className="text-lg">{t('screens.healthtracker.todaySActivity')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span>Steps:</span>
+                              <span>{t('screens.healthtracker.steps')}</span>
                               <span>8,247 / 10,000</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Active minutes:</span>
+                              <span>{t('screens.healthtracker.activeMinutes')}</span>
                               <span>34 / 60</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Calories burned:</span>
+                              <span>{t('screens.healthtracker.caloriesBurned')}</span>
                               <span>247</span>
                             </div>
                           </div>
@@ -369,35 +370,35 @@ export default function HealthTracker() {
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <Brain className="w-5 h-5 text-pink-500" />
-                            Mental Wellness
+                            {t('screens.healthtracker.mentalWellness')}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex justify-between text-sm">
-                              <span>Mood Score</span>
+                              <span>{t('screens.healthtracker.moodScore')}</span>
                               <span>7.2/10</span>
                             </div>
                             <Progress value={72} className="h-2" />
-                            <div className="text-xs text-muted-foreground">Stress level: Moderate</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.healthtracker.stressLevelModerate')}</div>
                           </div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardHeader>
-                          <CardTitle className="text-lg">Mindfulness</CardTitle>
+                          <CardTitle className="text-lg">{t('screens.healthtracker.mindfulness')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span>Meditation streak:</span>
-                              <span>3 days</span>
+                              <span>{t('screens.healthtracker.meditationStreak')}</span>
+                              <span>{t('screens.healthtracker.text3Days')}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Today's session:</span>
-                              <span>12 min</span>
+                              <span>{t('screens.healthtracker.todaySSession')}</span>
+                              <span>{t('screens.healthtracker.text12Min')}</span>
                             </div>
-                            <Button size="sm" className="w-full mt-2">Start Session</Button>
+                            <Button size="sm" className="w-full mt-2">{t('screens.healthtracker.startSession')}</Button>
                           </div>
                         </CardContent>
                       </Card>
@@ -411,7 +412,7 @@ export default function HealthTracker() {
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                           <Activity className="w-5 h-5 text-green-500" />
-                          Vitana Index Overview
+                          {t('screens.healthtracker.vitanaIndexOverview')}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -420,7 +421,7 @@ export default function HealthTracker() {
                             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
                               <span className="text-2xl font-bold text-green-600">{vitanaIndexDisplay}</span>
                             </div>
-                            <div className="mt-2 text-sm font-medium">Your Index</div>
+                            <div className="mt-2 text-sm font-medium">{t('screens.healthtracker.yourIndex')}</div>
                           </div>
                         </div>
                         <div className="grid grid-cols-5 gap-4 mt-6">

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Target, Users, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CompatibilityMatch {
   type: 'wellness' | 'interests' | 'goals' | 'lifestyle';
@@ -86,22 +87,20 @@ export function CompatibilityIndicator({
               <div className="font-semibold text-sm" style={{ color: getCompatibilityColor(topMatch.percentage) }}>
                 {topMatch.percentage}% {getCompatibilityLabel(topMatch.percentage)}
               </div>
-              <div className="text-xs text-muted-foreground capitalize">
-                {topMatch.type} alignment
+              <div className="text-xs text-muted-foreground capitalize">{t('screens.profile.typeAlignment', { type: topMatch.type })}
               </div>
             </div>
           </div>
           
           {mutualConnections > 0 && (
             <Badge variant="outline" className="text-xs">
-              <Users className="h-3 w-3 mr-1" />
-              {mutualConnections} mutual
+              <Users className="h-3 w-3 mr-1" />{t('screens.profile.mutualconnectionsMutual', { mutualConnections })}
             </Badge>
           )}
         </div>
 
         <div className="space-y-2">
-          <div className="text-xs text-muted-foreground">Shared interests:</div>
+          <div className="text-xs text-muted-foreground">{t('screens.profile.sharedInterests')}</div>
           <div className="flex flex-wrap gap-1">
             {topMatch.sharedItems.slice(0, 3).map((item, index) => (
               <Badge 
@@ -113,8 +112,7 @@ export function CompatibilityIndicator({
               </Badge>
             ))}
             {topMatch.sharedItems.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{topMatch.sharedItems.length - 3} more
+              <Badge variant="outline" className="text-xs">{t('screens.profile.value0More', { value0: topMatch.sharedItems.length - 3 })}
               </Badge>
             )}
           </div>

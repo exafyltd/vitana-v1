@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { TrendingUp, TrendingDown, Minus, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface StatItem {
   label: string;
@@ -143,7 +144,7 @@ const StatCardBase = React.forwardRef<HTMLDivElement, StatCardProps>(
           
           {stats.length === 0 && (
             <div className="text-center py-4 text-muted-foreground">
-              <p className="text-sm">No data available</p>
+              <p className="text-sm">{t('screens.templates.noDataAvailable')}</p>
             </div>
           )}
         </CardContent>

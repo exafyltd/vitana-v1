@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSimulateNavigator } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 interface SimulatorPanelProps {
   tenantId?: string | null;
@@ -74,21 +75,19 @@ export function SimulatorPanel({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="h-5 w-5 text-primary" />
-          Live Simulator
+          {t('screens.admin.liveSimulator')}
         </CardTitle>
-        <CardDescription>
-          Run the real Navigator pipeline against a test utterance. Shows top-3 picks with scores so
-          you can tell if your trigger edit landed.
+        <CardDescription>{t('screens.admin.runRealNavigatorPipelineAgainstTest')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="sim-utterance">Utterance</Label>
+          <Label htmlFor="sim-utterance">{t('screens.admin.utterance')}</Label>
           <Textarea
             id="sim-utterance"
             value={utterance}
             onChange={(e) => setUtterance(e.target.value)}
-            placeholder="e.g. how do I track my biology"
+            placeholder={t('screens.admin.eGHowDoITrack')}
             rows={2}
             className="resize-none"
           />
@@ -96,24 +95,24 @@ export function SimulatorPanel({
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-2">
-            <Label htmlFor="sim-lang">Language</Label>
+            <Label htmlFor="sim-lang">{t('screens.admin.language')}</Label>
             <Select value={lang} onValueChange={setLang}>
               <SelectTrigger id="sim-lang">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="de">Deutsch</SelectItem>
+                <SelectItem value="en">{t('screens.admin.english')}</SelectItem>
+                <SelectItem value="de">{t('screens.admin.deutsch')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="sim-current">Current route</Label>
+            <Label htmlFor="sim-current">{t('screens.admin.currentRoute')}</Label>
             <Input
               id="sim-current"
               value={currentRoute}
               onChange={(e) => setCurrentRoute(e.target.value)}
-              placeholder="/home"
+              placeholder={t('screens.admin.home')}
             />
           </div>
         </div>
@@ -125,7 +124,7 @@ export function SimulatorPanel({
             onChange={(e) => setIsAnonymous(e.target.checked)}
             className="rounded border-input"
           />
-          <span>Simulate anonymous session</span>
+          <span>{t('screens.admin.simulateAnonymousSession')}</span>
         </label>
 
         <Button
@@ -153,27 +152,25 @@ export function SimulatorPanel({
               <Badge variant="outline" className="text-xs">
                 {result.decision_source}
               </Badge>
-              <span className="text-xs text-muted-foreground">
-                {result.ms_elapsed}ms
+              <span className="text-xs text-muted-foreground">{t('screens.admin.ms_elapsedMs', { ms_elapsed: result.ms_elapsed })}
               </span>
             </div>
 
             {result.blocked_reason && (
               <div className="flex items-start gap-2 rounded-md border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
-                <span>Blocked: {result.blocked_reason}</span>
+                <span>{t('screens.admin.blockedBlocked_reason', { blocked_reason: result.blocked_reason })}</span>
               </div>
             )}
 
             {result.primary && (
               <div className="rounded-md border bg-muted/30 p-3">
-                <div className="text-xs text-muted-foreground">Primary pick</div>
+                <div className="text-xs text-muted-foreground">{t('screens.admin.primaryPick')}</div>
                 <div className="font-mono text-sm">{result.primary.screen_id}</div>
                 <div className="text-sm">{result.primary.title}</div>
                 <div className="text-xs text-muted-foreground">{result.primary.route}</div>
                 {result.primary.score != null && (
-                  <div className="mt-1 text-xs">
-                    score: <span className="font-mono">{result.primary.score}</span>
+                  <div className="mt-1 text-xs">{t('screens.admin.score')} <span className="font-mono">{result.primary.score}</span>
                   </div>
                 )}
               </div>
@@ -182,7 +179,7 @@ export function SimulatorPanel({
             {result.top_picks.length > 0 && (
               <div>
                 <div className="mb-2 text-xs font-medium text-muted-foreground">
-                  Top picks (ranked)
+                  {t('screens.admin.topPicksRanked')}
                 </div>
                 <div className="space-y-1">
                   {result.top_picks.map((p, i) => (
@@ -203,21 +200,20 @@ export function SimulatorPanel({
             )}
 
             {result.suggested_question && (
-              <div className="rounded-md border bg-primary/5 p-2 text-xs italic">
-                Clarification: "{result.suggested_question}"
+              <div className="rounded-md border bg-primary/5 p-2 text-xs italic">{t('screens.admin.clarificationSuggested_question', { suggested_question: result.suggested_question })}
               </div>
             )}
 
             {result.explanation && (
               <div className="text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">Vitana would say:</span>{" "}
+                <span className="font-medium text-foreground">{t('screens.admin.vitanaWouldSay')}</span>{" "}
                 {result.explanation}
               </div>
             )}
 
             {result.kb_excerpts.length > 0 && (
               <div className="text-xs">
-                <div className="mb-1 font-medium">KB excerpts</div>
+                <div className="mb-1 font-medium">{t('screens.admin.kbExcerpts')}</div>
                 <ul className="list-disc space-y-0.5 pl-4 text-muted-foreground">
                   {result.kb_excerpts.map((x, i) => (
                     <li key={i}>{x}</li>

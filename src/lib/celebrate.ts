@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { celebrateSuccess } from "./confetti";
 import { playSound } from "./playSound";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
+import { lookup } from '@/lib/i18n-toast';
 
 export type CelebrateKind =
   | "index-lift"
@@ -405,7 +406,7 @@ function fireAtRisk(input: CelebrateInput): { throttled: boolean } {
     return { throttled: true };
   }
   markDayKeyFired(scope);
-  toast.message("🔥 Don't break the streak — one small action today");
+  toast.message(lookup('toasts.common.donTBreakStreakOneSmall'));
   emitAnalytics({ kind: "at-risk", source: source ?? "streak-hook", throttled: false });
   return { throttled: false };
 }

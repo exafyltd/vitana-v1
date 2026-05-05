@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface ReplyQuoteProps {
   parentMessage: any;
@@ -21,7 +22,7 @@ export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
         "p-2 rounded-lg border border-dashed border-muted-foreground/30 text-center",
         className
       )}>
-        <span className="text-xs text-muted-foreground">Message not found</span>
+        <span className="text-xs text-muted-foreground">{t('screens.messages.messageNotFound')}</span>
       </div>
     );
   }

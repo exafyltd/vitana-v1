@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { getInstantTenantName } from '@/lib/tenant-display';
+import { t } from '@/lib/i18n-toast';
 
 interface TopAppBarProps {
   onMenuClick: () => void;
@@ -45,7 +46,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
         <button
           onClick={onMenuClick}
           className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
-          aria-label="Open navigation menu"
+          aria-label={t('screens.mobile.openNavigationMenu')}
         >
           <MoreVertical className="h-5 w-5" />
         </button>

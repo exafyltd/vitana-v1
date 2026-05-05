@@ -27,6 +27,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfile } from "@/context/ProfileProvider";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { Copy, Check, Share2, MessageCircle, Mail, Loader2 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -89,7 +90,7 @@ export function IntentShareSheet({
   const handleSendInApp = async () => {
     if (!session?.access_token) return;
     if (recipients.length === 0) {
-      toast({ title: "Add at least one @vitana-id", variant: "destructive" });
+      notifyError('toasts.intents.addAtLeastOneVitanaid');
       return;
     }
     if (recipientsExceeded) {
@@ -146,7 +147,7 @@ export function IntentShareSheet({
       setNote("");
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Network error", description: err?.message || "Try again", variant: "destructive" });
+      notifyError('toasts.intents.networkError');
     } finally {
       setSubmitting(false);
     }
@@ -157,9 +158,9 @@ export function IntentShareSheet({
       await navigator.clipboard.writeText(publicLink);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-      toast({ title: "Link copied" });
+      notify('toasts.intents.linkCopied');
     } catch {
-      toast({ title: "Could not copy", variant: "destructive" });
+      notifyError('toasts.intents.couldNotCopy');
     }
   };
 
@@ -188,10 +189,10 @@ export function IntentShareSheet({
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle className="flex items-center gap-2">
-            <Share2 className="h-5 w-5" /> Share this post
+            <Share2 className="h-5 w-5" /> {t('screens.intents.shareThisPost')}
           </DrawerTitle>
           <DrawerDescription>
-            Send a direct invite to friends, or copy the link to share anywhere.
+            {t('screens.intents.sendDirectInviteFriendsCopyLink')}
           </DrawerDescription>
         </DrawerHeader>
 
@@ -199,26 +200,24 @@ export function IntentShareSheet({
           {/* In-app DM */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Direct invite to Vitana friends
+              {t('screens.intents.directInviteVitanaFriends')}
             </p>
             <Textarea
-              placeholder="@dragan1 @maria3 @daniel4 (paste or type up to 20)"
+              placeholder={t('screens.intents.dragan1Maria3Daniel4PasteTypeUp')}
               value={recipientText}
               onChange={(e) => setRecipientText(e.target.value)}
               className="min-h-[60px] font-mono text-sm"
-              aria-label="Recipient vitana_ids"
+              aria-label={t('screens.intents.recipientVitana_ids')}
             />
             <Input
-              placeholder="Add a short note (optional)"
+              placeholder={t('screens.intents.addShortNoteOptional')}
               value={note}
               onChange={(e) => setNote(e.target.value)}
               maxLength={280}
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>
-                {recipients.length} valid {recipients.length === 1 ? "recipient" : "recipients"}
-                {recipientsExceeded && (
-                  <span className="text-destructive ml-2">over the {maxRecipients} cap</span>
+              <span>{t('screens.intents.lengthValidValue1', { length: recipients.length, value1: recipients.length === 1 ? "recipient" : "recipients" })}{recipientsExceeded && (
+                  <span className="text-destructive ml-2">{t('screens.intents.overMaxrecipientsCap', { maxRecipients })}</span>
                 )}
               </span>
               <Button
@@ -226,8 +225,7 @@ export function IntentShareSheet({
                 onClick={handleSendInApp}
                 disabled={submitting || recipients.length === 0 || recipientsExceeded}
               >
-                {submitting ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
-                Send
+                {submitting ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}{t('screens.intents.send')}
               </Button>
             </div>
           </div>
@@ -235,37 +233,36 @@ export function IntentShareSheet({
           {/* Public link */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Public link
+              {t('screens.intents.publicLink')}
             </p>
             <div className="flex gap-2">
               <Input value={publicLink} readOnly className="flex-1 font-mono text-xs" />
-              <Button variant="outline" size="icon" onClick={handleCopyLink} aria-label="Copy link">
+              <Button variant="outline" size="icon" onClick={handleCopyLink} aria-label={t('screens.intents.copyLink')}>
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Tracks who clicked from your share. Public posts open to anyone; private posts ask viewers to sign in.
+            <p className="text-xs text-muted-foreground">{t('screens.intents.tracksWhoClickedFromYourShare')}
             </p>
           </div>
 
           {/* External channels */}
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Share elsewhere
+              {t('screens.intents.shareElsewhere')}
             </p>
             <div className="grid grid-cols-3 gap-2">
               <Button variant="outline" onClick={handleWhatsApp} className="flex-col h-auto py-3">
                 <MessageCircle className="h-4 w-4 mb-1" />
-                <span className="text-xs">WhatsApp</span>
+                <span className="text-xs">{t('screens.intents.whatsapp')}</span>
               </Button>
               <Button variant="outline" onClick={handleEmail} className="flex-col h-auto py-3">
                 <Mail className="h-4 w-4 mb-1" />
-                <span className="text-xs">Email</span>
+                <span className="text-xs">{t('screens.intents.email')}</span>
               </Button>
               {nativeShareAvailable && (
                 <Button variant="outline" onClick={handleNativeShare} className="flex-col h-auto py-3">
                   <Share2 className="h-4 w-4 mb-1" />
-                  <span className="text-xs">More…</span>
+                  <span className="text-xs">{t('screens.intents.more')}</span>
                 </Button>
               )}
             </div>
@@ -274,7 +271,7 @@ export function IntentShareSheet({
 
         <DrawerFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Close
+            {t('screens.intents.close')}
           </Button>
         </DrawerFooter>
       </DrawerContent>

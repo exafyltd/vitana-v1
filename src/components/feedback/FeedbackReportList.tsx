@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   ResponsiveConfirmDialog,
   ResponsiveConfirmDialogAction,
@@ -16,6 +16,7 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface FeedbackReport {
   id: string;
@@ -103,9 +104,9 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
       if (error) throw error;
 
       queryClient.invalidateQueries({ queryKey: ['feedback-reports'], exact: false });
-      toast({ title: "Report deleted", description: "The feedback report has been removed." });
+      notify('toasts.feedback.reportDeleted', 'toasts.feedback.feedbackReportHasRemoved');
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete report. Please try again.", variant: "destructive" });
+      notifyError('toasts.feedback.error', 'toasts.feedback.failedDeleteReportPleaseTryAgain');
     } finally {
       setIsDeleting(false);
       setDeleteTarget(null);
@@ -127,8 +128,8 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
           <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-2">
             <Bug className="h-5 w-5 text-destructive" />
           </div>
-          <p>No reports sent yet</p>
-          <p className="text-sm mt-1">Use the recorder above to report bugs or suggest improvements</p>
+          <p>{t('screens.feedback.noReportsSentYet')}</p>
+          <p className="text-sm mt-1">{t('screens.feedback.useRecorderAboveReportBugsSuggest')}</p>
         </CardContent>
       </Card>
     );
@@ -137,8 +138,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
   return (
     <>
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-muted-foreground">
-          My Reports ({reports.length})
+        <h3 className="text-sm font-semibold text-muted-foreground">{t('screens.feedback.myReportsLength', { length: reports.length })}
         </h3>
         {visibleReports.map((report) => {
           const statusConfig = STATUS_CONFIG[report.status] || STATUS_CONFIG.received;
@@ -176,7 +176,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
                       <button
                         onClick={() => setDeleteTarget(report.id)}
                         className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                        aria-label="Delete report"
+                        aria-label={t('screens.feedback.deleteReport')}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -197,8 +197,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
                         </Badge>
                       )}
                       {report.attachments?.length > 0 && (
-                        <span className="text-xs text-muted-foreground">
-                          📎 {report.attachments.length} attachment(s)
+                        <span className="text-xs text-muted-foreground">{t('screens.feedback.lengthAttachmentS', { length: report.attachments.length })}
                         </span>
                       )}
                     </div>
@@ -215,8 +214,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
           <button
             onClick={() => setDisplayCount(prev => prev + 10)}
             className="px-6 py-2 text-sm font-medium text-primary hover:text-primary/80 bg-muted/60 hover:bg-muted rounded-full transition-colors"
-          >
-            Load more ({reports.length - displayCount} remaining)
+          >{t('screens.feedback.loadMoreValue0Remaining', { value0: reports.length - displayCount })}
           </button>
         </div>
       )}
@@ -224,13 +222,13 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
       <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <ResponsiveConfirmDialogContent className="max-w-sm">
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Report?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.feedback.deleteReport')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              This feedback report will be permanently deleted. This action cannot be undone.
+              {t('screens.feedback.thisFeedbackReportWillPermanentlyDeleted')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>{t('screens.feedback.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

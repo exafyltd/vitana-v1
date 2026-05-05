@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { Play, RotateCcw, Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { t } from '@/lib/i18n-toast';
 
 interface ProactiveTalkingPanelProps {
   preferences: any;
@@ -41,15 +42,15 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Proactive Speaking Settings</CardTitle>
-          <CardDescription>Control when and how Vitana speaks to you proactively</CardDescription>
+          <CardTitle>{t('screens.assistant.proactiveSpeakingSettings')}</CardTitle>
+          <CardDescription>{t('screens.assistant.controlWhenHowVitanaSpeaksYou')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label>Auto-Greeting</Label>
+              <Label>{t('screens.assistant.autogreeting')}</Label>
               <p className="text-sm text-muted-foreground">
-                Vitana will greet you automatically
+                {t('screens.assistant.vitanaWillGreetYouAutomatically')}
               </p>
             </div>
             <Switch
@@ -64,7 +65,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
           {preferences?.auto_greeting_enabled && (
             <>
               <div className="space-y-2">
-                <Label>Greeting Frequency</Label>
+                <Label>{t('screens.assistant.greetingFrequency')}</Label>
                 <Select
                   value={preferences.greeting_frequency}
                   onValueChange={(value: 'session' | 'daily' | 'hourly' | 'off') =>
@@ -76,16 +77,16 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="session">Once per session</SelectItem>
-                    <SelectItem value="daily">Once per day</SelectItem>
-                    <SelectItem value="hourly">Once per hour</SelectItem>
-                    <SelectItem value="off">Off</SelectItem>
+                    <SelectItem value="session">{t('screens.assistant.oncePerSession')}</SelectItem>
+                    <SelectItem value="daily">{t('screens.assistant.oncePerDay')}</SelectItem>
+                    <SelectItem value="hourly">{t('screens.assistant.oncePerHour')}</SelectItem>
+                    <SelectItem value="off">{t('screens.assistant.off')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-3">
-                <Label>Message Types</Label>
+                <Label>{t('screens.assistant.messageTypes')}</Label>
                 <div className="space-y-3">
                   {[
                     { id: 'time_greeting', label: 'Time-based greetings (Good morning, etc.)' },
@@ -123,36 +124,35 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
 
       <Card>
         <CardHeader>
-          <CardTitle>Testing & Debugging</CardTitle>
-          <CardDescription>Test and debug proactive greeting functionality</CardDescription>
+          <CardTitle>{t('screens.assistant.testingDebugging')}</CardTitle>
+          <CardDescription>{t('screens.assistant.testDebugProactiveGreetingFunctionality')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              <strong>Language vs Voice:</strong> The "Language" setting controls what language text is generated in. 
-              The "Voice" setting controls which text-to-speech voice reads it aloud. They are auto-synced for convenience.
+              <strong>{t('screens.assistant.languageVsVoice')}</strong>{t('screens.assistant.languageSettingControlsWhatLanguageText')}
             </AlertDescription>
           </Alert>
 
           <div className="space-y-2 p-4 bg-muted rounded-lg">
-            <h4 className="text-sm font-medium">Current Configuration</h4>
+            <h4 className="text-sm font-medium">{t('screens.assistant.currentConfiguration')}</h4>
             <div className="text-xs space-y-1 text-muted-foreground">
-              <p><strong>STT Language:</strong> {preferences?.stt_language || 'Not set'}</p>
-              <p><strong>TTS Voice:</strong> {preferences?.tts_voice || 'Not set'}</p>
-              <p><strong>Extracted from Voice:</strong> {voiceLangExtracted || 'None'}</p>
-              <p><strong>Final Language Used:</strong> {canonicalLang}</p>
-              <p><strong>Allowed Message Types:</strong> {allowedGeneratorTypes.join(', ') || 'None'}</p>
+              <p><strong>{t('screens.assistant.sttLanguage')}</strong> {preferences?.stt_language || 'Not set'}</p>
+              <p><strong>{t('screens.assistant.ttsVoice')}</strong> {preferences?.tts_voice || 'Not set'}</p>
+              <p><strong>{t('screens.assistant.extractedFromVoice')}</strong> {voiceLangExtracted || 'None'}</p>
+              <p><strong>{t('screens.assistant.finalLanguageUsed')}</strong> {canonicalLang}</p>
+              <p><strong>{t('screens.assistant.allowedMessageTypes')}</strong> {allowedGeneratorTypes.join(', ') || 'None'}</p>
             </div>
           </div>
 
           {lastGreeting && (
             <div className="space-y-2 p-4 bg-muted rounded-lg">
-              <h4 className="text-sm font-medium">Last Greeting</h4>
+              <h4 className="text-sm font-medium">{t('screens.assistant.lastGreeting')}</h4>
               <div className="text-xs space-y-1 text-muted-foreground">
-                <p><strong>Type:</strong> {lastGreeting.type}</p>
-                <p><strong>Text:</strong> "{lastGreeting.text}"</p>
-                <p><strong>Priority:</strong> {lastGreeting.priority}</p>
+                <p><strong>{t('screens.assistant.type')}</strong> {lastGreeting.type}</p>
+                <p><strong>{t('screens.assistant.text')}</strong> "{lastGreeting.text}"</p>
+                <p><strong>{t('screens.assistant.priority')}</strong> {lastGreeting.priority}</p>
               </div>
             </div>
           )}
@@ -172,7 +172,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
               disabled={isUpdating}
             >
               <RotateCcw className="mr-2 h-4 w-4" />
-              Reset Session
+              {t('screens.assistant.resetSession')}
             </Button>
           </div>
         </CardContent>

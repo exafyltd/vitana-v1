@@ -8,6 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 type RewardKind = "vtn" | "index-tier" | "none";
 
@@ -93,8 +94,7 @@ export default function MilestoneCelebration() {
         </DialogHeader>
 
         {mapping.rewardKind === "vtn" && mapping.reward > 0 && (
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400 my-4">
-            +{mapping.reward} VTN!
+          <p className="text-2xl font-bold text-green-600 dark:text-green-400 my-4">{t('screens.common.rewardVtn', { reward: mapping.reward })}
           </p>
         )}
         {mapping.rewardKind === "index-tier" && detail.rewardValue && (
@@ -111,11 +111,11 @@ export default function MilestoneCelebration() {
               if (detail.url) navigate(detail.url);
             }}
           >
-            Continue
+            {t('screens.common.continue')}
           </Button>
           {mapping.inviteCta && (
             <Button variant="outline" className="w-full" onClick={handleInvite}>
-              Invite a friend to celebrate
+              {t('screens.common.inviteFriendCelebrate')}
             </Button>
           )}
         </div>

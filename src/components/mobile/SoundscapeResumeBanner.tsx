@@ -12,6 +12,7 @@ import { Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as AudioManager from '@/audio/SoundscapeAudioManager';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@/lib/i18n-toast';
 
 export function SoundscapeResumeBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -80,7 +81,7 @@ export function SoundscapeResumeBanner() {
         style={{ top: 'max(env(safe-area-inset-top, 12px), 12px)' }}
       >
         <Volume2 className="w-5 h-5" />
-        <span className="text-sm font-medium">Tap to resume Soundscape</span>
+        <span className="text-sm font-medium">{t('screens.mobile.tapResumeSoundscape')}</span>
       </motion.button>
     </AnimatePresence>
   );

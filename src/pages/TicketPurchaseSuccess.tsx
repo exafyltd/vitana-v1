@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { useTicketPurchase } from "@/hooks/useEventTickets";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 export default function TicketPurchaseSuccess() {
   const [searchParams] = useSearchParams();
@@ -50,10 +51,10 @@ export default function TicketPurchaseSuccess() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
           <AlertCircle className="h-16 w-16 text-destructive mx-auto" />
-          <h1 className="text-2xl font-bold">Invalid Request</h1>
-          <p className="text-muted-foreground">No purchase information found.</p>
+          <h1 className="text-2xl font-bold">{t('screens.ticketpurchasesuccess.invalidRequest')}</h1>
+          <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.noPurchaseInformationFound')}</p>
           <Button onClick={() => navigate("/comm/events-meetups")}>
-            Browse Events
+            {t('screens.ticketpurchasesuccess.browseEvents')}
           </Button>
         </div>
       </div>
@@ -65,7 +66,7 @@ export default function TicketPurchaseSuccess() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-          <p className="text-muted-foreground">Confirming your purchase...</p>
+          <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.confirmingYourPurchase')}</p>
         </div>
       </div>
     );
@@ -76,12 +77,12 @@ export default function TicketPurchaseSuccess() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center space-y-4">
           <AlertCircle className="h-16 w-16 text-destructive mx-auto" />
-          <h1 className="text-2xl font-bold">Something went wrong</h1>
+          <h1 className="text-2xl font-bold">{t('screens.ticketpurchasesuccess.somethingWentWrong')}</h1>
           <p className="text-muted-foreground">
             {error || "Could not load your ticket. Please check your email for confirmation."}
           </p>
           <Button onClick={() => navigate("/my-tickets")}>
-            View My Tickets
+            {t('screens.ticketpurchasesuccess.viewMyTickets')}
           </Button>
         </div>
       </div>
@@ -100,11 +101,9 @@ export default function TicketPurchaseSuccess() {
             <CheckCircle className="h-8 w-8 text-green-500" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">
-            Payment Successful!
+            {t('screens.ticketpurchasesuccess.paymentSuccessful')}
           </h1>
-          <p className="text-muted-foreground">
-            Your ticket has been confirmed. A confirmation email has been sent to{" "}
-            <span className="font-medium text-foreground">{purchase.buyer_email}</span>
+          <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.yourTicketHasConfirmedConfirmationEmail', { value0: " " })}<span className="font-medium text-foreground">{purchase.buyer_email}</span>
           </p>
         </div>
       </div>
@@ -133,14 +132,14 @@ export default function TicketPurchaseSuccess() {
           onClick={() => navigate("/my-tickets")}
         >
           <Calendar className="h-4 w-4 mr-2" />
-          View All My Tickets
+          {t('screens.ticketpurchasesuccess.viewAllMyTickets')}
         </Button>
         
         <Button
           className="w-full"
           onClick={() => navigate("/comm/events-meetups")}
         >
-          Discover More Events
+          {t('screens.ticketpurchasesuccess.discoverMoreEvents')}
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       </div>

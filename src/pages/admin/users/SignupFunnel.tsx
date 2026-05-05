@@ -17,6 +17,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { SignupFunnelChart } from "@/components/admin/SignupFunnelChart";
 import { adminUsersNavigation } from "@/config/navigation";
 import { useSignupFunnel, useSignupAttempts } from "@/hooks/useSignupFunnel";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_OPTIONS = [
   { value: "all", label: "All Statuses" },
@@ -121,7 +122,7 @@ export default function SignupFunnel() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Signup Funnel"
+            title={t('screens.admin.signupFunnel')}
             description="Track user registration flow from initial attempt through onboarding completion."
             emoji="📈"
           />
@@ -129,27 +130,27 @@ export default function SignupFunnel() {
           {/* Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AdminStatsCard
-              title="Total Attempts"
+              title={t('screens.admin.totalAttempts')}
               value={funnelStats?.total_attempts ?? 0}
               icon={Users}
               loading={funnelLoading}
             />
             <AdminStatsCard
-              title="Verified"
+              title={t('screens.admin.verified')}
               value={funnelStats?.pending ?? 0}
               subtitle={`${funnelStats?.conversion_rate?.toFixed(1) ?? 0}% conversion rate`}
               icon={CheckCircle}
               loading={funnelLoading}
             />
             <AdminStatsCard
-              title="Onboarded"
+              title={t('screens.admin.onboarded')}
               value={funnelStats?.completed ?? 0}
               icon={UserCheck}
               loading={funnelLoading}
               variant="success"
             />
             <AdminStatsCard
-              title="Abandoned"
+              title={t('screens.admin.abandoned')}
               value={funnelStats?.failed ?? 0}
               icon={XCircle}
               loading={funnelLoading}
@@ -160,7 +161,7 @@ export default function SignupFunnel() {
           {/* Funnel Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Signup Funnel Visualization</CardTitle>
+              <CardTitle>{t('screens.admin.signupFunnelVisualization')}</CardTitle>
             </CardHeader>
             <CardContent>
               <SignupFunnelChart data={chartData} loading={funnelLoading} />
@@ -171,7 +172,7 @@ export default function SignupFunnel() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Signup Attempts</CardTitle>
+                <CardTitle>{t('screens.admin.signupAttempts')}</CardTitle>
                 <Select
                   value={statusFilter}
                   onValueChange={(v) => {
@@ -180,7 +181,7 @@ export default function SignupFunnel() {
                   }}
                 >
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Filter by status" />
+                    <SelectValue placeholder={t('screens.admin.filterByStatus2')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STATUS_OPTIONS.map((opt) => (

@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { useOrbSuppression } from "@/hooks/useOrbSuppression"
+import { t } from '@/lib/i18n-toast';
 
 const Dialog = DialogPrimitive.Root
 
@@ -67,7 +68,7 @@ const DialogContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close style={{ boxShadow: 'none' }} className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
         <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">{t('screens.ui.close')}</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -118,7 +119,7 @@ const DialogContentNoAnimation = React.forwardRef<
       {children}
       <DialogPrimitive.Close style={{ boxShadow: 'none' }} className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
         <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">{t('screens.ui.close')}</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -147,7 +148,7 @@ const DialogContentNoOverlay = React.forwardRef<
       {children}
       <DialogPrimitive.Close style={{ boxShadow: 'none' }} className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
         <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">{t('screens.ui.close')}</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>

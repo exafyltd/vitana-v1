@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useResellerSales } from "@/hooks/useResellerSales";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { VaeaDetectionsCard } from "@/components/business/vaea/VaeaDetectionsCard";
+import { t } from '@/lib/i18n-toast';
 
 export function AnalyticsSubTabs() {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ export function AnalyticsSubTabs() {
   return (
     <SplitBar defaultValue="performance" className="w-full">
       <SplitBarList>
-        <SplitBarTrigger value="performance">📊 Performance</SplitBarTrigger>
-        <SplitBarTrigger value="earnings">💵 Earnings</SplitBarTrigger>
-        <SplitBarTrigger value="growth">📈 Growth</SplitBarTrigger>
+        <SplitBarTrigger value="performance">{t('screens.business.performance')}</SplitBarTrigger>
+        <SplitBarTrigger value="earnings">{t('screens.business.earnings')}</SplitBarTrigger>
+        <SplitBarTrigger value="growth">{t('screens.business.growth')}</SplitBarTrigger>
       </SplitBarList>
 
       <SplitBarContent value="performance" className="space-y-4 mt-4">
@@ -35,12 +36,12 @@ export function AnalyticsSubTabs() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <BarChart3 className="w-5 h-5" />
-                Bookings Overview
+                {t('screens.business.bookingsOverview')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground text-center py-8">
-                Booking analytics coming soon
+                {t('screens.business.bookingAnalyticsComingSoon')}
               </p>
             </CardContent>
           </Card>
@@ -49,12 +50,12 @@ export function AnalyticsSubTabs() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Users className="w-5 h-5" />
-                Attendance Rates
+                {t('screens.business.attendanceRates')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground text-center py-8">
-                Attendance metrics coming soon
+                {t('screens.business.attendanceMetricsComingSoon')}
               </p>
             </CardContent>
           </Card>
@@ -72,7 +73,7 @@ export function AnalyticsSubTabs() {
                   <DollarSign className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Services & Events</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.business.servicesEvents')}</p>
                   <p className="text-2xl font-bold">$2,450</p>
                 </div>
               </div>
@@ -87,7 +88,7 @@ export function AnalyticsSubTabs() {
                     <TrendingUp className="w-5 h-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Reseller Commission</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.business.resellerCommission')}</p>
                     <p className="text-2xl font-bold">{formatCurrency(resellerSales.totalCommissionEarned)}</p>
                   </div>
                 </div>
@@ -102,13 +103,13 @@ export function AnalyticsSubTabs() {
                   <Wallet className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Wallet Balance</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.business.walletBalance')}</p>
                   <Button 
                     variant="link" 
                     className="p-0 h-auto text-lg font-semibold"
                     onClick={() => navigate("/wallet")}
                   >
-                    View in Wallet →
+                    {t('screens.business.viewWallet')}
                   </Button>
                 </div>
               </div>
@@ -122,12 +123,11 @@ export function AnalyticsSubTabs() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <TrendingUp className="w-5 h-5" />
-              Client Growth
+              {t('screens.business.clientGrowth')}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center py-8 space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Growth analytics will show new clients over time and traffic sources.
+            <p className="text-sm text-muted-foreground">{t('screens.business.growthAnalyticsWillShowNewClients')}
             </p>
             <Button 
               variant="outline" 
@@ -135,7 +135,7 @@ export function AnalyticsSubTabs() {
               onClick={() => navigate("/sharing")}
             >
               <Share2 className="w-4 h-4" />
-              Create Campaign in Sharing
+              {t('screens.business.createCampaignSharing')}
             </Button>
           </CardContent>
         </Card>

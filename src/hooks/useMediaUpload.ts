@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface UploadMetadata {
   title: string;
@@ -174,19 +175,12 @@ export const useMediaUpload = () => {
 
       setProgress(100);
 
-      toast({
-        title: 'Upload successful!',
-        description: 'Your media is pending moderation.',
-      });
+      notify('toasts.hooks.uploadSuccessful', 'toasts.hooks.yourMediaPendingModeration');
 
       return mediaUpload;
     } catch (error: any) {
       console.error('Upload error:', error);
-      toast({
-        title: 'Upload failed',
-        description: error.message || 'Please try again',
-        variant: 'destructive',
-      });
+      notifyError('toasts.hooks.uploadFailed');
       return null;
     } finally {
       setIsUploading(false);

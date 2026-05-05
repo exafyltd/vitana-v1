@@ -52,6 +52,7 @@ import {
 } from '@/lib/intentKind';
 import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface FindPartnerMatchCardProps {
   match: IntentMatch;
@@ -165,14 +166,11 @@ export function FindPartnerMatchCard({
     try {
       const newState = perspective === 'outgoing' ? 'responded_by_a' : 'responded_by_b';
       await transitionMatch(match.match_id, newState);
-      toast({
-        title: 'Interest recorded',
-        description: "If they're interested too, we'll connect you.",
-      });
+      notify('toasts.intents.interestRecorded', 'toasts.intents.ifTheyReInterestedTooWe');
       onAction?.();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : '';
-      toast({ title: 'Could not record interest', description: message, variant: 'destructive' });
+      notifyError('toasts.intents.couldNotRecordInterest');
     } finally {
       setBusy(null);
     }
@@ -182,11 +180,11 @@ export function FindPartnerMatchCard({
     setBusy('decline');
     try {
       await declineMatch(match.match_id);
-      toast({ title: 'Passed for now' });
+      notify('toasts.intents.passedForNow');
       onAction?.();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : '';
-      toast({ title: 'Could not pass', description: message, variant: 'destructive' });
+      notifyError('toasts.intents.couldNotPass');
     } finally {
       setBusy(null);
     }
@@ -240,7 +238,7 @@ export function FindPartnerMatchCard({
                   <div className="h-14 w-14 rounded-full bg-white/25 backdrop-blur flex items-center justify-center">
                     <Lock className="h-6 w-6" />
                   </div>
-                  <span className="text-[11px] uppercase tracking-wider">Mutual reveal</span>
+                  <span className="text-[11px] uppercase tracking-wider">{t('screens.intents.mutualReveal')}</span>
                 </div>
               </div>
             )}
@@ -260,20 +258,18 @@ export function FindPartnerMatchCard({
         </span>
 
         {/* Top-right match score */}
-        <span className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full bg-black/55 text-white backdrop-blur shadow-sm">
-          {scorePct}% match
+        <span className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full bg-black/55 text-white backdrop-blur shadow-sm">{t('screens.intents.scorepctMatch', { scorePct })}
         </span>
 
         {match.compass_aligned && (
-          <span className="absolute top-12 right-3 px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">
-            ⭐ Compass-aligned
+          <span className="absolute top-12 right-3 px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">{t('screens.intents.compassaligned')}
           </span>
         )}
 
         {/* Bottom identity strip — name + handle ONLY (no avatar pill, no intent line) */}
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white">
           {isRedacted ? (
-            <h3 className="text-lg font-semibold leading-tight">Anonymous match</h3>
+            <h3 className="text-lg font-semibold leading-tight">{t('screens.intents.anonymousMatch')}</h3>
           ) : (
             <div className="min-w-0">
               <h3 className="text-lg font-semibold leading-tight truncate">
@@ -303,15 +299,14 @@ export function FindPartnerMatchCard({
 
         {isMutual ? (
           <div className="space-y-2">
-            <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">
-              🎉 Mutual interest — open the message thread to start chatting.
+            <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2">{t('screens.intents.mutualInterestOpenMessageThreadStart')}
             </div>
             <button
               type="button"
               onClick={() => setDisputeOpen(true)}
               className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
             >
-              <Flag className="h-3 w-3" /> Report an issue
+              <Flag className="h-3 w-3" />{t('screens.intents.reportIssue')}
             </button>
           </div>
         ) : isClosed ? (
@@ -342,7 +337,7 @@ export function FindPartnerMatchCard({
             onClick={() => setDisputeOpen(true)}
             className="mt-2 text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
           >
-            <Flag className="h-3 w-3" /> Report
+            <Flag className="h-3 w-3" />{t('screens.intents.report')}
           </button>
         )}
       </div>

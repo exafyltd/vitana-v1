@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex, formatIndexDelta } from "@/lib/diary-index-sync";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PhotoDiaryUploaderProps {
   onUploadComplete?: () => void;
@@ -44,11 +45,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
 
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
-      toast({
-        title: "No photos selected",
-        description: "Please select at least one photo to upload",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.noPhotosSelected', 'toasts.diary.pleaseSelectAtLeastOnePhoto');
       return;
     }
 
@@ -133,10 +130,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
             : `${sync.health_features_written} health signals logged from your caption.`,
         });
       } else {
-        toast({
-          title: "Photos uploaded!",
-          description: "Your photo diary entry has been saved successfully.",
-        });
+        notify('toasts.diary.photosUploaded', 'toasts.diary.yourPhotoDiaryEntryHasSaved');
       }
 
       // Reset form
@@ -146,11 +140,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       onUploadComplete?.();
     } catch (error) {
       console.error('Error uploading photos:', error);
-      toast({
-        title: "Upload failed",
-        description: "Failed to save your photo entry. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.uploadFailed', 'toasts.diary.failedSaveYourPhotoEntryPlease');
     } finally {
       setIsUploading(false);
     }
@@ -174,8 +164,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           size="lg"
           variant="outline"
         >
-          <Image className="w-5 h-5 mr-2" />
-          Upload Today's Entry
+          <Image className="w-5 h-5 mr-2" />{t('screens.diary.uploadTodaySEntry')}
         </Button>
       ) : (
         <div className="space-y-4">
@@ -198,7 +187,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           </div>
 
           <Textarea
-            placeholder="Add a caption (optional)..."
+            placeholder={t('screens.diary.addCaptionOptional')}
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             rows={3}
@@ -217,8 +206,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
               onClick={() => fileInputRef.current?.click()}
               variant="outline"
             >
-              <Image className="w-4 h-4 mr-2" />
-              Add More
+              <Image className="w-4 h-4 mr-2" />{t('screens.diary.addMore')}
             </Button>
           </div>
         </div>

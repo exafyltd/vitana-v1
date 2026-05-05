@@ -7,6 +7,7 @@ import { Zap, TrendingUp, Calendar, Sparkles, Trophy } from "lucide-react";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ShareableMoment {
   id: string;
@@ -51,18 +52,12 @@ export function SocialShareAutopilot() {
   const handleAutoShare = (momentId: string) => {
     const moment = shareableMoments.find(m => m.id === momentId);
     if (moment) {
-      toast({
-        title: "Auto-Share Scheduled!",
-        description: `Your post will be shared to ${moment.suggestedPlatforms.length} platforms at ${moment.optimalTime}`,
-      });
+      notify('toasts.proactive.autoshareScheduled');
     }
   };
 
   const handleEditPost = (momentId: string) => {
-    toast({
-      title: "Edit Post",
-      description: "Post editor coming soon!",
-    });
+    notify('toasts.proactive.editPost', 'toasts.proactive.postEditorComingSoon');
   };
 
   // Transform ShareableMoment to StandardHorizontalCardProps
@@ -139,7 +134,7 @@ export function SocialShareAutopilot() {
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-primary" />
-            Social Share Autopilot
+            {t('screens.proactive.socialShareAutopilot')}
           </div>
           <Button
             variant={autoShareEnabled ? "default" : "outline"}
@@ -151,7 +146,7 @@ export function SocialShareAutopilot() {
           </Button>
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Automatically share your wellness journey when you hit milestones
+          {t('screens.proactive.automaticallyShareYourWellnessJourneyWhen')}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -160,10 +155,8 @@ export function SocialShareAutopilot() {
           <div className="flex items-start gap-3">
             <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm font-semibold">Grow 8x Faster with Auto-Sharing</p>
-              <p className="text-xs text-muted-foreground">
-                Members who auto-share their wellness wins inspire 5-10 friends to join each month, 
-                creating a powerful ripple effect in their network.
+              <p className="text-sm font-semibold">{t('screens.proactive.grow8xFasterWithAutosharing')}</p>
+              <p className="text-xs text-muted-foreground">{t('screens.proactive.membersWhoAutoshareTheirWellnessWins')}
               </p>
             </div>
           </div>
@@ -172,9 +165,9 @@ export function SocialShareAutopilot() {
         {/* Connected platforms status */}
         {connectedPlatforms.length === 0 && (
           <div className="p-4 rounded-lg border border-yellow-500/20 bg-yellow-500/5">
-            <p className="text-sm font-medium mb-2">⚠️ No platforms connected</p>
+            <p className="text-sm font-medium mb-2">{t('screens.proactive.noPlatformsConnected')}</p>
             <Button variant="outline" size="sm" asChild>
-              <Link to="/sharing">Connect Social Media</Link>
+              <Link to="/sharing">{t('screens.proactive.connectSocialMedia')}</Link>
             </Button>
           </div>
         )}
@@ -183,7 +176,7 @@ export function SocialShareAutopilot() {
         <div className="space-y-3">
           <h4 className="text-sm font-semibold flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            Ready to Share
+            {t('screens.proactive.readyShare')}
           </h4>
           
           <HorizontalCardList
@@ -199,11 +192,11 @@ export function SocialShareAutopilot() {
         <div className="grid grid-cols-2 gap-4 pt-4 border-t">
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">4.2x</div>
-            <div className="text-xs text-muted-foreground">Avg Engagement Boost</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.avgEngagementBoost')}</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary">15min</div>
-            <div className="text-xs text-muted-foreground">Time Saved Weekly</div>
+            <div className="text-2xl font-bold text-primary">{t('screens.proactive.text15min')}</div>
+            <div className="text-xs text-muted-foreground">{t('screens.proactive.timeSavedWeekly')}</div>
           </div>
         </div>
       </CardContent>

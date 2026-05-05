@@ -17,6 +17,7 @@ import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVitanaIndexForUser } from "@/hooks/useVitanaIndexForUser";
+import { t } from '@/lib/i18n-toast';
 
 interface DatabaseProfile {
   user_id: string;
@@ -146,9 +147,9 @@ export function ProfilePreviewDialog() {
             </div>
           ) : error || !profile ? (
             <div className="flex flex-col items-center justify-center h-[300px] sm:h-[400px] gap-3 px-6">
-              <p className="text-muted-foreground">Unable to load profile</p>
+              <p className="text-muted-foreground">{t('screens.profile.unableLoadProfile')}</p>
               <Button variant="outline" onClick={closePreview}>
-                Close
+                {t('screens.profile.close')}
               </Button>
             </div>
           ) : (
@@ -189,7 +190,7 @@ export function ProfilePreviewDialog() {
                   size="lg"
                 >
                   <ExternalLink className="h-5 w-5" />
-                  View Full Profile
+                  {t('screens.profile.viewFullProfile')}
                 </Button>
               </div>
             </div>

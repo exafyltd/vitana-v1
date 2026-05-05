@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Download } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface LogEntry {
   timestamp: string;
@@ -22,11 +23,11 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
   const getLevelBadge = (level: LogEntry['level']) => {
     switch (level) {
       case 'error':
-        return <Badge variant="destructive" className="text-xs">ERROR</Badge>;
+        return <Badge variant="destructive" className="text-xs">{t('screens.vertex.error')}</Badge>;
       case 'warn':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs">WARN</Badge>;
+        return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs">{t('screens.vertex.warn')}</Badge>;
       default:
-        return <Badge variant="outline" className="text-xs">INFO</Badge>;
+        return <Badge variant="outline" className="text-xs">{t('screens.vertex.info')}</Badge>;
     }
   };
 
@@ -34,7 +35,7 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-sm">Debug Console</CardTitle>
+          <CardTitle className="text-sm">{t('screens.vertex.debugConsole')}</CardTitle>
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -43,7 +44,7 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
               className="h-8"
             >
               <Download className="h-3 w-3 mr-1" />
-              Export
+              {t('screens.vertex.export')}
             </Button>
             <Button
               variant="ghost"
@@ -66,7 +67,7 @@ export function VertexDebugConsole({ logs, onExportLogs }: VertexDebugConsolePro
           <ScrollArea className="h-[300px] w-full rounded-md border bg-black/5 dark:bg-black/20">
             <div className="p-4 space-y-2 font-mono text-xs">
               {logs.length === 0 ? (
-                <p className="text-muted-foreground">No logs yet...</p>
+                <p className="text-muted-foreground">{t('screens.vertex.noLogsYet')}</p>
               ) : (
                 logs.map((log, index) => (
                   <div key={index} className="flex items-start gap-2">

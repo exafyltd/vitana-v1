@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -47,7 +48,7 @@ export default function SettingsBranding() {
     updateMutation.mutate(
       { branding: { brand_accent: accent, brand_bg: bg, brand_fg: fg, logo_url: logoUrl } },
       {
-        onSuccess: () => toast.success("Branding saved"),
+        onSuccess: () => notifySuccess('toasts.admin.brandingSaved'),
         onError: (err) => toast.error((err as Error).message || "Failed to save"),
       }
     );
@@ -59,27 +60,27 @@ export default function SettingsBranding() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🎨"
-          title="Branding"
+          title={t('screens.admin.branding')}
           description="Customize colors and logo for your tenant"
         />
 
         {settingsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading branding...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingBranding')}</p>
         )}
 
         {settingsQuery.data && (
           <>
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Brand Colors</CardTitle>
+                <CardTitle className="text-base">{t('screens.admin.brandColors')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <ColorField label="Accent Color" value={accent} onChange={setAccent} />
                 <ColorField label="Background Color" value={bg} onChange={setBg} />
                 <ColorField label="Foreground Color" value={fg} onChange={setFg} />
                 <div>
-                  <label className="text-sm font-medium">Logo URL</label>
-                  <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." className="mt-1" />
+                  <label className="text-sm font-medium">{t('screens.admin.logoUrl')}</label>
+                  <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder={t('screens.admin.https')} className="mt-1" />
                 </div>
               </CardContent>
             </Card>
@@ -88,13 +89,13 @@ export default function SettingsBranding() {
             {(accent || bg || fg) && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Preview</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.preview')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-2 h-12 rounded-md overflow-hidden border">
-                    {bg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: bg, color: fg || "#000" }}>Background</div>}
-                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-white" style={{ backgroundColor: accent }}>Accent</div>}
-                    {fg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: fg, color: "#fff" }}>Foreground</div>}
+                    {bg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: bg, color: fg || "#000" }}>{t('screens.admin.background')}</div>}
+                    {accent && <div className="flex-1 flex items-center justify-center text-xs text-white" style={{ backgroundColor: accent }}>{t('screens.admin.accent')}</div>}
+                    {fg && <div className="flex-1 flex items-center justify-center text-xs" style={{ backgroundColor: fg, color: "#fff" }}>{t('screens.admin.foreground')}</div>}
                   </div>
                 </CardContent>
               </Card>

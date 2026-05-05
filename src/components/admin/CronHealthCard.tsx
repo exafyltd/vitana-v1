@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, AlertTriangle, CheckCircle, PlayCircle, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function CronHealthCard() {
   const [triggering, setTriggering] = useState(false);
@@ -22,17 +23,10 @@ export default function CronHealthCard() {
 
       if (error) throw error;
 
-      toast({
-        title: "✅ Manual trigger successful",
-        description: "Appointment reminder function has been executed",
-      });
+      notify('toasts.admin.manualTriggerSuccessful', 'toasts.admin.appointmentReminderFunctionHasExecuted');
     } catch (error) {
       console.error('Error triggering function:', error);
-      toast({
-        title: "❌ Trigger failed",
-        description: "Failed to execute reminder function",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.triggerFailed', 'toasts.admin.failedExecuteReminderFunction');
     } finally {
       setTriggering(false);
     }
@@ -43,28 +37,28 @@ export default function CronHealthCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Activity className="w-5 h-5" />
-          Cron Job Health
+          {t('screens.admin.cronJobHealth')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Status Badge */}
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">Status:</span>
+          <span className="text-sm font-medium">{t('screens.admin.status')}</span>
           <Badge className="bg-green-500 text-white">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Running
+            {t('screens.admin.running')}
           </Badge>
         </div>
 
         {/* Schedule Info */}
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Schedule:</span>
-            <span className="font-medium">Every hour</span>
+            <span className="text-muted-foreground">{t('screens.admin.schedule')}</span>
+            <span className="font-medium">{t('screens.admin.everyHour')}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Function:</span>
-            <span className="font-mono text-xs">send-appointment-reminder</span>
+            <span className="text-muted-foreground">{t('screens.admin.function')}</span>
+            <span className="font-mono text-xs">{t('screens.admin.sendappointmentreminder')}</span>
           </div>
         </div>
 
@@ -88,13 +82,13 @@ export default function CronHealthCard() {
             onClick={() => window.open('https://supabase.com/dashboard/project/inmkhvwdcuyhnxkgfvsb/functions/send-appointment-reminder/logs', '_blank')}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
-            View Edge Function Logs
+            {t('screens.admin.viewEdgeFunctionLogs')}
           </Button>
         </div>
 
         {/* Help Text */}
         <p className="text-xs text-muted-foreground border-t pt-2">
-          This cron job sends appointment reminders 24 hours and 1 hour before appointments.
+          {t('screens.admin.thisCronJobSendsAppointmentReminders')}
         </p>
       </CardContent>
     </Card>

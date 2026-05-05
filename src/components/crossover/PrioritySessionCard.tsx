@@ -3,6 +3,7 @@ import { Clock, MapPin, Users, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface PrioritySessionCardProps {
   className?: string;
@@ -42,7 +43,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         <div className="flex justify-between items-start">
           <Badge variant="secondary" className="bg-primary/90 text-primary-foreground border-0">
             <Star className="w-3 h-3 mr-1" />
-            Today's Priority
+            {t('screens.crossover.todaySPriority')}
           </Badge>
           <Badge variant="outline" className="bg-white/20 text-white border-white/30">
             {session.type}
@@ -53,7 +54,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         <div className="space-y-3">
           <div>
             <h3 className="text-2xl font-bold mb-1">{session.title}</h3>
-            <p className="text-white/90 text-sm">with {session.instructor}</p>
+            <p className="text-white/90 text-sm">{t('screens.crossover.withInstructor', { instructor: session.instructor })}</p>
           </div>
           
           {/* Session Details */}
@@ -75,7 +76,7 @@ function PrioritySessionCardBase({ className }: PrioritySessionCardProps) {
         
         {/* Bottom Info */}
         <div className="flex justify-between items-center pt-2 border-t border-white/20">
-          <span className="text-xs text-white/80">Starting in 2 hours</span>
+          <span className="text-xs text-white/80">{t('screens.crossover.starting2Hours')}</span>
           <span className="text-xs text-primary font-medium">{session.duration}</span>
         </div>
       </div>

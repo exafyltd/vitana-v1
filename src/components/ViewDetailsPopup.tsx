@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye, FileText, AlertTriangle, Download, Calendar, Users, Shield } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface ViewDetailsPopupProps {
   isOpen: boolean;
@@ -87,10 +88,10 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Eye className="h-5 w-5 text-blue-600" />
-            Data Sharing Activity Details
+            {t('screens.common.dataSharingActivityDetails')}
           </DialogTitle>
           <DialogDescription>
-            Comprehensive view of data sharing activity and compliance information
+            {t('screens.common.comprehensiveViewDataSharingActivityCompliance')}
           </DialogDescription>
         </DialogHeader>
 
@@ -111,19 +112,19 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
             <CardContent className="pt-0">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <div className="font-medium text-muted-foreground">Timestamp</div>
+                  <div className="font-medium text-muted-foreground">{t('screens.common.timestamp')}</div>
                   <div>{sampleLogDetails.timestamp}</div>
                 </div>
                 <div>
-                  <div className="font-medium text-muted-foreground">Recipient</div>
+                  <div className="font-medium text-muted-foreground">{t('screens.common.recipient')}</div>
                   <div>{sampleLogDetails.recipient}</div>
                 </div>
                 <div>
-                  <div className="font-medium text-muted-foreground">Package Size</div>
+                  <div className="font-medium text-muted-foreground">{t('screens.common.packageSize')}</div>
                   <div>{sampleLogDetails.metadata.packageSize}</div>
                 </div>
                 <div>
-                  <div className="font-medium text-muted-foreground">Encryption</div>
+                  <div className="font-medium text-muted-foreground">{t('screens.common.encryption')}</div>
                   <div>{sampleLogDetails.metadata.encryptionLevel}</div>
                 </div>
               </div>
@@ -132,33 +133,33 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="data">Data Types</TabsTrigger>
-              <TabsTrigger value="audit">Audit Trail</TabsTrigger>
-              <TabsTrigger value="compliance">Compliance</TabsTrigger>
+              <TabsTrigger value="overview">{t('screens.common.overview')}</TabsTrigger>
+              <TabsTrigger value="data">{t('screens.common.dataTypes')}</TabsTrigger>
+              <TabsTrigger value="audit">{t('screens.common.auditTrail')}</TabsTrigger>
+              <TabsTrigger value="compliance">{t('screens.common.compliance')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Sharing Details</CardTitle>
+                  <CardTitle className="text-base">{t('screens.common.sharingDetails')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground">Access Duration</div>
+                      <div className="text-sm font-medium text-muted-foreground">{t('screens.common.accessDuration')}</div>
                       <div className="text-sm">{sampleLogDetails.metadata.accessDuration}</div>
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground">Data Retention</div>
+                      <div className="text-sm font-medium text-muted-foreground">{t('screens.common.dataRetention')}</div>
                       <div className="text-sm">{sampleLogDetails.metadata.dataRetention}</div>
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground">Consent Expiry</div>
+                      <div className="text-sm font-medium text-muted-foreground">{t('screens.common.consentExpiry')}</div>
                       <div className="text-sm">{sampleLogDetails.metadata.consentExpiry}</div>
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-muted-foreground">Sharing Method</div>
+                      <div className="text-sm font-medium text-muted-foreground">{t('screens.common.sharingMethod')}</div>
                       <div className="text-sm">{sampleLogDetails.metadata.sharingMethod}</div>
                     </div>
                   </div>
@@ -169,9 +170,9 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
             <TabsContent value="data" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Shared Data Types</CardTitle>
+                  <CardTitle className="text-base">{t('screens.common.sharedDataTypes')}</CardTitle>
                   <CardDescription>
-                    Complete list of data types included in this sharing activity
+                    {t('screens.common.completeListDataTypesIncludedThis')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -182,7 +183,7 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
                           <FileText className="h-4 w-4 text-primary" />
                           <span className="text-sm font-medium">{type}</span>
                         </div>
-                        <Badge variant="outline" className="text-xs">Included</Badge>
+                        <Badge variant="outline" className="text-xs">{t('screens.common.included')}</Badge>
                       </div>
                     ))}
                   </div>
@@ -193,9 +194,9 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
             <TabsContent value="audit" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Audit Trail</CardTitle>
+                  <CardTitle className="text-base">{t('screens.common.auditTrail')}</CardTitle>
                   <CardDescription>
-                    Chronological record of all activities related to this data sharing event
+                    {t('screens.common.chronologicalRecordAllActivitiesRelatedThis')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -208,7 +209,7 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
                             <div className="text-sm font-medium">{entry.event}</div>
                             <div className="text-xs text-muted-foreground">{entry.timestamp}</div>
                           </div>
-                          <div className="text-xs text-muted-foreground mb-1">By: {entry.user}</div>
+                          <div className="text-xs text-muted-foreground mb-1">{t('screens.common.byUser', { user: entry.user })}</div>
                           <div className="text-sm">{entry.details}</div>
                         </div>
                       </div>
@@ -221,9 +222,9 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
             <TabsContent value="compliance" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Compliance Verification</CardTitle>
+                  <CardTitle className="text-base">{t('screens.common.complianceVerification')}</CardTitle>
                   <CardDescription>
-                    Automated compliance checks performed during data sharing
+                    {t('screens.common.automatedComplianceChecksPerformedDuringData')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -252,13 +253,13 @@ export function ViewDetailsPopup({ isOpen, onClose }: ViewDetailsPopupProps) {
           <div className="flex flex-wrap gap-2 pt-4 border-t">
             <Button size="sm">
               <Download className="h-4 w-4 mr-2" />
-              Export Details
+              {t('screens.common.exportDetails')}
             </Button>
             <Button variant="outline" size="sm">
               <AlertTriangle className="h-4 w-4 mr-2" />
-              Report Issue
+              {t('screens.common.reportIssue')}
             </Button>
-            <Button variant="ghost" size="sm" onClick={onClose}>Close</Button>
+            <Button variant="ghost" size="sm" onClick={onClose}>{t('screens.common.close')}</Button>
           </div>
         </div>
       </DialogContent>

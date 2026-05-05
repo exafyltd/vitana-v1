@@ -3,6 +3,7 @@ import { usePresenceDebug } from '@/hooks/usePresenceDebug';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 class PresenceDebugErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
@@ -34,7 +35,7 @@ const PresenceDebugPanelInner: React.FC = () => {
   return (
     <Card className="fixed bottom-4 right-4 w-64 z-50 opacity-75 hover:opacity-100 transition-opacity">
       <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-sm">Presence Debug</CardTitle>
+        <CardTitle className="text-sm">{t('screens.debug.presenceDebug')}</CardTitle>
         <Button 
           variant="ghost" 
           size="sm" 
@@ -46,7 +47,7 @@ const PresenceDebugPanelInner: React.FC = () => {
       </CardHeader>
       <CardContent className="text-xs space-y-1">
         <div className="flex justify-between">
-          <span>Status:</span>
+          <span>{t('screens.debug.status')}</span>
           <span className={
             debugInfo.connectionStatus === 'connected' ? 'text-emerald-500' :
             debugInfo.connectionStatus === 'connecting' ? 'text-amber-500' : 'text-red-500'
@@ -55,23 +56,23 @@ const PresenceDebugPanelInner: React.FC = () => {
           </span>
         </div>
         <div className="flex justify-between">
-          <span>Users:</span>
+          <span>{t('screens.debug.users')}</span>
           <span>{debugInfo.totalUsers}</span>
         </div>
         <div className="flex justify-between">
-          <span>Retries:</span>
+          <span>{t('screens.debug.retries')}</span>
           <span>{debugInfo.reconnectAttempts}</span>
         </div>
         {debugInfo.lastConnected && (
           <div className="flex justify-between">
-            <span>Connected:</span>
-            <span>{Math.floor((Date.now() - debugInfo.lastConnected) / 1000)}s ago</span>
+            <span>{t('screens.debug.connected')}</span>
+            <span>{t('screens.debug.value0SAgo', { value0: Math.floor((Date.now() - debugInfo.lastConnected) / 1000) })}</span>
           </div>
         )}
         {debugInfo.realtimeLatency && (
           <div className="flex justify-between">
-            <span>Latency:</span>
-            <span>{debugInfo.realtimeLatency}ms</span>
+            <span>{t('screens.debug.latency')}</span>
+            <span>{t('screens.debug.realtimelatencyMs', { realtimeLatency: debugInfo.realtimeLatency })}</span>
           </div>
         )}
       </CardContent>

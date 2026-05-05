@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { BookmarkedItem, BookmarkItemType, BookmarkButtonItem } from '@/types/bookmarks';
-import { toast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export function useBookmarks() {
   const { user } = useAuth();
@@ -27,11 +27,7 @@ export function useBookmarks() {
       setBookmarks((data || []) as BookmarkedItem[]);
     } catch (error) {
       console.error('Error fetching bookmarks:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load bookmarks",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedLoadBookmarks');
     } finally {
       setIsLoading(false);
     }
@@ -39,11 +35,7 @@ export function useBookmarks() {
 
   const addBookmark = async (item: BookmarkButtonItem) => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to bookmark items",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.signRequired', 'toasts.hooks.pleaseSignBookmarkItems');
       return false;
     }
 
@@ -61,29 +53,19 @@ export function useBookmarks() {
 
       if (error) {
         if (error.code === '23505') {
-          toast({
-            title: "Already bookmarked",
-            description: "This item is already in your bookmarks",
-          });
+          notify('toasts.hooks.alreadyBookmarked', 'toasts.hooks.thisItemAlreadyYourBookmarks');
           return false;
         }
         throw error;
       }
 
-      toast({
-        title: "Bookmarked!",
-        description: `${item.item_name} added to your bookmarks`,
-      });
+      notify('toasts.hooks.bookmarked');
 
       await fetchBookmarks();
       return true;
     } catch (error) {
       console.error('Error adding bookmark:', error);
-      toast({
-        title: "Error",
-        description: "Failed to bookmark item",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedBookmarkItem');
       return false;
     }
   };
@@ -101,20 +83,13 @@ export function useBookmarks() {
 
       if (error) throw error;
 
-      toast({
-        title: "Removed",
-        description: "Item removed from bookmarks",
-      });
+      notify('toasts.hooks.removed', 'toasts.hooks.itemRemovedFromBookmarks');
 
       await fetchBookmarks();
       return true;
     } catch (error) {
       console.error('Error removing bookmark:', error);
-      toast({
-        title: "Error",
-        description: "Failed to remove bookmark",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedRemoveBookmark');
       return false;
     }
   };

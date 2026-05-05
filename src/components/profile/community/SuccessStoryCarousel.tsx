@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Quote, TrendingUp, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface SuccessStory {
   id: string;
@@ -94,10 +95,8 @@ export function SuccessStoryCarousel({ className }: SuccessStoryCarouselProps) {
           <div className="flex-1 space-y-4">
             <div className="space-y-3">
               <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                Success Story
-                <Badge variant="outline" className="text-xs">
-                  {currentStoryIndex + 1} of {mockStories.length}
-                </Badge>
+                {t('screens.profile.successStory')}
+                <Badge variant="outline" className="text-xs">{t('screens.profile.value0Length', { value0: currentStoryIndex + 1, length: mockStories.length })}</Badge>
               </h3>
               
               <blockquote className="text-foreground leading-relaxed italic">

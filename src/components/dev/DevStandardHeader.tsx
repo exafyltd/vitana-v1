@@ -6,6 +6,7 @@ import { Plane, Lock } from "lucide-react";
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 import { useDevAutopilot } from "@/hooks/use-dev-autopilot";
 import { DevAutopilotPopup } from "@/components/dev/DevAutopilotPopup";
+import { t } from '@/lib/i18n-toast';
 
 interface DevStandardHeaderProps {
   title: string;
@@ -30,9 +31,9 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
       {DEV_HUB_CONFIG.readonly && (
         <Alert className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800">
           <Lock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-          <AlertTitle className="text-yellow-800 dark:text-yellow-300">Read-Only Mode</AlertTitle>
+          <AlertTitle className="text-yellow-800 dark:text-yellow-300">{t('screens.dev.readonlyMode2')}</AlertTitle>
           <AlertDescription className="text-yellow-700 dark:text-yellow-400">
-            Phase 1: View-only access. Write operations available in Phase 2.
+            {t('screens.dev.phase1ViewonlyAccessWriteOperations')}
           </AlertDescription>
         </Alert>
       )}
@@ -47,8 +48,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
             </h1>
             <p className="text-muted-foreground">{description}</p>
             {DEV_HUB_CONFIG.readonly && (
-              <Badge variant="secondary" className="mt-2">
-                Read-Only
+              <Badge variant="secondary" className="mt-2">{t('screens.dev.readonly')}
               </Badge>
             )}
           </div>
@@ -73,13 +73,13 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
             <div>
               <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
             </div>
-            <span className="text-sm font-medium text-red-400">Autopilot</span>
+            <span className="text-sm font-medium text-red-400">{t('screens.dev.autopilot')}</span>
           </div>
 
           {/* Hover Preview */}
           {showPreview && pendingCount > 0 && (
             <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 dark:bg-card/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-              <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+              <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.dev.latestActions')}</div>
               {latestActions.map((action) => (
                 <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                   <span>{action.icon}</span>
@@ -87,8 +87,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
                 </div>
               ))}
               {pendingCount > 2 && (
-                <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                  +{pendingCount - 2} more actions
+                <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.dev.value0MoreActions', { value0: pendingCount - 2 })}
                 </div>
               )}
             </div>
@@ -104,7 +103,7 @@ export function DevStandardHeader({ title, description, emoji }: DevStandardHead
             <span className="text-3xl font-bold" style={{ color: '#22c55e' }}>
               99%
             </span>
-            <span className="text-xs text-muted-foreground">System Health</span>
+            <span className="text-xs text-muted-foreground">{t('screens.dev.systemHealth')}</span>
           </div>
         </div>
       </div>

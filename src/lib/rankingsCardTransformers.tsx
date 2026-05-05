@@ -4,6 +4,7 @@ import { Users, TrendingUp, Activity, Star, Calendar, Award, Trophy, Flame, BarC
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 // Position badge configurations
 const getPositionBadge = (position: number) => {
@@ -67,7 +68,7 @@ const OrganizerLink = ({ organizer }: { organizer: { name: string, id: string, a
         />
       )}
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-muted-foreground">Organized by</p>
+        <p className="text-xs text-muted-foreground">{t('screens.common.organizedBy')}</p>
         <p className="text-sm font-medium text-foreground truncate">{organizer.name}</p>
       </div>
       <Button 
@@ -79,8 +80,7 @@ const OrganizerLink = ({ organizer }: { organizer: { name: string, id: string, a
           // Navigate to organizer profile
           console.log('View organizer:', organizer.id);
         }}
-      >
-        View
+      >{t('screens.common.view')}
       </Button>
     </div>
   </div>
@@ -275,9 +275,7 @@ export const transformCreatorRankingToCard = (
           ]}
         />
         {creator.organizedBy && (
-          <div className="mt-2 pt-2 border-t border-border/20 text-xs text-muted-foreground">
-            Organized by {creator.organizedBy}
-          </div>
+          <div className="mt-2 pt-2 border-t border-border/20 text-xs text-muted-foreground">{t('screens.common.organizedByOrganizedby', { organizedBy: creator.organizedBy })}</div>
         )}
         <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
@@ -288,8 +286,7 @@ export const transformCreatorRankingToCard = (
               window.history.pushState({}, '', `/u/${creator.id}`);
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-          >
-            View Full Profile
+          >{t('screens.common.viewFullProfile')}
           </Button>
         </div>
       </>
@@ -350,7 +347,7 @@ export const transformMemberRankingToCard = (
     expandedContent: (
       <>
         <div className="mb-3">
-          <p className="text-xs text-muted-foreground mb-2">Pillar Breakdown</p>
+          <p className="text-xs text-muted-foreground mb-2">{t('screens.common.pillarBreakdown')}</p>
           <RankingStatsTable 
             stats={[
               { label: '💤 Sleep', value: member.pillar_scores.sleep, trend: 'up' },
@@ -378,8 +375,7 @@ export const transformMemberRankingToCard = (
               window.history.pushState({}, '', `/u/${member.user_id}`);
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-          >
-            View Full Profile
+          >{t('screens.common.viewFullProfile')}
           </Button>
         </div>
       </>

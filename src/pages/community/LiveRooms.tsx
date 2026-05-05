@@ -44,6 +44,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function LiveRooms() {
   const navigate = useNavigate();
@@ -166,14 +167,14 @@ export default function LiveRooms() {
     // Check if it's a mock room
     if (roomId.startsWith('mock-')) {
       toast({
-        title: "Demo Room",
-        description: "This is an example room. Create your own to go live!",
+        title: lookup('toasts.community.demoRoom'),
+        description: lookup('toasts.community.thisExampleRoomCreateYourOwn'),
         action: (
           <Button 
             size="sm" 
             onClick={() => setIsGoLiveOpen(true)}
           >
-            Create Room
+            {t('screens.community.createRoom')}
           </Button>
         ),
       });
@@ -212,11 +213,7 @@ export default function LiveRooms() {
 
   const handleJoinRoom = (roomId: string) => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to join live rooms",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
       return;
     }
 
@@ -224,11 +221,7 @@ export default function LiveRooms() {
     const room = [...liveRooms, ...scheduledRooms].find(r => r.id === roomId);
     
     if (!room) {
-      toast({
-        title: "Room not found",
-        description: "This live room no longer exists",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.roomNotFound', 'toasts.community.thisLiveRoomNoLongerExists');
       return;
     }
 
@@ -264,10 +257,7 @@ export default function LiveRooms() {
 
   const handleEditRoom = async () => {
     // Edit mode removed in session-based architecture
-    toast({
-      title: "Not yet supported",
-      description: "Editing sessions will be available soon",
-    });
+    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
@@ -277,30 +267,20 @@ export default function LiveRooms() {
     try {
       console.log('Attempting to delete stream:', idToDelete);
       await deleteStream(idToDelete);
-      toast({
-        title: "Stream deleted",
-        description: "Your live stream has been deleted",
-      });
+      notify('toasts.community.streamDeleted', 'toasts.community.yourLiveStreamHasDeleted');
       setDeleteConfirmRoomId(null);
       if (selectedRoomId === idToDelete) {
         handleDrawerClose();
       }
     } catch (error) {
       console.error('Delete stream error:', error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete stream",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.error');
     }
   };
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    toast({
-      title: "Not yet supported",
-      description: "Editing sessions will be available soon",
-    });
+    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
@@ -552,7 +532,7 @@ export default function LiveRooms() {
   return (
     <AppLayout>
       <SEO
-        title="Live Rooms | Community"
+        title={t('screens.community.liveRoomsCommunity')}
         description="Join live conversations and discussions"
         canonical={window.location.href}
       />
@@ -603,7 +583,7 @@ export default function LiveRooms() {
         >
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder="Search Live Rooms…"
+              placeholder={t('screens.community.searchLiveRooms')}
               onSearch={(query) => setSearchQuery(query)}
             />
             
@@ -645,7 +625,7 @@ export default function LiveRooms() {
                   <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                     {filteredLiveRooms.length}
                     {liveStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -656,7 +636,7 @@ export default function LiveRooms() {
                   <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                     {filteredScheduledRooms.length}
                     {scheduledStreams.length === 0 && (
-                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                      <span className="ml-1 text-[10px] opacity-70">{t('screens.community.demo')}</span>
                     )}
                   </Badge>
                 )}
@@ -670,7 +650,7 @@ export default function LiveRooms() {
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading live rooms...</p>
+                <p className="text-muted-foreground">{t('screens.community.loadingLiveRooms')}</p>
               </div>
             ) : filteredLiveRooms.length > 0 ? (
               isMobile ? (
@@ -722,7 +702,7 @@ export default function LiveRooms() {
           <SplitBarContent value="scheduled" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingScheduled ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading scheduled rooms...</p>
+                <p className="text-muted-foreground">{t('screens.community.loadingScheduledRooms')}</p>
               </div>
             ) : filteredScheduledRooms.length > 0 ? (
               isMobile ? (
@@ -757,7 +737,7 @@ export default function LiveRooms() {
               )
             ) : (
               <div className="text-center py-6">
-                <p className="text-muted-foreground">No scheduled rooms</p>
+                <p className="text-muted-foreground">{t('screens.community.noScheduledRooms')}</p>
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -765,7 +745,7 @@ export default function LiveRooms() {
                   onClick={() => setIsGoLiveOpen(true)}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Schedule a live room
+                  {t('screens.community.scheduleLiveRoom')}
                 </Button>
               </div>
             )}
@@ -773,9 +753,8 @@ export default function LiveRooms() {
 
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
             <div className="text-center py-6">
-              <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                View summaries, highlights, and recordings from completed sessions.
+              <p className="text-muted-foreground">{t('screens.community.pastSessionsWillAppearHereOnce')}</p>
+              <p className="text-sm text-muted-foreground mt-2">{t('screens.community.viewSummariesHighlightsRecordingsFromCompleted')}
               </p>
             </div>
           </SplitBarContent>
@@ -823,18 +802,17 @@ export default function LiveRooms() {
       <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Live Room</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{t('screens.community.deleteLiveRoom')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              Are you sure you want to delete this live room? This action cannot be undone.
+              {t('screens.community.youSureYouWantDeleteThis')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{t('screens.community.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
+            >{t('screens.community.delete')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>

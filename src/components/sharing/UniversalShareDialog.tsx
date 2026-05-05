@@ -21,7 +21,7 @@ import {
   CheckCircle2,
   Share2,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
@@ -30,6 +30,7 @@ import { getShareUrl } from "@/lib/shareUrl";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { PersonalShareButtons } from "./PersonalShareButtons";
 import type { ShareableContent } from "@/types/sharing";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -97,10 +98,7 @@ export function UniversalShareDialog({
           : [...prev, channel.id]
       );
     } else {
-      toast({
-        title: "Connect account",
-        description: `Connect your ${channel.name} account to share content`,
-      });
+      notify('toasts.sharing.connectAccount');
     }
   };
 
@@ -115,11 +113,7 @@ export function UniversalShareDialog({
     );
 
     if (distributionChannels.length === 0) {
-      toast({
-        title: "Select distribution channels",
-        description: "Please select at least one channel for distribution",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.selectDistributionChannels', 'toasts.sharing.pleaseSelectAtLeastOneChannel3');
       return;
     }
 
@@ -154,20 +148,13 @@ export function UniversalShareDialog({
 
       if (campaignError) throw campaignError;
 
-      toast({
-        title: "🚀 Blast Successful!",
-        description: `Your ${content.type} is being shared across ${distributionChannels.length} channel(s)`,
-      });
+      notify('toasts.sharing.blastSuccessful');
 
       analytics.trackShare('share_completed', 'universal', content.id, content.type);
       onOpenChange(false);
     } catch (error) {
       console.error("Share error:", error);
-      toast({
-        title: "Share failed",
-        description: "Failed to share content. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.sharing.shareFailed2', 'toasts.sharing.failedShareContentPleaseTryAgain');
     } finally {
       setIsSharing(false);
     }
@@ -192,11 +179,9 @@ export function UniversalShareDialog({
       <DialogContent className="max-w-2xl z-[60]" overlayClassName="z-[60]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Send className="h-5 w-5" />
-            Share {content.type}
-          </DialogTitle>
+            <Send className="h-5 w-5" />{t('screens.sharing.shareType', { type: content.type })}</DialogTitle>
           <DialogDescription>
-            Share personally or distribute across your connected channels
+            {t('screens.sharing.sharePersonallyDistributeAcrossYourConnected')}
           </DialogDescription>
         </DialogHeader>
 
@@ -226,11 +211,11 @@ export function UniversalShareDialog({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-4 h-4 text-primary" />
-              <h3 className="text-sm font-semibold">Quick Share (Personal)</h3>
-              <Badge variant="secondary" className="text-[10px]">No setup needed</Badge>
+              <h3 className="text-sm font-semibold">{t('screens.sharing.quickSharePersonal2')}</h3>
+              <Badge variant="secondary" className="text-[10px]">{t('screens.sharing.noSetupNeeded')}</Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              Opens your personal apps to share directly with friends and contacts
+              {t('screens.sharing.opensYourPersonalAppsShareDirectly2')}
             </p>
             <PersonalShareButtons
               shareUrl={shareUrl}
@@ -251,10 +236,10 @@ export function UniversalShareDialog({
 
           {/* Message */}
           <div className="space-y-2">
-            <Label htmlFor="message">Custom Message (Optional)</Label>
+            <Label htmlFor="message">{t('screens.sharing.customMessageOptional')}</Label>
             <Textarea
               id="message"
-              placeholder="Add a custom message to your share..."
+              placeholder={t('screens.sharing.addCustomMessageYourShare')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={2}
@@ -266,10 +251,9 @@ export function UniversalShareDialog({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Share2 className="w-4 h-4 text-primary" />
-                <h3 className="text-sm font-semibold">Social Media (Auto-Post)</h3>
+                <h3 className="text-sm font-semibold">{t('screens.sharing.socialMediaAutopost')}</h3>
               </div>
-              <Badge variant="secondary" className="text-xs">
-                {selectedChannels.length} selected
+              <Badge variant="secondary" className="text-xs">{t('screens.sharing.lengthSelected', { length: selectedChannels.length })}
               </Badge>
             </div>
             
@@ -282,7 +266,7 @@ export function UniversalShareDialog({
                 <Alert className="bg-muted/50">
                   <Info className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    Select connected accounts to auto-post. Click <strong>+</strong> to connect new accounts.
+                    {t('screens.sharing.selectConnectedAccountsAutopostClick')} <strong>+</strong>{t('screens.sharing.connectNewAccounts')}
                   </AlertDescription>
                 </Alert>
                 
@@ -345,7 +329,7 @@ export function UniversalShareDialog({
               onClick={handleCreateCampaign}
             >
               <Plus className="mr-2 h-4 w-4" />
-              Create Campaign
+              {t('screens.sharing.createCampaign')}
             </Button>
             <Button
               type="button"
@@ -355,13 +339,12 @@ export function UniversalShareDialog({
             >
               {isSharing ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sharing...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.sharing.sharing')}
                 </>
               ) : (
                 <>
                   <Send className="mr-2 h-4 w-4" />
-                  Blast Now
+                  {t('screens.sharing.blastNow')}
                 </>
               )}
             </Button>

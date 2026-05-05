@@ -1,0 +1,90 @@
+name: i18n translate
+
+# Drains _pending_review entries from src/i18n/<locale>/<shard>.json by
+# translating from the corresponding src/i18n/en/<shard>.json via the chosen
+# provider (Gemini default, DeepSeek fallback). Pushes the result back to the
+# branch the workflow is dispatched against.
+#
+# Manual trigger:
+#   gh workflow run i18n-translate.yml --ref VTID-i18n-toasts-cleanup \
+#     -f provider=gemini -f locale=de
+#
+# Auto-trigger (Wave 6+): on push to main when a DE shard changes — opens an
+# auto-PR with the diff.
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'Translation provider'
+        required: true
+        default: 'gemini'
+        type: choice
+        options:
+          - gemini
+          - deepseek
+          - anthropic
+      locale:
+        description: 'Target locale (de, sr, ar, es, ru, zh, fr, pt, pl)'
+        required: true
+        default: 'de'
+      shard:
+        description: 'Shard name (omit for all)'
+        required: false
+        default: ''
+      batch:
+        description: 'Strings per API call'
+        required: false
+        default: '30'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: i18n-translate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run translator
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
+          if [ -n "${{ inputs.shard }}" ]; then
+            ARGS="$ARGS --shard=${{ inputs.shard }}"
+          fi
+          echo "Running: node scripts/translate-keys.mjs $ARGS"
+          node scripts/translate-keys.mjs $ARGS
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet src/i18n/; then
+            echo "No translation changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/i18n/
+          git commit -m "chore(i18n): drain _pending_review via ${{ inputs.provider }} (${{ inputs.locale }})
+
+Auto-translation run.
+Provider: ${{ inputs.provider }}
+Locale: ${{ inputs.locale }}
+Triggered by: ${{ github.actor }}
+"
+          git push origin HEAD:${{ github.ref_name }}

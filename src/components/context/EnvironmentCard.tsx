@@ -1,4 +1,5 @@
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface EnvironmentCardProps {
   location?: string;
@@ -28,7 +29,7 @@ export function EnvironmentCard({
 
   return (
     <NewsCard
-      title="Environment 🌦️"
+      title={t('screens.context.environment')}
       description={`${location} · ${temperature}°C · ${weather}`}
       imageUrl={getWeatherImage(weather)}
       pillar="Mental"

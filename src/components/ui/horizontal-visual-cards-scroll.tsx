@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { VisualHorizontalCard, VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
+import { t } from '@/lib/i18n-toast';
 
 interface HorizontalVisualCardsScrollProps {
   items: VisualHorizontalCardProps[];
@@ -68,7 +69,7 @@ export function HorizontalVisualCardsScroll({
         ref={scrollRef}
         className="flex gap-4 xl:gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide"
         role="list"
-        aria-label="Autopilot actions"
+        aria-label={t('screens.ui.autopilotActions')}
         tabIndex={0}
       >
         {items.map((item) => (

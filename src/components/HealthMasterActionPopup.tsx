@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthMasterActionPopupProps {
   open: boolean;
@@ -92,7 +93,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
             [&>button]:sr-only selector hides. */}
         <span className="absolute right-3 top-3 z-10">
           <DialogClose
-            aria-label="Close"
+            aria-label={t('screens.common.close')}
             style={{ boxShadow: 'none' }}
             className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
           >
@@ -103,8 +104,7 @@ export function HealthMasterActionPopup({ open, onOpenChange, onUploadOpen, onOr
         <DialogHeader className="pr-8">
           <div className="flex items-center gap-2 mb-1">
             <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-green-500 shrink-0" />
-            <DialogTitle className="text-xl sm:text-2xl break-words">
-              Health Actions
+            <DialogTitle className="text-xl sm:text-2xl break-words">{t('screens.common.healthActions')}
             </DialogTitle>
           </div>
         </DialogHeader>

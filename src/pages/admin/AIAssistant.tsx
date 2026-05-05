@@ -8,6 +8,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminAIAssistantNavigation } from "@/config/navigation";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
+import { t } from '@/lib/i18n-toast';
 
 export default function AIAssistantOverview() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function AIAssistantOverview() {
   return (
     <AppLayout>
       <SEO 
-        title="AI Assistant | Admin | VITANA" 
+        title={t('screens.admin.aiAssistantAdminVitana')} 
         description="Intelligent automation and AI-powered system management" 
         canonical={window.location.href} 
       />
@@ -24,7 +25,7 @@ export default function AIAssistantOverview() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="AI Assistant"
+            title={t('screens.admin.aiAssistant')}
             description="Intelligent automation engine powered by AI for proactive user engagement"
             emoji="🤖"
           />
@@ -32,14 +33,14 @@ export default function AIAssistantOverview() {
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <AdminStatsCard
-              title="Active Automations"
+              title={t('screens.admin.activeAutomations')}
               value={0}
               subtitle="Ready to scale to 5000+"
               icon={Zap}
             />
 
             <AdminStatsCard
-              title="AI Recommendations"
+              title={t('screens.admin.aiRecommendations')}
               value={0}
               subtitle="Waiting for deployment"
               icon={Bot}
@@ -47,14 +48,14 @@ export default function AIAssistantOverview() {
             />
 
             <AdminStatsCard
-              title="Pattern Discoveries"
+              title={t('screens.admin.patternDiscoveries')}
               value={0}
               subtitle="Behavioral insights found"
               icon={TrendingUp}
             />
 
             <AdminStatsCard
-              title="Autopilot Actions"
+              title={t('screens.admin.autopilotActions')}
               value={0}
               subtitle="Sent to users today"
               icon={Sparkles}
@@ -63,7 +64,7 @@ export default function AIAssistantOverview() {
 
           {/* Quick Access Cards */}
           <div>
-            <h2 className="text-lg font-semibold mb-4">Get Started</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('screens.admin.getStarted')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <Card 
@@ -76,15 +77,13 @@ export default function AIAssistantOverview() {
                       <Bot className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">AI Situation Analyzer</CardTitle>
-                      <CardDescription>Let AI suggest automations</CardDescription>
+                      <CardTitle className="text-base">{t('screens.admin.aiSituationAnalyzer')}</CardTitle>
+                      <CardDescription>{t('screens.admin.letAiSuggestAutomations')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Describe any situation and AI will analyze it, then suggest 
-                    specific automations with confidence scores.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.describeAnySituationAiWillAnalyze')}
                   </p>
                 </CardContent>
               </Card>
@@ -99,15 +98,13 @@ export default function AIAssistantOverview() {
                       <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">Pattern Discovery</CardTitle>
-                      <CardDescription>AI-discovered opportunities</CardDescription>
+                      <CardTitle className="text-base">{t('screens.admin.patternDiscovery')}</CardTitle>
+                      <CardDescription>{t('screens.admin.aidiscoveredOpportunities')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    View behavioral patterns automatically discovered by AI from 
-                    user data and system analytics.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.viewBehavioralPatternsAutomaticallyDiscoveredBy')}
                   </p>
                 </CardContent>
               </Card>
@@ -122,15 +119,13 @@ export default function AIAssistantOverview() {
                       <Activity className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">Analytics & Performance</CardTitle>
-                      <CardDescription>Track automation effectiveness</CardDescription>
+                      <CardTitle className="text-base">{t('screens.admin.analyticsPerformance')}</CardTitle>
+                      <CardDescription>{t('screens.admin.trackAutomationEffectiveness')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Monitor execution rates, success metrics, and user engagement 
-                    for all automations and AI actions.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.monitorExecutionRatesSuccessMetricsUser')}
                   </p>
                 </CardContent>
               </Card>
@@ -140,41 +135,36 @@ export default function AIAssistantOverview() {
           {/* System Architecture Info */}
           <Card>
             <CardHeader>
-              <CardTitle>System Architecture</CardTitle>
-              <CardDescription>How the AI Assistant works</CardDescription>
+              <CardTitle>{t('screens.admin.systemArchitecture')}</CardTitle>
+              <CardDescription>{t('screens.admin.howAiAssistantWorks')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                    <h4 className="font-semibold">Automation Engine</h4>
+                    <h4 className="font-semibold">{t('screens.admin.automationEngine')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Trigger-based system that executes actions based on user events, 
-                    schedules, and conditions.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.triggerbasedSystemThatExecutesActionsBased')}
                   </p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                    <h4 className="font-semibold">AI Analyzer</h4>
+                    <h4 className="font-semibold">{t('screens.admin.aiAnalyzer')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Uses Lovable AI to understand situations and generate 
-                    intelligent automation recommendations.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.usesLovableAiUnderstandSituationsGenerate')}
                   </p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <h4 className="font-semibold">Autopilot Integration</h4>
+                    <h4 className="font-semibold">{t('screens.admin.autopilotIntegration')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Connects automations to user-facing proactive actions 
-                    for seamless engagement.
+                    {t('screens.admin.connectsAutomationsUserfacingProactiveActionsFor')}
                   </p>
                 </div>
               </div>

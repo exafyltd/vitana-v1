@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Globe, MapPin, Battery } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface CurrentVibeCardProps {
   location?: string;
@@ -36,12 +37,12 @@ function CurrentVibeCardBase({
         <div className="flex items-center gap-2">
           <Battery className="w-3 h-3 text-green-600" />
           <div>
-            <div className="font-medium">Sleep Score</div>
+            <div className="font-medium">{t('screens.crossover.sleepScore')}</div>
             <div className="text-muted-foreground">{sleepScore}/100</div>
           </div>
         </div>
         <div>
-          <div className="font-medium">Stress Level</div>
+          <div className="font-medium">{t('screens.crossover.stressLevel')}</div>
           <div className={`text-muted-foreground ${stressLevel === 'Low' ? 'text-green-600' : stressLevel === 'High' ? 'text-red-600' : 'text-yellow-600'}`}>
             {stressLevel}
           </div>
@@ -61,7 +62,7 @@ function CurrentVibeCardBase({
     <CrossoverCard
       icon={Globe}
       category="mental"
-      title="My Current Vibe 🌍"
+      title={t('screens.crossover.myCurrentVibe')}
       subtitle="Location, mood & wellness snapshot"
       content={content}
       buttonText="Edit Mood"

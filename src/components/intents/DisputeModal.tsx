@@ -18,8 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { raiseDispute, type DisputeReasonCategory } from "@/lib/intentApi";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DisputeModalProps {
   open: boolean;
@@ -44,18 +45,18 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
 
   const submit = async () => {
     if (detail.trim().length < 10) {
-      toast({ title: "More detail needed", description: "Minimum 10 characters.", variant: "destructive" });
+      notifyError('toasts.intents.moreDetailNeeded', 'toasts.intents.minimum10Characters');
       return;
     }
     setSubmitting(true);
     try {
       await raiseDispute(matchId, category, detail.trim());
-      toast({ title: "Dispute raised", description: "Our support team will review and follow up." });
+      notify('toasts.intents.disputeRaised', 'toasts.intents.ourSupportTeamWillReviewFollow');
       setDetail("");
       onRaised?.();
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Could not raise dispute", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotRaiseDispute');
     } finally {
       setSubmitting(false);
     }
@@ -65,15 +66,14 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Report an issue</DialogTitle>
-          <DialogDescription>
-            Raise a dispute on this match. Vitana support will review and follow up. Both parties' identities are recorded for the audit trail.
+          <DialogTitle>{t('screens.intents.reportIssue')}</DialogTitle>
+          <DialogDescription>{t('screens.intents.raiseDisputeThisMatchVitanaSupport')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-3">
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Category</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.category')}</Label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as DisputeReasonCategory)}
@@ -89,14 +89,13 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
           </div>
 
           <div>
-            <Label htmlFor="dispute-detail" className="text-xs uppercase tracking-wider text-muted-foreground">
-              What happened? (10–2000 chars)
+            <Label htmlFor="dispute-detail" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.whatHappened102000Chars')}
             </Label>
             <Textarea
               id="dispute-detail"
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
-              placeholder="Describe the issue clearly. Include dates, amounts, and any context that helps support investigate."
+              placeholder={t('screens.intents.describeIssueClearlyIncludeDatesAmounts')}
               rows={5}
               maxLength={2000}
             />
@@ -105,7 +104,7 @@ export function DisputeModal({ open, onOpenChange, matchId, onRaised }: DisputeM
 
         <DialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t('screens.intents.cancel')}
           </Button>
           <Button variant="destructive" onClick={submit} disabled={submitting}>
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Raise dispute"}

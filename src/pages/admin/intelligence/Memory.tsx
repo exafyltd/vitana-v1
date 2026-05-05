@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const SOURCE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   orb_text: "default",
@@ -127,13 +128,13 @@ export default function IntelligenceMemory() {
     <AppLayout>
       <SubNavigation items={adminIntelligenceNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Memory Garden" description="Browse memory items and extracted facts across all users" />
+        <AdminHeader title={t('screens.admin.memoryGarden')} description="Browse memory items and extracted facts across all users" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Memory Items" value={itemsQuery.data?.total ?? "..."} icon={Brain} loading={itemsQuery.isLoading} />
-          <AdminStatsCard title="Active Facts" value={factsQuery.data?.total ?? "..."} icon={BookOpen} loading={factsQuery.isLoading} />
-          <AdminStatsCard title="On This Page" value={records.length} icon={Layers} loading={activeQuery.isLoading} />
-          <AdminStatsCard title="View" value={tab === "items" ? "Items" : "Facts"} icon={Sparkles} />
+          <AdminStatsCard title={t('screens.admin.memoryItems')} value={itemsQuery.data?.total ?? "..."} icon={Brain} loading={itemsQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.activeFacts')} value={factsQuery.data?.total ?? "..."} icon={BookOpen} loading={factsQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.thisPage')} value={records.length} icon={Layers} loading={activeQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.view')} value={tab === "items" ? "Items" : "Facts"} icon={Sparkles} />
         </div>
 
         {/* Toggle */}
@@ -141,14 +142,12 @@ export default function IntelligenceMemory() {
           <button
             onClick={() => { setTab("items"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "items" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Memory Items
+          >{t('screens.admin.memoryItems')}
           </button>
           <button
             onClick={() => { setTab("facts"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "facts" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Extracted Facts
+          >{t('screens.admin.extractedFacts')}
           </button>
         </div>
 

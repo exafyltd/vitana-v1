@@ -14,6 +14,7 @@ import { CheckCircle, XCircle, AlertTriangle, Flag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface ContentReport {
   id: string;
@@ -64,7 +65,7 @@ const ReportedContent = () => {
       setReports(data || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
-      toast.error('Failed to load reports');
+      notifyError('toasts.admin.failedLoadReports');
     } finally {
       setLoading(false);
     }
@@ -93,7 +94,7 @@ const ReportedContent = () => {
       fetchReports();
     } catch (error) {
       console.error('Error resolving report:', error);
-      toast.error('Failed to resolve report');
+      notifyError('toasts.admin.failedResolveReport');
     }
   };
 
@@ -128,45 +129,45 @@ const ReportedContent = () => {
   return (
     <AdminGuard>
       <AppLayout>
-        <SEO title="Reported Content - Admin" description="Review and resolve user reports" />
+        <SEO title={t('screens.admin.reportedContentAdmin')} description="Review and resolve user reports" />
         
         <SubNavigation items={adminCommunityNavigation} />
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Reported Content"
+              title={t('screens.admin.reportedContent')}
               description="Review and resolve user reports across community features"
             />
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="all">All Reports</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="reviewing">Reviewing</TabsTrigger>
-                <TabsTrigger value="resolved">Resolved</TabsTrigger>
-                <TabsTrigger value="dismissed">Dismissed</TabsTrigger>
+                <TabsTrigger value="all">{t('screens.admin.allReports')}</TabsTrigger>
+                <TabsTrigger value="pending">{t('screens.admin.pending')}</TabsTrigger>
+                <TabsTrigger value="reviewing">{t('screens.admin.reviewing')}</TabsTrigger>
+                <TabsTrigger value="resolved">{t('screens.admin.resolved')}</TabsTrigger>
+                <TabsTrigger value="dismissed">{t('screens.admin.dismissed')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="mt-6">
                 <Card>
                   {loading ? (
-                    <div className="p-12 text-center text-muted-foreground">Loading reports...</div>
+                    <div className="p-12 text-center text-muted-foreground">{t('screens.admin.loadingReports')}</div>
                   ) : filteredReports.length === 0 ? (
                     <div className="p-12 text-center">
                       <Flag className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground">No reports found</p>
+                      <p className="text-muted-foreground">{t('screens.admin.noReportsFound')}</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Content Type</TableHead>
-                          <TableHead>Reason</TableHead>
-                          <TableHead>Description</TableHead>
-                          <TableHead>Reported</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{t('screens.admin.contentType')}</TableHead>
+                          <TableHead>{t('screens.admin.reason')}</TableHead>
+                          <TableHead>{t('screens.admin.description')}</TableHead>
+                          <TableHead>{t('screens.admin.reported')}</TableHead>
+                          <TableHead>{t('screens.admin.status')}</TableHead>
+                          <TableHead>{t('screens.admin.actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -189,7 +190,7 @@ const ReportedContent = () => {
                                   {selectedReport === report.id ? (
                                     <div className="flex flex-col gap-2 min-w-[200px]">
                                       <Textarea
-                                        placeholder="Admin notes (optional)"
+                                        placeholder={t('screens.admin.adminNotesOptional')}
                                         value={adminNotes}
                                         onChange={(e) => setAdminNotes(e.target.value)}
                                         className="text-sm h-20"
@@ -198,15 +199,13 @@ const ReportedContent = () => {
                                         <Button
                                           size="sm"
                                           onClick={() => resolveReport(report.id, 'removed', 'resolved')}
-                                        >
-                                          Remove
+                                        >{t('screens.admin.remove')}
                                         </Button>
                                         <Button
                                           size="sm"
                                           variant="outline"
                                           onClick={() => resolveReport(report.id, 'no_action', 'dismissed')}
-                                        >
-                                          Dismiss
+                                        >{t('screens.admin.dismiss')}
                                         </Button>
                                         <Button
                                           size="sm"
@@ -215,8 +214,7 @@ const ReportedContent = () => {
                                             setSelectedReport(null);
                                             setAdminNotes("");
                                           }}
-                                        >
-                                          Cancel
+                                        >{t('screens.admin.cancel')}
                                         </Button>
                                       </div>
                                     </div>
@@ -227,7 +225,7 @@ const ReportedContent = () => {
                                       onClick={() => setSelectedReport(report.id)}
                                     >
                                       <AlertTriangle className="h-4 w-4 mr-1" />
-                                      Review
+                                      {t('screens.admin.review')}
                                     </Button>
                                   )}
                                 </div>

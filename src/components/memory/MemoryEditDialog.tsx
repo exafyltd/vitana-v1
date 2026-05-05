@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { t } from '@/lib/i18n-toast';
 
 interface TimelineMemory {
   id: string;
@@ -106,18 +107,17 @@ export function MemoryEditDialog({
         <div className="space-y-4 py-4">
           {/* Content */}
           <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
+            <Label htmlFor="content">{t('screens.memory.content')}</Label>
             <Textarea
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter memory content..."
+              placeholder={t('screens.memory.enterMemoryContent')}
               rows={4}
               disabled={isConversation}
             />
             {isConversation && (
-              <p className="text-xs text-muted-foreground">
-                Conversation messages cannot be edited
+              <p className="text-xs text-muted-foreground">{t('screens.memory.conversationMessagesCannotEdited')}
               </p>
             )}
           </div>
@@ -125,14 +125,14 @@ export function MemoryEditDialog({
           {/* Source Type (only for new memories) */}
           {!memory && (
             <div className="space-y-2">
-              <Label htmlFor="source">Source Type</Label>
+              <Label htmlFor="source">{t('screens.memory.sourceType')}</Label>
               <Select value={source} onValueChange={(v: "ai" | "diary") => setSource(v)}>
                 <SelectTrigger id="source">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ai">AI Insight</SelectItem>
-                  <SelectItem value="diary">Diary Entry</SelectItem>
+                  <SelectItem value="ai">{t('screens.memory.aiInsight')}</SelectItem>
+                  <SelectItem value="diary">{t('screens.memory.diaryEntry')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -141,17 +141,17 @@ export function MemoryEditDialog({
           {/* Memory Type (for AI insights) */}
           {(source === "ai" || memory?.source === "ai") && !isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="memoryType">Memory Type</Label>
+              <Label htmlFor="memoryType">{t('screens.memory.memoryType')}</Label>
               <Select value={memoryType} onValueChange={setMemoryType}>
                 <SelectTrigger id="memoryType">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="fact">Fact</SelectItem>
-                  <SelectItem value="preference">Preference</SelectItem>
-                  <SelectItem value="goal">Goal</SelectItem>
-                  <SelectItem value="pattern">Pattern</SelectItem>
-                  <SelectItem value="insight">Insight</SelectItem>
+                  <SelectItem value="fact">{t('screens.memory.fact')}</SelectItem>
+                  <SelectItem value="preference">{t('screens.memory.preference')}</SelectItem>
+                  <SelectItem value="goal">{t('screens.memory.goal')}</SelectItem>
+                  <SelectItem value="pattern">{t('screens.memory.pattern')}</SelectItem>
+                  <SelectItem value="insight">{t('screens.memory.insight')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -160,8 +160,7 @@ export function MemoryEditDialog({
           {/* Confidence Score (for AI insights) */}
           {(source === "ai" || memory?.source === "ai") && !isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="confidence">
-                Confidence Score: {confidenceScore}%
+              <Label htmlFor="confidence">{t('screens.memory.confidenceScoreConfidencescore', { confidenceScore })}
               </Label>
               <Slider
                 id="confidence"
@@ -177,12 +176,12 @@ export function MemoryEditDialog({
           {/* Tags */}
           {!isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="tags">Tags (comma-separated)</Label>
+              <Label htmlFor="tags">{t('screens.memory.tagsCommaseparated')}</Label>
               <Input
                 id="tags"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                placeholder="health, personal, goals"
+                placeholder={t('screens.memory.healthPersonalGoals')}
               />
             </div>
           )}
@@ -194,7 +193,7 @@ export function MemoryEditDialog({
             onClick={() => onOpenChange(false)}
             disabled={isSaving}
           >
-            Cancel
+            {t('screens.memory.cancel')}
           </Button>
           <Button
             onClick={handleSave}

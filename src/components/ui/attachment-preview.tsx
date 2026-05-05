@@ -3,6 +3,7 @@ import { X, File, Image, Video, Music, Download } from 'lucide-react';
 import { Button } from './button';
 import { cn } from '@/lib/utils';
 import { formatFileSize, getFileTypeCategory } from '@/lib/fileUpload';
+import { t } from '@/lib/i18n-toast';
 
 interface AttachmentPreviewProps {
   file: File;
@@ -147,7 +148,7 @@ export const MessageAttachment: React.FC<MessageAttachmentProps> = ({
           className="rounded-lg max-h-64 w-full"
           preload="metadata"
         >
-          Your browser does not support the video tag.
+          {t('screens.ui.yourBrowserDoesNotSupportVideo')}
         </video>
         <div className="text-xs text-muted-foreground mt-1">
           {formatFileSize(size)}

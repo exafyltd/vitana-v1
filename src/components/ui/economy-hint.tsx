@@ -2,6 +2,7 @@ import * as React from "react";
 import { Info, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 export interface EconomyHintProps {
   message: string;
@@ -68,8 +69,7 @@ export function EconomyHint({
               }
             )}
             onClick={handleLearnMore}
-          >
-            Learn more
+          >{t('screens.ui.learnMore')}
             <ExternalLink className={cn(
               "ml-1",
               compact ? "h-3 w-3" : "h-4 w-4"

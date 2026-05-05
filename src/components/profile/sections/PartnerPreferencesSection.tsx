@@ -17,6 +17,7 @@
 import { Heart, MapPin, Users } from "lucide-react";
 import type { PartnerPreferences } from "@/lib/profilePrefsApi";
 import type { AccountVisibility, FieldVisibility } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 type ViewerRel = "self" | "connection" | "stranger";
 
@@ -87,7 +88,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
       <header className="flex items-center gap-2">
         <Heart className="h-4 w-4 text-rose-500" />
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Partner preferences
+          {t('screens.profile.partnerPreferences')}
         </h3>
       </header>
 
@@ -99,8 +100,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
           </span>
         )}
         {showAge && (
-          <span className="inline-flex items-center px-2 py-1 rounded border border-border bg-muted/40">
-            {prefs.age_range![0]}–{prefs.age_range![1]} years
+          <span className="inline-flex items-center px-2 py-1 rounded border border-border bg-muted/40">{t('screens.profile.value0Value1Years', { value0: prefs.age_range![0], value1: prefs.age_range![1] })}
           </span>
         )}
         {showIntent && (
@@ -119,7 +119,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
 
       {showMustHaves && (
         <div>
-          <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Must-haves</div>
+          <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">{t('screens.profile.musthaves')}</div>
           <div className="flex flex-wrap gap-1">
             {prefs.must_haves!.map((m, i) => (
               <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -133,7 +133,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
       {showDealBreakers && (
         <div>
           <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-            Deal-breakers <span className="opacity-70">(only you see this)</span>
+            {t('screens.profile.dealbreakers')} <span className="opacity-70">{t('screens.profile.onlyYouSeeThis')}</span>
           </div>
           <div className="flex flex-wrap gap-1">
             {prefs.deal_breakers!.map((m, i) => (

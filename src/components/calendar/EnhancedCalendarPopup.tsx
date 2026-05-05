@@ -61,6 +61,7 @@ import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { VitanaPillarKey } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
   nutrition: "Nutrition",
@@ -520,9 +521,7 @@ export function EnhancedCalendarPopup({
                         const totalCount = tagged.length;
                         return (
                           <div className="rounded-xl border ring-1 ring-border/60 px-3 py-2 mb-3">
-                            <div className="text-xs text-muted-foreground mb-1.5">
-                              Today's Index pulse: completing your {totalCount} pillar-tagged event
-                              {totalCount === 1 ? "" : "s"} will move your Index.
+                            <div className="text-xs text-muted-foreground mb-1.5">{t('screens.calendar.todaySIndexPulseCompletingYour', { totalCount, value1: totalCount === 1 ? "" : "s" })}
                             </div>
                             <div className="flex h-1.5 rounded-full overflow-hidden bg-muted">
                               {(Object.entries(counts) as Array<[VitanaPillarKey, number]>).map(

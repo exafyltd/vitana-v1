@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, DollarSign, Calendar, Star, Edit3 } from "lucide-react";
 import { UserProfile, ServiceOffering } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileServicesTabProps {
   profile: UserProfile;
@@ -29,9 +30,9 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
       <Card>
         <CardContent className="p-12 text-center">
           <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No Services Available</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('screens.profile.noServicesAvailable')}</h3>
           <p className="text-muted-foreground">
-            This user doesn't have any published services yet.
+            {t('screens.profile.thisUserDoesnTHaveAny')}
           </p>
         </CardContent>
       </Card>
@@ -41,9 +42,8 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
   return (
     <div className="w-full max-w-3xl mx-auto space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold mb-2">Professional Services</h2>
-        <p className="text-muted-foreground">
-          Book a session with {profile.name} to get personalized guidance
+        <h2 className="text-2xl font-bold mb-2">{t('screens.profile.professionalServices')}</h2>
+        <p className="text-muted-foreground">{t('screens.profile.bookSessionWithNameGetPersonalized', { name: profile.name })}
         </p>
       </div>
 
@@ -56,8 +56,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                   <CardTitle className="text-xl mb-2">{offering.title}</CardTitle>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      {offering.durationMin} minutes
+                      <Clock className="h-4 w-4" />{t('screens.profile.durationminMinutes', { durationMin: offering.durationMin })}
                     </div>
                     <div className="flex items-center gap-1">
                       <DollarSign className="h-4 w-4" />
@@ -67,7 +66,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                 </div>
                 <Badge variant="secondary" className="flex items-center gap-1">
                   <Star className="h-3 w-3" />
-                  Featured
+                  {t('screens.profile.featured')}
                 </Badge>
               </div>
             </CardHeader>
@@ -76,7 +75,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
               {/* Next Available Times */}
               {offering.nextTimes && offering.nextTimes.length > 0 && (
                 <div>
-                  <h4 className="font-medium mb-2">Next Available</h4>
+                  <h4 className="font-medium mb-2">{t('screens.profile.nextAvailable')}</h4>
                   <div className="flex flex-wrap gap-2">
                     {offering.nextTimes.slice(0, 3).map((time, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
@@ -97,17 +96,16 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
         {editMode && onEditServices && (
           <Button variant="outline" onClick={onEditServices}>
             <Edit3 className="h-4 w-4 mr-2" />
-            Manage Services
+            {t('screens.profile.manageServices')}
           </Button>
         )}
         {!editMode && (
           <>
             <Button className="flex-1">
-              <Calendar className="h-4 w-4 mr-2" />
-              Book Session
+              <Calendar className="h-4 w-4 mr-2" />{t('screens.profile.bookSession')}
             </Button>
             <Button variant="outline">
-              Learn More
+              {t('screens.profile.learnMore')}
             </Button>
           </>
         )}
@@ -127,10 +125,9 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                   <Star className="h-5 w-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Verified Professional</h3>
+                  <h3 className="font-semibold">{t('screens.profile.verifiedProfessional')}</h3>
                   {profile.compliance.licenseVerified && (
-                    <p className="text-sm text-muted-foreground">
-                      Licensed and verified healthcare provider
+                    <p className="text-sm text-muted-foreground">{t('screens.profile.licensedVerifiedHealthcareProvider')}
                     </p>
                   )}
                 </div>
@@ -138,14 +135,14 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
               {editMode && onEditCompliance && (
                 <Button variant="outline" size="sm" onClick={onEditCompliance}>
                   <Edit3 className="h-4 w-4 mr-2" />
-                  Manage Credentials
+                  {t('screens.profile.manageCredentials')}
                 </Button>
               )}
             </div>
             
             {profile.compliance.specialties && profile.compliance.specialties.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Specialties</h4>
+                <h4 className="font-medium mb-2">{t('screens.profile.specialties')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {profile.compliance.specialties.map((specialty, index) => (
                     <Badge key={index} variant="secondary">

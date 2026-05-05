@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Mail, MessageSquare, Phone } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventMessageTemplatesProps {
   templates: {
@@ -46,12 +47,12 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Mail className="w-4 h-4" />
-              Email Template
+              {t('screens.sharing.emailTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="email-subject">Subject Line</Label>
+              <Label htmlFor="email-subject">{t('screens.sharing.subjectLine')}</Label>
               <Input
                 id="email-subject"
                 value={emailSubject}
@@ -59,12 +60,12 @@ export function EventMessageTemplates({
                   setEmailSubject(e.target.value);
                   handleEmailChange();
                 }}
-                placeholder="e.g., You're invited: Event Name"
+                placeholder={t('screens.sharing.eGYouReInvitedEvent')}
                 className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="email-body">Message Body</Label>
+              <Label htmlFor="email-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="email-body"
                 value={emailBody}
@@ -73,11 +74,10 @@ export function EventMessageTemplates({
                   handleEmailChange();
                 }}
                 rows={10}
-                placeholder="Email content..."
+                placeholder={t('screens.sharing.emailContent')}
                 className="mt-1 font-mono text-sm"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Use {"{name}"} for recipient name and {"{event_link}"} for the event URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.useValue0ForRecipientNameValue1', { value0: "{name}", value1: "{event_link}" })}
               </p>
             </div>
           </CardContent>
@@ -90,12 +90,12 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Phone className="w-4 h-4" />
-              SMS Template
+              {t('screens.sharing.smsTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="sms-body">Message Body</Label>
+              <Label htmlFor="sms-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="sms-body"
                 value={smsBody}
@@ -104,16 +104,14 @@ export function EventMessageTemplates({
                   handleSmsChange();
                 }}
                 rows={5}
-                placeholder="SMS content..."
+                placeholder={t('screens.sharing.smsContent')}
                 className="mt-1 font-mono text-sm"
                 maxLength={160}
               />
               <div className="flex justify-between items-center mt-1">
-                <p className="text-xs text-muted-foreground">
-                  Use {"{event_link}"} for the event URL
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.useValue0ForEventUrl', { value0: "{event_link}" })}
                 </p>
-                <Badge variant={smsBody.length > 160 ? "destructive" : "secondary"}>
-                  {smsBody.length}/160 chars
+                <Badge variant={smsBody.length > 160 ? "destructive" : "secondary"}>{t('screens.sharing.length160Chars', { length: smsBody.length })}
                 </Badge>
               </div>
             </div>
@@ -127,12 +125,12 @@ export function EventMessageTemplates({
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <MessageSquare className="w-4 h-4" />
-              WhatsApp Template
+              {t('screens.sharing.whatsappTemplate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <Label htmlFor="whatsapp-body">Message Body</Label>
+              <Label htmlFor="whatsapp-body">{t('screens.sharing.messageBody')}</Label>
               <Textarea
                 id="whatsapp-body"
                 value={whatsappBody}
@@ -141,11 +139,10 @@ export function EventMessageTemplates({
                   handleWhatsAppChange();
                 }}
                 rows={8}
-                placeholder="WhatsApp content..."
+                placeholder={t('screens.sharing.whatsappContent')}
                 className="mt-1 font-mono text-sm"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Use *bold*, _italic_, and {"{event_link}"} for the event URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.useBold_italic_Value0ForEvent', { value0: "{event_link}" })}
               </p>
             </div>
           </CardContent>

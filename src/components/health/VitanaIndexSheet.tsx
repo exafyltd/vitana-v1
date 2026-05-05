@@ -15,6 +15,7 @@ import { EMPTY_COPY } from "@/lib/celebrate";
 import { confettiManager } from "@/lib/confetti";
 import { buildHorizonPoints, type ProjectedPoint } from "@/lib/vitana-projection";
 import type { ContributionVector } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 export const VITANA_INDEX_OPEN_EVENT = "vitana:open-index";
 
@@ -164,8 +165,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
           />
         )}
       </svg>
-      <p className="text-xs text-muted-foreground">
-        At this pace you land around <strong>{projectedScore}</strong> in 30 days.
+      <p className="text-xs text-muted-foreground">{t('screens.health.atThisPaceYouLandAround')} <strong>{projectedScore}</strong>{t('screens.health.text30Days')}
       </p>
     </div>
   );
@@ -305,7 +305,7 @@ export function VitanaIndexSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="right" className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-xl font-semibold">Your Index</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t('screens.health.yourIndex')}</SheetTitle>
           {tierLabel && (
             <SheetDescription className="text-sm text-muted-foreground">
               {tierFraming ?? tierLabel}
@@ -344,8 +344,7 @@ export function VitanaIndexSheet() {
             <h3
               id="vitana-index-today"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-            >
-              Today
+            >{t('screens.health.today')}
             </h3>
 
             <div className="flex items-center justify-center">
@@ -362,7 +361,7 @@ export function VitanaIndexSheet() {
                   <div className="text-4xl font-bold text-green-600">
                     {isLoading || total === null ? "…" : total}
                   </div>
-                  <div className="text-xs text-muted-foreground">of 999</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
                 </div>
               </div>
             </div>
@@ -374,19 +373,15 @@ export function VitanaIndexSheet() {
                 </Badge>
               )}
               {sevenDayDelta !== null && sevenDayDelta !== 0 && (
-                <Badge variant="outline" className="text-xs">
-                  {sevenDayDelta > 0 ? "+" : ""}
-                  {sevenDayDelta} this week
+                <Badge variant="outline" className="text-xs">{t('screens.health.value0SevendaydeltaThisWeek', { value0: sevenDayDelta > 0 ? "+" : "", sevenDayDelta })}
                 </Badge>
               )}
               {balanceFactor !== null && (
-                <Badge variant="outline" className="text-xs">
-                  Balance {Math.round(balanceFactor * 100)}%
+                <Badge variant="outline" className="text-xs">{t('screens.health.balanceValue0', { value0: Math.round(balanceFactor * 100) })}
                 </Badge>
               )}
               {streakDays > 0 && (
-                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">
-                  🔥 {streakDays}-day streak
+                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">{t('screens.health.streakdaysdayStreak', { streakDays })}
                 </Badge>
               )}
             </div>
@@ -415,16 +410,14 @@ export function VitanaIndexSheet() {
             <h3
               id="vitana-index-next-days"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-            >
-              Next few days
+            >{t('screens.health.nextFewDays')}
             </h3>
 
             {pendingActions.length === 0 ? (
               <p className="text-sm text-muted-foreground">{EMPTY_COPY.indexSheetNextDays}</p>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm">
-                  Complete the {pendingActions.length} action{pendingActions.length === 1 ? "" : "s"} Autopilot suggests
+                <p className="text-sm">{t('screens.health.completeLengthActionValue1AutopilotSuggests', { length: pendingActions.length, value1: pendingActions.length === 1 ? "" : "s" })}
                   {nextDaysTotal > 0 ? (
                     <>
                       {" "}→ <strong className="text-green-600">+{nextDaysTotal}</strong>
@@ -439,8 +432,7 @@ export function VitanaIndexSheet() {
                   onClick={handleOpenAutopilot}
                   className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Open Autopilot
+                  <Zap className="w-4 h-4 mr-2" />{t('screens.health.openAutopilot')}
                 </Button>
               </div>
             )}
@@ -454,8 +446,7 @@ export function VitanaIndexSheet() {
               id="vitana-index-horizon"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5"
             >
-              <Sparkles className="w-3 h-3" />
-              30-day horizon
+              <Sparkles className="w-3 h-3" />{t('screens.health.text30dayHorizon')}
             </h3>
 
             {horizonPoints.length === 0 ? (

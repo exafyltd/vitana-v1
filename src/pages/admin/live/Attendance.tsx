@@ -8,6 +8,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminLiveNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -67,13 +68,13 @@ export default function LiveAttendance() {
     <AppLayout>
       <SubNavigation items={adminLiveNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Attendance" description="Track who joined which rooms and for how long" />
+        <AdminHeader title={t('screens.admin.attendance')} description="Track who joined which rooms and for how long" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Records" value={total} icon={Users} loading={isLoading} />
-          <AdminStatsCard title="Still Active" value={activeNow} icon={UserCheck} loading={isLoading} variant="success" />
-          <AdminStatsCard title="Avg Duration" value={`${avgDuration} min`} icon={Clock} loading={isLoading} />
-          <AdminStatsCard title="Unique Users" value={new Set(records.map((r: any) => r.user_id)).size} icon={TrendingUp} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalRecords')} value={total} icon={Users} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.stillActive')} value={activeNow} icon={UserCheck} loading={isLoading} variant="success" />
+          <AdminStatsCard title={t('screens.admin.avgDuration')} value={`${avgDuration} min`} icon={Clock} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.uniqueUsers')} value={new Set(records.map((r: any) => r.user_id)).size} icon={TrendingUp} loading={isLoading} />
         </div>
 
         <AdminTable

@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface VisualContextConfig {
   captureInterval: number; // milliseconds between captures
@@ -85,17 +86,10 @@ export const useVisualContext = () => {
         stopScreenShare();
       });
 
-      toast({
-        title: "Screen sharing started",
-        description: "Your screen context is now being analyzed",
-      });
+      notify('toasts.hooks.screenSharingStarted', 'toasts.hooks.yourScreenContextNowAnalyzed');
     } catch (error) {
       console.error('Error starting screen share:', error);
-      toast({
-        title: "Screen sharing failed",
-        description: "Could not access screen sharing",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.screenSharingFailed', 'toasts.hooks.couldNotAccessScreenSharing');
     }
   }, [toast]);
 
@@ -125,17 +119,10 @@ export const useVisualContext = () => {
       }
       cameraVideoRef.current.srcObject = stream;
 
-      toast({
-        title: "Camera started",
-        description: "Your camera context is now being analyzed",
-      });
+      notify('toasts.hooks.cameraStarted', 'toasts.hooks.yourCameraContextNowAnalyzed');
     } catch (error) {
       console.error('Error starting camera:', error);
-      toast({
-        title: "Camera failed",
-        description: "Could not access camera",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.cameraFailed', 'toasts.hooks.couldNotAccessCamera');
     }
   }, [toast]);
 
@@ -178,10 +165,7 @@ export const useVisualContext = () => {
     stopCamera();
     setIsCapturing(false);
 
-    toast({
-      title: "Visual context stopped",
-      description: "Context capture has been disabled",
-    });
+    notify('toasts.hooks.visualContextStopped', 'toasts.hooks.contextCaptureHasDisabled');
   }, [stopScreenShare, stopCamera, toast]);
 
   useEffect(() => {

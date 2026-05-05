@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { TrendingUp, Zap, Clock, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningOpportunity {
   id: string;
@@ -96,10 +97,9 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Earning Forecast
+            {t('screens.wallet.earningForecast')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            +{totalPotential} VTNA Available
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.totalpotentialVtnaAvailable', { totalPotential })}
           </Badge>
         </div>
       </CardHeader>
@@ -108,12 +108,12 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         {/* Weekly Progress */}
         <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Weekly Goal Progress</span>
+            <span className="text-sm font-medium">{t('screens.wallet.weeklyGoalProgress')}</span>
             <span className="text-sm text-muted-foreground">{completionProgress}%</span>
           </div>
           <Progress value={completionProgress} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            On track to earn <span className="font-semibold text-primary">150 VTNA</span> this week
+            {t('screens.wallet.trackEarn')} <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span>{t('screens.wallet.thisWeek')}
           </p>
         </div>
 
@@ -121,7 +121,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Zap className="h-4 w-4 text-amber-500" />
-            Next Best Actions
+            {t('screens.wallet.nextBestActions')}
           </h4>
           
           {mockOpportunities.slice(0, 2).map((opportunity) => (
@@ -141,12 +141,10 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    +{opportunity.potential} VTNA
+                  <Badge variant="secondary" className="text-xs">{t('screens.wallet.potentialVtna', { potential: opportunity.potential })}
                   </Badge>
                   {opportunity.urgency && (
-                    <Badge variant="outline" className={`text-xs ${getUrgencyColor(opportunity.urgency)}`}>
-                      {opportunity.urgency} priority
+                    <Badge variant="outline" className={`text-xs ${getUrgencyColor(opportunity.urgency)}`}>{t('screens.wallet.urgencyPriority', { urgency: opportunity.urgency })}
                     </Badge>
                   )}
                 </div>
@@ -162,7 +160,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Target className="h-4 w-4 mr-2" />
-          View All Opportunities
+          {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>
     </Card>

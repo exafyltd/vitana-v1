@@ -15,10 +15,11 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -88,7 +89,7 @@ export default function MarketplaceOverview() {
       setData({ stats: json.stats, runs: json.recent_runs ?? [] });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Load failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.loadFailed');
     } finally {
       setLoading(false);
     }
@@ -103,7 +104,7 @@ export default function MarketplaceOverview() {
       <AppLayout>
         <SubNavigation items={adminMarketplaceCatalogNavigation} />
         <div className="p-8 flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" /> Loading marketplace overview…
+          <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loadingMarketplaceOverview')}
         </div>
       </AppLayout>
     );
@@ -114,18 +115,18 @@ export default function MarketplaceOverview() {
 
   return (
     <AppLayout>
-      <SEO title="Marketplace Overview | Admin" description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.admin.marketplaceOverviewAdmin')} description="Live view of the autonomous marketplace system." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={adminMarketplaceCatalogNavigation} />
       <div className="p-6 min-h-screen">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-3">
             <StandardHeader
-              title="Marketplace Overview"
+              title={t('screens.admin.marketplaceOverview')}
               description="Live view of what the autonomous marketplace system has done. You tune the rules here — the system picks the products."
             />
             <Button variant="outline" size="sm" onClick={load}>
               <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           </div>
 
@@ -152,11 +153,11 @@ export default function MarketplaceOverview() {
           {/* Recent runs */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Recent ingestion runs</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.recentIngestionRuns')}</CardTitle>
             </CardHeader>
             <CardContent>
               {runs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No runs yet. Hand catalog scraping off to Claude Code — it calls <code>POST /api/v1/catalog/ingest/start</code> to begin.</p>
+                <p className="text-sm text-muted-foreground">{t('screens.admin.noRunsYetHandCatalogScraping')} <code>{t('screens.admin.postapiv1catalogingeststart')}</code> {t('screens.admin.begin')}</p>
               ) : (
                 <div className="space-y-2">
                   {runs.map((r) => (
@@ -168,7 +169,7 @@ export default function MarketplaceOverview() {
                         <span className="font-medium">{r.source_network}</span>
                         <span className="text-muted-foreground">
                           +{r.products_inserted} / ~{r.products_updated}
-                          {r.errors > 0 && <span className="text-red-600"> / {r.errors} err</span>}
+                          {r.errors > 0 && <span className="text-red-600">{t('screens.admin.ErrorsErr', { errors: r.errors })}</span>}
                         </span>
                       </div>
                       <span className="text-xs text-muted-foreground">{timeAgo(r.started_at)}</span>

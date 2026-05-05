@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { notifyError } from '@/lib/i18n-toast';
 
 export function useActivityLogger() {
   const logActivity = async ({
@@ -34,11 +34,7 @@ export function useActivityLogger() {
       if (error) {
         console.error("[ActivityLogger] insert failed", { activityType, error });
         if (import.meta.env.DEV) {
-          toast({
-            title: "Activity logging failed",
-            description: `${activityType}: ${error.message}`,
-            variant: "destructive",
-          });
+          notifyError('toasts.hooks.activityLoggingFailed');
         }
       }
     } catch (err) {

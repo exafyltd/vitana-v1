@@ -9,6 +9,7 @@ import { Heart, MessageCircle, Share, Star, X } from "lucide-react";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface FeaturedPost {
   id: string;
@@ -92,13 +93,11 @@ export function ShowcaseForm() {
       <Card className="p-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <Label className="text-base font-medium">Featured Content</Label>
-            <p className="text-sm text-muted-foreground">
-              {featuredCount}/{maxFeatured} items selected
+            <Label className="text-base font-medium">{t('screens.profile.featuredContent')}</Label>
+            <p className="text-sm text-muted-foreground">{t('screens.profile.featuredcountMaxfeaturedItemsSelected', { featuredCount, maxFeatured })}
             </p>
           </div>
-          <Badge variant="secondary">
-            {featuredCount} Featured
+          <Badge variant="secondary">{t('screens.profile.featuredcountFeatured', { featuredCount })}
           </Badge>
         </div>
       </Card>
@@ -128,7 +127,7 @@ export function ShowcaseForm() {
                   <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
                     <img 
                       src={post.image} 
-                      alt="Post media" 
+                      alt={t('screens.profile.postMedia')} 
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -156,9 +155,7 @@ export function ShowcaseForm() {
 
       {featuredCount >= maxFeatured && (
         <Card className="p-4 border-amber-200 bg-amber-50">
-          <p className="text-sm text-amber-700">
-            You've reached the maximum number of featured items ({maxFeatured}). 
-            Unselect some items to feature others.
+          <p className="text-sm text-amber-700">{t('screens.profile.youVeReachedMaximumNumberFeatured', { maxFeatured })}
           </p>
         </Card>
       )}

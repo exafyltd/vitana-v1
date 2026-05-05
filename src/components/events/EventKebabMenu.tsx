@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface EventKebabMenuProps {
   event: any;
@@ -50,20 +50,13 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
 
       if (error) throw error;
 
-      toast({
-        title: "Event deleted",
-        description: `"${event.title}" has been permanently removed.`,
-      });
+      notify('toasts.events.eventDeleted');
 
       setDeleteDialogOpen(false);
       onDelete?.(event.id);
     } catch (error) {
       console.error("Failed to delete event:", error);
-      toast({
-        title: "Failed to delete event",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
+      notifyError('toasts.events.failedDeleteEvent', 'toasts.events.pleaseTryAgainLater');
     } finally {
       setIsDeleting(false);
     }
@@ -77,7 +70,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
         variant="ghost"
         size="sm"
         className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
-        aria-label="Share event"
+        aria-label={t('screens.events.shareEvent')}
         onClick={(e) => { e.stopPropagation(); onShare(event); }}
         onPointerDown={(e) => e.stopPropagation()}
       >
@@ -97,7 +90,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             }}
           >
             <Pencil className="h-4 w-4 mr-2" />
-            Edit
+            {t('screens.events.edit')}
           </DropdownMenuItem>
         )}
         {onShare && (
@@ -108,7 +101,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
             }}
           >
             <Share2 className="h-4 w-4 mr-2" />
-            Share
+            {t('screens.events.share')}
           </DropdownMenuItem>
         )}
         {canDelete && (
@@ -122,7 +115,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
               }}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Delete
+              {t('screens.events.delete')}
             </DropdownMenuItem>
           </>
         )}
@@ -131,14 +124,12 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Event</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete "{event.title}"? This action cannot be undone.
-              All participants, tickets, and associated data will be permanently removed.
+            <AlertDialogTitle>{t('screens.events.deleteEvent')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.events.youSureYouWantDeleteTitle', { title: event.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('screens.events.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

@@ -11,11 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -130,11 +131,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
 
   const startRecording = () => {
     if (!ClientSTT.isSupported()) {
-      toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in this browser.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.notSupported', 'toasts.feedback.speechRecognitionNotSupportedThisBrowser');
       return;
     }
 
@@ -176,11 +173,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
           return;
         }
-        toast({
-          title: "Recognition Error",
-          description: "Speech recognition encountered an error. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.feedback.recognitionError', 'toasts.feedback.speechRecognitionEncounteredErrorPleaseTry');
         stopRecording();
       },
       onEnd: () => {
@@ -264,11 +257,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
 
   const handleSend = async () => {
     if (!transcript.trim()) {
-      toast({
-        title: "No Content",
-        description: "Please record or type your feedback before sending.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.noContent', 'toasts.feedback.pleaseRecordTypeYourFeedbackBefore');
       return;
     }
 
@@ -326,11 +315,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
       onSubmitted?.();
     } catch (error) {
       console.error('[FeedbackRecorder] Send error:', error);
-      toast({
-        title: "Send Failed",
-        description: "Could not send your feedback. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.feedback.sendFailed', 'toasts.feedback.couldNotSendYourFeedbackPlease');
     } finally {
       setIsSending(false);
     }
@@ -345,12 +330,12 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
             <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
-        <h3 className="text-lg font-semibold">Report Sent!</h3>
+        <h3 className="text-lg font-semibold">{t('screens.feedback.reportSent')}</h3>
         <p className="text-sm text-muted-foreground text-center max-w-xs">
-          The Exafy team appreciates your support to make Vitanaland a better experience every day.
+          {t('screens.feedback.exafyTeamAppreciatesYourSupportMake')}
         </p>
         <Button variant="outline" onClick={() => setShowConfirmation(false)}>
-          Send Another Report
+          {t('screens.feedback.sendAnotherReport')}
         </Button>
       </div>
     );
@@ -380,7 +365,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
             </Button>
             <div className="text-center">
               <Badge variant="destructive" className="animate-pulse">
-                Recording
+                {t('screens.feedback.recording')}
               </Badge>
               <div className="text-2xl font-mono font-bold text-destructive mt-1">
                 {formatDuration(recordingDuration)}
@@ -401,13 +386,13 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         <button
           onClick={() => fileInputRef.current?.click()}
           className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
-          aria-label="Attach screenshots"
+          aria-label={t('screens.feedback.attachScreenshots')}
         >
           <Plus className="h-5 w-5" />
         </button>
       </div>
 
-      <p className="text-xs text-muted-foreground text-center">Tap the mic to describe the issue</p>
+      <p className="text-xs text-muted-foreground text-center">{t('screens.feedback.tapMicDescribeIssue')}</p>
 
       {/* Audio Visualization - matching VoiceDiaryRecorder */}
       {isRecording && (
@@ -453,9 +438,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
                 {isRecording ? "Live Transcription" : "Your Feedback"}
               </span>
               {!isRecording && recordingDuration > 0 && (
-                <Badge variant="outline">
-                  Duration: {formatDuration(recordingDuration)}
-                </Badge>
+                <Badge variant="outline">{t('screens.feedback.durationValue0', { value0: formatDuration(recordingDuration) })}</Badge>
               )}
             </div>
             <Textarea
@@ -466,8 +449,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
               disabled={isRecording}
             />
             {interimText && isRecording && (
-              <p className="text-xs text-muted-foreground italic">
-                Interim text appears in gray until finalized...
+              <p className="text-xs text-muted-foreground italic">{t('screens.feedback.interimTextAppearsGrayUntilFinalized')}
               </p>
             )}
           </CardContent>
@@ -483,7 +465,7 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           onClick={() => setReportType("bug_report")}
         >
           <Bug className="h-4 w-4" />
-          Bug Report
+          {t('screens.feedback.bugReport')}
         </Button>
         <Button
           variant={reportType === "ux_improvement" ? "default" : "outline"}
@@ -492,31 +474,31 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           onClick={() => setReportType("ux_improvement")}
         >
           <Lightbulb className="h-4 w-4" />
-          UX Improvement
+          {t('screens.feedback.uxImprovement')}
         </Button>
       </div>
 
       {/* Metadata: Severity + Affected Screen */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Severity</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('screens.feedback.severity')}</label>
           <Select value={severity} onValueChange={(v: any) => setSeverity(v)}>
             <SelectTrigger className="h-9">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
+              <SelectItem value="low">{t('screens.feedback.low')}</SelectItem>
+              <SelectItem value="medium">{t('screens.feedback.medium')}</SelectItem>
+              <SelectItem value="high">{t('screens.feedback.high')}</SelectItem>
+              <SelectItem value="critical">{t('screens.feedback.critical')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-muted-foreground">Affected Screen</label>
+          <label className="text-xs font-medium text-muted-foreground">{t('screens.feedback.affectedScreen')}</label>
           <Select value={affectedScreen} onValueChange={setAffectedScreen}>
             <SelectTrigger className="h-9">
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder={t('screens.feedback.select')} />
             </SelectTrigger>
             <SelectContent>
               {SCREEN_OPTIONS.map(s => (

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect, useRef } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoLightboxProps {
   open: boolean;
@@ -177,12 +178,12 @@ export function PhotoLightbox({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         role="dialog"
-        aria-label="Photo preview"
+        aria-label={t('screens.diary.photoPreview')}
       >
         {/* Chrome Bar - Semi-transparent with gradient fade */}
         <div className="absolute top-0 left-0 right-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
           <div className="flex items-center gap-3">
-            <span className="text-[13px] text-white/80">Timeline / Diary entry</span>
+            <span className="text-[13px] text-white/80">{t('screens.diary.timelineDiaryEntry')}</span>
             {createdAt && (
               <>
                 <span className="text-white/60">·</span>
@@ -281,7 +282,7 @@ export function PhotoLightbox({
                   className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex - 1)}
                   disabled={currentIndex === 0}
-                  aria-label="Previous image"
+                  aria-label={t('screens.diary.previousImage')}
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
@@ -291,7 +292,7 @@ export function PhotoLightbox({
                   className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
                   onClick={() => onIndexChange(currentIndex + 1)}
                   disabled={currentIndex === images.length - 1}
-                  aria-label="Next image"
+                  aria-label={t('screens.diary.nextImage')}
                 >
                   <ChevronRight className="h-6 w-6" />
                 </Button>

@@ -26,10 +26,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { postIntent, type IntentKind } from "@/lib/intentApi";
 import type { CoverTheme } from "@/lib/intentCovers";
 import { CoverPhotoPicker } from "./CoverPhotoPicker";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntentComposerProps {
   open: boolean;
@@ -79,19 +80,15 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
 
   const submit = async () => {
     if (!title.trim() || title.trim().length < 3) {
-      toast({ title: "Title required", description: "3-140 characters.", variant: "destructive" });
+      notifyError('toasts.intents.titleRequired', 'toasts.intents.message3140Characters');
       return;
     }
     if (!scope.trim() || scope.trim().length < 20) {
-      toast({ title: "Scope too short", description: "Minimum 20 characters.", variant: "destructive" });
+      notifyError('toasts.intents.scopeTooShort', 'toasts.intents.minimum20Characters');
       return;
     }
     if (!coverUrl) {
-      toast({
-        title: "Cover photo required",
-        description: "Upload one, or tap ✨ Generate for me.",
-        variant: "destructive",
-      });
+      notifyError('toasts.intents.coverPhotoRequired', 'toasts.intents.uploadOneTapGenerateForMe');
       return;
     }
 
@@ -117,17 +114,12 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         scope: scope.trim(),
         kind_payload: kindPayload,
       });
-      toast({
-        title: "Posted to community",
-        description: result.match_count
-          ? `Found ${result.match_count} match${result.match_count === 1 ? "" : "es"} already.`
-          : "We'll notify you when matches arrive.",
-      });
+      notify('toasts.intents.postedCommunity');
       reset();
       onPosted?.(result.intent_id);
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Could not post", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotPost');
     } finally {
       setSubmitting(false);
     }
@@ -137,9 +129,8 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Post to the community</DialogTitle>
-          <DialogDescription>
-            Tell the community what you need or what you're offering — the system will match you with the right people.
+          <DialogTitle>{t('screens.intents.postCommunity')}</DialogTitle>
+          <DialogDescription>{t('screens.intents.tellCommunityWhatYouNeedWhat')}
           </DialogDescription>
         </DialogHeader>
 
@@ -148,41 +139,35 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             variant={mode === "form" ? "default" : "outline"}
             size="sm"
             onClick={() => setMode("form")}
-          >
-            Form
+          >{t('screens.intents.form')}
           </Button>
           <Button
             variant={mode === "voice" ? "default" : "outline"}
             size="sm"
             onClick={() => setMode("voice")}
           >
-            <Mic className="h-4 w-4 mr-1.5" /> Voice
+            <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
           </Button>
         </div>
 
         {mode === "voice" ? (
           <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
             <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
-            <p className="text-sm font-medium">Open ORB and just say it</p>
-            <p className="text-xs text-muted-foreground">
-              Examples:
+            <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
+            <p className="text-xs text-muted-foreground">{t('screens.intents.examples')}
               <br />
-              <em>"I need a kitchen contractor in Vienna, budget 8 to 12 thousand."</em>
+              <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
               <br />
-              <em>"I'm looking for someone to play tennis Tuesday evenings."</em>
-              <br />
-              ORB will read it back to you and post on confirmation.
+              <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
+              <br />{t('screens.intents.orbWillReadItBackYou')}
             </p>
-            <p className="text-[11px] text-muted-foreground/80 pt-1">
-              Don't worry about a cover photo — Vitana will pick a themed one for you,
-              and you can swap it from My Posts.
+            <p className="text-[11px] text-muted-foreground/80 pt-1">{t('screens.intents.donTWorryAboutCoverPhoto')}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Kind
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.kind')}
               </Label>
               <select
                 value={kind}
@@ -198,27 +183,25 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             </div>
 
             <div>
-              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Title (3–140 chars)
+              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.title3140Chars')}
               </Label>
               <Input
                 id="intent-title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Short headline"
+                placeholder={t('screens.intents.shortHeadline')}
                 maxLength={140}
               />
             </div>
 
             <div>
-              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Description (≥ 20 chars)
+              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.description20Chars')}
               </Label>
               <Textarea
                 id="intent-scope"
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                placeholder="Describe what you need / what you're offering"
+                placeholder={t('screens.intents.describeWhatYouNeedWhat')}
                 rows={3}
                 maxLength={1500}
               />
@@ -227,14 +210,12 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             {(kind === "commercial_buy" || kind === "commercial_sell") && (
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget min (€)
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMin')}
                   </Label>
                   <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
                 </div>
                 <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget max (€)
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMax')}
                   </Label>
                   <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
                 </div>
@@ -242,15 +223,13 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             )}
 
             <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Location (optional)
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.locationOptional')}
               </Label>
-              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Vienna" />
+              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
             </div>
 
             <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Cover photo (required)
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.coverPhotoRequired')}
               </Label>
               <div className="mt-1">
                 <CoverPhotoPicker
@@ -264,8 +243,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         )}
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>{t('screens.intents.cancel')}
           </Button>
           {mode === "form" && (
             <Button onClick={submit} disabled={submitting || !coverUrl}>

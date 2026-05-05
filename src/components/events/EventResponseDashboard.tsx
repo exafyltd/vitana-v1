@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle, X, Clock, Users, TrendingUp, Send } from "lucide-react";
 import { Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventResponseDashboardProps {
   eventId: string;
@@ -116,7 +117,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.accepted}</p>
-                <p className="text-sm text-muted-foreground">Accepted</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.accepted')}</p>
               </div>
             </div>
           </CardContent>
@@ -128,7 +129,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <Clock className="w-5 h-5 text-yellow-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.maybe}</p>
-                <p className="text-sm text-muted-foreground">Maybe</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.maybe')}</p>
               </div>
             </div>
           </CardContent>
@@ -140,7 +141,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <X className="w-5 h-5 text-red-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.declined}</p>
-                <p className="text-sm text-muted-foreground">Declined</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.declined')}</p>
               </div>
             </div>
           </CardContent>
@@ -152,7 +153,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               <Users className="w-5 h-5 text-blue-600" />
               <div>
                 <p className="text-2xl font-bold">{stats.pending}</p>
-                <p className="text-sm text-muted-foreground">Pending</p>
+                <p className="text-sm text-muted-foreground">{t('screens.events.pending')}</p>
               </div>
             </div>
           </CardContent>
@@ -165,7 +166,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              Distribution Analytics
+              {t('screens.events.distributionAnalytics')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -176,8 +177,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
                     <Send className="w-4 h-4 text-muted-foreground" />
                     <div>
                       <p className="font-medium capitalize">{item.channel}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.sent_count} sent • {item.response_count} responded
+                      <p className="text-sm text-muted-foreground">{t('screens.events.sent_countSentResponse_countResponded', { sent_count: item.sent_count, response_count: item.response_count })}
                       </p>
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
               ))}
               <div className="pt-4 border-t">
                 <div className="flex items-center justify-between">
-                  <p className="font-semibold">Overall Response Rate</p>
+                  <p className="font-semibold">{t('screens.events.overallResponseRate')}</p>
                   <Badge className="bg-green-600 text-white">{responseRate}%</Badge>
                 </div>
               </div>
@@ -204,15 +204,13 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
-              <Users className="w-5 h-5" />
-              Attendees ({stats.total})
+              <Users className="w-5 h-5" />{t('screens.events.attendeesTotal', { total: stats.total })}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
           {attendees.length === 0 ? (
-            <p className="text-center text-muted-foreground py-8">
-              No invitations sent yet. Start inviting people to see responses here.
+            <p className="text-center text-muted-foreground py-8">{t('screens.events.noInvitationsSentYetStartInviting')}
             </p>
           ) : (
             <div className="space-y-3">

@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RecipientSelector, RecipientSelection } from "./RecipientSelector";
+import { t } from '@/lib/i18n-toast';
 
 const NOTIFICATION_TYPES = [
   { value: "welcome_to_vitana", label: "Welcome / System" },
@@ -95,7 +96,7 @@ export function NotificationComposer({
 
       {/* Notification type */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Type</label>
+        <label className="text-sm font-medium">{t('screens.admin.type')}</label>
         <Select value={formData.type} onValueChange={(type) => update({ type })}>
           <SelectTrigger>
             <SelectValue />
@@ -112,9 +113,9 @@ export function NotificationComposer({
 
       {/* Title */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Title</label>
+        <label className="text-sm font-medium">{t('screens.admin.title')}</label>
         <Input
-          placeholder="Notification title"
+          placeholder={t('screens.admin.notificationTitle')}
           value={formData.title}
           onChange={(e) => update({ title: e.target.value })}
           maxLength={100}
@@ -124,9 +125,9 @@ export function NotificationComposer({
 
       {/* Body */}
       <div className="space-y-1.5">
-        <label className="text-sm font-medium">Body</label>
+        <label className="text-sm font-medium">{t('screens.admin.body')}</label>
         <Textarea
-          placeholder="Write the notification message..."
+          placeholder={t('screens.admin.writeNotificationMessage')}
           value={formData.body}
           onChange={(e) => update({ body: e.target.value })}
           rows={4}
@@ -138,7 +139,7 @@ export function NotificationComposer({
       {/* Channel + Priority row */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">Channel</label>
+          <label className="text-sm font-medium">{t('screens.admin.channel')}</label>
           <Select value={formData.channel} onValueChange={(channel) => update({ channel })}>
             <SelectTrigger>
               <SelectValue />
@@ -153,7 +154,7 @@ export function NotificationComposer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">Priority</label>
+          <label className="text-sm font-medium">{t('screens.admin.priority')}</label>
           <Select value={formData.priority} onValueChange={(priority) => update({ priority })}>
             <SelectTrigger>
               <SelectValue />
@@ -178,13 +179,12 @@ export function NotificationComposer({
       >
         {sending ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending...
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.admin.sending')}
           </>
         ) : (
           <>
             <Send className="mr-2 h-4 w-4" />
-            Send Notification
+            {t('screens.admin.sendNotification')}
           </>
         )}
       </Button>

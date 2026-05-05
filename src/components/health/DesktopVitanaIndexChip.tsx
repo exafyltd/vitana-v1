@@ -3,6 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
 import { VITANA_INDEX_OPEN_EVENT } from "./VitanaIndexSheet";
 import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
+import { t } from '@/lib/i18n-toast';
 
 /**
  * Sidebar-styled twin of the mobile `VitanaIndexChip`. Lives in the desktop
@@ -58,11 +59,9 @@ export function DesktopVitanaIndexChip() {
           </div>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>
-            VITANA Index — your North Star
+          <p>{t('screens.health.vitanaIndexYourNorthStar')}
             {showStreak && (
-              <span className="block text-xs text-muted-foreground">
-                🔥 {streakDays}-day streak
+              <span className="block text-xs text-muted-foreground">{t('screens.health.streakdaysdayStreak', { streakDays })}
               </span>
             )}
           </p>

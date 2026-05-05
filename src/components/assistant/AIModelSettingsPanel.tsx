@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { t } from '@/lib/i18n-toast';
 
 interface AIModelSettingsPanelProps {
   preferences: any;
@@ -13,14 +14,14 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
   return (
     <Card>
       <CardHeader>
-        <CardTitle>AI Model Preferences</CardTitle>
+        <CardTitle>{t('screens.assistant.aiModelPreferences')}</CardTitle>
         <CardDescription>
-          Choose your preferred AI model and behavior
+          {t('screens.assistant.chooseYourPreferredAiModelBehavior')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="ai-model">Preferred Model</Label>
+          <Label htmlFor="ai-model">{t('screens.assistant.preferredModel')}</Label>
           <Select
             value={preferences.ai_model}
             onValueChange={(value) => updatePreferences({ ai_model: value })}
@@ -30,16 +31,16 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="gpt-4">GPT-4</SelectItem>
-              <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
-              <SelectItem value="claude-3">Claude 3</SelectItem>
-              <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
+              <SelectItem value="gpt-4">{t('screens.assistant.gpt4')}</SelectItem>
+              <SelectItem value="gpt-4-turbo">{t('screens.assistant.gpt4Turbo')}</SelectItem>
+              <SelectItem value="claude-3">{t('screens.assistant.claude3')}</SelectItem>
+              <SelectItem value="gemini-pro">{t('screens.assistant.geminiPro')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="ai-temperature">Creativity: {preferences.ai_temperature.toFixed(1)}</Label>
+          <Label htmlFor="ai-temperature">{t('screens.assistant.creativityValue0', { value0: preferences.ai_temperature.toFixed(1) })}</Label>
           <Slider
             id="ai-temperature"
             min={0}
@@ -52,12 +53,12 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
             disabled={isUpdating}
           />
           <p className="text-xs text-muted-foreground">
-            Lower values are more focused, higher values are more creative
+            {t('screens.assistant.lowerValuesMoreFocusedHigherValues')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="response-length">Response Length</Label>
+          <Label htmlFor="response-length">{t('screens.assistant.responseLength')}</Label>
           <Select
             value={preferences.ai_response_length}
             onValueChange={(value: any) => updatePreferences({ ai_response_length: value })}
@@ -67,9 +68,9 @@ export default function AIModelSettingsPanel({ preferences, isUpdating, updatePr
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="short">Short & Concise</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="long">Detailed & Comprehensive</SelectItem>
+              <SelectItem value="short">{t('screens.assistant.shortConcise')}</SelectItem>
+              <SelectItem value="medium">{t('screens.assistant.medium')}</SelectItem>
+              <SelectItem value="long">{t('screens.assistant.detailedComprehensive')}</SelectItem>
             </SelectContent>
           </Select>
         </div>

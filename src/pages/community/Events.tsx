@@ -17,6 +17,7 @@ import { useEventSelection } from "@/context/EventSelectionContext";
 import { cn } from "@/lib/utils";
 import { Plus, Apple, Dumbbell, Droplets, Moon, Brain } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
+import { t } from '@/lib/i18n-toast';
 
 // Mock data for events with unique IDs
 const todayEvents = [
@@ -279,8 +280,8 @@ const renderEventGrid = (events: any[], onClick?: (event: any) => void) => {
     return (
       <div className="text-center py-12">
         <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <h3 className="text-lg font-semibold mb-2">No events scheduled</h3>
-        <p className="text-muted-foreground">Check back soon for upcoming community events!</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noEventsScheduled')}</h3>
+        <p className="text-muted-foreground">{t('screens.community.checkBackSoonForUpcomingCommunity')}</p>
       </div>
     );
   }
@@ -465,7 +466,7 @@ const Events = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
       <SEO 
-        title="Community Events" 
+        title={t('screens.community.communityEvents')} 
         description="Discover and join wellness events, workshops, and activities in your community"
       />
       <AppLayout>
@@ -474,7 +475,7 @@ const Events = () => {
             <SubNavigation items={communityNavigation} />
             
             <StandardHeader 
-              title="Events & MeetUps"
+              title={t('screens.community.eventsMeetups')}
               description="Discover wellness events, workshops, and activities"
               emoji="📅"
             />
@@ -489,14 +490,14 @@ const Events = () => {
               />
               <Button size="sm" onClick={() => setCreateEventOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                Create Event
+                {t('screens.community.createEvent')}
               </Button>
             </UtilityActionButton>
 
             <SplitBar defaultValue="today" onValueChange={setActiveTab}>
               <SplitBarList>
-                <SplitBarTrigger value="today">☀️ Today</SplitBarTrigger>
-                <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
+                <SplitBarTrigger value="today">{t('screens.community.today')}</SplitBarTrigger>
+                <SplitBarTrigger value="upcoming">{t('screens.community.upcoming')}</SplitBarTrigger>
               </SplitBarList>
 
               <SplitBarContent value="today">

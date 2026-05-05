@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { syncDiaryToIndex } from "@/lib/diary-index-sync";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface TextDiaryEditorProps {
   onSaveComplete?: () => void;
@@ -19,11 +20,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
 
   const handleSave = async () => {
     if (!text.trim()) {
-      toast({
-        title: "Empty entry",
-        description: "Please write something before saving",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.emptyEntry', 'toasts.diary.pleaseWriteSomethingBeforeSaving');
       return;
     }
 
@@ -59,10 +56,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
             : `${sync.health_features_written} health signals logged.`,
         });
       } else {
-        toast({
-          title: "Entry saved!",
-          description: "Your diary entry has been saved successfully.",
-        });
+        notify('toasts.diary.entrySaved', 'toasts.diary.yourDiaryEntryHasSavedSuccessfully');
       }
 
       setText("");
@@ -72,11 +66,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
       onSaveComplete?.();
     } catch (error) {
       console.error('Error saving text entry:', error);
-      toast({
-        title: "Save failed",
-        description: "Failed to save your entry. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.diary.saveFailed', 'toasts.diary.failedSaveYourEntryPleaseTry');
     } finally {
       setIsSaving(false);
     }
@@ -86,14 +76,13 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
     <div className="space-y-4">
       <div className="relative">
         <Textarea
-          placeholder="Type your today's entry..."
+          placeholder={t('screens.diary.typeYourTodaySEntry')}
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={6}
           className="resize-none"
         />
-        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
-          {text.length} characters
+        <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">{t('screens.diary.lengthCharacters', { length: text.length })}
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Search, UserCheck, Heart, Users } from 'lucide-react';
 import { withCardId } from '@/lib/withCardId';
 import { analytics } from '@/lib/analytics';
+import { t } from '@/lib/i18n-toast';
 
 interface IntentChip {
   id: string;
@@ -97,7 +98,7 @@ function IntentRouterBase() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="What are you looking for? (e.g., yoga classes, longevity doctor, meetups)"
+            placeholder={t('screens.discover.whatYouLookingForEG')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-12 pr-4 py-6 text-lg rounded-xl border-2 focus:border-primary bg-background"
@@ -130,9 +131,7 @@ function IntentRouterBase() {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                >
-                  Explore {chip.title}
-                </Button>
+                >{t('screens.discover.exploreTitle', { title: chip.title })}</Button>
               </CardContent>
             </Card>
           );
@@ -143,15 +142,15 @@ function IntentRouterBase() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto text-center">
         <div className="p-4">
           <div className="text-2xl font-bold text-primary">150+</div>
-          <div className="text-sm text-muted-foreground">Verified Providers</div>
+          <div className="text-sm text-muted-foreground">{t('screens.discover.verifiedProviders')}</div>
         </div>
         <div className="p-4">
           <div className="text-2xl font-bold text-primary">50+</div>
-          <div className="text-sm text-muted-foreground">Service Categories</div>
+          <div className="text-sm text-muted-foreground">{t('screens.discover.serviceCategories')}</div>
         </div>
         <div className="p-4">
           <div className="text-2xl font-bold text-primary">1000+</div>
-          <div className="text-sm text-muted-foreground">Community Members</div>
+          <div className="text-sm text-muted-foreground">{t('screens.discover.communityMembers')}</div>
         </div>
       </div>
     </div>

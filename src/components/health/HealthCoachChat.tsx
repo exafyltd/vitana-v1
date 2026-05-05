@@ -7,6 +7,7 @@ import { useState } from "react";
 import { withCardId } from "@/lib/withCardId";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthCoachChatProps {
   context?: string;
@@ -87,8 +88,8 @@ function HealthCoachChatBase({
                     <Brain className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-sm">AI Health Coach</CardTitle>
-                    <Badge variant="secondary" className="text-xs">Online</Badge>
+                    <CardTitle className="text-sm">{t('screens.health.aiHealthCoach')}</CardTitle>
+                    <Badge variant="secondary" className="text-xs">{t('screens.health.online')}</Badge>
                   </div>
                 </div>
                 <div className="flex gap-1">
@@ -117,7 +118,7 @@ function HealthCoachChatBase({
               </div>
               <div className="flex gap-2">
                 <Input
-                  placeholder="Ask your health coach..."
+                  placeholder={t('screens.health.askYourHealthCoach')}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -144,13 +145,13 @@ function HealthCoachChatBase({
             <Brain className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Ask AI Coach</h3>
-            <p className="text-sm text-muted-foreground">Get personalized health guidance</p>
+            <h3 className="font-semibold text-foreground">{t('screens.health.askAiCoach')}</h3>
+            <p className="text-sm text-muted-foreground">{t('screens.health.getPersonalizedHealthGuidance')}</p>
           </div>
         </div>
         <div className="flex gap-2">
           <Input
-            placeholder="How can I help with your health today?"
+            placeholder={t('screens.health.howCanIHelpWithYour')}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -175,8 +176,8 @@ function HealthCoachChatBase({
               <Brain className="w-4 h-4 text-white" />
             </div>
             <div>
-              <CardTitle className="text-lg">AI Health Coach</CardTitle>
-              <Badge variant="secondary" className="text-xs">Available 24/7</Badge>
+              <CardTitle className="text-lg">{t('screens.health.aiHealthCoach')}</CardTitle>
+              <Badge variant="secondary" className="text-xs">{t('screens.health.available247')}</Badge>
             </div>
           </div>
           <div className="flex gap-1">
@@ -191,7 +192,7 @@ function HealthCoachChatBase({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">Quick actions:</p>
+          <p className="text-sm text-muted-foreground">{t('screens.health.quickActions')}</p>
           <div className="grid grid-cols-2 gap-2">
             {quickActions.map((action, index) => (
               <Button 
@@ -210,7 +211,7 @@ function HealthCoachChatBase({
         <div className="space-y-2">
           <div className="flex gap-2">
             <Input
-              placeholder="Ask about your health, symptoms, or goals..."
+              placeholder={t('screens.health.askAboutYourHealthSymptomsGoals')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -226,8 +227,7 @@ function HealthCoachChatBase({
                 <div className="w-2 h-2 rounded-full bg-calendar-primary animate-bounce"></div>
                 <div className="w-2 h-2 rounded-full bg-calendar-primary animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                 <div className="w-2 h-2 rounded-full bg-calendar-primary animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-              </div>
-              AI Coach is typing...
+              </div>{t('screens.health.aiCoachTyping')}
             </div>
           )}
         </div>

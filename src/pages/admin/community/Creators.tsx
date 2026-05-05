@@ -5,6 +5,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCommunityCreators } from "@/hooks/useAdminCommunity";
+import { t } from '@/lib/i18n-toast';
 
 export default function Creators() {
   const { data: creators = [], isLoading } = useCommunityCreators();
@@ -16,14 +17,14 @@ export default function Creators() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="🎨"
-          title="Creators"
+          title={t('screens.admin.creators')}
           description={`${creators.length} creator${creators.length !== 1 ? "s" : ""} found`}
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading creators...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingCreators')}</p>
         ) : creators.length === 0 ? (
-          <AdminEmptyState title="No creators found" description="There are no community creators yet." />
+          <AdminEmptyState title={t('screens.admin.noCreatorsFound')} description="There are no community creators yet." />
         ) : (
           <Card>
             <Table>

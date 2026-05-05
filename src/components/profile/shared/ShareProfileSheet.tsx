@@ -1,7 +1,8 @@
 import { QrCode, Share2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ShareProfileSheetProps {
   isOpen: boolean;
@@ -45,17 +46,10 @@ export function ShareProfileSheet({
 
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast({
-        title: "Link copied",
-        description: "Share it anywhere you like.",
-      });
+      notify('toasts.profile.linkCopied', 'toasts.profile.shareItAnywhereYouLike');
       onOpenChange(false);
     } catch {
-      toast({
-        title: "Could not share",
-        description: "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.couldNotShare', 'toasts.profile.pleaseTryAgain');
     }
   };
 
@@ -68,7 +62,7 @@ export function ShareProfileSheet({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Share profile</DialogTitle>
+          <DialogTitle>{t('screens.profile.shareProfile2')}</DialogTitle>
         </DialogHeader>
 
         <div className="mt-2 space-y-2">
@@ -81,9 +75,9 @@ export function ShareProfileSheet({
               <Share2 className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium">Share</div>
+              <div className="text-sm font-medium">{t('screens.profile.share')}</div>
               <div className="text-xs text-muted-foreground">
-                Open your device's share sheet
+                {t('screens.profile.openYourDeviceSShareSheet')}
               </div>
             </div>
           </button>
@@ -97,9 +91,9 @@ export function ShareProfileSheet({
               <QrCode className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-medium">Show QR code</div>
+              <div className="text-sm font-medium">{t('screens.profile.showQrCode')}</div>
               <div className="text-xs text-muted-foreground">
-                Let someone scan to open your profile
+                {t('screens.profile.letSomeoneScanOpenYourProfile')}
               </div>
             </div>
           </button>

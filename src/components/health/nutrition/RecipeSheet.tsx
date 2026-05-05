@@ -31,6 +31,7 @@ import { scaleQuantity } from "@/lib/recipeUtils";
 import { toast } from "sonner";
 import { MacroRings } from "./MacroRings";
 import { CookModeFullScreen } from "./CookModeFullScreen";
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface RecipeSheetProps {
   recipe: Recipe | null;
@@ -120,8 +121,8 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <div className="flex items-center justify-between px-6 py-3">
                 <h3 className="font-semibold truncate">{recipe.title}</h3>
                 <div className="flex gap-2">
-                  <Badge variant="outline" className="text-xs">{recipe.calories} cal</Badge>
-                  <Badge variant="outline" className="text-xs">{recipe.prep.timeMin} min</Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.health.caloriesCal', { calories: recipe.calories })}</Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}</Badge>
                 </div>
               </div>
             </div>
@@ -188,7 +189,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 <div className="flex gap-4">
                   <div className="text-sm flex items-center gap-1">
                     <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span>{recipe.prep.timeMin} min</span>
+                    <span>{t('screens.health.timeminMin', { timeMin: recipe.prep.timeMin })}</span>
                   </div>
                   <div className="text-sm flex items-center gap-1">
                     <ChefHat className="w-4 h-4 text-muted-foreground" />
@@ -224,24 +225,22 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {recipe.allergens.length > 0 && (
                 <Alert className="border-amber-500/20 bg-amber-500/5">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
-                  <AlertTitle>Allergens</AlertTitle>
-                  <AlertDescription>
-                    Contains: {recipe.allergens.join(', ')}
-                  </AlertDescription>
+                  <AlertTitle>{t('screens.health.allergens')}</AlertTitle>
+                  <AlertDescription>{t('screens.health.containsValue0', { value0: recipe.allergens.join(', ') })}</AlertDescription>
                 </Alert>
               )}
           
               {/* Ingredients Checklist */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-lg">Ingredients</h3>
+                  <h3 className="font-semibold text-lg">{t('screens.health.ingredients')}</h3>
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    onClick={() => toast.success('Added to shopping list')}
+                    onClick={() => notifySuccess('toasts.health.addedShoppingList')}
                   >
                     <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to List
+                    {t('screens.health.addList')}
                   </Button>
                 </div>
                 <div className="space-y-2">
@@ -261,7 +260,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                           <strong>{scaleQuantity(ing.qty, scaleFactor)}</strong> {ing.item}
                         </span>
                         {ing.optional && (
-                          <Badge variant="outline" className="ml-2 text-xs">Optional</Badge>
+                          <Badge variant="outline" className="ml-2 text-xs">{t('screens.health.optional')}</Badge>
                         )}
                         {ing.notes && (
                           <p className="text-xs text-muted-foreground mt-1">{ing.notes}</p>
@@ -275,13 +274,13 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               {/* Steps */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-lg">Instructions</h3>
+                  <h3 className="font-semibold text-lg">{t('screens.health.instructions')}</h3>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setFullScreenCookMode(true)}
                   >
-                    👁 Cook Mode
+                    {t('screens.health.cookMode')}
                   </Button>
                 </div>
                 
@@ -302,7 +301,7 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                 <div>
                   <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                     <Repeat className="w-5 h-5 text-primary" />
-                    Recipe Swaps
+                    {t('screens.health.recipeSwaps')}
                   </h3>
                   <div className="space-y-2">
                     {recipe.swaps.map((swap, idx) => {
@@ -327,21 +326,19 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
                               <p className="text-xs text-muted-foreground mt-1">
                                 {Object.entries(swap.replace).map(([from, to]) => (
                                   <span key={from}>
-                                    Replace <strong>{from}</strong> with <strong>{to}</strong>
+                                    {t('screens.health.replace')} <strong>{from}</strong>{t('screens.health.with')} <strong>{to}</strong>
                                   </span>
                                 ))}
                               </p>
                             )}
                             {swap.remove && (
-                              <p className="text-xs text-muted-foreground mt-1">
-                                Remove: {swap.remove.join(', ')}
-                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">{t('screens.health.removeValue0', { value0: swap.remove.join(', ') })}</p>
                             )}
                           </div>
                           
                           {isVegan && (
                             <Badge variant="outline" className="text-xs bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
-                              vegan
+                              {t('screens.health.vegan')}
                             </Badge>
                           )}
                         </button>
@@ -353,10 +350,10 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
           
               {/* Notes */}
               <div>
-                <Label htmlFor="notes">Personal Notes</Label>
+                <Label htmlFor="notes">{t('screens.health.personalNotes')}</Label>
                 <Textarea
                   id="notes"
-                  placeholder="Add your cooking notes..."
+                  placeholder={t('screens.health.addYourCookingNotes')}
                   className="mt-2"
                 />
               </div>
@@ -369,36 +366,36 @@ export function RecipeSheet({ recipe, open, onOpenChange }: RecipeSheetProps) {
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.success('Recipe saved to favorites')}
+                onClick={() => notifySuccess('toasts.health.recipeSavedFavorites')}
               >
                 <Heart className="w-4 h-4" />
-                <span className="hidden sm:inline">Save</span>
+                <span className="hidden sm:inline">{t('screens.health.save')}</span>
               </Button>
               
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.info('Finding similar recipes...')}
+                onClick={() => notifyInfo('toasts.health.findingSimilarRecipes')}
               >
                 <Repeat className="w-4 h-4" />
-                <span className="hidden sm:inline">Replace</span>
+                <span className="hidden sm:inline">{t('screens.health.replace')}</span>
               </Button>
               
               <Button 
                 variant="outline" 
                 className="flex-1 gap-2 hover:scale-[1.02] transition-all"
-                onClick={() => toast.success('Added to food diary')}
+                onClick={() => notifySuccess('toasts.health.addedFoodDiary')}
               >
                 <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Diary</span>
+                <span className="hidden sm:inline">{t('screens.health.diary')}</span>
               </Button>
               
               <Button 
                 className="flex-1 gap-2 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 hover:scale-[1.02] transition-all border-0"
-                onClick={() => toast.success('Added to shopping list')}
+                onClick={() => notifySuccess('toasts.health.addedShoppingList')}
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline">Shop</span>
+                <span className="hidden sm:inline">{t('screens.health.shop')}</span>
               </Button>
             </div>
           </SheetFooter>

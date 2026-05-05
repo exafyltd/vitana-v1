@@ -8,6 +8,7 @@ import { MilestoneEditor } from "./MilestoneEditor";
 import { useTranslation } from "@/hooks/useTranslation";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface MilestoneTimelineProps {
   milestones: Milestone[];
@@ -136,8 +137,7 @@ export function MilestoneTimeline({
           </div>
 
           {compact && milestones.length > 3 && (
-            <p className="text-xs text-muted-foreground text-center mt-3">
-              +{milestones.length - 3} more
+            <p className="text-xs text-muted-foreground text-center mt-3">{t('screens.profile.value0More', { value0: milestones.length - 3 })}
             </p>
           )}
         </div>

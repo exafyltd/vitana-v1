@@ -11,8 +11,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ApiKeySettingsModalProps {
   open: boolean;
@@ -26,11 +27,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
   const handleSave = async () => {
     if (!apiKey.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter an API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.chat.error', 'toasts.chat.pleaseEnterApiKey');
       return;
     }
 
@@ -69,20 +66,13 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
 
       if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "API key saved securely with encryption",
-      });
+      notify('toasts.chat.success', 'toasts.chat.apiKeySavedSecurelyWithEncryption');
       
       onOpenChange(false);
       setApiKey("");
     } catch (error) {
       console.error("Error saving API key:", error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save API key",
-        variant: "destructive",
-      });
+      notifyError('toasts.chat.error');
     } finally {
       setIsSaving(false);
     }
@@ -92,35 +82,35 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Google Cloud API Key</DialogTitle>
+          <DialogTitle>{t('screens.chat.googleCloudApiKey')}</DialogTitle>
           <DialogDescription>
-            Enter your Google Cloud API key to enable voice AI features (Speech-to-Text and Text-to-Speech).
+            {t('screens.chat.enterYourGoogleCloudApiKey')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="apiKey">API Key</Label>
+            <Label htmlFor="apiKey">{t('screens.chat.apiKey')}</Label>
             <Input
               id="apiKey"
               type="password"
-              placeholder="Enter your Google Cloud API key"
+              placeholder={t('screens.chat.enterYourGoogleCloudApiKey')}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               disabled={isSaving}
             />
             <p className="text-sm text-muted-foreground">
-              Your API key is stored securely and only used for AI voice features.
+              {t('screens.chat.yourApiKeyStoredSecurelyOnly')}
             </p>
           </div>
 
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p className="font-medium">To get your Google Cloud API key:</p>
+            <p className="font-medium">{t('screens.chat.getYourGoogleCloudApiKey')}</p>
             <ol className="list-decimal list-inside space-y-1 ml-2">
-              <li>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Cloud Console</a></li>
-              <li>Enable Cloud Speech-to-Text API and Cloud Text-to-Speech API</li>
-              <li>Create an API key in Credentials</li>
-              <li>Paste it here</li>
+              <li>{t('screens.chat.go')} <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{t('screens.chat.googleCloudConsole')}</a></li>
+              <li>{t('screens.chat.enableCloudSpeechtotextApiCloudTexttospeech')}</li>
+              <li>{t('screens.chat.createApiKeyCredentials')}</li>
+              <li>{t('screens.chat.pasteItHere')}</li>
             </ol>
           </div>
         </div>
@@ -131,11 +121,10 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
             onClick={() => onOpenChange(false)}
             disabled={isSaving}
           >
-            Cancel
+            {t('screens.chat.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save API Key
+            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.chat.saveApiKey')}
           </Button>
         </DialogFooter>
       </DialogContent>

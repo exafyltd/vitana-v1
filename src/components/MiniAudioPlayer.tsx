@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { useAudioPlayer, updateAudioTime, updateAudioDuration, globalState, notifyListeners } from '@/hooks/useAudioPlayer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { t } from '@/lib/i18n-toast';
 
 export function MiniAudioPlayer() {
   const {
@@ -85,7 +86,7 @@ export function MiniAudioPlayer() {
           onClick={() => setDrawerOpen(true)}
           className="fixed right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-primary hover:bg-primary/90 active:scale-95 transition-transform"
           style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px) + 12px)' }}
-          aria-label="Open audio player"
+          aria-label={t('screens.common.openAudioPlayer')}
         >
           {/* Pulse ring when playing */}
           {isPlaying && (
@@ -107,7 +108,7 @@ export function MiniAudioPlayer() {
         {/* Expanded drawer */}
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerContent className="pb-safe">
-            <DrawerTitle className="sr-only">Audio Player</DrawerTitle>
+            <DrawerTitle className="sr-only">{t('screens.common.audioPlayer')}</DrawerTitle>
             <div className="px-6 pt-2 pb-6 space-y-6">
               {/* Cover art + info */}
               <div className="flex flex-col items-center text-center gap-3">
@@ -214,7 +215,7 @@ export function MiniAudioPlayer() {
                   className="h-8 px-3 text-xs text-muted-foreground"
                 >
                   <X className="h-3.5 w-3.5 mr-1" />
-                  Close
+                  {t('screens.common.close')}
                 </Button>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MailCheck, Lock, Eye, EyeOff, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -63,13 +64,13 @@ function RequestResetView() {
           <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center">
             <MailCheck className="h-7 w-7 text-pink-500" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground">Check your email</h3>
+          <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.checkYourEmail')}</h3>
           <p className="text-sm text-muted-foreground">
-            We've sent a password reset link to<br />
+            {t('screens.auth.weVeSentPasswordResetLink')}<br />
             <span className="font-medium text-foreground">{email}</span>
           </p>
           <p className="text-xs text-muted-foreground">
-            If you don't see it, check your spam folder.
+            {t('screens.auth.ifYouDonTSeeIt')}
           </p>
           <div className="pt-2">
             <Link
@@ -77,7 +78,7 @@ function RequestResetView() {
               className="inline-flex items-center gap-1.5 text-sm text-pink-600 hover:text-pink-700 dark:text-pink-400 dark:hover:text-pink-300 transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Back to Maxina
+              {t('screens.auth.backMaxina')}
             </Link>
           </div>
         </CardContent>
@@ -91,17 +92,17 @@ function RequestResetView() {
         <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center mb-2">
           <Lock className="h-7 w-7 text-pink-500" />
         </div>
-        <CardTitle className="text-xl">Reset your password</CardTitle>
-        <CardDescription>Enter your email and we'll send you a reset link</CardDescription>
+        <CardTitle className="text-xl">{t('screens.auth.resetYourPassword')}</CardTitle>
+        <CardDescription>{t('screens.auth.enterYourEmailWeLlSend')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="reset-email">Email address</Label>
+            <Label htmlFor="reset-email">{t('screens.auth.emailAddress')}</Label>
             <Input
               id="reset-email"
               type="email"
-              placeholder="you@example.com"
+              placeholder={t('screens.auth.youExampleCom')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -116,8 +117,7 @@ function RequestResetView() {
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Sending…
+                <Loader2 className="h-4 w-4 animate-spin" />{t('screens.auth.sending')}
               </>
             ) : (
               "Send reset link"
@@ -130,7 +130,7 @@ function RequestResetView() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Maxina
+            {t('screens.auth.backMaxina')}
           </Link>
         </div>
       </CardContent>
@@ -171,14 +171,14 @@ function UpdatePasswordView() {
           <div className="mx-auto w-14 h-14 rounded-full bg-green-50 dark:bg-green-950/40 flex items-center justify-center">
             <CheckCircle2 className="h-7 w-7 text-green-500" />
           </div>
-          <h3 className="text-xl font-semibold text-foreground">Password updated</h3>
+          <h3 className="text-xl font-semibold text-foreground">{t('screens.auth.passwordUpdated')}</h3>
           <p className="text-sm text-muted-foreground">
-            Your password has been successfully reset.
+            {t('screens.auth.yourPasswordHasSuccessfullyReset')}
           </p>
           <div className="pt-2">
             <Link to="/maxina">
               <Button className="bg-pink-500 hover:bg-pink-600 text-white">
-                Continue to Maxina
+                {t('screens.auth.continueMaxina')}
               </Button>
             </Link>
           </div>
@@ -193,18 +193,18 @@ function UpdatePasswordView() {
         <div className="mx-auto w-14 h-14 rounded-full bg-pink-50 dark:bg-pink-950/40 flex items-center justify-center mb-2">
           <Lock className="h-7 w-7 text-pink-500" />
         </div>
-        <CardTitle className="text-xl">Set new password</CardTitle>
-        <CardDescription>Choose a strong password for your account</CardDescription>
+        <CardTitle className="text-xl">{t('screens.auth.setNewPassword')}</CardTitle>
+        <CardDescription>{t('screens.auth.chooseStrongPasswordForYourAccount')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="new-password">New password</Label>
+            <Label htmlFor="new-password">{t('screens.auth.newPassword')}</Label>
             <div className="relative">
               <Input
                 id="new-password"
                 type={showPassword ? "text" : "password"}
-                placeholder="At least 6 characters"
+                placeholder={t('screens.auth.atLeast6Characters')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -223,11 +223,11 @@ function UpdatePasswordView() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirm-password">Confirm password</Label>
+            <Label htmlFor="confirm-password">{t('screens.auth.confirmPassword')}</Label>
             <Input
               id="confirm-password"
               type={showPassword ? "text" : "password"}
-              placeholder="Re-enter your password"
+              placeholder={t('screens.auth.reenterYourPassword')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -236,7 +236,7 @@ function UpdatePasswordView() {
               }`}
             />
             {confirmPassword && !passwordsMatch && (
-              <p className="text-xs text-destructive">Passwords don't match</p>
+              <p className="text-xs text-destructive">{t('screens.auth.passwordsDonTMatch')}</p>
             )}
           </div>
           <Button
@@ -246,8 +246,7 @@ function UpdatePasswordView() {
           >
             {loading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Updating…
+                <Loader2 className="h-4 w-4 animate-spin" />{t('screens.auth.updating')}
               </>
             ) : (
               "Update password"
@@ -260,7 +259,7 @@ function UpdatePasswordView() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to Maxina
+            {t('screens.auth.backMaxina')}
           </Link>
         </div>
       </CardContent>

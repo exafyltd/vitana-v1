@@ -52,6 +52,7 @@ import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileC
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Messages() {
   const { user } = useAuth();
@@ -466,8 +467,7 @@ export default function Messages() {
                               
                               {densityMode === 'comfortable' && (
                                 <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                  <Users className="w-3 h-3 mr-1" />
-                                  {thread.participants?.length || 0} participants
+                                  <Users className="w-3 h-3 mr-1" />{t('screens.messages.value0Participants', { value0: thread.participants?.length || 0 })}
                                 </div>
                               )}
                             </div>
@@ -511,7 +511,7 @@ export default function Messages() {
                 className="w-full justify-start"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Create New Group
+                {t('screens.messages.createNewGroup')}
               </Button>
             </div>
           )}
@@ -520,13 +520,13 @@ export default function Messages() {
             {filteredThreads.length === 0 ? (
               <div className="text-center py-12">
                 <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No Groups Yet</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noGroupsYet2')}</h3>
                 <p className="text-muted-foreground mb-4 max-w-sm mx-auto">
-                  Groups help you collaborate with multiple people at once. Perfect for teams, projects, or communities.
+                  {t('screens.messages.groupsHelpYouCollaborateWithMultiple')}
                 </p>
                 <Button onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
-                  Create Your First Group
+                  {t('screens.messages.createYourFirstGroup2')}
                 </Button>
               </div>
             ) : (
@@ -601,8 +601,7 @@ export default function Messages() {
                               
                               <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                                 <div className="flex items-center">
-                                  <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                                    {thread.participants?.length || 0} members
+                                  <Badge variant="secondary" className="text-xs px-1.5 py-0">{t('screens.messages.value0Members', { value0: thread.participants?.length || 0 })}
                                   </Badge>
                                 </div>
                               </div>
@@ -640,11 +639,11 @@ export default function Messages() {
             {filteredThreads.length === 0 ? (
               <div className="text-center py-12">
                 <MessageSquareText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No Direct Messages</h3>
-                <p className="text-muted-foreground mb-4">Start a conversation with someone</p>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noDirectMessages')}</h3>
+                <p className="text-muted-foreground mb-4">{t('screens.messages.startConversationWithSomeone')}</p>
                 <Button onClick={() => setShowNewConversation(true)}>
                   <MessageSquareText className="w-4 h-4 mr-2" />
-                  New Message
+                  {t('screens.messages.newMessage')}
                 </Button>
               </div>
             ) : (
@@ -845,9 +844,8 @@ export default function Messages() {
                 <div className="h-full flex items-center justify-center px-4 py-4">
                   <div className="text-center">
                     <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-semibold mb-2">Select a conversation</h3>
-                    <p className="text-muted-foreground">
-                      Choose a conversation from the left to start messaging
+                    <h3 className="text-lg font-semibold mb-2">{t('screens.messages.selectConversation')}</h3>
+                    <p className="text-muted-foreground">{t('screens.messages.chooseConversationFromLeftStartMessaging')}
                     </p>
                   </div>
                 </div>
@@ -876,7 +874,7 @@ export default function Messages() {
       return (
         <div className="text-center py-12">
           <Search className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
-          <p className="text-muted-foreground">No conversations matching "{inboxSearchQuery}"</p>
+          <p className="text-muted-foreground">{t('screens.messages.noConversationsMatchingInboxsearchquery', { inboxSearchQuery })}</p>
         </div>
       );
     }
@@ -953,7 +951,7 @@ export default function Messages() {
     return (
       <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
         <AppLayout>
-          <SEO title="Inbox" description="Your conversations, updates, and notifications" canonical={window.location.href} />
+          <SEO title={t('screens.messages.inbox')} description="Your conversations, updates, and notifications" canonical={window.location.href} />
           
           <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
             {/* When viewing a conversation, show full-screen chat */}
@@ -1078,19 +1076,19 @@ export default function Messages() {
   return (
     <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
       <AppLayout>
-        <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
+        <SEO title={t('screens.messages.messages')} description="Your messages and conversations" canonical={window.location.href} />
         <div className="flex h-[100dvh] min-h-0 flex-col overflow-hidden">
           <SubNavigation items={messagesNavigation} />
           <div className="flex-1 min-h-0 overflow-hidden p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
             <div className="mx-auto flex h-full min-h-0 max-w-7xl flex-col gap-2">
           <div className="pt-1">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Messages</h1>
-            <p className="text-sm text-muted-foreground">Connect with your community and professional network</p>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">{t('screens.messages.messages')}</h1>
+            <p className="text-sm text-muted-foreground">{t('screens.messages.connectWithYourCommunityProfessionalNetwork')}</p>
           </div>
           {/* Utility Action Button */}
           <UtilityActionButton>
             <ExpandableSearchButton
-              placeholder="Search conversations, people, or groups…"
+              placeholder={t('screens.messages.searchConversationsPeopleGroups')}
               onSearch={(query) => setInboxSearchQuery(query)}
               onClear={() => setInboxSearchQuery("")}
               dropdownItems={searchDropdownItems}
@@ -1101,17 +1099,17 @@ export default function Messages() {
               <DropdownMenuTrigger asChild>
                 <Button size="sm">
                   <Plus className="w-4 h-4 mr-2" />
-                  New
+                  {t('screens.messages.new')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setShowNewConversation(true)}>
                   <MessageSquareText className="w-4 h-4 mr-2" />
-                  New Message
+                  {t('screens.messages.newMessage')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
-                  Create Group
+                  {t('screens.messages.createGroup')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -1121,10 +1119,10 @@ export default function Messages() {
           <SplitBar value={messageContext} onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }} className="flex flex-1 min-h-0 flex-col overflow-hidden">
             <SplitBarList>
             <SplitBarTrigger value="global">
-              🌍 Global Community
+              {t('screens.messages.globalCommunity')}
             </SplitBarTrigger>
             <SplitBarTrigger value="tenant">
-              🏢 Professional Network
+              {t('screens.messages.professionalNetwork')}
             </SplitBarTrigger>
             </SplitBarList>
 

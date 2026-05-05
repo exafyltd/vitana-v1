@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { toast } from "@/components/ui/use-toast";
 import type { Json } from "@/integrations/supabase/types";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export type PackageType = 'bundle' | 'subscription' | 'program';
 export type PackageStatus = 'draft' | 'published' | 'archived';
@@ -157,17 +158,10 @@ export function useBusinessPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business-packages'] });
-      toast({
-        title: "Package created",
-        description: "Your package has been created successfully.",
-      });
+      notify('toasts.hooks.packageCreated', 'toasts.hooks.yourPackageHasCreatedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to create package",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error');
     },
   });
 
@@ -187,10 +181,7 @@ export function useBusinessPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business-packages'] });
-      toast({
-        title: "Package updated",
-        description: "Your package has been updated successfully.",
-      });
+      notify('toasts.hooks.packageUpdated', 'toasts.hooks.yourPackageHasUpdatedSuccessfully');
     },
   });
 
@@ -232,17 +223,10 @@ export function useBusinessPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business-packages'] });
-      toast({
-        title: "Package updated",
-        description: "Your package and items have been updated successfully.",
-      });
+      notify('toasts.hooks.packageUpdated', 'toasts.hooks.yourPackageItemsHaveUpdatedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update package",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error');
     },
   });
 
@@ -257,10 +241,7 @@ export function useBusinessPackages() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business-packages'] });
-      toast({
-        title: "Package deleted",
-        description: "Your package has been deleted.",
-      });
+      notify('toasts.hooks.packageDeleted', 'toasts.hooks.yourPackageHasDeleted');
     },
   });
 

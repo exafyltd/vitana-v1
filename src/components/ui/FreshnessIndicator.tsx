@@ -7,6 +7,7 @@
 
 import { RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { t } from '@/lib/i18n-toast';
 
 interface FreshnessIndicatorProps {
   dataUpdatedAt: number | undefined;
@@ -25,7 +26,7 @@ export function FreshnessIndicator({
     return (
       <div className={cn('flex items-center gap-1 text-xs text-muted-foreground', className)}>
         <RefreshCw className="h-3 w-3 animate-spin" />
-        <span>Updating...</span>
+        <span>{t('screens.ui.updating')}</span>
       </div>
     );
   }

@@ -16,6 +16,7 @@ import {
   FileText,
   Mic
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthTrackerMasterActionPopupProps {
   open: boolean;
@@ -106,7 +107,7 @@ export function HealthTrackerMasterActionPopup({ open, onOpenChange }: HealthTra
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-6">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Health Tracker Actions
+            {t('screens.common.healthTrackerActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -115,10 +116,10 @@ export function HealthTrackerMasterActionPopup({ open, onOpenChange }: HealthTra
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Mic className="w-5 h-5 text-primary" />
-              Voice Health Diary
+              {t('screens.common.voiceHealthDiary')}
             </CardTitle>
             <CardDescription>
-              Record your daily health updates, symptoms, progress, or any health-related observations
+              {t('screens.common.recordYourDailyHealthUpdatesSymptoms')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -151,7 +152,7 @@ export function HealthTrackerMasterActionPopup({ open, onOpenChange }: HealthTra
             onClick={() => onOpenChange(false)}
             className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Close
+            {t('screens.common.close')}
           </button>
         </div>
       </DialogContent>

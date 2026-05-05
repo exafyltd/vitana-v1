@@ -4,6 +4,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 interface ServiceCardProps {
   name: string;
@@ -47,7 +48,7 @@ function ServiceCard({ name, description, healthy }: ServiceCardProps) {
           </span>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          Check <code className="rounded bg-muted px-1 py-0.5">/alive</code> endpoint
+          {t('screens.admin.check')} <code className="rounded bg-muted px-1 py-0.5">{t('screens.admin.alive')}</code>{t('screens.admin.endpoint')}
         </p>
       </CardContent>
     </Card>
@@ -89,7 +90,7 @@ export default function SystemHealth() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="System Health"
+            title={t('screens.admin.systemHealth')}
             description="Monitor service status and infrastructure health"
             emoji="🏥"
           />
@@ -98,7 +99,7 @@ export default function SystemHealth() {
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Server className="h-5 w-5 text-muted-foreground" />
-              Cloud Run Services
+              {t('screens.admin.cloudRunServices')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {services.map((service) => (
@@ -113,16 +114,9 @@ export default function SystemHealth() {
               <div className="flex items-start gap-3">
                 <Activity className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium">Static Status Display</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    This page shows placeholder service statuses. Real-time health checks require
-                    server-side proxying through the Gateway to curl each service's{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">/alive</code> endpoint.
-                    All services run on Cloud Run in{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">us-central1</code>{" "}
-                    under project{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                      lovable-vitana-vers1
+                  <p className="text-sm font-medium">{t('screens.admin.staticStatusDisplay')}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{t('screens.admin.thisPageShowsPlaceholderServiceStatuses', { value0: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.alive')}</code>{t('screens.admin.endpointAllServicesRunCloudRun', { value0: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.uscentral1')}</code>{t('screens.admin.value0UnderProjectValue1', { value0: " ", value1: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">
+                      {t('screens.admin.lovablevitanavers1')}
                     </code>
                     .
                   </p>

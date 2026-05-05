@@ -23,6 +23,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 export default function DealsOffers() {
   return (
@@ -360,12 +361,12 @@ function DealsOffersInner() {
 
   return (
     <AppLayout>
-      <SEO title="Deals & Offers | Discover" description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
+      <SEO title={t('screens.discover.dealsOffersDiscover')} description="Limited-time deals, trending services, AI recommendations, and saved items" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
       <div className="p-6 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Deals & Offers"
+            title={t('screens.discover.dealsOffers')}
             description="Limited-time deals, trending services, AI recommendations, and saved items"
             emoji="🔥"
           />
@@ -377,14 +378,14 @@ function DealsOffersInner() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search deals and offers…"
+              placeholder={t('screens.discover.searchDealsOffers')}
             />
             <UniversalCalendarButton />
             <Button 
@@ -392,25 +393,25 @@ function DealsOffersInner() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="flash">🔥 Flash Deals</SplitBarTrigger>
-              <SplitBarTrigger value="trending">⭐ Trending</SplitBarTrigger>
-              <SplitBarTrigger value="ai">💡 AI Picks</SplitBarTrigger>
-              <SplitBarTrigger value="saved">🔖 Saved</SplitBarTrigger>
+              <SplitBarTrigger value="flash">{t('screens.discover.flashDeals')}</SplitBarTrigger>
+              <SplitBarTrigger value="trending">{t('screens.discover.trending')}</SplitBarTrigger>
+              <SplitBarTrigger value="ai">{t('screens.discover.aiPicks')}</SplitBarTrigger>
+              <SplitBarTrigger value="saved">{t('screens.discover.saved')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="flash" className="space-y-6">
               {flashDeals.length === 0 && (
                 <Card className="p-8 text-center bg-white/70 backdrop-blur-sm">
                   <Flame className="h-10 w-10 text-red-500 mx-auto mb-3" />
-                  <h3 className="font-semibold mb-1">No flash deals right now</h3>
+                  <h3 className="font-semibold mb-1">{t('screens.discover.noFlashDealsRightNow')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    When merchants run promotions, they&rsquo;ll show up here. Check back soon.
+                    {t('screens.discover.whenMerchantsRunPromotionsTheyRsquo')}
                   </p>
                 </Card>
               )}
@@ -443,8 +444,7 @@ function DealsOffersInner() {
                         sizeClass="w-full h-48"
                         className="rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                        {deal.discount}% OFF
+                      <div className="absolute top-2 right-12 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.discountOff', { discount: deal.discount })}
                       </div>
                       {deal.timeLeft && (
                         <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
@@ -483,7 +483,7 @@ function DealsOffersInner() {
                       {deal.claimed != null && deal.total != null && deal.total > 0 && (
                         <div className="bg-gray-100 rounded-lg p-2">
                           <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                            <span>{deal.claimed}/{deal.total} claimed</span>
+                            <span>{t('screens.discover.claimedTotalClaimed', { claimed: deal.claimed, total: deal.total })}</span>
                             <span>{Math.round((deal.claimed / deal.total) * 100)}%</span>
                           </div>
                           <div className="w-full bg-gray-300 rounded-full h-2">
@@ -500,9 +500,7 @@ function DealsOffersInner() {
                         <span className="text-muted-foreground line-through text-sm">
                           ${deal.originalPrice}
                         </span>
-                        <span className="text-green-600 font-semibold text-sm ml-auto">
-                          Save ${deal.originalPrice - deal.price}
-                        </span>
+                        <span className="text-green-600 font-semibold text-sm ml-auto">{t('screens.discover.saveValue0', { value0: deal.originalPrice - deal.price })}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2" onClick={(e) => e.stopPropagation()}>
@@ -510,7 +508,7 @@ function DealsOffersInner() {
                           className="flex-1"
                           onClick={() => deal._product && selectProduct(deal._product)}
                         >
-                          View Deal
+                          {t('screens.discover.viewDeal')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -594,7 +592,7 @@ function DealsOffersInner() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin className="h-4 w-4" />
                         <span>{service.location}</span>
-                        <span className="ml-auto">{service.bookings} bookings</span>
+                        <span className="ml-auto">{t('screens.discover.bookingsBookings', { bookings: service.bookings })}</span>
                       </div>
 
                       <div className="flex gap-1 flex-wrap">
@@ -607,12 +605,12 @@ function DealsOffersInner() {
 
                       <div className="flex items-baseline gap-2">
                         <span className="text-2xl font-bold">${service.price}</span>
-                        <span className="text-sm text-muted-foreground">per session</span>
+                        <span className="text-sm text-muted-foreground">{t('screens.discover.perSession')}</span>
                       </div>
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Book Now
+                          {t('screens.discover.bookNow')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -661,8 +659,7 @@ function DealsOffersInner() {
                         alt={match.title}
                         className="w-full h-48 object-cover rounded-t-lg"
                       />
-                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                        {match.match}% Match
+                      <div className="absolute top-2 right-12 bg-purple-600 text-white px-3 py-1 rounded-full font-bold text-sm">{t('screens.discover.matchMatch', { match: match.match })}
                       </div>
                     </div>
                     
@@ -709,7 +706,7 @@ function DealsOffersInner() {
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Book Consultation
+                          {t('screens.discover.bookConsultation')}
                         </Button>
                         <AddToCartButton
                           item={{
@@ -760,7 +757,7 @@ function DealsOffersInner() {
                       {product.priceChange < 0 && (
                         <div className="absolute top-2 left-2 bg-green-600 text-white px-3 py-1 rounded-full font-bold text-sm flex items-center gap-1">
                           <TrendingDown className="h-3 w-3" />
-                          Price Drop!
+                          {t('screens.discover.priceDrop')}
                         </div>
                       )}
                     </div>
@@ -793,19 +790,17 @@ function DealsOffersInner() {
 
                       <div className="text-xs text-muted-foreground space-y-1">
                         <div className="flex justify-between">
-                          <span>Saved {product.savedDate}</span>
+                          <span>{t('screens.discover.savedSaveddate', { savedDate: product.savedDate })}</span>
                           <span className={product.stock === "In Stock" ? "text-green-600" : "text-orange-600"}>
                             {product.stock}
                           </span>
                         </div>
                         {product.priceChange < 0 && (
-                          <div className="text-green-600 font-semibold">
-                            Price dropped ${Math.abs(product.priceChange).toFixed(2)}!
+                          <div className="text-green-600 font-semibold">{t('screens.discover.priceDroppedValue0', { value0: Math.abs(product.priceChange).toFixed(2) })}
                           </div>
                         )}
                         {product.priceChange === 0 && (
-                          <div className="text-muted-foreground">
-                            Same price
+                          <div className="text-muted-foreground">{t('screens.discover.samePrice')}
                           </div>
                         )}
                       </div>
@@ -823,7 +818,7 @@ function DealsOffersInner() {
                       
                       <div className="flex gap-2 mt-auto pt-2">
                         <Button className="flex-1">
-                          Add to Cart
+                          {t('screens.discover.addCart')}
                         </Button>
                         <Button variant="outline" size="icon">
                           <Package className="h-4 w-4" />

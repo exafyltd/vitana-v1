@@ -46,6 +46,7 @@ import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWa
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
+import { t } from '@/lib/i18n-toast';
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -423,7 +424,7 @@ export default function Wallet() {
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
                       <Sparkles className="h-3.5 w-3.5 text-accent" />
-                      <span className="text-xs">Showing: {getFilterLabel(filterType)}</span>
+                      <span className="text-xs">{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                       <button 
                         onClick={clearFilter}
                         className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
@@ -460,13 +461,13 @@ export default function Wallet() {
   // Desktop Layout (unchanged)
   return (
     <AppLayout>
-      <SEO title="Vitana Wallet | VITANA" description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
+      <SEO title={t('screens.wallet.vitanaWalletVitana')} description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
       <SubNavigation items={walletNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
         <StandardHeader
-          title="Vitana Wallet"
+          title={t('screens.wallet.vitanaWallet')}
           description="Your digital bank account for health rewards and benefits"
           emoji="🏦"
         />
@@ -474,22 +475,22 @@ export default function Wallet() {
         {/* Utility Action Button */}
         <UtilityActionButton>
           <ExpandableSearchButton 
-            placeholder="Search transactions, rewards, or benefits..."
+            placeholder={t('screens.wallet.searchTransactionsRewardsBenefits')}
             onSearch={(query) => console.log('Search:', query)}
           />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setMasterActionOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Wallet Actions
+            {t('screens.wallet.walletActions')}
           </Button>
         </UtilityActionButton>
 
         {/* Split Navigation */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="balance-overview">💰 Balance Overview</SplitBarTrigger>
-            <SplitBarTrigger value="recent-activity">📊 Recent Activity</SplitBarTrigger>
-            <SplitBarTrigger value="quick-actions">⚡ Smart Actions</SplitBarTrigger>
+            <SplitBarTrigger value="balance-overview">{t('screens.wallet.balanceOverview')}</SplitBarTrigger>
+            <SplitBarTrigger value="recent-activity">{t('screens.wallet.recentActivity2')}</SplitBarTrigger>
+            <SplitBarTrigger value="quick-actions">{t('screens.wallet.smartActions')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="balance-overview">
@@ -500,7 +501,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="tokens"
-                    title="VTNA Tokens"
+                    title={t('screens.wallet.vtnaTokens')}
                     balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
                     subBalance="Staked: 25%"
                     change="+5.7%"
@@ -542,7 +543,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="cash"
-                    title="USD Balance"
+                    title={t('screens.wallet.usdBalance')}
                     balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+2.3%"
@@ -584,7 +585,7 @@ export default function Wallet() {
                 <div className="col-span-4">
                   <WalletBalanceCard
                     type="credits"
-                    title="Credits Balance"
+                    title={t('screens.wallet.creditsBalance')}
                     balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"
@@ -644,7 +645,7 @@ export default function Wallet() {
                 <div className="flex items-center gap-2 mb-4">
                   <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5 text-accent" />
-                    <span>Showing: {getFilterLabel(filterType)}</span>
+                    <span>{t('screens.wallet.showingValue0', { value0: getFilterLabel(filterType) })}</span>
                     <button 
                       onClick={clearFilter}
                       className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
@@ -652,9 +653,7 @@ export default function Wallet() {
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </Badge>
-                  <span className="text-sm text-muted-foreground">
-                    {filteredTransactions.length} transaction{filteredTransactions.length !== 1 ? "s" : ""}
-                  </span>
+                  <span className="text-sm text-muted-foreground">{t('screens.wallet.lengthTransactionValue1', { length: filteredTransactions.length, value1: filteredTransactions.length !== 1 ? "s" : "" })}</span>
                 </div>
               )}
 
@@ -665,8 +664,7 @@ export default function Wallet() {
                 </div>
                 <div className="col-span-3">
                   {loading ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      Loading transactions...
+                    <div className="h-full flex items-center justify-center text-muted-foreground">{t('screens.wallet.loadingTransactions')}
                     </div>
                   ) : filteredTransactions.length > 0 ? (
                     <WalletTransactionCard
@@ -693,8 +691,7 @@ export default function Wallet() {
                 </div>
                 <div className="col-span-3">
                   {loading ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground">
-                      Loading transactions...
+                    <div className="h-full flex items-center justify-center text-muted-foreground">{t('screens.wallet.loadingTransactions')}
                     </div>
                   ) : filteredTransactions.length > 1 ? (
                     <WalletTransactionCard
@@ -715,7 +712,7 @@ export default function Wallet() {
                     />
                   ) : (
                     <div className="h-full flex items-center justify-center text-muted-foreground">
-                      No additional transactions
+                      {t('screens.wallet.noAdditionalTransactions')}
                     </div>
                   )}
                 </div>
@@ -749,7 +746,7 @@ export default function Wallet() {
                   Array.from({ length: 3 - Math.max(0, filteredTransactions.length - 2) }).map((_, index) => (
                     <div key={`empty-${index}`} className="col-span-4">
                       <div className="h-full flex items-center justify-center text-muted-foreground">
-                        No additional transactions
+                        {t('screens.wallet.noAdditionalTransactions')}
                       </div>
                     </div>
                   ))

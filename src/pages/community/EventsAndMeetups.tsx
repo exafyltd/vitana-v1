@@ -24,7 +24,7 @@ import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { cn } from "@/lib/utils";
 import { Plus, Calendar as CalendarIcon, Brain, Users, Megaphone, Plane } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
@@ -42,6 +42,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -580,11 +581,7 @@ const EventsAndMeetups = () => {
     const event = freshEvents.find(e => e.id === eventId);
     
     if (!event) {
-      toast({
-        title: "Event Created",
-        description: "Your event was created but couldn't be displayed. Please refresh the page.",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.eventCreated', 'toasts.community.yourEventCreatedButCouldnT');
       return;
     }
     
@@ -900,12 +897,12 @@ const EventsAndMeetups = () => {
                     emptyState={
                       <div className="text-center py-12">
                         <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-semibold mb-2">No Upcoming Events</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noUpcomingEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
-                          There are no events scheduled. Be the first to create one!
+                          {t('screens.community.thereNoEventsScheduledFirstCreate')}
                         </p>
                         <Button onClick={() => setCreateSelectionOpen(true)}>
-                          Create Event
+                          {t('screens.community.createEvent')}
                         </Button>
                       </div>
                     }
@@ -981,9 +978,9 @@ const EventsAndMeetups = () => {
                     emptyState={
                       <div className="text-center py-12">
                         <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-semibold mb-2">No Recommended Events</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noRecommendedEvents')}</h3>
                         <p className="text-muted-foreground mb-4">
-                          Check back soon for curated events.
+                          {t('screens.community.checkBackSoonForCuratedEvents')}
                         </p>
                       </div>
                     }

@@ -21,6 +21,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { Search, Loader2, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -75,7 +76,7 @@ export default function MarketplaceProducts() {
 
   const load = useCallback(async () => {
     if (!GATEWAY_URL) {
-      toast({ title: "Gateway URL not configured", variant: "destructive" });
+      notifyError('toasts.admin.gatewayUrlNotConfigured');
       setLoading(false);
       return;
     }
@@ -95,7 +96,7 @@ export default function MarketplaceProducts() {
       setSelected(new Set());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Load failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.loadFailed');
     } finally {
       setLoading(false);
     }
@@ -107,7 +108,7 @@ export default function MarketplaceProducts() {
 
   async function bulkAction(action: "hide" | "clear_review" | "flag_review" | "deactivate" | "reactivate") {
     if (selected.size === 0) {
-      toast({ title: "No products selected" });
+      notify('toasts.admin.noProductsSelected');
       return;
     }
     if (!GATEWAY_URL) return;
@@ -125,7 +126,7 @@ export default function MarketplaceProducts() {
       await load();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Bulk action failed", description: message, variant: "destructive" });
+      notifyError('toasts.admin.bulkActionFailed');
     } finally {
       setBusy(false);
     }
@@ -156,12 +157,12 @@ export default function MarketplaceProducts() {
 
   return (
     <AppLayout>
-      <SEO title="Products | Marketplace Admin" description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.admin.productsMarketplaceAdmin')} description="Review queue for products flagged by the autonomous analyzer." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={adminMarketplaceCatalogNavigation} />
       <div className="p-6 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-4">
           <StandardHeader
-            title="Products"
+            title={t('screens.admin.products')}
             description="Review queue for products the analyzer flagged. Catalog ingestion is handled by Claude Code scraping — you tune the rules and clear the anomaly queue."
           />
 
@@ -173,7 +174,7 @@ export default function MarketplaceProducts() {
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search title…"
+                  placeholder={t('screens.admin.searchTitle')}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") load();
                   }}
@@ -183,38 +184,37 @@ export default function MarketplaceProducts() {
                 size="sm"
                 variant={reviewOnly ? "default" : "outline"}
                 onClick={() => setFilter("requires_admin_review", reviewOnly ? null : "true")}
-              >
-                Needs review
+              >{t('screens.admin.needsReview')}
               </Button>
               <Button
                 size="sm"
                 variant={inactiveOnly ? "default" : "outline"}
                 onClick={() => setFilter("is_active", inactiveOnly ? null : "false")}
               >
-                Inactive
+                {t('screens.admin.inactive')}
               </Button>
               <Button size="sm" variant="outline" onClick={load}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
-              <span className="text-xs text-muted-foreground ml-auto">{total.toLocaleString()} total</span>
+              <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.value0Total', { value0: total.toLocaleString() })}</span>
             </CardContent>
           </Card>
 
           {/* Bulk action bar — only visible when selection is active */}
           {selected.size > 0 && (
             <div className="flex gap-2 items-center bg-slate-100 border rounded-md p-3">
-              <span className="text-sm font-medium">{selected.size} selected</span>
+              <span className="text-sm font-medium">{t('screens.admin.sizeSelected', { size: selected.size })}</span>
               <Button size="sm" variant="outline" onClick={() => bulkAction("clear_review")} disabled={busy}>
-                <CheckCircle className="w-4 h-4 mr-1" /> Clear review
+                <CheckCircle className="w-4 h-4 mr-1" /> {t('screens.admin.clearReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("flag_review")} disabled={busy}>
-                <Flag className="w-4 h-4 mr-1" /> Flag for review
+                <Flag className="w-4 h-4 mr-1" /> {t('screens.admin.flagForReview')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => bulkAction("hide")} disabled={busy}>
-                <EyeOff className="w-4 h-4 mr-1" /> Hide
+                <EyeOff className="w-4 h-4 mr-1" /> {t('screens.admin.hide')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => setSelected(new Set())}>
-                Cancel
+                {t('screens.admin.cancel')}
               </Button>
             </div>
           )}
@@ -222,12 +222,12 @@ export default function MarketplaceProducts() {
           {/* Products list */}
           {loading ? (
             <div className="p-8 flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" /> Loading…
+              <Loader2 className="w-4 h-4 animate-spin" /> {t('screens.admin.loading')}
             </div>
           ) : items.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center text-muted-foreground">
-                <p className="font-medium">No products {reviewOnly ? "in the review queue" : "yet"}</p>
+                <p className="font-medium">{t('screens.admin.noProductsValue0', { value0: reviewOnly ? "in the review queue" : "yet" })}</p>
                 <p className="text-sm mt-1">
                   {reviewOnly
                     ? "All clear — nothing flagged for review right now."
@@ -247,12 +247,12 @@ export default function MarketplaceProducts() {
                           onCheckedChange={toggleAll}
                         />
                       </th>
-                      <th className="p-3 text-left font-medium">Product</th>
-                      <th className="p-3 text-left font-medium">Brand</th>
-                      <th className="p-3 text-left font-medium">Category</th>
-                      <th className="p-3 text-right font-medium">Price</th>
-                      <th className="p-3 text-left font-medium">Origin</th>
-                      <th className="p-3 text-left font-medium">Status</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.product')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.brand')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.category')}</th>
+                      <th className="p-3 text-right font-medium">{t('screens.admin.price')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.origin')}</th>
+                      <th className="p-3 text-left font-medium">{t('screens.admin.status')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -272,7 +272,7 @@ export default function MarketplaceProducts() {
                           <div className="text-xs text-muted-foreground mt-0.5">
                             {p.source_network} · {p.source_product_id}
                             {p.analyzer_confidence !== null && (
-                              <> · confidence {(p.analyzer_confidence * 100).toFixed(0)}%</>
+                              <>{t('screens.admin.confidenceValue02', { value0: (p.analyzer_confidence * 100).toFixed(0) })}</>
                             )}
                           </div>
                           {p.requires_admin_review && p.admin_review_reason && (
@@ -290,9 +290,9 @@ export default function MarketplaceProducts() {
                           {p.origin_region && <span className="text-muted-foreground"> · {p.origin_region}</span>}
                         </td>
                         <td className="p-3">
-                          {!p.is_active && <Badge variant="secondary">Inactive</Badge>}
-                          {p.is_active && p.requires_admin_review && <Badge className="bg-amber-500">Review</Badge>}
-                          {p.is_active && !p.requires_admin_review && <Badge variant="outline">Live</Badge>}
+                          {!p.is_active && <Badge variant="secondary">{t('screens.admin.inactive')}</Badge>}
+                          {p.is_active && p.requires_admin_review && <Badge className="bg-amber-500">{t('screens.admin.review')}</Badge>}
+                          {p.is_active && !p.requires_admin_review && <Badge variant="outline">{t('screens.admin.live')}</Badge>}
                         </td>
                       </tr>
                     ))}

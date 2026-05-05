@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   User,
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface UserDetail {
   user_id: string;
@@ -193,7 +194,7 @@ export function UserDetailPanel({ user, onInvite, onRepair }: UserDetailPanelPro
             onClick={() => onInvite(user.user_id)}
           >
             <Send className="h-4 w-4" />
-            Send Invitation
+            {t('screens.admin.sendInvitation')}
           </Button>
         )}
         {onRepair && (
@@ -203,7 +204,7 @@ export function UserDetailPanel({ user, onInvite, onRepair }: UserDetailPanelPro
             onClick={() => onRepair(user.user_id)}
           >
             <Wrench className="h-4 w-4" />
-            Repair Provisioning
+            {t('screens.admin.repairProvisioning')}
           </Button>
         )}
       </div>

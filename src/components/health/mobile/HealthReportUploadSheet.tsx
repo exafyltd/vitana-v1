@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ import {
   Droplets, Dna, FlaskConical, Bug, AlertTriangle, 
   Heart, Scan, ImageIcon, MoreHorizontal 
 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const REPORT_CATEGORIES = [
   { value: 'blood_panel', label: 'Blood Panel', icon: Droplets, color: 'bg-red-500/10 text-red-600 border-red-500/20' },
@@ -63,7 +64,7 @@ export function HealthReportUploadSheet({
 
     // Validate size (20MB)
     if (file.size > 20 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Maximum file size is 20MB", variant: "destructive" });
+      notifyError('toasts.health.fileTooLarge', 'toasts.health.maximumFileSize20mb');
       return;
     }
 
@@ -123,12 +124,12 @@ export function HealthReportUploadSheet({
 
       if (dbError) throw dbError;
 
-      toast({ title: "Report uploaded", description: "Your health report has been saved successfully." });
+      notify('toasts.health.reportUploaded', 'toasts.health.yourHealthReportHasSavedSuccessfully');
       onUploadComplete?.();
       handleOpenChange(false);
     } catch (error: any) {
       console.error('[HealthReportUpload] Error:', error);
-      toast({ title: "Upload failed", description: error.message || "Please try again", variant: "destructive" });
+      notifyError('toasts.health.uploadFailed');
     } finally {
       setIsUploading(false);
     }
@@ -146,14 +147,14 @@ export function HealthReportUploadSheet({
         <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2">
             <Upload className="w-5 h-5 text-primary" />
-            Upload Health Report
+            {t('screens.health.uploadHealthReport')}
           </SheetTitle>
         </SheetHeader>
 
         <div className="space-y-6">
           {/* Category Pills */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Report Type</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.reportType')}</label>
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
               {REPORT_CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
@@ -179,7 +180,7 @@ export function HealthReportUploadSheet({
 
           {/* File Upload Zone */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Document</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.document')}</label>
             <input
               ref={fileInputRef}
               type="file"
@@ -200,8 +201,7 @@ export function HealthReportUploadSheet({
                   variant="ghost" 
                   size="sm" 
                   onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
-                >
-                  Change
+                >{t('screens.health.change')}
                 </Button>
               </div>
             ) : (
@@ -210,17 +210,17 @@ export function HealthReportUploadSheet({
                 className="w-full p-8 rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition-colors flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground"
               >
                 <Upload className="w-8 h-8" />
-                <span className="text-sm font-medium">Tap to select a file</span>
-                <span className="text-xs">PDF, JPEG, PNG, HEIC — max 20MB</span>
+                <span className="text-sm font-medium">{t('screens.health.tapSelectFile')}</span>
+                <span className="text-xs">{t('screens.health.pdfJpegPngHeicMax20mb')}</span>
               </button>
             )}
           </div>
 
           {/* Provider Name */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Provider / Lab (optional)</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.providerLabOptional')}</label>
             <Input
-              placeholder="e.g. Quest Diagnostics"
+              placeholder={t('screens.health.eGQuestDiagnostics')}
               value={providerName}
               onChange={(e) => setProviderName(e.target.value)}
             />
@@ -228,7 +228,7 @@ export function HealthReportUploadSheet({
 
           {/* Test Date */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-2 block">Test Date</label>
+            <label className="text-sm font-medium text-foreground mb-2 block">{t('screens.health.testDate')}</label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-start text-left font-normal">
@@ -257,9 +257,9 @@ export function HealthReportUploadSheet({
             onClick={handleUpload}
           >
             {isUploading ? (
-              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</>
+              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t('screens.health.uploading')}</>
             ) : (
-              <><CheckCircle className="w-4 h-4 mr-2" /> Upload Report</>
+              <><CheckCircle className="w-4 h-4 mr-2" /> {t('screens.health.uploadReport')}</>
             )}
           </Button>
         </div>

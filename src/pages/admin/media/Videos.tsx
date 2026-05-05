@@ -14,7 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useSearchParams } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function Videos() {
   const [searchParams] = useSearchParams();
@@ -65,9 +66,9 @@ export default function Videos() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedUpdateStatus');
     } else {
-      toast({ title: "Success", description: `Video ${newStatus}` });
+      notify('toasts.admin.success');
       refetch();
     }
   };
@@ -79,9 +80,9 @@ export default function Videos() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to delete video", variant: "destructive" });
+      notifyError('toasts.admin.error', 'toasts.admin.failedDeleteVideo');
     } else {
-      toast({ title: "Success", description: "Video deleted" });
+      notify('toasts.admin.success', 'toasts.admin.videoDeleted');
       refetch();
     }
   };
@@ -95,7 +96,7 @@ export default function Videos() {
   return (
     <AppLayout>
       <SEO 
-        title="Videos | Media Management" 
+        title={t('screens.admin.videosMediaManagement')} 
         description="Manage video content"
         canonical={window.location.href}
       />
@@ -103,8 +104,8 @@ export default function Videos() {
       
       <div className="p-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Video Management</h1>
-          <p className="text-muted-foreground">Review and moderate video uploads</p>
+          <h1 className="text-3xl font-bold mb-2">{t('screens.admin.videoManagement')}</h1>
+          <p className="text-muted-foreground">{t('screens.admin.reviewModerateVideoUploads')}</p>
         </div>
 
         {/* Filters */}
@@ -115,7 +116,7 @@ export default function Videos() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
-                    placeholder="Search videos..." 
+                    placeholder={t('screens.admin.searchVideos')} 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9"
@@ -124,14 +125,14 @@ export default function Videos() {
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t('screens.admin.filterByStatus2')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                  <SelectItem value="flagged">Flagged</SelectItem>
+                  <SelectItem value="all">{t('screens.admin.allStatus')}</SelectItem>
+                  <SelectItem value="pending">{t('screens.admin.pending')}</SelectItem>
+                  <SelectItem value="approved">{t('screens.admin.approved')}</SelectItem>
+                  <SelectItem value="rejected">{t('screens.admin.rejected')}</SelectItem>
+                  <SelectItem value="flagged">{t('screens.admin.flagged')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -144,14 +145,14 @@ export default function Videos() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Video</TableHead>
-                  <TableHead>Uploader</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Views</TableHead>
-                  <TableHead>Likes</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.video')}</TableHead>
+                  <TableHead>{t('screens.admin.uploader')}</TableHead>
+                  <TableHead>{t('screens.admin.duration')}</TableHead>
+                  <TableHead>{t('screens.admin.views')}</TableHead>
+                  <TableHead>{t('screens.admin.likes')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

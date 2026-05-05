@@ -7,7 +7,8 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { useCart } from "@/hooks/useCart";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
@@ -20,17 +21,14 @@ export default function CheckoutSuccess() {
     // Clear cart after successful checkout
     if (sessionId) {
       clearCart();
-      toast({
-        title: "Order confirmed!",
-        description: "Your payment was successful. Check your email for order details.",
-      });
+      notify('toasts.checkoutsuccess.orderConfirmed', 'toasts.checkoutsuccess.yourPaymentSuccessfulCheckYourEmail');
     }
   }, [sessionId]);
 
   return (
     <AppLayout>
       <SEO 
-        title="Order Confirmed | VITANA"
+        title={t('screens.checkoutsuccess.orderConfirmedVitana')}
         description="Your order has been successfully placed"
         canonical={window.location.href}
       />
@@ -44,30 +42,30 @@ export default function CheckoutSuccess() {
               </div>
               
               <StandardHeader
-                title="Order Confirmed!"
+                title={t('screens.checkoutsuccess.orderConfirmed')}
                 description="Thank you for your purchase"
                 emoji="🎉"
               />
 
               <div className="my-8 space-y-4">
                 <p className="text-muted-foreground">
-                  Your order has been successfully placed and is being processed.
+                  {t('screens.checkoutsuccess.yourOrderHasSuccessfullyPlacedProcessed')}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  You'll receive a confirmation email with your order details and tracking information shortly.
+                  {t('screens.checkoutsuccess.youLlReceiveConfirmationEmailWith')}
                 </p>
               </div>
 
               <div className="bg-purple-50 rounded-lg p-6 mb-8">
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <Package className="h-6 w-6 text-purple-600" />
-                  <h3 className="font-semibold text-lg">What's Next?</h3>
+                  <h3 className="font-semibold text-lg">{t('screens.checkoutsuccess.whatSNext')}</h3>
                 </div>
                 <ul className="text-sm text-left space-y-2 max-w-md mx-auto">
-                  <li>✓ Order confirmation sent to your email</li>
-                  <li>✓ Your items will be prepared for shipment</li>
-                  <li>✓ You'll receive tracking information within 24 hours</li>
-                  <li>✓ Expected delivery: 3-5 business days</li>
+                  <li>{t('screens.checkoutsuccess.orderConfirmationSentYourEmail')}</li>
+                  <li>{t('screens.checkoutsuccess.yourItemsWillPreparedForShipment')}</li>
+                  <li>{t('screens.checkoutsuccess.youLlReceiveTrackingInformationWithin')}</li>
+                  <li>{t('screens.checkoutsuccess.expectedDelivery35BusinessDays')}</li>
                 </ul>
               </div>
 
@@ -76,7 +74,7 @@ export default function CheckoutSuccess() {
                   size="lg"
                   onClick={() => navigate('/discover/orders')}
                 >
-                  View My Orders
+                  {t('screens.checkoutsuccess.viewMyOrders')}
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
                 <Button 
@@ -84,7 +82,7 @@ export default function CheckoutSuccess() {
                   size="lg"
                   onClick={() => navigate('/discover')}
                 >
-                  Continue Shopping
+                  {t('screens.checkoutsuccess.continueShopping')}
                 </Button>
               </div>
             </CardContent>
@@ -92,12 +90,12 @@ export default function CheckoutSuccess() {
 
           <Card className="bg-white/80 backdrop-blur-sm">
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Need Help?</h3>
+              <h3 className="font-semibold mb-4">{t('screens.checkoutsuccess.needHelp')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                If you have any questions about your order, our support team is here to help.
+                {t('screens.checkoutsuccess.ifYouHaveAnyQuestionsAbout')}
               </p>
               <Button variant="outline" onClick={() => navigate('/settings/support')}>
-                Contact Support
+                {t('screens.checkoutsuccess.contactSupport')}
               </Button>
             </CardContent>
           </Card>

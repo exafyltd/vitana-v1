@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, Plus, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DEV_HUB_CONFIG } from "@/config/dev-config";
+import { t } from '@/lib/i18n-toast';
 
 interface SavedFilter {
   id: string;
@@ -74,9 +75,9 @@ export function FilteredView() {
       <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold mb-1">Saved Filters</h3>
+            <h3 className="text-sm font-semibold mb-1">{t('screens.dev.savedFilters')}</h3>
             <p className="text-xs text-muted-foreground">
-              Quick access to pre-configured query filters
+              {t('screens.dev.quickAccessPreconfiguredQueryFilters')}
             </p>
           </div>
           <Button
@@ -89,7 +90,7 @@ export function FilteredView() {
             }
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create New Filter
+            {t('screens.dev.createNewFilter')}
           </Button>
         </div>
       </Card>
@@ -121,8 +122,7 @@ export function FilteredView() {
                     </p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="text-xs">
-                  {filter.resultCount} results
+                <Badge variant="secondary" className="text-xs">{t('screens.dev.resultcountResults', { resultCount: filter.resultCount })}
                 </Badge>
               </div>
             </CardHeader>
@@ -130,19 +130,13 @@ export function FilteredView() {
             <CardContent className="pt-0">
               <div className="flex flex-wrap gap-2">
                 {filter.criteria.status && (
-                  <Badge variant="outline" className="text-xs">
-                    Status: {filter.criteria.status}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.statusStatus', { status: filter.criteria.status })}</Badge>
                 )}
                 {filter.criteria.agent && (
-                  <Badge variant="outline" className="text-xs">
-                    Agent: {filter.criteria.agent}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.agentAgent', { agent: filter.criteria.agent })}</Badge>
                 )}
                 {filter.criteria.dateRange && (
-                  <Badge variant="outline" className="text-xs">
-                    Last {filter.criteria.dateRange}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.lastDaterange', { dateRange: filter.criteria.dateRange })}</Badge>
                 )}
               </div>
             </CardContent>
@@ -162,7 +156,7 @@ export function FilteredView() {
                     {MOCK_FILTERS.find((f) => f.id === selectedFilter)?.name}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Showing filtered results below
+                    {t('screens.dev.showingFilteredResultsBelow')}
                   </p>
                 </div>
               </div>
@@ -179,10 +173,10 @@ export function FilteredView() {
           <CardContent>
             <div className="rounded-lg bg-muted/30 p-8 text-center border border-border/50">
               <p className="text-sm text-muted-foreground">
-                Filtered results would appear here in production.
+                {t('screens.dev.filteredResultsWouldAppearHereProduction')}
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                This will display a table similar to the Execution Logs view.
+                {t('screens.dev.thisWillDisplayTableSimilarExecution')}
               </p>
             </div>
           </CardContent>

@@ -8,6 +8,7 @@ import { useUserGroups } from "@/hooks/useUserGroups";
 import { generateGroupImage } from "@/lib/groupCardTransformers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileGroupsTabProps {
   profile: UserProfile;
@@ -47,16 +48,16 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
     return (
       <div className="w-full max-w-7xl mx-auto space-y-6">
         <div className="space-y-2">
-          <h2 className="text-2xl font-semibold flex items-center gap-2"><span>🌍</span><span>Active Communities</span></h2>
-          <p className="text-sm text-muted-foreground/80 leading-[1.75] tracking-wide">Connect, collaborate, and grow together</p>
+          <h2 className="text-2xl font-semibold flex items-center gap-2"><span>🌍</span><span>{t('screens.profile.activeCommunities')}</span></h2>
+          <p className="text-sm text-muted-foreground/80 leading-[1.75] tracking-wide">{t('screens.profile.connectCollaborateGrowTogether')}</p>
         </div>
         <div className="flex flex-col items-center justify-center py-20 space-y-6">
           <div className="w-24 h-24 bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl backdrop-blur-xl flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
             <Users className="h-12 w-12 text-primary/50" />
           </div>
           <div className="text-center space-y-3">
-            <h3 className="text-xl font-semibold text-foreground">You're not in any communities yet</h3>
-            <p className="text-sm text-muted-foreground/80 max-w-sm leading-[1.75] tracking-wide">Explore wellness circles</p>
+            <h3 className="text-xl font-semibold text-foreground">{t('screens.profile.youReNotAnyCommunitiesYet')}</h3>
+            <p className="text-sm text-muted-foreground/80 max-w-sm leading-[1.75] tracking-wide">{t('screens.profile.exploreWellnessCircles')}</p>
           </div>
         </div>
       </div>
@@ -68,10 +69,10 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold flex items-center gap-2">
           <span>🌍</span>
-          <span>Active Communities</span>
+          <span>{t('screens.profile.activeCommunities')}</span>
         </h2>
         <p className="text-sm text-muted-foreground/80">
-          Connect, collaborate, and grow together with like-minded wellness enthusiasts
+          {t('screens.profile.connectCollaborateGrowTogetherWithLikeminded')}
         </p>
       </div>
 
@@ -107,8 +108,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                       {group.name}
                     </h3>
                     <p className="text-sm text-white/90 flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      {group.member_count.toLocaleString()} members
+                      <Users className="w-4 h-4" />{t('screens.profile.value0Members', { value0: group.member_count.toLocaleString() })}
                     </p>
                   </div>
                   
@@ -131,8 +131,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                         e.stopPropagation();
                         navigate(`/comm/groups/${group.id}`);
                       }}
-                    >
-                      View
+                    >{t('screens.profile.view')}
                     </Button>
                   </div>
                 </div>

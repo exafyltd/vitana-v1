@@ -12,6 +12,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { BookOpen, Video, Headphones, GraduationCap, Play, Clock, Star, Plus } from "lucide-react";
 import { healthNavigation } from "@/config/navigation";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 
 export default function EducationResources() {
@@ -20,19 +21,19 @@ export default function EducationResources() {
 
   return (
     <AppLayout>
-      <SEO title="Education & Resources | Health" description="Access health education materials and resources" canonical={window.location.href} />
+      <SEO title={t('screens.health.educationResourcesHealth')} description="Access health education materials and resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Education & Science"
+            title={t('screens.health.educationScience')}
             description="Access curated health education materials linked to your interests and demographic profile."
             emoji="📚"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search articles, videos, podcasts, or topics..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchArticlesVideosPodcastsTopics')} />
             <UniversalCalendarButton />
             <Button
               variant="default"
@@ -40,15 +41,15 @@ export default function EducationResources() {
               onClick={() => setEducationActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Education Actions
+              {t('screens.health.educationActions')}
             </Button>
           </UtilityActionButton>
 
         <SplitBar value={activeSection} onValueChange={setActiveSection} className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="articles">📚 Articles</SplitBarTrigger>
-            <SplitBarTrigger value="videos">🎥 Videos</SplitBarTrigger>
-            <SplitBarTrigger value="podcasts">🎧 Podcasts</SplitBarTrigger>
+            <SplitBarTrigger value="articles">{t('screens.health.articles')}</SplitBarTrigger>
+            <SplitBarTrigger value="videos">{t('screens.health.videos')}</SplitBarTrigger>
+            <SplitBarTrigger value="podcasts">{t('screens.health.podcasts')}</SplitBarTrigger>
           </SplitBarList>
 
             <SplitBarContent value="articles" className="space-y-6">
@@ -75,7 +76,7 @@ export default function EducationResources() {
                     <CardContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="w-4 h-4" />
-                        <span>{article.readTime} read</span>
+                        <span>{t('screens.health.readtimeRead', { readTime: article.readTime })}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -99,7 +100,7 @@ export default function EducationResources() {
                         <span className="text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded">{video.category}</span>
                         <div className="flex items-center gap-2">
                           <Play className="w-4 h-4 text-green-500" />
-                          <span className="text-xs text-muted-foreground">{video.views} views</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.health.viewsViews', { views: video.views })}</span>
                         </div>
                       </div>
                       <CardTitle className="text-lg">{video.title}</CardTitle>

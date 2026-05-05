@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Eye, MousePointer, Share2, DollarSign } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface KPI {
   label: string;
@@ -23,9 +24,9 @@ export function GrowthKPIs() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="w-5 h-5" />
-          Growth KPIs
+          {t('screens.sharing.growthKpis')}
         </CardTitle>
-        <p className="text-sm text-muted-foreground">Last 7 days performance</p>
+        <p className="text-sm text-muted-foreground">{t('screens.sharing.last7DaysPerformance')}</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
@@ -60,10 +61,10 @@ export function GrowthKPIs() {
             <Share2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="space-y-1">
               <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                Best time to post today
+                {t('screens.sharing.bestTimePostToday')}
               </p>
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                9:00 AM - 11:00 AM • Highest engagement expected
+                {t('screens.sharing.text900Am1100')}
               </p>
             </div>
           </div>

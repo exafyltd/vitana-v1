@@ -43,6 +43,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Bell, Check, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 function formatTime(iso: string): string {
   try {
@@ -86,14 +87,14 @@ const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderR
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {reminder.status === "pending" || reminder.status === "fired" ? (
-          <Button size="icon" variant="ghost" aria-label="Mark done" onClick={() => onComplete(reminder)}>
+          <Button size="icon" variant="ghost" aria-label={t('screens.reminders.markDone')} onClick={() => onComplete(reminder)}>
             <Check className="h-4 w-4 text-muted-foreground" />
           </Button>
         ) : null}
         <Button
           size="icon"
           variant="ghost"
-          aria-label="Delete reminder"
+          aria-label={t('screens.reminders.deleteReminder')}
           onClick={() => onDelete(reminder)}
           className="hover:bg-destructive/10"
         >
@@ -188,16 +189,16 @@ const Reminders: React.FC = () => {
   const handleCreate = async () => {
     const text = actionText.trim();
     if (!text) {
-      toast.error("Please enter what to remind you about");
+      notifyError('toasts.reminders.pleaseEnterWhatRemindYouAbout');
       return;
     }
     if (!whenLocal) {
-      toast.error("Please pick a time");
+      notifyError('toasts.reminders.pleasePickTime');
       return;
     }
     const fireAt = new Date(whenLocal);
     if (isNaN(fireAt.getTime())) {
-      toast.error("Invalid time");
+      notifyError('toasts.reminders.invalidTime');
       return;
     }
     try {
@@ -207,7 +208,7 @@ const Reminders: React.FC = () => {
         scheduled_for_iso: fireAt.toISOString(),
         description: description.trim() || undefined,
       });
-      toast.success("Reminder created");
+      notifySuccess('toasts.reminders.reminderCreated');
       setOpenCreate(false);
       setActionText("");
       setSpokenMessage("");
@@ -222,7 +223,7 @@ const Reminders: React.FC = () => {
     if (!confirmDelete) return;
     try {
       await deleteMut.mutateAsync(confirmDelete.id);
-      toast.success("Reminder deleted");
+      notifySuccess('toasts.reminders.reminderDeleted');
     } catch (err: any) {
       toast.error(err?.message || "Failed to delete reminder");
     } finally {
@@ -244,7 +245,7 @@ const Reminders: React.FC = () => {
   const handleComplete = async (r: ReminderRow) => {
     try {
       await completeMut.mutateAsync(r.id);
-      toast.success("Marked done");
+      notifySuccess('toasts.reminders.markedDone');
     } catch (err: any) {
       toast.error(err?.message || "Failed to mark done");
     }
@@ -263,7 +264,7 @@ const Reminders: React.FC = () => {
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Bell className="h-6 w-6" />
-          Reminders
+          {t('screens.reminders.reminders')}
         </h1>
         <p className="text-sm text-muted-foreground">
           {filteredView
@@ -281,15 +282,14 @@ const Reminders: React.FC = () => {
               type="button"
               onClick={() => setConfirmDeleteAll(true)}
               className="text-xs text-muted-foreground hover:text-destructive underline"
-            >
-              Delete all {upcoming.length} reminders
+            >{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}
             </button>
           ) : (
             <span />
           )}
           <Button variant="ghost" size="sm" onClick={() => setOpenCreate(true)}>
             <Plus className="h-4 w-4 mr-1" />
-            Add manually
+            {t('screens.reminders.addManually')}
           </Button>
         </div>
       ) : null}
@@ -303,12 +303,12 @@ const Reminders: React.FC = () => {
               onClick={clearFilter}
               className="text-xs text-muted-foreground hover:text-foreground underline"
             >
-              Show all
+              {t('screens.reminders.showAll')}
             </button>
           </CardHeader>
           <CardContent className="space-y-2">
             {isLoading ? (
-              <div className="text-sm text-muted-foreground">Loading…</div>
+              <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
             ) : filteredView.items.length === 0 ? (
               <div className="text-sm text-muted-foreground py-6 text-center">{filteredView.emptyText}</div>
             ) : (
@@ -324,15 +324,15 @@ const Reminders: React.FC = () => {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                Suggested by Vitana
+                {t('screens.reminders.suggestedByVitana')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {isLoading ? (
-                <div className="text-sm text-muted-foreground">Loading…</div>
+                <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
               ) : suggestedByVitana.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-6 text-center">
-                  Vitana hasn't suggested any reminders yet. Once Autopilot connects, contextual nudges will appear here.
+                  {t('screens.reminders.vitanaHasnTSuggestedAnyReminders')}
                 </div>
               ) : (
                 suggestedByVitana.map((r) => (
@@ -344,14 +344,14 @@ const Reminders: React.FC = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Scheduled by you</CardTitle>
+              <CardTitle className="text-lg">{t('screens.reminders.scheduledByYou')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {isLoading ? (
-                <div className="text-sm text-muted-foreground">Loading…</div>
+                <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
               ) : scheduledByYou.length === 0 ? (
                 <div className="text-sm text-muted-foreground py-6 text-center">
-                  Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
+                  {t('screens.reminders.tapOrbSay')} <em>{t('screens.reminders.remindMeAt8pmTakeMy')}</em>
                 </div>
               ) : (
                 scheduledByYou.map((r) => (
@@ -364,7 +364,7 @@ const Reminders: React.FC = () => {
           {recent.length > 0 ? (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Recent</CardTitle>
+                <CardTitle className="text-lg">{t('screens.reminders.recent')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {recent.map((r) => (
@@ -380,22 +380,22 @@ const Reminders: React.FC = () => {
       <Dialog open={openCreate} onOpenChange={setOpenCreate}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New reminder</DialogTitle>
-            <DialogDescription>Vitana will chime and speak at the scheduled time.</DialogDescription>
+            <DialogTitle>{t('screens.reminders.newReminder')}</DialogTitle>
+            <DialogDescription>{t('screens.reminders.vitanaWillChimeSpeakAtScheduled')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <div>
-              <Label htmlFor="reminder-action">What to remind you about</Label>
+              <Label htmlFor="reminder-action">{t('screens.reminders.whatRemindYouAbout')}</Label>
               <Input
                 id="reminder-action"
                 value={actionText}
                 onChange={(e) => setActionText(e.target.value)}
-                placeholder="Take magnesium"
+                placeholder={t('screens.reminders.takeMagnesium')}
                 autoFocus
               />
             </div>
             <div>
-              <Label htmlFor="reminder-when">When</Label>
+              <Label htmlFor="reminder-when">{t('screens.reminders.when')}</Label>
               <Input
                 id="reminder-when"
                 type="datetime-local"
@@ -404,16 +404,16 @@ const Reminders: React.FC = () => {
               />
             </div>
             <div>
-              <Label htmlFor="reminder-spoken">Spoken message (optional)</Label>
+              <Label htmlFor="reminder-spoken">{t('screens.reminders.spokenMessageOptional')}</Label>
               <Input
                 id="reminder-spoken"
                 value={spokenMessage}
                 onChange={(e) => setSpokenMessage(e.target.value)}
-                placeholder="Time to take your magnesium pills"
+                placeholder={t('screens.reminders.timeTakeYourMagnesiumPills')}
               />
             </div>
             <div>
-              <Label htmlFor="reminder-desc">Notes (optional)</Label>
+              <Label htmlFor="reminder-desc">{t('screens.reminders.notesOptional')}</Label>
               <Input
                 id="reminder-desc"
                 value={description}
@@ -423,7 +423,7 @@ const Reminders: React.FC = () => {
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setOpenCreate(false)}>
-              Cancel
+              {t('screens.reminders.cancel')}
             </Button>
             <Button onClick={handleCreate} disabled={createMut.isPending}>
               {createMut.isPending ? "Creating…" : "Create reminder"}
@@ -436,13 +436,13 @@ const Reminders: React.FC = () => {
       <AlertDialog open={!!confirmDelete} onOpenChange={(o) => !o && setConfirmDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this reminder?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.reminders.deleteThisReminder')}</AlertDialogTitle>
             <AlertDialogDescription>{confirmDelete?.action_text}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+              {t('screens.reminders.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -452,15 +452,14 @@ const Reminders: React.FC = () => {
       <AlertDialog open={confirmDeleteAll} onOpenChange={setConfirmDeleteAll}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete all {upcoming.length} reminders?</AlertDialogTitle>
-            <AlertDialogDescription>
-              They will be removed from your list. This can't be easily undone.
+            <AlertDialogTitle>{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.reminders.theyWillRemovedFromYourList')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteAll} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete All
+              {t('screens.reminders.deleteAll')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, TrendingUp, Clock, Calendar } from "lucide-react";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
+import { t } from '@/lib/i18n-toast';
 
 interface ViewStatisticsDialogProps {
   open: boolean;
@@ -49,7 +50,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <BarChart3 className="w-6 h-6" />
-            Activity Statistics
+            {t('screens.memory.activityStatistics')}
           </DialogTitle>
         </DialogHeader>
 
@@ -62,7 +63,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <Calendar className="w-8 h-8 text-primary" />
                   <div>
                     <div className="text-2xl font-bold">{totalItems}</div>
-                    <div className="text-sm text-muted-foreground">Total Items</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.totalItems')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <TrendingUp className="w-8 h-8 text-accent" />
                   <div>
                     <div className="text-2xl font-bold">{last7Days}</div>
-                    <div className="text-sm text-muted-foreground">Last 7 Days</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.last7Days')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -86,7 +87,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                   <Clock className="w-8 h-8 text-secondary" />
                   <div>
                     <div className="text-2xl font-bold">{last30Days}</div>
-                    <div className="text-sm text-muted-foreground">Last 30 Days</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.memory.last30Days')}</div>
                   </div>
                 </div>
               </CardContent>
@@ -96,7 +97,7 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
           {/* Category Breakdown */}
           <Card>
             <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Activity by Category</h3>
+              <h3 className="font-semibold mb-4">{t('screens.memory.activityByCategory')}</h3>
               <div className="space-y-3">
                 {categories.map(([category, count]) => {
                   const percentage = ((count / totalItems) * 100).toFixed(1);
@@ -126,12 +127,12 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
             <CardContent className="p-6">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" />
-                Insights
+                {t('screens.memory.insights')}
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Most active category: {categories[0]?.[0] || 'N/A'}</li>
-                <li>• Average daily activity: {(last30Days / 30).toFixed(1)} items</li>
-                <li>• Weekly trend: {last7Days > last30Days / 4.3 ? '📈 Increasing' : '📉 Decreasing'}</li>
+                <li>{t('screens.memory.mostActiveCategoryValue0', { value0: categories[0]?.[0] || 'N/A' })}</li>
+                <li>{t('screens.memory.averageDailyActivityValue0Items', { value0: (last30Days / 30).toFixed(1) })}</li>
+                <li>{t('screens.memory.weeklyTrendValue0', { value0: last7Days > last30Days / 4.3 ? '📈 Increasing' : '📉 Decreasing' })}</li>
               </ul>
             </CardContent>
           </Card>

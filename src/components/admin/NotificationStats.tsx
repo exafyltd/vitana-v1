@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Mail, Smartphone, Bell, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface Stats {
   total_today: number;
@@ -106,7 +107,7 @@ export default function NotificationStats() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="w-5 h-5" />
-          Notification Statistics
+          {t('screens.admin.notificationStatistics')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -129,7 +130,7 @@ export default function NotificationStats() {
         <div className="mt-6 pt-4 border-t">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-muted-foreground">Success Rate</p>
+              <p className="text-muted-foreground">{t('screens.admin.successRate')}</p>
               <p className="text-lg font-semibold text-green-600">
                 {stats.total_today > 0 
                   ? Math.round((stats.email_sent / stats.total_today) * 100) 
@@ -137,7 +138,7 @@ export default function NotificationStats() {
               </p>
             </div>
             <div>
-              <p className="text-muted-foreground">Failure Rate</p>
+              <p className="text-muted-foreground">{t('screens.admin.failureRate')}</p>
               <p className="text-lg font-semibold text-red-600">
                 {stats.total_today > 0 
                   ? Math.round((stats.failed / stats.total_today) * 100) 

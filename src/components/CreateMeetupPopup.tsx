@@ -10,8 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -133,11 +134,7 @@ const generateImageUrl = (title: string, description: string) => {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
-      toast({
-        title: "Form Incomplete",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.formIncomplete', 'toasts.common.pleaseFillAllRequiredFields');
       return;
     }
 
@@ -145,11 +142,7 @@ const generateImageUrl = (title: string, description: string) => {
     const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
     const now = new Date();
     if (selectedDateTime < now) {
-      toast({
-        title: "Invalid Date",
-        description: "You cannot create a meetup in the past. Please select a future date and time.",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.invalidDate', 'toasts.common.youCannotCreateMeetupPastPlease');
       return;
     }
 
@@ -203,11 +196,7 @@ const generateImageUrl = (title: string, description: string) => {
           uploadedImageUrl = pub.publicUrl;
         } catch (e) {
           console.error('Image upload failed:', e);
-          toast({
-            title: "Image upload failed",
-            description: "We’ll use an automatic fallback image.",
-            variant: "default",
-          });
+          notify('toasts.common.imageUploadFailed', 'toasts.common.weLlUseAutomaticFallbackImage');
         }
       }
 
@@ -226,10 +215,7 @@ const generateImageUrl = (title: string, description: string) => {
       const result = await createEvent(eventData);
       
       if (result.success) {
-        toast({
-          title: "Meetup Created!",
-          description: "Your meetup has been successfully created and will appear in the community.",
-        });
+        notify('toasts.common.meetupCreated', 'toasts.common.yourMeetupHasSuccessfullyCreatedWill');
         
         // Call the callback FIRST (before closing) to allow parent to handle event display
         if (onEventCreated && result.eventId) {
@@ -282,11 +268,7 @@ const generateImageUrl = (title: string, description: string) => {
           window.dispatchEvent(new PopStateEvent('popstate'));
         }
       } else {
-        toast({
-          title: "Error Creating Meetup",
-          description: "There was an issue creating your meetup. Please try again.",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.errorCreatingMeetup', 'toasts.common.thereIssueCreatingYourMeetupPlease');
       }
     } finally {
       setLoading(false);
@@ -299,23 +281,23 @@ const generateImageUrl = (title: string, description: string) => {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-orange-600" />
-            Create New Meetup
+            {t('screens.common.createNewMeetup')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Meetup Details</CardTitle>
+              <CardTitle className="text-lg">{t('screens.common.meetupDetails')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="title">Meetup Title *</Label>
+                <Label htmlFor="title">{t('screens.common.meetupTitle')}</Label>
                 <Input
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="e.g., Weekend Hiking Adventure, Meditation Circle"
+                  placeholder={t('screens.common.eGWeekendHikingAdventureMeditation')}
                   className={`mt-1 ${errors.title ? 'border-destructive' : ''}`}
                 />
                 {errors.title && (
@@ -327,47 +309,47 @@ const generateImageUrl = (title: string, description: string) => {
               </div>
 
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.common.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe your meetup, what participants can expect..."
+                  placeholder={t('screens.common.describeYourMeetupWhatParticipantsCan')}
                   className="mt-1"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('screens.common.category')}</Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={t('screens.common.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="fitness">Fitness & Exercise</SelectItem>
-                      <SelectItem value="outdoor">Outdoor Activities</SelectItem>
-                      <SelectItem value="wellness">Wellness & Mindfulness</SelectItem>
-                      <SelectItem value="social">Social & Networking</SelectItem>
-                      <SelectItem value="learning">Learning & Workshops</SelectItem>
-                      <SelectItem value="support">Support & Community</SelectItem>
+                      <SelectItem value="fitness">{t('screens.common.fitnessExercise')}</SelectItem>
+                      <SelectItem value="outdoor">{t('screens.common.outdoorActivities')}</SelectItem>
+                      <SelectItem value="wellness">{t('screens.common.wellnessMindfulness')}</SelectItem>
+                      <SelectItem value="social">{t('screens.common.socialNetworking')}</SelectItem>
+                      <SelectItem value="learning">{t('screens.common.learningWorkshops')}</SelectItem>
+                      <SelectItem value="support">{t('screens.common.supportCommunity')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="duration">Duration</Label>
+                  <Label htmlFor="duration">{t('screens.common.duration')}</Label>
                   <Select value={formData.duration} onValueChange={(value) => setFormData({...formData, duration: value})}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Select duration" />
+                      <SelectValue placeholder={t('screens.common.selectDuration')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="30min">30 minutes</SelectItem>
-                      <SelectItem value="1hour">1 hour</SelectItem>
-                      <SelectItem value="2hour">2 hours</SelectItem>
-                      <SelectItem value="half-day">Half day</SelectItem>
-                      <SelectItem value="full-day">Full day</SelectItem>
-                      <SelectItem value="custom">Custom</SelectItem>
+                      <SelectItem value="30min">{t('screens.common.text30Minutes')}</SelectItem>
+                      <SelectItem value="1hour">{t('screens.common.text1Hour')}</SelectItem>
+                      <SelectItem value="2hour">{t('screens.common.text2Hours')}</SelectItem>
+                      <SelectItem value="half-day">{t('screens.common.halfDay')}</SelectItem>
+                      <SelectItem value="full-day">{t('screens.common.fullDay')}</SelectItem>
+                      <SelectItem value="custom">{t('screens.common.custom')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -375,7 +357,7 @@ const generateImageUrl = (title: string, description: string) => {
 
               {formData.duration === "custom" && (
                 <div>
-                  <Label htmlFor="customDuration">Custom Duration (hours)</Label>
+                  <Label htmlFor="customDuration">{t('screens.common.customDurationHours')}</Label>
                   <Input
                     id="customDuration"
                     type="number"
@@ -386,12 +368,12 @@ const generateImageUrl = (title: string, description: string) => {
                     onChange={(e) => setFormData({...formData, customDuration: e.target.value})}
                     className="mt-1"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">Enter duration in hours (e.g., 1.5 for 90 minutes)</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.common.enterDurationHoursEG1')}</p>
                 </div>
               )}
 
               <div>
-                <Label>Tags</Label>
+                <Label>{t('screens.common.tags')}</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {availableTags.map((tag) => (
                     <Badge
@@ -408,7 +390,7 @@ const generateImageUrl = (title: string, description: string) => {
               </div>
 
               <div>
-                <Label>Meetup Image</Label>
+                <Label>{t('screens.common.meetupImage')}</Label>
                 <div className="mt-2 space-y-4">
                   <div>
                     <input
@@ -424,23 +406,21 @@ const generateImageUrl = (title: string, description: string) => {
                       onClick={() => document.getElementById('image-upload')?.click()}
                       className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Upload Custom Image
+                      <Plus className="w-4 h-4 mr-2" />{t('screens.common.uploadCustomImage')}
                     </Button>
                   </div>
                   
                   <div>
-                    <p className="text-sm text-muted-foreground">
-                      💡 Meetup image will be automatically generated based on your title and description
+                    <p className="text-sm text-muted-foreground">{t('screens.common.meetupImageWillAutomaticallyGeneratedBased')}
                     </p>
                   </div>
 
                   {formData.imageUrl && (
                     <div className="border rounded p-2">
-                      <p className="text-sm text-muted-foreground mb-2">Selected image:</p>
+                      <p className="text-sm text-muted-foreground mb-2">{t('screens.common.selectedImage')}</p>
                       <img 
                         src={formData.imageUrl} 
-                        alt="Preview" 
+                        alt={t('screens.common.preview')} 
                         className="w-full h-32 object-cover rounded"
                       />
                     </div>
@@ -453,14 +433,13 @@ const generateImageUrl = (title: string, description: string) => {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Schedule & Location
+                <Calendar className="w-5 h-5" />{t('screens.common.scheduleLocation')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="date">Date *</Label>
+                  <Label htmlFor="date">{t('screens.common.date')}</Label>
                   <Input
                     id="date"
                     type="date"
@@ -478,7 +457,7 @@ const generateImageUrl = (title: string, description: string) => {
                 </div>
 
                 <div>
-                  <Label htmlFor="time">Time *</Label>
+                  <Label htmlFor="time">{t('screens.common.time')}</Label>
                   <Select 
                     value={generateTimeOptions().includes(formData.time) ? formData.time : formData.time ? "custom" : ""} 
                     onValueChange={(value) => {
@@ -490,7 +469,7 @@ const generateImageUrl = (title: string, description: string) => {
                     }}
                   >
                     <SelectTrigger className={`mt-1 ${errors.time ? 'border-destructive' : ''}`}>
-                      <SelectValue placeholder="Select time" />
+                      <SelectValue placeholder={t('screens.common.selectTime')} />
                     </SelectTrigger>
                     <SelectContent className="max-h-[200px]">
                       {generateTimeOptions().map((time) => (
@@ -498,7 +477,7 @@ const generateImageUrl = (title: string, description: string) => {
                           {time}
                         </SelectItem>
                       ))}
-                      <SelectItem value="custom">Custom time...</SelectItem>
+                      <SelectItem value="custom">{t('screens.common.customTime')}</SelectItem>
                     </SelectContent>
                   </Select>
                   {formData.time && !generateTimeOptions().includes(formData.time) && (
@@ -510,7 +489,7 @@ const generateImageUrl = (title: string, description: string) => {
                         setFormData({...formData, time: e.target.value});
                       }}
                       className={`mt-2 ${errors.time ? 'border-destructive' : ''}`}
-                      placeholder="HH:MM"
+                      placeholder={t('screens.common.hhMm')}
                     />
                   )}
                   {errors.time && (
@@ -524,8 +503,8 @@ const generateImageUrl = (title: string, description: string) => {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Virtual Meetup</Label>
-                  <p className="text-sm text-muted-foreground">This meetup will be held online</p>
+                  <Label>{t('screens.common.virtualMeetup')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('screens.common.thisMeetupWillHeldOnline')}</p>
                 </div>
                 <Switch 
                   checked={formData.isVirtual}
@@ -535,12 +514,12 @@ const generateImageUrl = (title: string, description: string) => {
 
               {!formData.isVirtual && (
                 <div>
-                  <Label htmlFor="location">Location *</Label>
+                  <Label htmlFor="location">{t('screens.common.location')}</Label>
                   <Input
                     id="location"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Central Park, Community Center, Local Gym"
+                    placeholder={t('screens.common.eGCentralParkCommunityCenter')}
                     className={`mt-1 ${errors.location ? 'border-destructive' : ''}`}
                   />
                   {errors.location && (
@@ -554,13 +533,13 @@ const generateImageUrl = (title: string, description: string) => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="capacity">Max Participants</Label>
+                  <Label htmlFor="capacity">{t('screens.common.maxParticipants')}</Label>
                   <Input
                     id="capacity"
                     type="number"
                     value={formData.capacity}
                     onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                    placeholder="Leave empty for unlimited"
+                    placeholder={t('screens.common.leaveEmptyForUnlimited')}
                     className="mt-1"
                   />
                 </div>
@@ -568,8 +547,8 @@ const generateImageUrl = (title: string, description: string) => {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <Label>Recurring Meetup</Label>
-                      <p className="text-sm text-muted-foreground">Create a repeating event</p>
+                      <Label>{t('screens.common.recurringMeetup')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('screens.common.createRepeatingEvent')}</p>
                     </div>
                     <Switch 
                       checked={formData.isRecurring}
@@ -578,15 +557,15 @@ const generateImageUrl = (title: string, description: string) => {
                   </div>
                   {formData.isRecurring && (
                     <div>
-                      <Label htmlFor="recurringType">Frequency</Label>
+                      <Label htmlFor="recurringType">{t('screens.common.frequency')}</Label>
                       <Select value={formData.recurringType} onValueChange={(value) => setFormData({...formData, recurringType: value})}>
                         <SelectTrigger className="mt-1">
-                          <SelectValue placeholder="Select frequency" />
+                          <SelectValue placeholder={t('screens.common.selectFrequency')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="daily">Daily</SelectItem>
-                          <SelectItem value="weekly">Weekly</SelectItem>
-                          <SelectItem value="monthly">Monthly</SelectItem>
+                          <SelectItem value="daily">{t('screens.common.daily')}</SelectItem>
+                          <SelectItem value="weekly">{t('screens.common.weekly')}</SelectItem>
+                          <SelectItem value="monthly">{t('screens.common.monthly')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -595,12 +574,12 @@ const generateImageUrl = (title: string, description: string) => {
               </div>
 
               <div>
-                <Label htmlFor="requirements">Requirements (Optional)</Label>
+                <Label htmlFor="requirements">{t('screens.common.requirementsOptional')}</Label>
                 <Textarea
                   id="requirements"
                   value={formData.requirements}
                   onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                  placeholder="Any equipment, preparation, or prerequisites needed..."
+                  placeholder={t('screens.common.anyEquipmentPreparationPrerequisitesNeeded')}
                   className="mt-1"
                 />
               </div>
@@ -608,8 +587,7 @@ const generateImageUrl = (title: string, description: string) => {
           </Card>
 
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+            <Button variant="outline" onClick={onClose} className="flex-1">{t('screens.common.cancel')}
             </Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={loading}>
               {loading ? "Creating..." : "Create Meetup"}

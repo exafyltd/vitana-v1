@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoGalleryProps {
   photos: GalleryPhoto[];
@@ -107,8 +108,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
       )}
 
       {compact && photos.length > 6 && (
-        <p className="text-xs text-muted-foreground text-center">
-          +{photos.length - 6} more photos
+        <p className="text-xs text-muted-foreground text-center">{t('screens.profile.value0MorePhotos', { value0: photos.length - 6 })}
         </p>
       )}
 

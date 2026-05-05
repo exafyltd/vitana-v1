@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Loader2, MessageCircle } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/context/AuthProvider";
 import { communityFetch } from "@/lib/community-gateway";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 export const REFERRAL_OPEN_EVENT = "referral:open";
 
@@ -79,10 +79,10 @@ export function InviteSheet() {
     try {
       await navigator.clipboard.writeText(link.url);
       setCopied(true);
-      toast.success("Invite link copied");
+      notifySuccess('toasts.common.inviteLinkCopied');
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Couldn't copy — please copy the link manually");
+      notifyError('toasts.common.couldnTCopyPleaseCopyLink');
     }
   };
 
@@ -95,10 +95,9 @@ export function InviteSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="right" className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-xl font-semibold">Bring a friend along</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t('screens.common.bringFriendAlong')}</SheetTitle>
           <SheetDescription className="text-sm text-muted-foreground">
-            The journey is better together. Share your invite link — they get a
-            head start, you get the company.
+            {t('screens.common.journeyBetterTogetherShareYourInvite')}
           </SheetDescription>
         </SheetHeader>
 
@@ -107,30 +106,29 @@ export function InviteSheet() {
             {loading ? (
               <span className="text-sm text-muted-foreground inline-flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Generating your invite link…
+                {t('screens.common.generatingYourInviteLink')}
               </span>
             ) : error ? (
               <span className="text-sm text-destructive">{error}</span>
             ) : link?.url ? (
               <div className="w-full">
-                <p className="text-xs text-muted-foreground mb-1">Your invite link</p>
+                <p className="text-xs text-muted-foreground mb-1">{t('screens.common.yourInviteLink')}</p>
                 <p className="text-sm font-mono break-all">{link.url}</p>
               </div>
             ) : (
-              <span className="text-sm text-muted-foreground">No link yet.</span>
+              <span className="text-sm text-muted-foreground">{t('screens.common.noLinkYet')}</span>
             )}
           </div>
 
           <Button onClick={handleCopy} disabled={!link?.url || loading} className="w-full">
             {copied ? (
               <>
-                <Check className="w-4 h-4 mr-2" />
-                Copied
+                <Check className="w-4 h-4 mr-2" />{t('screens.common.copied')}
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4 mr-2" />
-                Copy invite link
+                {t('screens.common.copyInviteLink')}
               </>
             )}
           </Button>
@@ -142,18 +140,17 @@ export function InviteSheet() {
             className="w-full"
           >
             <MessageCircle className="w-4 h-4 mr-2" />
-            Share on WhatsApp
+            {t('screens.common.shareWhatsapp')}
           </Button>
 
           {error && (
             <Button variant="ghost" onClick={fetchLink} className="w-full">
-              Try again
+              {t('screens.common.tryAgain2')}
             </Button>
           )}
 
           <p className="text-xs text-muted-foreground text-center">
-            Each share is tracked, so when a friend signs up your reward credit
-            arrives automatically.
+            {t('screens.common.eachShareTrackedSoWhenFriend')}
           </p>
         </div>
       </SheetContent>

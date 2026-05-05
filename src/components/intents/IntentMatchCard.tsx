@@ -12,9 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Flag } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { transitionMatch, declineMatch, type IntentMatch } from "@/lib/intentApi";
 import { DisputeModal } from "./DisputeModal";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntentMatchCardProps {
   match: IntentMatch;
@@ -76,10 +77,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
     try {
       const newState = perspective === "outgoing" ? "responded_by_a" : "responded_by_b";
       await transitionMatch(match.match_id, newState);
-      toast({ title: "Interest recorded", description: "If they're interested too, we'll connect you." });
+      notify('toasts.intents.interestRecorded', 'toasts.intents.ifTheyReInterestedTooWe');
       onAction?.();
     } catch (err: any) {
-      toast({ title: "Could not record interest", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotRecordInterest');
     } finally {
       setBusy(null);
     }
@@ -89,10 +90,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
     setBusy("decline");
     try {
       await declineMatch(match.match_id);
-      toast({ title: "Declined" });
+      notify('toasts.intents.declined');
       onAction?.();
     } catch (err: any) {
-      toast({ title: "Could not decline", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intents.couldNotDecline');
     } finally {
       setBusy(null);
     }
@@ -125,10 +126,10 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
             {isRedacted ? (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-base font-semibold tracking-wide text-muted-foreground">
-                  Anonymous match
+                  {t('screens.intents.anonymousMatch')}
                 </span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
-                  mutual reveal
+                  {t('screens.intents.mutualReveal')}
                 </span>
               </div>
             ) : match.partner_display_name ? (
@@ -145,7 +146,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
         <div className="text-right shrink-0">
           <p className="text-sm font-semibold">{scorePct}%</p>
           {match.compass_aligned && (
-            <p className="text-xs text-amber-600 mt-0.5">⭐ compass-aligned</p>
+            <p className="text-xs text-amber-600 mt-0.5">{t('screens.intents.compassaligned')}</p>
           )}
         </div>
       </div>
@@ -163,14 +164,14 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
       {isMutual ? (
         <div className="space-y-2">
           <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2">
-            🎉 Mutual interest — open the message thread to start chatting.
+            {t('screens.intents.mutualInterestOpenMessageThreadStart')}
           </div>
           <button
             type="button"
             onClick={() => setDisputeOpen(true)}
             className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
           >
-            <Flag className="h-3 w-3" /> Report an issue
+            <Flag className="h-3 w-3" /> {t('screens.intents.reportIssue')}
           </button>
         </div>
       ) : match.state === "declined" || match.state === "closed" ? (
@@ -198,7 +199,7 @@ export function IntentMatchCard({ match, perspective, onAction }: IntentMatchCar
               onClick={() => setDisputeOpen(true)}
               className="ml-auto text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
             >
-              <Flag className="h-3 w-3" /> Report
+              <Flag className="h-3 w-3" /> {t('screens.intents.report')}
             </button>
           )}
         </div>

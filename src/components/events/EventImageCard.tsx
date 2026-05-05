@@ -4,6 +4,7 @@ import { NewsCard, NewsCardProps } from "@/components/crossover/NewsCard";
 import { eventCardToNewsCardProps } from "@/lib/eventCardTransformers";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { t } from '@/lib/i18n-toast';
 
 interface EventImageCardProps {
   event: UnifiedEventCard;
@@ -30,8 +31,7 @@ export const EventImageCard: React.FC<EventImageCardProps> = ({
 
   // Add match score badge if enabled
   const utilityTopRight = showMatchScore && event.match_score !== undefined ? (
-    <Badge className="bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0 text-xs font-medium px-2 py-1">
-      {Math.round(event.match_score * 100)}% Match
+    <Badge className="bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0 text-xs font-medium px-2 py-1">{t('screens.events.value0Match', { value0: Math.round(event.match_score * 100) })}
     </Badge>
   ) : undefined;
 

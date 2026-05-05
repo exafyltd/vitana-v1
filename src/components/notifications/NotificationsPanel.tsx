@@ -23,6 +23,7 @@ import {
   resolveNotificationRoute,
   type NotificationCategory,
 } from '@/lib/notification-types';
+import { t } from '@/lib/i18n-toast';
 
 type FilterValue = 'all' | 'unread' | NotificationCategory;
 
@@ -133,9 +134,9 @@ export function NotificationsPanel({
       {/* Header */}
       <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b">
         <div className="flex items-baseline gap-2">
-          <h3 className="font-semibold text-base">Notifications</h3>
+          <h3 className="font-semibold text-base">{t('screens.notifications.notifications')}</h3>
           {unreadCount > 0 && (
-            <span className="text-xs text-muted-foreground">{unreadCount} unread</span>
+            <span className="text-xs text-muted-foreground">{t('screens.notifications.unreadcountUnread', { unreadCount })}</span>
           )}
         </div>
         <div className="flex items-center gap-0.5">
@@ -145,8 +146,8 @@ export function NotificationsPanel({
               size="icon"
               onClick={markAllAsRead}
               className="h-8 w-8"
-              title="Mark all as read"
-              aria-label="Mark all as read"
+              title={t('screens.notifications.markAllAsRead')}
+              aria-label={t('screens.notifications.markAllAsRead')}
             >
               <Check className="h-4 w-4" />
             </Button>
@@ -157,8 +158,8 @@ export function NotificationsPanel({
               size="icon"
               onClick={() => setConfirmOpen(true)}
               className="h-8 w-8 hover:text-destructive"
-              title="Clear all"
-              aria-label="Clear all notifications"
+              title={t('screens.notifications.clearAll')}
+              aria-label={t('screens.notifications.clearAllNotifications')}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -169,8 +170,8 @@ export function NotificationsPanel({
               size="icon"
               onClick={onClose}
               className="h-8 w-8"
-              title="Close"
-              aria-label="Close notifications"
+              title={t('screens.notifications.close')}
+              aria-label={t('screens.notifications.closeNotifications')}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -270,7 +271,7 @@ export function NotificationsPanel({
             onClick={handleSettingsClick}
           >
             <Settings className="h-3.5 w-3.5 mr-1.5 shrink-0" />
-            <span className="truncate">Manage your notifications</span>
+            <span className="truncate">{t('screens.notifications.manageYourNotifications')}</span>
           </Button>
         </div>
       )}
@@ -287,7 +288,7 @@ export function NotificationsPanel({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.notifications.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDeleteAll}
               className={filter !== 'unread' ? 'bg-destructive hover:bg-destructive/90' : ''}
@@ -368,8 +369,8 @@ function NotificationRow({
           e.stopPropagation();
           onDelete();
         }}
-        aria-label="Delete this notification"
-        title="Delete"
+        aria-label={t('screens.notifications.deleteThisNotification')}
+        title={t('screens.notifications.delete')}
         className="
           shrink-0 self-center
           h-9 w-9 flex items-center justify-center rounded-full

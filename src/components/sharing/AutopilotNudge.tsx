@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Calendar, X } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface AutopilotNudgeProps {
   message: string;
@@ -39,7 +40,7 @@ export function AutopilotNudge({
             <div className="flex items-start gap-2">
               <div className="flex-1">
                 <Badge variant="secondary" className="mb-2">
-                  Autopilot Suggestion
+                  {t('screens.sharing.autopilotSuggestion')}
                 </Badge>
                 <p className="text-sm font-medium">{message}</p>
               </div>
@@ -49,11 +50,11 @@ export function AutopilotNudge({
             </div>
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={onPostNow}>
-                Post Now
+                {t('screens.sharing.postNow')}
               </Button>
               <Button variant="outline" size="sm" onClick={onSchedule}>
                 <Calendar className="w-4 h-4 mr-2" />
-                Schedule
+                {t('screens.sharing.schedule')}
               </Button>
             </div>
           </div>

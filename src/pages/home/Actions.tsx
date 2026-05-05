@@ -25,7 +25,8 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { HorizontalVisualCardsScroll } from "@/components/ui/horizontal-visual-cards-scroll";
 import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
 import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -40,18 +41,12 @@ export default function Actions() {
 
   const handleExecuteAction = async (actionId: string) => {
     await executeActions([actionId]);
-    toast({
-      title: "Action Executed",
-      description: "Your action has been completed successfully.",
-    });
+    notify('toasts.home.actionExecuted', 'toasts.home.yourActionHasCompletedSuccessfully');
   };
 
   const handleDismissAction = (actionId: string) => {
     dismissActions([actionId]);
-    toast({
-      title: "Action Dismissed",
-      description: "This action has been removed from your list.",
-    });
+    notify('toasts.home.actionDismissed', 'toasts.home.thisActionHasRemovedFromYour');
   };
 
   const getCategoryIcon = (category: AutopilotCategory) => {
@@ -100,12 +95,12 @@ export default function Actions() {
 
   return (
     <AppLayout>
-      <SEO title="Actions | Dashboard" description="Next Best Actions & Today's Plan" canonical={window.location.href} />
+      <SEO title={t('screens.home.actionsDashboard')} description="Next Best Actions & Today's Plan" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-pink-50/50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Next Best Actions & Today's Plan"
+            title={t('screens.home.nextBestActionsTodaySPlan')}
             description="Autopilot = your decision partner."
             emoji="⭐"
           />
@@ -113,23 +108,23 @@ export default function Actions() {
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
             <ExpandableSearchButton 
-              placeholder="Search actions, categories, or autopilot tasks…"
+              placeholder={t('screens.home.searchActionsCategoriesAutopilotTasks')}
               onSearch={(query) => console.log('Search Actions:', query)}
             />
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setManageActionsOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Actions
+              {t('screens.home.actions')}
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="pending" className="w-full">
             <SplitBarList className="grid w-full grid-cols-4">
-              <SplitBarTrigger value="pending">⏳ Pending</SplitBarTrigger>
-              <SplitBarTrigger value="categories">📂 Categories</SplitBarTrigger>
-              <SplitBarTrigger value="completed">✅ Completed</SplitBarTrigger>
-              <SplitBarTrigger value="failed">❌ Failed</SplitBarTrigger>
+              <SplitBarTrigger value="pending">{t('screens.home.pending')}</SplitBarTrigger>
+              <SplitBarTrigger value="categories">{t('screens.home.categories')}</SplitBarTrigger>
+              <SplitBarTrigger value="completed">{t('screens.home.completed')}</SplitBarTrigger>
+              <SplitBarTrigger value="failed">{t('screens.home.failed')}</SplitBarTrigger>
             </SplitBarList>
             
             {/* Soft separator gradient line */}
@@ -142,7 +137,7 @@ export default function Actions() {
                 <div className="mb-6 px-1">
                   <p className="text-sm text-muted-foreground/80 flex items-center gap-2">
                     <span className="text-base">🤖</span>
-                    <span>Autopilot analyzed your routines and found <strong className="text-foreground font-semibold">{pendingActions.length} optimized actions</strong> for today.</span>
+                    <span>{t('screens.home.autopilotAnalyzedYourRoutinesFound')} <strong className="text-foreground font-semibold">{t('screens.home.lengthOptimizedActions', { length: pendingActions.length })}</strong> {t('screens.home.forToday')}</span>
                   </p>
                 </div>
                 
@@ -173,7 +168,7 @@ export default function Actions() {
             className="mt-4"
             emptyState={
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No pending actions</p>
+                <p className="text-muted-foreground">{t('screens.home.noPendingActions')}</p>
               </div>
             }
           />
@@ -182,7 +177,7 @@ export default function Actions() {
                         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                           <Zap className="w-8 h-8 text-gray-400" />
                         </div>
-                        <p>No pending actions</p>
+                        <p>{t('screens.home.noPendingActions')}</p>
                       </div>
                     )}
                   </section>
@@ -252,11 +247,9 @@ export default function Actions() {
                                   variant="outline"
                                   onClick={() => executeActions(actionsByCategory[category.key].map(a => a.id))}
                                 >
-                                  <Zap className="w-4 h-4 mr-2" />
-                                  Execute All {category.label.split(' ')[0]}
-                                </Button>
+                                  <Zap className="w-4 h-4 mr-2" />{t('screens.home.executeAllValue0', { value0: category.label.split(' ')[0] })}</Button>
                                 <Button variant="ghost" size="sm">
-                                  Configure Category
+                                  {t('screens.home.configureCategory')}
                                 </Button>
                               </div>
                             </>
@@ -265,7 +258,7 @@ export default function Actions() {
                               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                                 {React.createElement(getCategoryIcon(category.key), { className: "w-8 h-8 text-gray-400" })}
                               </div>
-                              <p>No {category.label.toLowerCase()} actions available</p>
+                              <p>{t('screens.home.noValue0ActionsAvailable', { value0: category.label.toLowerCase() })}</p>
                             </div>
                           )}
                         </TabsContent>
@@ -299,7 +292,7 @@ export default function Actions() {
                       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                         <CheckCircle className="w-8 h-8 text-gray-400" />
                       </div>
-                      <p>No completed actions to show</p>
+                      <p>{t('screens.home.noCompletedActionsShow')}</p>
                     </div>
                   </section>
                   
@@ -329,7 +322,7 @@ export default function Actions() {
                       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
                         <FileText className="w-8 h-8 text-gray-400" />
                       </div>
-                      <p>No failed actions to show</p>
+                      <p>{t('screens.home.noFailedActionsShow')}</p>
                     </div>
                   </section>
                   

@@ -11,6 +11,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentForm } from '@/components/billing/StripePaymentForm';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 // Load Stripe publishable key from env
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -43,13 +44,13 @@ export function PurchaseRoomAccessDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Purchase Access: {room.title}</DialogTitle>
+          <DialogTitle>{t('screens.liverooms.purchaseAccessTitle', { title: room.title })}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="text-center">
             <div className="text-3xl font-bold">${amount?.toFixed(2) || room.metadata.price?.toFixed(2)}</div>
-            <p className="text-sm text-muted-foreground">One-time access fee</p>
+            <p className="text-sm text-muted-foreground">{t('screens.liverooms.onetimeAccessFee')}</p>
           </div>
 
           {!clientSecret && (

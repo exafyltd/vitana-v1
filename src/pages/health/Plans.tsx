@@ -23,6 +23,7 @@ import { CrossPlanRelationshipWidget } from "@/components/health/CrossPlanRelati
 import { VitanaScoreTooltip } from "@/components/health/VitanaScoreTooltip";
 import { calculateAutopilotContext } from "@/services/autopilotContext";
 import { toast } from "sonner";
+import { lookup, t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -37,7 +38,7 @@ export default withScreenId(function Plans() {
   
   // Footer button handlers
   const handleRecalibrateAll = () => {
-    toast.info('🔄 Recalibration Started', {
+    toast.info(lookup('toasts.health.recalibrationStarted'), {
       description: 'Analyzing all plans and cross-pillar synergies. This may take a few moments...',
       action: {
         label: 'View Progress',
@@ -47,7 +48,7 @@ export default withScreenId(function Plans() {
   };
 
   const handleViewReport = () => {
-    toast.info('📊 Report Generation', {
+    toast.info(lookup('toasts.health.reportGeneration'), {
       description: 'Your detailed health analytics report is being prepared. Check back in a few minutes!',
       action: {
         label: 'Got it',
@@ -75,7 +76,7 @@ export default withScreenId(function Plans() {
   return (
     <AppLayout>
       <SEO 
-        title="Personalized Health Plans | Vitana" 
+        title={t('screens.health.personalizedHealthPlansVitana')} 
         description="AI-powered nutrition, exercise, hydration, sleep, and wellness plans tailored to your unique health profile and goals"
         canonical={window.location.href}
       />
@@ -88,13 +89,13 @@ export default withScreenId(function Plans() {
         <div className="max-w-7xl mx-auto">
           
           <StandardHeader
-            title="Your Personalized Health Plans"
+            title={t('screens.health.yourPersonalizedHealthPlans')}
             description="AI-powered plans tailored to your unique health profile and goals"
             emoji="🎯"
           />
           
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search plans..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchPlans')} />
           <Button
             variant="default"
             size="sm"
@@ -104,25 +105,24 @@ export default withScreenId(function Plans() {
             }}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Generate New Plan
+            {t('screens.health.generateNewPlan')}
           </Button>
           </UtilityActionButton>
           
           {/* Split Bar Navigation */}
           <SplitBar defaultValue="all" className="mb-6">
             <SplitBarList className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
-              <SplitBarTrigger value="all">📋 All Plans</SplitBarTrigger>
-              <SplitBarTrigger value="nutrition">🥗 Nutrition</SplitBarTrigger>
-              <SplitBarTrigger value="exercise">🏃 Exercise</SplitBarTrigger>
-              <SplitBarTrigger value="hydration">💧 Hydration</SplitBarTrigger>
-              <SplitBarTrigger value="sleep">😴 Sleep</SplitBarTrigger>
-              <SplitBarTrigger value="mental">🧠 Mental</SplitBarTrigger>
+              <SplitBarTrigger value="all">{t('screens.health.allPlans')}</SplitBarTrigger>
+              <SplitBarTrigger value="nutrition">{t('screens.health.nutrition')}</SplitBarTrigger>
+              <SplitBarTrigger value="exercise">{t('screens.health.exercise')}</SplitBarTrigger>
+              <SplitBarTrigger value="hydration">{t('screens.health.hydration')}</SplitBarTrigger>
+              <SplitBarTrigger value="sleep">{t('screens.health.sleep')}</SplitBarTrigger>
+              <SplitBarTrigger value="mental">{t('screens.health.mental')}</SplitBarTrigger>
             </SplitBarList>
             
             <SplitBarContent value="all">
               {isLoading ? (
-                <div className="text-center py-12 text-slate-600 dark:text-slate-400">
-                  Loading plans...
+                <div className="text-center py-12 text-slate-600 dark:text-slate-400">{t('screens.health.loadingPlans')}
                 </div>
               ) : (
                 <>
@@ -159,20 +159,18 @@ export default withScreenId(function Plans() {
                   <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
                     <div className="mb-4">
                       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2 flex items-center gap-2">
-                        🧠 Autopilot Summary
+                        {t('screens.health.autopilotSummary')}
                       </h3>
                       <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                         <div>
                           <VitanaScoreTooltip score={autopilotData.vitanaScore}>
-                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">
-                              {autopilotData.vitanaScore} Vitana Score
+                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">{t('screens.health.vitanascoreVitanaScore', { vitanaScore: autopilotData.vitanaScore })}
                             </button>
                           </VitanaScoreTooltip>
-                          <span> · 5 active plans synced · Cross-pillar synergy {autopilotData.synergyScore}/100</span>
+                          <span>{t('screens.health.text5ActivePlansSyncedCrosspillarSynergy', { synergyScore: autopilotData.synergyScore })}</span>
                         </div>
                         <div>
-                          Next recalibration: <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}
-                        </div>
+                          {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span>{t('screens.health.adjustmentLastadjustment', { lastAdjustment: autopilotData.lastAdjustment })}</div>
                       </div>
                     </div>
                     
@@ -181,20 +179,17 @@ export default withScreenId(function Plans() {
                       <button 
                         onClick={handleRecalibrateAll}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
-                      >
-                        ⚙ Recalibrate All
+                      >{t('screens.health.recalibrateAll')}
                       </button>
                       <button 
                         onClick={handleViewReport}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
-                      >
-                        📈 View Detailed Report
+                      >{t('screens.health.viewDetailedReport')}
                       </button>
                       <button 
                         onClick={handleOptimizeWeakest}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
-                      >
-                        ✨ Optimize Weakest Pillar
+                      >{t('screens.health.optimizeWeakestPillar')}
                       </button>
                     </div>
                   </div>

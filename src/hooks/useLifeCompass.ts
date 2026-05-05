@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface LifeCompass {
   id: string;
@@ -103,17 +104,10 @@ export function useLifeCompass() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["life-compass"] });
-      toast({
-        title: "Life Compass Updated",
-        description: "Your AI guidance has been updated to align with your new goal.",
-      });
+      notify('toasts.hooks.lifeCompassUpdated', 'toasts.hooks.yourAiGuidanceHasUpdatedAlign');
     },
     onError: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Failed to Update",
-        description: error.message,
-      });
+      notifyError('toasts.hooks.failedUpdate');
     },
   });
 
@@ -136,17 +130,10 @@ export function useLifeCompass() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["life-compass-subgoals"] });
-      toast({
-        title: "Subgoal Added",
-        description: "Your subgoal has been added successfully.",
-      });
+      notify('toasts.hooks.subgoalAdded', 'toasts.hooks.yourSubgoalHasAddedSuccessfully');
     },
     onError: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Failed to Add Subgoal",
-        description: error.message,
-      });
+      notifyError('toasts.hooks.failedAddSubgoal');
     },
   });
 

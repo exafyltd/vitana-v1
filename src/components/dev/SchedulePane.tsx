@@ -6,6 +6,7 @@ import { Task } from "@/types/task";
 import { TaskCard } from "./TaskCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SchedulePaneProps {
   tasks: Task[];
@@ -21,9 +22,8 @@ export function SchedulePane({ tasks, onTaskClick }: SchedulePaneProps) {
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
         <Calendar className="h-5 w-5 text-pill-hydration-accent" />
-        <h2 className="text-lg font-semibold">Schedule</h2>
-        <span className="ml-auto text-sm text-muted-foreground">
-          {scheduledTasks.length} tasks
+        <h2 className="text-lg font-semibold">{t('screens.dev.schedule')}</h2>
+        <span className="ml-auto text-sm text-muted-foreground">{t('screens.dev.lengthTasks', { length: scheduledTasks.length })}
         </span>
       </div>
       
@@ -32,8 +32,8 @@ export function SchedulePane({ tasks, onTaskClick }: SchedulePaneProps) {
           {scheduledTasks.length === 0 ? (
             <div className="col-span-full text-center py-12 text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>No scheduled tasks yet.</p>
-              <p className="text-sm mt-1">Drag tasks from Catalog to schedule them.</p>
+              <p>{t('screens.dev.noScheduledTasksYet')}</p>
+              <p className="text-sm mt-1">{t('screens.dev.dragTasksFromCatalogScheduleThem')}</p>
             </div>
           ) : (
             scheduledTasks.map((task) => (

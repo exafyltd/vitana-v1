@@ -53,6 +53,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 // Report type display config
 const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
@@ -131,7 +132,7 @@ export default function MyBiology() {
 
   const handleViewReport = async (filePath: string | null) => {
     if (!filePath) {
-      toast({ title: "No file available", variant: "destructive" });
+      notifyError('toasts.health.noFileAvailable');
       return;
     }
     const { data, error } = await supabase.storage
@@ -139,7 +140,7 @@ export default function MyBiology() {
       .createSignedUrl(filePath, 3600);
     
     if (error || !data?.signedUrl) {
-      toast({ title: "Could not load file", description: error?.message, variant: "destructive" });
+      notifyError('toasts.health.couldNotLoadFile');
       return;
     }
     window.open(data.signedUrl, '_blank');
@@ -212,7 +213,7 @@ export default function MyBiology() {
   return (
     <AppLayout>
       <SEO 
-        title="My Biology | Health" 
+        title={t('screens.health.myBiologyHealth')} 
         description="Your medical biomarkers, omics data, and supplement tracking hub" 
         canonical={window.location.href} 
       />
@@ -221,13 +222,13 @@ export default function MyBiology() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Your Biology Central Hub"
+            title={t('screens.health.yourBiologyCentralHub')}
             description="Track medical biomarkers, omics data, and supplements in one place."
             emoji="🧬"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search biomarkers, tests, or supplements..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchBiomarkersTestsSupplements')} />
             <UniversalCalendarButton />
             <Button
               variant="default"
@@ -235,20 +236,20 @@ export default function MyBiology() {
               onClick={() => setBiomarkerActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Data
+              {t('screens.health.addData')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
             <SplitBarList>
               <SplitBarTrigger value="medical">
-                🧪 My Medical
+                {t('screens.health.myMedical')}
               </SplitBarTrigger>
               <SplitBarTrigger value="omics">
-                🧬 My Omics
+                {t('screens.health.myOmics')}
               </SplitBarTrigger>
               <SplitBarTrigger value="supplements">
-                💊 My Supplements
+                {t('screens.health.mySupplements')}
               </SplitBarTrigger>
             </SplitBarList>
 
@@ -259,10 +260,9 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <TestTube className="w-5 h-5" />
-                      Medical Biomarkers
+                      {t('screens.health.medicalBiomarkers')}
                     </CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Clinical lab results from blood tests, devices, and wearables
+                    <p className="text-sm text-muted-foreground">{t('screens.health.clinicalLabResultsFromBloodTests')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -273,7 +273,7 @@ export default function MyBiology() {
                         onClick={() => openUploadSheet('blood_panel')}
                       >
                         <Upload className="w-4 h-4 mr-2" />
-                        Upload PDF
+                        {t('screens.health.uploadPdf')}
                       </Button>
                       <Button 
                         variant="outline" 
@@ -281,7 +281,7 @@ export default function MyBiology() {
                         onClick={() => logDeviceConnect('Wearable Device')}
                       >
                         <Activity className="w-4 h-4 mr-2" />
-                        Connect Device
+                        {t('screens.health.connectDevice')}
                       </Button>
                     </div>
 
@@ -294,10 +294,10 @@ export default function MyBiology() {
                       emptyState={
                         <div className="text-center py-12 text-muted-foreground">
                           <Droplets className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p className="font-medium mb-1">No medical reports yet</p>
-                          <p className="text-sm">Upload your first blood panel to start building your health profile.</p>
+                          <p className="font-medium mb-1">{t('screens.health.noMedicalReportsYet')}</p>
+                          <p className="text-sm">{t('screens.health.uploadYourFirstBloodPanelStart')}</p>
                           <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
-                            <Upload className="w-4 h-4 mr-2" /> Upload Blood Panel
+                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadBloodPanel')}
                           </Button>
                         </div>
                       }
@@ -314,10 +314,10 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Dna className="w-5 h-5" />
-                      Omics Biomarkers
+                      {t('screens.health.omicsBiomarkers')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Genomics, Epigenomics, Metabolomics, Microbiome, Proteomics, and more
+                      {t('screens.health.genomicsEpigenomicsMetabolomicsMicrobiomeProteomic')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -328,7 +328,7 @@ export default function MyBiology() {
                         onClick={() => openUploadSheet('genomics')}
                       >
                         <FileText className="w-4 h-4 mr-2" />
-                        Upload Results
+                        {t('screens.health.uploadResults')}
                       </Button>
                       <Button 
                         variant="outline" 
@@ -336,7 +336,7 @@ export default function MyBiology() {
                         onClick={() => logOmicsConnectAPI('API Provider')}
                       >
                         <Activity className="w-4 h-4 mr-2" />
-                        Connect API
+                        {t('screens.health.connectApi')}
                       </Button>
                     </div>
 
@@ -349,10 +349,10 @@ export default function MyBiology() {
                       emptyState={
                         <div className="text-center py-12 text-muted-foreground">
                           <Dna className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p className="font-medium mb-1">No omics data yet</p>
-                          <p className="text-sm">Upload your genomics or metabolomics results to unlock deeper insights.</p>
+                          <p className="font-medium mb-1">{t('screens.health.noOmicsDataYet')}</p>
+                          <p className="text-sm">{t('screens.health.uploadYourGenomicsMetabolomicsResultsUnlock')}</p>
                           <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
-                            <Upload className="w-4 h-4 mr-2" /> Upload Omics Report
+                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadOmicsReport')}
                           </Button>
                         </div>
                       }
@@ -369,10 +369,10 @@ export default function MyBiology() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Pill className="w-5 h-5" />
-                      My Supplements
+                      {t('screens.health.mySupplements2')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Track your supplement regimen across 40+ categories
+                      {t('screens.health.trackYourSupplementRegimenAcross40')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -386,17 +386,16 @@ export default function MyBiology() {
                         }}
                       >
                         <Plus className="w-4 h-4 mr-2" />
-                        Add Supplement
+                        {t('screens.health.addSupplement')}
                       </Button>
                       
                       <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                         <SelectTrigger className="w-[200px]">
                           <Filter className="w-4 h-4 mr-2" />
-                          <SelectValue placeholder="Filter by category" />
+                          <SelectValue placeholder={t('screens.health.filterByCategory')} />
                         </SelectTrigger>
                         <SelectContent className="max-h-[300px]">
-                          <SelectItem value="all">
-                            All Categories ({supplements.length})
+                          <SelectItem value="all">{t('screens.health.allCategoriesLength', { length: supplements.length })}
                           </SelectItem>
                           {allCategories.map((category) => (
                             <SelectItem key={category} value={category}>
@@ -410,7 +409,7 @@ export default function MyBiology() {
                     <div className="space-y-2">
                       {supplementsLoading ? (
                         <div className="text-center py-12 text-muted-foreground">
-                          <p>Loading supplements...</p>
+                          <p>{t('screens.health.loadingSupplements')}</p>
                         </div>
                       ) : filteredSupplements.length > 0 ? (
                         filteredSupplements.map((supplement) => (
@@ -435,7 +434,7 @@ export default function MyBiology() {
 
                     {supplements.length > 0 && (
                       <div className="mt-6 p-4 bg-muted/20 rounded-lg">
-                        <h4 className="font-semibold mb-3">Your Active Categories</h4>
+                        <h4 className="font-semibold mb-3">{t('screens.health.yourActiveCategories')}</h4>
                         <div className="flex flex-wrap gap-2">
                           {Object.entries(activeCategoryCount)
                             .sort((a, b) => b[1] - a[1])

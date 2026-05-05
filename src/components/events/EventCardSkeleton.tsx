@@ -1,5 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface EventCardSkeletonProps {
   count?: number;
@@ -102,7 +103,7 @@ export function EventLoadingSpinner() {
         />
       </div>
       <p className="text-xs text-muted-foreground/70 mt-4 font-medium">
-        Loading events…
+        {t('screens.events.loadingEvents')}
       </p>
     </div>
   );

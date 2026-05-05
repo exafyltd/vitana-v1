@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { t } from '@/lib/i18n-toast';
 
 export function DevHubHeader() {
   const { user, signOut } = useAuth();
@@ -24,8 +25,8 @@ export function DevHubHeader() {
     <header className="border-b bg-card">
       <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
         <div>
-          <h1 className="text-lg md:text-2xl font-bold">Vitana Dev — Command Hub</h1>
-          <p className="text-xs md:text-sm text-muted-foreground">(Read-Only Mode)</p>
+          <h1 className="text-lg md:text-2xl font-bold">{t('screens.dev.vitanaDevCommandHub')}</h1>
+          <p className="text-xs md:text-sm text-muted-foreground">{t('screens.dev.readonlyMode')}</p>
         </div>
         
         {user && (
@@ -38,7 +39,7 @@ export function DevHubHeader() {
                 className="gap-2"
               >
                 <Settings className="h-4 w-4" />
-                <span className="hidden lg:inline">Settings</span>
+                <span className="hidden lg:inline">{t('screens.dev.settings')}</span>
               </Button>
             )}
             
@@ -60,7 +61,7 @@ export function DevHubHeader() {
               className="gap-2"
             >
               <LogOut className="h-4 w-4" />
-              {!isMobile && <span>Sign Out</span>}
+              {!isMobile && <span>{t('screens.dev.signOut')}</span>}
             </Button>
           </div>
         )}

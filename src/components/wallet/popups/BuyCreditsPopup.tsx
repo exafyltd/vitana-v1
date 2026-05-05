@@ -14,6 +14,7 @@ import { CreditCard, Gift, Zap, Loader2, Star } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BuyCreditsPopupProps {
   open: boolean;
@@ -40,11 +41,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
   const handleBuyCredits = async (credits: number, cost: number, bonus: number) => {
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
     }
 
@@ -55,18 +52,11 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('CREDITS', credits + bonus, 'add');
       
-      toast({
-        title: '✅ Credits Purchased Successfully!',
-        description: `Purchased ${credits} credits${bonus > 0 ? ` + ${bonus} bonus credits` : ''} for $${cost}`,
-      });
+      notify('toasts.wallet.creditsPurchasedSuccessfully');
       
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -74,11 +64,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
   const handleCustomPurchase = async () => {
     if (!creditAmount || parseFloat(creditAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid number of credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidNumberCredits');
       return;
     }
 
@@ -86,11 +72,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
     const cost = Math.round(credits * 0.25); // $0.25 per credit
     
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these credits',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
     }
 
@@ -100,19 +82,12 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('CREDITS', credits, 'add');
       
-      toast({
-        title: '✅ Credits Purchased Successfully!',
-        description: `Purchased ${credits} credits for $${cost}`,
-      });
+      notify('toasts.wallet.creditsPurchasedSuccessfully');
       
       onOpenChange(false);
       setCreditAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -124,7 +99,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-blue-600" />
-            Buy Credits
+            {t('screens.wallet.buyCredits')}
           </DialogTitle>
         </DialogHeader>
         
@@ -132,18 +107,18 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
-              <div className="text-xs text-muted-foreground">Current Credits</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.currentCredits')}</div>
               <div className="font-semibold text-blue-700">{currentCredits.toLocaleString()}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
-              <div className="text-xs text-muted-foreground">USD Balance</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
               <div className="font-semibold text-green-700">${usdBalance.toLocaleString()}</div>
             </div>
           </div>
 
           {/* Credit Packages */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">Credit Packages</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.creditPackages')}</h4>
             {creditPackages.map((pkg, index) => (
               <Button
                 key={index}
@@ -159,10 +134,9 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
                   <div className="text-left">
-                    <div className="font-medium">
-                      {pkg.credits.toLocaleString()} Credits
+                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: pkg.credits.toLocaleString() })}
                       {pkg.bonus > 0 && (
-                        <span className="text-green-600 ml-1">+ {pkg.bonus} Bonus</span>
+                        <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                       )}
                     </div>
                     <div className="text-xs text-muted-foreground">${pkg.cost}</div>
@@ -178,7 +152,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                   {pkg.popular && (
                     <Badge className="bg-blue-600 text-white flex items-center gap-1">
                       <Star className="h-3 w-3" />
-                      Popular
+                      {t('screens.wallet.popular')}
                     </Badge>
                   )}
                 </div>
@@ -190,19 +164,19 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
           {/* Custom Amount */}
           <div className="space-y-2">
-            <Label htmlFor="creditAmount">Custom Amount</Label>
+            <Label htmlFor="creditAmount">{t('screens.wallet.customAmount')}</Label>
             <Input
               id="creditAmount"
               type="number"
-              placeholder="Enter number of credits"
+              placeholder={t('screens.wallet.enterNumberCredits')}
               value={creditAmount}
               onChange={(e) => setCreditAmount(e.target.value)}
               min="1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Rate: $0.25 per credit</span>
+              <span>{t('screens.wallet.rate025PerCredit')}</span>
               {creditAmount && (
-                <span>Cost: ${(parseFloat(creditAmount) * 0.25).toFixed(2)}</span>
+                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(creditAmount) * 0.25).toFixed(2) })}</span>
               )}
             </div>
             <Button
@@ -215,8 +189,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : (
                 <Zap className="h-4 w-4 mr-2" />
-              )}
-              Buy Custom Amount
+              )}{t('screens.wallet.buyCustomAmount')}
             </Button>
           </div>
 
@@ -224,12 +197,12 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
           <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
             <div className="flex items-center gap-2 mb-2">
               <Zap className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">Credit Usage</span>
+              <span className="text-sm font-medium text-purple-700">{t('screens.wallet.creditUsage')}</span>
             </div>
             <ul className="text-xs text-purple-600 space-y-1">
-              <li>• Access premium features and services</li>
-              <li>• Purchase in-app items and upgrades</li>
-              <li>• Participate in exclusive events</li>
+              <li>{t('screens.wallet.accessPremiumFeaturesServices')}</li>
+              <li>{t('screens.wallet.purchaseInappItemsUpgrades')}</li>
+              <li>{t('screens.wallet.participateExclusiveEvents')}</li>
             </ul>
           </div>
         </div>

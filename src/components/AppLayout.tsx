@@ -44,6 +44,7 @@ import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
+import { t } from '@/lib/i18n-toast';
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -222,7 +223,7 @@ function AppSidebar({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>{open ? "Collapse" : "Expand"} sidebar (⌘/Ctrl+B)</p>
+                  <p>{t('screens.common.value0SidebarctrlB', { value0: open ? "Collapse" : "Expand" })}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -237,7 +238,7 @@ function AppSidebar({
               {/* Calendar Button - Today's Overview */}
               <div
                 className="relative shrink-0 transition-all duration-200"
-                title="Calendar & Events - Today's overview"
+                title={t('screens.common.calendarEventsTodaySOverview')}
               >
                 <UniversalCalendarButton
                   variant="ghost" 
@@ -259,7 +260,7 @@ function AppSidebar({
               <Button
                 variant="ghost"
                 className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
-                title="Digital Wallet"
+                title={t('screens.common.digitalWallet')}
                 onClick={() => setWalletPopupOpen(true)}
               >
                 <Wallet className="h-4 w-4 text-white" />

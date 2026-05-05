@@ -8,6 +8,7 @@ import { TrendingUp, Zap, Brain, Target, Calendar, DollarSign } from "lucide-rea
 import { SmartEarningsForecastCard } from "./SmartEarningsForecastCard";
 import { IntelligentSpendingCard } from "./IntelligentSpendingCard";
 import { DynamicRewardOpportunityCard } from "./DynamicRewardOpportunityCard";
+import { t } from '@/lib/i18n-toast';
 
 interface OptimizationStrategy {
   id: string;
@@ -96,21 +97,20 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            Earning Optimization Dashboard
+            {t('screens.wallet.earningOptimizationDashboard')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Strategy Implementation Progress */}
           <div className="p-3 rounded-lg bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Strategy Implementation</span>
-              <span className="text-sm text-muted-foreground">
-                {implementedStrategies}/{mockStrategies.length} complete
+              <span className="text-sm font-medium">{t('screens.wallet.strategyImplementation')}</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.implementedstrategiesLengthComplete', { implementedStrategies, length: mockStrategies.length })}
               </span>
             </div>
             <Progress value={implementationProgress} className="h-2 mb-2" />
             <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-primary">{totalImpact} VTN</span> potential monthly increase
+              <span className="font-semibold text-primary">{t('screens.wallet.totalimpactVtn', { totalImpact })}</span>{t('screens.wallet.potentialMonthlyIncrease')}
             </p>
           </div>
 
@@ -118,7 +118,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Target className="h-4 w-4 text-green-500" />
-              Recommended Strategies
+              {t('screens.wallet.recommendedStrategies')}
             </h4>
             
             {mockStrategies.map((strategy) => (
@@ -132,7 +132,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                       {strategy.title}
                       {strategy.implemented && (
                         <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600">
-                          Active
+                          {t('screens.wallet.active')}
                         </Badge>
                       )}
                     </h5>
@@ -140,16 +140,14 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                       {strategy.description}
                     </p>
                   </div>
-                  <Badge variant="outline" className={getEffortColor(strategy.effort)}>
-                    {strategy.effort} effort
+                  <Badge variant="outline" className={getEffortColor(strategy.effort)}>{t('screens.wallet.effortEffort', { effort: strategy.effort })}
                   </Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
-                      <DollarSign className="h-3 w-3" />
-                      +{strategy.impact} VTN/month
+                      <DollarSign className="h-3 w-3" />{t('screens.wallet.impactVtnmonth', { impact: strategy.impact })}
                     </div>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Calendar className="h-3 w-3" />
@@ -157,8 +155,7 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
                     </div>
                   </div>
                   {!strategy.implemented && (
-                    <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                      Implement
+                    <Button size="sm" variant="outline" className="text-xs h-6 px-2">{t('screens.wallet.implement')}
                     </Button>
                   )}
                 </div>
@@ -170,22 +167,22 @@ export function EarningOptimizationSplitScreen({ className }: EarningOptimizatio
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-primary">{totalImpact}</div>
-              <div className="text-xs text-muted-foreground">VTN Potential</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnPotential')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-emerald-600">{implementedStrategies}</div>
-              <div className="text-xs text-muted-foreground">Active</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
             </div>
             <div className="text-center p-3 rounded-lg bg-muted/50">
               <div className="text-lg font-bold text-amber-600">{Math.round(implementationProgress)}%</div>
-              <div className="text-xs text-muted-foreground">Complete</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.complete')}</div>
             </div>
           </div>
 
           {/* Action Button */}
           <Button className="w-full">
             <Zap className="h-4 w-4 mr-2" />
-            Activate All Optimizations
+            {t('screens.wallet.activateAllOptimizations')}
           </Button>
         </CardContent>
       </Card>

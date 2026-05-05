@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import {
   getProfilePrefs,
@@ -19,6 +19,7 @@ import {
 } from "@/lib/profilePrefsApi";
 import type { AccountVisibility } from "@/types/profile";
 import { ServiceOfferingsSection } from "./ServiceOfferingsSection";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface Props {
   userId: string;
@@ -43,7 +44,7 @@ export function ServiceOfferingsPublicSection({ userId, vitanaId }: Props) {
           setRelationship("self");
         })
         .catch((e) =>
-          toast({ title: "Could not load offerings", description: e?.message ?? "", variant: "destructive" })
+          notifyError('toasts.profile.couldNotLoadOfferings')
         );
       return;
     }

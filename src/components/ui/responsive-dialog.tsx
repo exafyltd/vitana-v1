@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useOrbSuppression } from "@/hooks/useOrbSuppression"
+import { t } from '@/lib/i18n-toast';
 
 // ============================================================================
 // ResponsiveDialog - Automatically renders as bottom sheet on mobile
@@ -130,7 +131,7 @@ const ResponsiveDialogContent = React.forwardRef<
             )}
           >
             <X className={cn(isMobile ? "h-5 w-5" : "h-4 w-4")} />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{t('screens.ui.close')}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>

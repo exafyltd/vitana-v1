@@ -7,6 +7,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { adminNotificationsNavigation } from "@/config/navigation";
 import { useNotificationPreferenceStats } from "@/hooks/useAdminNotifications";
+import { t } from '@/lib/i18n-toast';
 
 const CATEGORY_LABELS: Record<string, string> = {
   live_room_notifications: "Live Room",
@@ -33,20 +34,20 @@ export default function NotificationPreferences() {
       <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Notification Preferences"
+          title={t('screens.admin.notificationPreferences')}
           description="Aggregate view of user notification opt-in rates and engagement"
         />
 
         {/* Top stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <AdminStatsCard
-            title="Users with Preferences"
+            title={t('screens.admin.usersWithPreferences')}
             value={totalWithPrefs}
             icon={Users}
             loading={isLoading}
           />
           <AdminStatsCard
-            title="Push Enabled"
+            title={t('screens.admin.pushEnabled')}
             value={`${pushRate}%`}
             subtitle={`${stats?.push_enabled || 0} of ${totalWithPrefs}`}
             icon={Bell}
@@ -54,14 +55,14 @@ export default function NotificationPreferences() {
             variant={pushRate > 50 ? "success" : "warning"}
           />
           <AdminStatsCard
-            title="DND Active"
+            title={t('screens.admin.dndActive')}
             value={stats?.dnd_enabled || 0}
             subtitle="Users with DND on"
             icon={Moon}
             loading={isLoading}
           />
           <AdminStatsCard
-            title="30-Day Read Rate"
+            title={t('screens.admin.text30dayReadRate')}
             value={delivery ? `${delivery.read_rate}%` : "N/A"}
             subtitle={delivery ? `${delivery.total_read_30d} of ${delivery.total_sent_30d}` : undefined}
             icon={TrendingUp}
@@ -83,7 +84,7 @@ export default function NotificationPreferences() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <BarChart3 className="h-4 w-4" />
-                Category Opt-In Rates
+                {t('screens.admin.categoryOptinRates')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -98,7 +99,7 @@ export default function NotificationPreferences() {
                 </div>
               ) : totalWithPrefs === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  No users have configured preferences yet.
+                  {t('screens.admin.noUsersHaveConfiguredPreferencesYet')}
                 </p>
               ) : (
                 Object.entries(CATEGORY_LABELS).map(([key, label]) => {
@@ -125,7 +126,7 @@ export default function NotificationPreferences() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <TrendingUp className="h-4 w-4" />
-                30-Day Delivery Summary
+                {t('screens.admin.text30dayDeliverySummary')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -140,17 +141,17 @@ export default function NotificationPreferences() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="rounded-lg border p-4 text-center">
                       <p className="text-2xl font-bold">{delivery?.total_sent_30d || 0}</p>
-                      <p className="text-xs text-muted-foreground mt-1">Total Sent</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.totalSent')}</p>
                     </div>
                     <div className="rounded-lg border p-4 text-center">
                       <p className="text-2xl font-bold">{delivery?.total_read_30d || 0}</p>
-                      <p className="text-xs text-muted-foreground mt-1">Total Read</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.totalRead')}</p>
                     </div>
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex justify-between text-sm">
-                      <span>Overall Read Rate</span>
+                      <span>{t('screens.admin.overallReadRate')}</span>
                       <span className="font-medium">{delivery?.read_rate || 0}%</span>
                     </div>
                     <Progress value={delivery?.read_rate || 0} className="h-3" />
@@ -159,8 +160,7 @@ export default function NotificationPreferences() {
                   <div className="rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <BellOff className="h-3 w-3" />
-                      <span>
-                        {stats?.push_disabled || 0} user(s) have push notifications disabled globally.
+                      <span>{t('screens.admin.value0UserSHavePushNotifications', { value0: stats?.push_disabled || 0 })}
                       </span>
                     </div>
                   </div>

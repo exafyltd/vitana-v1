@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
+import { t } from '@/lib/i18n-toast';
 
 interface SearchSuggestion {
   id: string;
@@ -230,7 +231,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Search members, groups, content…"
+              placeholder={t('screens.common.searchMembersGroupsContent')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => {
@@ -265,7 +266,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             size="icon"
             onClick={handleInputClick}
             className="w-10 h-10 rounded-lg hover:bg-sidebar-accent/70 transition-colors"
-            title="Search"
+            title={t('screens.common.search')}
           >
             <Search className="h-4 w-4 text-sidebar-foreground/70" />
           </Button>

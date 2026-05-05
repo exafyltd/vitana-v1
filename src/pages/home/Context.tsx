@@ -35,6 +35,7 @@ import {
   SleepReadinessCard 
 } from "@/components/context/QuickActionCards";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
+import { t } from '@/lib/i18n-toast';
 
 export default function Context() {
   const navigate = useNavigate();
@@ -86,13 +87,13 @@ export default function Context() {
 
   return (
     <AppLayout>
-      <SEO title="Context | Dashboard" description="Now & Context Snapshot" canonical={window.location.href} />
+      <SEO title={t('screens.home.contextDashboard')} description="Now & Context Snapshot" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-purple-950/20 dark:via-blue-950/20 dark:to-pink-950/20 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Now & Context Snapshot"
+            title={t('screens.home.nowContextSnapshot')}
             description="Transparency: Why Autopilot makes these choices."
             emoji="🌍"
           />
@@ -100,24 +101,24 @@ export default function Context() {
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
             <ExpandableSearchButton 
-              placeholder="Search context data, cards, or insights…"
+              placeholder={t('screens.home.searchContextDataCardsInsights')}
               onSearch={(query) => console.log("Search:", query)}
             />
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setContextPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Context
+              {t('screens.home.context')}
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="current" className="w-full">
             <SplitBarList className="grid w-full grid-cols-5">
-              <SplitBarTrigger value="current">⚡ Current</SplitBarTrigger>
-              <SplitBarTrigger value="reasoning">🤖 AI Logic</SplitBarTrigger>
-              <SplitBarTrigger value="timeline">📅 Timeline</SplitBarTrigger>
-              <SplitBarTrigger value="environment">🌍 Environment</SplitBarTrigger>
-              <SplitBarTrigger value="social">👥 Social</SplitBarTrigger>
+              <SplitBarTrigger value="current">{t('screens.home.current')}</SplitBarTrigger>
+              <SplitBarTrigger value="reasoning">{t('screens.home.aiLogic')}</SplitBarTrigger>
+              <SplitBarTrigger value="timeline">{t('screens.home.timeline')}</SplitBarTrigger>
+              <SplitBarTrigger value="environment">{t('screens.home.environment')}</SplitBarTrigger>
+              <SplitBarTrigger value="social">{t('screens.home.social')}</SplitBarTrigger>
             </SplitBarList>
 
             {/* Current Tab */}
@@ -170,7 +171,7 @@ export default function Context() {
                   <div className="col-span-12">
                     <MusicListCard 
                       tracks={aiRecommendedMedia || []}
-                      title="AI Recommended for Your Goals"
+                      title={t('screens.home.aiRecommendedForYourGoals')}
                       className="h-full"
                     />
                   </div>
@@ -228,7 +229,7 @@ export default function Context() {
                   <div className="col-span-12">
                     <MusicListCard 
                       tracks={environmentMedia || []}
-                      title="Nature & Ambient Sounds"
+                      title={t('screens.home.natureAmbientSounds')}
                       className="h-full"
                     />
                   </div>
@@ -257,7 +258,7 @@ export default function Context() {
                   <div className="col-span-12">
                     <MusicListCard 
                       tracks={communityMedia || []}
-                      title="Trending in Your Community"
+                      title={t('screens.home.trendingYourCommunity')}
                       className="h-full"
                     />
                   </div>

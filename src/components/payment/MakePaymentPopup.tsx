@@ -8,13 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { useWallet } from "@/hooks/useWallet";
 import { CreditCard, Coins, DollarSign, Send, CheckCircle, AlertCircle, Wallet, Search, Users } from "lucide-react";
 import { getCurrencyIcon } from "@/lib/currencies";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface MakePaymentPopupProps {
   isOpen: boolean;
@@ -75,29 +76,17 @@ export default function MakePaymentPopup({
 
   const handleMakePayment = async () => {
     if (!amount || !description) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAmountDescription');
       return;
     }
 
     if (!selectedRecipient) {
-      toast({
-        title: "No Recipient Selected",
-        description: "Please select who to send the payment to",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.noRecipientSelected', 'toasts.payment.pleaseSelectWhoSendPayment');
       return;
     }
 
     if (!canAfford()) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You don't have enough ${currency} to make this payment`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
@@ -135,11 +124,7 @@ export default function MakePaymentPopup({
         }
       );
 
-      toast({
-        title: "Payment Sent! ✅",
-        description: `${currency === 'CREDITS' ? amount + ' credits' : '$' + amount} sent to ${selectedRecipient.name}`,
-        duration: 5000
-      });
+      notify('toasts.payment.paymentSent');
 
       onClose();
       setAmount('');
@@ -148,11 +133,7 @@ export default function MakePaymentPopup({
       setSearchTerm('');
     } catch (error) {
       console.error('Error making payment:', error);
-      toast({
-        title: "Payment Failed",
-        description: "Failed to process payment. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.paymentFailed', 'toasts.payment.failedProcessPaymentPleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }
@@ -168,14 +149,14 @@ export default function MakePaymentPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Wallet className="w-5 h-5 text-green-600" />
-            Make Payment
+            {t('screens.payment.makePayment')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Recipient Selection */}
           <div>
-            <Label htmlFor="recipient">Send To</Label>
+            <Label htmlFor="recipient">{t('screens.payment.send')}</Label>
             {selectedRecipient ? (
               <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
                 <Avatar className="w-8 h-8">
@@ -184,7 +165,7 @@ export default function MakePaymentPopup({
                 </Avatar>
                 <div className="flex-1">
                   <p className="font-medium text-sm">{selectedRecipient.name}</p>
-                  <p className="text-xs text-muted-foreground">Payment recipient</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.payment.paymentRecipient')}</p>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -193,8 +174,7 @@ export default function MakePaymentPopup({
                     setSelectedRecipient(null);
                     setSearchTerm('');
                   }}
-                >
-                  Change
+                >{t('screens.payment.change')}
                 </Button>
               </div>
             ) : (
@@ -203,7 +183,7 @@ export default function MakePaymentPopup({
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input
                     id="recipient"
-                    placeholder="Search for a community member..."
+                    placeholder={t('screens.payment.searchForCommunityMember')}
                     value={searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     className="pl-10"
@@ -213,8 +193,7 @@ export default function MakePaymentPopup({
                 {searchTerm && (
                   <div className="mt-2 max-h-40 overflow-y-auto border rounded-md bg-background">
                     {membersLoading ? (
-                      <div className="p-3 text-center text-sm text-muted-foreground">
-                        Searching...
+                      <div className="p-3 text-center text-sm text-muted-foreground">{t('screens.payment.searching')}
                       </div>
                     ) : members.length > 0 ? (
                       members.map((member) => (
@@ -229,13 +208,13 @@ export default function MakePaymentPopup({
                           </Avatar>
                           <div>
                             <p className="font-medium text-sm">{getDisplayName(member)}</p>
-                            <p className="text-xs text-muted-foreground">Community member</p>
+                            <p className="text-xs text-muted-foreground">{t('screens.payment.communityMember')}</p>
                           </div>
                         </div>
                       ))
                     ) : (
                       <div className="p-3 text-center text-sm text-muted-foreground">
-                        No members found
+                        {t('screens.payment.noMembersFound')}
                       </div>
                     )}
                   </div>
@@ -248,7 +227,7 @@ export default function MakePaymentPopup({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourBalance2')}</span>
                 <div className="flex items-center gap-4">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
@@ -264,7 +243,7 @@ export default function MakePaymentPopup({
           {/* Amount & Currency */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -274,28 +253,22 @@ export default function MakePaymentPopup({
               />
             </div>
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="CREDITS">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('CREDITS', 'w-4 h-4')}
-                      Credits
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Credits2', { value0: getCurrencyIcon('CREDITS', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                   <SelectItem value="USD">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('USD', 'w-4 h-4')}
-                      USD
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Usd', { value0: getCurrencyIcon('USD', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                   <SelectItem value="VTNA">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('VTNA', 'w-4 h-4')}
-                      VTNA
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Vtna', { value0: getCurrencyIcon('VTNA', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -305,10 +278,10 @@ export default function MakePaymentPopup({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -318,12 +291,10 @@ export default function MakePaymentPopup({
           {/* Payment Status Indicators */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="capitalize">
-                {paymentType} Payment
+              <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePayment', { paymentType })}
               </Badge>
               {currency.toUpperCase() === 'CREDITS' && (
-                <Badge variant="secondary">
-                  Platform Credits
+                <Badge variant="secondary">{t('screens.payment.platformCredits')}
                 </Badge>
               )}
             </div>
@@ -333,12 +304,12 @@ export default function MakePaymentPopup({
                 {canAfford() ? (
                   <>
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-green-600">Sufficient balance</span>
+                    <span className="text-green-600">{t('screens.payment.sufficientBalance')}</span>
                   </>
                 ) : (
                   <>
                     <AlertCircle className="w-4 h-4 text-red-600" />
-                    <span className="text-red-600">Insufficient balance</span>
+                    <span className="text-red-600">{t('screens.payment.insufficientBalance2')}</span>
                   </>
                 )}
               </div>
@@ -348,7 +319,7 @@ export default function MakePaymentPopup({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleMakePayment} 
@@ -357,13 +328,12 @@ export default function MakePaymentPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Payment
+                  {t('screens.payment.sendPayment')}
                 </>
               )}
             </Button>

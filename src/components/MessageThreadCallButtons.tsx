@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { callSounds } from '@/utils/callSounds';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserPresence } from '@/hooks/useUserPresence';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface MessageThreadCallButtonsProps {
   userId: string;
@@ -32,11 +33,7 @@ export const MessageThreadCallButtons = ({
   // Show notification when call times out (no answer)
   useEffect(() => {
     if (activeCall?.state === 'no-answer') {
-      toast({
-        title: "No answer",
-        description: `${activeCall.recipientName || 'User'} didn't answer the call`,
-        variant: "destructive",
-      });
+      notifyError('toasts.common.noAnswer');
     }
   }, [activeCall?.state, activeCall?.recipientName, toast]);
 
@@ -70,11 +67,7 @@ export const MessageThreadCallButtons = ({
       });
       
       if (!isConnected) {
-        toast({
-          title: "Connection issue",
-          description: "Unable to connect to call service. Please check your internet connection.",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.connectionIssue', 'toasts.common.unableConnectCallServicePleaseCheck');
         return;
       }
       
@@ -84,29 +77,18 @@ export const MessageThreadCallButtons = ({
         const primed = await callSounds.prime();
         setAudioPrimed(primed);
         if (!primed) {
-          toast({
-            title: "Audio blocked",
-            description: "Please allow audio to hear call sounds",
-            variant: "destructive"
-          });
+          notifyError('toasts.common.audioBlocked', 'toasts.common.pleaseAllowAudioHearCallSounds');
         }
       }
       
       console.log('📞 Initiating audio call to:', recipientName);
-      toast({
-        title: "Calling...",
-        description: `Calling ${recipientName}`,
-      });
+      notify('toasts.common.calling');
       
       await startCall(recipientId, false);
       console.log('✅ Audio call started successfully');
     } catch (error) {
       console.error('❌ Error starting audio call:', error);
-      toast({
-        title: "Call failed",
-        description: "Unable to start the call. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.callFailed', 'toasts.common.unableStartCallPleaseTryAgain');
     } finally {
       setIsCalling(false);
     }
@@ -142,11 +124,7 @@ export const MessageThreadCallButtons = ({
       });
       
       if (!isConnected) {
-        toast({
-          title: "Connection issue",
-          description: "Unable to connect to call service. Please check your internet connection.",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.connectionIssue', 'toasts.common.unableConnectCallServicePleaseCheck');
         return;
       }
       
@@ -156,29 +134,18 @@ export const MessageThreadCallButtons = ({
         const primed = await callSounds.prime();
         setAudioPrimed(primed);
         if (!primed) {
-          toast({
-            title: "Audio blocked",
-            description: "Please allow audio to hear call sounds",
-            variant: "destructive"
-          });
+          notifyError('toasts.common.audioBlocked', 'toasts.common.pleaseAllowAudioHearCallSounds');
         }
       }
       
       console.log('📞 Initiating video call to:', recipientName);
-      toast({
-        title: "Calling...",
-        description: `Starting video call with ${recipientName}`,
-      });
+      notify('toasts.common.calling');
       
       await startCall(recipientId, true);
       console.log('✅ Video call started successfully');
     } catch (error) {
       console.error('❌ Error starting video call:', error);
-      toast({
-        title: "Call failed",
-        description: "Unable to start the video call. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.common.callFailed', 'toasts.common.unableStartVideoCallPleaseTry');
     } finally {
       setIsCalling(false);
     }

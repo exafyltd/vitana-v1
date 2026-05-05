@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TrendingUp, Zap, ArrowUp, Users, UserCheck, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface AnalysisHeroProps {
   overallScore: number;
@@ -58,10 +59,10 @@ export function AnalysisHero({
         {/* Header */}
         <div className="text-center">
           <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-amber-600 bg-clip-text text-transparent mb-2">
-            Your Compatibility Overview
+            {t('screens.analysis.yourCompatibilityOverview')}
           </h2>
           <p className="text-sm text-muted-foreground">
-            AI-powered insights based on your profile, interests, and behavior
+            {t('screens.analysis.aipoweredInsightsBasedYourProfileInterests')}
           </p>
         </div>
         
@@ -101,7 +102,7 @@ export function AnalysisHero({
               </div>
             </div>
             <p className="text-center text-sm text-muted-foreground mt-3">
-              Overall Compatibility
+              {t('screens.analysis.overallCompatibility')}
             </p>
           </div>
           
@@ -113,7 +114,7 @@ export function AnalysisHero({
                 <div className="p-2 rounded-lg bg-gradient-to-br from-pink-500/20 to-fuchsia-500/20">
                   <TrendingUp className="w-5 h-5 text-pink-600" />
                 </div>
-                <h3 className="text-lg font-semibold">Top Match Factors</h3>
+                <h3 className="text-lg font-semibold">{t('screens.analysis.topMatchFactors')}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {topFactors.map((factor, index) => (
@@ -134,7 +135,7 @@ export function AnalysisHero({
                 <div className="p-2 rounded-lg bg-gradient-to-br from-fuchsia-500/20 to-amber-500/20">
                   <Zap className="w-5 h-5 text-fuchsia-600" />
                 </div>
-                <h3 className="text-lg font-semibold">Shared Interests</h3>
+                <h3 className="text-lg font-semibold">{t('screens.analysis.sharedInterests')}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {sharedInterests.map((interest, index) => (
@@ -152,7 +153,7 @@ export function AnalysisHero({
             {/* Growth Trend */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">This Week's Growth</span>
+                <span className="text-sm font-medium">{t('screens.analysis.thisWeekSGrowth')}</span>
                 <span className="text-sm text-green-600 dark:text-green-400 font-semibold flex items-center gap-1">
                   <ArrowUp className="w-4 h-4" />
                   +{weekDelta}%
@@ -177,7 +178,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Users className="w-3 h-3 mr-1" />
-            People
+            {t('screens.analysis.people')}
           </Button>
           <Button 
             variant={activeContext === 'coaches' ? 'default' : 'ghost'}
@@ -186,7 +187,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <UserCheck className="w-3 h-3 mr-1" />
-            Coaches
+            {t('screens.analysis.coaches')}
           </Button>
           <Button 
             variant={activeContext === 'groups' ? 'default' : 'ghost'}
@@ -195,7 +196,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Users className="w-3 h-3 mr-1" />
-            Groups
+            {t('screens.analysis.groups')}
           </Button>
           <Button 
             variant={activeContext === 'events' ? 'default' : 'ghost'}
@@ -204,7 +205,7 @@ export function AnalysisHero({
             className="text-xs"
           >
             <Calendar className="w-3 h-3 mr-1" />
-            Events
+            {t('screens.analysis.events')}
           </Button>
         </div>
       </div>

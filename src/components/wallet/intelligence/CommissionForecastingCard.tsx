@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TrendingUp, DollarSign, Calendar, Clock, AlertTriangle, Target } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CommissionForecast {
   id: string;
@@ -135,10 +136,9 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            Commission Forecasting
+            {t('screens.wallet.commissionForecasting')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            +{projectedGrowth}% Growth
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.projectedgrowthGrowth', { projectedGrowth })}
           </Badge>
         </div>
       </CardHeader>
@@ -149,19 +149,19 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-primary">${totalCurrent}</div>
-              <div className="text-xs text-muted-foreground">Current</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.current')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">${totalPredicted}</div>
-              <div className="text-xs text-muted-foreground">Predicted</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.predicted')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{averageConfidence}%</div>
-              <div className="text-xs text-muted-foreground">Confidence</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.confidence')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Projected <span className="font-semibold text-emerald-600">${totalPredicted - totalCurrent} increase</span> this month
+            {t('screens.wallet.projected')} <span className="font-semibold text-emerald-600">{t('screens.wallet.value0Increase', { value0: totalPredicted - totalCurrent })}</span>{t('screens.wallet.thisMonth')}
           </p>
         </div>
 
@@ -169,7 +169,7 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-green-500" />
-            Revenue Streams
+            {t('screens.wallet.revenueStreams')}
           </h4>
           
           {mockForecasts.slice(0, 2).map((forecast) => {
@@ -184,25 +184,21 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
                       {forecast.source}
                       <TrendIcon className={`h-3 w-3 ${trendConfig.color}`} />
                     </h5>
-                    <p className="text-xs text-muted-foreground">
-                      ${forecast.currentMonth} → ${forecast.predicted} predicted
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentmonthPredictedPredicted', { currentMonth: forecast.currentMonth, predicted: forecast.predicted })}
                     </p>
                   </div>
                   <div className="text-right">
                     <Badge variant="outline" className={getTierColor(forecast.tier)}>
                       {forecast.tier}
                     </Badge>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {forecast.confidence}% confidence
+                    <div className="text-xs text-muted-foreground mt-1">{t('screens.wallet.confidenceConfidence', { confidence: forecast.confidence })}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Calendar className="h-3 w-3" />
-                    Payout: {forecast.nextPayout}
-                  </div>
+                    <Calendar className="h-3 w-3" />{t('screens.wallet.payoutNextpayout', { nextPayout: forecast.nextPayout })}</div>
                   <div className={`text-xs font-semibold ${trendConfig.color}`}>
                     {forecast.trend}
                   </div>
@@ -216,7 +212,7 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Clock className="h-4 w-4 text-purple-500" />
-            Optimal Timing
+            {t('screens.wallet.optimalTiming')}
           </h4>
           
           {mockTimingRecommendations.map((timing) => (
@@ -226,22 +222,20 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
                   <h5 className="text-sm font-medium">{timing.action}</h5>
                   <p className="text-xs text-muted-foreground">{timing.reason}</p>
                 </div>
-                <Badge variant="outline" className={getUrgencyColor(timing.urgency)}>
-                  {timing.urgency} priority
+                <Badge variant="outline" className={getUrgencyColor(timing.urgency)}>{t('screens.wallet.urgencyPriority', { urgency: timing.urgency })}
                 </Badge>
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-purple-600 font-semibold">
-                    +${timing.impact} impact
+                  <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.impactImpact', { impact: timing.impact })}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {timing.timing}
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Set Reminder
+                  {t('screens.wallet.setReminder')}
                 </Button>
               </div>
             </div>
@@ -252,15 +246,15 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Target className="h-4 w-4 text-amber-600" />
-            <span className="text-sm font-medium">Market Intelligence</span>
+            <span className="text-sm font-medium">{t('screens.wallet.marketIntelligence')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            Commission rates are 8% higher than average due to increased health service demand
+            {t('screens.wallet.commissionRates8HigherThanAverage')}
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600 font-medium">Optimal earning window: Next 2 weeks</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.optimalEarningWindowNext2Weeks')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-              Maximize Now
+              {t('screens.wallet.maximizeNow')}
             </Button>
           </div>
         </div>
@@ -268,7 +262,7 @@ export function CommissionForecastingCard({ className }: CommissionForecastingCa
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <TrendingUp className="h-4 w-4 mr-2" />
-          View Detailed Forecast
+          {t('screens.wallet.viewDetailedForecast')}
         </Button>
       </CardContent>
     </Card>

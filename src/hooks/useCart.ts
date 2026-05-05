@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
-import { toast } from 'sonner';
+import { notifyError, notifySuccess } from '@/lib/i18n-toast';
 
 export interface CartItem {
   id: string;
@@ -71,7 +71,7 @@ export function useCart() {
     quantity?: number;
   }) => {
     if (!user) {
-      toast.error('Please sign in to add items to cart');
+      notifyError('toasts.hooks.pleaseSignAddItemsCart');
       return;
     }
 
@@ -105,12 +105,12 @@ export function useCart() {
 
         if (error) throw error;
         
-        toast.success('Added to cart');
+        notifySuccess('toasts.hooks.addedCart');
         await fetchCart();
       }
     } catch (error) {
       console.error('Error adding to cart:', error);
-      toast.error('Failed to add to cart');
+      notifyError('toasts.hooks.failedAddCart');
     }
   };
 
@@ -132,7 +132,7 @@ export function useCart() {
       await fetchCart();
     } catch (error) {
       console.error('Error updating quantity:', error);
-      toast.error('Failed to update quantity');
+      notifyError('toasts.hooks.failedUpdateQuantity');
     }
   };
 
@@ -146,11 +146,11 @@ export function useCart() {
 
       if (error) throw error;
       
-      toast.success('Removed from cart');
+      notifySuccess('toasts.hooks.removedFromCart');
       await fetchCart();
     } catch (error) {
       console.error('Error removing from cart:', error);
-      toast.error('Failed to remove from cart');
+      notifyError('toasts.hooks.failedRemoveFromCart');
     }
   };
 
@@ -168,10 +168,10 @@ export function useCart() {
       
       setCartItems([]);
       setCartCount(0);
-      toast.success('Cart cleared');
+      notifySuccess('toasts.hooks.cartCleared');
     } catch (error) {
       console.error('Error clearing cart:', error);
-      toast.error('Failed to clear cart');
+      notifyError('toasts.hooks.failedClearCart');
     }
   };
 
@@ -184,12 +184,12 @@ export function useCart() {
   // Checkout
   const checkout = async () => {
     if (!user) {
-      toast.error('Please sign in to checkout');
+      notifyError('toasts.hooks.pleaseSignCheckout');
       return;
     }
 
     if (cartItems.length === 0) {
-      toast.error('Your cart is empty');
+      notifyError('toasts.hooks.yourCartEmpty');
       return;
     }
 
@@ -212,7 +212,7 @@ export function useCart() {
       }
     } catch (error) {
       console.error('Error during checkout:', error);
-      toast.error('Failed to start checkout');
+      notifyError('toasts.hooks.failedStartCheckout');
     } finally {
       setIsLoading(false);
     }

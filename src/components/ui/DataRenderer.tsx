@@ -12,6 +12,7 @@
 import React from 'react';
 import { useOffline } from '@/context/OfflineProvider';
 import { OfflineBadge } from './OfflineBadge';
+import { t } from '@/lib/i18n-toast';
 
 interface DataRendererProps<T> {
   data: T | undefined;
@@ -44,7 +45,7 @@ export function DataRenderer<T>({
       <>
         {errorState || (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <p className="text-destructive">Failed to load data</p>
+            <p className="text-destructive">{t('screens.ui.failedLoadData')}</p>
             <p className="text-sm text-muted-foreground mt-1">
               {error.message || 'Please try again later'}
             </p>
@@ -88,9 +89,9 @@ export function DataRenderer<T>({
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <OfflineBadge className="mb-4" />
-        <p className="text-muted-foreground">No cached data available</p>
+        <p className="text-muted-foreground">{t('screens.ui.noCachedDataAvailable')}</p>
         <p className="text-sm text-muted-foreground mt-1">
-          Connect to the internet to load content
+          {t('screens.ui.connectInternetLoadContent')}
         </p>
       </div>
     );

@@ -2,6 +2,7 @@ import { Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useNavigate } from "react-router-dom";
+import { t } from '@/lib/i18n-toast';
 
 export function RelatedCommunityPreview() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export function RelatedCommunityPreview() {
       <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-white/10 p-5">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Users className="w-5 h-5 text-pink-600" />
-          Related Groups
+          {t('screens.coaches.relatedGroups')}
         </h3>
         
         <div className="space-y-2 mb-4">
@@ -32,8 +33,7 @@ export function RelatedCommunityPreview() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{group.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {group.member_count} members
+                <p className="text-xs text-muted-foreground">{t('screens.coaches.member_countMembers', { member_count: group.member_count })}
                 </p>
               </div>
             </div>
@@ -46,7 +46,7 @@ export function RelatedCommunityPreview() {
           className="w-full" 
           onClick={() => navigate('/home/matches?tab=groups')}
         >
-          Explore More Groups →
+          {t('screens.coaches.exploreMoreGroups')}
         </Button>
       </div>
       
@@ -54,7 +54,7 @@ export function RelatedCommunityPreview() {
       <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-white/10 p-5">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Calendar className="w-5 h-5 text-fuchsia-600" />
-          Upcoming Events
+          {t('screens.coaches.upcomingEvents')}
         </h3>
         
         <div className="space-y-2 mb-4">
@@ -73,8 +73,7 @@ export function RelatedCommunityPreview() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{event.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {event.participant_count} attending
+                <p className="text-xs text-muted-foreground">{t('screens.coaches.participant_countAttending', { participant_count: event.participant_count })}
                 </p>
               </div>
             </div>
@@ -87,7 +86,7 @@ export function RelatedCommunityPreview() {
           className="w-full" 
           onClick={() => navigate('/home/matches?tab=events')}
         >
-          Explore More Events →
+          {t('screens.coaches.exploreMoreEvents')}
         </Button>
       </div>
     </div>

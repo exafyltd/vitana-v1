@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Plus, Star, CheckCircle, Edit, X, Zap } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotCategory, AutopilotPriority } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 interface ManageMyActionsPopupProps {
   open: boolean;
@@ -87,10 +88,10 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
             <Star className="w-5 h-5" />
-            Manage My Actions
+            {t('screens.common.manageMyActions')}
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Review, prioritize, and add actions to optimize today's plan with Autopilot.
+            {t('screens.common.reviewPrioritizeAddActionsOptimizeToday')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
@@ -99,30 +100,30 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="pending" className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                Pending
+                {t('screens.common.pending')}
               </TabsTrigger>
               <TabsTrigger value="new" className="flex items-center gap-2">
                 <Plus className="w-4 h-4" />
-                New Action
+                {t('screens.common.newAction')}
               </TabsTrigger>
               <TabsTrigger value="prioritize" className="flex items-center gap-2">
                 <Star className="w-4 h-4" />
-                Prioritize
+                {t('screens.common.prioritize')}
               </TabsTrigger>
             </TabsList>
 
             {/* Pending Actions Tab */}
             <TabsContent value="pending" className="space-y-4 mt-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium">Pending Actions ({pendingActions.length})</h3>
+                <h3 className="text-lg font-medium">{t('screens.common.pendingActionsLength', { length: pendingActions.length })}</h3>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleConfirmAll}>
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    Confirm All
+                    {t('screens.common.confirmAll')}
                   </Button>
                   <Button variant="outline" size="sm" onClick={handleSnoozeAll}>
                     <Clock className="w-4 h-4 mr-2" />
-                    Snooze All
+                    {t('screens.common.snoozeAll')}
                   </Button>
                 </div>
               </div>
@@ -183,13 +184,13 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
             {/* New Action Tab */}
             <TabsContent value="new" className="space-y-4 mt-4">
-              <h3 className="text-lg font-medium">Add New Action</h3>
+              <h3 className="text-lg font-medium">{t('screens.common.addNewAction')}</h3>
               
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Action Title</label>
+                  <label className="text-sm font-medium mb-2 block">{t('screens.common.actionTitle')}</label>
                   <Input 
-                    placeholder="e.g., Evening Walk, Call Doctor"
+                    placeholder={t('screens.common.eGEveningWalkCallDoctor')}
                     value={newActionTitle}
                     onChange={(e) => setNewActionTitle(e.target.value)}
                   />
@@ -197,54 +198,54 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Category</label>
+                    <label className="text-sm font-medium mb-2 block">{t('screens.common.category')}</label>
                     <Select value={newActionCategory} onValueChange={(value: AutopilotCategory) => setNewActionCategory(value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="health">Health</SelectItem>
-                        <SelectItem value="community">Community</SelectItem>
-                        <SelectItem value="media">Learning</SelectItem>
-                        <SelectItem value="discover">Discover</SelectItem>
-                        <SelectItem value="calendar">Calendar</SelectItem>
+                        <SelectItem value="health">{t('screens.common.health')}</SelectItem>
+                        <SelectItem value="community">{t('screens.common.community')}</SelectItem>
+                        <SelectItem value="media">{t('screens.common.learning')}</SelectItem>
+                        <SelectItem value="discover">{t('screens.common.discover')}</SelectItem>
+                        <SelectItem value="calendar">{t('screens.common.calendar')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Priority</label>
+                    <label className="text-sm font-medium mb-2 block">{t('screens.common.priority')}</label>
                     <Select value={newActionPriority} onValueChange={(value: AutopilotPriority) => setNewActionPriority(value)}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="high">High</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="high">{t('screens.common.high')}</SelectItem>
+                        <SelectItem value="medium">{t('screens.common.medium')}</SelectItem>
+                        <SelectItem value="low">{t('screens.common.low')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Trigger</label>
+                  <label className="text-sm font-medium mb-2 block">{t('screens.common.trigger')}</label>
                   <Select value={newActionTrigger} onValueChange={setNewActionTrigger}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="time-based">Time-based</SelectItem>
-                      <SelectItem value="context-based">Context-based</SelectItem>
-                      <SelectItem value="manual">Manual</SelectItem>
+                      <SelectItem value="time-based">{t('screens.common.timebased')}</SelectItem>
+                      <SelectItem value="context-based">{t('screens.common.contextbased')}</SelectItem>
+                      <SelectItem value="manual">{t('screens.common.manual')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Optional Notes</label>
+                  <label className="text-sm font-medium mb-2 block">{t('screens.common.optionalNotes')}</label>
                   <Textarea 
-                    placeholder="Additional details or context..."
+                    placeholder={t('screens.common.additionalDetailsContext')}
                     value={newActionNotes}
                     onChange={(e) => setNewActionNotes(e.target.value)}
                   />
@@ -252,14 +253,14 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
                 <Button onClick={handleSaveNewAction} className="w-full">
                   <Plus className="w-4 h-4 mr-2" />
-                  Save Action
+                  {t('screens.common.saveAction')}
                 </Button>
               </div>
             </TabsContent>
 
             {/* Prioritize Tab */}
             <TabsContent value="prioritize" className="space-y-4 mt-4">
-              <h3 className="text-lg font-medium">Prioritize Actions</h3>
+              <h3 className="text-lg font-medium">{t('screens.common.prioritizeActions')}</h3>
               
               <div className="space-y-3">
                 {prioritizedActions.map((action, index) => (
@@ -291,16 +292,16 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
               <div className="p-3 rounded-lg bg-blue-50 border border-blue-200">
                 <div className="flex items-center gap-2 text-blue-700">
                   <Zap className="w-4 h-4" />
-                  <span className="text-sm font-medium">Autopilot Suggestion</span>
+                  <span className="text-sm font-medium">{t('screens.common.autopilotSuggestion')}</span>
                 </div>
                 <p className="text-sm text-blue-600 mt-1">
-                  Recommended order based on your current context and energy levels.
+                  {t('screens.common.recommendedOrderBasedYourCurrentContext')}
                 </p>
               </div>
 
               <Button className="w-full">
                 <Star className="w-4 h-4 mr-2" />
-                Save Priorities
+                {t('screens.common.savePriorities')}
               </Button>
             </TabsContent>
           </Tabs>
@@ -308,10 +309,10 @@ export function ManageMyActionsPopup({ open, onOpenChange }: ManageMyActionsPopu
 
         <ResponsiveDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.common.cancel')}
           </Button>
           <Button onClick={() => onOpenChange(false)}>
-            Save & Close
+            {t('screens.common.saveClose')}
           </Button>
         </ResponsiveDialogFooter>
       </ResponsiveDialogContent>

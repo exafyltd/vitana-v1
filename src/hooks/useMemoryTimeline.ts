@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface TimelineMemory {
   id: string;
@@ -128,17 +129,10 @@ export function useMemoryTimeline(filter: "all" | "insights" | "conversations" =
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });
-      toast({
-        title: "Memory Deleted",
-        description: "The memory has been permanently removed."
-      });
+      notify('toasts.hooks.memoryDeleted', 'toasts.hooks.memoryHasPermanentlyRemoved');
     },
     onError: (error) => {
-      toast({
-        title: "Delete Failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.deleteFailed');
     }
   });
 
@@ -173,17 +167,10 @@ export function useMemoryTimeline(filter: "all" | "insights" | "conversations" =
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });
-      toast({
-        title: "Memory Updated",
-        description: "Your changes have been saved."
-      });
+      notify('toasts.hooks.memoryUpdated', 'toasts.hooks.yourChangesHaveSaved');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.updateFailed');
     }
   });
 
@@ -220,17 +207,10 @@ export function useMemoryTimeline(filter: "all" | "insights" | "conversations" =
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memory-timeline"] });
-      toast({
-        title: "Memory Created",
-        description: "Your new memory has been added."
-      });
+      notify('toasts.hooks.memoryCreated', 'toasts.hooks.yourNewMemoryHasAdded');
     },
     onError: (error) => {
-      toast({
-        title: "Create Failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.createFailed');
     }
   });
 

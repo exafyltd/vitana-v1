@@ -27,7 +27,8 @@ import {
   Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface DevAutopilotPopupProps {
   open: boolean;
@@ -86,20 +87,13 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
       const results = await executeActions(actionIds);
       const successCount = results.filter(r => r.success).length;
       
-      toast({
-        title: "Dev Actions Executed",
-        description: `${successCount}/${results.length} dev actions completed successfully`,
-      });
+      notify('toasts.dev.devActionsExecuted');
       
       onOpenChange(false);
       setShowOptions(false);
       setExecutionProgress(0);
     } catch (error) {
-      toast({
-        title: "Execution Failed", 
-        description: "Something went wrong. Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.dev.executionFailed', 'toasts.dev.somethingWentWrongPleaseTryAgain');
     }
   };
 
@@ -155,13 +149,11 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
             </div>
-            <span>Dev Autopilot Actions</span>
-            <Badge variant="outline" className="ml-2">
-              {selectedActions.length} of {pendingActions.length} selected
+            <span>{t('screens.dev.devAutopilotActions')}</span>
+            <Badge variant="outline" className="ml-2">{t('screens.dev.lengthLength2Selected', { length: selectedActions.length, length2: pendingActions.length })}
             </Badge>
           </DialogTitle>
-          <DialogDescription>
-            Ready to execute {selectedActions.length} dev action{selectedActions.length !== 1 ? 's' : ''} prepared by your AI assistant.
+          <DialogDescription>{t('screens.dev.readyExecuteLengthDevActionValue1', { length: selectedActions.length, value1: selectedActions.length !== 1 ? 's' : '' })}
           </DialogDescription>
         </DialogHeader>
 
@@ -171,12 +163,12 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
                 <Plane className="w-6 h-6 text-red-500 animate-pulse" />
               </div>
-              <h3 className="font-medium mb-2">Executing Dev Actions...</h3>
-              <p className="text-sm text-muted-foreground">Please wait while AI handles your dev operations</p>
+              <h3 className="font-medium mb-2">{t('screens.dev.executingDevActions')}</h3>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.pleaseWaitWhileAiHandlesYour')}</p>
             </div>
             <Progress value={executionProgress} className="w-full" />
             <div className="text-center mt-2">
-              <span className="text-sm text-muted-foreground">{executionProgress}% complete</span>
+              <span className="text-sm text-muted-foreground">{t('screens.dev.executionprogressComplete', { executionProgress })}</span>
             </div>
           </div>
         ) : (
@@ -199,8 +191,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       variant="ghost" 
                       size="sm"
                       onClick={() => setShowOptions(true)}
-                    >
-                      +{selectedActions.length - 6} more actions
+                    >{t('screens.dev.value0MoreActions', { value0: selectedActions.length - 6 })}
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   </div>
@@ -218,11 +209,10 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                     disabled={selectedActions.length === 0}
                     className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                   >
-                    <Zap className="w-4 h-4 mr-2" />
-                    GO ({selectedActions.length})
+                    <Zap className="w-4 h-4 mr-2" />{t('screens.dev.goLength', { length: selectedActions.length })}
                   </Button>
                   <Button variant="outline" onClick={handleNotNow}>
-                    Not Now
+                    {t('screens.dev.notNow')}
                   </Button>
                   {!showOptions && (
                     <Button 
@@ -230,7 +220,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                       onClick={() => setShowOptions(true)}
                     >
                       <Settings className="w-4 h-4 mr-1" />
-                      See Options
+                      {t('screens.dev.seeOptions')}
                     </Button>
                   )}
                 </div>
@@ -240,7 +230,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
                   onClick={handleQuickJump}
                   className="text-sm text-muted-foreground p-0 h-auto"
                 >
-                  See All in Command Hub →
+                  {t('screens.dev.seeAllCommandHub')}
                 </Button>
               </div>
             </DialogFooter>

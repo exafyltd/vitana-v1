@@ -13,6 +13,7 @@ import { CalendarIcon, Upload as UploadIcon, X, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
+import { t } from '@/lib/i18n-toast';
 
 interface MediaUploadPopupProps {
   open: boolean;
@@ -137,23 +138,23 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Upload Media</DialogTitle>
+          <DialogTitle>{t('screens.common.uploadMedia')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
           {/* Step 1: Basic Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Basic Information</h3>
+            <h3 className="text-lg font-semibold">{t('screens.common.basicInformation')}</h3>
             
             {/* Title */}
             <div>
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">{t('screens.common.title')}</Label>
               <div className="relative">
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value.slice(0, 25))}
-                  placeholder="Enter media title"
+                  placeholder={t('screens.common.enterMediaTitle')}
                   maxLength={25}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
@@ -164,13 +165,13 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* Description */}
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.common.description')}</Label>
               <div className="relative">
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value.slice(0, 250))}
-                  placeholder="Describe your content"
+                  placeholder={t('screens.common.describeYourContent')}
                   rows={3}
                   maxLength={250}
                 />
@@ -182,22 +183,22 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
             {/* Type Selection */}
             <div>
-              <Label htmlFor="type">Media Type</Label>
+              <Label htmlFor="type">{t('screens.common.mediaType')}</Label>
               <Select value={mediaType} onValueChange={(value: "Podcast" | "Music" | "Video") => setMediaType(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select media type" />
+                  <SelectValue placeholder={t('screens.common.selectMediaType')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Podcast">Podcast</SelectItem>
-                  <SelectItem value="Music">Music</SelectItem>
-                  <SelectItem value="Video">Video</SelectItem>
+                  <SelectItem value="Podcast">{t('screens.common.podcast')}</SelectItem>
+                  <SelectItem value="Music">{t('screens.common.music')}</SelectItem>
+                  <SelectItem value="Video">{t('screens.common.video')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* File Upload */}
             <div>
-              <Label htmlFor="file">Upload File *</Label>
+              <Label htmlFor="file">{t('screens.common.uploadFile')}</Label>
               <div className={cn(
                 "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
                 selectedFile ? "border-primary bg-primary/5" : "border-muted-foreground/25 hover:border-muted-foreground/50 cursor-pointer"
@@ -233,8 +234,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                   <div className="flex items-center justify-between">
                     <div className="text-left flex-1">
                       <p className="text-sm font-medium truncate">{selectedFile.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                      <p className="text-xs text-muted-foreground">{t('screens.common.value0Mb', { value0: (selectedFile.size / 1024 / 1024).toFixed(2) })}
                       </p>
                     </div>
                     <Button
@@ -252,7 +252,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {isUploading && (
                 <div className="space-y-2 mt-3">
                   <Progress value={progress} className="w-full" />
-                  <p className="text-xs text-center text-muted-foreground">Uploading... {progress}%</p>
+                  <p className="text-xs text-center text-muted-foreground">{t('screens.common.uploadingProgress', { progress })}</p>
                 </div>
               )}
             </div>
@@ -277,7 +277,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
             {/* Release Date and Language */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Release Date</Label>
+                <Label>{t('screens.common.releaseDate')}</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -304,10 +304,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               </div>
 
               <div>
-                <Label htmlFor="language">Language *</Label>
+                <Label htmlFor="language">{t('screens.common.language')}</Label>
                 <Select value={language || 'en-US'} onValueChange={setLanguage} required>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select language" />
+                    <SelectValue placeholder={t('screens.common.selectLanguage')} />
                   </SelectTrigger>
                   <SelectContent>
                     {languages.map((lang) => (
@@ -322,23 +322,22 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
           {/* Step 2: Conditional Fields */}
           {mediaType && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">
-                {mediaType} Details
+              <h3 className="text-lg font-semibold">{t('screens.common.mediatypeDetails', { mediaType })}
               </h3>
 
               {mediaType === "Podcast" && (
                 <>
                   <div>
-                    <Label htmlFor="host-guest">Host / Guest Names (Optional)</Label>
+                    <Label htmlFor="host-guest">{t('screens.common.hostGuestNamesOptional')}</Label>
                     <Input
                       id="host-guest"
                       value={hostGuest}
                       onChange={(e) => setHostGuest(e.target.value)}
-                      placeholder="Enter host and guest names"
+                      placeholder={t('screens.common.enterHostGuestNames')}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="duration">Duration</Label>
+                    <Label htmlFor="duration">{t('screens.common.duration')}</Label>
                     <Input
                       id="duration"
                       value={duration}
@@ -352,10 +351,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {mediaType === "Music" && (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="genre">Genre</Label>
+                    <Label htmlFor="genre">{t('screens.common.genre')}</Label>
                     <Select value={genre} onValueChange={setGenre}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select genre" />
+                        <SelectValue placeholder={t('screens.common.selectGenre')} />
                       </SelectTrigger>
                       <SelectContent>
                         {musicGenres.map((g) => (
@@ -365,10 +364,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="mood">Mood</Label>
+                    <Label htmlFor="mood">{t('screens.common.mood')}</Label>
                     <Select value={mood} onValueChange={setMood}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select mood" />
+                        <SelectValue placeholder={t('screens.common.selectMood')} />
                       </SelectTrigger>
                       <SelectContent>
                         {musicMoods.map((m) => (
@@ -383,10 +382,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {mediaType === "Video" && (
                 <>
                   <div>
-                    <Label htmlFor="topic">Video Topic</Label>
+                    <Label htmlFor="topic">{t('screens.common.videoTopic')}</Label>
                     <Select value={topic} onValueChange={setTopic}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select topic" />
+                        <SelectValue placeholder={t('screens.common.selectTopic')} />
                       </SelectTrigger>
                       <SelectContent>
                         {videoTopics.map((t) => (
@@ -396,16 +395,16 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="thumbnail">Thumbnail Upload (Optional)</Label>
+                    <Label htmlFor="thumbnail">{t('screens.common.thumbnailUploadOptional')}</Label>
                     <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer">
                       <UploadIcon className="w-6 h-6 mx-auto mb-1 text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">
-                        Upload thumbnail image
+                        {t('screens.common.uploadThumbnailImage')}
                       </p>
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="video-duration">Duration</Label>
+                    <Label htmlFor="video-duration">{t('screens.common.duration')}</Label>
                     <Input
                       id="video-duration"
                       value={duration}
@@ -420,10 +419,10 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
 
           {/* Step 3: Visibility & Attribution */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Visibility & Attribution</h3>
+            <h3 className="text-lg font-semibold">{t('screens.common.visibilityAttribution')}</h3>
             
             <div>
-              <Label>Visibility</Label>
+              <Label>{t('screens.common.visibility')}</Label>
               <div className="flex gap-2 mt-2">
                 {["Public", "Followers", "Group-only"].map((option) => (
                   <Button
@@ -439,12 +438,12 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
             </div>
 
             <div>
-              <Label htmlFor="external-link">External Link (Optional)</Label>
+              <Label htmlFor="external-link">{t('screens.common.externalLinkOptional')}</Label>
               <Input
                 id="external-link"
                 value={externalLink}
                 onChange={(e) => setExternalLink(e.target.value)}
-                placeholder="Spotify, Apple Music, YouTube link"
+                placeholder={t('screens.common.spotifyAppleMusicYoutubeLink')}
               />
             </div>
           </div>
@@ -457,7 +456,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               onClick={() => onOpenChange(false)}
               disabled={isUploading}
             >
-              Cancel
+              {t('screens.common.cancel')}
             </Button>
             <Button
               className="flex-1"

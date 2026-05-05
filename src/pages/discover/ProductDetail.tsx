@@ -42,6 +42,7 @@ import {
   getRedirectUrl,
 } from "@/hooks/useMarketplace";
 import { getShareUrl } from "@/lib/shareUrl";
+import { t } from '@/lib/i18n-toast';
 
 export default function ProductDetail() {
   const navigate = useNavigate();
@@ -69,17 +70,17 @@ export default function ProductDetail() {
   if (error || !data?.ok || !data.product) {
     return (
       <AppLayout>
-        <SEO title="Product not found | VITANA" description="This product is unavailable or has been removed." />
+        <SEO title={t('screens.discover.productNotFoundVitana')} description="This product is unavailable or has been removed." />
         <div className="p-6 min-h-screen flex items-center justify-center">
           <Card className="max-w-md text-center">
             <CardContent className="p-8 space-y-4">
-              <h1 className="text-xl font-semibold">Product not found</h1>
+              <h1 className="text-xl font-semibold">{t('screens.discover.productNotFound')}</h1>
               <p className="text-sm text-muted-foreground">
-                The product you&rsquo;re looking for is unavailable or has been removed.
+                {t('screens.discover.productYouRsquoReLookingFor')}
               </p>
               <div className="flex gap-2 justify-center">
-                <Button variant="outline" onClick={() => navigate(-1)}>Go back</Button>
-                <Button asChild><Link to="/discover">Discover more</Link></Button>
+                <Button variant="outline" onClick={() => navigate(-1)}>{t('screens.discover.goBack')}</Button>
+                <Button asChild><Link to="/discover">{t('screens.discover.discoverMore')}</Link></Button>
               </div>
             </CardContent>
           </Card>
@@ -115,7 +116,7 @@ export default function ProductDetail() {
         <div className="max-w-5xl mx-auto space-y-6">
           <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t('screens.discover.back')}
           </Button>
 
           {/* Hero row: image + top-of-page summary */}
@@ -149,7 +150,7 @@ export default function ProductDetail() {
                         <span className="flex items-center gap-1">
                           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                           <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
-                          {p.review_count ? <span>({p.review_count.toLocaleString()} reviews)</span> : null}
+                          {p.review_count ? <span>{t('screens.discover.value0Reviews', { value0: p.review_count.toLocaleString() })}</span> : null}
                         </span>
                       )}
                       {p.origin_country && (
@@ -165,16 +166,14 @@ export default function ProductDetail() {
                       {hasDiscount && (
                         <>
                           <span className="text-base text-muted-foreground line-through">{compareAtText}</span>
-                          <Badge variant="destructive" className="ml-1">
-                            Save {Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100)}%
+                          <Badge variant="destructive" className="ml-1">{t('screens.discover.saveValue02', { value0: Math.round((1 - (p.price_cents ?? 0) / (p.compare_at_price_cents ?? 1)) * 100) })}
                           </Badge>
                         </>
                       )}
                     </div>
                     {p.reward_preview?.points_estimate ? (
                       <div className="flex items-center gap-1 text-sm text-emerald-700 dark:text-emerald-300">
-                        <Gift className="w-4 h-4" />
-                        Earn +{p.reward_preview.points_estimate} points on purchase
+                        <Gift className="w-4 h-4" />{t('screens.discover.earnPoints_estimatePointsPurchase', { points_estimate: p.reward_preview.points_estimate })}
                       </div>
                     ) : null}
                   </div>
@@ -194,7 +193,7 @@ export default function ProductDetail() {
                     />
                     <Button asChild variant="outline" size="lg">
                       <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                        Buy <ExternalLink className="w-4 h-4 ml-1.5" />
+                        {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
                       </a>
                     </Button>
                     <BookmarkButton
@@ -231,7 +230,7 @@ export default function ProductDetail() {
               {(p.description_long || p.description) && (
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="text-lg font-semibold">About this product</h2>
+                    <h2 className="text-lg font-semibold">{t('screens.discover.aboutThisProduct')}</h2>
                     <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
                       {p.description_long || p.description}
                     </p>
@@ -243,7 +242,7 @@ export default function ProductDetail() {
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
-                      <Leaf className="w-5 h-5 text-muted-foreground" /> Key ingredients
+                      <Leaf className="w-5 h-5 text-muted-foreground" /> {t('screens.discover.keyIngredients')}
                     </h2>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-sm text-muted-foreground">
                       {ingredients.map((ing) => (
@@ -261,7 +260,7 @@ export default function ProductDetail() {
                 <Card className="bg-amber-50 dark:bg-amber-950/20 border-amber-200/60 dark:border-amber-900/40">
                   <CardContent className="p-6 space-y-2">
                     <h2 className="flex items-center gap-2 text-lg font-semibold text-amber-900 dark:text-amber-200">
-                      <AlertTriangle className="w-5 h-5" /> Safety &amp; interactions
+                      <AlertTriangle className="w-5 h-5" /> {t('screens.discover.safetyAmpInteractions')}
                     </h2>
                     <p className="text-sm text-amber-900/90 dark:text-amber-100/90 whitespace-pre-line leading-relaxed">
                       {p.safety_notes}
@@ -274,7 +273,7 @@ export default function ProductDetail() {
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-lg font-semibold">
-                      <BookOpen className="w-5 h-5 text-muted-foreground" /> Evidence
+                      <BookOpen className="w-5 h-5 text-muted-foreground" /> {t('screens.discover.evidence')}
                     </h2>
                     <ul className="space-y-2 text-sm">
                       {evidence.map((e, i) => (
@@ -310,24 +309,24 @@ export default function ProductDetail() {
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
-                      <ClipboardList className="w-4 h-4 text-muted-foreground" /> Directions
+                      <ClipboardList className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.directions')}
                     </h2>
                     <div className="grid grid-cols-3 gap-2 text-sm">
                       {p.dosage && (
                         <div className="rounded-md bg-muted/50 p-2">
-                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Dose</div>
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.dose')}</div>
                           <div className="font-medium leading-tight">{p.dosage}</div>
                         </div>
                       )}
                       {p.serving_size && (
                         <div className="rounded-md bg-muted/50 p-2">
-                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Serving</div>
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.serving')}</div>
                           <div className="font-medium leading-tight">{p.serving_size}</div>
                         </div>
                       )}
                       {p.servings_per_container != null && (
                         <div className="rounded-md bg-muted/50 p-2">
-                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Servings</div>
+                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">{t('screens.discover.servings')}</div>
                           <div className="font-medium leading-tight">{p.servings_per_container}</div>
                         </div>
                       )}
@@ -340,7 +339,7 @@ export default function ProductDetail() {
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
-                      <Target className="w-4 h-4 text-muted-foreground" /> Supports
+                      <Target className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.supports')}
                     </h2>
                     <div className="flex flex-wrap gap-1.5">
                       {goals.map((g) => (
@@ -357,7 +356,7 @@ export default function ProductDetail() {
                 <Card className="bg-white/85 dark:bg-card/85 backdrop-blur-sm">
                   <CardContent className="p-6 space-y-3">
                     <h2 className="flex items-center gap-2 text-base font-semibold">
-                      <ShieldCheck className="w-4 h-4 text-muted-foreground" /> Dietary
+                      <ShieldCheck className="w-4 h-4 text-muted-foreground" /> {t('screens.discover.dietary')}
                     </h2>
                     <div className="flex flex-wrap gap-1.5">
                       {dietary.map((t) => (
@@ -373,7 +372,7 @@ export default function ProductDetail() {
               {matchReasons.length > 0 && (
                 <Card className="bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200/60 dark:border-emerald-900/40">
                   <CardContent className="p-6 space-y-2">
-                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">Why this for you</h2>
+                    <h2 className="text-base font-semibold text-emerald-900 dark:text-emerald-200">{t('screens.discover.whyThisForYou')}</h2>
                     <ul className="space-y-1 text-sm text-emerald-900/90 dark:text-emerald-100/90">
                       {matchReasons.map((r, i) => (
                         <li key={i} className="flex gap-2">
@@ -390,10 +389,7 @@ export default function ProductDetail() {
 
           <Separator />
           <div className="max-w-2xl space-y-2">
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              This product card is informational. Always consult a qualified practitioner before
-              starting a new supplement, especially if you are pregnant, nursing, or taking
-              medication.
+            <p className="text-xs text-muted-foreground leading-relaxed">{t('screens.discover.thisProductCardInformationalAlwaysConsult2')}
             </p>
             <AffiliateDisclosure />
           </div>

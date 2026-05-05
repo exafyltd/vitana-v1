@@ -29,6 +29,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CoverPhotoPickerProps {
   value: string | null;
@@ -71,21 +72,12 @@ export function CoverPhotoPicker({
       fileExt === 'heif';
 
     if (isHeic) {
-      toast({
-        title: 'Upload failed',
-        description:
-          'HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.intents.uploadFailed', 'toasts.intents.heicheifFormatNotSupportedByBrowsers');
       return;
     }
 
     if (!file.type.startsWith('image/') || !ALLOWED_EXTS.includes(fileExt)) {
-      toast({
-        title: 'Upload failed',
-        description: `Unsupported image format (.${fileExt}). Please use JPG, PNG, GIF, or WebP.`,
-        variant: 'destructive',
-      });
+      notifyError('toasts.intents.uploadFailed');
       return;
     }
 
@@ -109,10 +101,10 @@ export function CoverPhotoPicker({
       } = supabase.storage.from('avatars').getPublicUrl(fileName);
 
       onChange(publicUrl);
-      toast({ title: 'Cover photo uploaded' });
+      notify('toasts.intents.coverPhotoUploaded');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Please try again.';
-      toast({ title: 'Upload failed', description: message, variant: 'destructive' });
+      notifyError('toasts.intents.uploadFailed');
     } finally {
       setUploading(false);
     }
@@ -126,7 +118,7 @@ export function CoverPhotoPicker({
       const url = pickThemedCover(theme, seed ?? `${theme}:${Date.now()}`);
       onChange(url);
       setGenerating(false);
-      toast({ title: 'Themed cover ready', description: 'You can replace it any time.' });
+      notify('toasts.intents.themedCoverReady', 'toasts.intents.youCanReplaceItAnyTime');
     }, 350);
   };
 
@@ -142,11 +134,11 @@ export function CoverPhotoPicker({
 
       <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden border border-border bg-muted">
         {value ? (
-          <img src={value} alt="Cover preview" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={value} alt={t('screens.intents.coverPreview')} className="absolute inset-0 w-full h-full object-cover" />
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground gap-2">
             <Upload className="h-6 w-6" />
-            <p className="text-xs">Add a cover photo</p>
+            <p className="text-xs">{t('screens.intents.addCoverPhoto')}</p>
           </div>
         )}
       </div>
@@ -169,8 +161,7 @@ export function CoverPhotoPicker({
           disabled={uploading || generating}
           className="flex-1"
         >
-          {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1.5" />}
-          ✨ Generate for me
+          {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1.5" />}{t('screens.intents.generateForMe')}
         </Button>
       </div>
     </div>

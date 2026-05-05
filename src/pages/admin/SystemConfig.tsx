@@ -13,6 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { useVitanaIndexConfig } from "@/hooks/useVitanaIndexConfig";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export default function SystemConfig() {
   const { config, isLoading, updateConfig, isUpdating } = useVitanaIndexConfig();
@@ -48,7 +49,7 @@ export default function SystemConfig() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - System Configuration" 
+        title={t('screens.admin.adminSystemConfiguration')} 
         description="Global system settings and configurations" 
         canonical={window.location.href} 
       />
@@ -57,17 +58,17 @@ export default function SystemConfig() {
       <div className="p-6 bg-gradient-subtle min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="System Configuration"
+            title={t('screens.admin.systemConfiguration')}
             description="Configure global system settings, integrations, and API keys"
             emoji="⚙️"
           />
 
           <Tabs defaultValue="general" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="general">General</TabsTrigger>
-              <TabsTrigger value="vitana">Vitana Index</TabsTrigger>
-              <TabsTrigger value="autopilot">Autopilot</TabsTrigger>
-              <TabsTrigger value="integrations">Integrations</TabsTrigger>
+              <TabsTrigger value="general">{t('screens.admin.general')}</TabsTrigger>
+              <TabsTrigger value="vitana">{t('screens.admin.vitanaIndex')}</TabsTrigger>
+              <TabsTrigger value="autopilot">{t('screens.admin.autopilot')}</TabsTrigger>
+              <TabsTrigger value="integrations">{t('screens.admin.integrations')}</TabsTrigger>
             </TabsList>
 
             {/* General Settings */}
@@ -77,12 +78,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Database className="w-5 h-5" />
-                      Database
+                      {t('screens.admin.database')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">Connection and backup settings</p>
-                    <Button variant="outline" size="sm">Configure</Button>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.connectionBackupSettings')}</p>
+                    <Button variant="outline" size="sm">{t('screens.admin.configure')}</Button>
                   </CardContent>
                 </Card>
 
@@ -90,12 +91,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Mail className="w-5 h-5" />
-                      Email Service
+                      {t('screens.admin.emailService')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">SMTP and notification settings</p>
-                    <Button variant="outline" size="sm">Configure</Button>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.smtpNotificationSettings')}</p>
+                    <Button variant="outline" size="sm">{t('screens.admin.configure')}</Button>
                   </CardContent>
                 </Card>
 
@@ -103,12 +104,12 @@ export default function SystemConfig() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Code className="w-5 h-5" />
-                      API Keys
+                      {t('screens.admin.apiKeys')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground mb-3">Third-party integrations</p>
-                    <Button variant="outline" size="sm">Manage</Button>
+                    <p className="text-sm text-muted-foreground mb-3">{t('screens.admin.thirdpartyIntegrations')}</p>
+                    <Button variant="outline" size="sm">{t('screens.admin.manage')}</Button>
                   </CardContent>
                 </Card>
               </div>
@@ -122,21 +123,21 @@ export default function SystemConfig() {
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <Activity className="w-5 h-5" />
-                        Vitana Index Algorithm Weights
+                        {t('screens.admin.vitanaIndexAlgorithmWeights')}
                       </CardTitle>
                       <CardDescription>
-                        Configure the weight of each health metric in the Vitana Index calculation
+                        {t('screens.admin.configureWeightEachHealthMetricVitana')}
                       </CardDescription>
                     </div>
                     <Button onClick={handleSaveWeights} disabled={isUpdating}>
                       <Save className="w-4 h-4 mr-2" />
-                      Save Weights
+                      {t('screens.admin.saveWeights')}
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
-                    <Label>Sleep: {(weights.sleep * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.sleepValue0', { value0: (weights.sleep * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -147,7 +148,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Exercise: {(weights.exercise * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.exerciseValue0', { value0: (weights.exercise * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -158,7 +159,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Nutrition: {(weights.nutrition * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.nutritionValue0', { value0: (weights.nutrition * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -169,7 +170,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Mental Wellness: {(weights.mental_wellness * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.mentalWellnessValue0', { value0: (weights.mental_wellness * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -180,7 +181,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Social Connection: {(weights.social_connection * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.socialConnectionValue0', { value0: (weights.social_connection * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -191,7 +192,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Hydration: {(weights.hydration * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.hydrationValue0', { value0: (weights.hydration * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -202,10 +203,9 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="pt-4 border-t">
-                    <p className="text-sm text-muted-foreground">
-                      Total Weight: {(Object.values(weights).reduce((sum, val) => sum + val, 0) * 100).toFixed(0)}%
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.totalWeight')} {(Object.values(weights).reduce((sum, val) => sum + val, 0) * 100).toFixed(0)}%
                       {Object.values(weights).reduce((sum, val) => sum + val, 0) !== 1 && (
-                        <span className="text-destructive ml-2">(Warning: Should equal 100%)</span>
+                        <span className="text-destructive ml-2">{t('screens.admin.warningShouldEqual100')}</span>
                       )}
                     </p>
                   </div>
@@ -214,18 +214,16 @@ export default function SystemConfig() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Scoring Tiers Configuration</CardTitle>
+                  <CardTitle>{t('screens.admin.scoringTiersConfiguration')}</CardTitle>
                   <CardDescription>
-                    Define the score ranges and labels for the Vitana Index tiers
+                    {t('screens.admin.defineScoreRangesLabelsForVitana')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      Current tiers: Very Poor (0-99), Poor (100-299), Fair (300-499), 
-                      Improving (500-699), Good (700-849), Excellent (850-999)
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.currentTiersVeryPoor099Poor')}
                     </p>
-                    <Button variant="outline" size="sm">Edit Tiers</Button>
+                    <Button variant="outline" size="sm">{t('screens.admin.editTiers')}</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -237,15 +235,15 @@ export default function SystemConfig() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Bot className="w-5 h-5" />
-                    Global Autopilot Rules
+                    {t('screens.admin.globalAutopilotRules')}
                   </CardTitle>
                   <CardDescription>
-                    Configure system-wide automation rules that apply to all users by default
+                    {t('screens.admin.configureSystemwideAutomationRulesThatApply')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="default-max-actions">Default Max Actions Per Day</Label>
+                    <Label htmlFor="default-max-actions">{t('screens.admin.defaultMaxActionsPerDay')}</Label>
                     <Input
                       id="default-max-actions"
                       type="number"
@@ -257,7 +255,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Global Quiet Hours</Label>
+                    <Label>{t('screens.admin.globalQuietHours')}</Label>
                     <div className="grid grid-cols-2 gap-4">
                       <Input type="time" defaultValue="22:00" />
                       <Input type="time" defaultValue="08:00" />
@@ -267,7 +265,7 @@ export default function SystemConfig() {
                   <div className="pt-4">
                     <Button>
                       <Save className="w-4 h-4 mr-2" />
-                      Save Global Settings
+                      {t('screens.admin.saveGlobalSettings')}
                     </Button>
                   </div>
                 </CardContent>
@@ -275,14 +273,14 @@ export default function SystemConfig() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Automation Rule Templates</CardTitle>
+                  <CardTitle>{t('screens.admin.automationRuleTemplates')}</CardTitle>
                   <CardDescription>
-                    Create reusable rule templates that users can enable
+                    {t('screens.admin.createReusableRuleTemplatesThatUsers')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button variant="outline">
-                    Manage Rule Templates
+                    {t('screens.admin.manageRuleTemplates')}
                   </Button>
                 </CardContent>
               </Card>
@@ -292,14 +290,14 @@ export default function SystemConfig() {
             <TabsContent value="integrations" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Third-Party Integrations</CardTitle>
+                  <CardTitle>{t('screens.admin.thirdpartyIntegrations2')}</CardTitle>
                   <CardDescription>
-                    Manage API keys and configurations for external services
+                    {t('screens.admin.manageApiKeysConfigurationsForExternal')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    Integration management coming soon
+                    {t('screens.admin.integrationManagementComingSoon')}
                   </p>
                 </CardContent>
               </Card>

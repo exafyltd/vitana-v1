@@ -1,4 +1,5 @@
 import { RecipeMacros } from "@/types/recipe";
+import { t } from '@/lib/i18n-toast';
 
 interface MacroRingsProps {
   macros: RecipeMacros;
@@ -114,7 +115,7 @@ export function MacroRings({ macros, calories }: MacroRingsProps) {
       {/* AI Microtip */}
       <div className="flex-1 ml-6">
         <p className="text-sm text-muted-foreground italic">
-          "Balanced for recovery & focus"
+          {t('screens.health.balancedForRecoveryFocus')}
         </p>
       </div>
     </div>

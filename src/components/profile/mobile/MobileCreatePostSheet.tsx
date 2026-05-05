@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useProfilePosts } from '@/hooks/useProfilePosts';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface MobileCreatePostSheetProps {
   open: boolean;
@@ -29,11 +30,11 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
     // Reset input so the same file can be re-selected
     e.target.value = '';
     if (!file.type.startsWith('image/')) {
-      toast({ title: 'Only images are allowed', variant: 'destructive' });
+      notifyError('toasts.profile.onlyImagesAllowed');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      toast({ title: 'Image must be under 10MB', variant: 'destructive' });
+      notifyError('toasts.profile.imageMustUnder10mb');
       return;
     }
     // Materialize into memory immediately to prevent Android file descriptor issues
@@ -45,7 +46,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       setImagePreview(URL.createObjectURL(materializedFile));
     } catch (err) {
       console.error('[PostUpload] Failed to read file:', err);
-      toast({ title: 'Could not read selected image', variant: 'destructive' });
+      notifyError('toasts.profile.couldNotReadSelectedImage');
     }
   };
 
@@ -146,7 +147,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
           {/* Image Preview */}
           {imagePreview && (
             <div className="relative mt-3 rounded-xl overflow-hidden border">
-              <img src={imagePreview} alt="Preview" className="w-full max-h-[300px] object-cover" />
+              <img src={imagePreview} alt={t('screens.profile.preview')} className="w-full max-h-[300px] object-cover" />
               <Button
                 variant="secondary"
                 size="icon"
@@ -175,7 +176,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />
-            <span className="text-sm font-medium">Foto / Video</span>
+            <span className="text-sm font-medium">{t('screens.profile.fotoVideo')}</span>
           </Button>
           <span className={`text-sm ${content.length > MAX_CHARS ? 'text-destructive' : 'text-muted-foreground'}`}>
             {content.length}/{MAX_CHARS}

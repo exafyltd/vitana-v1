@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminSystemNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -27,7 +28,7 @@ const columns = [
     label: "Stripe Account",
     render: (val: string) => val
       ? <span className="font-mono text-xs">{val}</span>
-      : <span className="text-muted-foreground text-xs">Not connected</span>,
+      : <span className="text-muted-foreground text-xs">{t('screens.admin.notConnected')}</span>,
   },
   {
     key: "stripe_onboarding_complete",
@@ -70,12 +71,12 @@ export default function SystemCreators() {
       <AppLayout>
         <SubNavigation items={adminSystemNavigation} />
         <div className="p-6 space-y-6">
-          <AdminHeader title="Creators" description="Stripe Connect creator accounts" />
+          <AdminHeader title={t('screens.admin.creators')} description="Stripe Connect creator accounts" />
           <div className="rounded-xl border bg-card p-8 text-center">
             <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Creator Profiles</h3>
+            <h3 className="text-lg font-medium mb-2">{t('screens.admin.creatorProfiles')}</h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Creator profile data will appear here once creators register via Stripe Connect.
+              {t('screens.admin.creatorProfileDataWillAppearHere')}
             </p>
           </div>
         </div>
@@ -91,13 +92,13 @@ export default function SystemCreators() {
     <AppLayout>
       <SubNavigation items={adminSystemNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Creators" description="Stripe Connect creator accounts and onboarding status" />
+        <AdminHeader title={t('screens.admin.creators')} description="Stripe Connect creator accounts and onboarding status" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Creators" value={total} icon={Users} loading={isLoading} />
-          <AdminStatsCard title="Onboarded" value={onboardedCount} icon={CheckCircle2} loading={isLoading} variant="success" />
-          <AdminStatsCard title="Pending" value={creators.length - onboardedCount} icon={AlertCircle} loading={isLoading} variant={creators.length - onboardedCount > 0 ? "warning" : "default"} />
-          <AdminStatsCard title="Connected" value={creators.filter((c: any) => c.stripe_account_id).length} icon={CreditCard} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalCreators')} value={total} icon={Users} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.onboarded')} value={onboardedCount} icon={CheckCircle2} loading={isLoading} variant="success" />
+          <AdminStatsCard title={t('screens.admin.pending')} value={creators.length - onboardedCount} icon={AlertCircle} loading={isLoading} variant={creators.length - onboardedCount > 0 ? "warning" : "default"} />
+          <AdminStatsCard title={t('screens.admin.connected')} value={creators.filter((c: any) => c.stripe_account_id).length} icon={CreditCard} loading={isLoading} />
         </div>
 
         <AdminTable

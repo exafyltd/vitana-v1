@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Package, Share2, Download, Eye, Calendar, Users } from "lucide-react";
 import { CreatePackagePopup } from "@/components/CreatePackagePopup";
+import { t } from '@/lib/i18n-toast';
 
 const packageData = {
   myPackages: [
@@ -81,7 +82,7 @@ export default withScreenId(function Packages() {
   return (
     <AppLayout>
       <SEO 
-        title="Data Packages | Sharing" 
+        title={t('screens.sharing.dataPackagesSharing')} 
         description="Create, manage, and share customized health data packages with healthcare providers and researchers."
         canonical={window.location.href}
       />
@@ -90,24 +91,24 @@ export default withScreenId(function Packages() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader 
-            title="Data Packages 📦"
+            title={t('screens.sharing.dataPackages')}
             description="Create and manage customized health data packages for sharing with healthcare providers"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search packages, templates..." />
+            <ExpandableSearchButton placeholder={t('screens.sharing.searchPackagesTemplates')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Package
+              {t('screens.sharing.createPackage')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="my-packages">My Packages</SplitBarTrigger>
-              <SplitBarTrigger value="templates">Templates</SplitBarTrigger>
-              <SplitBarTrigger value="create-custom">Create Custom</SplitBarTrigger>
+              <SplitBarTrigger value="my-packages">{t('screens.sharing.myPackages')}</SplitBarTrigger>
+              <SplitBarTrigger value="templates">{t('screens.sharing.templates')}</SplitBarTrigger>
+              <SplitBarTrigger value="create-custom">{t('screens.sharing.createCustom')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="my-packages">
@@ -126,7 +127,7 @@ export default withScreenId(function Packages() {
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Data Types Included</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.dataTypesIncluded')}</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {pkg.dataTypes.map((type, index) => (
                               <Badge key={index} variant="secondary" className="text-xs">{type}</Badge>
@@ -136,17 +137,17 @@ export default withScreenId(function Packages() {
                         
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <div className="font-medium text-muted-foreground">Date Range</div>
+                            <div className="font-medium text-muted-foreground">{t('screens.sharing.dateRange')}</div>
                             <div>{pkg.dateRange}</div>
                           </div>
                           <div>
-                            <div className="font-medium text-muted-foreground">Created</div>
+                            <div className="font-medium text-muted-foreground">{t('screens.sharing.created')}</div>
                             <div>{pkg.createdDate}</div>
                           </div>
                         </div>
                         
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Shared With</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.sharedWith')}</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {pkg.recipients.map((recipient, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
@@ -160,15 +161,15 @@ export default withScreenId(function Packages() {
                         <div className="flex gap-2 pt-2">
                           <Button variant="outline" size="sm">
                             <Eye className="h-4 w-4 mr-2" />
-                            Preview
+                            {t('screens.sharing.preview')}
                           </Button>
                           <Button variant="outline" size="sm">
                             <Download className="h-4 w-4 mr-2" />
-                            Download
+                            {t('screens.sharing.download')}
                           </Button>
                           <Button variant="outline" size="sm">
                             <Share2 className="h-4 w-4 mr-2" />
-                            Share
+                            {t('screens.sharing.share')}
                           </Button>
                         </div>
                       </CardContent>
@@ -189,7 +190,7 @@ export default withScreenId(function Packages() {
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Included Data Types</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.includedDataTypes')}</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {template.dataTypes.map((type, index) => (
                               <Badge key={index} variant="outline" className="text-xs">{type}</Badge>
@@ -198,13 +199,13 @@ export default withScreenId(function Packages() {
                         </div>
                         
                         <div>
-                          <div className="text-sm font-medium text-muted-foreground">Best For</div>
+                          <div className="text-sm font-medium text-muted-foreground">{t('screens.sharing.bestFor2')}</div>
                           <div className="text-sm">{template.useCase}</div>
                         </div>
                         
                         <Button className="w-full" size="sm">
                           <Package className="h-4 w-4 mr-2" />
-                          Use Template
+                          {t('screens.sharing.useTemplate')}
                         </Button>
                       </CardContent>
                     </Card>
@@ -220,26 +221,24 @@ export default withScreenId(function Packages() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Package className="h-5 w-5" />
-                        Create Custom Package
+                        {t('screens.sharing.createCustomPackage')}
                       </CardTitle>
                       <CardDescription>
-                        Build a personalized data package with specific health information
+                        {t('screens.sharing.buildPersonalizedDataPackageWithSpecific')}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="text-sm text-muted-foreground">
-                        Create a custom data package by selecting specific health metrics, date ranges, and data types 
-                        tailored to your healthcare provider's needs or research participation requirements.
+                      <div className="text-sm text-muted-foreground">{t('screens.sharing.createCustomDataPackageBySelecting')}
                       </div>
                       
                       <div className="flex gap-4">
                         <Button size="sm">
                           <Package className="h-4 w-4 mr-2" />
-                          Start Custom Package
+                          {t('screens.sharing.startCustomPackage')}
                         </Button>
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4 mr-2" />
-                          Preview Available Data
+                          {t('screens.sharing.previewAvailableData')}
                         </Button>
                       </div>
                     </CardContent>

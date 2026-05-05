@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import type { ExternalContact, CsvValidationResult } from "@/types/audience";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface CsvContactUploaderProps {
   onContactsImported: (contacts: ExternalContact[]) => void;
@@ -96,7 +97,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
     if (!file) return;
 
     if (!file.name.endsWith('.csv')) {
-      toast.error('Please upload a CSV file');
+      notifyError('toasts.sharing.pleaseUploadCsvFile');
       return;
     }
 
@@ -109,7 +110,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
       setValidationResult(result);
 
       if (result.valid.length === 0) {
-        toast.error('No valid contacts found in CSV');
+        notifyError('toasts.sharing.noValidContactsFoundCsv');
       } else {
         toast.success(`${result.valid.length} contacts imported successfully`);
         onContactsImported(result.valid);
@@ -127,7 +128,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
   const handleClearImport = () => {
     setValidationResult(null);
     onContactsImported([]);
-    toast.success('Import cleared');
+    notifySuccess('toasts.sharing.importCleared');
   };
 
   const hasImportedContacts = currentContacts.length > 0;
@@ -137,9 +138,9 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
       {!hasImportedContacts ? (
         <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
           <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="font-semibold mb-2">Upload CSV File</h3>
+          <h3 className="font-semibold mb-2">{t('screens.sharing.uploadCsvFile')}</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            CSV should contain columns: name, email, phone, whatsapp_number
+            {t('screens.sharing.csvShouldContainColumnsNameEmail')}
           </p>
           <Button variant="outline" className="relative" disabled={isProcessing}>
             <input
@@ -158,9 +159,8 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
             <div className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               <div>
-                <h3 className="font-semibold">CSV Imported</h3>
-                <p className="text-sm text-muted-foreground">
-                  {currentContacts.length} contacts ready to send
+                <h3 className="font-semibold">{t('screens.sharing.csvImported')}</h3>
+                <p className="text-sm text-muted-foreground">{t('screens.sharing.lengthContactsReadySend', { length: currentContacts.length })}
                 </p>
               </div>
             </div>
@@ -173,18 +173,15 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="h-4 w-4 text-destructive" />
-                <span className="text-sm font-medium">
-                  {validationResult.invalid.length} rows skipped due to errors
+                <span className="text-sm font-medium">{t('screens.sharing.lengthRowsSkippedDueErrors', { length: validationResult.invalid.length })}
                 </span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1 max-h-32 overflow-y-auto">
                 {validationResult.invalid.slice(0, 5).map((item, idx) => (
-                  <div key={idx}>
-                    Row {item.row}: {item.errors.join(', ')}
-                  </div>
+                  <div key={idx}>{t('screens.sharing.rowRowValue1', { row: item.row, value1: item.errors.join(', ') })}</div>
                 ))}
                 {validationResult.invalid.length > 5 && (
-                  <div>...and {validationResult.invalid.length - 5} more</div>
+                  <div>{t('screens.sharing.value0More', { value0: validationResult.invalid.length - 5 })}</div>
                 )}
               </div>
             </div>
@@ -192,7 +189,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
 
           {/* Preview first 5 contacts */}
           <div className="mt-4">
-            <h4 className="text-sm font-medium mb-2">Preview</h4>
+            <h4 className="text-sm font-medium mb-2">{t('screens.sharing.preview')}</h4>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {currentContacts.slice(0, 5).map((contact, idx) => (
                 <div key={idx} className="text-xs bg-muted/50 rounded p-2">
@@ -205,8 +202,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
                 </div>
               ))}
               {currentContacts.length > 5 && (
-                <div className="text-xs text-muted-foreground text-center py-1">
-                  ...and {currentContacts.length - 5} more contacts
+                <div className="text-xs text-muted-foreground text-center py-1">{t('screens.sharing.value0MoreContacts', { value0: currentContacts.length - 5 })}
                 </div>
               )}
             </div>
@@ -216,12 +212,12 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
 
       {/* Instructions */}
       <div className="text-xs text-muted-foreground space-y-1">
-        <p className="font-medium">CSV Format Requirements:</p>
+        <p className="font-medium">{t('screens.sharing.csvFormatRequirements')}</p>
         <ul className="list-disc list-inside space-y-0.5 ml-2">
-          <li>First row must contain column headers</li>
-          <li>Required column: <code>name</code></li>
-          <li>Optional columns: <code>email</code>, <code>phone</code>, <code>whatsapp_number</code></li>
-          <li>At least one contact method (email, phone, or WhatsApp) is required</li>
+          <li>{t('screens.sharing.firstRowMustContainColumnHeaders')}</li>
+          <li>{t('screens.sharing.requiredColumn')} <code>{t('screens.sharing.name')}</code></li>
+          <li>{t('screens.sharing.optionalColumns')} <code>{t('screens.sharing.email')}</code>, <code>{t('screens.sharing.phone')}</code>, <code>{t('screens.sharing.whatsapp_number')}</code></li>
+          <li>{t('screens.sharing.atLeastOneContactMethodEmail')}</li>
         </ul>
       </div>
     </div>

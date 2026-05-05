@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Brain 
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ProgressDashboardProps {
   progress: ExerciseProgress;
@@ -22,7 +23,7 @@ export function ProgressDashboard({ progress, aiSummary }: ProgressDashboardProp
       
       <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        Weekly Progress & Consistency
+        {t('screens.health.weeklyProgressConsistency')}
       </h3>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -31,25 +32,25 @@ export function ProgressDashboard({ progress, aiSummary }: ProgressDashboardProp
           <p className="text-2xl font-bold">
             {progress.workoutsCompleted}/{progress.workoutsTotal}
           </p>
-          <p className="text-xs text-muted-foreground">Workouts</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.workouts')}</p>
         </div>
         
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
           <Clock className="w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
           <p className="text-2xl font-bold">{progress.avgWorkoutTime}</p>
-          <p className="text-xs text-muted-foreground">Avg Minutes</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.avgMinutes')}</p>
         </div>
         
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
           <Flame className="w-6 h-6 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
           <p className="text-2xl font-bold">{progress.totalCaloriesBurned}</p>
-          <p className="text-xs text-muted-foreground">Cal Burned</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.calBurned')}</p>
         </div>
         
         <div className="text-center p-4 rounded-xl bg-white/60 dark:bg-slate-800/60">
           <Heart className="w-6 h-6 mx-auto mb-2 text-rose-600 dark:text-rose-400" />
           <p className="text-2xl font-bold">{progress.recoveryScore}/100</p>
-          <p className="text-xs text-muted-foreground">Recovery</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.recovery')}</p>
           <Badge variant="outline" className="mt-1 text-xs">
             <TrendingUp className="w-3 h-3 mr-1" />
             +5

@@ -4,10 +4,12 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import noRawJsxText from "./eslint-rules/no-raw-jsx-text.js";
+import noRawToastArg from "./eslint-rules/no-raw-toast-arg.js";
 
 const i18nPlugin = {
   rules: {
     "no-raw-jsx-text": noRawJsxText,
+    "no-raw-toast-arg": noRawToastArg,
   },
 };
 
@@ -32,8 +34,11 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
-      // Wave 1: warn-level. Graduates to error in Wave 2 (toast args first), then globally in Wave 6.
-      "i18n/no-raw-jsx-text": "warn",
+      // JSX text + translatable attributes: ERROR-level as of Wave 6.
+      // Any new hardcoded user-visible string fails the build.
+      "i18n/no-raw-jsx-text": "error",
+      // toast/sonner/notify first-arg literals: ERROR-level since Wave 2.x.
+      "i18n/no-raw-toast-arg": "error",
     },
   }
 );

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, AlertCircle, Zap, ArrowRight } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface AnalysisResultsProps {
   analysis: any;
@@ -27,20 +28,18 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
             <div className="space-y-2">
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-primary" />
-                AI Analysis Complete
+                {t('screens.admin.aiAnalysisComplete')}
               </CardTitle>
-              <CardDescription>
-                Analysis took {analysis.analysis_duration_ms}ms
+              <CardDescription>{t('screens.admin.analysisTookAnalysis_duration_msMs', { analysis_duration_ms: analysis.analysis_duration_ms })}
               </CardDescription>
             </div>
-            <Badge variant={priorityColors[result.priority as keyof typeof priorityColors]}>
-              {result.priority} priority
+            <Badge variant={priorityColors[result.priority as keyof typeof priorityColors]}>{t('screens.admin.priorityPriority', { priority: result.priority })}
             </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <h4 className="font-medium mb-2">Analysis</h4>
+            <h4 className="font-medium mb-2">{t('screens.admin.analysis')}</h4>
             <p className="text-sm text-muted-foreground">{result.analysis}</p>
           </div>
 
@@ -49,7 +48,7 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
               <div className="flex items-start gap-2">
                 <Zap className="h-4 w-4 text-primary mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium">Expected Impact</p>
+                  <p className="text-sm font-medium">{t('screens.admin.expectedImpact')}</p>
                   <p className="text-sm text-muted-foreground">{result.estimatedImpact}</p>
                 </div>
               </div>
@@ -60,8 +59,8 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
 
       <Card>
         <CardHeader>
-          <CardTitle>Suggested Triggers</CardTitle>
-          <CardDescription>Events that will start this automation</CardDescription>
+          <CardTitle>{t('screens.admin.suggestedTriggers')}</CardTitle>
+          <CardDescription>{t('screens.admin.eventsThatWillStartThisAutomation')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
@@ -77,8 +76,8 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
       {result.suggestedConditions && result.suggestedConditions.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Suggested Conditions</CardTitle>
-            <CardDescription>When these conditions are met</CardDescription>
+            <CardTitle>{t('screens.admin.suggestedConditions')}</CardTitle>
+            <CardDescription>{t('screens.admin.whenTheseConditionsMet')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {result.suggestedConditions.map((condition: any, index: number) => (
@@ -99,8 +98,8 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
 
       <Card>
         <CardHeader>
-          <CardTitle>Suggested Actions</CardTitle>
-          <CardDescription>What will happen when triggered</CardDescription>
+          <CardTitle>{t('screens.admin.suggestedActions')}</CardTitle>
+          <CardDescription>{t('screens.admin.whatWillHappenWhenTriggered')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {result.suggestedActions?.map((action: any, index: number) => (
@@ -126,7 +125,7 @@ export default function AnalysisResults({ analysis, onDeploy, isDeploying }: Ana
 
       <div className="flex gap-3 justify-end">
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Analyze Another
+          {t('screens.admin.analyzeAnother')}
         </Button>
         <Button onClick={onDeploy} disabled={isDeploying}>
           {isDeploying ? "Deploying..." : "Deploy as Automation"}

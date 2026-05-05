@@ -16,6 +16,7 @@ import { Search, Calendar as CalendarIcon, X } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface AdvancedSearchDialogProps {
   open: boolean;
@@ -53,7 +54,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Search className="w-6 h-6" />
-            Advanced Search
+            {t('screens.memory.advancedSearch')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
 
@@ -61,10 +62,10 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
           <div className="space-y-6">
             {/* Keyword Search */}
             <div className="space-y-2">
-              <Label htmlFor="keyword">Keyword</Label>
+              <Label htmlFor="keyword">{t('screens.memory.keyword')}</Label>
               <Input
                 id="keyword"
-                placeholder="Search in activity content..."
+                placeholder={t('screens.memory.searchActivityContent')}
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
               />
@@ -72,13 +73,13 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
 
             {/* Category Filter */}
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">{t('screens.memory.category')}</Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger id="category">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="all">{t('screens.memory.allCategories')}</SelectItem>
                   {CATEGORIES.map(cat => (
                     <SelectItem key={cat} value={cat} className="capitalize">
                       {cat}
@@ -91,7 +92,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
             {/* Date Range */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>From Date</Label>
+                <Label>{t('screens.memory.fromDate')}</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -118,7 +119,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
               </div>
 
               <div className="space-y-2">
-                <Label>To Date</Label>
+                <Label>{t('screens.memory.date')}</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -147,15 +148,15 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
 
             {/* Sort By */}
             <div className="space-y-2">
-              <Label htmlFor="sort">Sort By</Label>
+              <Label htmlFor="sort">{t('screens.memory.sortBy')}</Label>
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger id="sort">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="date-desc">Date (Newest First)</SelectItem>
-                  <SelectItem value="date-asc">Date (Oldest First)</SelectItem>
-                  <SelectItem value="category">Category</SelectItem>
+                  <SelectItem value="date-desc">{t('screens.memory.dateNewestFirst')}</SelectItem>
+                  <SelectItem value="date-asc">{t('screens.memory.dateOldestFirst')}</SelectItem>
+                  <SelectItem value="category">{t('screens.memory.category')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -166,15 +167,15 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
           <div className="flex justify-between w-full">
             <Button variant="outline" onClick={handleReset}>
               <X className="w-4 h-4 mr-2" />
-              Reset
+              {t('screens.memory.reset')}
             </Button>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('screens.memory.cancel')}
               </Button>
               <Button onClick={handleSearch}>
                 <Search className="w-4 h-4 mr-2" />
-                Search
+                {t('screens.memory.search')}
               </Button>
             </div>
           </div>

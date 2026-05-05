@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface VitanaIndexConfig {
   id: string;
@@ -69,17 +70,10 @@ export function useVitanaIndexConfig() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["vitana_index_config"] });
-      toast({
-        title: "Vitana Index Config updated",
-        description: "System configuration has been saved successfully.",
-      });
+      notify('toasts.hooks.vitanaIndexConfigUpdated', 'toasts.hooks.systemConfigurationHasSavedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Error updating config",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.errorUpdatingConfig');
     },
   });
 

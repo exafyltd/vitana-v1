@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
 import { Mail, MessageSquare, Download, Link2, Check, Calendar, MapPin, Ticket } from "lucide-react";
 import { siWhatsapp, siViber } from "simple-icons";
 import { cn } from "@/lib/utils";
+import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface TicketShareSheetProps {
   open: boolean;
@@ -46,7 +46,7 @@ export function TicketShareSheet({
   const generateTicketImage = async (): Promise<Blob | null> => {
     if (imageCache.current) return imageCache.current;
     if (!ticketRef.current) {
-      toast.error("Unable to generate ticket image");
+      notifyError('toasts.tickets.unableGenerateTicketImage');
       return null;
     }
 
@@ -69,7 +69,7 @@ export function TicketShareSheet({
     } catch (error) {
       console.error("Error generating ticket image:", error);
       setIsGenerating(false);
-      toast.error("Failed to generate ticket image");
+      notifyError('toasts.tickets.failedGenerateTicketImage');
       return null;
     }
   };
@@ -93,7 +93,7 @@ export function TicketShareSheet({
     const blob = await downloadTicket();
     if (!blob) return;
     
-    toast.success("Ticket downloaded! Opening WhatsApp...");
+    notifySuccess('toasts.tickets.ticketDownloadedOpeningWhatsapp');
     const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n\n(Ticket image attached separately)")}`;
     window.open(url, "_blank");
   };
@@ -109,7 +109,7 @@ export function TicketShareSheet({
     const checkTimer = setTimeout(() => {
       if (!hasOpened) {
         navigator.clipboard.writeText(shareText);
-        toast.info("Ticket downloaded! Message copied – paste it into Viber");
+        notifyInfo('toasts.tickets.ticketDownloadedMessageCopiedPasteIt');
       }
     }, 1500);
 
@@ -117,7 +117,7 @@ export function TicketShareSheet({
       if (document.hidden) {
         hasOpened = true;
         clearTimeout(checkTimer);
-        toast.success("Ticket downloaded! Opening Viber...");
+        notifySuccess('toasts.tickets.ticketDownloadedOpeningViber');
       }
     };
 
@@ -131,7 +131,7 @@ export function TicketShareSheet({
     const blob = await downloadTicket();
     if (!blob) return;
 
-    toast.success("Ticket downloaded! Opening email...");
+    notifySuccess('toasts.tickets.ticketDownloadedOpeningEmail');
     const subject = encodeURIComponent(`My ticket for ${eventTitle}`);
     const body = encodeURIComponent(`${shareText}\n\n(Please attach the downloaded ticket image)`);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
@@ -141,20 +141,20 @@ export function TicketShareSheet({
     const blob = await downloadTicket();
     if (!blob) return;
 
-    toast.success("Ticket downloaded! Opening messages...");
+    notifySuccess('toasts.tickets.ticketDownloadedOpeningMessages');
     const body = encodeURIComponent(shareText);
     window.location.href = `sms:?&body=${body}`;
   };
 
   const handleDownload = async () => {
     await downloadTicket();
-    toast.success("Ticket saved!");
+    notifySuccess('toasts.tickets.ticketSaved');
   };
 
   const handleCopyDetails = () => {
     navigator.clipboard.writeText(shareText);
     setCopied(true);
-    toast.success("Event details copied!");
+    notifySuccess('toasts.tickets.eventDetailsCopied');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -236,9 +236,9 @@ export function TicketShareSheet({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share your ticket</DialogTitle>
+          <DialogTitle>{t('screens.tickets.shareYourTicket')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Send your ticket to friends or save for easy access.
+            {t('screens.tickets.sendYourTicketFriendsSaveFor')}
           </p>
         </DialogHeader>
 
@@ -282,7 +282,7 @@ export function TicketShareSheet({
 
         {/* Share Buttons Grid */}
         <div className="space-y-3">
-          <p className="text-xs font-medium text-muted-foreground">Quick share</p>
+          <p className="text-xs font-medium text-muted-foreground">{t('screens.tickets.quickShare')}</p>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
             {buttons.map((btn) => (
               <Button
@@ -300,7 +300,7 @@ export function TicketShareSheet({
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          Opens your personal apps to share directly
+          {t('screens.tickets.opensYourPersonalAppsShareDirectly')}
         </p>
       </DialogContent>
     </Dialog>

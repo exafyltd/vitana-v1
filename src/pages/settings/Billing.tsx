@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { BillingActionPopup } from "@/components/BillingActionPopup";
 import { InvoicePreviewDialog, type InvoiceData } from "@/components/billing/InvoicePreviewDialog";
 import { CreatorPaymentsSection } from "@/components/creator/CreatorPaymentsSection";
+import { t } from '@/lib/i18n-toast';
 
 export default function Billing() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -77,18 +78,18 @@ export default function Billing() {
 
   return (
     <AppLayout>
-      <SEO title="Billing | Settings" description="Manage your subscription and billing information" canonical={window.location.href} />
+      <SEO title={t('screens.settings.billingSettings')} description="Manage your subscription and billing information" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Manage your investment in wellness! 💳"
+            title={t('screens.settings.manageYourInvestmentWellness')}
             description="Manage your subscription and billing information"
           />
         <UtilityActionButton>
           <ExpandableSearchButton 
-            placeholder="Search billing..." 
+            placeholder={t('screens.settings.searchBilling')} 
             onSearch={handleSearch}
           />
           <UniversalCalendarButton />
@@ -97,14 +98,14 @@ export default function Billing() {
             onClick={() => setActionPopupOpen(true)}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Billing Actions
+            {t('screens.settings.billingActions')}
           </Button>
         </UtilityActionButton>
         
         <SplitBar defaultValue="billing" className="w-full">
           <SplitBarList>
-            <SplitBarTrigger value="billing">💳 Billing</SplitBarTrigger>
-            <SplitBarTrigger value="rewards">🏆 Rewards & Achievements</SplitBarTrigger>
+            <SplitBarTrigger value="billing">{t('screens.settings.billing')}</SplitBarTrigger>
+            <SplitBarTrigger value="rewards">{t('screens.settings.rewardsAchievements')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="billing" className="space-y-6">
@@ -116,40 +117,40 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5 text-yellow-500" />
-              Current Subscription
+              {t('screens.settings.currentSubscription')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold">Vitana Premium</h3>
-                <p className="text-sm text-muted-foreground">Advanced AI insights, unlimited storage, priority support</p>
+                <h3 className="text-lg font-semibold">{t('screens.settings.vitanaPremium')}</h3>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.advancedAiInsightsUnlimitedStoragePriority')}</p>
               </div>
-              <Badge className="bg-primary text-primary-foreground">Active</Badge>
+              <Badge className="bg-primary text-primary-foreground">{t('screens.settings.active')}</Badge>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
               <div>
-                <p className="text-sm text-muted-foreground">Monthly Cost</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.monthlyCost')}</p>
                 <p className="font-semibold">$19.99</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Next Billing</p>
-                <p className="font-semibold">Jan 15, 2025</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.nextBilling')}</p>
+                <p className="font-semibold">{t('screens.settings.jan152025')}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Started</p>
-                <p className="font-semibold">Oct 15, 2024</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.started')}</p>
+                <p className="font-semibold">{t('screens.settings.oct152024')}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Auto-Renew</p>
-                <p className="font-semibold text-green-600">Enabled</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.autorenew')}</p>
+                <p className="font-semibold text-green-600">{t('screens.settings.enabled')}</p>
               </div>
             </div>
 
             <div className="flex gap-2 pt-4">
-              <Button variant="outline">Change Plan</Button>
-              <Button variant="outline">Cancel Subscription</Button>
+              <Button variant="outline">{t('screens.settings.changePlan')}</Button>
+              <Button variant="outline">{t('screens.settings.cancelSubscription')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -157,77 +158,77 @@ export default function Billing() {
         {/* Available Plans */}
         <Card>
           <CardHeader>
-            <CardTitle>Available Plans</CardTitle>
+            <CardTitle>{t('screens.settings.availablePlans')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="border rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Basic</h3>
-                <div className="text-2xl font-bold mb-4">Free</div>
+                <h3 className="font-semibold mb-2">{t('screens.settings.basic')}</h3>
+                <div className="text-2xl font-bold mb-4">{t('screens.settings.free')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Basic health tracking
+                    {t('screens.settings.basicHealthTracking')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Community access
+                    {t('screens.settings.communityAccess')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Limited AI insights
+                    {t('screens.settings.limitedAiInsights')}
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full" disabled>Current Plan</Button>
+                <Button variant="outline" className="w-full" disabled>{t('screens.settings.currentPlan')}</Button>
               </div>
 
               <div className="border-2 border-primary rounded-lg p-6 relative">
-                <Badge className="absolute -top-3 left-6 bg-primary">Most Popular</Badge>
-                <h3 className="font-semibold mb-2">Premium</h3>
-                <div className="text-2xl font-bold mb-4">$19.99/mo</div>
+                <Badge className="absolute -top-3 left-6 bg-primary">{t('screens.settings.mostPopular')}</Badge>
+                <h3 className="font-semibold mb-2">{t('screens.settings.premium')}</h3>
+                <div className="text-2xl font-bold mb-4">{t('screens.settings.text1999mo')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Advanced AI insights
+                    {t('screens.settings.advancedAiInsights')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Unlimited storage
+                    {t('screens.settings.unlimitedStorage')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Priority support
+                    {t('screens.settings.prioritySupport')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    All integrations
+                    {t('screens.settings.allIntegrations')}
                   </li>
                 </ul>
-                <Button className="w-full" disabled>Current Plan</Button>
+                <Button className="w-full" disabled>{t('screens.settings.currentPlan')}</Button>
               </div>
 
               <div className="border rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Enterprise</h3>
-                <div className="text-2xl font-bold mb-4">$49.99/mo</div>
+                <h3 className="font-semibold mb-2">{t('screens.settings.enterprise')}</h3>
+                <div className="text-2xl font-bold mb-4">{t('screens.settings.text4999mo')}</div>
                 <ul className="space-y-2 text-sm mb-6">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Custom AI models
+                    {t('screens.settings.customAiModels')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Team management
+                    {t('screens.settings.teamManagement')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    Advanced analytics
+                    {t('screens.settings.advancedAnalytics')}
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600" />
-                    24/7 phone support
+                    {t('screens.settings.text247PhoneSupport')}
                   </li>
                 </ul>
-                <Button variant="outline" className="w-full">Upgrade</Button>
+                <Button variant="outline" className="w-full">{t('screens.settings.upgrade')}</Button>
               </div>
             </div>
           </CardContent>
@@ -238,7 +239,7 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
-              Payment Methods
+              {t('screens.settings.paymentMethods')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -249,18 +250,18 @@ export default function Billing() {
                 </div>
                 <div>
                   <h4 className="font-medium">•••• •••• •••• 4242</h4>
-                  <p className="text-sm text-muted-foreground">Expires 12/26</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.settings.expires1226')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">Primary</Badge>
-                <Button variant="outline" size="sm">Edit</Button>
+                <Badge variant="secondary">{t('screens.settings.primary')}</Badge>
+                <Button variant="outline" size="sm">{t('screens.settings.edit')}</Button>
               </div>
             </div>
 
             <Button variant="outline" className="w-full">
               <CreditCard className="w-4 h-4 mr-2" />
-              Add Payment Method
+              {t('screens.settings.addPaymentMethod')}
             </Button>
           </CardContent>
         </Card>
@@ -270,14 +271,14 @@ export default function Billing() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              Billing History
+              {t('screens.settings.billingHistory')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between py-3 border-b">
               <div>
-                <p className="font-medium">Premium Subscription</p>
-                <p className="text-sm text-muted-foreground">Dec 15, 2024</p>
+                <p className="font-medium">{t('screens.settings.premiumSubscription')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.dec152024')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
@@ -285,12 +286,12 @@ export default function Billing() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    title="View Invoice"
+                    title={t('screens.settings.viewInvoice')}
                     onClick={() => handleViewInvoice(invoiceDataDec)}
                   >
                     <Eye className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" title="Download Invoice">
+                  <Button variant="ghost" size="sm" title={t('screens.settings.downloadInvoice')}>
                     <Download className="w-4 h-4" />
                   </Button>
                 </div>
@@ -299,8 +300,8 @@ export default function Billing() {
 
             <div className="flex items-center justify-between py-3 border-b">
               <div>
-                <p className="font-medium">Premium Subscription</p>
-                <p className="text-sm text-muted-foreground">Nov 15, 2024</p>
+                <p className="font-medium">{t('screens.settings.premiumSubscription')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.nov152024')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
@@ -308,12 +309,12 @@ export default function Billing() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    title="View Invoice"
+                    title={t('screens.settings.viewInvoice')}
                     onClick={() => handleViewInvoice(invoiceDataNov)}
                   >
                     <Eye className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" title="Download Invoice">
+                  <Button variant="ghost" size="sm" title={t('screens.settings.downloadInvoice')}>
                     <Download className="w-4 h-4" />
                   </Button>
                 </div>
@@ -322,8 +323,8 @@ export default function Billing() {
 
             <div className="flex items-center justify-between py-3">
               <div>
-                <p className="font-medium">Premium Subscription</p>
-                <p className="text-sm text-muted-foreground">Oct 15, 2024</p>
+                <p className="font-medium">{t('screens.settings.premiumSubscription')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.settings.oct152024')}</p>
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
@@ -331,12 +332,12 @@ export default function Billing() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    title="View Invoice"
+                    title={t('screens.settings.viewInvoice')}
                     onClick={() => handleViewInvoice(invoiceDataOct)}
                   >
                     <Eye className="w-4 h-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" title="Download Invoice">
+                  <Button variant="ghost" size="sm" title={t('screens.settings.downloadInvoice')}>
                     <Download className="w-4 h-4" />
                   </Button>
                 </div>
@@ -352,33 +353,33 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-yellow-500" />
-                  Points Overview
+                  {t('screens.settings.pointsOverview')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary">2,450</div>
-                    <div className="text-sm text-muted-foreground">Total Points</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.settings.totalPoints')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">$24.50</div>
-                    <div className="text-sm text-muted-foreground">Credit Value</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.settings.creditValue')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-orange-600">850</div>
-                    <div className="text-sm text-muted-foreground">This Month</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.settings.thisMonth')}</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-purple-600">550</div>
-                    <div className="text-sm text-muted-foreground">To Next Credit</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.settings.nextCredit')}</div>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Progress to next $5 credit</span>
-                    <span>2,450 / 3,000 points</span>
+                    <span>{t('screens.settings.progressNext5Credit')}</span>
+                    <span>{t('screens.settings.text24503000Points')}</span>
                   </div>
                   <Progress value={81.6} className="h-2" />
                 </div>
@@ -386,9 +387,9 @@ export default function Billing() {
                 <div className="flex gap-2">
                   <Button className="flex-1">
                     <Coins className="w-4 h-4 mr-2" />
-                    Redeem Points
+                    {t('screens.settings.redeemPoints')}
                   </Button>
-                  <Button variant="outline">View Rules</Button>
+                  <Button variant="outline">{t('screens.settings.viewRules')}</Button>
                 </div>
               </CardContent>
             </Card>
@@ -398,7 +399,7 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5 text-blue-500" />
-                  Earn Points
+                  {t('screens.settings.earnPoints')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -409,13 +410,13 @@ export default function Billing() {
                         <span>💧</span>
                       </div>
                       <div>
-                        <h4 className="font-medium">Daily Water Goal</h4>
-                        <p className="text-sm text-muted-foreground">Log 8 glasses of water</p>
+                        <h4 className="font-medium">{t('screens.settings.dailyWaterGoal')}</h4>
+                        <p className="text-sm text-muted-foreground">{t('screens.settings.log8GlassesWater')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge>+50 pts</Badge>
-                      <Button size="sm">Do Now</Button>
+                      <Badge>{t('screens.settings.text50Pts')}</Badge>
+                      <Button size="sm">{t('screens.settings.doNow')}</Button>
                     </div>
                   </div>
 
@@ -425,13 +426,13 @@ export default function Billing() {
                         <span>👥</span>
                       </div>
                       <div>
-                        <h4 className="font-medium">Community Engagement</h4>
-                        <p className="text-sm text-muted-foreground">Share in group chat</p>
+                        <h4 className="font-medium">{t('screens.settings.communityEngagement')}</h4>
+                        <p className="text-sm text-muted-foreground">{t('screens.settings.shareGroupChat')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge>+25 pts</Badge>
-                      <Button size="sm">Do Now</Button>
+                      <Badge>{t('screens.settings.text25Pts')}</Badge>
+                      <Button size="sm">{t('screens.settings.doNow')}</Button>
                     </div>
                   </div>
 
@@ -441,13 +442,13 @@ export default function Billing() {
                         <span>📊</span>
                       </div>
                       <div>
-                        <h4 className="font-medium">Weekly Check-in</h4>
-                        <p className="text-sm text-muted-foreground">Complete health assessment</p>
+                        <h4 className="font-medium">{t('screens.settings.weeklyCheckin')}</h4>
+                        <p className="text-sm text-muted-foreground">{t('screens.settings.completeHealthAssessment')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge>+100 pts</Badge>
-                      <Button size="sm">Do Now</Button>
+                      <Badge>{t('screens.settings.text100Pts')}</Badge>
+                      <Button size="sm">{t('screens.settings.doNow')}</Button>
                     </div>
                   </div>
                 </div>
@@ -459,30 +460,30 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Gift className="w-5 h-5 text-green-500" />
-                  Redeem Points
+                  {t('screens.settings.redeemPoints')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">$5 Subscription Credit</h4>
-                    <Badge variant="outline">500 points</Badge>
+                    <h4 className="font-medium">{t('screens.settings.text5SubscriptionCredit')}</h4>
+                    <Badge variant="outline">{t('screens.settings.text500Points')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Apply $5 credit to your next billing cycle. Maximum 2 credits per month.
+                    {t('screens.settings.apply5CreditYourNextBilling')}
                   </p>
-                  <Button>Redeem Now</Button>
+                  <Button>{t('screens.settings.redeemNow')}</Button>
                 </div>
 
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">$10 Subscription Credit</h4>
-                    <Badge variant="outline">1,000 points</Badge>
+                    <h4 className="font-medium">{t('screens.settings.text10SubscriptionCredit')}</h4>
+                    <Badge variant="outline">{t('screens.settings.text1000Points')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Apply $10 credit to your next billing cycle. Maximum 1 credit per month.
+                    {t('screens.settings.apply10CreditYourNextBilling')}
                   </p>
-                  <Button>Redeem Now</Button>
+                  <Button>{t('screens.settings.redeemNow')}</Button>
                 </div>
               </CardContent>
             </Card>
@@ -492,50 +493,50 @@ export default function Billing() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Award className="w-5 h-5 text-purple-500" />
-                  Achievements
+                  {t('screens.settings.achievements')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center p-4 border rounded-lg bg-yellow-50">
                     <div className="text-2xl mb-2">🏆</div>
-                    <div className="font-medium text-sm">Early Adopter</div>
-                    <div className="text-xs text-muted-foreground">Joined in 2024</div>
+                    <div className="font-medium text-sm">{t('screens.settings.earlyAdopter')}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.joined2024')}</div>
                   </div>
                   
                   <div className="text-center p-4 border rounded-lg bg-blue-50">
                     <div className="text-2xl mb-2">💪</div>
-                    <div className="font-medium text-sm">Consistency King</div>
-                    <div className="text-xs text-muted-foreground">7-day streak</div>
+                    <div className="font-medium text-sm">{t('screens.settings.consistencyKing')}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.text7dayStreak')}</div>
                   </div>
 
                   <div className="text-center p-4 border rounded-lg bg-green-50">
                     <div className="text-2xl mb-2">🎯</div>
-                    <div className="font-medium text-sm">Goal Crusher</div>
-                    <div className="text-xs text-muted-foreground">10 goals completed</div>
+                    <div className="font-medium text-sm">{t('screens.settings.goalCrusher')}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.text10GoalsCompleted')}</div>
                   </div>
 
                   <div className="text-center p-4 border rounded-lg bg-purple-50">
                     <div className="text-2xl mb-2">🌟</div>
-                    <div className="font-medium text-sm">Vitana Champion</div>
-                    <div className="text-xs text-muted-foreground">Premium for 3 months</div>
+                    <div className="font-medium text-sm">{t('screens.settings.vitanaChampion')}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.premiumFor3Months')}</div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Coming up next...</h4>
+                  <h4 className="font-medium mb-3">{t('screens.settings.comingUpNext')}</h4>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 border rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="text-xl">🔥</div>
                         <div>
-                          <h5 className="font-medium text-sm">Streak Master</h5>
-                          <p className="text-xs text-muted-foreground">Maintain 30-day streak</p>
+                          <h5 className="font-medium text-sm">{t('screens.settings.streakMaster')}</h5>
+                          <p className="text-xs text-muted-foreground">{t('screens.settings.maintain30dayStreak')}</p>
                         </div>
                       </div>
                       <div className="text-right">
                         <Progress value={23} className="w-20 h-2" />
-                        <div className="text-xs text-muted-foreground">7/30 days</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.text730Days')}</div>
                       </div>
                     </div>
 
@@ -543,13 +544,13 @@ export default function Billing() {
                       <div className="flex items-center gap-3">
                         <div className="text-xl">💎</div>
                         <div>
-                          <h5 className="font-medium text-sm">Diamond Member</h5>
-                          <p className="text-xs text-muted-foreground">Premium for 6 months</p>
+                          <h5 className="font-medium text-sm">{t('screens.settings.diamondMember')}</h5>
+                          <p className="text-xs text-muted-foreground">{t('screens.settings.premiumFor6Months')}</p>
                         </div>
                       </div>
                       <div className="text-right">
                         <Progress value={50} className="w-20 h-2" />
-                        <div className="text-xs text-muted-foreground">3/6 months</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.text36Months')}</div>
                       </div>
                     </div>
                   </div>

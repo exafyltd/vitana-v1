@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SharedConnectionsCardProps {
   mutualConnections?: number;
@@ -34,14 +35,13 @@ export function SharedConnectionsCard({
       <CardHeader className="pb-3">
         <CardTitle className="text-sm font-semibold flex items-center gap-2">
           <Users className="h-4 w-4 text-[hsl(var(--domain-community-accent))]" />
-          Shared Connections
+          {t('screens.profile.sharedConnections')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Mutual Connections */}
         <div>
-          <p className="text-xs text-muted-foreground mb-2">
-            {mutualConnections} mutual connections
+          <p className="text-xs text-muted-foreground mb-2">{t('screens.profile.mutualconnectionsMutualConnections', { mutualConnections })}
           </p>
           <div className="flex -space-x-2">
             {mutualAvatars.map((avatar) => (
@@ -61,7 +61,7 @@ export function SharedConnectionsCard({
         {/* Shared Groups */}
         {defaultSharedGroups.length > 0 && (
           <div>
-            <p className="text-xs text-muted-foreground mb-2">Shared groups</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('screens.profile.sharedGroups')}</p>
             <div className="flex flex-wrap gap-1">
               {defaultSharedGroups.map((group, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
@@ -75,7 +75,7 @@ export function SharedConnectionsCard({
         {/* Common Interests */}
         {defaultCommonInterests.length > 0 && (
           <div>
-            <p className="text-xs text-muted-foreground mb-2">Common interests</p>
+            <p className="text-xs text-muted-foreground mb-2">{t('screens.profile.commonInterests')}</p>
             <div className="flex flex-wrap gap-1">
               {defaultCommonInterests.map((interest, index) => (
                 <Badge 

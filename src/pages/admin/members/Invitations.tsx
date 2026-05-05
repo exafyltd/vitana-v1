@@ -37,6 +37,7 @@ import {
   useCreateInvitation,
   useRevokeInvitation,
 } from "@/hooks/useAdminMembers";
+import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 const AVAILABLE_ROLES = ["community", "patient", "professional", "staff", "admin"];
 
@@ -60,11 +61,11 @@ export default function MembersInvitations() {
 
   async function handleInvite() {
     if (!email || !email.includes("@")) {
-      toast.error("Please enter a valid email address.");
+      notifyError('toasts.admin.pleaseEnterValidEmailAddress2');
       return;
     }
     if (selectedRoles.length === 0) {
-      toast.error("Select at least one role.");
+      notifyError('toasts.admin.selectAtLeastOneRole');
       return;
     }
 
@@ -79,7 +80,7 @@ export default function MembersInvitations() {
       if (result?.invitation?.token) {
         const acceptUrl = `${window.location.origin}/admin/invitations/accept/${result.invitation.token}`;
         await navigator.clipboard.writeText(acceptUrl).catch(() => {});
-        toast.info("Accept link copied to clipboard");
+        notifyInfo('toasts.admin.acceptLinkCopiedClipboard');
       }
     } catch (err: any) {
       toast.error(err.message || "Failed to create invitation");
@@ -89,7 +90,7 @@ export default function MembersInvitations() {
   async function handleRevoke(id: string) {
     try {
       await revokeMutation.mutateAsync(id);
-      toast.success("Invitation revoked");
+      notifySuccess('toasts.admin.invitationRevoked');
     } catch (err: any) {
       toast.error(err.message || "Failed to revoke invitation");
     }
@@ -108,12 +109,12 @@ export default function MembersInvitations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="✉️"
-          title="Invitations"
+          title={t('screens.admin.invitations')}
           description="Invite new members to your tenant by email"
           rightAction={
             <Button onClick={() => setShowForm(!showForm)} size="sm">
               <Plus className="mr-2 h-4 w-4" />
-              Invite Member
+              {t('screens.admin.inviteMember')}
             </Button>
           }
         />
@@ -122,20 +123,20 @@ export default function MembersInvitations() {
         {showForm && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">New Invitation</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.newInvitation')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Email</Label>
+                <Label>{t('screens.admin.email')}</Label>
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
+                  placeholder={t('screens.admin.userExampleCom')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Roles to grant</Label>
+                <Label>{t('screens.admin.rolesGrant')}</Label>
                 <div className="flex flex-wrap gap-3">
                   {AVAILABLE_ROLES.map((role) => (
                     <label key={role} className="flex items-center gap-2 text-sm">
@@ -157,7 +158,7 @@ export default function MembersInvitations() {
                   {createMutation.isPending ? "Sending..." : "Send Invitation"}
                 </Button>
                 <Button variant="ghost" size="sm" onClick={() => setShowForm(false)}>
-                  Cancel
+                  {t('screens.admin.cancel')}
                 </Button>
               </div>
             </CardContent>
@@ -184,12 +185,12 @@ export default function MembersInvitations() {
         />
 
         {invitationsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading invitations...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingInvitations')}</p>
         )}
 
         {!invitationsQuery.isLoading && invitations.length === 0 && (
           <AdminEmptyState
-            title="No invitations yet"
+            title={t('screens.admin.noInvitationsYet')}
             description="Click 'Invite Member' above to send your first invitation."
             actionLabel="Invite Member"
             onAction={() => setShowForm(true)}
@@ -201,11 +202,11 @@ export default function MembersInvitations() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Roles</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Expires</TableHead>
+                  <TableHead>{t('screens.admin.email')}</TableHead>
+                  <TableHead>{t('screens.admin.roles')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.created')}</TableHead>
+                  <TableHead>{t('screens.admin.expires')}</TableHead>
                   <TableHead className="w-[80px]" />
                 </TableRow>
               </TableHeader>

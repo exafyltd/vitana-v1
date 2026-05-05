@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Gift, Sparkles, Calendar, Users, Star } from "lucide-react";
 import type { VoucherLookupData } from "@/hooks/useRedeemVoucher";
+import { t } from '@/lib/i18n-toast';
 
 interface RedemptionLandingProps {
   voucherData: VoucherLookupData;
@@ -75,12 +76,10 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
             <Gift className="w-10 h-10 text-primary" />
           </div>
           <h1 className="text-2xl font-bold text-foreground mb-2">
-            You've received a gift!
+            {t('screens.voucher.youVeReceivedGift')}
           </h1>
           {voucherData.order?.buyer_name && (
-            <p className="text-muted-foreground">
-              From {voucherData.order.buyer_name}
-            </p>
+            <p className="text-muted-foreground">{t('screens.voucher.fromBuyer_name', { buyer_name: voucherData.order.buyer_name })}</p>
           )}
         </motion.div>
 
@@ -121,14 +120,14 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
               €{((voucherData.order?.amount_cents || 0) / 100).toFixed(2)}
             </div>
             <div className="text-sm text-muted-foreground mt-1">
-              Voucher Value
+              {t('screens.voucher.voucherValue')}
             </div>
           </div>
 
           {/* Code Display */}
           <div className="bg-background/50 rounded-xl p-4 text-center mb-4">
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-              Voucher Code
+              {t('screens.voucher.voucherCode')}
             </div>
             <div className="font-mono text-xl font-bold text-foreground tracking-widest">
               {voucherData.voucher?.code || voucherCode}
@@ -138,7 +137,7 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
           {/* Benefits */}
           <div className="space-y-2">
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-              What's included
+              {t('screens.voucher.whatSIncluded')}
             </div>
             {config.benefits.map((benefit, index) => (
               <div key={index} className="flex items-start gap-2 text-sm text-foreground">
@@ -160,16 +159,15 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
             onClick={handleLogin}
             className="w-full py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg hover:bg-primary/90 transition-colors"
           >
-            Sign In to Redeem
+            {t('screens.voucher.signRedeem')}
           </button>
           <button
             onClick={handleRegister}
             className="w-full py-4 bg-secondary text-secondary-foreground rounded-2xl font-semibold text-lg hover:bg-secondary/80 transition-colors"
-          >
-            Create Account
+          >{t('screens.voucher.createAccount')}
           </button>
           <p className="text-center text-xs text-muted-foreground pt-2">
-            Sign in or create an account to claim your wellness voucher
+            {t('screens.voucher.signCreateAccountClaimYourWellness')}
           </p>
         </motion.div>
 
@@ -184,26 +182,26 @@ export function RedemptionLanding({ voucherData, voucherCode }: RedemptionLandin
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
               <Calendar className="w-6 h-6 text-primary" />
             </div>
-            <div className="text-xs text-muted-foreground">Events</div>
+            <div className="text-xs text-muted-foreground">{t('screens.voucher.events')}</div>
           </div>
           <div className="text-center">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
               <Users className="w-6 h-6 text-primary" />
             </div>
-            <div className="text-xs text-muted-foreground">Community</div>
+            <div className="text-xs text-muted-foreground">{t('screens.voucher.community')}</div>
           </div>
           <div className="text-center">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
               <Sparkles className="w-6 h-6 text-primary" />
             </div>
-            <div className="text-xs text-muted-foreground">Wellness</div>
+            <div className="text-xs text-muted-foreground">{t('screens.voucher.wellness')}</div>
           </div>
         </motion.div>
       </main>
 
       {/* Footer */}
       <footer className="text-center py-6 text-xs text-muted-foreground">
-        <p>Powered by MAXINA</p>
+        <p>{t('screens.voucher.poweredByMaxina')}</p>
       </footer>
     </div>
   );

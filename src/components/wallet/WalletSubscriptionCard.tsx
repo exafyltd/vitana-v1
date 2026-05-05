@@ -13,6 +13,7 @@ import {
   Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletSubscriptionCardProps {
   id: string;
@@ -153,7 +154,7 @@ export function WalletSubscriptionCard({
               </div>
               <div>
                 <h3 className="font-semibold text-lg">{name}</h3>
-                <p className="text-sm text-muted-foreground capitalize">{tier} Plan</p>
+                <p className="text-sm text-muted-foreground capitalize">{t('screens.wallet.tierPlan', { tier })}</p>
               </div>
             </div>
             <Badge 
@@ -183,7 +184,7 @@ export function WalletSubscriptionCard({
           {/* Features */}
           {features.length > 0 && (
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-muted-foreground">Features:</h4>
+              <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.features')}</h4>
               <ul className="space-y-1">
                 {features.slice(0, 3).map((feature, index) => (
                   <li key={index} className="flex items-center gap-2 text-sm">
@@ -192,8 +193,7 @@ export function WalletSubscriptionCard({
                   </li>
                 ))}
                 {features.length > 3 && (
-                  <li className="text-sm text-muted-foreground">
-                    +{features.length - 3} more features
+                  <li className="text-sm text-muted-foreground">{t('screens.wallet.value0MoreFeatures', { value0: features.length - 3 })}
                   </li>
                 )}
               </ul>
@@ -216,7 +216,7 @@ export function WalletSubscriptionCard({
             {status !== "available" && (
               <Button size="sm" variant="outline">
                 <Settings className="h-4 w-4 mr-1" />
-                Settings
+                {t('screens.wallet.settings')}
               </Button>
             )}
           </div>

@@ -26,12 +26,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Trash2, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   getProfilePrefs,
   patchServiceOfferings,
   type ServiceOffering,
 } from "@/lib/profilePrefsApi";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ServiceOfferingsDrawerProps {
   open: boolean;
@@ -63,7 +64,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
         setOffers(Array.isArray(s.offers) ? s.offers : []);
       })
       .catch((e) => {
-        toast({ title: "Could not load offerings", description: e?.message ?? "", variant: "destructive" });
+        notifyError('toasts.profile.couldNotLoadOfferings');
       })
       .finally(() => setLoading(false));
   }, [open, toast]);
@@ -87,11 +88,11 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
       // Filter out empty offers (must have category + title at minimum).
       const cleanOffers = offers.filter((o) => o.category.trim() && o.title.trim());
       const saved = await patchServiceOfferings({ offers: cleanOffers });
-      toast({ title: "Service offerings saved" });
+      notify('toasts.profile.serviceOfferingsSaved');
       onSaved?.(saved.offers ?? []);
       onOpenChange(false);
     } catch (e: any) {
-      toast({ title: "Save failed", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.profile.saveFailed');
     } finally {
       setSaving(false);
     }
@@ -101,11 +102,11 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Service offerings</DialogTitle>
+          <DialogTitle>{t('screens.profile.serviceOfferings')}</DialogTitle>
         </DialogHeader>
 
         <p className="text-xs text-muted-foreground -mt-2">
-          Public by default — these show on your profile so others can find what you offer.
+          {t('screens.profile.publicByDefaultTheseShowYour')}
         </p>
 
         {loading ? (
@@ -116,7 +117,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
           <div className="space-y-4">
             {offers.length === 0 && (
               <div className="text-sm text-muted-foreground py-6 text-center border border-dashed rounded-lg">
-                No offerings yet. Add one to start.
+                {t('screens.profile.noOfferingsYetAddOneStart')}
               </div>
             )}
 
@@ -127,37 +128,37 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                   variant="ghost"
                   className="absolute top-1.5 right-1.5 h-7 w-7 text-muted-foreground hover:text-destructive"
                   onClick={() => removeOffer(idx)}
-                  aria-label="Remove offering"
+                  aria-label={t('screens.profile.removeOffering')}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`title-${idx}`} className="text-xs">Title</Label>
+                    <Label htmlFor={`title-${idx}`} className="text-xs">{t('screens.profile.title')}</Label>
                     <Input
                       id={`title-${idx}`}
-                      placeholder="e.g. 1-on-1 salsa lesson"
+                      placeholder={t('screens.profile.eG1on1SalsaLesson')}
                       value={o.title}
                       onChange={(e) => updateOffer(idx, { title: e.target.value })}
                       maxLength={140}
                     />
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`category-${idx}`} className="text-xs">Category</Label>
+                    <Label htmlFor={`category-${idx}`} className="text-xs">{t('screens.profile.category')}</Label>
                     <Input
                       id={`category-${idx}`}
-                      placeholder="e.g. dance.teaching.salsa"
+                      placeholder={t('screens.profile.eGDanceTeachingSalsa')}
                       value={o.category}
                       onChange={(e) => updateOffer(idx, { category: e.target.value })}
                       maxLength={100}
                     />
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <Label htmlFor={`desc-${idx}`} className="text-xs">Description</Label>
+                    <Label htmlFor={`desc-${idx}`} className="text-xs">{t('screens.profile.description')}</Label>
                     <Textarea
                       id={`desc-${idx}`}
-                      placeholder="What's included, format, etc."
+                      placeholder={t('screens.profile.whatSIncludedFormatEtc')}
                       value={o.short_description ?? ""}
                       onChange={(e) => updateOffer(idx, { short_description: e.target.value })}
                       rows={2}
@@ -165,7 +166,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`pmin-${idx}`} className="text-xs">Price min (cents)</Label>
+                    <Label htmlFor={`pmin-${idx}`} className="text-xs">{t('screens.profile.priceMinCents')}</Label>
                     <Input
                       id={`pmin-${idx}`}
                       type="number"
@@ -176,7 +177,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`pmax-${idx}`} className="text-xs">Price max (cents)</Label>
+                    <Label htmlFor={`pmax-${idx}`} className="text-xs">{t('screens.profile.priceMaxCents')}</Label>
                     <Input
                       id={`pmax-${idx}`}
                       type="number"
@@ -187,16 +188,16 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label htmlFor={`curr-${idx}`} className="text-xs">Currency</Label>
+                    <Label htmlFor={`curr-${idx}`} className="text-xs">{t('screens.profile.currency')}</Label>
                     <Input
                       id={`curr-${idx}`}
                       value={o.currency ?? ""}
                       onChange={(e) => updateOffer(idx, { currency: e.target.value.toUpperCase().slice(0, 5) })}
-                      placeholder="EUR"
+                      placeholder={t('screens.profile.eur')}
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-xs">Contact via</Label>
+                    <Label className="text-xs">{t('screens.profile.contactVia')}</Label>
                     <Select
                       value={o.contact_via ?? "message"}
                       onValueChange={(v) => updateOffer(idx, { contact_via: v as "message" | "profile" })}
@@ -205,8 +206,8 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="message">Direct message</SelectItem>
-                        <SelectItem value="profile">Profile link</SelectItem>
+                        <SelectItem value="message">{t('screens.profile.directMessage')}</SelectItem>
+                        <SelectItem value="profile">{t('screens.profile.profileLink')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -215,17 +216,14 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
             ))}
 
             <Button variant="outline" onClick={addOffer} disabled={offers.length >= 20} className="w-full gap-2">
-              <Plus className="h-4 w-4" />
-              Add offering {offers.length >= 20 ? "(max 20)" : ""}
-            </Button>
+              <Plus className="h-4 w-4" />{t('screens.profile.addOfferingValue0', { value0: offers.length >= 20 ? "(max 20)" : "" })}</Button>
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-                Cancel
+                {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Save
+                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

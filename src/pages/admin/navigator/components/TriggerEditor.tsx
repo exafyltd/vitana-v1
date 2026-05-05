@@ -37,6 +37,7 @@ import {
   useUpdateCatalogEntry,
   useDeleteCatalogEntry,
 } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 const CATEGORIES = [
   "public", "auth", "community", "business", "wallet", "health",
@@ -202,23 +203,23 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label htmlFor="screen_id">Screen ID</Label>
+          <Label htmlFor="screen_id">{t('screens.admin.screenId')}</Label>
           <Input
             id="screen_id"
             value={form.screen_id}
             onChange={(e) => setForm((f) => ({ ...f, screen_id: e.target.value }))}
-            placeholder="HOME.MATCHES"
+            placeholder={t('screens.admin.homeMatches')}
             disabled={!isCreate}
             className="font-mono"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="route">Route</Label>
+          <Label htmlFor="route">{t('screens.admin.route')}</Label>
           <Input
             id="route"
             value={form.route}
             onChange={(e) => setForm((f) => ({ ...f, route: e.target.value }))}
-            placeholder="/home/matches"
+            placeholder={t('screens.admin.homematches')}
             className="font-mono"
           />
         </div>
@@ -226,7 +227,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
 
       <div className="grid grid-cols-3 gap-3">
         <div className="space-y-2">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">{t('screens.admin.category')}</Label>
           <Select
             value={form.category}
             onValueChange={(v) => setForm((f) => ({ ...f, category: v }))}
@@ -244,7 +245,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="access">Access</Label>
+          <Label htmlFor="access">{t('screens.admin.access')}</Label>
           <Select
             value={form.access}
             onValueChange={(v: any) => setForm((f) => ({ ...f, access: v }))}
@@ -253,13 +254,13 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="public">public</SelectItem>
-              <SelectItem value="authenticated">authenticated</SelectItem>
+              <SelectItem value="public">{t('screens.admin.public')}</SelectItem>
+              <SelectItem value="authenticated">{t('screens.admin.authenticated')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="priority">Priority (0..10)</Label>
+          <Label htmlFor="priority">{t('screens.admin.priority010')}</Label>
           <Input
             id="priority"
             type="number"
@@ -280,13 +281,13 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           onChange={(e) => setForm((f) => ({ ...f, anonymous_safe: e.target.checked }))}
           className="rounded border-input"
         />
-        <span>Anonymous safe (can be recommended to unauthenticated sessions)</span>
+        <span>{t('screens.admin.anonymousSafeCanRecommendedUnauthenticatedSessions')}</span>
       </label>
 
       {/* ── i18n (the trigger text lives here) ───────────────────────────── */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label>Trigger phrases & localized copy</Label>
+          <Label>{t('screens.admin.triggerPhrasesLocalizedCopy')}</Label>
           <div className="flex gap-1">
             {["de", "es", "fr", "pt"].map((l) =>
               form.i18n[l] ? null : (
@@ -302,18 +303,18 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
             {Object.keys(form.i18n).map((lang) => (
               <TabsTrigger key={lang} value={lang}>
                 {lang.toUpperCase()}
-                {lang === "en" && <span className="ml-1 text-xs text-muted-foreground">(required)</span>}
+                {lang === "en" && <span className="ml-1 text-xs text-muted-foreground">{t('screens.admin.required')}</span>}
               </TabsTrigger>
             ))}
           </TabsList>
           {Object.entries(form.i18n).map(([lang, content]) => (
             <TabsContent key={lang} value={lang} className="space-y-3 pt-3">
               <div className="space-y-1">
-                <Label>Title</Label>
+                <Label>{t('screens.admin.title')}</Label>
                 <Input value={content.title} onChange={(e) => setI18nField(lang, "title", e.target.value)} />
               </div>
               <div className="space-y-1">
-                <Label>Description</Label>
+                <Label>{t('screens.admin.description')}</Label>
                 <Input
                   value={content.description}
                   onChange={(e) => setI18nField(lang, "description", e.target.value)}
@@ -321,7 +322,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
               </div>
               <div className="space-y-1">
                 <Label>
-                  When to visit <span className="text-xs text-muted-foreground">(what the user says that should land here — the trigger text)</span>
+                  {t('screens.admin.whenVisit')} <span className="text-xs text-muted-foreground">{t('screens.admin.whatUserSaysThatShouldLand')}</span>
                 </Label>
                 <Textarea
                   rows={5}
@@ -338,17 +339,17 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
       <div className="space-y-2 rounded-md border bg-muted/20 p-3">
         <div className="flex items-center justify-between">
           <div>
-            <Label>Override triggers</Label>
+            <Label>{t('screens.admin.overrideTriggers')}</Label>
             <p className="text-xs text-muted-foreground">
-              Exact-match phrases that force this screen to win, bypassing scoring.
+              {t('screens.admin.exactmatchPhrasesThatForceThisScreen')}
             </p>
           </div>
           <Button size="sm" variant="outline" onClick={addOverride}>
-            <Plus className="mr-1 h-4 w-4" /> Add
+            <Plus className="mr-1 h-4 w-4" /> {t('screens.admin.add')}
           </Button>
         </div>
         {form.override_triggers.length === 0 ? (
-          <p className="text-xs text-muted-foreground italic">No overrides defined.</p>
+          <p className="text-xs text-muted-foreground italic">{t('screens.admin.noOverridesDefined')}</p>
         ) : (
           <div className="space-y-2">
             {form.override_triggers.map((t, i) => (
@@ -358,14 +359,14 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="en">en</SelectItem>
-                    <SelectItem value="de">de</SelectItem>
+                    <SelectItem value="en">{t('screens.admin.en')}</SelectItem>
+                    <SelectItem value="de">{t('screens.admin.de')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input
                   value={t.phrase}
                   onChange={(e) => updateOverride(i, { phrase: e.target.value })}
-                  placeholder="open my wallet"
+                  placeholder={t('screens.admin.openMyWallet')}
                   className="flex-1"
                 />
                 <label className="flex items-center gap-1 text-xs">
@@ -374,7 +375,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
                     checked={t.active}
                     onChange={(e) => updateOverride(i, { active: e.target.checked })}
                   />
-                  active
+                  {t('screens.admin.active2')}
                 </label>
                 <Button size="icon" variant="ghost" onClick={() => removeOverride(i)}>
                   <Trash2 className="h-4 w-4" />
@@ -391,14 +392,14 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
           {entry && (
             <Button variant="ghost" className="text-destructive hover:text-destructive" onClick={onDelete}>
               <Trash2 className="mr-2 h-4 w-4" />
-              Delete
+              {t('screens.admin.delete2')}
             </Button>
           )}
         </div>
         <div className="flex gap-2">
           {onClose && (
             <Button variant="outline" onClick={onClose}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
           )}
           <Button onClick={onSave} disabled={createMutation.isPending || updateMutation.isPending}>
@@ -411,14 +412,11 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
       {entry && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Badge variant="outline">{entry.id.slice(0, 8)}</Badge>
-          <span>
-            Updated{" "}
-            {entry.updated_at ? new Date(entry.updated_at).toLocaleString() : "—"}
-          </span>
+          <span>{t('screens.admin.updatedValue0Value1', { value0: " ", value1: entry.updated_at ? new Date(entry.updated_at).toLocaleString() : "—" })}</span>
           {entry.tenant_id ? (
-            <Badge variant="secondary">tenant: {entry.tenant_id.slice(0, 8)}</Badge>
+            <Badge variant="secondary">{t('screens.admin.tenantValue0', { value0: entry.tenant_id.slice(0, 8) })}</Badge>
           ) : (
-            <Badge variant="secondary">shared</Badge>
+            <Badge variant="secondary">{t('screens.admin.shared')}</Badge>
           )}
         </div>
       )}

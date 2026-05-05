@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Clock, Moon } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function EngagementRules() {
   const { toast } = useToast();
@@ -59,17 +60,10 @@ export function EngagementRules() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-proactive-settings'] });
-      toast({
-        title: "Rules Updated",
-        description: "Engagement rules have been saved successfully.",
-      });
+      notify('toasts.admin.rulesUpdated', 'toasts.admin.engagementRulesHaveSavedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.updateFailed');
     }
   });
 
@@ -95,9 +89,9 @@ export function EngagementRules() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Engagement Rules</CardTitle>
+        <CardTitle>{t('screens.admin.engagementRules')}</CardTitle>
         <CardDescription>
-          Configure when and how often the proactive assistant can reach out to users
+          {t('screens.admin.configureWhenHowOftenProactiveAssistant')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -105,7 +99,7 @@ export function EngagementRules() {
           <div className="space-y-2">
             <Label htmlFor="max-daily" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Max Daily Proactive Messages
+              {t('screens.admin.maxDailyProactiveMessages')}
             </Label>
             <Input
               id="max-daily"
@@ -116,14 +110,14 @@ export function EngagementRules() {
               onChange={(e) => setMaxDaily(parseInt(e.target.value))}
             />
             <p className="text-xs text-muted-foreground">
-              Maximum number of proactive greetings per user per day
+              {t('screens.admin.maximumNumberProactiveGreetingsPerUser')}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="min-minutes" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Minimum Minutes Between
+              {t('screens.admin.minimumMinutesBetween')}
             </Label>
             <Input
               id="min-minutes"
@@ -134,14 +128,14 @@ export function EngagementRules() {
               onChange={(e) => setMinMinutes(parseInt(e.target.value))}
             />
             <p className="text-xs text-muted-foreground">
-              Minimum time between proactive messages (in minutes)
+              {t('screens.admin.minimumTimeBetweenProactiveMessagesMinutes')}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="quiet-start" className="flex items-center gap-2">
               <Moon className="h-4 w-4" />
-              Quiet Hours Start
+              {t('screens.admin.quietHoursStart')}
             </Label>
             <Input
               id="quiet-start"
@@ -150,14 +144,14 @@ export function EngagementRules() {
               onChange={(e) => setQuietStart(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              No proactive messages after this time
+              {t('screens.admin.noProactiveMessagesAfterThisTime')}
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="quiet-end" className="flex items-center gap-2">
               <Moon className="h-4 w-4" />
-              Quiet Hours End
+              {t('screens.admin.quietHoursEnd')}
             </Label>
             <Input
               id="quiet-end"
@@ -166,7 +160,7 @@ export function EngagementRules() {
               onChange={(e) => setQuietEnd(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              Resume proactive messages after this time
+              {t('screens.admin.resumeProactiveMessagesAfterThisTime')}
             </p>
           </div>
         </div>
@@ -176,8 +170,7 @@ export function EngagementRules() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Engagement Rules
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.saveEngagementRules')}
         </Button>
       </CardContent>
     </Card>

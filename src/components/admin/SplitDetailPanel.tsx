@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface SplitDetailPanelProps {
   children: React.ReactNode;
@@ -47,7 +48,7 @@ export function SplitDetailPanel({
                 className="h-7 w-7"
               >
                 <X className="h-4 w-4" />
-                <span className="sr-only">Close detail panel</span>
+                <span className="sr-only">{t('screens.admin.closeDetailPanel')}</span>
               </Button>
             </div>
 

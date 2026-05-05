@@ -12,6 +12,7 @@ import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAssistantSurfaces } from "@/hooks/useAdminAssistant";
+import { t } from '@/lib/i18n-toast';
 
 const SURFACE_LABELS: Record<string, string> = {
   voice_live: "Voice Live (ORB)",
@@ -51,12 +52,12 @@ export default function AssistantRouting() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔀"
-          title="Model Routing"
+          title={t('screens.admin.modelRouting')}
           description="View which LLM model handles each assistant surface. Override support coming soon."
         />
 
         {surfacesQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading routing config...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingRoutingConfig')}</p>
         )}
 
         {surfaces.length > 0 && (
@@ -65,10 +66,10 @@ export default function AssistantRouting() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Surface</TableHead>
-                    <TableHead>Effective Model</TableHead>
-                    <TableHead>Override</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('screens.admin.surface')}</TableHead>
+                    <TableHead>{t('screens.admin.effectiveModel')}</TableHead>
+                    <TableHead>{t('screens.admin.override')}</TableHead>
+                    <TableHead>{t('screens.admin.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -87,14 +88,14 @@ export default function AssistantRouting() {
                           {override ? (
                             <code className="text-xs bg-muted px-2 py-0.5 rounded">{override}</code>
                           ) : (
-                            <span className="text-xs text-muted-foreground">None</span>
+                            <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>
                           )}
                         </TableCell>
                         <TableCell>
                           {surface.has_tenant_override ? (
-                            <AdminStatusBadge variant="active">Custom</AdminStatusBadge>
+                            <AdminStatusBadge variant="active">{t('screens.admin.custom2')}</AdminStatusBadge>
                           ) : (
-                            <AdminStatusBadge variant="inactive">Global</AdminStatusBadge>
+                            <AdminStatusBadge variant="inactive">{t('screens.admin.global')}</AdminStatusBadge>
                           )}
                         </TableCell>
                       </TableRow>

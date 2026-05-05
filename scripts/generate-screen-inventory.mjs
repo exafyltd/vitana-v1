@@ -32,6 +32,14 @@ function walk(dir) {
 
 const TRANSLATE_CALL_RX = /\btranslate\s*\(\s*['"`]([^'"`)]+)['"`]/g;
 const T_DOT_RX = /\bt\.(?!toString|valueOf|hasOwnProperty)([a-zA-Z_$][\w$]*(?:\.[a-zA-Z_$][\w$]*)+)/g;
+// Wave 2: notify('toasts.x.y'), notifyError('toasts.x.y'), etc.
+const NOTIFY_CALL_RX = /\bnotify(?:Error|Success|Info|Warning)?\s*\(\s*['"`]([^'"`)]+)['"`](?:\s*,\s*['"`]([^'"`)]+)['"`])?/g;
+// Wave 2.x: lookup('toasts.x.y') for rich toasts (sonner with action/duration)
+const LOOKUP_CALL_RX = /\blookup\s*\(\s*['"`]([^'"`)]+)['"`]/g;
+// Wave 3: t('screens.x.y') singleton from i18n-toast (alias of lookup)
+const T_FN_RX = /\bt\s*\(\s*['"`](screens\.[^'"`)]+)['"`]/g;
+// notify.error(...), notify.success(...) from useI18nNotify (existing pattern)
+const NOTIFY_DOT_RX = /\bnotify\.(?:error|success|info|warning)\s*\(\s*['"`]([^'"`)]+)['"`](?:\s*,\s*['"`]([^'"`)]+)['"`])?/g;
 
 // Heuristic for hardcoded JSX text. Cheap and intentionally narrow — the
 // authoritative check is the ESLint rule.
@@ -82,6 +90,16 @@ for (const file of files) {
   const keysUsed = new Set();
   for (const m of src.matchAll(TRANSLATE_CALL_RX)) keysUsed.add(m[1]);
   for (const m of src.matchAll(T_DOT_RX)) keysUsed.add(m[1]);
+  for (const m of src.matchAll(NOTIFY_CALL_RX)) {
+    keysUsed.add(m[1]);
+    if (m[2]) keysUsed.add(m[2]);
+  }
+  for (const m of src.matchAll(NOTIFY_DOT_RX)) {
+    keysUsed.add(m[1]);
+    if (m[2]) keysUsed.add(m[2]);
+  }
+  for (const m of src.matchAll(LOOKUP_CALL_RX)) keysUsed.add(m[1]);
+  for (const m of src.matchAll(T_FN_RX)) keysUsed.add(m[1]);
 
   const namespacesUsed = new Set([...keysUsed].map(extractNamespacesFromKey));
 

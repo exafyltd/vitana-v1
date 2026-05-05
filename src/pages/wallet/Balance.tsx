@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { useWallet } from "@/hooks/useWallet";
 import { useAuth } from "@/context/AuthProvider";
+import { t } from '@/lib/i18n-toast';
 
 const balanceData = {
   credits: {
@@ -95,7 +96,7 @@ function Balance() {
   return (
     <AppLayout>
       <SEO 
-        title="Balance & Benefits - Vitana Wallet" 
+        title={t('screens.wallet.balanceBenefitsVitanaWallet')} 
         description="Manage your credits, tokens, and membership benefits in your Vitana wallet."
       />
       <SubNavigation items={walletNavigation} />
@@ -103,12 +104,12 @@ function Balance() {
       <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
         <StandardHeader 
-          title="Balance & Benefits 💳"
+          title={t('screens.wallet.balanceBenefits')}
           description="Manage your credits, tokens, and membership benefits"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
+          <ExpandableSearchButton placeholder={t('screens.wallet.searchBalancesTransactionsBenefits')} />
           <UniversalCalendarButton />
           {contextualAction && (
             <Button size="sm" onClick={contextualAction.onClick}>
@@ -120,10 +121,10 @@ function Balance() {
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="credits">💳 Credits Account</SplitBarTrigger>
-            <SplitBarTrigger value="tokens">🪙 Tokens Account</SplitBarTrigger>
-            <SplitBarTrigger value="membership">⭐ Membership Benefits</SplitBarTrigger>
-            <SplitBarTrigger value="optimization">📈 Earning Optimization</SplitBarTrigger>
+            <SplitBarTrigger value="credits">{t('screens.wallet.creditsAccount')}</SplitBarTrigger>
+            <SplitBarTrigger value="tokens">{t('screens.wallet.tokensAccount')}</SplitBarTrigger>
+            <SplitBarTrigger value="membership">{t('screens.wallet.membershipBenefits')}</SplitBarTrigger>
+            <SplitBarTrigger value="optimization">{t('screens.wallet.earningOptimization')}</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner 
@@ -136,7 +137,7 @@ function Balance() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WalletBalanceCard
                   type="credits"
-                  title="Credits Balance"
+                  title={t('screens.wallet.creditsBalance')}
                   balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} credits` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+12.1%"
@@ -147,7 +148,7 @@ function Balance() {
                 />
                 <WalletBalanceCard
                   type="credits"
-                  title="Credits Status"
+                  title={t('screens.wallet.creditsStatus')}
                   balance="Active"
                   description="Your credits are active and ready to use"
                   status="Healthy"
@@ -163,7 +164,7 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {loading && <div className="text-center py-4">{t('screens.wallet.loadingTransactions')}</div>}
                 {transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
@@ -180,7 +181,7 @@ function Balance() {
                   />
                 ))}
                 {!loading && transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">No credit transactions yet</div>
+                  <div className="text-center py-8 text-muted-foreground">{t('screens.wallet.noCreditTransactionsYet')}</div>
                 )}
               </div>
             </div>
@@ -191,7 +192,7 @@ function Balance() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WalletBalanceCard
                   type="tokens"
-                  title="VTNA Balance"
+                  title={t('screens.wallet.vtnaBalance')}
                   balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
                   subBalance="Staked: 25%"
                   change="+5.7%"
@@ -202,7 +203,7 @@ function Balance() {
                 />
                 <WalletBalanceCard
                   type="tokens"
-                  title="Staking Rewards"
+                  title={t('screens.wallet.stakingRewards')}
                   balance="45.50 VTNA"
                   description="Accumulated rewards from staking your VTNA tokens"
                   status="Claimable"
@@ -218,7 +219,7 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {loading && <div className="text-center py-4">{t('screens.wallet.loadingTransactions')}</div>}
                 {transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
@@ -235,7 +236,7 @@ function Balance() {
                   />
                 ))}
                 {!loading && transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">No VTNA transactions yet</div>
+                  <div className="text-center py-8 text-muted-foreground">{t('screens.wallet.noVtnaTransactionsYet')}</div>
                 )}
               </div>
             </div>
@@ -246,7 +247,7 @@ function Balance() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <WalletBalanceCard
                   type="cash"
-                  title="USD Balance"
+                  title={t('screens.wallet.usdBalance')}
                   balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+2.3%"
@@ -257,7 +258,7 @@ function Balance() {
                 />
                 <WalletBalanceCard
                   type="cash"
-                  title="Membership Tier"
+                  title={t('screens.wallet.membershipTier')}
                   balance="Premium"
                   description="75% coverage + exclusive health benefits"
                   status="Active"
@@ -273,7 +274,7 @@ function Balance() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {loading && <div className="text-center py-4">Loading transactions...</div>}
+                {loading && <div className="text-center py-4">{t('screens.wallet.loadingTransactions')}</div>}
                 {transactions.filter(t => t.from_currency === 'USD' || t.to_currency === 'USD').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
@@ -290,7 +291,7 @@ function Balance() {
                   />
                 ))}
                 {!loading && transactions.filter(t => t.from_currency === 'USD' || t.to_currency === 'USD').length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">No USD transactions yet</div>
+                  <div className="text-center py-8 text-muted-foreground">{t('screens.wallet.noUsdTransactionsYet')}</div>
                 )}
               </div>
             </div>
@@ -307,9 +308,9 @@ function Balance() {
       <Dialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Top Up Credits</DialogTitle>
+            <DialogTitle>{t('screens.wallet.topUpCredits')}</DialogTitle>
             <DialogDescription>
-              Purchase credits to unlock premium health services and features.
+              {t('screens.wallet.purchaseCreditsUnlockPremiumHealthServices')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -333,7 +334,7 @@ function Balance() {
             </div>
             <Button className="w-full">
               <CreditCard className="h-4 w-4 mr-2" />
-              Purchase Credits
+              {t('screens.wallet.purchaseCredits')}
             </Button>
           </div>
         </DialogContent>
@@ -343,24 +344,24 @@ function Balance() {
       <Dialog open={isTokensOpen} onOpenChange={setIsTokensOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Buy/Stake VTNA Tokens</DialogTitle>
+            <DialogTitle>{t('screens.wallet.buystakeVtnaTokens')}</DialogTitle>
             <DialogDescription>
-              Purchase or stake VTNA tokens for governance and staking rewards.
+              {t('screens.wallet.purchaseStakeVtnaTokensForGovernance')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Button variant="outline" className="h-16">
                 <Coins className="h-4 w-4 mr-2" />
-                Buy Tokens
+                {t('screens.wallet.buyTokens')}
               </Button>
               <Button variant="outline" className="h-16">
                 <Shield className="h-4 w-4 mr-2" />
-                Stake Tokens
+                {t('screens.wallet.stakeTokens')}
               </Button>
             </div>
             <Button className="w-full">
-              Continue to Purchase
+              {t('screens.wallet.continuePurchase')}
             </Button>
           </div>
         </DialogContent>
@@ -370,27 +371,27 @@ function Balance() {
       <Dialog open={isUpgradeOpen} onOpenChange={setIsUpgradeOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Upgrade Membership</DialogTitle>
+            <DialogTitle>{t('screens.wallet.upgradeMembership')}</DialogTitle>
             <DialogDescription>
-              Upgrade to Platinum tier for 90% coverage and exclusive benefits.
+              {t('screens.wallet.upgradePlatinumTierFor90Coverage')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="border rounded-lg p-4">
               <div className="flex justify-between items-center mb-2">
-                <span className="font-semibold">Platinum Tier</span>
-                <span className="text-lg font-bold">$99/month</span>
+                <span className="font-semibold">{t('screens.wallet.platinumTier')}</span>
+                <span className="text-lg font-bold">{t('screens.wallet.text99month')}</span>
               </div>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• 90% lab test coverage</li>
-                <li>• Unlimited health coaching</li>
-                <li>• Priority support 24/7</li>
-                <li>• Advanced analytics</li>
+                <li>{t('screens.wallet.text90LabTestCoverage')}</li>
+                <li>{t('screens.wallet.unlimitedHealthCoaching')}</li>
+                <li>{t('screens.wallet.prioritySupport247')}</li>
+                <li>{t('screens.wallet.advancedAnalytics')}</li>
               </ul>
             </div>
             <Button className="w-full">
               <TrendingUp className="h-4 w-4 mr-2" />
-              Upgrade Now
+              {t('screens.wallet.upgradeNow')}
             </Button>
           </div>
         </DialogContent>

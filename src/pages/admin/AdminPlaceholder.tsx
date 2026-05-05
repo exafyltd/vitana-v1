@@ -15,6 +15,7 @@ import {
   getAdminSectionByPath,
   getAdminTabByPath,
 } from "@/config/admin-navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function AdminPlaceholder() {
   const location = useLocation();
@@ -46,11 +47,9 @@ export default function AdminPlaceholder() {
       <AppLayout>
         <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
           <div className="text-6xl font-bold text-muted-foreground mb-4">404</div>
-          <p className="text-lg text-muted-foreground mb-2">
-            No admin section matches <code className="font-mono text-sm">{pathname}</code>
+          <p className="text-lg text-muted-foreground mb-2">{t('screens.admin.noAdminSectionMatches')} <code className="font-mono text-sm">{pathname}</code>
           </p>
-          <p className="text-sm text-muted-foreground">
-            The sidebar is the canonical list of sections. Pick one on the left.
+          <p className="text-sm text-muted-foreground">{t('screens.admin.sidebarCanonicalListSectionsPickOne')}
           </p>
         </div>
       </AppLayout>
@@ -76,20 +75,15 @@ export default function AdminPlaceholder() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background border border-border text-xs font-medium mb-4">
               {wave === 1 ? (
                 <>
-                  <span className="h-2 w-2 rounded-full bg-amber-500" />
-                  Coming in Wave 1
+                  <span className="h-2 w-2 rounded-full bg-amber-500" />{t('screens.admin.comingWave1')}
                 </>
               ) : (
                 <>
-                  <span className="h-2 w-2 rounded-full bg-muted-foreground" />
-                  Coming in Wave 2
+                  <span className="h-2 w-2 rounded-full bg-muted-foreground" />{t('screens.admin.comingWave2')}
                 </>
               )}
             </div>
-            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              The sidebar, profile drawer, role switcher, and ORB widget above are live and
-              persistent across every admin screen. This section's content is being built and
-              will ship in the indicated wave.
+            <p className="text-sm text-muted-foreground max-w-lg mx-auto">{t('screens.admin.sidebarProfileDrawerRoleSwitcherOrb')}
             </p>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { DailyHydrationData } from "@/types/hydration";
 import { Droplets, Clock, Brain, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface DailyHydrationCardProps {
   data: DailyHydrationData;
@@ -79,7 +80,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
         {/* Intake Progress */}
         <div className="mb-2">
           <div className="flex items-center justify-between text-[12px] mb-1 text-slate-700 dark:text-slate-300">
-            <span>Intake</span>
+            <span>{t('screens.health.intake')}</span>
             <span className="font-medium">
               {(data.currentAmount / 1000).toFixed(1)}L / {(data.targetAmount / 1000).toFixed(1)}L
             </span>
@@ -93,8 +94,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
             />
           </div>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
-              {data.completionPercentage}% complete
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: data.completionPercentage })}
             </span>
             <span className="text-[11px] text-slate-500 dark:text-slate-400">
               {!isComplete && !isBelowHalf && getStatusText()}

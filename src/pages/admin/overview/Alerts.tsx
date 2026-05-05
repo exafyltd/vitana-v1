@@ -11,6 +11,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useOverviewAlerts } from "@/hooks/useAdminOverview";
+import { t } from '@/lib/i18n-toast';
 
 export default function OverviewAlerts() {
   const alertsQuery = useOverviewAlerts();
@@ -22,21 +23,21 @@ export default function OverviewAlerts() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🚨"
-          title="Alerts"
+          title={t('screens.admin.alerts')}
           description="Critical and error-level events in the last 24 hours"
           rightAction={
             <Button variant="outline" size="sm" onClick={() => alertsQuery.refetch()} disabled={alertsQuery.isFetching}>
               <RefreshCw className={`h-4 w-4 mr-2 ${alertsQuery.isFetching ? "animate-spin" : ""}`} />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           }
         />
 
-        {alertsQuery.isLoading && <p className="text-sm text-muted-foreground py-8 text-center">Loading alerts...</p>}
+        {alertsQuery.isLoading && <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingAlerts')}</p>}
 
         {!alertsQuery.isLoading && alerts.length === 0 && (
           <AdminEmptyState
-            title="No alerts — all clear"
+            title={t('screens.admin.noAlertsAllClear')}
             description="No critical or error events detected in the last 24 hours."
           />
         )}
@@ -47,10 +48,10 @@ export default function OverviewAlerts() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[30px]" />
-                  <TableHead>Time</TableHead>
-                  <TableHead>Topic</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>VTID</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.topic')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

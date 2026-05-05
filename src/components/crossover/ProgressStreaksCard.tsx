@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { TrendingUp, Flame } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface StreakData {
   type: string;
@@ -36,7 +37,7 @@ function ProgressStreaksCardBase({
       <div className="flex items-center justify-center gap-2">
         <Flame className="w-5 h-5 text-orange-500" />
         <span className="text-lg font-bold text-orange-600">{topStreak.count}</span>
-        <span className="text-sm text-muted-foreground">day streak</span>
+        <span className="text-sm text-muted-foreground">{t('screens.crossover.dayStreak')}</span>
       </div>
       
       <div className="text-sm">
@@ -54,7 +55,7 @@ function ProgressStreaksCardBase({
     <CrossoverCard
       icon={TrendingUp}
       category="vitana"
-      title="Progress Tracking"
+      title={t('screens.crossover.progressTracking')}
       subtitle="Monitor your wellness streaks and achievement momentum"
       content={content}
       buttonText="See Progress"

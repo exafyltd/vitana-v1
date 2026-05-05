@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
+import { t } from '@/lib/i18n-toast';
 
 export type RecipientMode = "all" | "role" | "individual";
 
@@ -67,7 +68,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
 
   return (
     <div className="space-y-3">
-      <label className="text-sm font-medium">Recipients</label>
+      <label className="text-sm font-medium">{t('screens.admin.recipients')}</label>
 
       {/* Mode selector */}
       <div className="flex gap-2">
@@ -78,7 +79,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("all")}
         >
           <Users className="mr-1 h-4 w-4" />
-          All Users
+          {t('screens.admin.allUsers')}
         </Button>
         <Button
           type="button"
@@ -87,7 +88,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("role")}
         >
           <Shield className="mr-1 h-4 w-4" />
-          By Role
+          {t('screens.admin.byRole')}
         </Button>
         <Button
           type="button"
@@ -96,7 +97,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onClick={() => handleModeChange("individual")}
         >
           <UserCheck className="mr-1 h-4 w-4" />
-          Individual
+          {t('screens.admin.individual')}
         </Button>
       </div>
 
@@ -107,7 +108,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           onValueChange={(role) => onChange({ ...value, role })}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select role" />
+            <SelectValue placeholder={t('screens.admin.selectRole')} />
           </SelectTrigger>
           <SelectContent>
             {ROLE_OPTIONS.map((r) => (
@@ -125,7 +126,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search users by name or email..."
+              placeholder={t('screens.admin.searchUsersByNameEmail')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9"
@@ -156,9 +157,9 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           {search && (
             <div className="max-h-48 overflow-y-auto rounded-md border">
               {isLoading ? (
-                <div className="p-3 text-sm text-muted-foreground">Loading...</div>
+                <div className="p-3 text-sm text-muted-foreground">{t('screens.admin.loading')}</div>
               ) : filteredUsers.length === 0 ? (
-                <div className="p-3 text-sm text-muted-foreground">No users found</div>
+                <div className="p-3 text-sm text-muted-foreground">{t('screens.admin.noUsersFound')}</div>
               ) : (
                 filteredUsers.slice(0, 20).map((user) => {
                   const userId = user.user_id;

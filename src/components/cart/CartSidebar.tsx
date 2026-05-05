@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { CartItem } from "./CartItem";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface CartSidebarProps {
   open: boolean;
@@ -46,7 +47,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
           <div className="flex items-center justify-between p-4 border-b border-white/20">
             <div className="flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 text-primary" />
-              <h2 className="text-lg font-semibold">Your Cart</h2>
+              <h2 className="text-lg font-semibold">{t('screens.cart.yourCart')}</h2>
               <span className="text-sm text-muted-foreground">({cartCount})</span>
             </div>
             <Button
@@ -63,12 +64,12 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
           {cartItems.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
               <ShoppingCart className="h-16 w-16 text-muted-foreground/30 mb-4" />
-              <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
+              <h3 className="text-lg font-medium mb-2">{t('screens.cart.yourCartEmpty')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Browse our wellness services and products to get started
+                {t('screens.cart.browseOurWellnessServicesProductsGet')}
               </p>
               <Button onClick={onClose} variant="outline">
-                Continue Shopping
+                {t('screens.cart.continueShopping')}
               </Button>
             </div>
           ) : (
@@ -90,12 +91,12 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
               <div className="border-t border-white/20 p-4 space-y-4 bg-white/5 backdrop-blur-sm">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-muted-foreground">{t('screens.cart.subtotal')}</span>
                     <span className="font-medium">${cartTotal.toFixed(2)}</span>
                   </div>
                   <Separator className="bg-white/10" />
                   <div className="flex justify-between text-base font-semibold">
-                    <span>Total</span>
+                    <span>{t('screens.cart.total')}</span>
                     <span>${cartTotal.toFixed(2)}</span>
                   </div>
                 </div>
@@ -116,7 +117,7 @@ export function CartSidebar({ open, onClose }: CartSidebarProps) {
                     className="w-full"
                     size="sm"
                   >
-                    Clear Cart
+                    {t('screens.cart.clearCart')}
                   </Button>
                 </div>
               </div>

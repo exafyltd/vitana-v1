@@ -24,6 +24,7 @@ import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface SelectedEntry {
   images: string[];
@@ -64,30 +65,30 @@ function Diary() {
 
   return (
     <AppLayout>
-      <SEO title="Wellness Diary | VITANA Memory" description="Record and review your wellness journey through voice entries, photos, and personal reflections." />
+      <SEO title={t('screens.memory.wellnessDiaryVitanaMemory')} description="Record and review your wellness journey through voice entries, photos, and personal reflections." />
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
         <StandardHeader 
-          title="Wellness Diary"
+          title={t('screens.memory.wellnessDiary')}
           description="Record and review your wellness journey through multimedia entries."
           emoji="📔"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search diary entries and reflections..." />
+          <ExpandableSearchButton placeholder={t('screens.memory.searchDiaryEntriesReflections')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            New Entry
+            {t('screens.memory.newEntry')}
           </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
           <SplitBarList>
-            <SplitBarTrigger value="voice">🎤 Voice</SplitBarTrigger>
-            <SplitBarTrigger value="photos">📸 Photos</SplitBarTrigger>
-            <SplitBarTrigger value="text">✍️ Text</SplitBarTrigger>
+            <SplitBarTrigger value="voice">{t('screens.memory.voice')}</SplitBarTrigger>
+            <SplitBarTrigger value="photos">{t('screens.memory.photos')}</SplitBarTrigger>
+            <SplitBarTrigger value="text">{t('screens.memory.text')}</SplitBarTrigger>
           </SplitBarList>
 
           <SplitBarContent value="voice">
@@ -96,10 +97,10 @@ function Diary() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Mic className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                    Record Today's Entry
+                    {t('screens.memory.recordTodaySEntry')}
                   </CardTitle>
                   <CardDescription>
-                    Share your thoughts, feelings, and wellness observations
+                    {t('screens.memory.shareYourThoughtsFeelingsWellnessObservations')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -119,10 +120,10 @@ function Diary() {
                     <div>
                       <CardTitle className="flex items-center gap-2">
                         <Image className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                        Upload Today's Entry
+                        {t('screens.memory.uploadTodaySEntry')}
                       </CardTitle>
                       <CardDescription>
-                        Capture and share your wellness moments through photos
+                        {t('screens.memory.captureShareYourWellnessMomentsThrough')}
                       </CardDescription>
                     </div>
                     <div className="flex gap-2">
@@ -176,10 +177,10 @@ function Diary() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <PenSquare className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                    Type Your Today's Entry
+                    {t('screens.memory.typeYourTodaySEntry')}
                   </CardTitle>
                   <CardDescription>
-                    Express your wellness journey through written reflections
+                    {t('screens.memory.expressYourWellnessJourneyThroughWritten')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -197,10 +198,10 @@ function Diary() {
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
               <Bug className="h-5 w-5 text-destructive" />
-              Test Feedback
+              {t('screens.memory.testFeedback')}
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Help Exafy improve Vitanaland — report bugs and suggest improvements with your voice.
+              {t('screens.memory.helpExafyImproveVitanalandReportBugs')}
             </p>
           </div>
 
@@ -208,10 +209,9 @@ function Diary() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
                 <Mic className="h-5 w-5 text-red-600 dark:text-red-400" />
-                Record Feedback
+                {t('screens.memory.recordFeedback')}
               </CardTitle>
-              <CardDescription>
-                Describe the issue or improvement — attach screenshots if needed
+              <CardDescription>{t('screens.memory.describeIssueImprovementAttachScreenshotsIf')}
               </CardDescription>
             </CardHeader>
             <CardContent>

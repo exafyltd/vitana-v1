@@ -3,6 +3,7 @@ import { NewsCard } from '@/components/crossover/NewsCard';
 import { cn } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
+import { t } from '@/lib/i18n-toast';
 
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -195,8 +196,8 @@ export function MobileEventCarousel({
         {emptyState || (
           <div className="text-center">
             <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Events</h3>
-            <p className="text-muted-foreground">Check back soon for upcoming events!</p>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.community.noEvents')}</h3>
+            <p className="text-muted-foreground">{t('screens.community.checkBackSoonForUpcomingEvents')}</p>
           </div>
         )}
       </div>
@@ -207,7 +208,7 @@ export function MobileEventCarousel({
     <div 
       className="relative w-full" 
       role="feed" 
-      aria-label="Events feed"
+      aria-label={t('screens.community.eventsFeed')}
     >
       {/* Vertical scroll container with snap */}
       <div 

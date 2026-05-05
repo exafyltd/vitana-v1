@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Activity, Wifi, Clock, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface StatusHeaderBarProps {
   backendStatus: "ONLINE" | "OFFLINE" | "PARTIAL";
@@ -78,7 +79,7 @@ export function StatusHeaderBar({
       <div className="flex items-center gap-3 flex-wrap text-xs w-full">
         <div className="flex items-center gap-1.5">
           <Activity className="w-3 h-3" />
-          <span className="text-muted-foreground">Backend:</span>
+          <span className="text-muted-foreground">{t('screens.dev.backend')}</span>
           <Badge variant={backendVariant} className="text-[10px] px-1.5 py-0">
             {backendStatus}
           </Badge>
@@ -86,7 +87,7 @@ export function StatusHeaderBar({
 
         <div className="flex items-center gap-1.5">
           <Wifi className="w-3 h-3" />
-          <span className="text-muted-foreground">Stream:</span>
+          <span className="text-muted-foreground">{t('screens.dev.stream')}</span>
           <Badge variant={streamVariant} className="text-[10px] px-1.5 py-0">
             {streamStatus}
           </Badge>
@@ -95,21 +96,21 @@ export function StatusHeaderBar({
         {latency !== undefined && (
           <div className="flex items-center gap-1.5">
             <Clock className="w-3 h-3" />
-            <span className="text-muted-foreground">Latency:</span>
-            <span className="font-mono">{latency}ms</span>
+            <span className="text-muted-foreground">{t('screens.dev.latency')}</span>
+            <span className="font-mono">{t('screens.dev.latencyMs', { latency })}</span>
           </div>
         )}
 
         <div className="flex items-center gap-1.5">
           <Clock className="w-3 h-3" />
-          <span className="text-muted-foreground">Last event:</span>
+          <span className="text-muted-foreground">{t('screens.dev.lastEvent')}</span>
           <span className="font-mono">{lastEventRelative}</span>
         </div>
 
         {activeVTID && (
           <div className="flex items-center gap-1.5 ml-auto">
             <User className="w-3 h-3" />
-            <span className="text-muted-foreground">VTID:</span>
+            <span className="text-muted-foreground">{t('screens.dev.vtid')}</span>
             <Badge 
               variant="secondary" 
               className="text-[10px] px-1.5 py-0 font-mono cursor-pointer hover:bg-secondary/80"

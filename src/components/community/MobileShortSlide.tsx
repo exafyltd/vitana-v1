@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
+import { t } from '@/lib/i18n-toast';
 
 type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
@@ -351,11 +352,10 @@ export function MobileShortSlide({
 
         <div className="flex items-center gap-2">
           <Badge variant="secondary" className="bg-black/30 backdrop-blur-sm text-white border-none">
-            Shorts
+            {t('screens.community.shorts')}
           </Badge>
           {video.isLive && (
-            <Badge variant="destructive" className="animate-pulse">
-              LIVE
+            <Badge variant="destructive" className="animate-pulse">{t('screens.community.live')}
             </Badge>
           )}
         </div>
@@ -374,7 +374,7 @@ export function MobileShortSlide({
                     }}
                   >
                     <Edit className="w-4 h-4 mr-2" />
-                    Edit details
+                    {t('screens.community.editDetails')}
                   </DropdownMenuItem>
                 )}
                 {onDelete && (
@@ -386,7 +386,7 @@ export function MobileShortSlide({
                     }}
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
+                    {t('screens.community.delete')}
                   </DropdownMenuItem>
                 )}
               </KebabMenu>

@@ -15,6 +15,7 @@ import {
   SplitBarTrigger,
   SplitBarContent,
 } from "@/components/ui/split-bar";
+import { t } from '@/lib/i18n-toast';
 
 interface BusinessHubOverviewProps {
   onCreateService: () => void;
@@ -109,8 +110,8 @@ export function BusinessHubOverview({
     <div className="space-y-6">
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
-          <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
-          <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
+          <SplitBarTrigger value="snapshot">{t('screens.business.snapshot')}</SplitBarTrigger>
+          <SplitBarTrigger value="history">{t('screens.business.history')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="snapshot" className="space-y-8 pt-4">

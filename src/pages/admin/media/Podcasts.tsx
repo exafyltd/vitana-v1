@@ -15,6 +15,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 export default function Podcasts() {
   const { toast } = useToast();
@@ -94,7 +95,7 @@ export default function Podcasts() {
   return (
     <AppLayout>
       <SEO 
-        title="Podcasts | Media Management" 
+        title={t('screens.admin.podcastsMediaManagement')} 
         description="Manage podcast content"
         canonical={window.location.href}
       />
@@ -143,14 +144,14 @@ export default function Podcasts() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Host</TableHead>
-                  <TableHead>Episode</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Plays</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.host')}</TableHead>
+                  <TableHead>{t('screens.admin.episode')}</TableHead>
+                  <TableHead>{t('screens.admin.duration')}</TableHead>
+                  <TableHead>{t('screens.admin.plays')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.date')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

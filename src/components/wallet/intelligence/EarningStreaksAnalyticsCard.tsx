@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Flame, TrendingUp, Target, Calendar, Trophy, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningStreak {
   id: string;
@@ -132,10 +133,9 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Flame className="h-5 w-5 text-orange-500" />
-            Earning Streaks Analytics
+            {t('screens.wallet.earningStreaksAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-orange-500/10 text-orange-600">
-            {activeStreaks} Active Streaks
+          <Badge variant="secondary" className="bg-orange-500/10 text-orange-600">{t('screens.wallet.activestreaksActiveStreaks', { activeStreaks })}
           </Badge>
         </div>
       </CardHeader>
@@ -146,19 +146,19 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-orange-600">{activeStreaks}</div>
-              <div className="text-xs text-muted-foreground">Active</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-primary">{totalMultiplier.toFixed(1)}x</div>
-              <div className="text-xs text-muted-foreground">Multiplier</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.multiplier')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">{longestStreak}</div>
-              <div className="text-xs text-muted-foreground">Best Streak</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.bestStreak')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your streaks are boosting earnings by <span className="font-semibold text-orange-600">{Math.round((totalMultiplier - activeStreaks) * 100)}%</span>
+            {t('screens.wallet.yourStreaksBoostingEarningsBy')} <span className="font-semibold text-orange-600">{Math.round((totalMultiplier - activeStreaks) * 100)}%</span>
           </p>
         </div>
 
@@ -166,7 +166,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Trophy className="h-4 w-4 text-yellow-500" />
-            Current Streaks
+            {t('screens.wallet.currentStreaks')}
           </h4>
           
           {mockStreaks.slice(0, 2).map((streak) => {
@@ -181,8 +181,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                       {streak.category}
                       <StatusIcon className="h-3 w-3 text-orange-500" />
                     </h5>
-                    <p className="text-xs text-muted-foreground">
-                      {streak.currentStreak} days • Best: {streak.bestStreak} days
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentstreakDaysBestBeststreakDays', { currentStreak: streak.currentStreak, bestStreak: streak.bestStreak })}
                     </p>
                   </div>
                   <div className="text-right">
@@ -194,11 +193,9 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">
-                      To {streak.nextMilestone} days
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.nextmilestoneDays', { nextMilestone: streak.nextMilestone })}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      +{streak.reward} VTN
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.rewardVtn', { reward: streak.reward })}
                     </span>
                   </div>
                   <Progress value={streak.progress} className="h-1.5" />
@@ -212,7 +209,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Zap className="h-4 w-4 text-purple-500" />
-            Next Opportunities
+            {t('screens.wallet.nextOpportunities')}
           </h4>
           
           {mockOpportunities.slice(0, 1).map((opportunity) => (
@@ -229,15 +226,13 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-purple-600 font-semibold">
-                    +{opportunity.reward} VTN
+                  <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.rewardVtn', { reward: opportunity.reward })}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {opportunity.deadline} left
+                  <div className="text-xs text-muted-foreground">{t('screens.wallet.deadlineLeft', { deadline: opportunity.deadline })}
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Start Streak
+                  {t('screens.wallet.startStreak')}
                 </Button>
               </div>
             </div>
@@ -249,13 +244,12 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Target className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Streak Recovery</span>
+              <span className="text-sm font-medium">{t('screens.wallet.streakRecovery')}</span>
             </div>
-            <p className="text-xs text-muted-foreground mb-2">
-              Restart your Wellness Goals streak today to rebuild your {mockStreaks.find(s => s.status === "broken")?.bestStreak}-day record
+            <p className="text-xs text-muted-foreground mb-2">{t('screens.wallet.restartYourWellnessGoalsStreakToday')} {mockStreaks.find(s => s.status === "broken")?.bestStreak}{t('screens.wallet.dayRecord')}
             </p>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
-              Restart Streak
+              {t('screens.wallet.restartStreak')}
             </Button>
           </div>
         )}
@@ -263,7 +257,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Flame className="h-4 w-4 mr-2" />
-          View All Streaks
+          {t('screens.wallet.viewAllStreaks')}
         </Button>
       </CardContent>
     </Card>

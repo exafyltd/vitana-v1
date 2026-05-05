@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2, CheckCircle2, XCircle, Music } from "lucide-react";
 import { useVerifyGoogleConnection, useInvokeCapability, handleInsufficientScope, type GoogleVerifyResult } from "@/hooks/useGoogleConnect";
 import { useEffect, useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   open: boolean;
@@ -124,32 +125,27 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100vw-2rem)] max-w-xl max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Google connection — live check</DialogTitle>
+          <DialogTitle>{t('screens.settings.googleConnectionLiveCheck')}</DialogTitle>
           <DialogDescription>
-            Calls Gmail, Calendar, Contacts and YouTube with your stored OAuth token and reports what came back.
+            {t('screens.settings.callsGmailCalendarContactsYoutubeWith')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto min-h-0">
           {isFetching && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground py-6">
-              <Loader2 className="h-4 w-4 animate-spin" /> Probing Google APIs…
+              <Loader2 className="h-4 w-4 animate-spin" /> {t('screens.settings.probingGoogleApis')}
             </div>
           )}
 
           {error && !isFetching && (
-            <div className="text-sm text-destructive py-4 break-words">
-              Couldn't reach the verify endpoint: {error instanceof Error ? error.message : String(error)}
-            </div>
+            <div className="text-sm text-destructive py-4 break-words">{t('screens.settings.couldnTReachVerifyEndpointValue0', { value0: error instanceof Error ? error.message : String(error) })}</div>
           )}
 
           {!isFetching && data?.ok && (
             <div className="space-y-3 py-2">
               <div className="text-sm text-muted-foreground break-words">
-                <span className="font-medium text-foreground">{data.connection?.email}</span> —
-                connected {data.connection?.connected_at?.slice(0, 10)},
-                refresh_token {data.connection?.has_refresh_token ? "present" : "missing"},
-                token expires {data.connection?.token_expires_at?.slice(11, 19)} UTC.
+                <span className="font-medium text-foreground">{data.connection?.email}</span>{t('screens.settings.connectedValue0Refresh_tokenValue1TokenExpires', { value0: data.connection?.connected_at?.slice(0, 10), value1: data.connection?.has_refresh_token ? "present" : "missing", value2: data.connection?.token_expires_at?.slice(11, 19) })}
               </div>
               <ul className="space-y-2">
                 {rows.map(r => (
@@ -166,8 +162,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
                   </li>
                 ))}
               </ul>
-              <div className="text-xs text-muted-foreground pt-1">
-                {passed} / {rows.length} services reachable.
+              <div className="text-xs text-muted-foreground pt-1">{t('screens.settings.passedLengthServicesReachable', { passed, length: rows.length })}
               </div>
             </div>
           )}
@@ -175,16 +170,16 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
           {/* VTID-01939: Play-a-song panel — proves the capability framework end-to-end. */}
           <div className="mt-6 rounded-md border p-3 space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <Music className="h-4 w-4" /> Play a song (music.play capability)
+              <Music className="h-4 w-4" /> {t('screens.settings.playSongMusicPlayCapability')}
             </div>
             <div className="text-xs text-muted-foreground">
-              Calls <code>POST /api/v1/capabilities/music.play</code>. Gateway searches YouTube with your token and returns a <code>music.youtube.com</code> URL — opens in YouTube Music on Android or the web player on desktop.
+              {t('screens.settings.calls')} <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>{t('screens.settings.gatewaySearchesYoutubeWithYourToken')} <code>{t('screens.settings.musicYoutubeCom')}</code>{t('screens.settings.urlOpensYoutubeMusicAndroidWeb')}
             </div>
             <div className="flex gap-2">
               <Input
                 value={songQuery}
                 onChange={(e) => setSongQuery(e.target.value)}
-                placeholder='e.g. "One Moment in Time Whitney Houston"'
+                placeholder={t('screens.settings.eGOneMomentTimeWhitney')}
                 disabled={invokeCapability.isPending}
                 onKeyDown={(e) => { if (e.key === "Enter") playSong(); }}
               />
@@ -200,14 +195,13 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
               <div className="text-xs text-destructive break-words">{playError}</div>
             )}
             {lastPlay && !playError && (
-              <div className="text-xs text-muted-foreground break-words">
-                Opened <span className="font-medium text-foreground">{lastPlay.title}</span>
+              <div className="text-xs text-muted-foreground break-words">{t('screens.settings.opened')} <span className="font-medium text-foreground">{lastPlay.title}</span>
                 {lastPlay.channel ? ` — ${lastPlay.channel}` : ""}.
                 {lastPlay.url ? (
                   <>
                     {" "}
                     <a href={lastPlay.url} target="_blank" rel="noreferrer" className="underline">
-                      Open again
+                      {t('screens.settings.openAgain')}
                     </a>
                     .
                   </>
@@ -224,9 +218,9 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
             onClick={() => refetch()}
             disabled={isFetching}
           >
-            Re-run check
+            {t('screens.settings.rerunCheck')}
           </Button>
-          <Button size="sm" onClick={() => onOpenChange(false)}>Close</Button>
+          <Button size="sm" onClick={() => onOpenChange(false)}>{t('screens.settings.close')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

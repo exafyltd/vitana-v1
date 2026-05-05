@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useOrderManagement, TicketOrder } from "@/hooks/useOrderManagement";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from '@/lib/i18n-toast';
 
 interface OrderManagementTableProps {
   eventId: string;
@@ -55,18 +56,18 @@ export function OrderManagementTable({
         return (
           <Badge variant="default" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
             <Check className="w-3 h-3 mr-1" />
-            Paid
+            {t('screens.business.paid')}
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="secondary">Pending</Badge>
+          <Badge variant="secondary">{t('screens.business.pending')}</Badge>
         );
       case "refunded":
         return (
           <Badge variant="destructive">
             <X className="w-3 h-3 mr-1" />
-            Refunded
+            {t('screens.business.refunded')}
           </Badge>
         );
       default:
@@ -80,7 +81,7 @@ export function OrderManagementTable({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
-          placeholder="Search by order #, name, or email..."
+          placeholder={t('screens.business.searchByOrderNameEmail')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
@@ -97,12 +98,12 @@ export function OrderManagementTable({
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-semibold">Order #</TableHead>
-                <TableHead className="font-semibold">Buyer</TableHead>
-                <TableHead className="font-semibold">Ticket Type</TableHead>
-                <TableHead className="font-semibold">Date</TableHead>
-                <TableHead className="font-semibold text-right">Total</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.order')}</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.buyer')}</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.ticketType')}</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.date')}</TableHead>
+                <TableHead className="font-semibold text-right">{t('screens.business.total')}</TableHead>
+                <TableHead className="font-semibold">{t('screens.business.status')}</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -151,7 +152,7 @@ export function OrderManagementTable({
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => onSelectOrder(order)}>
                           <Eye className="w-4 h-4 mr-2" />
-                          View Details
+                          {t('screens.business.viewDetails')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -165,9 +166,7 @@ export function OrderManagementTable({
 
       {/* Results count */}
       {orders.length > 0 && (
-        <p className="text-sm text-muted-foreground">
-          Showing {orders.length} order{orders.length !== 1 ? "s" : ""}
-        </p>
+        <p className="text-sm text-muted-foreground">{t('screens.business.showingLengthOrderValue1', { length: orders.length, value1: orders.length !== 1 ? "s" : "" })}</p>
       )}
     </div>
   );

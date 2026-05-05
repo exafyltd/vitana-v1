@@ -5,6 +5,7 @@ import { SoftWarningBanner } from "./SoftWarningBanner";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 export function VTIDSnapshotPanel() {
   const { vtids, error, available, isLoading, refetch } = useDevVTID();
@@ -14,8 +15,8 @@ export function VTIDSnapshotPanel() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>VTID Snapshot</CardTitle>
-            <CardDescription>Recent VTID assignments • Auto-refresh 30s</CardDescription>
+            <CardTitle>{t('screens.dev.vtidSnapshot')}</CardTitle>
+            <CardDescription>{t('screens.dev.recentVtidAssignmentsAutorefresh30s')}</CardDescription>
           </div>
           <Button
             variant="outline"
@@ -25,7 +26,7 @@ export function VTIDSnapshotPanel() {
             className="gap-2"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('screens.dev.refresh')}
           </Button>
         </div>
       </CardHeader>
@@ -42,20 +43,20 @@ export function VTIDSnapshotPanel() {
           </div>
         ) : vtids.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
-            <p>No VTID records available</p>
-            <p className="text-sm mt-2">VTID assignments will appear here once the backend is active</p>
+            <p>{t('screens.dev.noVtidRecordsAvailable')}</p>
+            <p className="text-sm mt-2">{t('screens.dev.vtidAssignmentsWillAppearHereOnce')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b">
                 <tr className="text-left">
-                  <th className="pb-2 font-medium">VTID Label</th>
-                  <th className="pb-2 font-medium">Color</th>
-                  <th className="pb-2 font-medium">Layer</th>
-                  <th className="pb-2 font-medium">Module</th>
-                  <th className="pb-2 font-medium">Number</th>
-                  <th className="pb-2 font-medium">Created</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.vtidLabel')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.color')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.layer')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.module')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.number')}</th>
+                  <th className="pb-2 font-medium">{t('screens.dev.created')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y">

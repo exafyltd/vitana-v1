@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface Contact {
   id: string;
@@ -138,11 +139,7 @@ export function useContacts() {
     } catch (err) {
       console.error("Error fetching contacts:", err);
       setError(err as Error);
-      toast({
-        title: "Error loading contacts",
-        description: err instanceof Error ? err.message : "Failed to load contacts",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.errorLoadingContacts');
     } finally {
       setIsLoading(false);
     }
@@ -163,10 +160,7 @@ export function useContacts() {
       }
       
       if (!participants || participants.length === 0) {
-        toast({
-          title: "No Conversations Found",
-          description: "You haven't messaged anyone yet.",
-        });
+        notify('toasts.hooks.noConversationsFound', 'toasts.hooks.youHavenTMessagedAnyoneYet');
         return;
       }
       
@@ -277,27 +271,17 @@ export function useContacts() {
       await fetchContacts();
       
       if (addedCount === 0 && updatedCount === 0) {
-        toast({
-          title: "Already Added",
-          description: "All conversation participants are already in your contacts.",
-        });
+        notify('toasts.hooks.alreadyAdded', 'toasts.hooks.allConversationParticipantsAlreadyYourContacts');
       } else {
         const parts = [];
         if (addedCount > 0) parts.push(`${addedCount} added`);
         if (updatedCount > 0) parts.push(`${updatedCount} updated`);
         
-        toast({
-          title: "Contacts Imported",
-          description: parts.join(', ') + ' from your conversations.',
-        });
+        notify('toasts.hooks.contactsImported');
       }
     } catch (error) {
       console.error('Error importing from conversations:', error);
-      toast({
-        title: "Import Failed",
-        description: error instanceof Error ? error.message : "Could not import contacts from conversations.",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.importFailed');
     } finally {
       setIsLoading(false);
     }
@@ -359,11 +343,7 @@ export function useContacts() {
       return data;
     } catch (err) {
       console.error("Error adding contact:", err);
-      toast({
-        title: "Failed to add contact",
-        description: err instanceof Error ? err.message : "Please try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedAddContact');
       return null;
     }
   }, [user?.id, toast, fetchContacts]);
@@ -384,20 +364,13 @@ export function useContacts() {
 
       if (updateError) throw updateError;
 
-      toast({
-        title: "Contact updated",
-        description: "Contact information has been updated successfully.",
-      });
+      notify('toasts.hooks.contactUpdated', 'toasts.hooks.contactInformationHasUpdatedSuccessfully');
 
       await fetchContacts();
       return true;
     } catch (err) {
       console.error("Error updating contact:", err);
-      toast({
-        title: "Failed to update contact",
-        description: err instanceof Error ? err.message : "Please try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedUpdateContact');
       return false;
     }
   }, [user?.id, toast, fetchContacts]);
@@ -415,20 +388,13 @@ export function useContacts() {
 
       if (deleteError) throw deleteError;
 
-      toast({
-        title: "Contact deleted",
-        description: "Contact has been removed from your list.",
-      });
+      notify('toasts.hooks.contactDeleted', 'toasts.hooks.contactHasRemovedFromYourList');
 
       await fetchContacts();
       return true;
     } catch (err) {
       console.error("Error deleting contact:", err);
-      toast({
-        title: "Failed to delete contact",
-        description: err instanceof Error ? err.message : "Please try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedDeleteContact');
       return false;
     }
   }, [user?.id, toast, fetchContacts]);
@@ -446,20 +412,13 @@ export function useContacts() {
 
       if (updateError) throw updateError;
 
-      toast({
-        title: "Invite sent!",
-        description: `Invitation sent via ${channel}. We'll notify you when they join VITANA.`,
-      });
+      notify('toasts.hooks.inviteSent');
 
       await fetchContacts();
       return true;
     } catch (err) {
       console.error("Error sending invite:", err);
-      toast({
-        title: "Failed to send invite",
-        description: err instanceof Error ? err.message : "Please try again",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.failedSendInvite');
       return false;
     }
   }, [user?.id, toast, fetchContacts]);
@@ -502,10 +461,7 @@ export function useContacts() {
               payload.new && payload.old &&
               (payload.new as any).is_on_platform && 
               !(payload.old as any).is_on_platform) {
-            toast({
-              title: "Contact joined VITANA! 🎉",
-              description: `${(payload.new as any).contact_name} is now on VITANA. You can message them now!`,
-            });
+            notify('toasts.hooks.contactJoinedVitana');
           }
           
           fetchContacts();

@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { MapPin, Monitor, ArrowRight, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileInventoryCardProps {
   id: string;
@@ -87,11 +88,9 @@ export function MobileInventoryCard({
             {/* Earnings badge */}
             {earningFormatted && (
               <div className="inline-flex flex-col items-center px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
-                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                  Earn {earningFormatted}
-                </span>
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{t('screens.reseller.earnEarningformatted', { earningFormatted })}</span>
                 <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">
-                  /ticket
+                  {t('screens.reseller.ticket')}
                 </span>
               </div>
             )}
@@ -104,16 +103,13 @@ export function MobileInventoryCard({
                 onSell();
               }}
               className="h-9 px-4 rounded-full font-medium gap-1.5"
-            >
-              Sell
+            >{t('screens.reseller.sell')}
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
 
             {/* Optional: Potential total */}
             {potentialFormatted && (
-              <span className="text-[10px] text-muted-foreground">
-                Potential: {potentialFormatted}
-              </span>
+              <span className="text-[10px] text-muted-foreground">{t('screens.reseller.potentialPotentialformatted', { potentialFormatted })}</span>
             )}
           </div>
         </div>
@@ -125,13 +121,13 @@ export function MobileInventoryCard({
         {quantity > 0 && (
           <>
             <span>·</span>
-            <span>Qty {quantity}</span>
+            <span>{t('screens.reseller.qtyQuantity', { quantity })}</span>
           </>
         )}
         {priceFormatted && (
           <>
             <span>·</span>
-            <span>Price {priceFormatted}</span>
+            <span>{t('screens.reseller.pricePriceformatted', { priceFormatted })}</span>
           </>
         )}
       </div>

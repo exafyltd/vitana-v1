@@ -23,10 +23,11 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useWallet } from "@/hooks/useWallet";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CreateServicePopupProps {
   isOpen: boolean;
@@ -126,10 +127,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
   };
 
   const handleSaveDraft = () => {
-    toast({
-      title: "Draft Saved ✨",
-      description: "Your service draft has been saved successfully."
-    });
+    notify('toasts.common.draftSaved', 'toasts.common.yourServiceDraftHasSavedSuccessfully');
     onClose();
   };
 
@@ -157,10 +155,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
       console.error('Error broadcasting service:', error);
     }
 
-    toast({
-      title: "Service Published! 🚀",
-      description: "Your service is now live and accepting bookings."
-    });
+    notify('toasts.common.servicePublished', 'toasts.common.yourServiceNowLiveAcceptingBookings');
     
     // Demo the booking flow
     setShowPaymentDemo(true);
@@ -207,8 +202,8 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
-          <DialogTitle className="text-2xl font-bold">Start a New Business Offering</DialogTitle>
-          <p className="text-muted-foreground">Turn your skills into income today 🚀</p>
+          <DialogTitle className="text-2xl font-bold">{t('screens.common.startNewBusinessOffering')}</DialogTitle>
+          <p className="text-muted-foreground">{t('screens.common.turnYourSkillsIntoIncomeToday')}</p>
         </DialogHeader>
 
         {/* Step Indicator */}
@@ -265,24 +260,24 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           <div className="space-y-6 py-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Service Title</Label>
+                <Label htmlFor="title">{t('screens.common.serviceTitle')}</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Morning Yoga Flow"
+                  placeholder={t('screens.common.eGMorningYogaFlow')}
                   value={formData.title}
                   onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                 />
               </div>
               <div>
-                <Label htmlFor="format">Format</Label>
+                <Label htmlFor="format">{t('screens.common.format')}</Label>
                 <Select value={formData.format} onValueChange={(value) => setFormData(prev => ({ ...prev, format: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose format" />
+                    <SelectValue placeholder={t('screens.common.chooseFormat')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="in-person">In-Person</SelectItem>
-                    <SelectItem value="virtual">Virtual</SelectItem>
-                    <SelectItem value="hybrid">Hybrid</SelectItem>
+                    <SelectItem value="in-person">{t('screens.common.inperson')}</SelectItem>
+                    <SelectItem value="virtual">{t('screens.common.virtual')}</SelectItem>
+                    <SelectItem value="hybrid">{t('screens.common.hybrid')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -290,19 +285,19 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="sessionType">Session Type</Label>
+                <Label htmlFor="sessionType">{t('screens.common.sessionType')}</Label>
                 <Select value={formData.sessionType} onValueChange={(value) => setFormData(prev => ({ ...prev, sessionType: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose type" />
+                    <SelectValue placeholder={t('screens.common.chooseType')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="one-time">One-time</SelectItem>
-                    <SelectItem value="recurring">Recurring</SelectItem>
+                    <SelectItem value="one-time">{t('screens.common.onetime')}</SelectItem>
+                    <SelectItem value="recurring">{t('screens.common.recurring')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="spots">Spots Available</Label>
+                <Label htmlFor="spots">{t('screens.common.spotsAvailable')}</Label>
                 <Input
                   id="spots"
                   placeholder="e.g., 15"
@@ -314,7 +309,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="price">Price per session</Label>
+                <Label htmlFor="price">{t('screens.common.pricePerSession')}</Label>
                 <div className="flex">
                   <Select value={formData.currency} onValueChange={(value) => setFormData(prev => ({ ...prev, currency: value }))}>
                     <SelectTrigger className="w-20">
@@ -343,7 +338,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
           <div className="space-y-6 py-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label>Date & Time</Label>
+                <Label>{t('screens.common.dateTime')}</Label>
                 <div className="flex space-x-2">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -376,24 +371,24 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                 </div>
               </div>
               <div>
-                <Label htmlFor="duration">Duration (minutes)</Label>
+                <Label htmlFor="duration">{t('screens.common.durationMinutes')}</Label>
                 <Select value={formData.duration} onValueChange={(value) => setFormData(prev => ({ ...prev, duration: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="30">30 minutes</SelectItem>
-                    <SelectItem value="45">45 minutes</SelectItem>
-                    <SelectItem value="60">60 minutes</SelectItem>
-                    <SelectItem value="90">90 minutes</SelectItem>
-                    <SelectItem value="120">120 minutes</SelectItem>
+                    <SelectItem value="30">{t('screens.common.text30Minutes')}</SelectItem>
+                    <SelectItem value="45">{t('screens.common.text45Minutes')}</SelectItem>
+                    <SelectItem value="60">{t('screens.common.text60Minutes')}</SelectItem>
+                    <SelectItem value="90">{t('screens.common.text90Minutes')}</SelectItem>
+                    <SelectItem value="120">{t('screens.common.text120Minutes')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div>
-              <Label htmlFor="location">Location/Venue</Label>
+              <Label htmlFor="location">{t('screens.common.locationvenue')}</Label>
               <Input
                 id="location"
                 placeholder={formData.format === 'virtual' ? "Meeting link or platform" : "Address or venue name"}
@@ -408,19 +403,19 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
         {currentStep === 4 && (
           <div className="space-y-6 py-4">
             <div>
-              <Label>Cover Image</Label>
+              <Label>{t('screens.common.coverImage')}</Label>
               <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
                 <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">Upload a cover image for your service</p>
-                <Button variant="outline" size="sm">Choose File</Button>
+                <p className="text-sm text-muted-foreground mb-2">{t('screens.common.uploadCoverImageForYourService')}</p>
+                <Button variant="outline" size="sm">{t('screens.common.chooseFile')}</Button>
               </div>
             </div>
 
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.common.description')}</Label>
               <Textarea
                 id="description"
-                placeholder="e.g., Start your day with energy and mindfulness"
+                placeholder={t('screens.common.eGStartYourDayWith')}
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={3}
@@ -428,7 +423,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             </div>
 
             <div>
-              <Label>Tags/Categories</Label>
+              <Label>{t('screens.common.tagscategories')}</Label>
               <div className="flex flex-wrap gap-2 mt-2">
                 {availableTags.map((tag) => (
                   <Badge
@@ -451,7 +446,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             {currentStep > 1 && (
               <Button variant="outline" onClick={handlePrevious}>
                 <ChevronLeft className="w-4 h-4 mr-2" />
-                Previous
+                {t('screens.common.previous')}
               </Button>
             )}
           </div>
@@ -460,23 +455,23 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
             {currentStep === 4 ? (
               <>
                 <Button variant="outline" onClick={handleSaveDraft}>
-                  Save Draft
+                  {t('screens.common.saveDraft')}
                 </Button>
                 <Button 
                   className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
                   onClick={handlePublish}
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
-                  Publish & Offer Service
+                  {t('screens.common.publishOfferService')}
                 </Button>
               </>
             ) : (
               <>
                 <Button variant="outline" onClick={handleClose}>
-                  Cancel
+                  {t('screens.common.cancel')}
                 </Button>
                 <Button onClick={handleNext} disabled={currentStep === 1 && !selectedServiceType}>
-                  Next
+                  {t('screens.common.next')}
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </>

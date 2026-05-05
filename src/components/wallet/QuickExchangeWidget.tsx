@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface QuickExchangeWidgetProps {
   onExchange?: (fromAmount: number, fromCurrency: string, toCurrency: string, toAmount: number) => void;
@@ -49,11 +50,7 @@ export function QuickExchangeWidget({
 
   const handleExchange = async () => {
     if (!calculation || parseFloat(fromAmount) <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount to exchange",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidAmountExchange');
       return;
     }
 
@@ -62,20 +59,12 @@ export function QuickExchangeWidget({
     try {
       await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
       
-      toast({
-        title: "Exchange Completed! ✅",
-        description: `Converted ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)}`,
-        duration: 5000
-      });
+      notify('toasts.wallet.exchangeCompleted');
 
       onExchange?.(calculation.fromAmount, fromCurrency, toCurrency, calculation.total);
       setFromAmount('');
     } catch (error) {
-      toast({
-        title: "Exchange Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.exchangeFailed', 'toasts.wallet.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }
@@ -91,11 +80,7 @@ export function QuickExchangeWidget({
       onExchangeAndSend?.(calculation.fromAmount, fromCurrency, toCurrency, calculation.total);
       setFromAmount('');
     } catch (error) {
-      toast({
-        title: "Action Failed", 
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.wallet.actionFailed', 'toasts.wallet.pleaseTryAgain');
     } finally {
       setIsProcessing(false);
     }
@@ -106,14 +91,14 @@ export function QuickExchangeWidget({
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           <ArrowUpDown className="w-5 h-5 text-blue-600" />
-          Quick Exchange
+          {t('screens.wallet.quickExchange')}
         </CardTitle>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {/* Quick Amount Buttons */}
         <div>
-          <Label className="text-sm text-muted-foreground mb-2 block">Quick amounts</Label>
+          <Label className="text-sm text-muted-foreground mb-2 block">{t('screens.wallet.quickAmounts')}</Label>
           <div className="grid grid-cols-4 gap-2">
             {quickAmounts.map(amount => (
               <Button
@@ -133,7 +118,7 @@ export function QuickExchangeWidget({
         <div className="grid grid-cols-2 gap-3">
           {/* From Currency */}
           <div className="space-y-2">
-            <Label htmlFor="from-amount">From</Label>
+            <Label htmlFor="from-amount">{t('screens.wallet.from')}</Label>
             <div className="space-y-2">
               <Input
                 id="from-amount"
@@ -162,7 +147,7 @@ export function QuickExchangeWidget({
 
           {/* To Currency */}
           <div className="space-y-2">
-            <Label htmlFor="to-amount">To</Label>
+            <Label htmlFor="to-amount">{t('screens.wallet.text')}</Label>
             <div className="space-y-2">
               <div className="relative">
                 <Input
@@ -207,14 +192,14 @@ export function QuickExchangeWidget({
             <CardContent className="p-3">
               <div className="flex items-center justify-center gap-3 text-sm">
                 <div className="text-center">
-                  <p className="text-muted-foreground">You send</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.youSend')}</p>
                   <p className="font-bold text-blue-600">
                     {formatCurrency(calculation.fromAmount, fromCurrency)}
                   </p>
                 </div>
                 <ArrowRight className="w-4 h-4 text-blue-500" />
                 <div className="text-center">
-                  <p className="text-muted-foreground">You receive</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.youReceive')}</p>
                   <p className="font-bold text-green-600">
                     {formatCurrency(calculation.total, toCurrency)}
                   </p>
@@ -222,8 +207,8 @@ export function QuickExchangeWidget({
               </div>
               
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                <span>Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency}</span>
-                <span>No fees - Free exchange</span>
+                <span>{t('screens.wallet.rate1FromcurrencyValue1Tocurrency', { fromCurrency, value1: calculation.rate.toFixed(3), toCurrency })}</span>
+                <span>{t('screens.wallet.noFeesFreeExchange')}</span>
               </div>
             </CardContent>
           </Card>
@@ -245,7 +230,7 @@ export function QuickExchangeWidget({
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
           >
             <Zap className="w-4 h-4 mr-1" />
-            Exchange & Send
+            {t('screens.wallet.exchangeSend')}
           </Button>
         </div>
       </CardContent>

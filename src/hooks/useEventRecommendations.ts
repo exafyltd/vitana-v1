@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface EventRecommendation {
   match_score: number;
@@ -53,11 +54,7 @@ export function useEventRecommendations() {
   // Generate new recommendations
   const generateRecommendations = async (type: 'events' | 'groups' | 'all' = 'events') => {
     if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to get personalized recommendations",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.authenticationRequired', 'toasts.hooks.pleaseSignGetPersonalizedRecommendations');
       return;
     }
     
@@ -65,10 +62,7 @@ export function useEventRecommendations() {
       setGenerating(true);
       console.log('useEventRecommendations: Generating recommendations, type:', type);
       
-      toast({
-        title: "Generating Recommendations",
-        description: "AI is analyzing your preferences...",
-      });
+      notify('toasts.hooks.generatingRecommendations', 'toasts.hooks.aiAnalyzingYourPreferences');
 
       const { data, error } = await supabase.functions.invoke('generate-enhanced-recommendations', {
         body: { type }
@@ -78,10 +72,7 @@ export function useEventRecommendations() {
       
       console.log('useEventRecommendations: Generation complete:', data);
       
-      toast({
-        title: "Recommendations Ready!",
-        description: `Found ${data?.event_count || 0} personalized matches for you`,
-      });
+      notify('toasts.hooks.recommendationsReady');
       
       // Refresh recommendations after generation
       await fetchRecommendations();
@@ -89,11 +80,7 @@ export function useEventRecommendations() {
       return data;
     } catch (error) {
       console.error('Error generating recommendations:', error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to generate recommendations",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.error');
     } finally {
       setGenerating(false);
     }

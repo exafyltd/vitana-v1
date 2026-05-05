@@ -19,6 +19,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavCatalogList } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 // For v1 we fetch the catalog list + one detail call per entry for audit.
 // This keeps the backend API surface small (no separate /audit/list endpoint)
@@ -64,7 +65,7 @@ export default function NavigatorHistory() {
       <div className="space-y-6 p-6">
         <AdminHeader
           emoji="📜"
-          title="Navigator History"
+          title={t('screens.admin.navigatorHistory')}
           description="Edit history across every catalog entry. Detailed revert is on the main Catalog screen: open an entry to see its full audit log and restore a prior snapshot."
         />
         <SubNavigation items={adminNavigatorNavigation} />
@@ -72,24 +73,24 @@ export default function NavigatorHistory() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between gap-4">
-              <CardTitle className="text-base">Recent updates</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.recentUpdates2')}</CardTitle>
               <Input
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                placeholder="Filter by screen_id or title…"
+                placeholder={t('screens.admin.filterByScreen_idTitle')}
                 className="max-w-sm"
               />
             </div>
           </CardHeader>
           <CardContent>
-            {catalog.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+            {catalog.isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>}
             {catalog.isError && (
               <p className="text-sm text-destructive">
                 {(catalog.error as Error)?.message || "Failed to load"}
               </p>
             )}
             {!catalog.isLoading && rows.length === 0 && (
-              <p className="text-sm italic text-muted-foreground">Nothing to show.</p>
+              <p className="text-sm italic text-muted-foreground">{t('screens.admin.nothingShow')}</p>
             )}
             <div className="divide-y">
               {rows.map((r) => (
@@ -100,7 +101,7 @@ export default function NavigatorHistory() {
                   </div>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground">
                     <Badge variant="outline">{r.action}</Badge>
-                    <span>by {r.actor}</span>
+                    <span>{t('screens.admin.byActor', { actor: r.actor })}</span>
                     <span>{new Date(r.at).toLocaleString()}</span>
                   </div>
                 </div>

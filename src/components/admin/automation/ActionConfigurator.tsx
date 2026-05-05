@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Mail, MessageSquare, Bell, Calendar } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Action {
   type: string;
@@ -49,16 +50,16 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
   return (
     <Card>
       <CardHeader>
-        <CardTitle>3. Configure Actions</CardTitle>
-        <CardDescription>Define what happens when the automation runs</CardDescription>
+        <CardTitle>{t('screens.admin.text3ConfigureActions')}</CardTitle>
+        <CardDescription>{t('screens.admin.defineWhatHappensWhenAutomationRuns')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {actions.length === 0 ? (
           <div className="text-center py-8 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground mb-4">No actions configured yet</p>
+            <p className="text-muted-foreground mb-4">{t('screens.admin.noActionsConfiguredYet')}</p>
             <Button onClick={addAction} variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
-              Add First Action
+              {t('screens.admin.addFirstAction')}
             </Button>
           </div>
         ) : (
@@ -72,7 +73,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {Icon && <Icon className="h-4 w-4" />}
-                      <Label>Action {index + 1}</Label>
+                      <Label>{t('screens.admin.actionValue0', { value0: index + 1 })}</Label>
                     </div>
                     <Button 
                       variant="ghost" 
@@ -84,13 +85,13 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Action Type</Label>
+                    <Label>{t('screens.admin.actionType')}</Label>
                     <Select 
                       value={action.type} 
                       onValueChange={(value) => updateAction(index, { type: value })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select action type..." />
+                        <SelectValue placeholder={t('screens.admin.selectActionType')} />
                       </SelectTrigger>
                       <SelectContent>
                         {ACTION_TYPES.map(type => {
@@ -111,19 +112,19 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   {action.type === "send_email" && (
                     <>
                       <div className="space-y-2">
-                        <Label>Subject</Label>
+                        <Label>{t('screens.admin.subject')}</Label>
                         <Input 
                           value={action.config.subject || ""}
                           onChange={(e) => updateActionConfig(index, "subject", e.target.value)}
-                          placeholder="Email subject..."
+                          placeholder={t('screens.admin.emailSubject')}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Message</Label>
+                        <Label>{t('screens.admin.message')}</Label>
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
-                          placeholder="Email content..."
+                          placeholder={t('screens.admin.emailContent')}
                           rows={4}
                         />
                       </div>
@@ -133,19 +134,19 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   {action.type === "send_notification" && (
                     <>
                       <div className="space-y-2">
-                        <Label>Title</Label>
+                        <Label>{t('screens.admin.title')}</Label>
                         <Input 
                           value={action.config.title || ""}
                           onChange={(e) => updateActionConfig(index, "title", e.target.value)}
-                          placeholder="Notification title..."
+                          placeholder={t('screens.admin.notificationTitle')}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label>Message</Label>
+                        <Label>{t('screens.admin.message')}</Label>
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
-                          placeholder="Notification message..."
+                          placeholder={t('screens.admin.notificationMessage')}
                           rows={3}
                         />
                       </div>
@@ -157,7 +158,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
 
             <Button onClick={addAction} variant="outline" size="sm" className="w-full">
               <Plus className="h-4 w-4 mr-2" />
-              Add Another Action
+              {t('screens.admin.addAnotherAction')}
             </Button>
           </div>
         )}

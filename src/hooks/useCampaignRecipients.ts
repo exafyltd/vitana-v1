@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type CampaignRecipient = {
   id: string;
@@ -56,7 +57,7 @@ export function useCampaignRecipients(campaignId?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaign_recipients"] });
-      toast.success("Recipients added to campaign");
+      notifySuccess('toasts.hooks.recipientsAddedCampaign');
     },
     onError: (error: Error) => {
       toast.error(`Failed to add recipients: ${error.message}`);

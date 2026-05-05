@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface PhotoEntryCardProps {
   id: string;
@@ -42,7 +43,7 @@ export function PhotoEntryCard({
               <button
                 onClick={(e) => { e.stopPropagation(); onDelete(id); }}
                 className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                aria-label="Delete entry"
+                aria-label={t('screens.diary.deleteEntry')}
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -71,7 +72,7 @@ export function PhotoEntryCard({
         >
           <ImageWithFallback
             src={attachments[0]}
-            alt="Photo entry"
+            alt={t('screens.diary.photoEntry')}
             className="w-20 h-20 md:w-24 md:h-24 rounded-lg aspect-square group-hover:opacity-90 transition-opacity"
           />
           {hasMultiplePhotos && (

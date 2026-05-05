@@ -53,6 +53,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
@@ -127,7 +128,7 @@ export default function KnowledgeDocuments() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📚"
-          title="Knowledge Base Documents"
+          title={t('screens.admin.knowledgeBaseDocuments')}
           description="All Vitana knowledge in one place: system docs that ground the Assistant, baseline library shared across tenants, and your own tenant docs."
           rightAction={
             <Button size="sm" onClick={() => setShowUpload((v) => !v)}>
@@ -141,7 +142,7 @@ export default function KnowledgeDocuments() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search across all scopes (title, path, tags)…"
+              placeholder={t('screens.admin.searchAcrossAllScopesTitlePath')}
             />
           </CardContent>
         </Card>
@@ -160,11 +161,10 @@ export default function KnowledgeDocuments() {
           <Card className="lg:col-span-1">
             <CardContent className="pt-6">
               {treeQuery.isLoading && (
-                <p className="text-sm text-muted-foreground">Loading tree…</p>
+                <p className="text-sm text-muted-foreground">{t('screens.admin.loadingTree')}</p>
               )}
               {treeQuery.isError && (
-                <p className="text-sm text-destructive">
-                  Failed to load KB tree. Refresh to retry.
+                <p className="text-sm text-destructive">{t('screens.admin.failedLoadKbTreeRefreshRetry')}
                 </p>
               )}
               {filteredTree && (
@@ -192,7 +192,7 @@ export default function KnowledgeDocuments() {
             <CardContent className="pt-6">
               {!selected && (
                 <AdminEmptyState
-                  title="Pick a document"
+                  title={t('screens.admin.pickDocument')}
                   description="Select a document from the tree on the left to read its content and manage it."
                 />
               )}
@@ -359,9 +359,9 @@ function SystemDocViewer({ id }: { id: string }) {
     setConfirmOpen(false);
   }, [id]);
 
-  if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (query.isLoading) return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   if (!query.data)
-    return <p className="text-sm text-destructive">Document not found.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.documentNotFound')}</p>;
   const doc = query.data;
   const gatewayBase = (import.meta.env.VITE_GATEWAY_BASE as string) || "";
   const commandHubUrl = gatewayBase
@@ -386,7 +386,7 @@ function SystemDocViewer({ id }: { id: string }) {
           .map((t) => t.trim())
           .filter(Boolean),
       });
-      toast.success("System doc updated — applies across all tenants");
+      notifySuccess('toasts.admin.systemDocUpdatedAppliesAcrossAll');
       setEditing(false);
       setConfirmOpen(false);
     } catch (err: any) {
@@ -399,12 +399,12 @@ function SystemDocViewer({ id }: { id: string }) {
     <div className="space-y-4">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Badge variant="secondary" className="text-[10px]">platform</Badge>
+          <Badge variant="secondary" className="text-[10px]">{t('screens.admin.platform')}</Badge>
           {!editing && !isExafyAdmin && (
-            <span className="text-xs text-muted-foreground">read-only</span>
+            <span className="text-xs text-muted-foreground">{t('screens.admin.readonly')}</span>
           )}
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">editing</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
           )}
           <div className="ml-auto flex items-center gap-2">
             {commandHubUrl && !editing && (
@@ -414,12 +414,12 @@ function SystemDocViewer({ id }: { id: string }) {
                 rel="noopener noreferrer"
                 className="text-xs text-primary hover:underline"
               >
-                View in Command Hub →
+                {t('screens.admin.viewCommandHub')}
               </a>
             )}
             {isExafyAdmin && !editing && (
               <Button size="sm" variant="outline" onClick={startEdit}>
-                Edit
+                {t('screens.admin.edit')}
               </Button>
             )}
           </div>
@@ -438,7 +438,7 @@ function SystemDocViewer({ id }: { id: string }) {
           <Input
             value={tagsCsv}
             onChange={(e) => setTagsCsv(e.target.value)}
-            placeholder="Tags (comma-separated)"
+            placeholder={t('screens.admin.tagsCommaseparated')}
             className="mt-2 text-xs"
           />
         ) : (
@@ -482,33 +482,26 @@ function SystemDocViewer({ id }: { id: string }) {
             onClick={() => setEditing(false)}
             disabled={editMutation.isPending}
           >
-            Cancel
+            {t('screens.admin.cancel')}
           </Button>
           <span className="text-xs text-muted-foreground ml-auto">
-            Saving will apply to every tenant immediately.
+            {t('screens.admin.savingWillApplyEveryTenantImmediately')}
           </span>
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground">
-          {doc.word_count ?? 0} words · updated {new Date(doc.updated_at).toLocaleString()}
-        </p>
+        <p className="text-xs text-muted-foreground">{t('screens.admin.value0WordsUpdatedValue1', { value0: doc.word_count ?? 0, value1: new Date(doc.updated_at).toLocaleString() })}</p>
       )}
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit a platform document?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This document is part of the Vitana system knowledge base
-              (retrieval-router priority 100). Saving applies your changes
-              immediately to the Assistant's grounding for <b>every tenant</b>,
-              including the Book of the Vitana Index if this doc is part of it.
-              Continue?
+            <AlertDialogTitle>{t('screens.admin.editPlatformDocument')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.admin.thisDocumentPartVitanaSystemKnowledge')} <b>{t('screens.admin.everyTenant')}</b>{t('screens.admin.includingBookVitanaIndexIfThis')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={editMutation.isPending}>
-              Cancel
+              {t('screens.admin.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={(e) => {
@@ -555,9 +548,9 @@ function KbDocViewer({
     setConfirmOpen(false);
   }, [id]);
 
-  if (query.isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (query.isLoading) return <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>;
   if (!query.data)
-    return <p className="text-sm text-destructive">Document not found.</p>;
+    return <p className="text-sm text-destructive">{t('screens.admin.documentNotFound')}</p>;
 
   const doc = query.data;
 
@@ -579,7 +572,7 @@ function KbDocViewer({
           .map((t) => t.trim())
           .filter(Boolean),
       });
-      toast.success("Baseline doc updated — applies to all non-opted-out tenants");
+      notifySuccess('toasts.admin.baselineDocUpdatedAppliesAllNonoptedout');
       setEditing(false);
       setConfirmOpen(false);
       onOptoutChanged(); // refresh tree so title update shows
@@ -592,7 +585,7 @@ function KbDocViewer({
   async function handleDelete() {
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success("Document deleted");
+      notifySuccess('toasts.admin.documentDeleted');
       onDeleted();
     } catch (err: any) {
       toast.error(err.message || "Failed to delete");
@@ -602,7 +595,7 @@ function KbDocViewer({
   async function handleReindex() {
     try {
       await reindexMutation.mutateAsync(id);
-      toast.success("Reindex triggered");
+      notifySuccess('toasts.admin.reindexTriggered');
     } catch (err: any) {
       toast.error(err.message || "Failed to reindex");
     }
@@ -632,7 +625,7 @@ function KbDocViewer({
           </Badge>
           <AdminStatusBadge variant={statusVariant as any}>{doc.status}</AdminStatusBadge>
           {editing && (
-            <span className="text-xs text-amber-600 font-medium">editing</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.admin.editing')}</span>
           )}
           {canEditBaseline && !editing && (
             <Button
@@ -641,7 +634,7 @@ function KbDocViewer({
               className="ml-auto"
               onClick={startEdit}
             >
-              Edit
+              {t('screens.admin.edit')}
             </Button>
           )}
         </div>
@@ -658,7 +651,7 @@ function KbDocViewer({
           <Input
             value={editTopicsCsv}
             onChange={(e) => setEditTopicsCsv(e.target.value)}
-            placeholder="Topics (comma-separated)"
+            placeholder={t('screens.admin.topicsCommaseparated')}
             className="mt-2 text-xs"
           />
         ) : (
@@ -703,10 +696,10 @@ function KbDocViewer({
               onClick={() => setEditing(false)}
               disabled={editBaselineMutation.isPending}
             >
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <span className="text-xs text-muted-foreground ml-auto">
-              Applies to all non-opted-out tenants.
+              {t('screens.admin.appliesAllNonoptedoutTenants')}
             </span>
           </>
         ) : scope === "tenant" ? (
@@ -717,7 +710,7 @@ function KbDocViewer({
               onClick={handleReindex}
               disabled={reindexMutation.isPending}
             >
-              Reindex
+              {t('screens.admin.reindex')}
             </Button>
             <Button
               size="sm"
@@ -725,12 +718,9 @@ function KbDocViewer({
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
               className="text-destructive"
-            >
-              Delete
+            >{t('screens.admin.delete')}
             </Button>
-            <span className="text-xs text-muted-foreground ml-auto">
-              updated {new Date(doc.updated_at).toLocaleString()}
-            </span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
           </>
         ) : (
           <>
@@ -740,11 +730,9 @@ function KbDocViewer({
                 onCheckedChange={(v) => handleOptout(!!v)}
                 disabled={optoutMutation.isPending}
               />
-              Opt out of this baseline doc for my tenant
+              {t('screens.admin.optOutThisBaselineDocFor')}
             </label>
-            <span className="text-xs text-muted-foreground ml-auto">
-              updated {new Date(doc.updated_at).toLocaleString()}
-            </span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
           </>
         )}
       </div>
@@ -752,17 +740,14 @@ function KbDocViewer({
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Edit a baseline document?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.admin.editBaselineDocument')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This document is shared across <b>all tenants</b>. Saving applies
-              your changes immediately to every tenant that hasn't opted out —
-              their Assistant will reflect the new content on the next retrieval.
-              Continue?
+              {t('screens.admin.thisDocumentSharedAcross')} <b>{t('screens.admin.allTenants')}</b>{t('screens.admin.savingAppliesYourChangesImmediatelyEvery')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={editBaselineMutation.isPending}>
-              Cancel
+              {t('screens.admin.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={(e) => {
@@ -796,7 +781,7 @@ function UploadCard({ onDone }: { onDone: () => void }) {
         body: body.trim() || undefined,
         topics: topics.split(",").map((t) => t.trim()).filter(Boolean),
       });
-      toast.success("Document created");
+      notifySuccess('toasts.admin.documentCreated');
       setTitle("");
       setBody("");
       setTopics("");
@@ -810,23 +795,23 @@ function UploadCard({ onDone }: { onDone: () => void }) {
     <Card>
       <CardContent className="pt-6 space-y-3">
         <p className="text-xs text-muted-foreground">
-          Upload goes to <span className="font-medium">Your Tenant Docs</span>.
+          {t('screens.admin.uploadGoes')} <span className="font-medium">{t('screens.admin.yourTenantDocs')}</span>.
         </p>
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Document title"
+          placeholder={t('screens.admin.documentTitle')}
         />
         <Textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          placeholder="Document body…"
+          placeholder={t('screens.admin.documentBody')}
           rows={4}
         />
         <Input
           value={topics}
           onChange={(e) => setTopics(e.target.value)}
-          placeholder="Topics (comma-separated)"
+          placeholder={t('screens.admin.topicsCommaseparated')}
         />
         <Button
           size="sm"

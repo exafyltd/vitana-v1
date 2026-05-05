@@ -7,12 +7,13 @@ import NotificationMonitor from "@/components/admin/NotificationMonitor";
 import CronHealthCard from "@/components/admin/CronHealthCard";
 import NotificationStats from "@/components/admin/NotificationStats";
 import { Bell } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export default function NotificationDashboard() {
   return (
     <AppLayout>
       <SEO 
-        title="Admin - Notification Dashboard" 
+        title={t('screens.admin.adminNotificationDashboard')} 
         description="Monitor and manage the VITANA notification system" 
         canonical={window.location.href} 
       />
@@ -21,7 +22,7 @@ export default function NotificationDashboard() {
       <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Notification Dashboard"
+            title={t('screens.admin.notificationDashboard')}
             description="Monitor notification system health, view real-time logs, and manage notification rules"
             emoji="📬"
           />

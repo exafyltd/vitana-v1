@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { DEV_HUB_CONFIG } from "@/config/devHub.config";
 import { CheckCircle, StopCircle, Zap } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export function CommandConsolePanel() {
   const [command, setCommand] = useState('');
@@ -13,7 +14,7 @@ export function CommandConsolePanel() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Command Console</CardTitle>
+        <CardTitle>{t('screens.dev.commandConsole')}</CardTitle>
         <CardDescription>
           {readonly 
             ? "Commands disabled in read-only mode" 
@@ -37,11 +38,11 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button disabled={readonly} className="gap-2">
                   <CheckCircle className="h-4 w-4" />
-                  Approve
+                  {t('screens.dev.approve')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -51,11 +52,11 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button variant="destructive" disabled={readonly} className="gap-2">
                   <StopCircle className="h-4 w-4" />
-                  Stop
+                  {t('screens.dev.stop')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -65,19 +66,18 @@ export function CommandConsolePanel() {
               <TooltipTrigger asChild>
                 <Button variant="outline" disabled={readonly} className="gap-2">
                   <Zap className="h-4 w-4" />
-                  Emit Test Event
+                  {t('screens.dev.emitTestEvent')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Commands disabled until backend routes are confirmed</p>
+                <p>{t('screens.dev.commandsDisabledUntilBackendRoutesConfirmed')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
 
         {readonly && (
-          <p className="text-xs text-muted-foreground">
-            Phase 1 read-only mode active. Set DEV_HUB_READONLY=false to enable commands.
+          <p className="text-xs text-muted-foreground">{t('screens.dev.phase1ReadonlyModeActiveSet')}
           </p>
         )}
       </CardContent>

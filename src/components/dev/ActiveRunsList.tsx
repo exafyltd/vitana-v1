@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FileText, StopCircle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ActiveRun {
   id: string;
@@ -50,10 +51,10 @@ export function ActiveRunsList() {
               {run.status === "running" ? (
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">Running</span>
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">{t('screens.dev.running')}</span>
                 </div>
               ) : (
-                <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">Queued</span>
+                <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">{t('screens.dev.queued')}</span>
               )}
             </div>
             <p className="text-xs text-muted-foreground font-mono">{run.id}</p>
@@ -61,29 +62,27 @@ export function ActiveRunsList() {
           <CardContent className="space-y-4">
             <div>
               <div className="flex justify-between text-xs mb-2">
-                <span className="text-muted-foreground">Progress</span>
+                <span className="text-muted-foreground">{t('screens.dev.progress')}</span>
                 <span className="font-semibold">{run.progress}%</span>
               </div>
               <Progress value={run.progress} className="h-2" />
             </div>
 
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Current Step</p>
+              <p className="text-xs text-muted-foreground mb-1">{t('screens.dev.currentStep')}</p>
               <p className="text-sm font-medium">{run.currentStep}</p>
             </div>
 
-            <div className="text-xs text-muted-foreground">
-              Started {run.startedAt}
-            </div>
+            <div className="text-xs text-muted-foreground">{t('screens.dev.startedStartedat', { startedAt: run.startedAt })}</div>
 
             <div className="flex gap-2 pt-2">
               <Button size="sm" variant="outline" className="flex-1">
                 <FileText className="w-3 h-3 mr-2" />
-                View Logs
+                {t('screens.dev.viewLogs')}
               </Button>
               <Button size="sm" variant="destructive" className="flex-1">
                 <StopCircle className="w-3 h-3 mr-2" />
-                Stop
+                {t('screens.dev.stop')}
               </Button>
             </div>
           </CardContent>

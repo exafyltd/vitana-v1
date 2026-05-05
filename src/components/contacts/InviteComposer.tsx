@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 type InviteChannel = "sms" | "email" | "whatsapp" | "share";
 
@@ -75,17 +76,13 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
       {/* Recipients summary */}
       <div className="flex items-center gap-2 p-3 rounded-xl bg-muted/50">
         <Users className="w-4 h-4 text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">
-          Sending to{" "}
-          <span className="font-medium text-foreground">
-            {selectedContacts.length} contact{selectedContacts.length !== 1 ? "s" : ""}
-          </span>
+        <span className="text-sm text-muted-foreground">{t('screens.contacts.sendingValue0', { value0: " " })}<span className="font-medium text-foreground">{t('screens.contacts.lengthContactValue1', { length: selectedContacts.length, value1: selectedContacts.length !== 1 ? "s" : "" })}</span>
         </span>
       </div>
 
       {/* Channel selector */}
       <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Send via</label>
+        <label className="text-sm font-medium text-foreground">{t('screens.contacts.sendVia')}</label>
         <div className="flex gap-2">
           {channels.map((channel) => {
             const recipientCount = getChannelRecipientsCount(channel.id);
@@ -127,7 +124,7 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
       {/* Message composer */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-foreground">Message</label>
+          <label className="text-sm font-medium text-foreground">{t('screens.contacts.message')}</label>
           {charLimit && (
             <span className={cn(
               "text-xs",
@@ -140,21 +137,20 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Write your invite message..."
+          placeholder={t('screens.contacts.writeYourInviteMessage')}
           className={cn(
             "min-h-[120px] resize-none",
             isOverLimit && "border-destructive focus-visible:ring-destructive"
           )}
         />
-        <p className="text-xs text-muted-foreground">
-          Tip: Use {"{{invite_link}}"} to include your personal invite link
+        <p className="text-xs text-muted-foreground">{t('screens.contacts.tipUseValue0IncludeYourPersonal', { value0: "{{invite_link}}" })}
         </p>
       </div>
 
       {/* Actions */}
       <div className="flex gap-3 pt-2">
         <Button variant="outline" onClick={onCancel} className="flex-1">
-          Cancel
+          {t('screens.contacts.cancel')}
         </Button>
         <Button
           onClick={handleSend}
@@ -165,8 +161,7 @@ export function InviteComposer({ selectedContacts, onSend, onCancel, isLoading }
             "Sending..."
           ) : (
             <>
-              <Send className="w-4 h-4 mr-2" />
-              Send Invites
+              <Send className="w-4 h-4 mr-2" />{t('screens.contacts.sendInvites')}
             </>
           )}
         </Button>

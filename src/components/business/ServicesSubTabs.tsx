@@ -7,6 +7,7 @@ import { CreatePackageDialog } from "@/components/sharing/CreatePackageDialog";
 import { EditPackageDialog } from "@/components/sharing/EditPackageDialog";
 import { PackageCard } from "./PackageCard";
 import { useBusinessPackages, BusinessPackage, PackageItem } from "@/hooks/useBusinessPackages";
+import { t } from '@/lib/i18n-toast';
 
 interface ServicesSubTabsProps {
   onCreateService: () => void;
@@ -30,21 +31,21 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
     <>
       <SplitBar defaultValue="services" className="w-full">
         <SplitBarList>
-          <SplitBarTrigger value="services">💼 My Services</SplitBarTrigger>
-          <SplitBarTrigger value="events">📅 My Events</SplitBarTrigger>
-          <SplitBarTrigger value="packages">📦 Packages</SplitBarTrigger>
+          <SplitBarTrigger value="services">{t('screens.business.myServices')}</SplitBarTrigger>
+          <SplitBarTrigger value="events">{t('screens.business.myEvents')}</SplitBarTrigger>
+          <SplitBarTrigger value="packages">{t('screens.business.packages')}</SplitBarTrigger>
         </SplitBarList>
 
         <SplitBarContent value="services" className="space-y-4 mt-4">
           <div className="text-center py-12">
             <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No Services Yet</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noServicesYet')}</h3>
             <p className="text-muted-foreground mb-4">
-              Create coaching sessions, consultations, or other services to offer.
+              {t('screens.business.createCoachingSessionsConsultationsOtherServices')}
             </p>
             <Button onClick={onCreateService} className="gap-2">
               <Plus className="w-4 h-4" />
-              Create Service
+              {t('screens.business.createService')}
             </Button>
           </div>
         </SplitBarContent>
@@ -61,13 +62,13 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
           ) : packages.length === 0 ? (
             <div className="text-center py-12">
               <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">Create Session Packages</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.createSessionPackages')}</h3>
               <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                Bundle multiple sessions, events, or perks into packages that increase commitment and lifetime value.
+                {t('screens.business.bundleMultipleSessionsEventsPerksInto')}
               </p>
               <Button onClick={() => setShowCreatePackage(true)} className="gap-2">
                 <Plus className="w-4 h-4" />
-                Create Package
+                {t('screens.business.createPackage')}
               </Button>
             </div>
           ) : (
@@ -78,7 +79,7 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
                 </p>
                 <Button onClick={() => setShowCreatePackage(true)} size="sm" className="gap-2">
                   <Plus className="w-4 h-4" />
-                  New Package
+                  {t('screens.business.newPackage')}
                 </Button>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

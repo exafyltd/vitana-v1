@@ -18,6 +18,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Plus, FileText, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Campaigns() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
@@ -114,17 +115,17 @@ export default withScreenId(function Campaigns() {
     link.click();
     URL.revokeObjectURL(url);
     
-    toast.success("Campaigns exported to CSV");
+    notifySuccess('toasts.sharing.campaignsExportedCsv');
   };
 
   const handleSmartReschedule = () => {
-    toast.info("Smart-Reschedule feature coming soon!");
+    notifyInfo('toasts.sharing.smartrescheduleFeatureComingSoon');
   };
 
   return (
     <AppLayout>
       <SEO
-        title="Campaign Manager | VITANA"
+        title={t('screens.sharing.campaignManagerVitana')}
         description="Plan, execute, and track multi-post campaigns"
         canonical={window.location.href}
       />
@@ -133,12 +134,12 @@ export default withScreenId(function Campaigns() {
       <div className="p-6 min-h-screen pb-24">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Campaign Manager 📊"
+            title={t('screens.sharing.campaignManager')}
             description="Plan, execute, and track multi-post campaigns"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search campaigns..." />
+            <ExpandableSearchButton placeholder={t('screens.sharing.searchCampaigns')} />
             <UniversalCalendarButton />
             
             {campaigns && campaigns.length >= 2 && (
@@ -159,13 +160,12 @@ export default withScreenId(function Campaigns() {
             
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              New Campaign
+              {t('screens.sharing.newCampaign')}
             </Button>
           </UtilityActionButton>
 
           {isLoading ? (
-            <div className="text-center py-12 text-muted-foreground">
-              Loading campaigns...
+            <div className="text-center py-12 text-muted-foreground">{t('screens.sharing.loadingCampaigns')}
             </div>
           ) : campaigns && campaigns.length > 0 ? (
             <>
@@ -208,13 +208,13 @@ export default withScreenId(function Campaigns() {
             <Card>
               <CardContent className="text-center py-12">
                 <FileText className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No campaigns yet</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('screens.sharing.noCampaignsYet')}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Create your first campaign to organize and track your content distribution
+                  {t('screens.sharing.createYourFirstCampaignOrganizeTrack')}
                 </p>
                 <Button onClick={() => setCampaignPopupOpen(true)}>
                   <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Campaign
+                  {t('screens.sharing.createYourFirstCampaign')}
                 </Button>
               </CardContent>
             </Card>

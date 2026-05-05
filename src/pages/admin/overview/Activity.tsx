@@ -12,6 +12,7 @@ import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useOverviewActivity } from "@/hooks/useAdminOverview";
+import { t } from '@/lib/i18n-toast';
 
 export default function OverviewActivity() {
   const activityQuery = useOverviewActivity(100);
@@ -23,20 +24,20 @@ export default function OverviewActivity() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📡"
-          title="Activity"
+          title={t('screens.admin.activity')}
           description="Recent OASIS events for your tenant"
           rightAction={
             <Button variant="outline" size="sm" onClick={() => activityQuery.refetch()} disabled={activityQuery.isFetching}>
               <RefreshCw className={`h-4 w-4 mr-2 ${activityQuery.isFetching ? "animate-spin" : ""}`} />
-              Refresh
+              {t('screens.admin.refresh')}
             </Button>
           }
         />
 
-        {activityQuery.isLoading && <p className="text-sm text-muted-foreground py-8 text-center">Loading events...</p>}
+        {activityQuery.isLoading && <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingEvents')}</p>}
 
         {!activityQuery.isLoading && events.length === 0 && (
-          <AdminEmptyState title="No recent events" description="OASIS events for your tenant will appear here as they occur." />
+          <AdminEmptyState title={t('screens.admin.noRecentEvents')} description="OASIS events for your tenant will appear here as they occur." />
         )}
 
         {events.length > 0 && (
@@ -44,10 +45,10 @@ export default function OverviewActivity() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Topic</TableHead>
-                  <TableHead>VTID</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('screens.admin.time')}</TableHead>
+                  <TableHead>{t('screens.admin.topic')}</TableHead>
+                  <TableHead>{t('screens.admin.vtid')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

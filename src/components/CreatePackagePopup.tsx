@@ -11,9 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Package, Calendar as CalendarIcon, Users, Shield, FileText } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CreatePackagePopupProps {
   isOpen: boolean;
@@ -66,10 +67,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
   };
 
   const handleSubmit = () => {
-    toast({
-      title: "Package Created! 📦",
-      description: `Your health data package "${formData.name}" has been created successfully.`
-    });
+    notify('toasts.common.packageCreated');
     onClose();
     // Reset form
     setFormData({ name: "", description: "", recipient: "", privacy: "healthcare-provider" });
@@ -84,7 +82,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Package className="w-6 h-6 text-purple-600" />
-            Create Health Data Package
+            {t('screens.common.createHealthDataPackage')}
           </DialogTitle>
         </DialogHeader>
 
@@ -92,19 +90,19 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="details" className="flex items-center gap-2">
               <Package className="w-4 h-4" />
-              Details
+              {t('screens.common.details')}
             </TabsTrigger>
             <TabsTrigger value="data" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
-              Data Types
+              {t('screens.common.dataTypes')}
             </TabsTrigger>
             <TabsTrigger value="timeline" className="flex items-center gap-2">
               <CalendarIcon className="w-4 h-4" />
-              Timeline
+              {t('screens.common.timeline')}
             </TabsTrigger>
             <TabsTrigger value="sharing" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Sharing
+              {t('screens.common.sharing')}
             </TabsTrigger>
           </TabsList>
 
@@ -113,45 +111,44 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <FileText className="w-5 h-5" />
-                  Package Information
+                  {t('screens.common.packageInformation')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Package Name *</Label>
+                  <Label htmlFor="name">{t('screens.common.packageName')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="e.g., Comprehensive Health Profile"
+                    placeholder={t('screens.common.eGComprehensiveHealthProfile')}
                     className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">{t('screens.common.description')}</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Describe the purpose and contents of this package..."
+                    placeholder={t('screens.common.describePurposeContentsThisPackage')}
                     className="mt-1 min-h-[100px]"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Quick Start Templates</Label>
+                  <Label className="text-base font-medium">{t('screens.common.quickStartTemplates')}</Label>
                   <div className="grid gap-3 mt-2">
                     {templates.map((template) => (
                       <div key={template.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <div className="font-medium">{template.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            Includes: {template.types.map(t => dataTypes.find(dt => dt.id === t)?.label).join(", ")}
+                          <div className="text-sm text-muted-foreground">{t('screens.common.includes')} {template.types.map(t => dataTypes.find(dt => dt.id === t)?.label).join(", ")}
                           </div>
                         </div>
                         <Button variant="outline" size="sm" onClick={() => handleTemplateSelect(template.id)}>
-                          Use Template
+                          {t('screens.common.useTemplate')}
                         </Button>
                       </div>
                     ))}
@@ -164,7 +161,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="data" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Select Data Types</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.selectDataTypes')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -191,12 +188,12 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="timeline" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Date Range</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.dateRange')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>From Date</Label>
+                    <Label>{t('screens.common.fromDate')}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -222,7 +219,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                   </div>
 
                   <div>
-                    <Label>To Date</Label>
+                    <Label>{t('screens.common.date2')}</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -249,7 +246,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                 </div>
 
                 <div>
-                  <Label className="text-base font-medium">Quick Date Ranges</Label>
+                  <Label className="text-base font-medium">{t('screens.common.quickDateRanges')}</Label>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {[
                       { label: "Last 30 days", days: 30 },
@@ -281,40 +278,38 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
           <TabsContent value="sharing" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Sharing Settings</CardTitle>
+                <CardTitle className="text-lg">{t('screens.common.sharingSettings')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="recipient">Recipient</Label>
+                  <Label htmlFor="recipient">{t('screens.common.recipient')}</Label>
                   <Input
                     id="recipient"
                     value={formData.recipient}
                     onChange={(e) => setFormData({...formData, recipient: e.target.value})}
-                    placeholder="Healthcare provider, researcher, or organization name"
+                    placeholder={t('screens.common.healthcareProviderResearcherOrganizationName')}
                     className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="privacy">Privacy Level</Label>
+                  <Label htmlFor="privacy">{t('screens.common.privacyLevel')}</Label>
                   <Select value={formData.privacy} onValueChange={(value) => setFormData({...formData, privacy: value})}>
                     <SelectTrigger className="mt-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="healthcare-provider">Healthcare Provider Only</SelectItem>
-                      <SelectItem value="research">Research Institution</SelectItem>
-                      <SelectItem value="anonymized">Anonymized Research</SelectItem>
-                      <SelectItem value="personal">Personal Use</SelectItem>
+                      <SelectItem value="healthcare-provider">{t('screens.common.healthcareProviderOnly')}</SelectItem>
+                      <SelectItem value="research">{t('screens.common.researchInstitution')}</SelectItem>
+                      <SelectItem value="anonymized">{t('screens.common.anonymizedResearch')}</SelectItem>
+                      <SelectItem value="personal">{t('screens.common.personalUse')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2">Privacy Notice</h4>
-                  <p className="text-sm text-blue-800">
-                    Your health data will be encrypted and shared only with the specified recipient. 
-                    You can revoke access at any time through your sharing dashboard.
+                  <h4 className="font-medium text-blue-900 mb-2">{t('screens.common.privacyNotice')}</h4>
+                  <p className="text-sm text-blue-800">{t('screens.common.yourHealthDataWillEncryptedShared')}
                   </p>
                 </div>
               </CardContent>
@@ -324,10 +319,10 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
 
         <div className="flex gap-3 pt-4">
           <Button variant="outline" onClick={onClose} className="flex-1">
-            Cancel
+            {t('screens.common.cancel')}
           </Button>
           <Button onClick={handleSubmit} className="flex-1" disabled={!formData.name || selectedDataTypes.length === 0}>
-            Create Package
+            {t('screens.common.createPackage')}
           </Button>
         </div>
       </DialogContent>

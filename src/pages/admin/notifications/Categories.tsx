@@ -37,6 +37,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 // BOOTSTRAP-NOTIF-CATEGORIES: Admin notification category management page.
 // Deploy timestamp: 2026-04-16T08:30Z (retry after billing/auth fix)
@@ -123,7 +124,7 @@ export default function Categories() {
           default_enabled: form.default_enabled,
           mapped_types: mappedTypesArray,
         });
-        toast({ title: "Category updated", description: `"${form.display_name}" has been updated.` });
+        notify('toasts.admin.categoryUpdated');
       } else {
         await createMutation.mutateAsync({
           type: dialogType,
@@ -133,11 +134,11 @@ export default function Categories() {
           default_enabled: form.default_enabled,
           mapped_types: mappedTypesArray,
         });
-        toast({ title: "Category created", description: `"${form.display_name}" has been added.` });
+        notify('toasts.admin.categoryCreated');
       }
       setDialogOpen(false);
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -145,19 +146,19 @@ export default function Categories() {
     if (!deleteTarget) return;
     try {
       await deleteMutation.mutateAsync(deleteTarget.id);
-      toast({ title: "Category removed", description: `"${deleteTarget.display_name}" has been deactivated.` });
+      notify('toasts.admin.categoryRemoved');
       setDeleteTarget(null);
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 
   const handleSendTest = async (category: NotificationCategory) => {
     try {
       await testMutation.mutateAsync(category.id);
-      toast({ title: "Test sent", description: `Test notification sent for "${category.display_name}".` });
+      notify('toasts.admin.testSent');
     } catch (err: any) {
-      toast({ title: "Send failed", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.sendFailed');
     }
   };
 
@@ -172,7 +173,7 @@ export default function Categories() {
         description: `"${category.display_name}" is now ${category.is_active ? "inactive" : "active"}.`,
       });
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      notifyError('toasts.admin.error');
     }
   };
 
@@ -192,7 +193,7 @@ export default function Categories() {
       <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Notification Categories"
+          title={t('screens.admin.notificationCategories')}
           description="Manage notification categories grouped by Chat, Calendar, and Community. Users can toggle these on/off in their settings."
         />
 
@@ -221,7 +222,7 @@ export default function Categories() {
                       onClick={(e) => { e.stopPropagation(); openCreateDialog(type); }}
                     >
                       <Plus className="w-4 h-4 mr-1" />
-                      Add
+                      {t('screens.admin.add')}
                     </Button>
                     {isExpanded ? (
                       <ChevronDown className="w-4 h-4 text-muted-foreground" />
@@ -235,8 +236,7 @@ export default function Categories() {
               {isExpanded && (
                 <CardContent className="space-y-3">
                   {items.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      No categories yet. Click "Add" to create one.
+                    <p className="text-sm text-muted-foreground text-center py-4">{t('screens.admin.noCategoriesYetClickAddCreate')}
                     </p>
                   ) : (
                     items.map((cat) => (
@@ -250,10 +250,10 @@ export default function Categories() {
                           <div className="flex items-center gap-2">
                             <h4 className="font-medium text-sm">{cat.display_name}</h4>
                             {!cat.is_active && (
-                              <Badge variant="outline" className="text-xs">Inactive</Badge>
+                              <Badge variant="outline" className="text-xs">{t('screens.admin.inactive')}</Badge>
                             )}
                             {!cat.default_enabled && (
-                              <Badge variant="secondary" className="text-xs">Opt-in</Badge>
+                              <Badge variant="secondary" className="text-xs">{t('screens.admin.optin')}</Badge>
                             )}
                           </div>
                           {cat.description && (
@@ -261,8 +261,7 @@ export default function Categories() {
                               {cat.description}
                             </p>
                           )}
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {(cat.mapped_types || []).length} notification type(s) mapped
+                          <p className="text-xs text-muted-foreground mt-0.5">{t('screens.admin.value0NotificationTypeSMapped', { value0: (cat.mapped_types || []).length })}
                           </p>
                         </div>
 
@@ -276,7 +275,7 @@ export default function Categories() {
                             variant="ghost"
                             onClick={() => handleSendTest(cat)}
                             disabled={testMutation.isPending || !cat.is_active}
-                            title="Send test notification"
+                            title={t('screens.admin.sendTestNotification')}
                           >
                             <Send className="w-4 h-4" />
                           </Button>
@@ -284,7 +283,7 @@ export default function Categories() {
                             size="sm"
                             variant="ghost"
                             onClick={() => openEditDialog(cat)}
-                            title="Edit category"
+                            title={t('screens.admin.editCategory')}
                           >
                             <Pencil className="w-4 h-4" />
                           </Button>
@@ -292,7 +291,7 @@ export default function Categories() {
                             size="sm"
                             variant="ghost"
                             onClick={() => setDeleteTarget(cat)}
-                            title="Delete category"
+                            title={t('screens.admin.deleteCategory')}
                             className="text-destructive hover:text-destructive"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -319,55 +318,53 @@ export default function Categories() {
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="display_name">Name</Label>
+              <Label htmlFor="display_name">{t('screens.admin.name')}</Label>
               <Input
                 id="display_name"
                 value={form.display_name}
                 onChange={(e) => setForm((f) => ({ ...f, display_name: e.target.value }))}
-                placeholder="e.g. Direct Messages"
+                placeholder={t('screens.admin.eGDirectMessages')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('screens.admin.description')}</Label>
               <Textarea
                 id="description"
                 value={form.description}
                 onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-                placeholder="Brief explanation shown in user settings"
+                placeholder={t('screens.admin.briefExplanationShownUserSettings')}
                 rows={2}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="icon">Icon (Lucide name)</Label>
+              <Label htmlFor="icon">{t('screens.admin.iconLucideName')}</Label>
               <Input
                 id="icon"
                 value={form.icon}
                 onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
-                placeholder="e.g. MessageSquare"
+                placeholder={t('screens.admin.eGMessagesquare')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mapped_types">Mapped Notification Types</Label>
+              <Label htmlFor="mapped_types">{t('screens.admin.mappedNotificationTypes')}</Label>
               <Textarea
                 id="mapped_types"
                 value={form.mapped_types}
                 onChange={(e) => setForm((f) => ({ ...f, mapped_types: e.target.value }))}
-                placeholder="Comma-separated TYPE_META keys, e.g. new_chat_message, orb_suggestion"
+                placeholder={t('screens.admin.commaseparatedType_metaKeysEGNew_chat_message')}
                 rows={2}
               />
-              <p className="text-xs text-muted-foreground">
-                These are the internal notification type keys that this category controls.
+              <p className="text-xs text-muted-foreground">{t('screens.admin.theseInternalNotificationTypeKeysThat')}
               </p>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <Label>Default Enabled</Label>
-                <p className="text-xs text-muted-foreground">
-                  When on, new users have this category enabled by default.
+                <Label>{t('screens.admin.defaultEnabled')}</Label>
+                <p className="text-xs text-muted-foreground">{t('screens.admin.whenNewUsersHaveThisCategory')}
                 </p>
               </div>
               <Switch
@@ -379,7 +376,7 @@ export default function Categories() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <Button
               onClick={handleSave}
@@ -398,16 +395,14 @@ export default function Categories() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Deactivate "{deleteTarget?.display_name}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will deactivate the category. Users will no longer see it in their notification settings.
-              Existing user preferences for this category will be preserved.
+            <AlertDialogTitle>{t('screens.admin.deactivateDisplay_name', { display_name: deleteTarget?.display_name })}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.admin.thisWillDeactivateCategoryUsersWill')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.admin.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>
-              Deactivate
+              {t('screens.admin.deactivate')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

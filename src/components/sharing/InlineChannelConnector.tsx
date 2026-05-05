@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, ExternalLink } from "lucide-react";
 import { CHANNEL_INFO } from "@/lib/campaign-templates";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface InlineChannelConnectorProps {
   open: boolean;
@@ -46,7 +47,7 @@ export function InlineChannelConnector({
 
   const handleConnectSocialMedia = async () => {
     if (!formData.url.trim()) {
-      toast.error("Please enter your profile URL");
+      notifyError('toasts.sharing.pleaseEnterYourProfileUrl');
       return;
     }
 
@@ -67,7 +68,7 @@ export function InlineChannelConnector({
       onOpenChange(false);
     } catch (error) {
       console.error("Connection error:", error);
-      toast.error("Failed to connect channel");
+      notifyError('toasts.sharing.failedConnectChannel');
     } finally {
       setLoading(false);
     }
@@ -78,25 +79,25 @@ export function InlineChannelConnector({
     try {
       if (channelKey === 'email') {
         if (!formData.email || !formData.senderName) {
-          toast.error("Please fill in all email fields");
+          notifyError('toasts.sharing.pleaseFillAllEmailFields');
           return;
         }
-        toast.success("Email configuration looks good! (Test email not sent in preview)");
+        notifySuccess('toasts.sharing.emailConfigurationLooksGoodTestEmail');
       } else if (channelKey === 'sms') {
         if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
-          toast.error("Please fill in all Twilio fields");
+          notifyError('toasts.sharing.pleaseFillAllTwilioFields');
           return;
         }
-        toast.success("Twilio configuration validated!");
+        notifySuccess('toasts.sharing.twilioConfigurationValidated');
       } else if (channelKey === 'whatsapp') {
         if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
-          toast.error("Please fill in all WhatsApp fields");
+          notifyError('toasts.sharing.pleaseFillAllWhatsappFields');
           return;
         }
-        toast.success("WhatsApp Business API configuration validated!");
+        notifySuccess('toasts.sharing.whatsappBusinessApiConfigurationValidated');
       }
     } catch (error) {
-      toast.error("Connection test failed");
+      notifyError('toasts.sharing.connectionTestFailed');
     } finally {
       setTesting(false);
     }
@@ -112,7 +113,7 @@ export function InlineChannelConnector({
       
       if (channelKey === 'email') {
         if (!formData.email || !formData.senderName) {
-          toast.error("Please fill in sender name and email");
+          notifyError('toasts.sharing.pleaseFillSenderNameEmail');
           setLoading(false);
           return;
         }
@@ -122,7 +123,7 @@ export function InlineChannelConnector({
         };
       } else if (channelKey === 'sms') {
         if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
-          toast.error("Please fill in all Twilio credentials");
+          notifyError('toasts.sharing.pleaseFillAllTwilioCredentials');
           setLoading(false);
           return;
         }
@@ -133,7 +134,7 @@ export function InlineChannelConnector({
         };
       } else if (channelKey === 'whatsapp') {
         if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
-          toast.error("Please fill in Meta API credentials");
+          notifyError('toasts.sharing.pleaseFillMetaApiCredentials');
           setLoading(false);
           return;
         }
@@ -157,7 +158,7 @@ export function InlineChannelConnector({
       onOpenChange(false);
     } catch (error) {
       console.error("Connection error:", error);
-      toast.error("Failed to connect channel");
+      notifyError('toasts.sharing.failedConnectChannel');
     } finally {
       setLoading(false);
     }
@@ -176,7 +177,7 @@ export function InlineChannelConnector({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Connect {channelInfo?.name}</DialogTitle>
+          <DialogTitle>{t('screens.sharing.connectName', { name: channelInfo?.name })}</DialogTitle>
           <DialogDescription>
             {isSocialMedia && "Enter your profile URL to enable posting"}
             {isMessaging && `Configure your ${channelInfo?.name} settings`}
@@ -187,7 +188,7 @@ export function InlineChannelConnector({
           {/* Social Media URL Input */}
           {isSocialMedia && (
             <div>
-              <Label htmlFor="url">Profile URL</Label>
+              <Label htmlFor="url">{t('screens.sharing.profileUrl')}</Label>
               <Input
                 id="url"
                 type="url"
@@ -196,8 +197,7 @@ export function InlineChannelConnector({
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                 className="mt-1"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Enter your full {channelInfo.name} profile URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.enterYourFullNameProfileUrl', { name: channelInfo.name })}
               </p>
             </div>
           )}
@@ -206,40 +206,40 @@ export function InlineChannelConnector({
           {channelKey === 'email' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="sender-name">Sender Name</Label>
+                <Label htmlFor="sender-name">{t('screens.sharing.senderName')}</Label>
                 <Input
                   id="sender-name"
                   type="text"
-                  placeholder="Your Name or Business"
+                  placeholder={t('screens.sharing.yourNameBusiness')}
                   value={formData.senderName}
                   onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  This name will appear in recipient inboxes
+                  {t('screens.sharing.thisNameWillAppearRecipientInboxes')}
                 </p>
               </div>
               
               <div>
-                <Label htmlFor="email">Sender Email Address</Label>
+                <Label htmlFor="email">{t('screens.sharing.senderEmailAddress')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="hello@yourdomain.com"
+                  placeholder={t('screens.sharing.helloYourdomainCom')}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Must be a verified domain in Resend
+                  {t('screens.sharing.mustVerifiedDomainResend')}
                 </p>
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">Domain Verification</p>
+                  <p className="font-medium">{t('screens.sharing.domainVerification')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Verify your domain in Resend to send emails
+                    {t('screens.sharing.verifyYourDomainResendSendEmails')}
                   </p>
                 </div>
                 <Button
@@ -249,7 +249,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://resend.com/domains', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Verify
+                  {t('screens.sharing.verify')}
                 </Button>
               </div>
 
@@ -260,8 +260,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test Email Configuration
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testEmailConfiguration')}
               </Button>
             </div>
           )}
@@ -270,11 +269,11 @@ export function InlineChannelConnector({
           {channelKey === 'sms' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="twilio-sid">Twilio Account SID</Label>
+                <Label htmlFor="twilio-sid">{t('screens.sharing.twilioAccountSid')}</Label>
                 <Input
                   id="twilio-sid"
                   type="text"
-                  placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  placeholder={t('screens.sharing.acxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')}
                   value={formData.twilioAccountSid}
                   onChange={(e) => setFormData({ ...formData, twilioAccountSid: e.target.value })}
                   className="mt-1"
@@ -282,11 +281,11 @@ export function InlineChannelConnector({
               </div>
 
               <div>
-                <Label htmlFor="twilio-token">Twilio Auth Token</Label>
+                <Label htmlFor="twilio-token">{t('screens.sharing.twilioAuthToken')}</Label>
                 <Input
                   id="twilio-token"
                   type="password"
-                  placeholder="Your Auth Token"
+                  placeholder={t('screens.sharing.yourAuthToken')}
                   value={formData.twilioAuthToken}
                   onChange={(e) => setFormData({ ...formData, twilioAuthToken: e.target.value })}
                   className="mt-1"
@@ -294,7 +293,7 @@ export function InlineChannelConnector({
               </div>
 
               <div>
-                <Label htmlFor="twilio-from">From Phone Number</Label>
+                <Label htmlFor="twilio-from">{t('screens.sharing.fromPhoneNumber')}</Label>
                 <Input
                   id="twilio-from"
                   type="tel"
@@ -304,15 +303,14 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Your Twilio phone number with country code
+                  {t('screens.sharing.yourTwilioPhoneNumberWithCountry')}
                 </p>
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">Twilio Setup</p>
-                  <p className="text-xs text-muted-foreground">
-                    Get your credentials from Twilio Console
+                  <p className="font-medium">{t('screens.sharing.twilioSetup')}</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.getYourCredentialsFromTwilioConsole')}
                   </p>
                 </div>
                 <Button
@@ -322,7 +320,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://console.twilio.com', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Open
+                  {t('screens.sharing.open')}
                 </Button>
               </div>
 
@@ -333,8 +331,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test SMS Connection
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testSmsConnection')}
               </Button>
             </div>
           )}
@@ -343,22 +340,22 @@ export function InlineChannelConnector({
           {channelKey === 'whatsapp' && (
             <div className="space-y-4">
               <div>
-                <Label htmlFor="meta-token">Meta Business API Token</Label>
+                <Label htmlFor="meta-token">{t('screens.sharing.metaBusinessApiToken')}</Label>
                 <Input
                   id="meta-token"
                   type="password"
-                  placeholder="Your Business API Token"
+                  placeholder={t('screens.sharing.yourBusinessApiToken')}
                   value={formData.metaApiToken}
                   onChange={(e) => setFormData({ ...formData, metaApiToken: e.target.value })}
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  From Meta Business Suite
+                  {t('screens.sharing.fromMetaBusinessSuite')}
                 </p>
               </div>
 
               <div>
-                <Label htmlFor="phone-id">Phone Number ID</Label>
+                <Label htmlFor="phone-id">{t('screens.sharing.phoneNumberId')}</Label>
                 <Input
                   id="phone-id"
                   type="text"
@@ -368,15 +365,15 @@ export function InlineChannelConnector({
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Your WhatsApp Business phone number ID
+                  {t('screens.sharing.yourWhatsappBusinessPhoneNumberId')}
                 </p>
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
-                  <p className="font-medium">WhatsApp Business Setup</p>
+                  <p className="font-medium">{t('screens.sharing.whatsappBusinessSetup')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Configure in Meta Business Suite
+                    {t('screens.sharing.configureMetaBusinessSuite')}
                   </p>
                 </div>
                 <Button
@@ -386,7 +383,7 @@ export function InlineChannelConnector({
                   onClick={() => window.open('https://business.facebook.com', '_blank')}
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  Open
+                  {t('screens.sharing.open')}
                 </Button>
               </div>
 
@@ -397,8 +394,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test WhatsApp Connection
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testWhatsappConnection')}
               </Button>
             </div>
           )}
@@ -410,15 +406,14 @@ export function InlineChannelConnector({
               onClick={() => onOpenChange(false)}
               className="flex-1"
             >
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button
               type="submit"
               disabled={loading}
               className="flex-1"
             >
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Connect
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.connect')}
             </Button>
           </div>
 
@@ -433,9 +428,7 @@ export function InlineChannelConnector({
                   window.open(`https://${channelKey}.com`, '_blank');
                 }}
               >
-                <ExternalLink className="w-3 h-3 mr-1" />
-                Visit {channelInfo.name}
-              </Button>
+                <ExternalLink className="w-3 h-3 mr-1" />{t('screens.sharing.visitName', { name: channelInfo.name })}</Button>
             </div>
           )}
         </form>

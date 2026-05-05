@@ -6,6 +6,7 @@ import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -169,7 +170,7 @@ export function MobileIdentityCard({
                   }}
                 >
                   <MessageSquare className="h-3.5 w-3.5" />
-                  Message
+                  {t('screens.profile.message')}
                 </Button>
               )}
             </div>
@@ -214,8 +215,7 @@ export function MobileIdentityCard({
                 backgroundColor: `${tier.color}20`,
                 color: tier.color
               }}
-            >
-              {tier.label} · Top {vitanaPercentile}%
+            >{t('screens.profile.labelTopVitanapercentile', { label: tier.label, vitanaPercentile })}
             </div>
 
             {/* Explanation */}
