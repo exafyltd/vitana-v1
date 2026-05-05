@@ -101,7 +101,7 @@ export default function NavigatorHistory() {
                   </div>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground">
                     <Badge variant="outline">{r.action}</Badge>
-                    <span>by {r.actor}</span>
+                    <span>{t('screens.admin.byActor', { actor: r.actor })}</span>
                     <span>{new Date(r.at).toLocaleString()}</span>
                   </div>
                 </div>

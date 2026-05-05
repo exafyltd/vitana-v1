@@ -399,7 +399,7 @@ export function CampaignCard({
                   </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p className="text-xs">{channelInfo.name} • Connected</p>
+                      <p className="text-xs">{t('screens.sharing.nameConnected', { name: channelInfo.name })}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

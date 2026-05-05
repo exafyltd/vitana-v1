@@ -1360,11 +1360,11 @@ export default withScreenId(function Community() {
             <div className="flex items-center justify-center gap-6 text-sm flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="font-medium">{activityMetrics.totalMembers} community members</span>
+                <span className="font-medium">{t('screens.community.totalmembersCommunityMembers', { totalMembers: activityMetrics.totalMembers })}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                <span>{activityMetrics.eventsToday} events today</span>
+                <span>{t('screens.community.eventstodayEventsToday', { eventsToday: activityMetrics.eventsToday })}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-accent" />

@@ -267,7 +267,7 @@ export function WalletTransactionCard({
                     {transaction.fees !== undefined && (
                       <div className="text-xs">
                         {transaction.fees > 0 ? (
-                          <span className="text-orange-600">Fee: {transaction.fees}</span>
+                          <span className="text-orange-600">{t('screens.wallet.feeFees', { fees: transaction.fees })}</span>
                         ) : (
                           <span className="text-green-600">{t('screens.wallet.noFees')}</span>
                         )}

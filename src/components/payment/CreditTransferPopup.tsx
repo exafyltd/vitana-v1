@@ -200,12 +200,12 @@ export default function CreditTransferPopup({
                 <div className="flex items-center justify-center gap-3 text-sm">
                   <div className="text-center">
                     <p className="font-medium">{t('screens.payment.youSend')}</p>
-                    <p className="text-green-600 font-bold">{transferAmount} credits</p>
+                    <p className="text-green-600 font-bold">{t('screens.payment.transferamountCredits', { transferAmount })}</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-green-600" />
                   <div className="text-center">
                     <p className="font-medium">{recipient?.name || 'Recipient'}</p>
-                    <p className="text-green-600 font-bold">receives {transferAmount} credits</p>
+                    <p className="text-green-600 font-bold">{t('screens.payment.receivesTransferamountCredits', { transferAmount })}</p>
                   </div>
                 </div>
               </CardContent>

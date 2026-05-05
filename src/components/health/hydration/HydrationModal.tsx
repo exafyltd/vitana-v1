@@ -218,7 +218,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
                         <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
                       )}
                     </div>
-                    <p className="text-sm font-semibold">{intake.amount}ml</p>
+                    <p className="text-sm font-semibold">{t('screens.health.amountMl', { amount: intake.amount })}</p>
                   </div>
                   
                   {/* Icon */}

@@ -364,7 +364,7 @@ export function ProfileInsightTab({
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>{activity.timestamp}</span>
-                        <span>{activity.engagement.views} views</span>
+                        <span>{t('screens.profile.viewsViews', { views: activity.engagement.views })}</span>
                       </div>
                     </div>
                   </div>

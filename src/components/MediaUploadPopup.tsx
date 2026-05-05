@@ -253,7 +253,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
               {isUploading && (
                 <div className="space-y-2 mt-3">
                   <Progress value={progress} className="w-full" />
-                  <p className="text-xs text-center text-muted-foreground">Uploading... {progress}%</p>
+                  <p className="text-xs text-center text-muted-foreground">{t('screens.common.uploadingProgress', { progress })}</p>
                 </div>
               )}
             </div>

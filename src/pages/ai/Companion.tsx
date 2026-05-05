@@ -199,7 +199,7 @@ export default function Companion() {
                           <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
                         </div>
                         <p className="text-xs text-muted-foreground mb-1">{entry.reason}</p>
-                        <div className="text-xs text-calendar-success">Impact: {entry.impact}</div>
+                        <div className="text-xs text-calendar-success">{t('screens.ai.impactImpact', { impact: entry.impact })}</div>
                       </div>
                     ))}
                   </div>

@@ -162,7 +162,7 @@ export default function MyGroups() {
                         </Avatar>
                         <div>
                           <p className="font-medium">{group.name}</p>
-                          <p className="text-sm text-muted-foreground">{group.members} members</p>
+                          <p className="text-sm text-muted-foreground">{t('screens.community.membersMembers', { members: group.members })}</p>
                         </div>
                       </div>
                       {group.unread > 0 && (
@@ -185,11 +185,11 @@ export default function MyGroups() {
                     <div key={index} className="p-4 border rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-medium">{group.name}</h4>
-                        <Badge variant="secondary">{group.match}% match</Badge>
+                        <Badge variant="secondary">{t('screens.community.matchMatch', { match: group.match })}</Badge>
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">{group.description}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">{group.members} members</span>
+                        <span className="text-sm text-muted-foreground">{t('screens.community.membersMembers', { members: group.members })}</span>
                         <Button size="sm">{t('screens.community.joinGroup')}</Button>
                       </div>
                     </div>

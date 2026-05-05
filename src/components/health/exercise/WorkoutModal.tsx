@@ -114,14 +114,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                 dark:from-blue-950/30 dark:to-cyan-950/30 text-center">
                 <Clock className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
                 <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
-                <p className="text-sm font-bold">{workout.duration} min</p>
+                <p className="text-sm font-bold">{t('screens.health.durationMin', { duration: workout.duration })}</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 
                 dark:from-amber-950/30 dark:to-orange-950/30 text-center">
                 <Flame className="w-5 h-5 mx-auto mb-1 text-amber-600 dark:text-amber-400" />
                 <p className="text-xs text-muted-foreground">{t('screens.health.calories')}</p>
-                <p className="text-sm font-bold">{workout.caloriesBurned} kcal</p>
+                <p className="text-sm font-bold">{t('screens.health.caloriesburnedKcal', { caloriesBurned: workout.caloriesBurned })}</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-violet-50 to-purple-50 

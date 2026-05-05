@@ -474,7 +474,7 @@ export function PaymentMessageHandler({
           {!isCurrentUser && effectiveStatus === 'pending' && typeof balanceVal === 'number' && balanceVal < amount && (
             <div className="flex items-center gap-1 mt-2 text-xs text-red-600">
               <AlertTriangle className="w-3 h-3" />
-              <span>Insufficient {currency} balance</span>
+              <span>{t('screens.payment.insufficientCurrencyBalance', { currency })}</span>
             </div>
           )}
         </CardContent>
@@ -575,7 +575,7 @@ export function PaymentMessageHandler({
           <p className="text-sm text-green-700 mb-2">{description}</p>
           <div className="flex items-center gap-1 text-xs text-green-600">
             <Receipt className="w-3 h-3" />
-            <span>ID: {transactionId}</span>
+            <span>{t('screens.payment.idTransactionid', { transactionId })}</span>
           </div>
         </CardContent>
       </Card>

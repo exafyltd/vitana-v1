@@ -70,7 +70,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
-            <span>{labTest.turnaround_days} days</span>
+            <span>{t('screens.common.turnaround_daysDays', { turnaround_days: labTest.turnaround_days })}</span>
           </div>
           <div className="flex items-center gap-1">
             <Droplets className="h-4 w-4" />

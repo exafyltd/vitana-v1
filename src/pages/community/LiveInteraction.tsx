@@ -215,7 +215,7 @@ export default function LiveInteraction() {
                         </Avatar>
                         <div className="flex-1">
                           <h3 className="font-semibold text-sm">{room.title}</h3>
-                          <p className="text-xs text-muted-foreground mb-1">Hosted by {room.host}</p>
+                          <p className="text-xs text-muted-foreground mb-1">{t('screens.community.hostedByHost', { host: room.host })}</p>
                           <Badge variant="outline" className="text-xs">{room.category}</Badge>
                         </div>
                       </div>
@@ -265,7 +265,7 @@ export default function LiveInteraction() {
                           </Button>
                         ))}
                       </div>
-                      <p className="text-xs text-muted-foreground">{poll.responses} responses so far</p>
+                      <p className="text-xs text-muted-foreground">{t('screens.community.responsesResponsesSoFar', { responses: poll.responses })}</p>
                     </div>
                   ))}
                 </div>
@@ -285,7 +285,7 @@ export default function LiveInteraction() {
                   {scheduledSessions.map((session, index) => (
                     <div key={index} className="p-4 border rounded-lg">
                       <h3 className="font-semibold mb-2">{session.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-3">Hosted by {session.host}</p>
+                      <p className="text-sm text-muted-foreground mb-3">{t('screens.community.hostedByHost', { host: session.host })}</p>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
@@ -359,7 +359,7 @@ export default function LiveInteraction() {
                         <Badge variant="outline">{group.category}</Badge>
                       </div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-muted-foreground">{group.members} members</span>
+                        <span className="text-xs text-muted-foreground">{t('screens.community.membersMembers', { members: group.members })}</span>
                         <span className="text-xs text-green-600 flex items-center gap-1">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           {group.activeNow} active

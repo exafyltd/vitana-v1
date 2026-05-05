@@ -204,7 +204,7 @@ export default function MarketplaceProducts() {
           {/* Bulk action bar — only visible when selection is active */}
           {selected.size > 0 && (
             <div className="flex gap-2 items-center bg-slate-100 border rounded-md p-3">
-              <span className="text-sm font-medium">{selected.size} selected</span>
+              <span className="text-sm font-medium">{t('screens.admin.sizeSelected', { size: selected.size })}</span>
               <Button size="sm" variant="outline" onClick={() => bulkAction("clear_review")} disabled={busy}>
                 <CheckCircle className="w-4 h-4 mr-1" /> {t('screens.admin.clearReview')}
               </Button>

@@ -80,7 +80,7 @@ export function VaeaCatalogPanel() {
                   </div>
                   <div className="font-medium">{item.title}</div>
                   {item.personal_note && (
-                    <p className="text-xs text-muted-foreground mt-1 italic">&ldquo;{item.personal_note}&rdquo;</p>
+                    <p className="text-xs text-muted-foreground mt-1 italic">{t('screens.business.ldquoPersonal_noteRdquo', { personal_note: item.personal_note })}</p>
                   )}
                   <a
                     href={item.affiliate_url}

@@ -211,7 +211,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
       <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6 shadow-2xl">
         <div className="mb-4 flex items-start justify-between">
           <div>
-            <h2 className="text-xl font-bold">{p.display_name} — Forwarding Rules</h2>
+            <h2 className="text-xl font-bold">{t('screens.admin.display_nameForwardingRules', { display_name: p.display_name })}</h2>
             <p className="text-sm text-muted-foreground">{p.role}</p>
             <div className="mt-2 flex gap-2 text-xs">
               <Badge variant="outline">{t('screens.admin.always')}</Badge>
@@ -350,10 +350,10 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                   {testResult.handoff ? `forward → ${testResult.persona_key}` : "answer inline (Vitana)"}
                 </Badge>
                 {testResult.gate && (
-                  <Badge variant="outline">gate: {testResult.gate}</Badge>
+                  <Badge variant="outline">{t('screens.admin.gateGate', { gate: testResult.gate })}</Badge>
                 )}
                 {testResult.decision && (
-                  <Badge variant="outline">decision: {testResult.decision}</Badge>
+                  <Badge variant="outline">{t('screens.admin.decisionDecision', { decision: testResult.decision })}</Badge>
                 )}
               </div>
               {(testResult.matched_phrase || testResult.matched_keyword) && (

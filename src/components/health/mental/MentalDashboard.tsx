@@ -46,7 +46,7 @@ export function MentalDashboard({ progress, aiSummary }: MentalDashboardProps) {
             <Zap className="w-4 h-4 text-amber-500" />
             <span className="text-sm text-slate-600 dark:text-slate-400">{t('screens.health.mindfulnessStreak')}</span>
           </div>
-          <p className="text-2xl font-bold">{progress.mindfulnessStreak} days</p>
+          <p className="text-2xl font-bold">{t('screens.health.mindfulnessstreakDays', { mindfulnessStreak: progress.mindfulnessStreak })}</p>
         </div>
       </div>
 

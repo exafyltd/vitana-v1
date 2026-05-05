@@ -368,7 +368,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
         {showParticipants && (
           <div className="absolute right-80 top-16 bottom-0 w-80 bg-card border-l shadow-lg z-10">
             <div className="p-4 border-b flex items-center justify-between">
-              <h3 className="font-semibold">Participants ({participants.length})</h3>
+              <h3 className="font-semibold">{t('screens.community.participantsLength', { length: participants.length })}</h3>
               <Button
                 variant="ghost"
                 size="sm"

@@ -137,7 +137,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <div className="font-medium">
                       {pkg.credits.toLocaleString()} Credits
                       {pkg.bonus > 0 && (
-                        <span className="text-green-600 ml-1">+ {pkg.bonus} Bonus</span>
+                        <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                       )}
                     </div>
                     <div className="text-xs text-muted-foreground">${pkg.cost}</div>

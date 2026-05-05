@@ -276,11 +276,11 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     )}
                     <span className="font-mono text-xs text-muted-foreground">{g.vitana_id ?? "(anonymous)"}</span>
                     {g.open > 0 && (
-                      <Badge variant="destructive" className="text-[10px]">{g.open} open</Badge>
+                      <Badge variant="destructive" className="text-[10px]">{t('screens.admin.openOpen', { open: g.open })}</Badge>
                     )}
-                    <Badge variant="outline" className="text-[10px]">{g.total} total</Badge>
+                    <Badge variant="outline" className="text-[10px]">{t('screens.admin.totalTotal', { total: g.total })}</Badge>
                     {g.actionable > 0 && (
-                      <Badge variant="secondary" className="text-[10px]">{g.actionable} ready</Badge>
+                      <Badge variant="secondary" className="text-[10px]">{t('screens.admin.actionableReady', { actionable: g.actionable })}</Badge>
                     )}
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
@@ -293,7 +293,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     </Badge>
                     <span>{g.latest.kind}</span>
                     {g.latest.resolver_agent && (
-                      <span>· handled by {g.latest.resolver_agent}</span>
+                      <span>{t('screens.admin.handledByResolver_agent', { resolver_agent: g.latest.resolver_agent })}</span>
                     )}
                     <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
                   </div>
@@ -596,9 +596,9 @@ export default function AdminFeedback() {
         {activeTab === "tickets" && (
           <>
             <div className="flex gap-2 text-xs items-center flex-wrap">
-              <Badge variant="outline">Total: {counts.total}</Badge>
-              <Badge variant="secondary">Open: {counts.open}</Badge>
-              <Badge variant="default">Resolved: {counts.resolved}</Badge>
+              <Badge variant="outline">{t('screens.admin.totalTotal2', { total: counts.total })}</Badge>
+              <Badge variant="secondary">{t('screens.admin.openOpen2', { open: counts.open })}</Badge>
+              <Badge variant="default">{t('screens.admin.resolvedResolved', { resolved: counts.resolved })}</Badge>
               {/* VTID-02660: Active / Archive filter. Default = active so
                   resolved/rejected tickets disappear from the supervisor's
                   view immediately after they're acted on. Switch to Archive
@@ -708,7 +708,7 @@ export default function AdminFeedback() {
                           : (p.handles_kinds.join(", ") || "—")}
                       </div>
                       <div>Voice: {p.voice_id || "(not set)"}</div>
-                      <div>Version: v{p.version}</div>
+                      <div>{t('screens.admin.versionVVersion', { version: p.version })}</div>
                     </div>
                   </Card>
                 );

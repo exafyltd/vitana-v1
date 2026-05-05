@@ -735,7 +735,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 {message.content_data?.attendees && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Users className="w-4 h-4" />
-                    <span>{message.content_data.attendees} attendees</span>
+                    <span>{t('screens.messages.attendeesAttendees', { attendees: message.content_data.attendees })}</span>
                   </div>
                 )}
                 

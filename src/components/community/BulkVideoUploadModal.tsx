@@ -556,10 +556,10 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
             <span>{t('screens.community.bulkVideoUpload')}</span>
             {items.length > 0 && (
               <div className="flex items-center gap-2 text-sm font-normal">
-                <Badge variant="outline">{queuedCount} queued</Badge>
-                {uploadingCount > 0 && <Badge className="bg-blue-100 text-blue-700">{uploadingCount} uploading</Badge>}
-                {doneCount > 0 && <Badge className="bg-green-100 text-green-700">{doneCount} done</Badge>}
-                {failedCount > 0 && <Badge className="bg-red-100 text-red-700">{failedCount} failed</Badge>}
+                <Badge variant="outline">{t('screens.community.queuedcountQueued', { queuedCount })}</Badge>
+                {uploadingCount > 0 && <Badge className="bg-blue-100 text-blue-700">{t('screens.community.uploadingcountUploading', { uploadingCount })}</Badge>}
+                {doneCount > 0 && <Badge className="bg-green-100 text-green-700">{t('screens.community.donecountDone', { doneCount })}</Badge>}
+                {failedCount > 0 && <Badge className="bg-red-100 text-red-700">{t('screens.community.failedcountFailed', { failedCount })}</Badge>}
               </div>
             )}
           </DialogTitle>
@@ -744,7 +744,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
           {items.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Upload Queue ({items.length})</h3>
+                <h3 className="font-semibold">{t('screens.community.uploadQueueLength', { length: items.length })}</h3>
                 {doneCount > 0 && (
                   <Button
                     type="button"

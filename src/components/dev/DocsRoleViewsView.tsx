@@ -24,7 +24,7 @@ export function DocsRoleViewsView() {
                 <Badge variant="default">{roleView.status}</Badge>
               </div>
               <CardTitle className="mt-4">{roleView.role}</CardTitle>
-              <CardDescription>{roleView.views} configured views</CardDescription>
+              <CardDescription>{t('screens.dev.viewsConfiguredViews', { views: roleView.views })}</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">

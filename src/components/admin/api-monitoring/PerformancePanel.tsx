@@ -208,7 +208,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
                     style={{ width: `${Math.min((metrics.avgResponseTime / 1000) * 100, 100)}%` }}
                   />
                 </div>
-                <span className="text-sm font-medium">{metrics.avgResponseTime}ms</span>
+                <span className="text-sm font-medium">{t('screens.admin.avgresponsetimeMs', { avgResponseTime: metrics.avgResponseTime })}</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
@@ -220,7 +220,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
                     style={{ width: `${Math.min((metrics.p95Latency / 1000) * 100, 100)}%` }}
                   />
                 </div>
-                <span className="text-sm font-medium">{metrics.p95Latency}ms</span>
+                <span className="text-sm font-medium">{t('screens.admin.p95latencyMs', { p95Latency: metrics.p95Latency })}</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
@@ -232,7 +232,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
                     style={{ width: `${Math.min((metrics.p99Latency / 1000) * 100, 100)}%` }}
                   />
                 </div>
-                <span className="text-sm font-medium">{metrics.p99Latency}ms</span>
+                <span className="text-sm font-medium">{t('screens.admin.p99latencyMs', { p99Latency: metrics.p99Latency })}</span>
               </div>
             </div>
           </div>

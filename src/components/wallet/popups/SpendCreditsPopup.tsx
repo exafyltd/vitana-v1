@@ -230,12 +230,12 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="font-medium">{selectedItem.name}</span>
-                      <Badge>{selectedItem.cost} Credits</Badge>
+                      <Badge>{t('screens.wallet.costCredits', { cost: selectedItem.cost })}</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">{selectedItem.description}</p>
                     <div className="flex justify-between items-center pt-2 border-t">
                       <span className="font-semibold">{t('screens.wallet.totalCost')}</span>
-                      <span className="font-bold text-lg">{selectedItem.cost} Credits</span>
+                      <span className="font-bold text-lg">{t('screens.wallet.costCredits', { cost: selectedItem.cost })}</span>
                     </div>
                   </div>
                 </CardContent>

@@ -60,11 +60,11 @@ export function WorkoutCard({ workout, onClick }: WorkoutCardProps) {
               <>
                 <div className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" />
-                  <span className="text-xs font-medium">{workout.duration} min</span>
+                  <span className="text-xs font-medium">{t('screens.health.durationMin', { duration: workout.duration })}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Flame className="w-3.5 h-3.5" />
-                  <span className="text-xs font-medium">{workout.caloriesBurned} kcal</span>
+                  <span className="text-xs font-medium">{t('screens.health.caloriesburnedKcal', { caloriesBurned: workout.caloriesBurned })}</span>
                 </div>
               </>
             )}

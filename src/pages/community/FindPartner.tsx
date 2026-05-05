@@ -238,7 +238,7 @@ export default function FindPartner() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
           )}
 
           {/* My Matches */}
@@ -264,7 +264,7 @@ export default function FindPartner() {
                             <span>{chip.label}</span>
                           </span>
                         )}
-                        <span className="font-medium text-primary">{scorePct}% match</span>
+                        <span className="font-medium text-primary">{t('screens.community.scorepctMatch', { scorePct })}</span>
                       </div>
                       <IntentMatchCard match={m} perspective="outgoing" onAction={() => void refresh()} />
                     </div>

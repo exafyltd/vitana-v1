@@ -610,7 +610,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         <Badge variant={statusVariant(t.status)}>{STATUS_LABEL[t.status] ?? t.status}</Badge>
         <span className="text-muted-foreground">{t.kind} · {(t.priority || "p2").toUpperCase()}</span>
         {t.resolver_agent && (
-          <span className="text-muted-foreground">handled by {t.resolver_agent}</span>
+          <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent2', { resolver_agent: t.resolver_agent })}</span>
         )}
         {t.vitana_id && (
           <span className="ml-auto font-mono text-xs text-muted-foreground">{t.vitana_id}</span>
@@ -912,8 +912,8 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
 
       {/* Context */}
       <section className="text-xs text-muted-foreground space-y-0.5">
-        {t.screen_path && <div>Screen: {t.screen_path}</div>}
-        {t.app_version && <div>App version: {t.app_version}</div>}
+        {t.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: t.screen_path })}</div>}
+        {t.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: t.app_version })}</div>}
         <div>Created: {new Date(t.created_at).toLocaleString()}</div>
         {t.resolved_at && <div>Resolved: {new Date(t.resolved_at).toLocaleString()}</div>}
         {t.user_confirmed_at && <div>Confirmed: {new Date(t.user_confirmed_at).toLocaleString()}</div>}

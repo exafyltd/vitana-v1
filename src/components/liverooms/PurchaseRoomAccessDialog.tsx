@@ -44,7 +44,7 @@ export function PurchaseRoomAccessDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Purchase Access: {room.title}</DialogTitle>
+          <DialogTitle>{t('screens.liverooms.purchaseAccessTitle', { title: room.title })}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">

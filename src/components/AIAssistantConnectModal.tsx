@@ -196,7 +196,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
       <Sheet open={open} onOpenChange={(v) => !v && handleClose()}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader className="pb-2">
-            <SheetTitle className="text-left">Connect {meta.display_name}</SheetTitle>
+            <SheetTitle className="text-left">{t('screens.common.connectDisplay_name', { display_name: meta.display_name })}</SheetTitle>
           </SheetHeader>
           {content}
         </SheetContent>
@@ -207,7 +207,7 @@ export function AIAssistantConnectModal({ open, provider, onClose }: AIAssistant
     <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Connect {meta.display_name}</DialogTitle>
+          <DialogTitle>{t('screens.common.connectDisplay_name', { display_name: meta.display_name })}</DialogTitle>
         </DialogHeader>
         {content}
       </DialogContent>

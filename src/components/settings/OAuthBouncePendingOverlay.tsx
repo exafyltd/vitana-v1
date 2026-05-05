@@ -99,7 +99,7 @@ export function OAuthBouncePendingOverlay() {
           <div className="flex items-start gap-3">
             <Loader2 className="mt-0.5 h-5 w-5 shrink-0 animate-spin text-primary" />
             <div className="space-y-1">
-              <p className="font-medium leading-tight">Connecting {label}…</p>
+              <p className="font-medium leading-tight">{t('screens.settings.connectingLabel', { label })}</p>
               <p className="text-sm text-muted-foreground">
                 {t('screens.settings.finishSigningYourBrowserThenCome')}
               </p>
@@ -120,7 +120,7 @@ export function OAuthBouncePendingOverlay() {
         <div className="flex items-start gap-3 pr-6">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
           <div className="space-y-1">
-            <p className="font-medium leading-tight text-green-700">{label} connected</p>
+            <p className="font-medium leading-tight text-green-700">{t('screens.settings.labelConnected', { label })}</p>
             <p className="text-sm text-green-700/80">{t('screens.settings.youReAllSet')}</p>
           </div>
         </div>
@@ -131,7 +131,7 @@ export function OAuthBouncePendingOverlay() {
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
             <div className="space-y-1">
-              <p className="font-medium leading-tight text-amber-700">We didn't see {label} confirm</p>
+              <p className="font-medium leading-tight text-amber-700">{t('screens.settings.weDidnTSeeLabelConfirm', { label })}</p>
               <p className="text-sm text-amber-700/80">
                 {t('screens.settings.ifYouCompletedSigninTapCheck')}
               </p>

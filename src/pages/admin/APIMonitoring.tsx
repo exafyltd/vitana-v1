@@ -198,7 +198,7 @@ export default function APIMonitoring() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{stats.total}</div>
-                  <p className="text-xs text-muted-foreground mt-1">{stats.active} active</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.activeActive', { active: stats.active })}</p>
                 </CardContent>
               </Card>
 
@@ -386,7 +386,7 @@ export default function APIMonitoring() {
                               </div>
                               <div className="flex items-center gap-2">
                                 {log.response_time_ms && (
-                                  <Badge variant="outline">{log.response_time_ms}ms</Badge>
+                                  <Badge variant="outline">{t('screens.admin.response_time_msMs', { response_time_ms: log.response_time_ms })}</Badge>
                                 )}
                                 {getStatusBadge(log.status)}
                               </div>
@@ -395,7 +395,7 @@ export default function APIMonitoring() {
                               <p>Test type: {log.test_type || 'automated'}</p>
                               <p>Time: {log.timestamp && new Date(log.timestamp).toLocaleString()}</p>
                               {log.error_log && (
-                                <p className="text-red-500 mt-2">Error: {log.error_log}</p>
+                                <p className="text-red-500 mt-2">{t('screens.admin.errorError_log', { error_log: log.error_log })}</p>
                               )}
                             </div>
                           </div>

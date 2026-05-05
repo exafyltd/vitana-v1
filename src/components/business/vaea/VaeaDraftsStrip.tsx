@@ -113,7 +113,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
       </div>
 
       {draft.match_reason && (
-        <p className="text-xs text-muted-foreground">Why: {draft.match_reason}</p>
+        <p className="text-xs text-muted-foreground">{t('screens.business.whyMatch_reason', { match_reason: draft.match_reason })}</p>
       )}
     </div>
   );

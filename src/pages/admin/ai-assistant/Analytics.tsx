@@ -34,7 +34,7 @@ export default function AIAssistantAnalytics() {
           {error && (
             <Card className="border-destructive">
               <CardContent className="pt-6">
-                <p className="text-destructive">Error loading analytics: {error}</p>
+                <p className="text-destructive">{t('screens.admin.errorLoadingAnalyticsError', { error })}</p>
               </CardContent>
             </Card>
           )}

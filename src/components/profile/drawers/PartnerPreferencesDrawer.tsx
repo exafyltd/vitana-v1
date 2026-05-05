@@ -158,7 +158,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label>Within {maxRadius} km</Label>
+              <Label>{t('screens.profile.withinMaxradiusKm', { maxRadius })}</Label>
               <Slider
                 min={0}
                 max={500}

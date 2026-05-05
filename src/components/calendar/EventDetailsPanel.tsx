@@ -146,7 +146,7 @@ export function EventDetailsPanel({
               <div className="flex items-start gap-3">
                 <Users className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium">{event.attendees_count} attendees</p>
+                  <p className="text-sm font-medium">{t('screens.calendar.attendees_countAttendees', { attendees_count: event.attendees_count })}</p>
                   <p className="text-xs text-muted-foreground">{t('screens.calendar.includingYou')}</p>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export function EventDetailsPanel({
               <div className="flex gap-2 flex-wrap">
                 <Badge variant="secondary" className="text-xs">{event.event_type}</Badge>
                 {event.priority && (
-                  <Badge variant="secondary" className="text-xs capitalize">{event.priority} priority</Badge>
+                  <Badge variant="secondary" className="text-xs capitalize">{t('screens.calendar.priorityPriority', { priority: event.priority })}</Badge>
                 )}
               </div>
             </div>

@@ -97,7 +97,7 @@ export function StatusHeaderBar({
           <div className="flex items-center gap-1.5">
             <Clock className="w-3 h-3" />
             <span className="text-muted-foreground">{t('screens.dev.latency')}</span>
-            <span className="font-mono">{latency}ms</span>
+            <span className="font-mono">{t('screens.dev.latencyMs', { latency })}</span>
           </div>
         )}
 

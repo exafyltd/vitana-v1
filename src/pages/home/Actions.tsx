@@ -137,7 +137,7 @@ export default function Actions() {
                 <div className="mb-6 px-1">
                   <p className="text-sm text-muted-foreground/80 flex items-center gap-2">
                     <span className="text-base">🤖</span>
-                    <span>{t('screens.home.autopilotAnalyzedYourRoutinesFound')} <strong className="text-foreground font-semibold">{pendingActions.length} optimized actions</strong> {t('screens.home.forToday')}</span>
+                    <span>{t('screens.home.autopilotAnalyzedYourRoutinesFound')} <strong className="text-foreground font-semibold">{t('screens.home.lengthOptimizedActions', { length: pendingActions.length })}</strong> {t('screens.home.forToday')}</span>
                   </p>
                 </div>
                 

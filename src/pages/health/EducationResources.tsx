@@ -76,7 +76,7 @@ export default function EducationResources() {
                     <CardContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="w-4 h-4" />
-                        <span>{article.readTime} read</span>
+                        <span>{t('screens.health.readtimeRead', { readTime: article.readTime })}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -100,7 +100,7 @@ export default function EducationResources() {
                         <span className="text-xs text-muted-foreground bg-primary/10 px-2 py-1 rounded">{video.category}</span>
                         <div className="flex items-center gap-2">
                           <Play className="w-4 h-4 text-green-500" />
-                          <span className="text-xs text-muted-foreground">{video.views} views</span>
+                          <span className="text-xs text-muted-foreground">{t('screens.health.viewsViews', { views: video.views })}</span>
                         </div>
                       </div>
                       <CardTitle className="text-lg">{video.title}</CardTitle>

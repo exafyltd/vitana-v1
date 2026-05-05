@@ -170,7 +170,7 @@ export function DevAutopilotPopup({ open, onOpenChange }: DevAutopilotPopupProps
             </div>
             <Progress value={executionProgress} className="w-full" />
             <div className="text-center mt-2">
-              <span className="text-sm text-muted-foreground">{executionProgress}% complete</span>
+              <span className="text-sm text-muted-foreground">{t('screens.dev.executionprogressComplete', { executionProgress })}</span>
             </div>
           </div>
         ) : (

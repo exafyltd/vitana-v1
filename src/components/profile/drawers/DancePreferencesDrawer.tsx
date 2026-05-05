@@ -295,7 +295,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
                     onValueChange={(v) => setRadiusKm(v[0] ?? 25)}
                     className="flex-1"
                   />
-                  <span className="text-sm w-16 text-right">{radiusKm} km</span>
+                  <span className="text-sm w-16 text-right">{t('screens.profile.radiuskmKm', { radiusKm })}</span>
                 </div>
               </div>
 

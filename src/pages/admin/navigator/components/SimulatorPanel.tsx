@@ -162,7 +162,7 @@ export function SimulatorPanel({
             {result.blocked_reason && (
               <div className="flex items-start gap-2 rounded-md border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700 dark:text-amber-400" />
-                <span>Blocked: {result.blocked_reason}</span>
+                <span>{t('screens.admin.blockedBlocked_reason', { blocked_reason: result.blocked_reason })}</span>
               </div>
             )}
 
