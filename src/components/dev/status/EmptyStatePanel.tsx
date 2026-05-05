@@ -90,8 +90,7 @@ export function EmptyStatePanel({
         </div>
         <div>
           <h3 className="font-semibold text-lg mb-2">{t('screens.dev.noEventsMatchFilters')}</h3>
-          <p className="text-sm text-muted-foreground">
-            Try adjusting your filters or wait for new events to arrive.
+          <p className="text-sm text-muted-foreground">{t('screens.dev.tryAdjustingYourFiltersWaitFor')}
           </p>
         </div>
         {onClearFilters && (

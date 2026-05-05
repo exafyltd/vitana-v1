@@ -89,8 +89,7 @@ export default function AutopilotGrowth() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <AdminStatusBadge variant={stats.success_rate >= 90 ? "active" : stats.success_rate >= 70 ? "warning" : "error"}>
-                    {stats.completed} completed · {stats.failed} failed
+                  <AdminStatusBadge variant={stats.success_rate >= 90 ? "active" : stats.success_rate >= 70 ? "warning" : "error"}>{t('screens.admin.completedCompletedFailedFailed', { completed: stats.completed, failed: stats.failed })}
                   </AdminStatusBadge>
                 </CardContent>
               </Card>
@@ -109,8 +108,7 @@ export default function AutopilotGrowth() {
                   <CardTitle className="text-2xl">{stats.period_days}d</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <span className="text-xs text-muted-foreground">
-                    avg {(stats.total_runs / stats.period_days).toFixed(1)} runs/day
+                  <span className="text-xs text-muted-foreground">{t('screens.admin.avgValue0Runsday', { value0: (stats.total_runs / stats.period_days).toFixed(1) })}
                   </span>
                 </CardContent>
               </Card>

@@ -321,7 +321,7 @@ export function transformAutopilotActionToVisualCard(
         {/* Priority indicator */}
         <div className="flex items-center gap-2 text-sm">
           <AlertCircle className="w-4 h-4" />
-          <span className="text-muted-foreground">Priority: <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
+          <span className="text-muted-foreground">{t('screens.common.priority')} <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
         </div>
 
         {/* Expected outcome */}
@@ -357,8 +357,7 @@ export function transformAutopilotActionToVisualCard(
             <button
               onClick={() => onDismiss(action.id)}
               className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
-            >
-              Not Interested
+            >{t('screens.common.notInterested')}
             </button>
           )}
         </div>
@@ -431,7 +430,7 @@ export function transformAutopilotActionsToStandardCards(
           {/* Priority indicator */}
           <div className="flex items-center gap-2 text-sm">
             <AlertCircle className="w-4 h-4" />
-            <span className="text-muted-foreground">Priority: <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
+            <span className="text-muted-foreground">{t('screens.common.priority')} <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
           </div>
 
           {/* Expected outcome */}
@@ -451,7 +450,7 @@ export function transformAutopilotActionsToStandardCards(
 
           {/* Action metadata */}
           <div className="pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
-            <span>Action ID: {action.id.slice(0, 8)}</span>
+            <span>{t('screens.common.actionIdValue0', { value0: action.id.slice(0, 8) })}</span>
             <span>{getCategoryLabel(action.category)}</span>
           </div>
         </div>

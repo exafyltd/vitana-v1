@@ -60,7 +60,7 @@ export function EventMessageTemplates({
                   setEmailSubject(e.target.value);
                   handleEmailChange();
                 }}
-                placeholder="e.g., You're invited: Event Name"
+                placeholder={t('screens.sharing.eGYouReInvitedEvent')}
                 className="mt-1"
               />
             </div>
@@ -74,11 +74,10 @@ export function EventMessageTemplates({
                   handleEmailChange();
                 }}
                 rows={10}
-                placeholder="Email content..."
+                placeholder={t('screens.sharing.emailContent')}
                 className="mt-1 font-mono text-sm"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Use {"{name}"} for recipient name and {"{event_link}"} for the event URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.useValue0ForRecipientNameValue1', { value0: "{name}", value1: "{event_link}" })}
               </p>
             </div>
           </CardContent>
@@ -105,16 +104,14 @@ export function EventMessageTemplates({
                   handleSmsChange();
                 }}
                 rows={5}
-                placeholder="SMS content..."
+                placeholder={t('screens.sharing.smsContent')}
                 className="mt-1 font-mono text-sm"
                 maxLength={160}
               />
               <div className="flex justify-between items-center mt-1">
-                <p className="text-xs text-muted-foreground">
-                  Use {"{event_link}"} for the event URL
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.useValue0ForEventUrl', { value0: "{event_link}" })}
                 </p>
-                <Badge variant={smsBody.length > 160 ? "destructive" : "secondary"}>
-                  {smsBody.length}/160 chars
+                <Badge variant={smsBody.length > 160 ? "destructive" : "secondary"}>{t('screens.sharing.length160Chars', { length: smsBody.length })}
                 </Badge>
               </div>
             </div>
@@ -142,11 +139,10 @@ export function EventMessageTemplates({
                   handleWhatsAppChange();
                 }}
                 rows={8}
-                placeholder="WhatsApp content..."
+                placeholder={t('screens.sharing.whatsappContent')}
                 className="mt-1 font-mono text-sm"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Use *bold*, _italic_, and {"{event_link}"} for the event URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.useBold_italic_Value0ForEvent', { value0: "{event_link}" })}
               </p>
             </div>
           </CardContent>

@@ -115,9 +115,7 @@ export default function PatternCard({
         </div>
 
         {pattern.linked_rule_id && (
-          <div className="text-xs text-muted-foreground pt-2 border-t">
-            Linked to automation rule: {pattern.linked_rule_id}
-          </div>
+          <div className="text-xs text-muted-foreground pt-2 border-t">{t('screens.admin.linkedAutomationRuleLinked_rule_id', { linked_rule_id: pattern.linked_rule_id })}</div>
         )}
       </CardContent>
     </Card>

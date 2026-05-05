@@ -1243,10 +1243,7 @@ export default withScreenId(function Community() {
             <h1 className="text-xl font-bold text-foreground">{t('screens.community.community')}</h1>
             <p className="text-sm text-muted-foreground">{t('screens.community.connectShareGrowTogether')}</p>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                🧬 Vitana {activityMetrics.totalMembers || 742}
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Live
+              <span className="inline-flex items-center gap-1">{t('screens.community.vitanaValue0', { value0: activityMetrics.totalMembers || 742 })}<span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>{t('screens.community.live2')}
               </span>
             </div>
           </div>
@@ -1255,19 +1252,19 @@ export default withScreenId(function Community() {
           <div className="space-y-3 mt-4">
             <MobileEntryCard
               icon={<Calendar className="h-5 w-5" />}
-              title="Browse Events & MeetUps"
+              title={t('screens.community.browseEventsMeetups')}
               subtitle="Discover local wellness gatherings"
               to="/comm/events-meetups"
             />
             <MobileEntryCard
               icon={<Radio className="h-5 w-5" />}
-              title="Join Live Rooms"
+              title={t('screens.community.joinLiveRooms')}
               subtitle="Drop into real-time conversations"
               to="/comm/live-rooms"
             />
             <MobileEntryCard
               icon={<Play className="h-5 w-5" />}
-              title="Watch Shorts"
+              title={t('screens.community.watchShorts')}
               subtitle="Quick wellness inspiration"
               to="/comm/media-hub?tab=shorts"
             />
@@ -1322,7 +1319,7 @@ export default withScreenId(function Community() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.community.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -1368,7 +1365,7 @@ export default withScreenId(function Community() {
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-accent" />
-                <span>{todayEvents.length + upcomingEvents.length} upcoming activities</span>
+                <span>{t('screens.community.value0UpcomingActivities', { value0: todayEvents.length + upcomingEvents.length })}</span>
               </div>
             </div>
           </Card>
@@ -1458,8 +1455,7 @@ export default withScreenId(function Community() {
                   )}
                   {!membersLoading && realCommunityPeople.length > 0 && (
                     <Badge variant="secondary">
-                      <Users className="w-3 h-3 mr-1" />
-                      {members.length} members
+                      <Users className="w-3 h-3 mr-1" />{t('screens.community.lengthMembers', { length: members.length })}
                     </Badge>
                   )}
                 </div>
@@ -1593,8 +1589,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No group rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noGroupRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1620,8 +1615,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No event rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noEventRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1647,8 +1641,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No creator rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noCreatorRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1669,8 +1662,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No member rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noMemberRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1716,8 +1708,7 @@ export default withScreenId(function Community() {
                     >
                       {generating ? (
                         <>
-                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                          Analyzing Your Profile...
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.analyzingYourProfile')}
                         </>
                       ) : (
                         <>

@@ -3,7 +3,7 @@ import { FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { lookup, notify, notifyError } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
 type Status = "idle" | "recording" | "stopping";
 
@@ -245,7 +245,7 @@ export default function DiaryButton() {
         } 
       }}
       role="button"
-      aria-label="Diary voice dictation"
+      aria-label={t('screens.diary.diaryVoiceDictation')}
       aria-pressed={isRecording}
       title={
         !isSupported 

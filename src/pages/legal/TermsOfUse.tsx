@@ -30,7 +30,7 @@ const TermsOfUse = () => {
             variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
-            aria-label="Go back"
+            aria-label={t('screens.legal.goBack')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -46,7 +46,7 @@ const TermsOfUse = () => {
             {t('screens.legal.maxinaAppAmpWebsiteTermsUse')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong> 17 May 2025 — Replaces all prior versions. You will be notified of any material change at least 30 days in advance.
+            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text17May2025ReplacesAllPrior')}
           </p>
 
           {/* Section 1 */}
@@ -55,14 +55,11 @@ const TermsOfUse = () => {
           </h2>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text11WhoWe')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            These Terms ("Terms") form a legally binding agreement between you ("you"/"User") and Exafy LTD, Al Khatem Tower, 15th Floor, ADGM Square, Al Maryah Island, Abu Dhabi, United Arab Emirates ("Exafy," "we," "us," "our"). Exafy owns and operates the Maxina mobile applications (iOS &amp; Android) and maxina.app website (together, the "Service"), built on the Vitana System.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.theseTermsTermsFormLegallyBinding')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text12Acceptance')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            By downloading, accessing or using any part of the Service, you acknowledge that you have read and agree to these Terms and to our{" "}
-            <Link to="/privacy" className="text-primary hover:underline">{t('screens.legal.privacyPolicy')}</Link>. If you do not agree, do not use the Service.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.byDownloadingAccessingUsingAnyPart', { value0: " " })}<Link to="/privacy" className="text-primary hover:underline">{t('screens.legal.privacyPolicy')}</Link>{t('screens.legal.ifYouDoNotAgreeDo')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text13MinimumAge')}</h3>
@@ -138,10 +135,7 @@ const TermsOfUse = () => {
             </Table>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-6">
-            *Refund requests must be submitted via{" "}
-            <a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>{" "}
-            within 14 calendar days of purchase; we will reimburse the original payment method within a further 14 days if eligible.
+          <p className="text-sm text-muted-foreground mb-6">{t('screens.legal.refundRequestsMustSubmittedViaValue0', { value0: " " })}<a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>{t('screens.legal.value0Within14CalendarDaysPurchase', { value0: " " })}
           </p>
 
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
@@ -177,34 +171,29 @@ const TermsOfUse = () => {
           </h2>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text61Rules')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            Our Video Feed and other social features must be used responsibly. We follow content standards comparable to Instagram, TikTok and YouTube (no harassment, hate, sexual exploitation, illegal activity, spam, malware, etc.).
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.ourVideoFeedOtherSocialFeatures')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text62Licence')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            You grant Exafy a world-wide, non-exclusive, royalty-free licence to host, display, adapt and share your UGC solely for operating, promoting and improving the Service.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.youGrantExafyWorldwideNonexclusiveRoyaltyfree')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text63Moderation')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            We reserve the right (but have no obligation) to review, remove or disable content at our discretion, including upon valid copyright-takedown notices or lawful requests.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weReserveRightButHaveNo')}
           </p>
 
           {/* Section 7 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text7HealthAmpWellnessDisclaimer')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            Maxina provides guidance and community support only. It is not a medical, psychological, or fitness service and does not replace professional care. Always consult qualified professionals before acting on information obtained through the Service.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.maxinaProvidesGuidanceCommunitySupportOnly')}
           </p>
 
           {/* Section 8 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text8IntellectualProperty')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            The Service and all Exafy-owned content are protected by copyright, trademark and other laws. Except for the limited licence expressly granted herein, no rights are transferred to you.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.serviceAllExafyownedContentProtectedBy')}
           </p>
 
           {/* Section 9 */}
@@ -225,11 +214,9 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text10DisclaimersAmpLimitationLiability')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed mb-4">
-            The Service is provided "as-is" and "as-available", without warranties of any kind, express or implied. To the fullest extent permitted by ADGM and consumer-protection laws, Exafy disclaims liability for indirect, consequential or special damages and limits aggregate liability to the greater of (a) total fees paid by you in the preceding 12 months or (b) €100.
+          <p className="text-foreground/90 leading-relaxed mb-4">{t('screens.legal.serviceProvidedAsisAsavailableWithoutWarranties')}
           </p>
-          <p className="text-foreground/90 leading-relaxed">
-            Nothing in these Terms excludes liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded under law.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.nothingTheseTermsExcludesLiabilityFor')}
           </p>
 
           {/* Section 11 */}
@@ -246,16 +233,14 @@ const TermsOfUse = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text12Termination')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            We may suspend or terminate your access for violation of these Terms, legal requirements, or platform policies. On termination, rights granted to you cease immediately, but sections that by nature should survive (e.g., licences, disclaimers, governing law) will remain in force.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weMaySuspendTerminateYourAccess')}
           </p>
 
           {/* Section 13 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text13ChangesTerms')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            We may update these Terms from time to time. Material changes take effect 30 days after notice via the app, website or email. Continued use after the effective date constitutes acceptance.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weMayUpdateTheseTermsFrom')}
           </p>
 
           {/* Section 14 */}
@@ -269,15 +254,12 @@ const TermsOfUse = () => {
             <strong>{t('screens.legal.exafyLtd')}</strong><br />
             {t('screens.legal.alKhatemTower15thFloorAdgm2')}<br />
             {t('screens.legal.abuDhabiUnitedArabEmirates')}<br />
-            <br />
-            Email: <a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>
+            <br />{t('screens.legal.email')} <a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>
           </address>
 
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground">
-              By tapping "Accept", creating an account, or continuing to use Maxina you confirm that you have read, understood and agree to be bound by these Terms and our{" "}
-              <Link to="/privacy" className="text-primary hover:underline">{t('screens.legal.privacyPolicy')}</Link>.
+            <p className="text-sm text-muted-foreground">{t('screens.legal.byTappingAcceptCreatingAccountContinuing', { value0: " " })}<Link to="/privacy" className="text-primary hover:underline">{t('screens.legal.privacyPolicy')}</Link>.
             </p>
           </div>
         </article>

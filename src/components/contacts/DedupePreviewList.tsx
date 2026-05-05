@@ -88,8 +88,7 @@ export function DedupePreviewList({
             <div className="w-6 h-6 rounded-full bg-[hsl(var(--contact-success)/0.1)] flex items-center justify-center">
               <Check className="w-3.5 h-3.5 text-[hsl(var(--contact-success))]" />
             </div>
-            <h4 className="text-sm font-medium text-foreground">
-              Already on VITANA ({matches.length})
+            <h4 className="text-sm font-medium text-foreground">{t('screens.contacts.alreadyVitanaLength', { length: matches.length })}
             </h4>
           </div>
 
@@ -152,8 +151,7 @@ export function DedupePreviewList({
               <div className="w-6 h-6 rounded-full bg-[hsl(var(--contact-sync-tint))] flex items-center justify-center">
                 <UserPlus className="w-3.5 h-3.5 text-[hsl(var(--contact-sync-accent))]" />
               </div>
-              <h4 className="text-sm font-medium text-foreground">
-                Invite to VITANA ({nonMatches.length})
+              <h4 className="text-sm font-medium text-foreground">{t('screens.contacts.inviteVitanaLength', { length: nonMatches.length })}
               </h4>
             </div>
 
@@ -217,13 +215,11 @@ export function DedupePreviewList({
             >
               {showAllNonMatches ? (
                 <>
-                  <ChevronUp className="w-4 h-4 mr-1" />
-                  Show less
+                  <ChevronUp className="w-4 h-4 mr-1" />{t('screens.contacts.showLess')}
                 </>
               ) : (
                 <>
-                  <ChevronDown className="w-4 h-4 mr-1" />
-                  Show {nonMatches.length - maxVisibleNonMatches} more
+                  <ChevronDown className="w-4 h-4 mr-1" />{t('screens.contacts.showValue0More', { value0: nonMatches.length - maxVisibleNonMatches })}
                 </>
               )}
             </Button>

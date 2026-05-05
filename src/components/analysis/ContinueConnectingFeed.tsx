@@ -85,8 +85,7 @@ export function ContinueConnectingFeed() {
                     <Users className="w-3 h-3" />
                     {item.member_count}
                   </span>
-                  <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/20">
-                    {item.match_score}% match
+                  <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-500/20">{t('screens.analysis.match_scoreMatch', { match_score: item.match_score })}
                   </Badge>
                 </div>
               </div>

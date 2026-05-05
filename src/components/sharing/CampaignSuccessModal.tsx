@@ -116,8 +116,7 @@ export function CampaignSuccessModal({
                     onOpenChange(false);
                   }}
                   className="w-full"
-                >
-                  Manage channels & scheduling
+                >{t('screens.sharing.manageChannelsScheduling')}
                 </Button>
               </>
             ) : (

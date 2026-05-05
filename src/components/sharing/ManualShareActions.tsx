@@ -194,8 +194,7 @@ export function ManualShareActions({
                   e.stopPropagation();
                   option.onClick();
                 }}
-              >
-                Share →
+              >{t('screens.sharing.share')}
               </Button>
             </div>
 

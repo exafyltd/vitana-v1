@@ -160,8 +160,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
               <CheckCircle2 className="h-5 w-5 text-green-500" />
               <div>
                 <h3 className="font-semibold">{t('screens.sharing.csvImported')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {currentContacts.length} contacts ready to send
+                <p className="text-sm text-muted-foreground">{t('screens.sharing.lengthContactsReadySend', { length: currentContacts.length })}
                 </p>
               </div>
             </div>
@@ -174,18 +173,15 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="h-4 w-4 text-destructive" />
-                <span className="text-sm font-medium">
-                  {validationResult.invalid.length} rows skipped due to errors
+                <span className="text-sm font-medium">{t('screens.sharing.lengthRowsSkippedDueErrors', { length: validationResult.invalid.length })}
                 </span>
               </div>
               <div className="text-xs text-muted-foreground space-y-1 max-h-32 overflow-y-auto">
                 {validationResult.invalid.slice(0, 5).map((item, idx) => (
-                  <div key={idx}>
-                    Row {item.row}: {item.errors.join(', ')}
-                  </div>
+                  <div key={idx}>{t('screens.sharing.rowRowValue1', { row: item.row, value1: item.errors.join(', ') })}</div>
                 ))}
                 {validationResult.invalid.length > 5 && (
-                  <div>...and {validationResult.invalid.length - 5} more</div>
+                  <div>{t('screens.sharing.value0More', { value0: validationResult.invalid.length - 5 })}</div>
                 )}
               </div>
             </div>
@@ -206,8 +202,7 @@ export function CsvContactUploader({ onContactsImported, currentContacts = [] }:
                 </div>
               ))}
               {currentContacts.length > 5 && (
-                <div className="text-xs text-muted-foreground text-center py-1">
-                  ...and {currentContacts.length - 5} more contacts
+                <div className="text-xs text-muted-foreground text-center py-1">{t('screens.sharing.value0MoreContacts', { value0: currentContacts.length - 5 })}
                 </div>
               )}
             </div>

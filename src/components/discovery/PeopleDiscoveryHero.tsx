@@ -346,8 +346,7 @@ export function PeopleDiscoveryHero() {
           </h2>
           
           {/* Status line - standard metadata */}
-          <p className="text-xs text-muted-foreground mt-1">
-            {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
+          <p className="text-xs text-muted-foreground mt-1">{t('screens.discovery.value0NewTodayViewedcountTotalcount', { value0: totalCount - viewedCount, viewedCount, totalCount })}
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-4 w-4 p-0 ml-1.5 opacity-40 hover:opacity-80 inline-flex items-center justify-center">
               <RefreshCw className="h-2.5 w-2.5" />
             </Button>
@@ -499,8 +498,7 @@ export function PeopleDiscoveryHero() {
                   setRegionFilter("all");
                   setPillarFilter("all");
                 }}
-              >
-                Clear Filters
+              >{t('screens.discovery.clearFilters')}
               </Button>
             )}
             

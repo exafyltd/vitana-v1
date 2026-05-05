@@ -181,9 +181,7 @@ export function LiveRoomCard({
                 <span>{room.participants}</span>
               </div>
             ) : showCountdown ? (
-              <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
-                Starts in {formatDistanceToNow(new Date(room.scheduledTime!))}
-              </div>
+              <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</div>
             ) : null}
             
             {/* Kebab menu - only show for creator */}
@@ -291,8 +289,8 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
-                      aria-label="Share room"
-                      title="Share"
+                      aria-label={t('screens.liverooms.shareRoom')}
+                      title={t('screens.liverooms.share')}
                     >
                       <Share2 className="w-[18px] h-[18px]" />
                     </Button>
@@ -320,8 +318,8 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
-                      aria-label="Share room"
-                      title="Share"
+                      aria-label={t('screens.liverooms.shareRoom')}
+                      title={t('screens.liverooms.share')}
                     >
                       <Share2 className="w-[18px] h-[18px]" />
                     </Button>

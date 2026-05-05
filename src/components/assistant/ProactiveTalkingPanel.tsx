@@ -131,8 +131,7 @@ export default function ProactiveTalkingPanel({ preferences, isUpdating, updateP
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              <strong>{t('screens.assistant.languageVsVoice')}</strong> The "Language" setting controls what language text is generated in. 
-              The "Voice" setting controls which text-to-speech voice reads it aloud. They are auto-synced for convenience.
+              <strong>{t('screens.assistant.languageVsVoice')}</strong>{t('screens.assistant.languageSettingControlsWhatLanguageText')}
             </AlertDescription>
           </Alert>
 

@@ -59,9 +59,7 @@ export function InvoicePreviewDialog({
             <span>{t('screens.billing.invoiceId', { id: invoiceData.id })}</span>
             <Badge variant="secondary">{t('screens.billing.paid')}</Badge>
           </DialogTitle>
-          <DialogDescription>
-            Invoice date: {invoiceData.date}
-          </DialogDescription>
+          <DialogDescription>{t('screens.billing.invoiceDateDate', { date: invoiceData.date })}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -73,8 +71,7 @@ export function InvoicePreviewDialog({
                   <h3 className="font-semibold mb-2">{t('screens.billing.from')}</h3>
                   <p className="text-sm text-muted-foreground">
                     {t('screens.billing.vitanalandInc')}<br />
-                    {t('screens.billing.text123WellnessStreet')}<br />
-                    Health City, HC 12345
+                    {t('screens.billing.text123WellnessStreet')}<br />{t('screens.billing.healthCityHc12345')}
                   </p>
                 </div>
                 <div>
@@ -83,9 +80,7 @@ export function InvoicePreviewDialog({
                     {invoiceData.billingAddress || "Account Holder\nEmail on file"}
                   </p>
                   {invoiceData.paymentMethod && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Payment Method: {invoiceData.paymentMethod}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">{t('screens.billing.paymentMethodPaymentmethod', { paymentMethod: invoiceData.paymentMethod })}</p>
                   )}
                 </div>
               </div>

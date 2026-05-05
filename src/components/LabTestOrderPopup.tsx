@@ -102,9 +102,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl">{t('screens.common.orderLabTest')}</DialogTitle>
-          <DialogDescription>
-            Complete your order for {labTest.name}
-          </DialogDescription>
+          <DialogDescription>{t('screens.common.completeYourOrderForName', { name: labTest.name })}</DialogDescription>
         </DialogHeader>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -315,9 +313,7 @@ export default function LabTestOrderPopup({ isOpen, onClose, labTest }: LabTestO
                     <>{t('screens.common.processing')}</>
                   ) : (
                     <>
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Place Order - ${labTest.price.toFixed(2)}
-                    </>
+                      <CreditCard className="mr-2 h-4 w-4" />{t('screens.common.placeOrderValue0', { value0: labTest.price.toFixed(2) })}</>
                   )}
                 </Button>
               </div>

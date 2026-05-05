@@ -199,8 +199,7 @@ export default function VitanaIndexDetail() {
                 </>
               )}
               {!isLoading && !index && (
-                <div className="text-sm text-muted-foreground">
-                  Your Index hasn't been computed yet. Complete the baseline survey from the Health screen to seed your Day-0 score.
+                <div className="text-sm text-muted-foreground">{t('screens.health.yourIndexHasnTComputedYet')}
                 </div>
               )}
               {isError && (
@@ -219,9 +218,9 @@ export default function VitanaIndexDetail() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                <strong>{milestoneGoal}+</strong> is the <em>{t('screens.health.reallyGood')}</em> zone — the "thriving" tier most focused 90-day pushes reach.
+                <strong>{milestoneGoal}+</strong>{t('screens.health.text')} <em>{t('screens.health.reallyGood')}</em>{t('screens.health.zoneThrivingTierMostFocused90day')}
                 <br />
-                <strong>{stretchGoal}+</strong> is elite territory — sustained excellence across all five pillars over months, not days.
+                <strong>{stretchGoal}+</strong>{t('screens.health.eliteTerritorySustainedExcellenceAcrossAll')}
               </p>
               {index ? (
                 index.total >= stretchGoal ? (
@@ -229,12 +228,11 @@ export default function VitanaIndexDetail() {
                     {t('screens.health.youReEliteBandKeepBalance')}
                   </div>
                 ) : index.total >= milestoneGoal ? (
-                  <div className="text-sm">
-                    You're in the thriving zone. Stretch to {stretchGoal} takes consistent multi-month practice, especially on your weakest pillar ({weakestPillarLabel(index)}).
+                  <div className="text-sm">{t('screens.health.youReThrivingZoneStretchStretchgoal', { stretchGoal, value1: weakestPillarLabel(index) })}
                   </div>
                 ) : (
                   <div className="text-sm">
-                    {t('screens.health.youRe')} <strong>{milestoneGoal - index.total}</strong> points away from the thriving zone. Every completion on the {weakestPillarLabel(index)} pillar moves you forward the fastest.
+                    {t('screens.health.youRe')} <strong>{milestoneGoal - index.total}</strong>{t('screens.health.pointsAwayFromThrivingZoneEvery', { value0: weakestPillarLabel(index) })}
                   </div>
                 )
               ) : (
@@ -285,16 +283,10 @@ export default function VitanaIndexDetail() {
             </CardHeader>
             <CardContent className="text-sm space-y-2 text-muted-foreground">
               <p>
-                {t('screens.health.eachFivePillarsMax200Each')} <strong>{t('screens.health.baseline')}</strong> from your onboarding survey, <strong>{t('screens.health.completions')}</strong>
-                of journey actions in the last 30 days, <strong>{t('screens.health.connectedData')}</strong> from wearables and logs,
-                and a <strong>{t('screens.health.streakBonus')}</strong> for consistency. We sum the five pillars, apply a
-                <strong> {t('screens.health.balanceFactor')}</strong> (it dampens when one pillar is far ahead of another),
-                and cap at 999.
+                {t('screens.health.eachFivePillarsMax200Each')} <strong>{t('screens.health.baseline')}</strong>{t('screens.health.fromYourOnboardingSurvey')} <strong>{t('screens.health.completions')}</strong>{t('screens.health.journeyActionsLast30Days')} <strong>{t('screens.health.connectedData')}</strong>{t('screens.health.fromWearablesLogs')} <strong>{t('screens.health.streakBonus')}</strong>{t('screens.health.forConsistencyWeSumFivePillars')}
+                <strong> {t('screens.health.balanceFactor')}</strong>{t('screens.health.itDampensWhenOnePillarFar')}
               </p>
-              <p>
-                Mark any journey event complete → the pillar it targets goes up. Keep it going day after day →
-                the streak bonus kicks in. Connect a wearable → the connected-data bar fills.
-                Balance across all five → the balance factor stays at 1.0× and every point counts fully.
+              <p>{t('screens.health.markAnyJourneyEventCompletePillar')}
               </p>
               <p className="pt-2">
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/autopilot')}>

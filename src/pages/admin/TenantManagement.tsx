@@ -184,16 +184,14 @@ export default function TenantManagement() {
               <div key={membership.tenant_id} className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <p className="font-medium">{membership.tenants.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Role: {membership.role} • Status: {membership.status}
-                  </p>
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.roleRoleStatusStatus', { role: membership.role, status: membership.status })}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge className={TENANT_CONFIGS[membership.tenants.slug as keyof typeof TENANT_CONFIGS]?.color}>
                     {membership.tenants.slug}
                   </Badge>
                   {membership.tenant_id === activeTenantId && (
-                    <Badge variant="outline">Active</Badge>
+                    <Badge variant="outline">{t('screens.admin.active')}</Badge>
                   )}
                 </div>
               </div>

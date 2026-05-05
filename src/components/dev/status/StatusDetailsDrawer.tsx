@@ -100,9 +100,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                       <div>
                         <div className="font-medium text-sm">{service.name}</div>
                         {service.lastCode && (
-                          <div className="text-xs text-muted-foreground">
-                            Status: {service.lastCode}
-                          </div>
+                          <div className="text-xs text-muted-foreground">{t('screens.dev.statusLastcode', { lastCode: service.lastCode })}</div>
                         )}
                       </div>
                     </div>

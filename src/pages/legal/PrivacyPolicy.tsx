@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
             variant="ghost" 
             size="icon"
             onClick={() => navigate(-1)}
-            aria-label="Go back"
+            aria-label={t('screens.legal.goBack')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -38,15 +38,13 @@ const PrivacyPolicy = () => {
             {t('screens.legal.privacyPolicyForMaxinaMobileApplication')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong> 6th April 2026
+            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text6thApril2026')}
           </p>
 
-          <p className="text-foreground/90 leading-relaxed">
-            Thank you for choosing to use Maxina Mobile ("App"), which is developed and provided by Exafy LTD ("we," "us," or "our"), a company based in Abu Dhabi, United Arab Emirates (UAE). This Privacy Policy explains how we collect, use, disclose, and protect your personal data when you use Maxina Mobile, including your rights under the EU General Data Protection Regulation (GDPR) and applicable UAE data protection regulations, and how we comply with the requirements of the Apple App Store and Google Play Store.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.thankYouForChoosingUseMaxina')}
           </p>
 
-          <p className="text-foreground/90 leading-relaxed">
-            By downloading, accessing, or using Maxina Mobile, you acknowledge that you have read, understood, and agree to the practices described in this Policy. If you do not agree with these terms, please do not use the App.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.byDownloadingAccessingUsingMaxinaMobile')}
           </p>
 
           {/* Section 1 */}
@@ -55,13 +53,11 @@ const PrivacyPolicy = () => {
           </h2>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text11AboutUs')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            Exafy LTD is incorporated in Abu Dhabi, UAE. Our goal is to provide a secure, user-friendly mobile application—Maxina Mobile—built on top of the Vitana System ("System"). The Vitana System provides technological infrastructure and backend services used to support Maxina Mobile's features.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.exafyLtdIncorporatedAbuDhabiUae')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text12Scope')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            This Privacy Policy applies to all users of Maxina Mobile, regardless of their geographic location, including users in the European Union (EU), United Arab Emirates (UAE), and elsewhere.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.thisPrivacyPolicyAppliesAllUsers')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text13Compliance')}</h3>
@@ -90,13 +86,11 @@ const PrivacyPolicy = () => {
           </ul>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text23LocationDataIfApplicable')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            If you permit us to access location data (e.g., precise location via GPS), we may collect this information to provide location-based services. You can control whether the App has access to location data in your device settings.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.ifYouPermitUsAccessLocation')}
           </p>
 
           <h3 className="text-lg font-medium text-foreground mt-6 mb-3">{t('screens.legal.text24CookiesSimilarTechnologies')}</h3>
-          <p className="text-foreground/90 leading-relaxed">
-            We may use cookies or similar tracking technologies within the App or on associated websites to understand usage patterns, remember preferences, and enhance user experience. You have the choice to manage your cookie preferences via your device or browser settings, depending on platform capabilities.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weMayUseCookiesSimilarTracking')}
           </p>
 
           {/* Section 3 */}
@@ -142,16 +136,14 @@ const PrivacyPolicy = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text6InternationalDataTransfers')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            Given that Exafy LTD operates in the UAE, your data may be processed and stored in servers located outside your country of residence, including countries within or outside the European Economic Area (EEA). If we transfer your data outside of the EEA, we will take measures to ensure adequate protection, such as implementing standard contractual clauses (SCCs) or equivalent legal mechanisms in compliance with GDPR.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.givenThatExafyLtdOperatesUae')}
           </p>
 
           {/* Section 7 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text7DataRetention')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed mb-4">
-            We will only retain your personal data for as long as necessary to fulfill the purposes outlined in this Privacy Policy or as required by law. The criteria used to determine retention periods include:
+          <p className="text-foreground/90 leading-relaxed mb-4">{t('screens.legal.weWillOnlyRetainYourPersonal')}
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.durationYourRelationshipWithUsE')}</li>
@@ -161,8 +153,7 @@ const PrivacyPolicy = () => {
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text8DataSecurity')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            We are committed to protecting your personal data by implementing appropriate technical and organizational security measures. These measures include encryption, access controls, and secure servers to safeguard your information against unauthorized access, alteration, disclosure, or destruction. However, no method of electronic transmission or storage is completely secure, and we cannot guarantee absolute security.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weCommittedProtectingYourPersonalData')}
           </p>
 
           {/* Section 9 */}
@@ -181,47 +172,41 @@ const PrivacyPolicy = () => {
             <li><strong>{t('screens.legal.rightObject')}</strong> {t('screens.legal.youCanObjectCertainProcessingActivities')}</li>
             <li><strong>{t('screens.legal.rightWithdrawConsent')}</strong> {t('screens.legal.ifWeRelyConsentProcessYour')}</li>
           </ol>
-          <p className="text-foreground/90 leading-relaxed mt-4">
-            To exercise any of these rights, please contact us using the contact details provided in Section 13. We will respond to your request within the time limits stipulated by GDPR and other applicable data protection laws.
+          <p className="text-foreground/90 leading-relaxed mt-4">{t('screens.legal.exerciseAnyTheseRightsPleaseContact')}
           </p>
 
           {/* Section 10 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text10ChildrenSPrivacy')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            Maxina Mobile is not intended for use by children under the age of 16 (or such other age as defined by local law). We do not knowingly collect personal data from children. If you believe that a child under 16 has provided personal information to us, please contact us immediately, and we will take steps to delete such information.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.maxinaMobileNotIntendedForUse')}
           </p>
 
           {/* Section 11 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text11ThirdpartyServices')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            Maxina Mobile may contain links to third-party websites or integrate services operated by third parties (e.g., payment processors, analytics tools). We do not control and are not responsible for the privacy practices of these third parties. We encourage you to review their separate privacy policies to understand how they handle your personal data.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.maxinaMobileMayContainLinksThirdparty')}
           </p>
 
           {/* Section 12 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text12ChangesThisPrivacyPolicy')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed">
-            We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. If we make significant changes, we will notify you through the App or by other means. Your continued use of Maxina Mobile after the posting of the updated Privacy Policy constitutes your acceptance of those changes.
+          <p className="text-foreground/90 leading-relaxed">{t('screens.legal.weMayUpdateThisPrivacyPolicy')}
           </p>
 
           {/* Section 13 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text13ContactUs')}
           </h2>
-          <p className="text-foreground/90 leading-relaxed mb-4">
-            If you have any questions, concerns, or requests regarding this Privacy Policy or our data processing practices, please contact us at:
+          <p className="text-foreground/90 leading-relaxed mb-4">{t('screens.legal.ifYouHaveAnyQuestionsConcerns')}
           </p>
           <address className="not-italic text-foreground/90 leading-relaxed mb-4">
             <strong>{t('screens.legal.exafyLtd')}</strong><br />
             {t('screens.legal.alKhatemTower15thFloorAdgm')}<br />
             {t('screens.legal.abuDhabiUnitedArabEmirates')}<br />
-            <br />
-            Email: <a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>
+            <br />{t('screens.legal.email')} <a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>
           </address>
           <p className="text-foreground/90 leading-relaxed">
             {t('screens.legal.weWillDoOurBestAddress')}
@@ -230,10 +215,9 @@ const PrivacyPolicy = () => {
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.legal.lastUpdated')}</strong> 6th April 2026
+              <strong>{t('screens.legal.lastUpdated')}</strong>{t('screens.legal.text6thApril2026')}
             </p>
-            <p className="text-sm text-muted-foreground mt-4">
-              By using the Maxina Mobile Application, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree, please discontinue the use of the App immediately.
+            <p className="text-sm text-muted-foreground mt-4">{t('screens.legal.byUsingMaxinaMobileApplicationYou')}
             </p>
           </div>
         </article>

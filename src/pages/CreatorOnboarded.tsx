@@ -70,11 +70,9 @@ export default function CreatorOnboarded() {
               {/* Success Message */}
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
-                  <Sparkles className="w-8 h-8 inline-block text-yellow-500 mb-1" />
-                  {' '}Payment Setup Complete!
+                  <Sparkles className="w-8 h-8 inline-block text-yellow-500 mb-1" />{t('screens.creatoronboarded.value0PaymentSetupComplete', { value0: ' ' })}
                 </h1>
-                <p className="text-lg text-muted-foreground mt-2">
-                  You're all set to start earning from your Live Rooms
+                <p className="text-lg text-muted-foreground mt-2">{t('screens.creatoronboarded.youReAllSetStartEarning')}
                 </p>
               </div>
 

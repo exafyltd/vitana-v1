@@ -34,7 +34,7 @@ export function VaeaDraftsStrip() {
           className="w-full flex items-center justify-between gap-2"
         >
           <div className="text-left">
-            <div className="font-medium text-sm">Autopilot has {drafts.length} referral draft{drafts.length === 1 ? "" : "s"} for you</div>
+            <div className="font-medium text-sm">{t('screens.business.autopilotHasLengthReferralDraftValue1', { length: drafts.length, value1: drafts.length === 1 ? "" : "s" })}</div>
             <p className="text-xs text-muted-foreground">{t('screens.business.shadowDraftsReviewDismissPostingArrives')}</p>
           </div>
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -80,7 +80,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
             </Badge>
           )}
           {draft.match_score != null && (
-            <Badge variant="secondary">score {draft.match_score.toFixed(2)}</Badge>
+            <Badge variant="secondary">{t('screens.business.scoreValue0', { value0: draft.match_score.toFixed(2) })}</Badge>
           )}
         </div>
         <Button variant="ghost" size="sm" onClick={() => void onDismiss()} disabled={dismissing}>
@@ -100,8 +100,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
               target="_blank"
               rel="noreferrer"
               className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              View source <ExternalLink className="h-3 w-3" />
+            >{t('screens.business.viewSource')} <ExternalLink className="h-3 w-3" />
             </a>
           )}
         </div>

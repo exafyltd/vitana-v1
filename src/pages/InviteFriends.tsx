@@ -240,8 +240,7 @@ export default function InviteFriends() {
                       onClick={handleImportPhone}
                       disabled={importingPhone}
                     >
-                      {importingPhone ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Smartphone className="w-4 h-4 mr-1" />}
-                      Import Contacts
+                      {importingPhone ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Smartphone className="w-4 h-4 mr-1" />}{t('screens.invitefriends.importContacts')}
                     </Button>
                   ) : (
                     <Button size="sm" className="w-full" disabled>
@@ -292,8 +291,7 @@ export default function InviteFriends() {
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
                     <CardTitle className="text-base">{t('screens.invitefriends.lengthContacts', { length: contacts.length })}</CardTitle>
-                    <Badge variant="secondary" className="text-xs">
-                      {selectedCount} selected
+                    <Badge variant="secondary" className="text-xs">{t('screens.invitefriends.selectedcountSelected', { selectedCount })}
                     </Badge>
                   </div>
                   <Button variant="ghost" size="sm" onClick={toggleAll}>
@@ -417,8 +415,7 @@ export default function InviteFriends() {
               onClick={handleSend}
             >
               {sending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-              <Share2 className="w-4 h-4 mr-2" />
-              Send Invites ({selectedCount})
+              <Share2 className="w-4 h-4 mr-2" />{t('screens.invitefriends.sendInvitesSelectedcount', { selectedCount })}
             </Button>
           )}
         </div>
@@ -433,8 +430,7 @@ export default function InviteFriends() {
             onClick={handleSend}
           >
             {sending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-            <Share2 className="w-4 h-4 mr-2" />
-            Send Invites ({selectedCount})
+            <Share2 className="w-4 h-4 mr-2" />{t('screens.invitefriends.sendInvitesSelectedcount', { selectedCount })}
           </Button>
         </div>
       )}

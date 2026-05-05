@@ -122,8 +122,7 @@ export function FilteredView() {
                     </p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="text-xs">
-                  {filter.resultCount} results
+                <Badge variant="secondary" className="text-xs">{t('screens.dev.resultcountResults', { resultCount: filter.resultCount })}
                 </Badge>
               </div>
             </CardHeader>
@@ -131,19 +130,13 @@ export function FilteredView() {
             <CardContent className="pt-0">
               <div className="flex flex-wrap gap-2">
                 {filter.criteria.status && (
-                  <Badge variant="outline" className="text-xs">
-                    Status: {filter.criteria.status}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.statusStatus', { status: filter.criteria.status })}</Badge>
                 )}
                 {filter.criteria.agent && (
-                  <Badge variant="outline" className="text-xs">
-                    Agent: {filter.criteria.agent}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.agentAgent', { agent: filter.criteria.agent })}</Badge>
                 )}
                 {filter.criteria.dateRange && (
-                  <Badge variant="outline" className="text-xs">
-                    Last {filter.criteria.dateRange}
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">{t('screens.dev.lastDaterange', { dateRange: filter.criteria.dateRange })}</Badge>
                 )}
               </div>
             </CardContent>

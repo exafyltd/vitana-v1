@@ -143,8 +143,7 @@ export function ContactSourcePicker({
 
             {/* Contact count */}
             {count !== undefined && count > 0 && (
-              <span className="text-xs font-medium text-[hsl(var(--contact-sync-accent))] mt-1">
-                {count} contacts
+              <span className="text-xs font-medium text-[hsl(var(--contact-sync-accent))] mt-1">{t('screens.contacts.countContacts', { count })}
               </span>
             )}
           </motion.button>

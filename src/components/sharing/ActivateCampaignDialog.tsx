@@ -179,9 +179,7 @@ export function ActivateCampaignDialog({
                   />
                 </div>
                 {scheduledDate && (
-                  <p className="text-xs text-muted-foreground">
-                    Campaign will activate on {format(scheduledDate, "MMMM d, yyyy")} at {scheduledTime}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignWillActivateValue0AtScheduledtime', { value0: format(scheduledDate, "MMMM d, yyyy"), scheduledTime })}</p>
                 )}
               </div>
             )}

@@ -607,20 +607,17 @@ export default function AdminFeedback() {
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "active" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("active")}
-                >
-                  Active ({counts.open})
+                >{t('screens.admin.activeOpen', { open: counts.open })}
                 </button>
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "archive" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("archive")}
-                >
-                  Archive ({counts.total - counts.open})
+                >{t('screens.admin.archiveValue0', { value0: counts.total - counts.open })}
                 </button>
                 <button
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "all" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("all")}
-                >
-                  All ({counts.total})
+                >{t('screens.admin.allTotal', { total: counts.total })}
                 </button>
               </div>
             </div>
@@ -660,9 +657,7 @@ export default function AdminFeedback() {
         {activeTab === "specialists" && (
           <>
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.admin.vitanaYourMembersLifeCompanion')}</strong> Almost every conversation stays with her. The
-              colleagues below take over only when a member explicitly asks to be connected for a corporate /
-              organizational issue (bug, refund, account, support escalation). Click any card to customize.
+              <strong>{t('screens.admin.vitanaYourMembersLifeCompanion')}</strong>{t('screens.admin.almostEveryConversationStaysWithHer')}
             </p>
             {personasQuery.isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loading2')}</p>}
             <div className="grid gap-3 sm:grid-cols-2">
@@ -682,8 +677,7 @@ export default function AdminFeedback() {
                         <div className="flex items-center gap-2">
                           <h3 className="text-base font-semibold">{p.display_name}</h3>
                           {isVitana && (
-                            <Badge variant="default" className="text-[9px]">
-                              receptionist
+                            <Badge variant="default" className="text-[9px]">{t('screens.admin.receptionist')}
                             </Badge>
                           )}
                         </div>
@@ -702,12 +696,10 @@ export default function AdminFeedback() {
                       )}
                     </div>
                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                      <div>
-                        Handles: {isVitana
+                      <div>{t('screens.admin.handlesValue0', { value0: isVitana
                           ? "everything except customer-support handoffs"
-                          : (p.handles_kinds.join(", ") || "—")}
-                      </div>
-                      <div>Voice: {p.voice_id || "(not set)"}</div>
+                          : (p.handles_kinds.join(", ") || "—") })}</div>
+                      <div>{t('screens.admin.voiceValue0', { value0: p.voice_id || "(not set)" })}</div>
                       <div>{t('screens.admin.versionVVersion', { version: p.version })}</div>
                     </div>
                   </Card>

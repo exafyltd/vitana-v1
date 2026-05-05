@@ -139,20 +139,20 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
           </label>
           <label className="text-xs space-y-1">
             <span className="text-muted-foreground">{t('screens.business.category')}</span>
-            <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. supplement, coaching" />
+            <Input className="h-11" value={category} onChange={(e) => setCategory(e.target.value)} placeholder={t('screens.business.eGSupplementCoaching')} />
           </label>
         </div>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">{t('screens.business.title')}</span>
-          <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What you're recommending" />
+          <Input className="h-11" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('screens.business.whatYouReRecommending')} />
         </label>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">{t('screens.business.affiliateProductUrl')}</span>
-          <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" />
+          <Input className="h-11" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder={t('screens.business.https')} />
         </label>
         <label className="text-xs space-y-1 block">
           <span className="text-muted-foreground">{t('screens.business.personalNoteOptional')}</span>
-          <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why you trust it" />
+          <Input className="h-11" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('screens.business.whyYouTrustIt')} />
         </label>
         {err && <p className="text-xs text-destructive">{err}</p>}
         <div className="flex justify-end">
@@ -171,8 +171,7 @@ function AddCatalogForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaCatalogI
               }
             }}
           >
-            {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-            Save
+            {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         </div>
       </CardContent>

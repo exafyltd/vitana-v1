@@ -162,8 +162,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 {ROLE_LABELS[profile.role]}
               </Badge>
               {activeTenantId && (
-                <p className="text-xs text-muted-foreground">
-                  Tenant: {activeTenantId.substring(0, 8)}...
+                <p className="text-xs text-muted-foreground">{t('screens.profile.tenantValue0', { value0: activeTenantId.substring(0, 8) })}
                 </p>
               )}
             </div>
@@ -202,8 +201,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
               <Separator />
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
-                  Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
+                  <Shield className="h-4 w-4" />{t('screens.profile.switchRole')} {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
                 </label>
                 <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>

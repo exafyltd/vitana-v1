@@ -165,8 +165,7 @@ export default withScreenId(function Campaigns() {
           </UtilityActionButton>
 
           {isLoading ? (
-            <div className="text-center py-12 text-muted-foreground">
-              Loading campaigns...
+            <div className="text-center py-12 text-muted-foreground">{t('screens.sharing.loadingCampaigns')}
             </div>
           ) : campaigns && campaigns.length > 0 ? (
             <>

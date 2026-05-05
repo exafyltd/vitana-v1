@@ -177,8 +177,7 @@ export function VisibilityForm() {
           {healthShareConsent && (
             <Alert>
               <Heart className="h-4 w-4" />
-              <AlertDescription>
-                Your Vitana Index and Health Snapshot tab are now visible on your public profile.
+              <AlertDescription>{t('screens.profile.yourVitanaIndexHealthSnapshotTab')}
               </AlertDescription>
             </Alert>
           )}
@@ -210,9 +209,7 @@ export function VisibilityForm() {
                 <Activity className="w-12 h-12 mx-auto mb-3 text-primary" />
                 <h3 className="text-lg font-medium">{t('screens.profile.shareHealthData')}</h3>
               </div>
-              <p className="text-sm text-muted-foreground text-center">
-                By enabling this, your Vitana Index score and health insights will be visible 
-                on your public profile. You can disable this anytime.
+              <p className="text-sm text-muted-foreground text-center">{t('screens.profile.byEnablingThisYourVitanaIndex')}
               </p>
               <div className="flex gap-2">
                 <Button variant="outline" className="flex-1" onClick={() => setShowConsentDialog(false)}>

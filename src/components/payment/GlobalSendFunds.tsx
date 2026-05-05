@@ -249,9 +249,7 @@ export default function GlobalSendFunds({
                   <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-xs text-muted-foreground mt-1">
-                Available: {currentBalance.toLocaleString()} {currency}
-              </p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.payment.availableValue0Currency', { value0: currentBalance.toLocaleString(), currency })}</p>
             </div>
 
             {/* Amount Input */}

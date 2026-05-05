@@ -53,8 +53,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.missing_in_catalog.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">
-                    Every SPA route has a catalog entry. Nice.
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.everySpaRouteHasCatalogEntry')}
                   </p>
                 ) : (
                   data.missing_in_catalog.map((r) => (
@@ -64,8 +63,7 @@ export default function NavigatorCoverage() {
                     >
                       <span className="truncate font-mono">{r.route}</span>
                       {r.requires_auth && (
-                        <Badge variant="secondary" className="text-[10px]">
-                          auth
+                        <Badge variant="secondary" className="text-[10px]">{t('screens.admin.auth')}
                         </Badge>
                       )}
                     </div>
@@ -121,8 +119,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.dead_triggers.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">
-                    Every catalog entry has fired at least once.
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.everyCatalogEntryHasFiredAt')}
                   </p>
                 ) : (
                   data.dead_triggers.map((e) => (

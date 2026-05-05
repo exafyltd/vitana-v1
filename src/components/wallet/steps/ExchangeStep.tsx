@@ -129,9 +129,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Available: {fromBalance} {fromCurrency}
-          </p>
+          <p className="text-xs text-muted-foreground">{t('screens.wallet.availableFrombalanceFromcurrency', { fromBalance, fromCurrency })}</p>
         </div>
 
         {/* Swap Button */}
@@ -198,8 +196,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Exchanging...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.exchanging')}
               </>
             ) : (
               'Exchange'

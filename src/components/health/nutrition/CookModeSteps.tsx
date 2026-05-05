@@ -14,9 +14,7 @@ export function CookModeSteps({ steps }: CookModeStepsProps) {
   return (
     <div className="bg-muted/50 rounded-lg p-6 border border-border">
       <div className="text-center mb-6">
-        <p className="text-sm text-muted-foreground mb-2">
-          Step {currentStep + 1} of {steps.length}
-        </p>
+        <p className="text-sm text-muted-foreground mb-2">{t('screens.health.stepValue0Length', { value0: currentStep + 1, length: steps.length })}</p>
         <Progress value={((currentStep + 1) / steps.length) * 100} className="h-2" />
       </div>
       
@@ -37,8 +35,7 @@ export function CookModeSteps({ steps }: CookModeStepsProps) {
           className="flex-1"
           disabled={currentStep === steps.length - 1}
           onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))}
-        >
-          Next
+        >{t('screens.health.next')}
           <ChevronRight className="w-4 h-4 ml-2" />
         </Button>
       </div>

@@ -57,10 +57,7 @@ export default function OverviewHealth() {
         {kpi && (
           <Card>
             <CardContent className="p-4">
-              <div className="text-xs text-muted-foreground">
-                Last checked: {summaryQuery.data?.generated_at ? new Date(summaryQuery.data.generated_at).toLocaleString() : "—"}
-                {summaryQuery.data?.cached && " (cached)"}
-              </div>
+              <div className="text-xs text-muted-foreground">{t('screens.admin.lastCheckedValue0Value1', { value0: summaryQuery.data?.generated_at ? new Date(summaryQuery.data.generated_at).toLocaleString() : "—", value1: summaryQuery.data?.cached && " (cached)" })}</div>
             </CardContent>
           </Card>
         )}

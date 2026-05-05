@@ -123,8 +123,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               
               {profile.vitanaPercentile && (
                 <Badge className="mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full px-4 py-1.5 shadow-lg">
-                  <Trophy className="h-3.5 w-3.5 mr-1.5" />
-                  Top {100 - profile.vitanaPercentile}%
+                  <Trophy className="h-3.5 w-3.5 mr-1.5" />{t('screens.profile.topValue02', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
             </div>
@@ -215,8 +214,7 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
                   />
                 </div>
                 
-                <div className="text-xs text-muted-foreground pt-1">
-                  Goal: 90% · Streak: {Math.floor(Math.random() * 15 + 5)} days
+                <div className="text-xs text-muted-foreground pt-1">{t('screens.profile.goal90StreakValue0Days', { value0: Math.floor(Math.random() * 15 + 5) })}
                 </div>
               </div>
             </CardContent>
@@ -269,19 +267,19 @@ export function ProfileHealthTab({ profile, scope, editMode, onEditVisibility }:
               <div className="p-4 bg-gradient-to-br from-orange-50/90 to-rose-50/80 dark:from-orange-950/50 dark:to-rose-950/40 rounded-2xl border border-orange-200/50 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">🎉</span>
-                  <strong className="text-orange-700 dark:text-orange-400">{t('screens.profile.greatProgress')}</strong> Your exercise consistency has improved by 12% this month.
+                  <strong className="text-orange-700 dark:text-orange-400">{t('screens.profile.greatProgress')}</strong>{t('screens.profile.yourExerciseConsistencyHasImprovedBy')}
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-indigo-50/90 to-purple-50/80 dark:from-indigo-950/50 dark:to-purple-950/40 rounded-2xl border border-indigo-200/50 dark:border-indigo-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">😴</span>
-                  <strong className="text-indigo-700 dark:text-indigo-400">{t('screens.profile.sleepQuality')}</strong> You're averaging 7.5 hours of quality sleep. Keep it up!
+                  <strong className="text-indigo-700 dark:text-indigo-400">{t('screens.profile.sleepQuality')}</strong>{t('screens.profile.youReAveraging75Hours')}
                 </p>
               </div>
               <div className="p-4 bg-gradient-to-br from-green-50/90 to-emerald-50/80 dark:from-green-950/50 dark:to-emerald-950/40 rounded-2xl border border-green-200/50 dark:border-green-800/30 shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="text-lg mr-2">🥗</span>
-                  <strong className="text-green-700 dark:text-green-400">{t('screens.profile.nutritionTip')}</strong> Consider adding more leafy greens to boost your nutrition score.
+                  <strong className="text-green-700 dark:text-green-400">{t('screens.profile.nutritionTip')}</strong>{t('screens.profile.considerAddingMoreLeafyGreensBoost')}
                 </p>
               </div>
             </div>

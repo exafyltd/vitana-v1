@@ -31,8 +31,7 @@ export function PlanDetailView({ plan }: PlanDetailViewProps) {
           </div>
           {plan.ai_generated && (
             <Badge className="gap-1">
-              <Sparkles className="h-3 w-3" />
-              AI Generated
+              <Sparkles className="h-3 w-3" />{t('screens.health.aiGenerated')}
             </Badge>
           )}
         </div>

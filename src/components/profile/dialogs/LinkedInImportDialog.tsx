@@ -119,8 +119,7 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
           >
             {importing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Importing...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.profile.importing')}
               </>
             ) : (
               'Import Profile'

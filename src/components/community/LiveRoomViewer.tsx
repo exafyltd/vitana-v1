@@ -348,7 +348,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
                 <Input
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
-                  placeholder="Type a message..."
+                  placeholder={t('screens.community.typeMessage')}
                   className="flex-1"
                   onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                 />
@@ -396,7 +396,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium truncate">{participant.name}</p>
                         {participant.isHost && (
-                          <Badge variant="secondary" className="text-xs">Host</Badge>
+                          <Badge variant="secondary" className="text-xs">{t('screens.community.host')}</Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-1 mt-1">

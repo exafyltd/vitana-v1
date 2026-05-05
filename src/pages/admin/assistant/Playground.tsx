@@ -69,8 +69,7 @@ export default function AssistantPlayground() {
               className="h-80 overflow-y-auto border rounded-lg p-4 mb-4 space-y-3 bg-muted/30"
             >
               {messages.length === 0 && (
-                <p className="text-sm text-muted-foreground text-center py-12">
-                  Send a message to start testing...
+                <p className="text-sm text-muted-foreground text-center py-12">{t('screens.admin.sendMessageStartTesting')}
                 </p>
               )}
               {messages.map((msg, i) => (
@@ -103,7 +102,7 @@ export default function AssistantPlayground() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send()}
-                placeholder="Type a message..."
+                placeholder={t('screens.admin.typeMessage')}
                 disabled={loading}
               />
               <Button onClick={send} disabled={loading || !input.trim()}>
@@ -113,9 +112,7 @@ export default function AssistantPlayground() {
           </CardContent>
         </Card>
 
-        <p className="text-xs text-muted-foreground">
-          Messages are sent to the gateway conversation endpoint with your admin token.
-          Responses reflect the current tenant personality, tools, and routing config.
+        <p className="text-xs text-muted-foreground">{t('screens.admin.messagesSentGatewayConversationEndpointWith')}
         </p>
       </div>
     </AppLayout>

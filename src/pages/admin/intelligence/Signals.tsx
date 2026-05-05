@@ -80,9 +80,7 @@ export default function IntelligenceSignals() {
           <div className="rounded-xl border bg-card p-8 text-center">
             <Zap className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('screens.admin.signalsNotActive')}</h3>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              The predictive signals engine has not been activated yet.
-              Signals will appear here once the D44 pipeline is enabled.
+            <p className="text-sm text-muted-foreground max-w-md mx-auto">{t('screens.admin.predictiveSignalsEngineHasNotActivated')}
             </p>
           </div>
         </div>

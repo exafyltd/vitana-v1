@@ -150,9 +150,7 @@ const Index = () => {
 
           {/* Footer Info */}
           <div className="mt-12 pt-8 border-t border-border/50">
-            <p className="text-sm text-muted-foreground">
-              VITANA is a comprehensive digital health platform offering multiple specialized environments 
-              for different wellness communities and professional healthcare management.
+            <p className="text-sm text-muted-foreground">{t('screens.index.vitanaComprehensiveDigitalHealthPlatformOffering')}
             </p>
           </div>
         </div>

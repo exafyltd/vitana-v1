@@ -201,8 +201,7 @@ export function HealthReportUploadSheet({
                   variant="ghost" 
                   size="sm" 
                   onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
-                >
-                  Change
+                >{t('screens.health.change')}
                 </Button>
               </div>
             ) : (

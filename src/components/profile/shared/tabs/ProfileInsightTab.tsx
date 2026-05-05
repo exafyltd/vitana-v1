@@ -287,8 +287,7 @@ export function ProfileInsightTab({
               </div>
               {profile.vitanaPercentile && (
                 <Badge className="w-full justify-center bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full py-2">
-                  <TrendingUp className="h-3 w-3 mr-1.5" />
-                  Top {100 - profile.vitanaPercentile}% Wellness
+                  <TrendingUp className="h-3 w-3 mr-1.5" />{t('screens.profile.topValue0Wellness', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
             </CardContent>

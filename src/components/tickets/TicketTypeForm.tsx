@@ -113,9 +113,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
         <Card key={index} className="border-border/60">
           <CardContent className="pt-4 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">
-                Ticket {index + 1}
-              </span>
+              <span className="text-sm font-medium text-muted-foreground">{t('screens.tickets.ticketValue0', { value0: index + 1 })}</span>
               <Button
                 type="button"
                 variant="ghost"
@@ -133,13 +131,12 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                 <Input
                   value={ticket.name}
                   onChange={(e) => updateTicketType(index, "name", e.target.value)}
-                  placeholder="e.g., General Admission"
+                  placeholder={t('screens.tickets.eGGeneralAdmission')}
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label className="text-xs">
-                  Price ({CURRENCY_SYMBOLS[ticket.currency] || ticket.currency}) *
+                <Label className="text-xs">{t('screens.tickets.priceValue0', { value0: CURRENCY_SYMBOLS[ticket.currency] || ticket.currency })}
                 </Label>
                 <div className="flex gap-2 mt-1">
                   <Input
@@ -172,7 +169,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
               <Textarea
                 value={ticket.description}
                 onChange={(e) => updateTicketType(index, "description", e.target.value)}
-                placeholder="What's included with this ticket?"
+                placeholder={t('screens.tickets.whatSIncludedWithThisTicket')}
                 className="mt-1 min-h-[60px]"
               />
             </div>

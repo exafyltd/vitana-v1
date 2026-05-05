@@ -123,13 +123,11 @@ export function MemoryTimelineTab() {
           <span className="font-medium">{t('screens.memory.type')}</span> {item.memoryType || "insight"}
         </div>
         {item.confidenceScore && (
-          <div className="text-sm text-amber-600 dark:text-amber-500">
-            Confidence: {Math.round(item.confidenceScore * 100)}%
+          <div className="text-sm text-amber-600 dark:text-amber-500">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
           </div>
         )}
         {item.metadata && (
-          <div className="text-xs text-muted-foreground/70">
-            Additional metadata available
+          <div className="text-xs text-muted-foreground/70">{t('screens.memory.additionalMetadataAvailable')}
           </div>
         )}
       </div>
@@ -250,8 +248,7 @@ export function MemoryTimelineTab() {
                     )}
 
                     {item.confidenceScore && (
-                      <div className="mt-2 text-xs text-muted-foreground">
-                        Confidence: {Math.round(item.confidenceScore * 100)}%
+                      <div className="mt-2 text-xs text-muted-foreground">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
                       </div>
                     )}
                   </div>

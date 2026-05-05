@@ -62,9 +62,9 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.channels')}</strong> LinkedIn, X, Instagram, Email, Blog<br/>
-          <strong>{t('screens.sharing.duration')}</strong> 3 weeks<br/>
-          <strong>{t('screens.sharing.estReach')}</strong> 50K-100K impressions
+          <strong>{t('screens.sharing.channels')}</strong>{t('screens.sharing.linkedinXInstagramEmailBlog')}<br/>
+          <strong>{t('screens.sharing.duration')}</strong>{t('screens.sharing.text3Weeks')}<br/>
+          <strong>{t('screens.sharing.estReach')}</strong>{t('screens.sharing.text50k100kImpressions')}
         </div>
       </div>
     )
@@ -96,8 +96,8 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.format')}</strong> Blog posts + Email digests<br/>
-          <strong>{t('screens.sharing.goal')}</strong> Build authority and trust over 8 weeks
+          <strong>{t('screens.sharing.format')}</strong>{t('screens.sharing.blogPostsEmailDigests')}<br/>
+          <strong>{t('screens.sharing.goal')}</strong>{t('screens.sharing.buildAuthorityTrustOver8Weeks')}
         </div>
       </div>
     )
@@ -130,7 +130,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.bestFor')}</strong> Webinars, launches, live events
+          <strong>{t('screens.sharing.bestFor')}</strong>{t('screens.sharing.webinarsLaunchesLiveEvents')}
         </div>
       </div>
     )
@@ -162,8 +162,8 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.channels')}</strong> All platforms + paid ads<br/>
-          <strong>{t('screens.sharing.duration')}</strong> 4 weeks intensive campaign
+          <strong>{t('screens.sharing.channels')}</strong>{t('screens.sharing.allPlatformsPaidAds')}<br/>
+          <strong>{t('screens.sharing.duration')}</strong>{t('screens.sharing.text4WeeksIntensiveCampaign')}
         </div>
       </div>
     )
@@ -195,7 +195,7 @@ const getCampaignTemplateCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.bestFor')}</strong> Clearance, limited inventory, time-sensitive offers
+          <strong>{t('screens.sharing.bestFor')}</strong>{t('screens.sharing.clearanceLimitedInventoryTimesensitiveOffers')}
         </div>
       </div>
     )
@@ -233,8 +233,8 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.last7Days')}</strong> 24 posts auto-scheduled<br/>
-          <strong>{t('screens.sharing.avgEngagement')}</strong> +32% vs manual posts
+          <strong>{t('screens.sharing.last7Days')}</strong>{t('screens.sharing.text24PostsAutoscheduled')}<br/>
+          <strong>{t('screens.sharing.avgEngagement')}</strong>{t('screens.sharing.text32VsManualPosts')}
         </div>
       </div>
     )
@@ -268,7 +268,7 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.timeSaved')}</strong> ~3 hours per blog post
+          <strong>{t('screens.sharing.timeSaved')}</strong>{t('screens.sharing.text3HoursPerBlogPost')}
         </div>
       </div>
     )
@@ -299,7 +299,7 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.avgBoost')}</strong> +45% additional reach per repost
+          <strong>{t('screens.sharing.avgBoost')}</strong>{t('screens.sharing.text45AdditionalReachPerRepost')}
         </div>
       </div>
     )
@@ -333,7 +333,7 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.strategy')}</strong> Keep valuable content in circulation
+          <strong>{t('screens.sharing.strategy')}</strong>{t('screens.sharing.keepValuableContentCirculation')}
         </div>
       </div>
     )
@@ -367,7 +367,7 @@ const getAutomationRuleCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.result')}</strong> +28% relevance score, -15% unsubscribes
+          <strong>{t('screens.sharing.result')}</strong>{t('screens.sharing.text28RelevanceScore15Unsubscribes')}
         </div>
       </div>
     )
@@ -402,7 +402,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
           </ul>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.example')}</strong> "Your longevity journey starts with small, sustainable changes. We're here to guide you every step of the way."
+          <strong>{t('screens.sharing.example')}</strong>{t('screens.sharing.yourLongevityJourneyStartsWithSmall')}
         </div>
       </div>
     )
@@ -433,7 +433,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.format')}</strong> SVG, PNG, JPG • High-res & web-optimized
+          <strong>{t('screens.sharing.format')}</strong>{t('screens.sharing.svgPngJpgHighresWeboptimized')}
         </div>
       </div>
     )
@@ -464,7 +464,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.includes')}</strong> Image specs, hashtag strategy, posting times
+          <strong>{t('screens.sharing.includes')}</strong>{t('screens.sharing.imageSpecsHashtagStrategyPostingTimes')}
         </div>
       </div>
     )
@@ -495,7 +495,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.editable')}</strong> Canva, Figma, or directly in-app
+          <strong>{t('screens.sharing.editable')}</strong>{t('screens.sharing.canvaFigmaDirectlyInapp')}
         </div>
       </div>
     )
@@ -526,7 +526,7 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
           </div>
         </div>
         <div className="text-xs text-muted-foreground border-t pt-2">
-          <strong>{t('screens.sharing.usage')}</strong> Copy-paste or customize for your needs
+          <strong>{t('screens.sharing.usage')}</strong>{t('screens.sharing.copypasteCustomizeForYourNeeds')}
         </div>
       </div>
     )

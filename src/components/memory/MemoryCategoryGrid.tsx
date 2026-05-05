@@ -175,8 +175,7 @@ export function MemoryCategoryGrid() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">{t('screens.memory.memoryGarden')}</h2>
-          <p className="text-sm text-muted-foreground">
-            {metadata?.total_memories_count || 0} total memories across all categories
+          <p className="text-sm text-muted-foreground">{t('screens.memory.value0TotalMemoriesAcrossAllCategories', { value0: metadata?.total_memories_count || 0 })}
           </p>
         </div>
         <Button

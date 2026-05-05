@@ -303,7 +303,7 @@ export default function ServiceDetailDrawer({ service, open, onOpenChange }: Ser
           {/* Tags */}
           {serviceDetail.tags.length > 0 && (
             <div>
-              <h4 className="font-medium mb-2">Tags</h4>
+              <h4 className="font-medium mb-2">{t('screens.health.tags')}</h4>
               <div className="flex gap-2 flex-wrap">
                 {serviceDetail.tags.map((tag, index) => (
                   <Badge key={index} variant="secondary" className="text-xs">

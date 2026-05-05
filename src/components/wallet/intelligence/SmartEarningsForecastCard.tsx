@@ -99,8 +99,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
             <TrendingUp className="h-5 w-5 text-primary" />
             {t('screens.wallet.earningForecast')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            +{totalPotential} VTNA Available
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.totalpotentialVtnaAvailable', { totalPotential })}
           </Badge>
         </div>
       </CardHeader>
@@ -114,7 +113,7 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
           </div>
           <Progress value={completionProgress} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            {t('screens.wallet.trackEarn')} <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span> this week
+            {t('screens.wallet.trackEarn')} <span className="font-semibold text-primary">{t('screens.wallet.text150Vtna')}</span>{t('screens.wallet.thisWeek')}
           </p>
         </div>
 
@@ -142,12 +141,10 @@ export function SmartEarningsForecastCard({ className }: SmartEarningsForecastCa
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
-                    +{opportunity.potential} VTNA
+                  <Badge variant="secondary" className="text-xs">{t('screens.wallet.potentialVtna', { potential: opportunity.potential })}
                   </Badge>
                   {opportunity.urgency && (
-                    <Badge variant="outline" className={`text-xs ${getUrgencyColor(opportunity.urgency)}`}>
-                      {opportunity.urgency} priority
+                    <Badge variant="outline" className={`text-xs ${getUrgencyColor(opportunity.urgency)}`}>{t('screens.wallet.urgencyPriority', { urgency: opportunity.urgency })}
                     </Badge>
                   )}
                 </div>

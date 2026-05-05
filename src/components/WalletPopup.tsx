@@ -143,8 +143,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Wallet className="w-4 h-4 text-green-500" />
             </div>
             <span>{t('screens.common.digitalWallet')}</span>
-            <Badge variant="outline" className="ml-auto text-green-600 border-green-200">
-              {loading ? '...' : currentBalance.toLocaleString()} VTNA
+            <Badge variant="outline" className="ml-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : currentBalance.toLocaleString() })}
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -228,9 +227,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">{t('screens.common.recentTransactions')}</p>
-                <Badge variant="outline" className="text-xs">
-                  Last {mockTransactions.length}
-                </Badge>
+                <Badge variant="outline" className="text-xs">{t('screens.common.lastLength', { length: mockTransactions.length })}</Badge>
               </div>
               
               {mockTransactions.map((transaction) => (
@@ -248,8 +245,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
                       </div>
                     </div>
                     
-                    <div className={cn("text-sm font-medium", getTransactionColor(transaction.type))}>
-                      {transaction.amount > 0 ? '+' : ''}{transaction.amount} VTNA
+                    <div className={cn("text-sm font-medium", getTransactionColor(transaction.type))}>{t('screens.common.value0AmountVtna', { value0: transaction.amount > 0 ? '+' : '', amount: transaction.amount })}
                     </div>
                   </div>
                 </Card>

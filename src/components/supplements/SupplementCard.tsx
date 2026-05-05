@@ -22,8 +22,7 @@ export function SupplementCard({ supplement, onEdit, onDelete }: SupplementCardP
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold truncate">{supplement.name}</h3>
               {!supplement.is_active && (
-                <Badge variant="secondary" className="text-xs">
-                  Inactive
+                <Badge variant="secondary" className="text-xs">{t('screens.supplements.inactive')}
                 </Badge>
               )}
             </div>

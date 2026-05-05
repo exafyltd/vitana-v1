@@ -94,8 +94,7 @@ function StreamSupervision() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Video className="w-5 h-5 text-red-500" />
-                    Active Streams ({mockStreams.length})
+                    <Video className="w-5 h-5 text-red-500" />{t('screens.admin.activeStreamsLength', { length: mockStreams.length })}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -110,7 +109,7 @@ function StreamSupervision() {
                         </div>
                         <div>
                           <p className="font-medium">{stream.title}</p>
-                          <p className="text-sm text-muted-foreground">Host: {stream.host} • {stream.duration}</p>
+                          <p className="text-sm text-muted-foreground">{t('screens.admin.hostHostDuration', { host: stream.host, duration: stream.duration })}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">

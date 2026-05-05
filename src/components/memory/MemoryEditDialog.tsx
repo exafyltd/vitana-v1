@@ -112,13 +112,12 @@ export function MemoryEditDialog({
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter memory content..."
+              placeholder={t('screens.memory.enterMemoryContent')}
               rows={4}
               disabled={isConversation}
             />
             {isConversation && (
-              <p className="text-xs text-muted-foreground">
-                Conversation messages cannot be edited
+              <p className="text-xs text-muted-foreground">{t('screens.memory.conversationMessagesCannotEdited')}
               </p>
             )}
           </div>
@@ -161,8 +160,7 @@ export function MemoryEditDialog({
           {/* Confidence Score (for AI insights) */}
           {(source === "ai" || memory?.source === "ai") && !isConversation && (
             <div className="space-y-2">
-              <Label htmlFor="confidence">
-                Confidence Score: {confidenceScore}%
+              <Label htmlFor="confidence">{t('screens.memory.confidenceScoreConfidencescore', { confidenceScore })}
               </Label>
               <Slider
                 id="confidence"
@@ -183,7 +181,7 @@ export function MemoryEditDialog({
                 id="tags"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                placeholder="health, personal, goals"
+                placeholder={t('screens.memory.healthPersonalGoals')}
               />
             </div>
           )}

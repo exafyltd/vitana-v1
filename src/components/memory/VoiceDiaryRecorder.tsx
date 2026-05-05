@@ -493,17 +493,13 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                   : "Your Voice Entry"}
               </h3>
               {!isRecording && recordingDuration > 0 && (
-                <Badge variant="outline">
-                  Duration: {formatDuration(recordingDuration)}
-                </Badge>
+                <Badge variant="outline">{t('screens.memory.durationValue0', { value0: formatDuration(recordingDuration) })}</Badge>
               )}
             </div>
 
             {isRecording && useBackendSTT && (
               <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-sm text-amber-900 dark:text-amber-200">
-                {t('screens.memory.yourTranscriptionWillAppearHereAs')} <strong>{t('screens.memory.stop')}</strong>.
-                Your phone's browser doesn't support live word-by-word
-                transcription, so the full text shows up after recording ends.
+                {t('screens.memory.yourTranscriptionWillAppearHereAs')} <strong>{t('screens.memory.stop')}</strong>{t('screens.memory.yourPhoneSBrowserDoesnT')}
               </div>
             )}
 
@@ -520,8 +516,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
             />
 
             {interimText && isRecording && !useBackendSTT && (
-              <p className="text-xs text-muted-foreground italic">
-                Interim text appears in gray until finalized...
+              <p className="text-xs text-muted-foreground italic">{t('screens.memory.interimTextAppearsGrayUntilFinalized')}
               </p>
             )}
 
@@ -534,8 +529,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                 >
                   {isSaving ? (
                     <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Saving…
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.memory.saving2')}
                     </>
                   ) : (
                     <>
@@ -552,8 +546,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
                     setHasActiveSession(false);
                   }}
                   disabled={isSaving}
-                >
-                  Discard
+                >{t('screens.memory.discard')}
                 </Button>
               </div>
             )}

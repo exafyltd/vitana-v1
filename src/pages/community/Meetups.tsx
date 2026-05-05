@@ -374,7 +374,7 @@ const EditButton = ({ onEdit }: { onEdit: () => void }) => (
             onEdit();
           }}
           className="h-10 w-10 rounded-full bg-background/10 hover:bg-background/20 text-white border border-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
-          aria-label="Edit meetup"
+          aria-label={t('screens.community.editMeetup')}
         >
           <Pencil className="h-4 w-4" />
         </Button>

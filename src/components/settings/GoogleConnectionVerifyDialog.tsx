@@ -139,18 +139,13 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
           )}
 
           {error && !isFetching && (
-            <div className="text-sm text-destructive py-4 break-words">
-              Couldn't reach the verify endpoint: {error instanceof Error ? error.message : String(error)}
-            </div>
+            <div className="text-sm text-destructive py-4 break-words">{t('screens.settings.couldnTReachVerifyEndpointValue0', { value0: error instanceof Error ? error.message : String(error) })}</div>
           )}
 
           {!isFetching && data?.ok && (
             <div className="space-y-3 py-2">
               <div className="text-sm text-muted-foreground break-words">
-                <span className="font-medium text-foreground">{data.connection?.email}</span> —
-                connected {data.connection?.connected_at?.slice(0, 10)},
-                refresh_token {data.connection?.has_refresh_token ? "present" : "missing"},
-                token expires {data.connection?.token_expires_at?.slice(11, 19)} UTC.
+                <span className="font-medium text-foreground">{data.connection?.email}</span>{t('screens.settings.connectedValue0Refresh_tokenValue1TokenExpires', { value0: data.connection?.connected_at?.slice(0, 10), value1: data.connection?.has_refresh_token ? "present" : "missing", value2: data.connection?.token_expires_at?.slice(11, 19) })}
               </div>
               <ul className="space-y-2">
                 {rows.map(r => (
@@ -167,8 +162,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
                   </li>
                 ))}
               </ul>
-              <div className="text-xs text-muted-foreground pt-1">
-                {passed} / {rows.length} services reachable.
+              <div className="text-xs text-muted-foreground pt-1">{t('screens.settings.passedLengthServicesReachable', { passed, length: rows.length })}
               </div>
             </div>
           )}
@@ -179,13 +173,13 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
               <Music className="h-4 w-4" /> {t('screens.settings.playSongMusicPlayCapability')}
             </div>
             <div className="text-xs text-muted-foreground">
-              {t('screens.settings.calls')} <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>. Gateway searches YouTube with your token and returns a <code>{t('screens.settings.musicYoutubeCom')}</code> URL — opens in YouTube Music on Android or the web player on desktop.
+              {t('screens.settings.calls')} <code>{t('screens.settings.postapiv1capabilitiesmusicPlay')}</code>{t('screens.settings.gatewaySearchesYoutubeWithYourToken')} <code>{t('screens.settings.musicYoutubeCom')}</code>{t('screens.settings.urlOpensYoutubeMusicAndroidWeb')}
             </div>
             <div className="flex gap-2">
               <Input
                 value={songQuery}
                 onChange={(e) => setSongQuery(e.target.value)}
-                placeholder='e.g. "One Moment in Time Whitney Houston"'
+                placeholder={t('screens.settings.eGOneMomentTimeWhitney')}
                 disabled={invokeCapability.isPending}
                 onKeyDown={(e) => { if (e.key === "Enter") playSong(); }}
               />
@@ -201,8 +195,7 @@ export function GoogleConnectionVerifyDialog({ open, onOpenChange }: Props) {
               <div className="text-xs text-destructive break-words">{playError}</div>
             )}
             {lastPlay && !playError && (
-              <div className="text-xs text-muted-foreground break-words">
-                Opened <span className="font-medium text-foreground">{lastPlay.title}</span>
+              <div className="text-xs text-muted-foreground break-words">{t('screens.settings.opened')} <span className="font-medium text-foreground">{lastPlay.title}</span>
                 {lastPlay.channel ? ` — ${lastPlay.channel}` : ""}.
                 {lastPlay.url ? (
                   <>

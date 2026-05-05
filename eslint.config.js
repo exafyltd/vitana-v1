@@ -34,10 +34,10 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
-      // JSX text + translatable attributes: warn-level (Wave 6 graduates globally)
-      "i18n/no-raw-jsx-text": "warn",
-      // toast/sonner/notify first-arg literals: ERROR-level as of Wave 2.x.
-      // Any new untranslated toast added after this point fails the build.
+      // JSX text + translatable attributes: ERROR-level as of Wave 6.
+      // Any new hardcoded user-visible string fails the build.
+      "i18n/no-raw-jsx-text": "error",
+      // toast/sonner/notify first-arg literals: ERROR-level since Wave 2.x.
       "i18n/no-raw-toast-arg": "error",
     },
   }

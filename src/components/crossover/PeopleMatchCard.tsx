@@ -200,8 +200,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
                 size="sm"
                 onClick={() => handleChatClick(match)}
                 className="bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                💬 Chat
+              >{t('screens.crossover.chat')}
               </Button>
             </div>
           ))}

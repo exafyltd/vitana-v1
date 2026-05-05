@@ -213,9 +213,7 @@ export function AdminTable<T extends Record<string, any>>({
               <ChevronLeft className="mr-1 h-4 w-4" />
               {t('screens.admin.previous')}
             </Button>
-            <span className="text-sm text-muted-foreground">
-              Page {currentPage + 1} of {totalPages}
-            </span>
+            <span className="text-sm text-muted-foreground">{t('screens.admin.pageValue0Totalpages', { value0: currentPage + 1, totalPages })}</span>
             <Button
               variant="outline"
               size="sm"

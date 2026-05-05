@@ -495,8 +495,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 className="flex items-center gap-2 bg-secondary/50 rounded-lg px-3 py-2 text-sm"
               >
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                <span className="text-muted-foreground">
-                  Uploading... {progress.percentage}%
+                <span className="text-muted-foreground">{t('screens.messages.uploadingPercentage', { percentage: progress.percentage })}
                 </span>
               </div>
             ))}
@@ -563,7 +562,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               disabled={disabled}
               className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
-              aria-label="Message composer"
+              aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />
           </div>
@@ -586,7 +585,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             onClick={() => setShowVoiceRecorder(true)}
             disabled={isUploading || showVoiceRecorder}
             className="h-9 w-9 p-0 rounded-full shrink-0"
-            aria-label="Record voice message"
+            aria-label={t('screens.messages.recordVoiceMessage')}
           >
             <Mic className="h-4 w-4" />
           </Button>

@@ -128,7 +128,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                   variant="ghost"
                   className="absolute top-1.5 right-1.5 h-7 w-7 text-muted-foreground hover:text-destructive"
                   onClick={() => removeOffer(idx)}
-                  aria-label="Remove offering"
+                  aria-label={t('screens.profile.removeOffering')}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -193,7 +193,7 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
                       id={`curr-${idx}`}
                       value={o.currency ?? ""}
                       onChange={(e) => updateOffer(idx, { currency: e.target.value.toUpperCase().slice(0, 5) })}
-                      placeholder="EUR"
+                      placeholder={t('screens.profile.eur')}
                     />
                   </div>
                   <div className="space-y-1">
@@ -216,17 +216,14 @@ export function ServiceOfferingsDrawer({ open, onOpenChange, onSaved }: ServiceO
             ))}
 
             <Button variant="outline" onClick={addOffer} disabled={offers.length >= 20} className="w-full gap-2">
-              <Plus className="h-4 w-4" />
-              Add offering {offers.length >= 20 ? "(max 20)" : ""}
-            </Button>
+              <Plus className="h-4 w-4" />{t('screens.profile.addOfferingValue0', { value0: offers.length >= 20 ? "(max 20)" : "" })}</Button>
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
                 {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Save
+                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

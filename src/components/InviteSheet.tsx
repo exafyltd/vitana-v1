@@ -123,8 +123,7 @@ export function InviteSheet() {
           <Button onClick={handleCopy} disabled={!link?.url || loading} className="w-full">
             {copied ? (
               <>
-                <Check className="w-4 h-4 mr-2" />
-                Copied
+                <Check className="w-4 h-4 mr-2" />{t('screens.common.copied')}
               </>
             ) : (
               <>

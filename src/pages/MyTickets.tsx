@@ -40,8 +40,7 @@ export default function MyTickets() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">{t('screens.mytickets.myTickets')}</h1>
-              <p className="text-muted-foreground">
-                {tickets.length} ticket{tickets.length !== 1 ? "s" : ""} purchased
+              <p className="text-muted-foreground">{t('screens.mytickets.lengthTicketValue1Purchased', { length: tickets.length, value1: tickets.length !== 1 ? "s" : "" })}
               </p>
             </div>
           </div>
@@ -64,18 +63,15 @@ export default function MyTickets() {
         ) : (
           <Tabs defaultValue="upcoming" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="upcoming">
-                Upcoming ({upcomingTickets.length})
+              <TabsTrigger value="upcoming">{t('screens.mytickets.upcomingLength', { length: upcomingTickets.length })}
               </TabsTrigger>
-              <TabsTrigger value="past">
-                Past ({pastTickets.length})
+              <TabsTrigger value="past">{t('screens.mytickets.pastLength', { length: pastTickets.length })}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="upcoming" className="space-y-4">
               {upcomingTickets.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  No upcoming events
+                <div className="text-center py-12 text-muted-foreground">{t('screens.mytickets.noUpcomingEvents')}
                 </div>
               ) : (
                 upcomingTickets.map((ticket) => (
@@ -90,8 +86,7 @@ export default function MyTickets() {
 
             <TabsContent value="past" className="space-y-4">
               {pastTickets.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  No past events
+                <div className="text-center py-12 text-muted-foreground">{t('screens.mytickets.noPastEvents')}
                 </div>
               ) : (
                 pastTickets.map((ticket) => (

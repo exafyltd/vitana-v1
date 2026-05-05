@@ -348,8 +348,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                             e.stopPropagation();
                             handleConnect(platform);
                           }}
-                        >
-                          Manage
+                        >{t('screens.profile.manage')}
                         </Button>
                       )}
                     </>
@@ -362,8 +361,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                         e.stopPropagation();
                         handleConnect(platform);
                       }}
-                    >
-                      Connect
+                    >{t('screens.profile.connect')}
                     </Button>
                   ) : (
                     <span className="text-xs text-muted-foreground/40 italic">{t('screens.profile.notLinked')}</span>
@@ -403,23 +401,18 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
               <p className="text-xs text-muted-foreground line-clamp-3">{profile.linkedin_summary}</p>
             )}
             {profile.linkedin_synced_at && (
-              <p className="text-xs text-muted-foreground/60 mt-2">
-                Synced {new Date(profile.linkedin_synced_at).toLocaleDateString()}
-              </p>
+              <p className="text-xs text-muted-foreground/60 mt-2">{t('screens.profile.syncedValue0', { value0: new Date(profile.linkedin_synced_at).toLocaleDateString() })}</p>
             )}
           </div>
         )}
 
         {isOwnProfile && (
-          <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">
-            Connect accounts to auto-import bio, photos, and professional info
+          <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">{t('screens.profile.connectAccountsAutoimportBioPhotosProfessional')}
           </p>
         )}
 
         {/* ID Card decorative elements */}
-        <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">
-          ID #{profile.id.slice(0, 8)}
-        </div>
+        <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">{t('screens.profile.idValue0', { value0: profile.id.slice(0, 8) })}</div>
         <div className="absolute bottom-4 left-4 text-xs text-muted-foreground/50">
           @{profile.handle}
         </div>

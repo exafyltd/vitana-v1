@@ -99,10 +99,7 @@ export function MobileAccountCard({
           >
             <div className="flex gap-3">
               <Info className="h-4 w-4 text-white/60 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] leading-relaxed text-white/60">
-                Some personal information is used to personalize your experience,
-                improve trust, and support relevant services. You control what is
-                shared publicly.
+              <p className="text-[11px] leading-relaxed text-white/60">{t('screens.profile.somePersonalInformationUsedPersonalizeYour2')}
               </p>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { VisualHorizontalCard, VisualHorizontalCardProps } from './visual-horizo
 import { HorizontalCardSkeleton } from './horizontal-card-skeleton';
 import { cn } from '@/lib/utils';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
+import { t } from '@/lib/i18n-toast';
 
 interface HorizontalCardListProps<T extends StandardHorizontalCardProps | VisualHorizontalCardProps> {
   items: T[];
@@ -210,8 +211,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
 
   if (items.length === 0 && !isLoading) {
     return emptyState || (
-      <div className="text-center py-12 text-muted-foreground">
-        No items to display
+      <div className="text-center py-12 text-muted-foreground">{t('screens.ui.noItemsDisplay')}
       </div>
     );
   }

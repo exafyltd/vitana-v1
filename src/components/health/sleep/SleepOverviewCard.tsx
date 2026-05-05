@@ -54,9 +54,7 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
           <p className="text-lg font-bold">
             {planData.schedule}
           </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">
-            Consistent bedtime {planData.targetBedtime}
-          </p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.consistentBedtimeTargetbedtime', { targetBedtime: planData.targetBedtime })}</p>
         </div>
         
         {/* Program Progress */}
@@ -65,11 +63,8 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
             <Calendar className="w-4 h-4 text-sky-600 dark:text-sky-400" />
             <span className="text-sm font-medium text-slate-600 dark:text-slate-400">{t('screens.health.progress')}</span>
           </div>
-          <p className="text-lg font-bold">
-            Week {planData.currentWeek} of {planData.totalWeeks}
-          </p>
-          <p className="text-xs text-slate-600 dark:text-slate-400">
-            {planData.completionPercentage}% complete
+          <p className="text-lg font-bold">{t('screens.health.weekCurrentweekTotalweeks', { currentWeek: planData.currentWeek, totalWeeks: planData.totalWeeks })}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.completionpercentageComplete', { completionPercentage: planData.completionPercentage })}
           </p>
         </div>
       </div>
@@ -100,9 +95,7 @@ export function SleepOverviewCard({ planData, onRecalibrate }: SleepOverviewCard
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
             <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
-            <span className="text-xs text-slate-500/90 dark:text-slate-400/80 whitespace-nowrap">
-              Last updated {planData.lastUpdated}
-            </span>
+            <span className="text-xs text-slate-500/90 dark:text-slate-400/80 whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
           </div>
           <p className="text-sm italic text-slate-600/90 dark:text-slate-300/80">
             "{planData.aiInsight}"

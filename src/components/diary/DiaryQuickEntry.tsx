@@ -130,7 +130,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
             ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="What's on your mind today?"
+            placeholder={t('screens.diary.whatSYourMindToday')}
             className="flex-1 resize-none text-base leading-relaxed"
             autoFocus={!autoFocusText}
           />

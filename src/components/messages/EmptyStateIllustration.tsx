@@ -36,9 +36,7 @@ export default function EmptyStateIllustration({
           </div>
           
           <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noGroupsYet')}</h3>
-          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-            Create your first group to collaborate with multiple people at once in your{' '}
-            {context === 'global' ? 'global community' : 'professional network'}.
+          <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t('screens.messages.createYourFirstGroupCollaborateWith', { value0: ' ', value1: context === 'global' ? 'global community' : 'professional network' })}
           </p>
           
           {onCreateGroup && (
@@ -64,10 +62,7 @@ export default function EmptyStateIllustration({
         </div>
         
         <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noConversationsYet')}</h3>
-        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-          Start connecting with others in your{' '}
-          {context === 'global' ? 'global community' : 'professional network'}.
-          Your conversations will appear here.
+        <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t('screens.messages.startConnectingWithOthersYourValue0', { value0: ' ', value1: context === 'global' ? 'global community' : 'professional network' })}
         </p>
         
         {onAction && (

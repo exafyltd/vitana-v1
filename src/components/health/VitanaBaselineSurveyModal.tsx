@@ -152,8 +152,7 @@ export function VitanaBaselineSurveyModal({ open: controlledOpen, onOpenChange }
             </div>
             <DialogTitle>{current.title}</DialogTitle>
           </div>
-          <DialogDescription>
-            Five quick questions to set your Day-0 Vitana Index — one for each pillar. Step {step + 1} of {QUESTIONS.length}.
+          <DialogDescription>{t('screens.health.fiveQuickQuestionsSetYourDay0', { value0: step + 1, length: QUESTIONS.length })}
           </DialogDescription>
         </DialogHeader>
 

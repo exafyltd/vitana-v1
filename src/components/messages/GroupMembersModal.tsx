@@ -392,7 +392,7 @@ export default function GroupMembersModal({
                     setSearchTerm(e.target.value);
                     searchUsers(e.target.value);
                   }}
-                  placeholder="Search users to add..."
+                  placeholder={t('screens.messages.searchUsersAdd')}
                   className="pl-10"
                 />
               </div>
@@ -430,8 +430,7 @@ export default function GroupMembersModal({
           <ScrollArea className="h-64">
             <div className="space-y-2">
               {isLoading ? (
-                <div className="text-center py-4 text-muted-foreground">
-                  Loading members...
+                <div className="text-center py-4 text-muted-foreground">{t('screens.messages.loadingMembers')}
                 </div>
               ) : (
                 participants.map((participant) => {
@@ -483,8 +482,7 @@ export default function GroupMembersModal({
                               onClick={() => removeMember(participant.id, participant.user_id, displayName)}
                               className="text-destructive focus:text-destructive"
                             >
-                              <UserMinus className="w-4 h-4 mr-2" />
-                              Remove from group
+                              <UserMinus className="w-4 h-4 mr-2" />{t('screens.messages.removeFromGroup')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

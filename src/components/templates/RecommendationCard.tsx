@@ -96,8 +96,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
                     )}
                     {item.spots && (
                       <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        {item.spots} spots
+                        <Users className="w-3 h-3" />{t('screens.templates.spotsSpots', { spots: item.spots })}
                       </div>
                     )}
                   </div>
@@ -105,8 +104,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               ))}
             </div>
             {!showAll && items.length > maxItems && (
-              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">
-                View all {items.length} recommendations <ArrowRight className="w-4 h-4 ml-1" />
+              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             )}
           </CardContent>
@@ -175,8 +173,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
           )}
           
           {!showAll && items.length > maxItems && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">
-              View all {items.length} recommendations <ArrowRight className="w-4 h-4 ml-1" />
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           )}
         </CardContent>

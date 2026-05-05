@@ -120,8 +120,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
             <ArrowDown className="h-5 w-5 text-blue-600" />
             {t('screens.wallet.withdrawFunds')}
           </DialogTitle>
-          <DialogDescription>
-            Transfer money from your VITANA wallet to your bank account or card
+          <DialogDescription>{t('screens.wallet.transferMoneyFromYourVitanaWallet')}
           </DialogDescription>
         </DialogHeader>
 
@@ -187,8 +186,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
                         <Icon className="h-4 w-4" />
                         <span>{method.name}</span>
                         {method.fee > 0 && (
-                          <Badge variant="secondary" className="text-xs">
-                            ${method.fee} fee
+                          <Badge variant="secondary" className="text-xs">{t('screens.wallet.feeFee', { fee: method.fee })}
                           </Badge>
                         )}
                       </div>
@@ -240,14 +238,11 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
           >
             {isProcessing ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Processing...
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.wallet.processing')}
               </>
             ) : (
               <>
-                <ArrowDown className="h-4 w-4 mr-2" />
-                Withdraw ${withdrawAmountNum.toFixed(2)}
-              </>
+                <ArrowDown className="h-4 w-4 mr-2" />{t('screens.wallet.withdrawValue0', { value0: withdrawAmountNum.toFixed(2) })}</>
             )}
           </Button>
         </DialogFooter>

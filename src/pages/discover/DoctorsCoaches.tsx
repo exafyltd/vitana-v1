@@ -246,7 +246,7 @@ export default function DoctorsCoaches() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -269,9 +269,7 @@ export default function DoctorsCoaches() {
             <SplitBarList>
               <SplitBarTrigger value="find">{t('screens.discover.findProviders')}</SplitBarTrigger>
               <SplitBarTrigger value="matches">{t('screens.discover.bestMatches')}</SplitBarTrigger>
-              <SplitBarTrigger value="myproviders">
-                💛 My Providers {getBookmarksByType('provider').length > 0 && `(${getBookmarksByType('provider').length})`}
-              </SplitBarTrigger>
+              <SplitBarTrigger value="myproviders">{t('screens.discover.myProvidersValue0', { value0: getBookmarksByType('provider').length > 0 && `(${getBookmarksByType('provider').length})` })}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="find" className="space-y-6">
@@ -432,16 +430,14 @@ export default function DoctorsCoaches() {
                           size="sm" 
                           className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
                           onClick={() => navigate(`/discover/provider/${provider.id}`)}
-                        >
-                          View Profile
+                        >{t('screens.discover.viewProfile')}
                         </Button>
                         <Button 
                           size="sm" 
                           variant="default" 
                           className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
                           onClick={() => handleBookNow(provider)}
-                        >
-                          Book Now
+                        >{t('screens.discover.bookNow')}
                         </Button>
                   </div>
                 </CardContent>
@@ -685,7 +681,7 @@ export default function DoctorsCoaches() {
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                   <Clock className="h-4 w-4" />
-                                  <span>{format(appointmentDate, 'HH:mm')} - {appointment.duration_minutes} min</span>
+                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: format(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
                                 </div>
                                 {appointment.location && (
                                   <div className="flex items-center gap-2 text-sm">

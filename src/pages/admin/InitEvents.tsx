@@ -118,14 +118,12 @@ export default function InitEvents() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            Open SQL Editor →
+          >{t('screens.admin.openSqlEditor')}
           </a>
           <button
             onClick={() => navigate('/admin/community/events')}
             className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors font-medium"
-          >
-            View Events
+          >{t('screens.admin.viewEvents')}
           </button>
         </div>
       </div>

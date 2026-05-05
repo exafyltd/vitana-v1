@@ -208,7 +208,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
             id="screen_id"
             value={form.screen_id}
             onChange={(e) => setForm((f) => ({ ...f, screen_id: e.target.value }))}
-            placeholder="HOME.MATCHES"
+            placeholder={t('screens.admin.homeMatches')}
             disabled={!isCreate}
             className="font-mono"
           />
@@ -219,7 +219,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
             id="route"
             value={form.route}
             onChange={(e) => setForm((f) => ({ ...f, route: e.target.value }))}
-            placeholder="/home/matches"
+            placeholder={t('screens.admin.homematches')}
             className="font-mono"
           />
         </div>
@@ -366,7 +366,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
                 <Input
                   value={t.phrase}
                   onChange={(e) => updateOverride(i, { phrase: e.target.value })}
-                  placeholder="open my wallet"
+                  placeholder={t('screens.admin.openMyWallet')}
                   className="flex-1"
                 />
                 <label className="flex items-center gap-1 text-xs">
@@ -412,12 +412,9 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
       {entry && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Badge variant="outline">{entry.id.slice(0, 8)}</Badge>
-          <span>
-            Updated{" "}
-            {entry.updated_at ? new Date(entry.updated_at).toLocaleString() : "—"}
-          </span>
+          <span>{t('screens.admin.updatedValue0Value1', { value0: " ", value1: entry.updated_at ? new Date(entry.updated_at).toLocaleString() : "—" })}</span>
           {entry.tenant_id ? (
-            <Badge variant="secondary">tenant: {entry.tenant_id.slice(0, 8)}</Badge>
+            <Badge variant="secondary">{t('screens.admin.tenantValue0', { value0: entry.tenant_id.slice(0, 8) })}</Badge>
           ) : (
             <Badge variant="secondary">{t('screens.admin.shared')}</Badge>
           )}

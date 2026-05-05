@@ -343,9 +343,7 @@ export default function PublicCampaignLanding() {
                     <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-xs text-muted-foreground">{t('screens.publiccampaignlanding.channels')}</p>
-                      <p className="text-sm font-medium text-foreground">
-                        {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
-                      </p>
+                      <p className="text-sm font-medium text-foreground">{t('screens.publiccampaignlanding.lengthChannelValue1', { length: campaign.target_channels.length, value1: campaign.target_channels.length !== 1 ? 's' : '' })}</p>
                     </div>
                   </div>
                 )}
@@ -441,8 +439,7 @@ export default function PublicCampaignLanding() {
                         {user ? "Explore VITANA" : "Join in VITANA"}
                       </Button>
                       {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
-                          You'll sign in or create an account in the next step.
+                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">{t('screens.publiccampaignlanding.youLlSignCreateAccountNext')}
                         </p>
                       )}
                     </div>
@@ -458,7 +455,7 @@ export default function PublicCampaignLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              {t('screens.publiccampaignlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
+              {t('screens.publiccampaignlanding.poweredBy')} <span className="font-semibold text-foreground">VITANA</span>{t('screens.publiccampaignlanding.YourLongevityCommunity')}
             </p>
           </div>
         </div>
@@ -470,9 +467,7 @@ export default function PublicCampaignLanding() {
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Ticket className="h-5 w-5 text-primary" />
-                Get Tickets for {linkedEventTickets?.event_title || campaign.name}
-              </DialogTitle>
+                <Ticket className="h-5 w-5 text-primary" />{t('screens.publiccampaignlanding.getTicketsForValue0', { value0: linkedEventTickets?.event_title || campaign.name })}</DialogTitle>
             </DialogHeader>
             <EventTicketSelector 
               eventId={linkedEventId} 

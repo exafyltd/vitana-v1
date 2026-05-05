@@ -63,7 +63,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
               </div>
             </div>
             <p className="text-xs text-muted-foreground truncate mb-1">{coach.specialty}</p>
-            <p className="text-xs font-medium text-primary">from €{coach.sessions_from}</p>
+            <p className="text-xs font-medium text-primary">{t('screens.crossover.fromSessions_from', { sessions_from: coach.sessions_from })}</p>
             <p className="text-xs italic text-muted-foreground mt-1 line-clamp-1">"{coach.tagline}"</p>
           </div>
           <div className="flex flex-col items-end gap-1">

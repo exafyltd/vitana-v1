@@ -67,8 +67,7 @@ export function ProfileCardStack({
           <p className="text-muted-foreground mb-4">
             {t('screens.discovery.greatConnectionsBuiltDaily')}
           </p>
-          <p className="text-sm text-muted-foreground">
-            Check back tomorrow for 10 new fresh matches ✨
+          <p className="text-sm text-muted-foreground">{t('screens.discovery.checkBackTomorrowFor10New')}
           </p>
         </div>
       </div>

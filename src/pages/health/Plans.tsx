@@ -122,8 +122,7 @@ export default withScreenId(function Plans() {
             
             <SplitBarContent value="all">
               {isLoading ? (
-                <div className="text-center py-12 text-slate-600 dark:text-slate-400">
-                  Loading plans...
+                <div className="text-center py-12 text-slate-600 dark:text-slate-400">{t('screens.health.loadingPlans')}
                 </div>
               ) : (
                 <>
@@ -165,15 +164,13 @@ export default withScreenId(function Plans() {
                       <div className="space-y-1 text-sm text-slate-600 dark:text-slate-400">
                         <div>
                           <VitanaScoreTooltip score={autopilotData.vitanaScore}>
-                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">
-                              {autopilotData.vitanaScore} Vitana Score
+                            <button className="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">{t('screens.health.vitanascoreVitanaScore', { vitanaScore: autopilotData.vitanaScore })}
                             </button>
                           </VitanaScoreTooltip>
                           <span>{t('screens.health.text5ActivePlansSyncedCrosspillarSynergy', { synergyScore: autopilotData.synergyScore })}</span>
                         </div>
                         <div>
-                          {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span> · Adjustment: {autopilotData.lastAdjustment}
-                        </div>
+                          {t('screens.health.nextRecalibration')} <span className="font-medium text-slate-700 dark:text-slate-300">{autopilotData.nextRecalibration}</span>{t('screens.health.adjustmentLastadjustment', { lastAdjustment: autopilotData.lastAdjustment })}</div>
                       </div>
                     </div>
                     
@@ -182,20 +179,17 @@ export default withScreenId(function Plans() {
                       <button 
                         onClick={handleRecalibrateAll}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 text-[13px] font-medium transition-colors"
-                      >
-                        ⚙ Recalibrate All
+                      >{t('screens.health.recalibrateAll')}
                       </button>
                       <button 
                         onClick={handleViewReport}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
-                      >
-                        📈 View Detailed Report
+                      >{t('screens.health.viewDetailedReport')}
                       </button>
                       <button 
                         onClick={handleOptimizeWeakest}
                         className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[13px] font-medium transition-colors"
-                      >
-                        ✨ Optimize Weakest Pillar
+                      >{t('screens.health.optimizeWeakestPillar')}
                       </button>
                     </div>
                   </div>

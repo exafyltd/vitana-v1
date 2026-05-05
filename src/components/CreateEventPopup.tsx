@@ -631,7 +631,7 @@ export function CreateEventPopup({
                         setFormData({...formData, endTime: e.target.value});
                       }}
                       className="mt-2"
-                      placeholder="HH:MM"
+                      placeholder={t('screens.common.hhMm')}
                     />
                   )}
                   <p className="text-xs text-muted-foreground mt-1">{translate('createEventPopup.overridesDuration')}</p>
@@ -703,7 +703,7 @@ export function CreateEventPopup({
                         setFormData({...formData, time: e.target.value});
                       }}
                       className="mt-2"
-                      placeholder="HH:MM"
+                      placeholder={t('screens.common.hhMm')}
                     />
                   )}
                 </div>

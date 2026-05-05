@@ -53,7 +53,7 @@ export function HiddenByLimitationsFooter({ breakdown }: { breakdown?: HiddenBre
       >
         <span className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-emerald-700" />
-          <span><strong>{total}</strong> {total === 1 ? "product" : "products"} hidden by your preferences</span>
+          <span><strong>{total}</strong>{t('screens.discover.value0HiddenByYourPreferences', { value0: total === 1 ? "product" : "products" })}</span>
         </span>
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>

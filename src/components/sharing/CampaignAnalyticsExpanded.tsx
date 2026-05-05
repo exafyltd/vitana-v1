@@ -236,8 +236,7 @@ export function CampaignAnalyticsExpanded({
                     {displayData.reach.toLocaleString()}
                   </p>
                   {hasRealData && (
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {realAnalytics.deliveryRate.toFixed(1)}% rate
+                    <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.deliveryRate.toFixed(1) })}
                     </p>
                   )}
                 </div>
@@ -256,8 +255,7 @@ export function CampaignAnalyticsExpanded({
                     {displayData.engagement.toLocaleString()}
                   </p>
                   {hasRealData && (
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {realAnalytics.openRate.toFixed(1)}% rate
+                    <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.openRate.toFixed(1) })}
                     </p>
                   )}
                 </div>
@@ -307,8 +305,7 @@ export function CampaignAnalyticsExpanded({
               </h4>
               <div className="space-y-3">
                 {isLoading ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    Loading analytics...
+                  <div className="text-center py-8 text-muted-foreground">{t('screens.sharing.loadingAnalytics')}
                   </div>
                 ) : displayData.channelBreakdown.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
@@ -353,8 +350,7 @@ export function CampaignAnalyticsExpanded({
                           </div>
                           
                           <div className="flex items-center gap-4 mt-1">
-                            <span className="text-xs text-gray-500">
-                              {channel.engagement.toLocaleString()} opened
+                            <span className="text-xs text-gray-500">{t('screens.sharing.value0Opened', { value0: channel.engagement.toLocaleString() })}
                             </span>
                           </div>
                         </div>

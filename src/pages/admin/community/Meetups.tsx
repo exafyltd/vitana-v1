@@ -205,9 +205,7 @@ export default function Meetups() {
         {isLoading && <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingEvents')}</p>}
 
         {isError && (
-          <p className="text-sm text-destructive text-center py-8">
-            Failed to load events: {(error as Error)?.message || "Unknown error"}
-          </p>
+          <p className="text-sm text-destructive text-center py-8">{t('screens.admin.failedLoadEventsValue0', { value0: (error as Error)?.message || "Unknown error" })}</p>
         )}
 
         {!isLoading && meetups.length === 0 && (
@@ -223,9 +221,7 @@ export default function Meetups() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.admin.youSure')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete the event "{deleteTarget?.title}". This action cannot be undone.
-              All attendees and ticket data associated with this event will also be affected.
+            <AlertDialogDescription>{t('screens.admin.thisWillPermanentlyDeleteEventTitle', { title: deleteTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

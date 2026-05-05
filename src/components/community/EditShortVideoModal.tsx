@@ -202,7 +202,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter video title"
+              placeholder={t('screens.community.enterVideoTitle')}
               maxLength={100}
             />
           </div>
@@ -214,7 +214,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter video description (optional)"
+              placeholder={t('screens.community.enterVideoDescriptionOptional')}
               rows={3}
               maxLength={500}
             />
@@ -234,7 +234,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                     handleAddTag();
                   }
                 }}
-                placeholder="Type tag and press Enter"
+                placeholder={t('screens.community.typeTagPressEnter')}
                 disabled={tags.length >= 5}
               />
               <Button
@@ -291,14 +291,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isSaving || isRegenerating}
               >
-                <Upload className="w-4 h-4 mr-2" />
-                Upload Image
+                <Upload className="w-4 h-4 mr-2" />{t('screens.community.uploadImage')}
               </Button>
             </div>
 
             {/* Regenerate from video */}
             <div className="space-y-2">
-              <Label htmlFor="captureTime">Or capture from video at {captureTime}%</Label>
+              <Label htmlFor="captureTime">{t('screens.community.captureFromVideoAtCapturetime', { captureTime })}</Label>
               <div className="flex gap-2 items-center">
                 <input
                   id="captureTime"
@@ -319,8 +318,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 >
                   {isRegenerating ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Capturing...
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.capturing')}
                     </>
                   ) : (
                     <>
@@ -341,8 +339,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
           <Button onClick={handleSave} disabled={isSaving || !title.trim()}>
             {isSaving ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.saving')}
               </>
             ) : (
               'Save Changes'

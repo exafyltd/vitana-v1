@@ -142,7 +142,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="e.g., Morning Runners, Healthy Cooking Club"
+                  placeholder={t('screens.common.eGMorningRunnersHealthyCooking')}
                   className="mt-1"
                 />
               </div>
@@ -153,7 +153,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe your group's purpose and activities..."
+                  placeholder={t('screens.common.describeYourGroupSPurposeActivities')}
                   className="mt-1"
                 />
               </div>
@@ -237,12 +237,12 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
               {!formData.isVirtual && (
                 <div>
-                  <Label htmlFor="location">Location</Label>
+                  <Label htmlFor="location">{t('screens.common.location')}</Label>
                   <Input
                     id="location"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Downtown Area, Central Park"
+                    placeholder={t('screens.common.eGDowntownAreaCentralPark')}
                     className="mt-1"
                   />
                 </div>
@@ -254,7 +254,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
                   id="rules"
                   value={formData.rules}
                   onChange={(e) => setFormData({...formData, rules: e.target.value})}
-                  placeholder="Set guidelines for group members..."
+                  placeholder={t('screens.common.setGuidelinesForGroupMembers')}
                   className="mt-1"
                 />
               </div>

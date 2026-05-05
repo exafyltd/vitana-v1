@@ -244,7 +244,7 @@ export default function WellnessServices() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -267,9 +267,7 @@ export default function WellnessServices() {
             <SplitBarList>
               <SplitBarTrigger value="categories">{t('screens.discover.allCategories')}</SplitBarTrigger>
               <SplitBarTrigger value="recommended">{t('screens.discover.recommended')}</SplitBarTrigger>
-              <SplitBarTrigger value="bookmarked">
-                🔖 Bookmarked {getBookmarksByType('wellness_service').length > 0 && `(${getBookmarksByType('wellness_service').length})`}
-              </SplitBarTrigger>
+              <SplitBarTrigger value="bookmarked">{t('screens.discover.bookmarkedValue0', { value0: getBookmarksByType('wellness_service').length > 0 && `(${getBookmarksByType('wellness_service').length})` })}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="categories" className="space-y-6">
@@ -322,9 +320,7 @@ export default function WellnessServices() {
                     size="sm" 
                     className="w-full text-xs md:text-sm h-7 md:h-8 lg:h-9 mt-auto"
                     onClick={() => handleCategoryClick(category)}
-                  >
-                    Explore {category.name}
-                  </Button>
+                  >{t('screens.discover.exploreName', { name: category.name })}</Button>
                 </CardContent>
               </Card>
             ))}
@@ -367,8 +363,7 @@ export default function WellnessServices() {
                             size="sm" 
                             className="w-full text-xs"
                             onClick={() => handleCategoryClick(category)}
-                          >
-                            Explore Services
+                          >{t('screens.discover.exploreServices')}
                           </Button>
                         </CardContent>
                       </Card>
@@ -422,9 +417,7 @@ export default function WellnessServices() {
                               handleCategoryClick(matchedCategory);
                             }
                           }}
-                        >
-                          Explore {bookmark.item_name}
-                        </Button>
+                        >{t('screens.discover.exploreItem_name', { item_name: bookmark.item_name })}</Button>
                       </CardContent>
                     </Card>
                   ))}
@@ -464,7 +457,7 @@ export default function WellnessServices() {
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-lg">{t('screens.discover.availableServices')}</h3>
-                  <Badge variant="secondary">{categoryServicesData[selectedCategory.id]?.length || 0} Services</Badge>
+                  <Badge variant="secondary">{t('screens.discover.value0Services', { value0: categoryServicesData[selectedCategory.id]?.length || 0 })}</Badge>
                 </div>
 
                 {categoryServicesData[selectedCategory.id]?.map((service) => (

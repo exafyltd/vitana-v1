@@ -160,7 +160,7 @@ export function CommunityFiltersPopup({ open, onOpenChange }: CommunityFiltersPo
               />
               <div className="flex justify-between text-sm text-muted-foreground mt-1">
                 <span>{t('screens.common.text1Mile')}</span>
-                <span className="font-medium">{activityRadius[0]} miles</span>
+                <span className="font-medium">{t('screens.common.value0Miles', { value0: activityRadius[0] })}</span>
                 <span>{t('screens.common.text50Miles')}</span>
               </div>
             </div>

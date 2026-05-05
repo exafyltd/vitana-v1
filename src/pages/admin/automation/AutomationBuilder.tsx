@@ -169,8 +169,7 @@ export default function AutomationBuilder() {
 
           {loadingPattern && (
             <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Loading pattern data...
+              <CardContent className="py-8 text-center text-muted-foreground">{t('screens.admin.loadingPatternData')}
               </CardContent>
             </Card>
           )}
@@ -187,7 +186,7 @@ export default function AutomationBuilder() {
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g., Welcome New Users"
+                  placeholder={t('screens.admin.eGWelcomeNewUsers')}
                 />
               </div>
               
@@ -197,7 +196,7 @@ export default function AutomationBuilder() {
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe what this automation does..."
+                  placeholder={t('screens.admin.describeWhatThisAutomationDoes')}
                   rows={3}
                 />
               </div>

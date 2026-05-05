@@ -56,8 +56,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
               variant="ghost"
               size="sm"
               onClick={() => setNotesExpanded(!notesExpanded)}
-            >
-              {notesExpanded ? 'Hide' : 'View'} Notes
+            >{t('screens.discover.value0Notes', { value0: notesExpanded ? 'Hide' : 'View' })}
             </Button>
             {notesExpanded && (
               <p className="text-sm mt-2 p-3 bg-muted/50 rounded">{visit.patient_notes}</p>

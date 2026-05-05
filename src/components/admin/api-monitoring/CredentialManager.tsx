@@ -244,9 +244,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
                       </Badge>
                     </div>
                     {cred.last_used && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Last used: {new Date(cred.last_used).toLocaleDateString()}
-                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.lastUsedValue0', { value0: new Date(cred.last_used).toLocaleDateString() })}</p>
                     )}
                   </div>
                 </div>

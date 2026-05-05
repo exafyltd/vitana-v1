@@ -56,9 +56,7 @@ export default function Engagement() {
             <CardTitle className="text-base">{t('screens.admin.deepEngagementAnalytics')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground text-center py-6">
-              Deep engagement analytics coming soon — session duration, feature usage heatmaps,
-              retention cohorts, and churn prediction.
+            <p className="text-sm text-muted-foreground text-center py-6">{t('screens.admin.deepEngagementAnalyticsComingSoonSession')}
             </p>
           </CardContent>
         </Card>

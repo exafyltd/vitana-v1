@@ -215,7 +215,7 @@ export default function ProviderProfile() {
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{provider.bookings.toLocaleString()} bookings</span>
+                    <span>{t('screens.discover.value0Bookings', { value0: provider.bookings.toLocaleString() })}</span>
                   </div>
                 </div>
                 

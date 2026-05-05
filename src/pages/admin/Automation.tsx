@@ -81,9 +81,7 @@ export default function AutomationOverview() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Build powerful automation rules with triggers, conditions, and actions. 
-                    Start from scratch or use AI-discovered patterns.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.buildPowerfulAutomationRulesWithTriggers')}
                   </p>
                 </CardContent>
               </Card>
@@ -101,9 +99,7 @@ export default function AutomationOverview() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    View and manage all active automation workflows. Check execution 
-                    logs and performance metrics.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.viewManageAllActiveAutomationWorkflows')}
                   </p>
                 </CardContent>
               </Card>
@@ -123,9 +119,7 @@ export default function AutomationOverview() {
                     <div className="w-2 h-2 rounded-full bg-purple-500"></div>
                     <h4 className="font-semibold">{t('screens.admin.triggerEvents')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Automations start when specific events occur, such as user actions, 
-                    time schedules, or system events.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.automationsStartWhenSpecificEventsOccur')}
                   </p>
                 </div>
 
@@ -134,9 +128,7 @@ export default function AutomationOverview() {
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
                     <h4 className="font-semibold">{t('screens.admin.conditions')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Define rules that must be met before actions execute. Filter by user 
-                    attributes, context, or data values.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.defineRulesThatMustMetBefore')}
                   </p>
                 </div>
 
@@ -145,9 +137,7 @@ export default function AutomationOverview() {
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
                     <h4 className="font-semibold">{t('screens.admin.actions')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Execute specific operations like sending notifications, updating data, 
-                    or triggering other workflows.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.executeSpecificOperationsLikeSendingNotifications')}
                   </p>
                 </div>
               </div>

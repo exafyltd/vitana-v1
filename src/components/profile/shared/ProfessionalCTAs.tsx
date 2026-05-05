@@ -39,7 +39,7 @@ export function ProfessionalCTAs({
             <p className="text-sm text-red-700 mb-2">{credentials.liveSessionTitle}</p>
             <div className="flex items-center gap-1 text-xs text-red-600">
               <Users className="h-3 w-3" />
-              <span>{credentials.liveViewerCount || 0} watching</span>
+              <span>{t('screens.profile.value0Watching', { value0: credentials.liveViewerCount || 0 })}</span>
             </div>
           </div>
         )}
@@ -57,8 +57,7 @@ export function ProfessionalCTAs({
                 >
                   {isCurrentlyLive ? (
                     <>
-                      <Zap className="h-4 w-4 mr-2" />
-                      Manage Live Session
+                      <Zap className="h-4 w-4 mr-2" />{t('screens.profile.manageLiveSession')}
                     </>
                   ) : (
                     <>

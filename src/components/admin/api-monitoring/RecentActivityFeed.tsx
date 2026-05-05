@@ -138,8 +138,7 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
                     
                     <div className="flex items-center gap-3 mt-2">
                       {log.response_time_ms !== null && (
-                        <span className={`text-xs font-mono ${getResponseTimeColor(log.response_time_ms)}`}>
-                          {log.response_time_ms}ms
+                        <span className={`text-xs font-mono ${getResponseTimeColor(log.response_time_ms)}`}>{t('screens.admin.response_time_msMs', { response_time_ms: log.response_time_ms })}
                         </span>
                       )}
                       {log.api_integrations?.metadata?.deployment_type && (

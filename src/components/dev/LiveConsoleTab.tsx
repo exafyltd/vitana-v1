@@ -62,7 +62,7 @@ export function LiveConsoleTab() {
 
       <div className="p-2 border-t bg-muted/30 text-center">
         <p className="text-xs text-muted-foreground">
-          {t('screens.dev.keyboardShortcuts')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd> Focus Left • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd> Focus Right • <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd> Switch
+          {t('screens.dev.keyboardShortcuts')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">1</kbd>{t('screens.dev.focusLeft')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">2</kbd>{t('screens.dev.focusRight')} <kbd className="px-1 py-0.5 bg-background border rounded text-xs">←</kbd> <kbd className="px-1 py-0.5 bg-background border rounded text-xs">→</kbd>{t('screens.dev.switch')}
         </p>
       </div>
     </Card>

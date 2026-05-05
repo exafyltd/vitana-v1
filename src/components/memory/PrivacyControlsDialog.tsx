@@ -145,8 +145,7 @@ export function PrivacyControlsDialog({ open, onOpenChange }: PrivacyControlsDia
               <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-medium text-sm">{t('screens.memory.privacyNotice')}</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Disabling activity tracking will prevent certain features from working properly. Historical data will be retained but new activities won't be recorded.
+                <p className="text-sm text-muted-foreground mt-1">{t('screens.memory.disablingActivityTrackingWillPreventCertain')}
                 </p>
               </div>
             </div>

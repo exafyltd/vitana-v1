@@ -16,6 +16,7 @@ import { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface EarningsHistoryLedgerProps {
   transactions: EarningsTransaction[];
@@ -241,9 +242,7 @@ export function EarningsHistoryLedger({
               <X className="h-3.5 w-3.5" />
             </button>
           </Badge>
-          <span className="text-sm text-muted-foreground">
-            {filteredTransactions.length} transaction{filteredTransactions.length !== 1 ? "s" : ""}
-          </span>
+          <span className="text-sm text-muted-foreground">{t('screens.business.lengthTransactionValue1', { length: filteredTransactions.length, value1: filteredTransactions.length !== 1 ? "s" : "" })}</span>
         </div>
       )}
       

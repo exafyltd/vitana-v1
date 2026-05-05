@@ -154,8 +154,7 @@ export default function OperatorChat() {
                 </div>
               </TooltipTrigger>
               {isChatOffline && (
-                <TooltipContent>
-                  Cannot send message: Chat API is offline
+                <TooltipContent>{t('screens.dev.cannotSendMessageChatApiOffline')}
                 </TooltipContent>
               )}
             </Tooltip>

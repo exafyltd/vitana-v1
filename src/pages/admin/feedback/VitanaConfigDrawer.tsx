@@ -185,9 +185,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
             <div>
               <h2 className="text-xl font-bold">{t('screens.admin.couldnTLoadVitana')}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{errMsg}</p>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Possible causes: the gateway hasn't redeployed the new admin endpoints (PR forwarding-rules-gateway-VTID-02660),
-                your role isn't permitted, or the migration that adds the phrase columns hasn't applied yet.
+              <p className="mt-2 text-xs text-muted-foreground">{t('screens.admin.possibleCausesGatewayHasnTRedeployed2')}
               </p>
             </div>
             <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
@@ -230,10 +228,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
         {/* Gate A — forward triggers */}
         <Card className="mb-4 p-4">
           <h3 className="font-semibold">{t('screens.admin.forwardTriggers')}</h3>
-          <p className="text-xs text-muted-foreground">
-            Phrases that signal the user EXPLICITLY wants to be connected to a customer-support colleague.
-            Without one of these, Vitana stays inline. Lowercase, partial-match — "talk to support" matches
-            "I'd like to talk to support, please".
+          <p className="text-xs text-muted-foreground">{t('screens.admin.phrasesThatSignalUserExplicitlyWants')}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {forwardPhrases.map(ph => (
@@ -252,7 +247,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='Add a phrase (e.g. "I have a complaint")'
+              placeholder={t('screens.admin.addPhraseEGIHave')}
               value={forwardDraft}
               onChange={e => setForwardDraft(e.target.value)}
               onKeyDown={e => {
@@ -279,10 +274,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
         {/* Gate A override — stay-inline */}
         <Card className="mb-4 p-4">
           <h3 className="font-semibold">{t('screens.admin.stayinlineOverrides')}</h3>
-          <p className="text-xs text-muted-foreground">
-            Phrases that force the conversation to stay with Vitana even if a forward trigger would otherwise fire.
-            Covers life-companion question patterns ("I have a question", "how does this work?",
-            "tell me about X") so general curiosity never turns into a customer-support handoff.
+          <p className="text-xs text-muted-foreground">{t('screens.admin.phrasesThatForceConversationStayWith')}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {stayInlinePhrases.map(ph => (
@@ -301,7 +293,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='Add a phrase (e.g. "tell me about")'
+              placeholder={t('screens.admin.addPhraseEGTellMe')}
               value={stayDraft}
               onChange={e => setStayDraft(e.target.value)}
               onKeyDown={e => {
@@ -328,13 +320,11 @@ export function VitanaConfigDrawer({ onClose }: Props) {
         {/* Test sandbox */}
         <Card className="mb-4 p-4">
           <h3 className="font-semibold">{t('screens.admin.testSandbox')}</h3>
-          <p className="text-xs text-muted-foreground">
-            Paste a sentence the user might say. The router runs both gates and shows the decision so you can
-            verify a rule change before it goes live.
+          <p className="text-xs text-muted-foreground">{t('screens.admin.pasteSentenceUserMightSayRouter')}
           </p>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder='e.g. "I have a question, how does this work?"'
+              placeholder={t('screens.admin.eGIHaveQuestionHow')}
               value={testText}
               onChange={e => setTestText(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); runTest(); } }}
@@ -362,8 +352,7 @@ export function VitanaConfigDrawer({ onClose }: Props) {
                 </div>
               )}
               {typeof testResult.confidence === "number" && (
-                <div className="mt-1 text-muted-foreground">
-                  Confidence: {(testResult.confidence * 100).toFixed(0)}%
+                <div className="mt-1 text-muted-foreground">{t('screens.admin.confidenceValue0', { value0: (testResult.confidence * 100).toFixed(0) })}
                 </div>
               )}
             </div>

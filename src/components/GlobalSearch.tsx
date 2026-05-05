@@ -266,7 +266,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             size="icon"
             onClick={handleInputClick}
             className="w-10 h-10 rounded-lg hover:bg-sidebar-accent/70 transition-colors"
-            title="Search"
+            title={t('screens.common.search')}
           >
             <Search className="h-4 w-4 text-sidebar-foreground/70" />
           </Button>

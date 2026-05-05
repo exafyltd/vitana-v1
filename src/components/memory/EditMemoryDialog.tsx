@@ -90,7 +90,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
-              placeholder="Edit memory content..."
+              placeholder={t('screens.memory.editMemoryContent')}
               className="resize-none"
             />
           </div>

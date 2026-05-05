@@ -130,9 +130,9 @@ export function ViewStatisticsDialog({ open, onOpenChange }: ViewStatisticsDialo
                 {t('screens.memory.insights')}
               </h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Most active category: {categories[0]?.[0] || 'N/A'}</li>
-                <li>• Average daily activity: {(last30Days / 30).toFixed(1)} items</li>
-                <li>• Weekly trend: {last7Days > last30Days / 4.3 ? '📈 Increasing' : '📉 Decreasing'}</li>
+                <li>{t('screens.memory.mostActiveCategoryValue0', { value0: categories[0]?.[0] || 'N/A' })}</li>
+                <li>{t('screens.memory.averageDailyActivityValue0Items', { value0: (last30Days / 30).toFixed(1) })}</li>
+                <li>{t('screens.memory.weeklyTrendValue0', { value0: last7Days > last30Days / 4.3 ? '📈 Increasing' : '📉 Decreasing' })}</li>
               </ul>
             </CardContent>
           </Card>

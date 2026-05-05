@@ -86,7 +86,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Meeting title"
+              placeholder={t('screens.messages.meetingTitle')}
               required
             />
           </div>
@@ -106,7 +106,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
               id="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="Meeting location"
+              placeholder={t('screens.messages.meetingLocation')}
             />
           </div>
           <div>
@@ -115,7 +115,7 @@ function CalendarDialog({ onCalendarInvite }: { onCalendarInvite: (title: string
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Meeting description"
+              placeholder={t('screens.messages.meetingDescription')}
             />
           </div>
           <Button type="submit" className="w-full">
@@ -200,7 +200,7 @@ export function AttachmentMenu({
                 setShowGlobalSendFunds(true);
               }
             }}
-            title="Send funds"
+            title={t('screens.messages.sendFunds')}
           >
             <Send className="w-5 h-5 mr-3 text-green-600" />
             <span className="text-sm font-medium">{t('screens.messages.sendFunds')}</span>
@@ -222,7 +222,7 @@ export function AttachmentMenu({
                 setShowGlobalPaymentRequest(true);
               }
             }}
-            title="Request payment"
+            title={t('screens.messages.requestPayment')}
           >
             <DollarSign className="w-5 h-5 mr-3 text-green-500" />
             <span className="text-sm">{t('screens.messages.requestPayment')}</span>

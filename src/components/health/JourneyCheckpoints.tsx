@@ -262,8 +262,7 @@ export function JourneyCheckpoints({
                 <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
               ) : (
                 <Zap className="w-4 h-4 mr-1.5" />
-              )}
-              Start
+              )}{t('screens.health.start')}
             </Button>
           </>
         ) : (
@@ -282,14 +281,11 @@ export function JourneyCheckpoints({
           <span className="text-xs text-muted-foreground">{t('screens.health.dayDay7', { day7 })}</span>
         </div>
         {weekPicks.length === 0 ? (
-          <div className="py-2 text-sm text-muted-foreground">
-            No suggestions land this week yet.
+          <div className="py-2 text-sm text-muted-foreground">{t('screens.health.noSuggestionsLandThisWeekYet')}
           </div>
         ) : (
           <>
-            <p className="text-sm leading-snug">
-              Complete the {weekPicks.length} action{weekPicks.length === 1 ? "" : "s"} Autopilot
-              suggests this week
+            <p className="text-sm leading-snug">{t('screens.health.completeLengthActionValue1AutopilotSuggests', { length: weekPicks.length, value1: weekPicks.length === 1 ? "" : "s" })}
               {weekVector.total > 0 ? (
                 <>
                   {" "}→ <strong className="text-green-600">+{weekVector.total}</strong>
@@ -297,8 +293,7 @@ export function JourneyCheckpoints({
               ) : null}
               .
               {projected7d !== null && total !== null && (
-                <>
-                  {" "}You'd land around <strong>{projected7d}</strong>.
+                <>{t('screens.health.value0YouDLandAround', { value0: " " })} <strong>{projected7d}</strong>.
                 </>
               )}
             </p>
@@ -336,8 +331,7 @@ export function JourneyCheckpoints({
           <span className="text-xs text-muted-foreground">{t('screens.health.dayDay30', { day30 })}</span>
         </div>
         {projected30d !== null && total !== null ? (
-          <p className="text-sm leading-snug">
-            At your current pace: <strong>{projected30d}</strong>. {tierGuidance}
+          <p className="text-sm leading-snug">{t('screens.health.atYourCurrentPace')} <strong>{projected30d}</strong>. {tierGuidance}
           </p>
         ) : (
           <p className="text-sm text-muted-foreground">

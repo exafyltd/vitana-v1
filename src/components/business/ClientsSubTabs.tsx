@@ -29,8 +29,7 @@ export function ClientsSubTabs() {
         <div className="text-center py-12">
           <UserPlus className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.business.noProspectsYet')}</h3>
-          <p className="text-muted-foreground mb-4">
-            Leads from sharing campaigns and reseller links will appear here.
+          <p className="text-muted-foreground mb-4">{t('screens.business.leadsFromSharingCampaignsResellerLinks')}
           </p>
           <Button variant="outline" className="gap-2" onClick={() => navigate("/sharing")}>
             <Share2 className="w-4 h-4" />

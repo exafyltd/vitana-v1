@@ -113,8 +113,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             {/* Section 1: On VITANA */}
             {filteredPlatformContacts.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">
-                  On VITANA ({filteredPlatformContacts.length})
+                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.vitanaLength', { length: filteredPlatformContacts.length })}
                 </h3>
                 <div className="space-y-2 mr-3">
                   {filteredPlatformContacts.map((contact) => (
@@ -135,8 +134,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
             {/* Section 2: Invite to VITANA */}
             {filteredNonPlatformContacts.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">
-                  Invite to VITANA ({filteredNonPlatformContacts.length})
+                <h3 className="font-semibold mb-3 px-1 text-sm text-muted-foreground uppercase tracking-wide">{t('screens.contacts.inviteVitanaLength', { length: filteredNonPlatformContacts.length })}
                 </h3>
                 <div className="space-y-2 mr-3">
                   {filteredNonPlatformContacts.map((contact) => (
@@ -157,8 +155,7 @@ export default function ContactsTabContent({ onStartConversation, messageContext
              filteredPlatformContacts.length === 0 && 
              filteredNonPlatformContacts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No contacts found matching "{searchQuery}"
+                <p className="text-muted-foreground">{t('screens.contacts.noContactsFoundMatchingSearchquery', { searchQuery })}
                 </p>
               </div>
             )}

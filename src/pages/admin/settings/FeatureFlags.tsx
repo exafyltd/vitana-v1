@@ -52,7 +52,7 @@ export default function SettingsFeatureFlags() {
         {settingsQuery.data && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Flags</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.flags')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {KNOWN_FLAGS.map((flag) => (

@@ -101,8 +101,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
             <Brain className="h-5 w-5 text-primary" />
             {t('screens.wallet.spendingIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            {totalSavings} VTNA Savings Available
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.totalsavingsVtnaSavingsAvailable', { totalSavings })}
           </Badge>
         </div>
       </CardHeader>
@@ -116,7 +115,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
           </div>
           <Progress value={spendingEfficiency} className="h-2 mb-1" />
           <p className="text-xs text-muted-foreground">
-            <span className="font-semibold text-emerald-600">{t('screens.wallet.text22Improvement')}</span> from last month
+            <span className="font-semibold text-emerald-600">{t('screens.wallet.text22Improvement')}</span>{t('screens.wallet.fromLastMonth')}
           </p>
         </div>
 
@@ -151,8 +150,7 @@ export function IntelligentSpendingCard({ className }: IntelligentSpendingCardPr
                   </Badge>
                   {insight.savings && (
                     <div className="flex items-center gap-1 text-xs text-emerald-600">
-                      <DollarSign className="h-3 w-3" />
-                      Save {insight.savings} VTNA
+                      <DollarSign className="h-3 w-3" />{t('screens.wallet.saveSavingsVtna', { savings: insight.savings })}
                     </div>
                   )}
                 </div>

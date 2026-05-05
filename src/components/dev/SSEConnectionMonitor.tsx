@@ -63,8 +63,7 @@ export function SSEConnectionMonitor() {
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={activeCount > 0 ? "default" : "secondary"}>
-              {activeCount} Active
+            <Badge variant={activeCount > 0 ? "default" : "secondary"}>{t('screens.dev.activecountActive', { activeCount })}
             </Badge>
             {activeCount > 5 && (
               <Badge variant="destructive" className="gap-1">
@@ -79,8 +78,7 @@ export function SSEConnectionMonitor() {
         {activeCount > 0 ? (
           <>
             <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                {activeCount} connection{activeCount !== 1 ? 's' : ''} detected
+              <p className="text-sm text-muted-foreground">{t('screens.dev.activecountConnectionValue1Detected', { activeCount, value1: activeCount !== 1 ? 's' : '' })}
               </p>
               <Button 
                 size="sm" 

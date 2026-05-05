@@ -248,11 +248,9 @@ export default function TalkToVitana() {
                 </div>
                 {awaitingConfirm && (
                   <div className="rounded-md border border-primary/40 bg-primary/5 p-3 text-sm">
-                    <div className="mb-2 font-medium">
-                      {t.resolver_agent
+                    <div className="mb-2 font-medium">{t('screens.community.value0Value1DidItWork', { value0: t.resolver_agent
                         ? `${t.resolver_agent.charAt(0).toUpperCase() + t.resolver_agent.slice(1)} says this is fixed.`
-                        : "We think this is fixed."}{" "}
-                      Did it work?
+                        : "We think this is fixed.", value1: " " })}
                     </div>
                     <div className="flex gap-2">
                       <Button size="sm" onClick={handleConfirm}>{t('screens.community.yesFixed')}</Button>

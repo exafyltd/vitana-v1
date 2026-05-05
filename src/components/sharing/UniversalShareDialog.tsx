@@ -179,9 +179,7 @@ export function UniversalShareDialog({
       <DialogContent className="max-w-2xl z-[60]" overlayClassName="z-[60]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Send className="h-5 w-5" />
-            Share {content.type}
-          </DialogTitle>
+            <Send className="h-5 w-5" />{t('screens.sharing.shareType', { type: content.type })}</DialogTitle>
           <DialogDescription>
             {t('screens.sharing.sharePersonallyDistributeAcrossYourConnected')}
           </DialogDescription>
@@ -255,8 +253,7 @@ export function UniversalShareDialog({
                 <Share2 className="w-4 h-4 text-primary" />
                 <h3 className="text-sm font-semibold">{t('screens.sharing.socialMediaAutopost')}</h3>
               </div>
-              <Badge variant="secondary" className="text-xs">
-                {selectedChannels.length} selected
+              <Badge variant="secondary" className="text-xs">{t('screens.sharing.lengthSelected', { length: selectedChannels.length })}
               </Badge>
             </div>
             
@@ -269,7 +266,7 @@ export function UniversalShareDialog({
                 <Alert className="bg-muted/50">
                   <Info className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    {t('screens.sharing.selectConnectedAccountsAutopostClick')} <strong>+</strong> to connect new accounts.
+                    {t('screens.sharing.selectConnectedAccountsAutopostClick')} <strong>+</strong>{t('screens.sharing.connectNewAccounts')}
                   </AlertDescription>
                 </Alert>
                 
@@ -342,8 +339,7 @@ export function UniversalShareDialog({
             >
               {isSharing ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sharing...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.sharing.sharing')}
                 </>
               ) : (
                 <>

@@ -464,8 +464,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                 onClick={() => setShowTrends(!showTrends)}
                 className="h-8 px-3 text-xs"
               >
-                <TrendingUp className="w-3 h-3 mr-1" />
-                {showTrends ? "Hide" : "Show"} trends
+                <TrendingUp className="w-3 h-3 mr-1" />{t('screens.ai-feed.value0Trends', { value0: showTrends ? "Hide" : "Show" })}
               </Button>
               <Button variant="secondary" size="sm" className="h-8 px-3 text-xs">
                 <Download className="w-3 h-3 mr-1" />
@@ -627,8 +626,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
             <CardContent className="p-6">
               <RotateCcw className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
               <p className="text-sm text-muted-foreground">{t('screens.ai-feed.loadMoreHistory')}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {filteredEvents.length} events shown
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.ai-feed.lengthEventsShown', { length: filteredEvents.length })}
               </p>
             </CardContent>
           </Card>

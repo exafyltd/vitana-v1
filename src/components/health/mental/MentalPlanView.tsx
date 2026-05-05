@@ -46,8 +46,7 @@ export function MentalPlanView() {
           
           {/* Summary Strip */}
           <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Avg Mood: {planData.progress.avgMoodIndex} • 🎯 Focus: {planData.progress.focusStability} ({planData.progress.focusStabilityTrend}) • 💪 Stress Recovery: {planData.progress.stressRecovery} • 🔥 Streak: {planData.progress.mindfulnessStreak} days
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('screens.health.avgMoodAvgmoodindexFocusFocusstabilityFocusstabili', { avgMoodIndex: planData.progress.avgMoodIndex, focusStability: planData.progress.focusStability, focusStabilityTrend: planData.progress.focusStabilityTrend, stressRecovery: planData.progress.stressRecovery, mindfulnessStreak: planData.progress.mindfulnessStreak })}
             </p>
           </div>
         </div>

@@ -402,12 +402,9 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         <div className="rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 px-3 py-2 mb-3 text-sm flex items-center justify-between">
           <span>
             {currentTotal !== null ? (
-              <>
-                Now: <strong>{currentTotal}</strong>
+              <>{t('screens.common.now')} <strong>{currentTotal}</strong>
                 {selectedLift > 0 ? (
-                  <>
-                    {" "}→ After GO:{" "}
-                    <strong className="text-green-600 font-semibold">
+                  <>{t('screens.common.value0AfterGoValue1', { value0: " ", value1: " " })}<strong className="text-green-600 font-semibold">
                       {currentTotal + selectedLift}
                     </strong>
                   </>
@@ -442,8 +439,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   )}
                   {showGroupHeaders && isUnassigned && (
                     <div className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-muted-foreground`}>
-                      <span aria-hidden="true">✨</span>
-                      Other
+                      <span aria-hidden="true">✨</span>{t('screens.common.other')}
                     </div>
                   )}
                   <div className="space-y-2">
@@ -476,8 +472,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <Zap className="w-4 h-4 mr-2" />
-                )}
-                GO ({selectedActions.length})
+                )}{t('screens.common.goLength', { length: selectedActions.length })}
               </Button>
               <Button variant="outline" onClick={handleNotNow}>
                 {translate('autopilot.popup.notNow')}

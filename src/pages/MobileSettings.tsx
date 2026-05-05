@@ -321,7 +321,7 @@ export default function MobileSettings() {
                         <p className="text-xs text-muted-foreground">{s.location}</p>
                       </div>
                       {s.current ? (
-                        <span className="text-xs text-green-600 font-medium">Current</span>
+                        <span className="text-xs text-green-600 font-medium">{t('screens.mobilesettings.current')}</span>
                       ) : (
                         <Button variant="ghost" size="sm" className="text-xs text-destructive">{t('screens.mobilesettings.revoke')}</Button>
                       )}

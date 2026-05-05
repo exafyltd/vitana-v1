@@ -58,8 +58,7 @@ export default function Cart() {
               <CardContent className="p-12 text-center">
                 <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-xl font-semibold mb-2">{t('screens.cart.yourCartEmpty')}</h3>
-                <p className="text-muted-foreground mb-6">
-                  Start adding items from the Discover marketplace
+                <p className="text-muted-foreground mb-6">{t('screens.cart.startAddingItemsFromDiscoverMarketplace')}
                 </p>
                 <Button onClick={() => navigate('/discover')}>
                   {t('screens.cart.browseMarketplace')}
@@ -87,13 +86,10 @@ export default function Cart() {
                                 )}
                                 <div className="flex-1">
                                   <h3 className="font-semibold mb-1">{item.item_name}</h3>
-                                  <p className="text-sm text-muted-foreground mb-2">
-                                    ${item.item_price.toFixed(2)} each
+                                  <p className="text-sm text-muted-foreground mb-2">{t('screens.cart.value0Each', { value0: item.item_price.toFixed(2) })}
                                   </p>
                                   {item.item_metadata?.provider && (
-                                    <p className="text-xs text-muted-foreground">
-                                      by {item.item_metadata.provider}
-                                    </p>
+                                    <p className="text-xs text-muted-foreground">{t('screens.cart.byProvider', { provider: item.item_metadata.provider })}</p>
                                   )}
                                 </div>
                                 <div className="flex flex-col items-end justify-between">

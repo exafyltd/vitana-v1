@@ -112,8 +112,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
             <Sparkles className="h-5 w-5 text-primary" />
             {t('screens.wallet.smartRecommendations')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            {avgMatch}% Avg Match
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.avgmatchAvgMatch', { avgMatch })}
           </Badge>
         </div>
       </CardHeader>
@@ -124,8 +123,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
           <div className="flex items-center gap-2 mb-2">
             <Star className="h-4 w-4 text-purple-600" />
             <span className="text-sm font-medium">{t('screens.wallet.perfectMatch')}</span>
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600">
-              {topRecommendation.match}% match
+            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-600">{t('screens.wallet.matchMatch', { match: topRecommendation.match })}
             </Badge>
           </div>
           <div className="flex items-start justify-between mb-2">
@@ -137,8 +135,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
               <div className="text-lg font-bold text-primary">
                 ${topRecommendation.price}
                 {topRecommendation.discount && (
-                  <span className="text-xs text-emerald-600 ml-1">
-                    ({topRecommendation.discount}% off)
+                  <span className="text-xs text-emerald-600 ml-1">{t('screens.wallet.discountOff', { discount: topRecommendation.discount })}
                   </span>
                 )}
               </div>
@@ -186,8 +183,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                     </div>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className="text-xs mb-1">
-                      {recommendation.match}% match
+                    <Badge variant="outline" className="text-xs mb-1">{t('screens.wallet.matchMatch', { match: recommendation.match })}
                     </Badge>
                     <div className="text-sm font-bold">{t('screens.wallet.pricemo', { price: recommendation.price })}</div>
                   </div>

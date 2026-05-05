@@ -71,7 +71,7 @@ export default function Calendar() {
               <CardContent>
                 <div className="text-2xl font-bold">{todaysEvents.length}</div>
                 <p className="text-xs text-muted-foreground">
-                  {todaysEvents.filter(e => e.urgent).length} urgent
+                  {todaysEvents.filter(e => e.urgent).length}{t('screens.calendar.urgent')}
                 </p>
               </CardContent>
             </Card>
@@ -84,7 +84,7 @@ export default function Calendar() {
               <CardContent>
                 <div className="text-2xl font-bold">{upcomingReminders.length}</div>
                 <p className="text-xs text-muted-foreground">
-                  {upcomingReminders.filter(r => r.priority === 'high').length} high priority
+                  {upcomingReminders.filter(r => r.priority === 'high').length}{t('screens.calendar.highPriority')}
                 </p>
               </CardContent>
             </Card>

@@ -119,8 +119,7 @@ export function CategoryDetailDialog({
               variant={selectedSubcategory === null ? "default" : "outline"}
               className="cursor-pointer"
               onClick={() => setSelectedSubcategory(null)}
-            >
-              All ({categoryMemories.length})
+            >{t('screens.memory.allLength', { length: categoryMemories.length })}
             </Badge>
             {category.subcategories.map((sub) => {
               const count = categoryMemories.filter((item) =>
@@ -143,8 +142,7 @@ export function CategoryDetailDialog({
         {/* Memories List */}
         <ScrollArea className="flex-1 px-6 py-4 max-h-[400px]">
           {isLoading ? (
-            <div className="text-center text-muted-foreground py-8">
-              Loading memories...
+            <div className="text-center text-muted-foreground py-8">{t('screens.memory.loadingMemories')}
             </div>
           ) : filteredMemories.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">

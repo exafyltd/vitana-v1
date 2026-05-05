@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { LucideIcon } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface DevEmptyStateProps {
   title: string;
@@ -23,8 +24,7 @@ export function DevEmptyState({
           {description}
         </p>
         {showPhaseNote && (
-          <p className="text-xs text-muted-foreground">
-            This feature will be available in Phase 2 when write operations are enabled.
+          <p className="text-xs text-muted-foreground">{t('screens.dev.thisFeatureWillAvailablePhase2')}
           </p>
         )}
       </CardContent>

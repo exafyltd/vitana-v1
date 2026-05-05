@@ -50,7 +50,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
               id="template-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Product Launch Post"
+              placeholder={t('screens.sharing.eGProductLaunchPost')}
               required
             />
           </div>
@@ -60,7 +60,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
               id="template-content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter your template content..."
+              placeholder={t('screens.sharing.enterYourTemplateContent')}
               rows={4}
               required
             />
@@ -71,7 +71,7 @@ export function TemplateDialog({ open, onOpenChange }: TemplateDialogProps) {
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              placeholder="general"
+              placeholder={t('screens.sharing.general')}
             />
           </div>
           <div className="flex gap-2 justify-end">

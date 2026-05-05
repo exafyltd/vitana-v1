@@ -147,7 +147,7 @@ export function MemoryCard({
                 variant="ghost"
                 onClick={() => onEdit(id)}
                 className="h-7 w-7 p-0"
-                title="Edit memory"
+                title={t('screens.memory.editMemory')}
               >
                 <Edit2 className="w-3.5 h-3.5" />
               </Button>
@@ -159,7 +159,7 @@ export function MemoryCard({
                   variant="ghost"
                   onClick={handleConfirm}
                   className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
-                  title="Confirm (increases confidence)"
+                  title={t('screens.memory.confirmIncreasesConfidence')}
                 >
                   <Check className="w-3.5 h-3.5" />
                 </Button>
@@ -168,7 +168,7 @@ export function MemoryCard({
                   variant="ghost"
                   onClick={handleContradict}
                   className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
-                  title="Mark as incorrect (decreases confidence)"
+                  title={t('screens.memory.markAsIncorrectDecreasesConfidence')}
                 >
                   <X className="w-3.5 h-3.5" />
                 </Button>

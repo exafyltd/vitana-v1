@@ -119,9 +119,7 @@ export const EnableRemindersPrompt: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>
-            Reminders work in the Maxina app while you're using it. To also get notified when the app
-            is closed or your phone is locked, open Vitana in Chrome on this phone (one-time setup).
+          <p>{t('screens.reminders.remindersWorkMaxinaAppWhileYou')}
           </p>
           <div className="flex gap-2 pt-1">
             <Button asChild size="sm" variant="outline">
@@ -160,7 +158,7 @@ export const EnableRemindersPrompt: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           <p>
-            {t('screens.reminders.getNotifiedWhenAppClosedTap')} <strong>{t('screens.reminders.allow')}</strong>. Then reload this page.
+            {t('screens.reminders.getNotifiedWhenAppClosedTap')} <strong>{t('screens.reminders.allow')}</strong>{t('screens.reminders.thenReloadThisPage')}
           </p>
           <Button size="sm" variant="ghost" onClick={handleNotNow}>
             {t('screens.reminders.notNow')}

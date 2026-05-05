@@ -494,15 +494,11 @@ export function CampaignCard({
                     >
                       {showAllSchedules ? (
                         <>
-                          <ChevronUp className="w-3 h-3" />
-                          Show less
+                          <ChevronUp className="w-3 h-3" />{t('screens.sharing.showLess')}
                         </>
                       ) : (
                         <>
-                          <ChevronDown className="w-3 h-3" />
-                          +{Object.keys(bestTimes).length - 3} more channel
-                          {Object.keys(bestTimes).length - 3 !== 1 ? "s" : ""}
-                        </>
+                          <ChevronDown className="w-3 h-3" />{t('screens.sharing.value0MoreChannelValue1', { value0: Object.keys(bestTimes).length - 3, value1: Object.keys(bestTimes).length - 3 !== 1 ? "s" : "" })}</>
                       )}
                     </button>
                   )}

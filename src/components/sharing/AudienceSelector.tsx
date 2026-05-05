@@ -198,8 +198,7 @@ export function AudienceSelector({
             <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
               <div className="font-medium">{t('screens.sharing.vitanaContacts')}</div>
-              <div className="text-sm text-muted-foreground">
-                Choose from your saved contacts
+              <div className="text-sm text-muted-foreground">{t('screens.sharing.chooseFromYourSavedContacts')}
               </div>
               {vitanaContactsEnabled && (
                 <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
@@ -241,8 +240,7 @@ export function AudienceSelector({
             <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
               <div className="font-medium">{t('screens.sharing.externalContactsCsv')}</div>
-              <div className="text-sm text-muted-foreground mb-3">
-                Import contacts from a CSV file
+              <div className="text-sm text-muted-foreground mb-3">{t('screens.sharing.importContactsFromCsvFile')}
               </div>
               {csvEnabled && (
                 <CsvContactUploader

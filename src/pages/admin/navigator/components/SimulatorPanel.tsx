@@ -77,9 +77,7 @@ export function SimulatorPanel({
           <Zap className="h-5 w-5 text-primary" />
           {t('screens.admin.liveSimulator')}
         </CardTitle>
-        <CardDescription>
-          Run the real Navigator pipeline against a test utterance. Shows top-3 picks with scores so
-          you can tell if your trigger edit landed.
+        <CardDescription>{t('screens.admin.runRealNavigatorPipelineAgainstTest')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -89,7 +87,7 @@ export function SimulatorPanel({
             id="sim-utterance"
             value={utterance}
             onChange={(e) => setUtterance(e.target.value)}
-            placeholder="e.g. how do I track my biology"
+            placeholder={t('screens.admin.eGHowDoITrack')}
             rows={2}
             className="resize-none"
           />
@@ -114,7 +112,7 @@ export function SimulatorPanel({
               id="sim-current"
               value={currentRoute}
               onChange={(e) => setCurrentRoute(e.target.value)}
-              placeholder="/home"
+              placeholder={t('screens.admin.home')}
             />
           </div>
         </div>
@@ -154,8 +152,7 @@ export function SimulatorPanel({
               <Badge variant="outline" className="text-xs">
                 {result.decision_source}
               </Badge>
-              <span className="text-xs text-muted-foreground">
-                {result.ms_elapsed}ms
+              <span className="text-xs text-muted-foreground">{t('screens.admin.ms_elapsedMs', { ms_elapsed: result.ms_elapsed })}
               </span>
             </div>
 
@@ -173,8 +170,7 @@ export function SimulatorPanel({
                 <div className="text-sm">{result.primary.title}</div>
                 <div className="text-xs text-muted-foreground">{result.primary.route}</div>
                 {result.primary.score != null && (
-                  <div className="mt-1 text-xs">
-                    score: <span className="font-mono">{result.primary.score}</span>
+                  <div className="mt-1 text-xs">{t('screens.admin.score')} <span className="font-mono">{result.primary.score}</span>
                   </div>
                 )}
               </div>
@@ -204,8 +200,7 @@ export function SimulatorPanel({
             )}
 
             {result.suggested_question && (
-              <div className="rounded-md border bg-primary/5 p-2 text-xs italic">
-                Clarification: "{result.suggested_question}"
+              <div className="rounded-md border bg-primary/5 p-2 text-xs italic">{t('screens.admin.clarificationSuggested_question', { suggested_question: result.suggested_question })}
               </div>
             )}
 

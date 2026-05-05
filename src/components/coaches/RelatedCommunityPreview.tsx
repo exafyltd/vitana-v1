@@ -33,8 +33,7 @@ export function RelatedCommunityPreview() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{group.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {group.member_count} members
+                <p className="text-xs text-muted-foreground">{t('screens.coaches.member_countMembers', { member_count: group.member_count })}
                 </p>
               </div>
             </div>
@@ -74,8 +73,7 @@ export function RelatedCommunityPreview() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{event.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {event.participant_count} attending
+                <p className="text-xs text-muted-foreground">{t('screens.coaches.participant_countAttending', { participant_count: event.participant_count })}
                 </p>
               </div>
             </div>

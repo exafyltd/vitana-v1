@@ -162,7 +162,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                     </div>
                   </div>
                   <div>
-                    <Label>Energy Level: {energy[0]}%</Label>
+                    <Label>{t('screens.common.energyLevelValue0', { value0: energy[0] })}</Label>
                     <Slider
                       value={energy}
                       onValueChange={setEnergy}
@@ -254,7 +254,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                     </div>
                   </div>
                   <div>
-                    <Label>Energy Level: {overrideEnergy[0]}%</Label>
+                    <Label>{t('screens.common.energyLevelValue0', { value0: overrideEnergy[0] })}</Label>
                     <Slider
                       value={overrideEnergy}
                       onValueChange={setOverrideEnergy}
@@ -298,7 +298,7 @@ export default function EnrichContextPopup({ open, onOpenChange }: EnrichContext
                     </div>
                   </div>
                   <div>
-                    <Label>Sleep Quality: {sleepQuality[0]}/5</Label>
+                    <Label>{t('screens.common.sleepQualityValue05', { value0: sleepQuality[0] })}</Label>
                     <Slider
                       value={sleepQuality}
                       onValueChange={setSleepQuality}

@@ -61,8 +61,7 @@ export function AutoInviteGenerator() {
       <CardContent className="space-y-4">
         <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
           <p className="text-sm font-medium">
-            💡 <strong>{t('screens.proactive.proTip')}</strong> Personal invites get 3x more responses than generic messages. 
-            Our AI crafts authentic invitations that reflect your wellness journey!
+            💡 <strong>{t('screens.proactive.proTip')}</strong>{t('screens.proactive.personalInvitesGet3xMoreResponses')}
           </p>
         </div>
 

@@ -59,7 +59,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
               id="entry-name" 
               value={entryName}
               onChange={(e) => setEntryName(e.target.value)}
-              placeholder="e.g., ButtonComponent, UserSchema"
+              placeholder={t('screens.dev.eGButtoncomponentUserschema')}
             />
           </div>
 
@@ -69,7 +69,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
               id="category" 
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              placeholder="e.g., UI, Data, Infrastructure"
+              placeholder={t('screens.dev.eGUiDataInfrastructure')}
             />
           </div>
 
@@ -79,7 +79,7 @@ export function NewCatalogEntryModal({ open, onOpenChange }: NewCatalogEntryModa
               id="description" 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the purpose and usage of this catalog entry"
+              placeholder={t('screens.dev.describePurposeUsageThisCatalogEntry')}
               rows={4}
             />
           </div>

@@ -120,7 +120,7 @@ export default function AgentPromptCenter() {
                 <Textarea 
                   value={customPrompt}
                   onChange={(e) => setCustomPrompt(e.target.value)}
-                  placeholder="Define how your AI agent should behave, what it should focus on, and how it should communicate with you..."
+                  placeholder={t('screens.ai.defineHowYourAiAgentShould')}
                   rows={8}
                   className="font-mono text-sm"
                 />
@@ -156,9 +156,7 @@ export default function AgentPromptCenter() {
           <CardContent className="p-6 text-center">
             <Zap className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('screens.ai.agentPromptCenterPhase5')}</h3>
-            <p className="text-muted-foreground">
-              This is a read-only placeholder for the Agent Prompt Center. 
-              Future phases will enable full AI agent customization and real-time testing.
+            <p className="text-muted-foreground">{t('screens.ai.thisReadonlyPlaceholderForAgentPrompt')}
             </p>
           </CardContent>
         </Card>

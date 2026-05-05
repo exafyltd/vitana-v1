@@ -103,9 +103,7 @@ export default function TicketPurchaseSuccess() {
           <h1 className="text-2xl font-bold text-foreground">
             {t('screens.ticketpurchasesuccess.paymentSuccessful')}
           </h1>
-          <p className="text-muted-foreground">
-            Your ticket has been confirmed. A confirmation email has been sent to{" "}
-            <span className="font-medium text-foreground">{purchase.buyer_email}</span>
+          <p className="text-muted-foreground">{t('screens.ticketpurchasesuccess.yourTicketHasConfirmedConfirmationEmail', { value0: " " })}<span className="font-medium text-foreground">{purchase.buyer_email}</span>
           </p>
         </div>
       </div>

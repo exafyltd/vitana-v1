@@ -467,8 +467,7 @@ export default function Messages() {
                               
                               {densityMode === 'comfortable' && (
                                 <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                  <Users className="w-3 h-3 mr-1" />
-                                  {thread.participants?.length || 0} participants
+                                  <Users className="w-3 h-3 mr-1" />{t('screens.messages.value0Participants', { value0: thread.participants?.length || 0 })}
                                 </div>
                               )}
                             </div>
@@ -602,8 +601,7 @@ export default function Messages() {
                               
                               <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                                 <div className="flex items-center">
-                                  <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                                    {thread.participants?.length || 0} members
+                                  <Badge variant="secondary" className="text-xs px-1.5 py-0">{t('screens.messages.value0Members', { value0: thread.participants?.length || 0 })}
                                   </Badge>
                                 </div>
                               </div>
@@ -847,8 +845,7 @@ export default function Messages() {
                   <div className="text-center">
                     <MessageSquare className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
                     <h3 className="text-lg font-semibold mb-2">{t('screens.messages.selectConversation')}</h3>
-                    <p className="text-muted-foreground">
-                      Choose a conversation from the left to start messaging
+                    <p className="text-muted-foreground">{t('screens.messages.chooseConversationFromLeftStartMessaging')}
                     </p>
                   </div>
                 </div>

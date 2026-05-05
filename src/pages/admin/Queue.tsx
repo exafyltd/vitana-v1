@@ -100,8 +100,7 @@ function Queue() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-orange-500" />
-                      Waiting Room ({mockQueueData.waitingRoom.length})
+                      <Clock className="w-5 h-5 text-orange-500" />{t('screens.admin.waitingRoomLength', { length: mockQueueData.waitingRoom.length })}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
@@ -125,8 +124,7 @@ function Queue() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <UserCheck className="w-5 h-5 text-green-500" />
-                      In Progress ({mockQueueData.inProgress.length})
+                      <UserCheck className="w-5 h-5 text-green-500" />{t('screens.admin.progressLength', { length: mockQueueData.inProgress.length })}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">

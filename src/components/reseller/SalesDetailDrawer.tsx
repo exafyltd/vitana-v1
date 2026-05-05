@@ -169,8 +169,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <span>{t('screens.reseller.commissionLogic')}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {t('screens.reseller.youEarn')} <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
-              Commission is calculated on gross ticket price before platform fees.
+              {t('screens.reseller.youEarn')} <span className="font-medium text-foreground">{event.commissionRate}%</span>{t('screens.reseller.perTicketSoldViaYourReseller')}
             </p>
           </div>
 
@@ -206,8 +205,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               size="sm"
               className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
               onClick={() => navigate("/wallet?filter=reseller_commission")}
-            >
-              View in Wallet →
+            >{t('screens.reseller.viewWallet2')}
             </Button>
           </div>
 
@@ -230,9 +228,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
                     className="flex items-center justify-between py-3 px-4 bg-card rounded-lg border border-border/40"
                   >
                     <div className="space-y-0.5">
-                      <p className="text-sm font-medium">
-                        {tx.ticketQuantity} ticket{tx.ticketQuantity > 1 ? "s" : ""} · {formatCurrency(tx.saleAmount)}
-                      </p>
+                      <p className="text-sm font-medium">{t('screens.reseller.ticketquantityTicketValue1Value2', { ticketQuantity: tx.ticketQuantity, value1: tx.ticketQuantity > 1 ? "s" : "", value2: formatCurrency(tx.saleAmount) })}</p>
                       <p className="text-xs text-muted-foreground">
                         {formatDistanceToNow(new Date(tx.createdAt), { addSuffix: true })}
                       </p>

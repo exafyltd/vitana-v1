@@ -80,7 +80,7 @@ function VitanaIndexMiniBase({
         }}
       >
         <Activity className="w-3 h-3 opacity-80" />
-        <span>Vitana Index: {isComputing ? "…" : score}</span>
+        <span>{t('screens.health.vitanaIndexValue0', { value0: isComputing ? "…" : score })}</span>
         {trend === "up" && <TrendingUp className="w-3 h-3 text-calendar-success" />}
         {trend === "down" && <TrendingDown className="w-3 h-3 text-destructive" />}
       </div>

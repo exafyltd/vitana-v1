@@ -48,7 +48,7 @@ function ServiceCard({ name, description, healthy }: ServiceCardProps) {
           </span>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">
-          {t('screens.admin.check')} <code className="rounded bg-muted px-1 py-0.5">{t('screens.admin.alive')}</code> endpoint
+          {t('screens.admin.check')} <code className="rounded bg-muted px-1 py-0.5">{t('screens.admin.alive')}</code>{t('screens.admin.endpoint')}
         </p>
       </CardContent>
     </Card>
@@ -115,14 +115,7 @@ export default function SystemHealth() {
                 <Activity className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-sm font-medium">{t('screens.admin.staticStatusDisplay')}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    This page shows placeholder service statuses. Real-time health checks require
-                    server-side proxying through the Gateway to curl each service's{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.alive')}</code> endpoint.
-                    All services run on Cloud Run in{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.uscentral1')}</code>{" "}
-                    under project{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                  <p className="text-sm text-muted-foreground mt-1">{t('screens.admin.thisPageShowsPlaceholderServiceStatuses', { value0: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.alive')}</code>{t('screens.admin.endpointAllServicesRunCloudRun', { value0: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">{t('screens.admin.uscentral1')}</code>{t('screens.admin.value0UnderProjectValue1', { value0: " ", value1: " " })}<code className="rounded bg-muted px-1 py-0.5 text-xs">
                       {t('screens.admin.lovablevitanavers1')}
                     </code>
                     .

@@ -108,7 +108,7 @@ function PatientRecords() {
                       <div key={patient.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div>
                           <p className="font-medium">{patient.name}</p>
-                          <p className="text-sm text-muted-foreground">DOB: {patient.dob} • Last Visit: {patient.lastVisit}</p>
+                          <p className="text-sm text-muted-foreground">{t('screens.admin.dobDobLastVisitLastvisit', { dob: patient.dob, lastVisit: patient.lastVisit })}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-muted-foreground">{t('screens.admin.recordcountRecords', { recordCount: patient.recordCount })}</span>

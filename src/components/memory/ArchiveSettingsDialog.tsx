@@ -96,7 +96,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           {/* Info Box */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.memory.note')}</strong> Archived items are hidden from regular views but can be restored at any time. They are not deleted and remain searchable.
+              <strong>{t('screens.memory.note')}</strong>{t('screens.memory.archivedItemsHiddenFromRegularViews')}
             </p>
           </div>
 

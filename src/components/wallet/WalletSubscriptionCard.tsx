@@ -193,8 +193,7 @@ export function WalletSubscriptionCard({
                   </li>
                 ))}
                 {features.length > 3 && (
-                  <li className="text-sm text-muted-foreground">
-                    +{features.length - 3} more features
+                  <li className="text-sm text-muted-foreground">{t('screens.wallet.value0MoreFeatures', { value0: features.length - 3 })}
                   </li>
                 )}
               </ul>

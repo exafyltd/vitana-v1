@@ -117,7 +117,7 @@ function Audit() {
                             </div>
                             <div>
                               <p className="font-medium">{log.action}</p>
-                              <p className="text-sm text-muted-foreground">User: {log.user} • Resource: {log.resource}</p>
+                              <p className="text-sm text-muted-foreground">{t('screens.admin.userUserResourceResource', { user: log.user, resource: log.resource })}</p>
                             </div>
                           </div>
                           <Badge variant={log.status === 'success' ? 'default' : 'destructive'}>

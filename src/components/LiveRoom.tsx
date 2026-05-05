@@ -93,8 +93,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
             muted
             className="w-full h-full object-cover"
           />
-          <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">
-            {userName} (You)
+          <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">{t('screens.common.usernameYou', { userName })}
           </div>
           {!isVideoEnabled && (
             <div className="absolute inset-0 flex items-center justify-center bg-muted">
@@ -166,8 +165,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
         </div>
 
         {isConnected && (
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            {peers.length + 1} participant{peers.length !== 0 ? 's' : ''} in the room
+          <p className="text-center text-sm text-muted-foreground mt-4">{t('screens.common.value0ParticipantValue1Room', { value0: peers.length + 1, value1: peers.length !== 0 ? 's' : '' })}
           </p>
         )}
       </div>

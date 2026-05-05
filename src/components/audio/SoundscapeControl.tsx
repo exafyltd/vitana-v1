@@ -46,9 +46,7 @@ export function SoundscapeControl() {
             </div>
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="right">
-          Soundscape {isPlaying ? '(playing)' : '(paused)'}
-        </TooltipContent>
+        <TooltipContent side="right">{t('screens.audio.soundscapeValue0', { value0: isPlaying ? '(playing)' : '(paused)' })}</TooltipContent>
       </Tooltip>
     );
   }

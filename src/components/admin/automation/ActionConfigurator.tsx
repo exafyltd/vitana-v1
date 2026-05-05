@@ -73,7 +73,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {Icon && <Icon className="h-4 w-4" />}
-                      <Label>Action {index + 1}</Label>
+                      <Label>{t('screens.admin.actionValue0', { value0: index + 1 })}</Label>
                     </div>
                     <Button 
                       variant="ghost" 
@@ -116,7 +116,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         <Input 
                           value={action.config.subject || ""}
                           onChange={(e) => updateActionConfig(index, "subject", e.target.value)}
-                          placeholder="Email subject..."
+                          placeholder={t('screens.admin.emailSubject')}
                         />
                       </div>
                       <div className="space-y-2">
@@ -124,7 +124,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
-                          placeholder="Email content..."
+                          placeholder={t('screens.admin.emailContent')}
                           rows={4}
                         />
                       </div>
@@ -138,7 +138,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         <Input 
                           value={action.config.title || ""}
                           onChange={(e) => updateActionConfig(index, "title", e.target.value)}
-                          placeholder="Notification title..."
+                          placeholder={t('screens.admin.notificationTitle')}
                         />
                       </div>
                       <div className="space-y-2">
@@ -146,7 +146,7 @@ export default function ActionConfigurator({ actions, onChange }: ActionConfigur
                         <Textarea 
                           value={action.config.message || ""}
                           onChange={(e) => updateActionConfig(index, "message", e.target.value)}
-                          placeholder="Notification message..."
+                          placeholder={t('screens.admin.notificationMessage')}
                           rows={3}
                         />
                       </div>

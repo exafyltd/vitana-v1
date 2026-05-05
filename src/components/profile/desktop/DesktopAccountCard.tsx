@@ -88,10 +88,7 @@ export function DesktopAccountCard({
         <div className="mt-8 rounded-xl p-4 border bg-muted/30">
           <div className="flex gap-3">
             <Info className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              Some personal information is used to personalize your experience,
-              improve trust, and support relevant services. You control what is
-              shared publicly.
+            <p className="text-xs leading-relaxed text-muted-foreground">{t('screens.profile.somePersonalInformationUsedPersonalizeYour')}
             </p>
           </div>
         </div>

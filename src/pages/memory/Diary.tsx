@@ -211,8 +211,7 @@ function Diary() {
                 <Mic className="h-5 w-5 text-red-600 dark:text-red-400" />
                 {t('screens.memory.recordFeedback')}
               </CardTitle>
-              <CardDescription>
-                Describe the issue or improvement — attach screenshots if needed
+              <CardDescription>{t('screens.memory.describeIssueImprovementAttachScreenshotsIf')}
               </CardDescription>
             </CardHeader>
             <CardContent>

@@ -124,8 +124,7 @@ export function ApiKeySettingsModal({ open, onOpenChange }: ApiKeySettingsModalP
             {t('screens.chat.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save API Key
+            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.chat.saveApiKey')}
           </Button>
         </DialogFooter>
       </DialogContent>

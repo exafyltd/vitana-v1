@@ -89,8 +89,7 @@ export function GreetingTemplates() {
           <Sparkles className="h-5 w-5" />
           {t('screens.admin.greetingTemplates')}
         </CardTitle>
-        <CardDescription>
-          Customize base greeting templates for different user experience levels. The AI will use these as starting points and personalize them with user context.
+        <CardDescription>{t('screens.admin.customizeBaseGreetingTemplatesForDifferent')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -100,7 +99,7 @@ export function GreetingTemplates() {
             id="new-user"
             value={newUser}
             onChange={(e) => setNewUser(e.target.value)}
-            placeholder="Welcome! I'm here to help you get started."
+            placeholder={t('screens.admin.welcomeIMHereHelpYou')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
@@ -114,7 +113,7 @@ export function GreetingTemplates() {
             id="returning-user"
             value={returningUser}
             onChange={(e) => setReturningUser(e.target.value)}
-            placeholder="Great to see you again!"
+            placeholder={t('screens.admin.greatSeeYouAgain')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
@@ -128,7 +127,7 @@ export function GreetingTemplates() {
             id="experienced-user"
             value={experiencedUser}
             onChange={(e) => setExperiencedUser(e.target.value)}
-            placeholder="Ready to explore more?"
+            placeholder={t('screens.admin.readyExploreMore')}
             rows={3}
           />
           <p className="text-xs text-muted-foreground">
@@ -141,8 +140,7 @@ export function GreetingTemplates() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Greeting Templates
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.saveGreetingTemplates')}
         </Button>
       </CardContent>
     </Card>

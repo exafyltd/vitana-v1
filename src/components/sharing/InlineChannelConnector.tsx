@@ -177,7 +177,7 @@ export function InlineChannelConnector({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Connect {channelInfo?.name}</DialogTitle>
+          <DialogTitle>{t('screens.sharing.connectName', { name: channelInfo?.name })}</DialogTitle>
           <DialogDescription>
             {isSocialMedia && "Enter your profile URL to enable posting"}
             {isMessaging && `Configure your ${channelInfo?.name} settings`}
@@ -197,8 +197,7 @@ export function InlineChannelConnector({
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                 className="mt-1"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Enter your full {channelInfo.name} profile URL
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.sharing.enterYourFullNameProfileUrl', { name: channelInfo.name })}
               </p>
             </div>
           )}
@@ -261,8 +260,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test Email Configuration
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testEmailConfiguration')}
               </Button>
             </div>
           )}
@@ -312,8 +310,7 @@ export function InlineChannelConnector({
               <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                 <div className="flex-1 text-sm">
                   <p className="font-medium">{t('screens.sharing.twilioSetup')}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Get your credentials from Twilio Console
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.getYourCredentialsFromTwilioConsole')}
                   </p>
                 </div>
                 <Button
@@ -334,8 +331,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test SMS Connection
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testSmsConnection')}
               </Button>
             </div>
           )}
@@ -398,8 +394,7 @@ export function InlineChannelConnector({
                 onClick={handleTestConnection}
                 disabled={testing}
               >
-                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                Test WhatsApp Connection
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.testWhatsappConnection')}
               </Button>
             </div>
           )}
@@ -418,8 +413,7 @@ export function InlineChannelConnector({
               disabled={loading}
               className="flex-1"
             >
-              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Connect
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}{t('screens.sharing.connect')}
             </Button>
           </div>
 
@@ -434,9 +428,7 @@ export function InlineChannelConnector({
                   window.open(`https://${channelKey}.com`, '_blank');
                 }}
               >
-                <ExternalLink className="w-3 h-3 mr-1" />
-                Visit {channelInfo.name}
-              </Button>
+                <ExternalLink className="w-3 h-3 mr-1" />{t('screens.sharing.visitName', { name: channelInfo.name })}</Button>
             </div>
           )}
         </form>

@@ -102,9 +102,7 @@ export function OrganizerEventSalesSheet({
                 </div>
                 {hasClientInfo && (
                   <Badge variant="outline" className="mt-2 gap-1">
-                    <Building2 className="w-3 h-3" />
-                    Client: {clientInfo.company || clientInfo.name}
-                  </Badge>
+                    <Building2 className="w-3 h-3" />{t('screens.business.clientValue0', { value0: clientInfo.company || clientInfo.name })}</Badge>
                 )}
               </div>
             </div>

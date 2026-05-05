@@ -134,8 +134,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
                   <div className="text-left">
-                    <div className="font-medium">
-                      {pkg.credits.toLocaleString()} Credits
+                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: pkg.credits.toLocaleString() })}
                       {pkg.bonus > 0 && (
                         <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                       )}
@@ -177,7 +176,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{t('screens.wallet.rate025PerCredit')}</span>
               {creditAmount && (
-                <span>Cost: ${(parseFloat(creditAmount) * 0.25).toFixed(2)}</span>
+                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(creditAmount) * 0.25).toFixed(2) })}</span>
               )}
             </div>
             <Button
@@ -190,8 +189,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : (
                 <Zap className="h-4 w-4 mr-2" />
-              )}
-              Buy Custom Amount
+              )}{t('screens.wallet.buyCustomAmount')}
             </Button>
           </div>
 

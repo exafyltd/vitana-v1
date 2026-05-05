@@ -333,7 +333,7 @@ function Timeline() {
           <TabsContent value="all" className="mt-6">
             <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                📜 <strong>{t('screens.memory.activityHistory')}</strong> A read-only chronological record of your system usage. This data is NOT used by AI for context.
+                📜 <strong>{t('screens.memory.activityHistory')}</strong>{t('screens.memory.readonlyChronologicalRecordYourSystemUsage')}
               </p>
             </div>
 
@@ -369,7 +369,7 @@ function Timeline() {
           <TabsContent value="by-category" className="mt-6">
             <div className="mb-4 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
               <p className="text-sm text-purple-700 dark:text-purple-300">
-                📊 <strong>{t('screens.memory.byCategory')}</strong> Browse your activity organized by system area. Expand any section to view details.
+                📊 <strong>{t('screens.memory.byCategory')}</strong>{t('screens.memory.browseYourActivityOrganizedBySystem')}
               </p>
             </div>
 
@@ -444,8 +444,7 @@ function Timeline() {
                         <Card className="border-dashed">
                           <CardContent className="p-8 text-center">
                             <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
-                            <p className="text-muted-foreground mb-3">
-                              No {category.label} activity yet
+                            <p className="text-muted-foreground mb-3">{t('screens.memory.noLabelActivityYet', { label: category.label })}
                             </p>
                             <Button 
                               variant="outline" 

@@ -137,7 +137,7 @@ export default function SystemConfig() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
-                    <Label>Sleep: {(weights.sleep * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.sleepValue0', { value0: (weights.sleep * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -148,7 +148,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Exercise: {(weights.exercise * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.exerciseValue0', { value0: (weights.exercise * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -159,7 +159,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Nutrition: {(weights.nutrition * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.nutritionValue0', { value0: (weights.nutrition * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -170,7 +170,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Mental Wellness: {(weights.mental_wellness * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.mentalWellnessValue0', { value0: (weights.mental_wellness * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -181,7 +181,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Social Connection: {(weights.social_connection * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.socialConnectionValue0', { value0: (weights.social_connection * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -192,7 +192,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Hydration: {(weights.hydration * 100).toFixed(0)}%</Label>
+                    <Label>{t('screens.admin.hydrationValue0', { value0: (weights.hydration * 100).toFixed(0) })}</Label>
                     <Slider
                       min={0}
                       max={1}
@@ -203,8 +203,7 @@ export default function SystemConfig() {
                   </div>
 
                   <div className="pt-4 border-t">
-                    <p className="text-sm text-muted-foreground">
-                      Total Weight: {(Object.values(weights).reduce((sum, val) => sum + val, 0) * 100).toFixed(0)}%
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.totalWeight')} {(Object.values(weights).reduce((sum, val) => sum + val, 0) * 100).toFixed(0)}%
                       {Object.values(weights).reduce((sum, val) => sum + val, 0) !== 1 && (
                         <span className="text-destructive ml-2">{t('screens.admin.warningShouldEqual100')}</span>
                       )}
@@ -222,9 +221,7 @@ export default function SystemConfig() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      Current tiers: Very Poor (0-99), Poor (100-299), Fair (300-499), 
-                      Improving (500-699), Good (700-849), Excellent (850-999)
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.currentTiersVeryPoor099Poor')}
                     </p>
                     <Button variant="outline" size="sm">{t('screens.admin.editTiers')}</Button>
                   </div>

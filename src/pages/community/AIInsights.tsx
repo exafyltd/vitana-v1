@@ -173,8 +173,7 @@ export default function AIInsights() {
                     </div>
                   ))}
                   {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.community.value0MoreActions', { value0: pendingCount - 2 })}
                     </div>
                   )}
                 </div>
@@ -237,8 +236,7 @@ export default function AIInsights() {
                       <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
                         <span>{t('screens.community.commongroupsCommonGroups', { commonGroups: person.commonGroups })}</span>
                         <span className="flex items-center gap-1">
-                          <div className={`w-2 h-2 rounded-full ${person.activityLevel === 'High' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                          {person.activityLevel} activity
+                          <div className={`w-2 h-2 rounded-full ${person.activityLevel === 'High' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>{t('screens.community.activitylevelActivity', { activityLevel: person.activityLevel })}
                         </span>
                       </div>
                       <div className="flex gap-2">

@@ -100,8 +100,7 @@ export function PartnerPreferencesSection({ prefs, visibility, viewerRelationshi
           </span>
         )}
         {showAge && (
-          <span className="inline-flex items-center px-2 py-1 rounded border border-border bg-muted/40">
-            {prefs.age_range![0]}–{prefs.age_range![1]} years
+          <span className="inline-flex items-center px-2 py-1 rounded border border-border bg-muted/40">{t('screens.profile.value0Value1Years', { value0: prefs.age_range![0], value1: prefs.age_range![1] })}
           </span>
         )}
         {showIntent && (

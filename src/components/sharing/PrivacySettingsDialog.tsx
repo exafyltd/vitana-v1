@@ -82,8 +82,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
                     <SelectItem value="informed">{t('screens.sharing.informedConsentOnly')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
-                  Default permission model for new access requests
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.defaultPermissionModelForNewAccess')}
                 </p>
               </div>
 
@@ -105,8 +104,7 @@ export function PrivacySettingsDialog({ open, onOpenChange }: PrivacySettingsDia
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label htmlFor="autoExportRequests">{t('screens.sharing.autoprocessExportRequests')}</Label>
-                    <p className="text-xs text-muted-foreground">
-                      Automatically fulfill data export requests
+                    <p className="text-xs text-muted-foreground">{t('screens.sharing.automaticallyFulfillDataExportRequests')}
                     </p>
                   </div>
                   <Switch

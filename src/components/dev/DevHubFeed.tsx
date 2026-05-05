@@ -296,7 +296,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
             {paused ? (
               <>
                 <Play className="h-3 w-3" />
-                <span className="text-xs">Resume</span>
+                <span className="text-xs">{t('screens.dev.resume')}</span>
               </>
             ) : (
               <>
@@ -318,8 +318,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                   ? "border-primary bg-primary/10 text-primary font-medium" 
                   : "border-border bg-background hover:bg-accent"
               )}
-            >
-              ALL
+            >{t('screens.dev.all')}
             </button>
             <button
               onClick={() => setScope(currentVTID)}
@@ -338,7 +337,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
           <Input
             value={filterQuery}
             onChange={(e) => setFilterQuery(e.target.value)}
-            placeholder="Filter events..."
+            placeholder={t('screens.dev.filterEvents')}
             className="h-6 text-xs flex-1"
           />
         </div>
@@ -376,7 +375,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                                 />
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>Source: {getSourceLabel(group.events[0].source)}</p>
+                                <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(group.events[0].source) })}</p>
                               </TooltipContent>
                             </Tooltip>
                             <span className="font-bold text-[12px] leading-tight flex-1 text-left">
@@ -442,7 +441,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                             />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Source: {getSourceLabel(event.source)}</p>
+                            <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(event.source) })}</p>
                           </TooltipContent>
                         </Tooltip>
 
@@ -515,8 +514,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                 size="sm"
                 onClick={handleLoadMore}
                 className="text-xs"
-              >
-                Load more ({groupedEvents.length - visibleCount} remaining)
+              >{t('screens.dev.loadMoreValue0Remaining', { value0: groupedEvents.length - visibleCount })}
               </Button>
             </div>
           )}
@@ -524,11 +522,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
 
         {/* Footer Info */}
         <div className="px-3 py-1.5 border-t bg-muted/30">
-          <p className="text-[10px] text-muted-foreground">
-            {filteredEvents.length > 0 ? `${filteredEvents.length} events` : 'No events'}
-            {filterQuery && ` • Filtered`}
-            {paused && ` • Paused`}
-            {' • '}Click VTID to open details
+          <p className="text-[10px] text-muted-foreground">{t('screens.dev.value0Value1Value2Value3ClickVtid', { value0: filteredEvents.length > 0 ? `${filteredEvents.length} events` : 'No events', value1: filterQuery && ` • Filtered`, value2: paused && ` • Paused`, value3: ' • ' })}
           </p>
         </div>
       </div>

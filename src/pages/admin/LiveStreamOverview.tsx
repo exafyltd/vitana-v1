@@ -104,8 +104,7 @@ export default function LiveStreamOverview() {
                   </div>
                 </CardHeader>
                 <CardContent className="pb-4">
-                  <p className="text-xs text-muted-foreground">
-                    Start a new community live room for group discussions
+                  <p className="text-xs text-muted-foreground">{t('screens.admin.startNewCommunityLiveRoomFor')}
                   </p>
                 </CardContent>
               </Card>
@@ -177,8 +176,7 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  Vertex AI
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>{t('screens.admin.vertexAi')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -191,13 +189,11 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  Community Rooms
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>{t('screens.admin.communityRooms')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  0 active rooms, ready for new sessions
+                <p className="text-sm text-muted-foreground">{t('screens.admin.text0ActiveRoomsReadyForNew')}
                 </p>
               </CardContent>
             </Card>
@@ -205,8 +201,7 @@ export default function LiveStreamOverview() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                  Telemedicine
+                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>{t('screens.admin.telemedicine')}
                 </CardTitle>
               </CardHeader>
               <CardContent>

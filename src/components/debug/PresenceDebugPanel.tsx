@@ -66,7 +66,7 @@ const PresenceDebugPanelInner: React.FC = () => {
         {debugInfo.lastConnected && (
           <div className="flex justify-between">
             <span>{t('screens.debug.connected')}</span>
-            <span>{Math.floor((Date.now() - debugInfo.lastConnected) / 1000)}s ago</span>
+            <span>{t('screens.debug.value0SAgo', { value0: Math.floor((Date.now() - debugInfo.lastConnected) / 1000) })}</span>
           </div>
         )}
         {debugInfo.realtimeLatency && (

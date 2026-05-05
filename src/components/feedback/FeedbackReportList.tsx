@@ -138,8 +138,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
   return (
     <>
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-muted-foreground">
-          My Reports ({reports.length})
+        <h3 className="text-sm font-semibold text-muted-foreground">{t('screens.feedback.myReportsLength', { length: reports.length })}
         </h3>
         {visibleReports.map((report) => {
           const statusConfig = STATUS_CONFIG[report.status] || STATUS_CONFIG.received;
@@ -177,7 +176,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
                       <button
                         onClick={() => setDeleteTarget(report.id)}
                         className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                        aria-label="Delete report"
+                        aria-label={t('screens.feedback.deleteReport')}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -198,8 +197,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
                         </Badge>
                       )}
                       {report.attachments?.length > 0 && (
-                        <span className="text-xs text-muted-foreground">
-                          📎 {report.attachments.length} attachment(s)
+                        <span className="text-xs text-muted-foreground">{t('screens.feedback.lengthAttachmentS', { length: report.attachments.length })}
                         </span>
                       )}
                     </div>
@@ -216,8 +214,7 @@ export function FeedbackReportList({ refreshKey }: FeedbackReportListProps) {
           <button
             onClick={() => setDisplayCount(prev => prev + 10)}
             className="px-6 py-2 text-sm font-medium text-primary hover:text-primary/80 bg-muted/60 hover:bg-muted rounded-full transition-colors"
-          >
-            Load more ({reports.length - displayCount} remaining)
+          >{t('screens.feedback.loadMoreValue0Remaining', { value0: reports.length - displayCount })}
           </button>
         </div>
       )}

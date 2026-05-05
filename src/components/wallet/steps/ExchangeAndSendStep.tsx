@@ -253,9 +253,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Available: {balance} {fromCurrency}
-          </p>
+          <p className="text-xs text-muted-foreground">{t('screens.wallet.availableBalanceFromcurrency', { balance, fromCurrency })}</p>
 
           {/* Swap Button */}
           <div className="flex justify-center">
@@ -338,8 +336,7 @@ export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProp
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.processing')}
               </>
             ) : (
               'Exchange & Send'

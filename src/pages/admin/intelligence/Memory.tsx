@@ -142,14 +142,12 @@ export default function IntelligenceMemory() {
           <button
             onClick={() => { setTab("items"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "items" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Memory Items
+          >{t('screens.admin.memoryItems')}
           </button>
           <button
             onClick={() => { setTab("facts"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "facts" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Extracted Facts
+          >{t('screens.admin.extractedFacts')}
           </button>
         </div>
 

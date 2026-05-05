@@ -80,8 +80,7 @@ export class DevErrorBoundary extends Component<Props, State> {
                 <Button
                   onClick={() => { window.history.pushState({}, '', '/dev/dashboard'); window.dispatchEvent(new PopStateEvent('popstate')); }}
                   variant="ghost"
-                >
-                  Go to Dashboard
+                >{t('screens.dev.goDashboard')}
                 </Button>
               </div>
             </CardContent>

@@ -166,8 +166,7 @@ export function PersonalitySettings() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Personality Settings
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.savePersonalitySettings')}
         </Button>
       </CardContent>
     </Card>

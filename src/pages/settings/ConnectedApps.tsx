@@ -198,7 +198,7 @@ function ConnectedApps() {
         expandedContent: platform.connected ? (
           <div className="space-y-3 pt-2">
             <div className="text-sm">
-              <strong>{t('screens.settings.permissions')}</strong> Post content, read analytics
+              <strong>{t('screens.settings.permissions')}</strong>{t('screens.settings.postContentReadAnalytics')}
             </div>
             <div className="text-sm text-muted-foreground">
               {t('screens.settings.lastSync5MinutesAgo')}
@@ -206,8 +206,7 @@ function ConnectedApps() {
             <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
           </div>
         ) : (
-          <div className="text-sm text-muted-foreground pt-2">
-            Connect your {platform.name} account to share content directly and track engagement.
+          <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.connectYourNameAccountShareContent', { name: platform.name })}
           </div>
         ),
       };
@@ -268,9 +267,7 @@ function ConnectedApps() {
               <strong>{t('screens.settings.status')}</strong> {p.last_verify_status || "unverified"}
             </div>
             {p.last_verified_at && (
-              <div className="text-sm text-muted-foreground">
-                Last verified: {new Date(p.last_verified_at).toLocaleString()}
-              </div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.lastVerifiedValue0', { value0: new Date(p.last_verified_at).toLocaleString() })}</div>
             )}
             <div className="flex gap-2">
               <Button
@@ -285,8 +282,7 @@ function ConnectedApps() {
                 size="sm"
                 onClick={() => disconnectAi.mutate({ provider: p.provider })}
                 disabled={disconnectAi.isPending}
-              >
-                Disconnect
+              >{t('screens.settings.disconnect')}
               </Button>
             </div>
           </div>
@@ -377,17 +373,14 @@ function ConnectedApps() {
             <div className="text-sm">
               <strong>{t('screens.settings.dataSyncing')}</strong> {app.syncData}
             </div>
-            <div className="text-sm text-muted-foreground">
-              Last sync: {app.lastSync}
-            </div>
+            <div className="text-sm text-muted-foreground">{t('screens.settings.lastSyncLastsync', { lastSync: app.lastSync })}</div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">{t('screens.settings.configureSync')}</Button>
               <Button variant="destructive" size="sm">{t('screens.settings.disconnect')}</Button>
             </div>
           </div>
         ) : (
-          <div className="text-sm text-muted-foreground pt-2">
-            Connect {app.name} to automatically sync your {app.syncData.toLowerCase()}.
+          <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.connectNameAutomaticallySyncYourValue1', { name: app.name, value1: app.syncData.toLowerCase() })}
           </div>
         ),
       };
@@ -570,8 +563,7 @@ function ConnectedApps() {
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
       primaryAction: undefined,
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon. This will enable secure access to {app.syncData.toLowerCase()}.
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.syncData.toLowerCase() })}
         </div>
       ),
     }));
@@ -667,8 +659,7 @@ function ConnectedApps() {
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
       primaryAction: undefined,
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon. Track your {app.syncData.toLowerCase()}.
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonTrackYour', { name: app.name, value1: app.syncData.toLowerCase() })}
         </div>
       ),
     }));
@@ -817,8 +808,7 @@ function ConnectedApps() {
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
       primaryAction: undefined,
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon.
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon', { name: app.name })}
         </div>
       ),
     }));
@@ -1086,8 +1076,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1135,8 +1124,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1184,8 +1172,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon. This will enable secure access to {app.description.toLowerCase()}.
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoonThisWill', { name: app.name, value1: app.description.toLowerCase() })}
         </div>
       ),
     }));
@@ -1233,8 +1220,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1282,8 +1268,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1331,8 +1316,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1374,8 +1358,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -1423,8 +1406,7 @@ function ConnectedApps() {
         variant: 'ghost' as const,
       },
       expandedContent: (
-        <div className="text-sm text-muted-foreground pt-2">
-          {app.name} integration is coming soon!
+        <div className="text-sm text-muted-foreground pt-2">{t('screens.settings.nameIntegrationComingSoon2', { name: app.name })}
         </div>
       ),
     }));
@@ -2227,8 +2209,7 @@ function ConnectedApps() {
                             ? 'font-medium border-b-2 border-primary text-foreground' 
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                      >
-                        All
+                      >{t('screens.settings.all')}
                       </button>
                       <button 
                         onClick={() => setSyncFilter('today')}
@@ -2237,8 +2218,7 @@ function ConnectedApps() {
                             ? 'font-medium border-b-2 border-primary text-foreground' 
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                      >
-                        Today
+                      >{t('screens.settings.today')}
                       </button>
                       <button 
                         onClick={() => setSyncFilter('last7days')}
@@ -2247,8 +2227,7 @@ function ConnectedApps() {
                             ? 'font-medium border-b-2 border-primary text-foreground' 
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                      >
-                        Last 7 Days
+                      >{t('screens.settings.last7Days')}
                       </button>
                       <button 
                         onClick={() => setSyncFilter('errors')}
@@ -2257,8 +2236,7 @@ function ConnectedApps() {
                             ? 'font-medium border-b-2 border-primary text-foreground' 
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
-                      >
-                        Errors Only
+                      >{t('screens.settings.errorsOnly')}
                       </button>
                     </div>
                   </div>

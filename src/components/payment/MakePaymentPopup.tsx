@@ -174,8 +174,7 @@ export default function MakePaymentPopup({
                     setSelectedRecipient(null);
                     setSearchTerm('');
                   }}
-                >
-                  Change
+                >{t('screens.payment.change')}
                 </Button>
               </div>
             ) : (
@@ -194,8 +193,7 @@ export default function MakePaymentPopup({
                 {searchTerm && (
                   <div className="mt-2 max-h-40 overflow-y-auto border rounded-md bg-background">
                     {membersLoading ? (
-                      <div className="p-3 text-center text-sm text-muted-foreground">
-                        Searching...
+                      <div className="p-3 text-center text-sm text-muted-foreground">{t('screens.payment.searching')}
                       </div>
                     ) : members.length > 0 ? (
                       members.map((member) => (
@@ -262,21 +260,15 @@ export default function MakePaymentPopup({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="CREDITS">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('CREDITS', 'w-4 h-4')}
-                      Credits
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Credits2', { value0: getCurrencyIcon('CREDITS', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                   <SelectItem value="USD">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('USD', 'w-4 h-4')}
-                      USD
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Usd', { value0: getCurrencyIcon('USD', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                   <SelectItem value="VTNA">
-                    <div className="flex items-center gap-2">
-                      {getCurrencyIcon('VTNA', 'w-4 h-4')}
-                      VTNA
+                    <div className="flex items-center gap-2">{t('screens.payment.value0Vtna', { value0: getCurrencyIcon('VTNA', 'w-4 h-4') })}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -299,12 +291,10 @@ export default function MakePaymentPopup({
           {/* Payment Status Indicators */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="capitalize">
-                {paymentType} Payment
+              <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePayment', { paymentType })}
               </Badge>
               {currency.toUpperCase() === 'CREDITS' && (
-                <Badge variant="secondary">
-                  Platform Credits
+                <Badge variant="secondary">{t('screens.payment.platformCredits')}
                 </Badge>
               )}
             </div>
@@ -338,8 +328,7 @@ export default function MakePaymentPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>

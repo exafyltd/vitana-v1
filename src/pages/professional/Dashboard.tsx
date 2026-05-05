@@ -61,8 +61,7 @@ export default function ProfessionalDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$24,500</div>
-            <p className="text-xs text-muted-foreground">
-              +12% from last month
+            <p className="text-xs text-muted-foreground">{t('screens.professional.text12FromLastMonth')}
             </p>
           </CardContent>
         </Card>

@@ -105,8 +105,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             </div>
             
             {/* Title */}
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">
-              {data.day} - Sleep
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">{t('screens.health.daySleep', { day: data.day })}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -220,7 +219,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           {/* Tags */}
           {data.tags.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Tags</h4>
+              <h4 className="text-sm font-semibold mb-2">{t('screens.health.tags')}</h4>
               <div className="flex flex-wrap gap-2">
                 {data.tags.map(tag => (
                   <Badge key={tag} variant="secondary" className="capitalize">

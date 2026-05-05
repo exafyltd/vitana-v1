@@ -54,8 +54,7 @@ function DataWalletCardBase({
       ))}
       
       {readyReports.length > 0 && (
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          {readyReports.length} report{readyReports.length !== 1 ? 's' : ''} ready to share
+        <p className="text-xs text-muted-foreground text-center mt-2">{t('screens.crossover.lengthReportValue1ReadyShare', { length: readyReports.length, value1: readyReports.length !== 1 ? 's' : '' })}
         </p>
       )}
     </div>

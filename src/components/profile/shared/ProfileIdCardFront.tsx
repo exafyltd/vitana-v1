@@ -251,8 +251,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                       role="status"
                       aria-label={`Top ${100 - profile.vitanaPercentile} percentile`}
                     >
-                      <span className="text-[9px] font-bold text-foreground leading-none tracking-wide">
-                        TOP {100 - profile.vitanaPercentile}%
+                      <span className="text-[9px] font-bold text-foreground leading-none tracking-wide">{t('screens.profile.topValue0', { value0: 100 - profile.vitanaPercentile })}
                       </span>
                     </div>
                   </div>

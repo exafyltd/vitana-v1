@@ -84,9 +84,8 @@ export default function IntentBoard() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">{t('screens.intentboard.communityBoard')}</h1>
-          <p className="text-sm text-muted-foreground">
-            What others are looking for. {data?.compass && (
-              <>Surfaced for your <span className="font-medium">{data.compass}</span> {t('screens.intentboard.focus')}</>
+          <p className="text-sm text-muted-foreground">{t('screens.intentboard.whatOthersLookingFor')} {data?.compass && (
+              <>{t('screens.intentboard.surfacedForYour')} <span className="font-medium">{data.compass}</span> {t('screens.intentboard.focus')}</>
             )}
           </p>
         </div>

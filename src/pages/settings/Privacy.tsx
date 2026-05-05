@@ -260,13 +260,11 @@ function Privacy() {
                           <p><strong>{t('screens.settings.control')}</strong> {t('screens.settings.toggleOffHereRevokeConsentAt')}</p>
                         </div>
                         {hasConsent && (
-                          <p className="text-xs text-muted-foreground">
-                            Consent granted. You can revoke at any time by toggling this off.
+                          <p className="text-xs text-muted-foreground">{t('screens.settings.consentGrantedYouCanRevokeAt')}
                           </p>
                         )}
                         {!hasConsent && (
-                          <p className="text-xs text-muted-foreground">
-                            AI features (voice assistant, proactive messages, profile enhancement) are disabled until consent is granted.
+                          <p className="text-xs text-muted-foreground">{t('screens.settings.aiFeaturesVoiceAssistantProactiveMessages')}
                           </p>
                         )}
                       </div>

@@ -102,8 +102,7 @@ export function PodcastListCard({ episodes, title = "Recommended Podcasts", clas
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=podcasts')}
             className="text-xs hover:text-orange-600 px-4 py-2 min-h-[40px] cursor-pointer"
-          >
-            View All
+          >{t('screens.home.viewAll')}
           </Button>
         </div>
       </CardHeader>

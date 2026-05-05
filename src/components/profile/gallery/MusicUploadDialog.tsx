@@ -9,7 +9,7 @@ import { Upload, Music } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
-import { lookup } from '@/lib/i18n-toast';
+import { lookup, t } from '@/lib/i18n-toast';
 
 interface MusicUploadDialogProps {
   open: boolean;
@@ -101,7 +101,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
                 <Music className="h-8 w-8 text-primary" />
                 <div className="text-left">
                   <p className="text-sm font-medium truncate max-w-[200px]">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.profile.value0Mb', { value0: (file.size / 1024 / 1024).toFixed(1) })}</p>
                 </div>
               </div>
             ) : (
@@ -110,7 +110,7 @@ export function MusicUploadDialog({ open, onOpenChange, onUpload, isUploading, p
                 <p className="text-sm text-muted-foreground">
                   {translate("gallery.dropzone", "Drag & drop or click to select")}
                 </p>
-                <p className="text-xs text-muted-foreground/60">MP3, WAV, FLAC, AAC, OGG, M4A · {translate("gallery.maxSizeHint", "Max. 50 MB")}</p>
+                <p className="text-xs text-muted-foreground/60">{t('screens.profile.mp3WavFlacAacOggM4a', { value0: translate("gallery.maxSizeHint", "Max. 50 MB") })}</p>
               </div>
             )}
             <input

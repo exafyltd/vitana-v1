@@ -116,8 +116,7 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
                     <ResponsiveConfirmDialogContent>
                       <ResponsiveConfirmDialogHeader>
                         <ResponsiveConfirmDialogTitle>{t('screens.memory.deleteConversation')}</ResponsiveConfirmDialogTitle>
-                        <ResponsiveConfirmDialogDescription>
-                          Are you sure you want to delete this conversation? This will remove both the user message and AI response. This action cannot be undone.
+                        <ResponsiveConfirmDialogDescription>{t('screens.memory.youSureYouWantDeleteThis')}
                         </ResponsiveConfirmDialogDescription>
                       </ResponsiveConfirmDialogHeader>
                       <ResponsiveConfirmDialogFooter>
@@ -125,8 +124,7 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
                         <ResponsiveConfirmDialogAction
                           onClick={() => onDelete(exchange.id, 'conversation')}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
-                          Delete
+                        >{t('screens.memory.delete')}
                         </ResponsiveConfirmDialogAction>
                       </ResponsiveConfirmDialogFooter>
                     </ResponsiveConfirmDialogContent>

@@ -9,7 +9,7 @@ import { Upload, Video } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useToast } from "@/hooks/use-toast";
-import { lookup } from '@/lib/i18n-toast';
+import { lookup, t } from '@/lib/i18n-toast';
 
 interface VideoUploadDialogProps {
   open: boolean;
@@ -104,7 +104,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
                 <p className="text-sm text-muted-foreground">
                   {translate("gallery.dropzone", "Drag & drop or click to select")}
                 </p>
-                <p className="text-xs text-muted-foreground/60">MP4, WebM, MOV · {translate("gallery.maxSizeHint", "Max. 50 MB")}</p>
+                <p className="text-xs text-muted-foreground/60">{t('screens.profile.mp4WebmMovValue0', { value0: translate("gallery.maxSizeHint", "Max. 50 MB") })}</p>
               </div>
             )}
             <input

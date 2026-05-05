@@ -135,9 +135,7 @@ export default function IntelligenceEmbeddings() {
                   className="h-3"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
-                Facts are automatically superseded when newer information replaces older values
-                (e.g., updated name, new birthday).
+              <p className="text-xs text-muted-foreground">{t('screens.admin.factsAutomaticallySupersededWhenNewerInformation')}
               </p>
             </CardContent>
           </Card>

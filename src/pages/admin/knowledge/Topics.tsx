@@ -64,9 +64,7 @@ export default function KnowledgeTopics() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
-                {topics.length} topic{topics.length !== 1 ? "s" : ""} across {docs.length} document{docs.length !== 1 ? "s" : ""}
-              </p>
+              <p className="text-xs text-muted-foreground mt-4">{t('screens.admin.lengthTopicValue1AcrossLength2Document', { length: topics.length, value1: topics.length !== 1 ? "s" : "", length2: docs.length, value3: docs.length !== 1 ? "s" : "" })}</p>
             </CardContent>
           </Card>
         )}

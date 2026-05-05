@@ -135,8 +135,7 @@ export default function TenantRole() {
           {isExafyAdmin && (
             <Alert>
               <Crown className="h-4 w-4" />
-              <AlertDescription>
-                You are an Exafy super administrator. You can switch between organizations and manage all tenants.
+              <AlertDescription>{t('screens.settings.youExafySuperAdministratorYouCan')}
               </AlertDescription>
             </Alert>
           )}
@@ -288,7 +287,7 @@ export default function TenantRole() {
                             </div>
                             <div>
                               <h4 className="font-medium">{membership.tenants.name}</h4>
-                              <p className="text-sm text-muted-foreground">Role: {getRoleDisplayName(membership.role)}</p>
+                              <p className="text-sm text-muted-foreground">{t('screens.settings.roleValue0', { value0: getRoleDisplayName(membership.role) })}</p>
                             </div>
                           </div>
                           <Badge className={

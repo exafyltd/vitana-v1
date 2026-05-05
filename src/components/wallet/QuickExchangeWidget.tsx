@@ -207,7 +207,7 @@ export function QuickExchangeWidget({
               </div>
               
               <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                <span>Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency}</span>
+                <span>{t('screens.wallet.rate1FromcurrencyValue1Tocurrency', { fromCurrency, value1: calculation.rate.toFixed(3), toCurrency })}</span>
                 <span>{t('screens.wallet.noFeesFreeExchange')}</span>
               </div>
             </CardContent>

@@ -29,9 +29,7 @@ export default function TelemedicineSessions() {
           <Alert>
             <Construction className="h-4 w-4" />
             <AlertTitle>{t('screens.admin.comingSoon')}</AlertTitle>
-            <AlertDescription>
-              Telemedicine session management is currently under development. 
-              This feature will enable healthcare providers to conduct secure video consultations with patients.
+            <AlertDescription>{t('screens.admin.telemedicineSessionManagementCurrentlyUnderDevelop')}
             </AlertDescription>
           </Alert>
 

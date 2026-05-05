@@ -156,8 +156,7 @@ export default function LiveInteraction() {
                     </div>
                   ))}
                   {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.community.value0MoreActions', { value0: pendingCount - 2 })}
                     </div>
                   )}
                 </div>
@@ -221,8 +220,7 @@ export default function LiveInteraction() {
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
-                          <Eye className="w-3 h-3" />
-                          {room.viewers} watching
+                          <Eye className="w-3 h-3" />{t('screens.community.viewersWatching', { viewers: room.viewers })}
                         </span>
                         <span className="flex items-center gap-1">
                           {room.isAudio ? <Headphones className="w-3 h-3" /> : <Video className="w-3 h-3" />}
@@ -288,14 +286,11 @@ export default function LiveInteraction() {
                       <p className="text-sm text-muted-foreground mb-3">{t('screens.community.hostedByHost', { host: session.host })}</p>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {session.date} at {session.time}
-                        </span>
+                          <Calendar className="w-4 h-4" />{t('screens.community.dateAtTime', { date: session.date, time: session.time })}</span>
                       </div>
                       <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
                         <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          {session.expectedAttendees} expected
+                          <Users className="w-4 h-4" />{t('screens.community.expectedattendeesExpected', { expectedAttendees: session.expectedAttendees })}
                         </span>
                         <span className="flex items-center gap-1">
                           {session.type === "Audio" ? <Headphones className="w-4 h-4" /> : <Video className="w-4 h-4" />}
@@ -327,9 +322,7 @@ export default function LiveInteraction() {
                   {coHostInvitations.map((invitation, index) => (
                     <div key={index} className="p-4 bg-green-50 border border-green-200 rounded-lg">
                       <h4 className="font-medium text-sm mb-1">{invitation.title}</h4>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        Hosted by {invitation.host} • Role: {invitation.role}
-                      </p>
+                      <p className="text-xs text-muted-foreground mb-2">{t('screens.community.hostedByHostRoleRole', { host: invitation.host, role: invitation.role })}</p>
                       <p className="text-xs text-muted-foreground mb-3">{invitation.time}</p>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline" className="flex-1">
@@ -361,8 +354,7 @@ export default function LiveInteraction() {
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-muted-foreground">{t('screens.community.membersMembers', { members: group.members })}</span>
                         <span className="text-xs text-green-600 flex items-center gap-1">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          {group.activeNow} active
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>{t('screens.community.activenowActive', { activeNow: group.activeNow })}
                         </span>
                       </div>
                       <Button size="sm" variant="outline" className="w-full">

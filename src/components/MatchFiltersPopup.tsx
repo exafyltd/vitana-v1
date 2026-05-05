@@ -95,8 +95,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           {/* Age Range */}
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Age Range: {ageRange[0]} - {ageRange[1]} years
+              <Users className="w-4 h-4" />{t('screens.common.ageRangeValue0Value1Years', { value0: ageRange[0], value1: ageRange[1] })}
             </Label>
             <Slider
               value={ageRange}
@@ -111,8 +110,7 @@ export function MatchFiltersPopup({ open, onOpenChange }: MatchFiltersPopupProps
           {/* Distance Range */}
           <div className="space-y-3">
             <Label className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              Distance: Within {distanceRange[0]} miles
+              <MapPin className="w-4 h-4" />{t('screens.common.distanceWithinValue0Miles', { value0: distanceRange[0] })}
             </Label>
             <Slider
               value={distanceRange}

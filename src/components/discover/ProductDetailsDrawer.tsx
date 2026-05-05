@@ -125,8 +125,7 @@ function DrawerBody() {
               to={`/discover/product/${p.id}`}
               className="ml-auto text-xs text-primary hover:underline inline-flex items-center gap-0.5"
               onClick={() => clearSelection()}
-            >
-              Open full page <ExternalLink className="w-3 h-3" />
+            >{t('screens.discover.openFullPage')} <ExternalLink className="w-3 h-3" />
             </Link>
           </div>
         </div>
@@ -146,8 +145,7 @@ function DrawerBody() {
             </div>
             {p.reward_preview?.points_estimate ? (
               <div className="flex items-center gap-1 text-xs text-emerald-700 mt-1">
-                <Gift className="w-3.5 h-3.5" />
-                Earn +{p.reward_preview.points_estimate} points on purchase
+                <Gift className="w-3.5 h-3.5" />{t('screens.discover.earnPoints_estimatePointsPurchase', { points_estimate: p.reward_preview.points_estimate })}
               </div>
             ) : null}
           </div>
@@ -305,9 +303,7 @@ function DrawerBody() {
 
         <Separator />
 
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          This product card is informational. Always consult a qualified practitioner before
-          starting a new supplement, especially if you are pregnant, nursing, or on medication.
+        <p className="text-xs text-muted-foreground leading-relaxed">{t('screens.discover.thisProductCardInformationalAlwaysConsult')}
         </p>
         <AffiliateDisclosure compact />
       </div>

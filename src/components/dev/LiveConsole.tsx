@@ -347,7 +347,7 @@ export default function LiveConsole() {
           <Badge variant={streaming ? "success" : "secondary"}>
             {streaming ? "LIVE" : "RECONNECTING"}
           </Badge>
-          {useFallback && <Badge variant="outline">POLLING</Badge>}
+          {useFallback && <Badge variant="outline">{t('screens.dev.polling')}</Badge>}
         </div>
         <div className="flex items-center gap-2">
           <TooltipProvider>
@@ -383,8 +383,7 @@ export default function LiveConsole() {
                 </span>
               </TooltipTrigger>
               {isOffline && (
-                <TooltipContent>
-                  Cannot send smoke test: Backend is offline
+                <TooltipContent>{t('screens.dev.cannotSendSmokeTestBackendOffline')}
                 </TooltipContent>
               )}
             </Tooltip>
@@ -395,11 +394,9 @@ export default function LiveConsole() {
               checked={paused} 
               onChange={e => paused ? handleUnpause() : setPaused(true)}
               className="cursor-pointer"
-            />
-            Pause
+            />{t('screens.dev.pause')}
             {paused && bufferedEvents.length > 0 && (
-              <Badge variant="secondary" className="ml-1">
-                {bufferedEvents.length} new
+              <Badge variant="secondary" className="ml-1">{t('screens.dev.lengthNew', { length: bufferedEvents.length })}
               </Badge>
             )}
           </label>
@@ -455,16 +452,14 @@ export default function LiveConsole() {
                 </span>
               </div>
               {streaming && eventRate > 0 && (
-                <span className="text-muted-foreground">
-                  {eventRate}/s rate
+                <span className="text-muted-foreground">{t('screens.dev.eventratesRate', { eventRate })}
                 </span>
               )}
               {useFallback && (
                 <span className="text-muted-foreground">{t('screens.dev.text5sRefresh')}</span>
               )}
             </div>
-            <div className="text-muted-foreground">
-              Showing {filteredEvents.length} • Loaded {totalLoaded} more
+            <div className="text-muted-foreground">{t('screens.dev.showingLengthLoadedTotalloadedMore', { length: filteredEvents.length, totalLoaded })}
             </div>
           </div>
         )}

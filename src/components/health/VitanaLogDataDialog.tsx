@@ -124,10 +124,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t('screens.health.logDataPoint')}</DialogTitle>
-          <DialogDescription>
-            Add a single health data point today. The corresponding pillar agent will
-            see it within a second and the Connected Data segment on that pillar's
-            bar will grow.
+          <DialogDescription>{t('screens.health.addSingleHealthDataPointToday')}
           </DialogDescription>
         </DialogHeader>
 
@@ -168,8 +165,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="log-data-value" className="text-xs uppercase tracking-wider text-muted-foreground">
-              Value ({selected.unit})
+            <Label htmlFor="log-data-value" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.valueUnit', { unit: selected.unit })}
             </Label>
             <Input
               id="log-data-value"

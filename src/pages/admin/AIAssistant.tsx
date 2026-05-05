@@ -83,9 +83,7 @@ export default function AIAssistantOverview() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Describe any situation and AI will analyze it, then suggest 
-                    specific automations with confidence scores.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.describeAnySituationAiWillAnalyze')}
                   </p>
                 </CardContent>
               </Card>
@@ -106,9 +104,7 @@ export default function AIAssistantOverview() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    View behavioral patterns automatically discovered by AI from 
-                    user data and system analytics.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.viewBehavioralPatternsAutomaticallyDiscoveredBy')}
                   </p>
                 </CardContent>
               </Card>
@@ -129,9 +125,7 @@ export default function AIAssistantOverview() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Monitor execution rates, success metrics, and user engagement 
-                    for all automations and AI actions.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.monitorExecutionRatesSuccessMetricsUser')}
                   </p>
                 </CardContent>
               </Card>
@@ -151,9 +145,7 @@ export default function AIAssistantOverview() {
                     <div className="w-2 h-2 rounded-full bg-purple-500"></div>
                     <h4 className="font-semibold">{t('screens.admin.automationEngine')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Trigger-based system that executes actions based on user events, 
-                    schedules, and conditions.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.triggerbasedSystemThatExecutesActionsBased')}
                   </p>
                 </div>
 
@@ -162,9 +154,7 @@ export default function AIAssistantOverview() {
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
                     <h4 className="font-semibold">{t('screens.admin.aiAnalyzer')}</h4>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Uses Lovable AI to understand situations and generate 
-                    intelligent automation recommendations.
+                  <p className="text-sm text-muted-foreground">{t('screens.admin.usesLovableAiUnderstandSituationsGenerate')}
                   </p>
                 </div>
 

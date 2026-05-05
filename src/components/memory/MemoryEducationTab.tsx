@@ -69,8 +69,7 @@ const educationalContent = [
 export function MemoryEducationTab() {
   return (
     <div className="mt-6 space-y-6">
-      <div className="text-sm text-muted-foreground mb-4">
-        Learn how lifestyle factors influence your wellness outcomes
+      <div className="text-sm text-muted-foreground mb-4">{t('screens.memory.learnHowLifestyleFactorsInfluenceYour')}
       </div>
 
       {educationalContent.map((item) => {
@@ -85,8 +84,7 @@ export function MemoryEducationTab() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="secondary">{item.category}</Badge>
-                    <Badge variant={item.impact === "High" ? "default" : "outline"}>
-                      {item.impact} Impact
+                    <Badge variant={item.impact === "High" ? "default" : "outline"}>{t('screens.memory.impactImpact', { impact: item.impact })}
                     </Badge>
                   </div>
                   <CardTitle className="text-lg">{item.title}</CardTitle>
@@ -121,9 +119,7 @@ export function MemoryEducationTab() {
             <Lightbulb className="w-5 h-5 text-primary" />
             <h3 className="font-semibold text-primary">{t('screens.memory.personalizedInsightsComingSoon')}</h3>
           </div>
-          <p className="text-sm text-muted-foreground">
-            As you track more memories and data, this section will provide AI-generated insights 
-            specifically tailored to your patterns and goals from your Life Compass.
+          <p className="text-sm text-muted-foreground">{t('screens.memory.asYouTrackMoreMemoriesData')}
           </p>
         </CardContent>
       </Card>

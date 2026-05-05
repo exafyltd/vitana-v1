@@ -333,8 +333,7 @@ export default function VoiceAISettings() {
                           onClick={loadVoices}
                           disabled={isUpdating}
                           className="h-7 text-xs"
-                        >
-                          Refresh Browser Voices
+                        >{t('screens.settings.refreshBrowserVoices')}
                         </Button>
                       </div>
                       <Select
@@ -574,7 +573,7 @@ export default function VoiceAISettings() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="ai-temperature">Creativity: {preferences.ai_temperature.toFixed(1)}</Label>
+                    <Label htmlFor="ai-temperature">{t('screens.settings.creativityValue0', { value0: preferences.ai_temperature.toFixed(1) })}</Label>
                     <Slider
                       id="ai-temperature"
                       min={0}

@@ -135,8 +135,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
             <Flame className="h-5 w-5 text-orange-500" />
             {t('screens.wallet.earningStreaksAnalytics')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-orange-500/10 text-orange-600">
-            {activeStreaks} Active Streaks
+          <Badge variant="secondary" className="bg-orange-500/10 text-orange-600">{t('screens.wallet.activestreaksActiveStreaks', { activeStreaks })}
           </Badge>
         </div>
       </CardHeader>
@@ -182,8 +181,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                       {streak.category}
                       <StatusIcon className="h-3 w-3 text-orange-500" />
                     </h5>
-                    <p className="text-xs text-muted-foreground">
-                      {streak.currentStreak} days • Best: {streak.bestStreak} days
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.currentstreakDaysBestBeststreakDays', { currentStreak: streak.currentStreak, bestStreak: streak.bestStreak })}
                     </p>
                   </div>
                   <div className="text-right">
@@ -195,11 +193,9 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
                 
                 <div className="mb-2">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">
-                      To {streak.nextMilestone} days
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.nextmilestoneDays', { nextMilestone: streak.nextMilestone })}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      +{streak.reward} VTN
+                    <span className="text-xs text-muted-foreground">{t('screens.wallet.rewardVtn', { reward: streak.reward })}
                     </span>
                   </div>
                   <Progress value={streak.progress} className="h-1.5" />
@@ -230,11 +226,9 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-purple-600 font-semibold">
-                    +{opportunity.reward} VTN
+                  <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.rewardVtn', { reward: opportunity.reward })}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {opportunity.deadline} left
+                  <div className="text-xs text-muted-foreground">{t('screens.wallet.deadlineLeft', { deadline: opportunity.deadline })}
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
@@ -252,8 +246,7 @@ export function EarningStreaksAnalyticsCard({ className }: EarningStreaksAnalyti
               <Target className="h-4 w-4 text-amber-600" />
               <span className="text-sm font-medium">{t('screens.wallet.streakRecovery')}</span>
             </div>
-            <p className="text-xs text-muted-foreground mb-2">
-              Restart your Wellness Goals streak today to rebuild your {mockStreaks.find(s => s.status === "broken")?.bestStreak}-day record
+            <p className="text-xs text-muted-foreground mb-2">{t('screens.wallet.restartYourWellnessGoalsStreakToday')} {mockStreaks.find(s => s.status === "broken")?.bestStreak}{t('screens.wallet.dayRecord')}
             </p>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
               {t('screens.wallet.restartStreak')}

@@ -132,7 +132,7 @@ export default function MembersInvitations() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
+                  placeholder={t('screens.admin.userExampleCom')}
                 />
               </div>
               <div className="space-y-2">

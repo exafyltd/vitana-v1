@@ -157,7 +157,7 @@ export default function MarketplaceOverview() {
             </CardHeader>
             <CardContent>
               {runs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No runs yet. Hand catalog scraping off to Claude Code — it calls <code>{t('screens.admin.postapiv1catalogingeststart')}</code> {t('screens.admin.begin')}</p>
+                <p className="text-sm text-muted-foreground">{t('screens.admin.noRunsYetHandCatalogScraping')} <code>{t('screens.admin.postapiv1catalogingeststart')}</code> {t('screens.admin.begin')}</p>
               ) : (
                 <div className="space-y-2">
                   {runs.map((r) => (

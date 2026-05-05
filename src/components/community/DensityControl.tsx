@@ -3,6 +3,7 @@ import { Label } from '@/components/ui/label';
 import { ShortsDensity } from '@/hooks/useShortsDensity';
 import { Grid3x3, Grid2x2, LayoutGrid } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { t } from '@/lib/i18n-toast';
 
 interface DensityControlProps {
   value: ShortsDensity;
@@ -24,7 +25,7 @@ export function DensityControl({ value, onChange }: DensityControlProps) {
         value={value}
         onValueChange={(v) => onChange(v as ShortsDensity)}
         className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-lg"
-        aria-label="View density"
+        aria-label={t('screens.community.viewDensity')}
       >
         {densityOptions.map((option) => (
           <div key={option.value} className="relative">

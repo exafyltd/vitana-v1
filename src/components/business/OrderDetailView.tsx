@@ -144,8 +144,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Ticket className="w-4 h-4" />
-            Attendees ({order.quantity})
+            <Ticket className="w-4 h-4" />{t('screens.business.attendeesQuantity', { quantity: order.quantity })}
           </CardTitle>
         </CardHeader>
         <CardContent>

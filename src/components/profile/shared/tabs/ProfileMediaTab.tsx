@@ -352,8 +352,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
             variant="soft" 
             onClick={() => setShowAll(true)}
             className="px-6 py-2"
-          >
-            Show more ({filteredMedia.length - 6} more {filteredMedia.length - 6 === 1 ? 'item' : 'items'})
+          >{t('screens.profile.showMoreValue0MoreValue1', { value0: filteredMedia.length - 6, value1: filteredMedia.length - 6 === 1 ? 'item' : 'items' })}
           </Button>
         </div>
       )}

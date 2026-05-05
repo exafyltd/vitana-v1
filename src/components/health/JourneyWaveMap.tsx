@@ -38,8 +38,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
             {t('screens.health.text90dayArc')}
           </span>
           {currentId && (
-            <span className="text-[10px] text-muted-foreground">
-              You are here
+            <span className="text-[10px] text-muted-foreground">{t('screens.health.youHere')}
             </span>
           )}
         </div>
@@ -58,9 +57,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
                 <TooltipTrigger asChild>
                   <span className={className} role="listitem">
                     {w.name}{" "}
-                    <span className="opacity-70">
-                      · Day {w.timeline.start_day}–{w.timeline.end_day}
-                    </span>
+                    <span className="opacity-70">{t('screens.health.dayStart_dayEnd_day', { start_day: w.timeline.start_day, end_day: w.timeline.end_day })}</span>
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs">

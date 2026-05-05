@@ -128,8 +128,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
                   </div>
                 </div>
                 {method.fee === 'Free' && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-700">
-                    Recommended
+                  <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.recommended')}
                   </Badge>
                 )}
               </Button>

@@ -74,7 +74,7 @@ const DeleteAccount = () => {
         />
         <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label="Go back">
+            <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t('screens.legal.goBack')}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
@@ -104,7 +104,7 @@ const DeleteAccount = () => {
 
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label="Go back">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} aria-label={t('screens.legal.goBack')}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.deleteAccount')}</h1>
@@ -136,9 +136,7 @@ const DeleteAccount = () => {
                 </ul>
               </div>
 
-              <p className="text-xs text-muted-foreground">
-                Completed payment transactions may be retained as required by financial regulations, in accordance with our{" "}
-                <Link to="/privacy" className="text-primary hover:underline">
+              <p className="text-xs text-muted-foreground">{t('screens.legal.completedPaymentTransactionsMayRetainedAs', { value0: " " })}<Link to="/privacy" className="text-primary hover:underline">
                   {t('screens.legal.privacyPolicy')}
                 </Link>.
               </p>
@@ -163,12 +161,12 @@ const DeleteAccount = () => {
               </div>
               <CardTitle className="text-xl">{t('screens.legal.youSure')}</CardTitle>
               <CardDescription className="text-sm">
-                {t('screens.legal.type')} <span className="font-mono font-bold text-destructive">{t('screens.legal.delete')}</span> below to confirm account deletion.
+                {t('screens.legal.type')} <span className="font-mono font-bold text-destructive">{t('screens.legal.delete')}</span>{t('screens.legal.belowConfirmAccountDeletion')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Input
-                placeholder='Type "DELETE" to confirm'
+                placeholder={t('screens.legal.typeDeleteConfirm')}
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
                 className="text-center font-mono text-lg tracking-widest"
@@ -183,8 +181,7 @@ const DeleteAccount = () => {
                     setConfirmText("");
                     setStep("info");
                   }}
-                >
-                  Cancel
+                >{t('screens.legal.cancel')}
                 </Button>
                 <Button
                   variant="destructive"

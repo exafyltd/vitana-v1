@@ -100,8 +100,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
             <BarChart3 className="h-5 w-5 text-primary" />
             {t('screens.wallet.tokenIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">
-            +{potentialIncrease}% APY Available
+          <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600">{t('screens.wallet.potentialincreaseApyAvailable', { potentialIncrease })}
           </Badge>
         </div>
       </CardHeader>
@@ -150,8 +149,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
                     </div>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" className={`text-xs mb-1 ${config.badgeColor}`}>
-                      {insight.confidence}% confidence
+                    <Badge variant="outline" className={`text-xs mb-1 ${config.badgeColor}`}>{t('screens.wallet.confidenceConfidence', { confidence: insight.confidence })}
                     </Badge>
                   </div>
                 </div>
@@ -162,8 +160,7 @@ export function TokenMarketIntelligenceCard({ className }: TokenMarketIntelligen
                     {insight.timeframe}
                   </div>
                   {insight.actionable && (
-                    <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600">
-                      Actionable
+                    <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600">{t('screens.wallet.actionable')}
                     </Badge>
                   )}
                 </div>

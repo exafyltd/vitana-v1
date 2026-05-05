@@ -49,9 +49,7 @@ export function SleepPlanView() {
           
           {/* Summary Strip */}
           <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Average sleep quality: {avgScore}/100 • 🌙 Deep Sleep: {planData.progress.deepSleepPercentage}% • 💪 Consistency: +{planData.progress.consistencyTrend}% • {planData.progress.recoveryImpact}
-            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('screens.health.averageSleepQualityAvgscore100Deep', { avgScore, deepSleepPercentage: planData.progress.deepSleepPercentage, consistencyTrend: planData.progress.consistencyTrend, recoveryImpact: planData.progress.recoveryImpact })}</p>
           </div>
         </div>
         

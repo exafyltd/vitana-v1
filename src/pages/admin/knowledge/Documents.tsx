@@ -142,7 +142,7 @@ export default function KnowledgeDocuments() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search across all scopes (title, path, tags)…"
+              placeholder={t('screens.admin.searchAcrossAllScopesTitlePath')}
             />
           </CardContent>
         </Card>
@@ -164,8 +164,7 @@ export default function KnowledgeDocuments() {
                 <p className="text-sm text-muted-foreground">{t('screens.admin.loadingTree')}</p>
               )}
               {treeQuery.isError && (
-                <p className="text-sm text-destructive">
-                  Failed to load KB tree. Refresh to retry.
+                <p className="text-sm text-destructive">{t('screens.admin.failedLoadKbTreeRefreshRetry')}
                 </p>
               )}
               {filteredTree && (
@@ -439,7 +438,7 @@ function SystemDocViewer({ id }: { id: string }) {
           <Input
             value={tagsCsv}
             onChange={(e) => setTagsCsv(e.target.value)}
-            placeholder="Tags (comma-separated)"
+            placeholder={t('screens.admin.tagsCommaseparated')}
             className="mt-2 text-xs"
           />
         ) : (
@@ -490,21 +489,14 @@ function SystemDocViewer({ id }: { id: string }) {
           </span>
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground">
-          {doc.word_count ?? 0} words · updated {new Date(doc.updated_at).toLocaleString()}
-        </p>
+        <p className="text-xs text-muted-foreground">{t('screens.admin.value0WordsUpdatedValue1', { value0: doc.word_count ?? 0, value1: new Date(doc.updated_at).toLocaleString() })}</p>
       )}
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.admin.editPlatformDocument')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              This document is part of the Vitana system knowledge base
-              (retrieval-router priority 100). Saving applies your changes
-              immediately to the Assistant's grounding for <b>{t('screens.admin.everyTenant')}</b>,
-              including the Book of the Vitana Index if this doc is part of it.
-              Continue?
+            <AlertDialogDescription>{t('screens.admin.thisDocumentPartVitanaSystemKnowledge')} <b>{t('screens.admin.everyTenant')}</b>{t('screens.admin.includingBookVitanaIndexIfThis')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -659,7 +651,7 @@ function KbDocViewer({
           <Input
             value={editTopicsCsv}
             onChange={(e) => setEditTopicsCsv(e.target.value)}
-            placeholder="Topics (comma-separated)"
+            placeholder={t('screens.admin.topicsCommaseparated')}
             className="mt-2 text-xs"
           />
         ) : (
@@ -726,12 +718,9 @@ function KbDocViewer({
               onClick={handleDelete}
               disabled={deleteMutation.isPending}
               className="text-destructive"
-            >
-              Delete
+            >{t('screens.admin.delete')}
             </Button>
-            <span className="text-xs text-muted-foreground ml-auto">
-              updated {new Date(doc.updated_at).toLocaleString()}
-            </span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
           </>
         ) : (
           <>
@@ -743,9 +732,7 @@ function KbDocViewer({
               />
               {t('screens.admin.optOutThisBaselineDocFor')}
             </label>
-            <span className="text-xs text-muted-foreground ml-auto">
-              updated {new Date(doc.updated_at).toLocaleString()}
-            </span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
           </>
         )}
       </div>
@@ -755,10 +742,7 @@ function KbDocViewer({
           <AlertDialogHeader>
             <AlertDialogTitle>{t('screens.admin.editBaselineDocument')}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t('screens.admin.thisDocumentSharedAcross')} <b>{t('screens.admin.allTenants')}</b>. Saving applies
-              your changes immediately to every tenant that hasn't opted out —
-              their Assistant will reflect the new content on the next retrieval.
-              Continue?
+              {t('screens.admin.thisDocumentSharedAcross')} <b>{t('screens.admin.allTenants')}</b>{t('screens.admin.savingAppliesYourChangesImmediatelyEvery')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -816,18 +800,18 @@ function UploadCard({ onDone }: { onDone: () => void }) {
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Document title"
+          placeholder={t('screens.admin.documentTitle')}
         />
         <Textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          placeholder="Document body…"
+          placeholder={t('screens.admin.documentBody')}
           rows={4}
         />
         <Input
           value={topics}
           onChange={(e) => setTopics(e.target.value)}
-          placeholder="Topics (comma-separated)"
+          placeholder={t('screens.admin.topicsCommaseparated')}
         />
         <Button
           size="sm"

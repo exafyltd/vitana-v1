@@ -263,8 +263,8 @@ const EnhancedMessageComposer: React.FC<EnhancedMessageComposerProps> = ({
         {/* Keyboard hint */}
         {showHint && (
           <div className="mt-2 text-xs text-muted-foreground bg-muted/50 px-3 py-1 rounded-lg animate-in fade-in slide-in-from-bottom-2">
-            {t('screens.messages.press')} <kbd className="px-1 py-0.5 bg-background rounded text-xs">{t('screens.messages.enter')}</kbd> to send, 
-            <kbd className="px-1 py-0.5 bg-background rounded text-xs ml-1">{t('screens.messages.shiftEnter')}</kbd> for new line
+            {t('screens.messages.press')} <kbd className="px-1 py-0.5 bg-background rounded text-xs">{t('screens.messages.enter')}</kbd>{t('screens.messages.send')} 
+            <kbd className="px-1 py-0.5 bg-background rounded text-xs ml-1">{t('screens.messages.shiftEnter')}</kbd>{t('screens.messages.forNewLine')}
           </div>
         )}
       </div>

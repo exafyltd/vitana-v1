@@ -127,8 +127,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
             <Gift className="h-5 w-5 text-primary" />
             {t('screens.wallet.liveOpportunities')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">
-            {totalPotential} VTN Available
+          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">{t('screens.wallet.totalpotentialVtnAvailable', { totalPotential })}
           </Badge>
         </div>
       </CardHeader>
@@ -187,8 +186,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
                     </Badge>
                   ))}
                   {opportunity.requirements.length > 2 && (
-                    <Badge variant="outline" className="text-xs h-5 px-2">
-                      +{opportunity.requirements.length - 2} more
+                    <Badge variant="outline" className="text-xs h-5 px-2">{t('screens.wallet.value0More', { value0: opportunity.requirements.length - 2 })}
                     </Badge>
                   )}
                 </div>
@@ -196,8 +194,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs font-bold">
-                    {opportunity.baseReward * opportunity.multiplier} VTN
+                  <Badge variant="secondary" className="text-xs font-bold">{t('screens.wallet.value0Vtn', { value0: opportunity.baseReward * opportunity.multiplier })}
                   </Badge>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />

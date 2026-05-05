@@ -51,7 +51,7 @@ export default function Challenges() {
                 className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
-                {!isMobile && <span>Join</span>}
+                {!isMobile && <span>{t('screens.community.join')}</span>}
               </Button>
               
               {/* Vitana Index chip (mobile only) */}

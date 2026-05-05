@@ -168,8 +168,7 @@ function DisclosureField({ value, onSave, saving }: { value: string; onSave: (v:
             disabled={saving}
             onClick={() => onSave(draft)}
           >
-            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-            Save
+            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         )}
       </div>
@@ -189,7 +188,7 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
         className="h-11"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
-        placeholder="e.g. longevity, sleep, supplements"
+        placeholder={t('screens.business.eGLongevitySleepSupplements')}
       />
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-muted-foreground">{t('screens.business.commaseparatedMessagesOutsideTheseTopicsGet')}</p>
@@ -201,8 +200,7 @@ function ExpertiseField({ zones, onSave, saving }: { zones: string[]; onSave: (v
             disabled={saving}
             onClick={() => onSave(draft.split(",").map((s) => s.trim()).filter(Boolean))}
           >
-            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-            Save
+            {saving && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.save')}
           </Button>
         )}
       </div>

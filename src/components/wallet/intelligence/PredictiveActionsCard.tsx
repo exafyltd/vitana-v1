@@ -114,8 +114,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
             <Sparkles className="h-5 w-5 text-primary" />
             {t('screens.wallet.aiPredictions')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">
-            {avgConfidence.toFixed(0)}% Confidence
+          <Badge variant="secondary" className="bg-purple-500/10 text-purple-600">{t('screens.wallet.value0Confidence', { value0: avgConfidence.toFixed(0) })}
           </Badge>
         </div>
       </CardHeader>
@@ -124,8 +123,7 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
         {/* Priority Actions */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
-            <Target className="h-4 w-4 text-red-500" />
-            High Priority Actions ({highPriorityActions.length})
+            <Target className="h-4 w-4 text-red-500" />{t('screens.wallet.highPriorityActionsLength', { length: highPriorityActions.length })}
           </h4>
           
           {highPriorityActions.map((action) => {
@@ -149,11 +147,9 @@ export function PredictiveActionsCard({ className }: PredictiveActionsCardProps)
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className={priorityConfig.color}>
-                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} mr-1`} />
-                      {action.priority} priority
+                      <div className={`w-2 h-2 rounded-full ${priorityConfig.dot} mr-1`} />{t('screens.wallet.priorityPriority', { priority: action.priority })}
                     </Badge>
-                    <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>
-                      +{action.expectedReturn} VTN
+                    <Badge variant="secondary" className={`text-xs ${getCategoryColor(action.category)}`}>{t('screens.wallet.expectedreturnVtn', { expectedReturn: action.expectedReturn })}
                     </Badge>
                   </div>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">

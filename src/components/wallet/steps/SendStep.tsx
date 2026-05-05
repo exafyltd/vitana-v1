@@ -222,9 +222,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Available: {balance} {currency}
-          </p>
+          <p className="text-xs text-muted-foreground">{t('screens.wallet.availableBalanceCurrency', { balance, currency })}</p>
         </div>
 
         {/* Description */}
@@ -271,8 +269,7 @@ export function SendStep({ onBack, onClose }: SendStepProps) {
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Sending...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.sending')}
               </>
             ) : (
               'Send Funds'

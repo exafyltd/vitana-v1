@@ -207,7 +207,7 @@ export function IntentShareSheet({
               value={recipientText}
               onChange={(e) => setRecipientText(e.target.value)}
               className="min-h-[60px] font-mono text-sm"
-              aria-label="Recipient vitana_ids"
+              aria-label={t('screens.intents.recipientVitana_ids')}
             />
             <Input
               placeholder={t('screens.intents.addShortNoteOptional')}
@@ -216,9 +216,7 @@ export function IntentShareSheet({
               maxLength={280}
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>
-                {recipients.length} valid {recipients.length === 1 ? "recipient" : "recipients"}
-                {recipientsExceeded && (
+              <span>{t('screens.intents.lengthValidValue1', { length: recipients.length, value1: recipients.length === 1 ? "recipient" : "recipients" })}{recipientsExceeded && (
                   <span className="text-destructive ml-2">{t('screens.intents.overMaxrecipientsCap', { maxRecipients })}</span>
                 )}
               </span>
@@ -227,8 +225,7 @@ export function IntentShareSheet({
                 onClick={handleSendInApp}
                 disabled={submitting || recipients.length === 0 || recipientsExceeded}
               >
-                {submitting ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
-                Send
+                {submitting ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}{t('screens.intents.send')}
               </Button>
             </div>
           </div>
@@ -244,8 +241,7 @@ export function IntentShareSheet({
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Tracks who clicked from your share. Public posts open to anyone; private posts ask viewers to sign in.
+            <p className="text-xs text-muted-foreground">{t('screens.intents.tracksWhoClickedFromYourShare')}
             </p>
           </div>
 

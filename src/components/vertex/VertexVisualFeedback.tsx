@@ -134,8 +134,7 @@ export function VertexVisualFeedback({
               )}
 
               {!userTranscript && !aiTranscript && (
-                <p className="text-sm text-muted-foreground text-center py-8">
-                  Transcript will appear here...
+                <p className="text-sm text-muted-foreground text-center py-8">{t('screens.vertex.transcriptWillAppearHere')}
                 </p>
               )}
             </div>

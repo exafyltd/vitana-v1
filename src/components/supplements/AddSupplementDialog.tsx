@@ -111,7 +111,7 @@ export function AddSupplementDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{mode === 'add' ? 'Add' : 'Edit'} Supplement</DialogTitle>
+          <DialogTitle>{t('screens.supplements.value0Supplement', { value0: mode === 'add' ? 'Add' : 'Edit' })}</DialogTitle>
           <DialogDescription>
             {mode === 'add' 
               ? 'Add a new supplement to your regimen'
@@ -248,8 +248,7 @@ export function AddSupplementDialog({
                 {t('screens.supplements.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {mode === 'add' ? 'Add' : 'Update'} Supplement
+                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.supplements.value0Supplement', { value0: mode === 'add' ? 'Add' : 'Update' })}
               </Button>
             </DialogFooter>
           </form>

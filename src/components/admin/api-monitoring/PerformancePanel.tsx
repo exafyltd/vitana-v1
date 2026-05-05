@@ -57,8 +57,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
               <span className="text-sm text-muted-foreground">{t('screens.admin.ms')}</span>
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-              <Zap className="w-3 h-3" />
-              P95: {metrics.p95Latency}ms | P99: {metrics.p99Latency}ms
+              <Zap className="w-3 h-3" />{t('screens.admin.p95P95latencyMsP99P99latencyMs', { p95Latency: metrics.p95Latency, p99Latency: metrics.p99Latency })}
             </div>
           </CardContent>
         </Card>
@@ -100,8 +99,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
               <span className="text-sm text-muted-foreground">{t('screens.admin.reqmin')}</span>
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-              <Activity className="w-3 h-3" />
-              {metrics.activeConnections} active connections
+              <Activity className="w-3 h-3" />{t('screens.admin.activeconnectionsActiveConnections', { activeConnections: metrics.activeConnections })}
             </div>
           </CardContent>
         </Card>

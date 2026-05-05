@@ -79,8 +79,7 @@ export function ComplianceForm() {
             <Badge variant={licenseVerified ? "default" : "secondary"} className="gap-1">
               {licenseVerified ? (
                 <>
-                  <CheckCircle className="w-3 h-3" />
-                  Verified
+                  <CheckCircle className="w-3 h-3" />{t('screens.profile.verified')}
                 </>
               ) : (
                 <>

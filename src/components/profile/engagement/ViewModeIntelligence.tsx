@@ -150,8 +150,7 @@ export function ViewModeIntelligence({
               </div>
               
               <div className="flex items-center gap-2">
-                <div className="text-xs text-muted-foreground">
-                  {profile.compatibility}% match
+                <div className="text-xs text-muted-foreground">{t('screens.profile.compatibilityMatch', { compatibility: profile.compatibility })}
                 </div>
                 <Button size="sm" variant="outline">
                   <UserPlus className="h-3 w-3" />

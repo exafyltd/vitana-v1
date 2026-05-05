@@ -483,7 +483,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   id="detailedDescription"
                   value={formData.detailedDescription}
                   onChange={(e) => setFormData({...formData, detailedDescription: e.target.value})}
-                  placeholder="Describe the agenda, program, what's included, giveaways, sponsors..."
+                  placeholder={t('screens.common.describeAgendaProgramWhatSIncluded')}
                   className="mt-1"
                   rows={6}
                 />
@@ -544,8 +544,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   >
                     {isGeneratingImage ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Generating with AI...
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.common.generatingWithAi')}
                       </>
                     ) : (
                       <>
@@ -582,8 +581,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                       onClick={() => document.getElementById('image-upload')?.click()}
                       className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Upload New Image Manually
+                      <Plus className="w-4 h-4 mr-2" />{t('screens.common.uploadNewImageManually')}
                     </Button>
                   </div>
 
@@ -595,8 +593,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                         </p>
                         {generatedImagePreview === formData.imageUrl && (
                           <Badge variant="secondary" className="gap-1">
-                            <Sparkles className="w-3 h-3" />
-                            AI Generated
+                            <Sparkles className="w-3 h-3" />{t('screens.common.aiGenerated')}
                           </Badge>
                         )}
                       </div>
@@ -614,8 +611,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                           disabled={isGeneratingImage}
                           className="w-full"
                         >
-                          <RefreshCw className="w-3 h-3 mr-2" />
-                          Regenerate
+                          <RefreshCw className="w-3 h-3 mr-2" />{t('screens.common.regenerate')}
                         </Button>
                       )}
                     </div>
@@ -628,8 +624,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                Schedule & Location
+                <Calendar className="w-5 h-5" />{t('screens.common.scheduleLocation')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -671,8 +666,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Virtual {event.event_type === 'event' ? 'Event' : 'Meetup'}</Label>
-                  <p className="text-sm text-muted-foreground">This {event.event_type === 'event' ? 'event' : 'meetup'} will be held online</p>
+                  <Label>{t('screens.common.virtualValue0', { value0: event.event_type === 'event' ? 'Event' : 'Meetup' })}</Label>
+                  <p className="text-sm text-muted-foreground">{t('screens.common.thisValue0WillHeldOnline', { value0: event.event_type === 'event' ? 'event' : 'meetup' })}</p>
                 </div>
                 <Switch 
                   checked={formData.isVirtual}
@@ -687,7 +682,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                     id="location"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    placeholder="e.g., Central Park, Community Center, Local Gym"
+                    placeholder={t('screens.common.eGCentralParkCommunityCenter')}
                     className={`mt-1 ${errors.location ? 'border-destructive' : ''}`}
                   />
                   {errors.location && (
@@ -706,7 +701,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                   type="number"
                   value={formData.capacity}
                   onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                  placeholder="Leave empty for unlimited"
+                  placeholder={t('screens.common.leaveEmptyForUnlimited')}
                   className="mt-1"
                 />
               </div>

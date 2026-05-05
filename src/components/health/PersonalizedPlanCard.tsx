@@ -208,7 +208,7 @@ export function PersonalizedPlanCard({
                 onClick={handleRefreshPlan}
                 disabled={isRefreshing}
                 className="inline-flex items-center justify-center rounded-full h-9 w-9 bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Refresh plan"
+                aria-label={t('screens.health.refreshPlan')}
               >
                 <RotateCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
               </button>
