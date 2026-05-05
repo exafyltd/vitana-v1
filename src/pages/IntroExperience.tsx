@@ -109,8 +109,14 @@ export default function IntroExperience() {
   }, [continueToMaxina]);
 
 
-  // Get current language for TTS and translations
-  const { t, isGerman } = useTranslation();
+  // Get current language for TTS and translations.
+  // NOTE: useTranslation() returns `t` as the translation OBJECT (the catalog
+  // for dotted access like `t.foo.bar`), NOT a function. This file's JSX uses
+  // the function-style `t('screens.foo.bar')` imported from `@/lib/i18n-toast`
+  // at the top of this file. Destructuring `t` here would shadow that function
+  // with an object and crash the entire screen with "t is not a function".
+  // Only pull `isGerman` from the hook.
+  const { isGerman } = useTranslation();
 
   const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
