@@ -21,13 +21,6 @@ interface MobileModePillProps {
   activeMode: string;
   onModeChange: (value: string) => void;
   className?: string;
-  /**
-   * Highlight palette for the active item.
-   * - `default` keeps the dark primary highlight (used by Profile and most pages).
-   * - `pastel` uses the soft VITANA-Index pillar tint, pulling Health out of the
-   *   dark-tab look so it matches the VITANA Index drawer.
-   */
-  variant?: "default" | "pastel";
 }
 
 /** Find the deepest matching label for dot-notation values like "services.events" */
@@ -42,27 +35,7 @@ function findActiveLabel(modes: ModeOption[], activeMode: string): { label: stri
   return null;
 }
 
-export function MobileModePill({
-  modes,
-  activeMode,
-  onModeChange,
-  className,
-  variant = "default",
-}: MobileModePillProps) {
-  const activeItemClass =
-    variant === "pastel"
-      ? "bg-pill-nutrition-tint text-pill-nutrition-accent font-semibold"
-      : "bg-primary/10 text-primary font-semibold";
-  const activeCheckClass =
-    variant === "pastel" ? "text-pill-nutrition-accent" : "text-primary";
-  const parentActiveClass =
-    variant === "pastel"
-      ? "text-pill-nutrition-accent font-semibold"
-      : "text-primary font-semibold";
-  const triggerClass =
-    variant === "pastel"
-      ? "bg-pill-nutrition-tint hover:bg-pill-nutrition-tint/80"
-      : "bg-muted/60 hover:bg-muted";
+export function MobileModePill({ modes, activeMode, onModeChange, className }: MobileModePillProps) {
   const [open, setOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
     // Auto-expand the group that contains the active mode
@@ -96,26 +69,13 @@ export function MobileModePill({
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "flex items-center gap-1.5 h-9 px-3 rounded-full shrink-0 transition-colors",
-          triggerClass,
+          "flex items-center gap-1.5 h-9 px-3 rounded-full bg-muted/60 hover:bg-muted shrink-0 transition-colors",
           className
         )}
       >
         {active?.icon && <span className="text-xs">{active.icon}</span>}
-        <span
-          className={cn(
-            "text-sm font-medium",
-            variant === "pastel" ? "text-pill-nutrition-accent" : "text-foreground"
-          )}
-        >
-          {active?.label ?? activeMode}
-        </span>
-        <ChevronDown
-          className={cn(
-            "h-3 w-3",
-            variant === "pastel" ? "text-pill-nutrition-accent/70" : "text-muted-foreground"
-          )}
-        />
+        <span className="text-sm font-medium text-foreground">{active?.label ?? activeMode}</span>
+        <ChevronDown className="h-3 w-3 text-muted-foreground" />
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
@@ -142,7 +102,7 @@ export function MobileModePill({
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors",
                       isActive(mode.value)
-                        ? activeItemClass
+                        ? "bg-primary/10 text-primary font-semibold"
                         : "hover:bg-muted text-foreground"
                     )}
                   >
@@ -154,7 +114,7 @@ export function MobileModePill({
                       </span>
                     )}
                     {isActive(mode.value) && (
-                      <Check className={cn("h-4 w-4", activeCheckClass)} />
+                      <Check className="h-4 w-4 text-primary" />
                     )}
                   </button>
                 );
@@ -169,14 +129,14 @@ export function MobileModePill({
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors w-full",
                       parentActive
-                        ? parentActiveClass
+                        ? "text-primary font-semibold"
                         : "hover:bg-muted text-foreground"
                     )}
                   >
                     {mode.icon && <span className="text-base">{mode.icon}</span>}
                     <span className="flex-1 text-sm">{mode.label}</span>
                     {parentActive && (
-                      <Check className={cn("h-4 w-4", activeCheckClass)} />
+                      <Check className="h-4 w-4 text-primary" />
                     )}
                     <ChevronDown
                       className={cn(
@@ -200,7 +160,7 @@ export function MobileModePill({
                           className={cn(
                             "flex items-center gap-3 px-4 py-2.5 rounded-xl text-left transition-colors",
                             isActive(child.value)
-                              ? activeItemClass
+                              ? "bg-primary/10 text-primary font-semibold"
                               : "hover:bg-muted text-foreground"
                           )}
                         >
@@ -212,7 +172,7 @@ export function MobileModePill({
                             </span>
                           )}
                           {isActive(child.value) && (
-                            <Check className={cn("h-4 w-4", activeCheckClass)} />
+                            <Check className="h-4 w-4 text-primary" />
                           )}
                         </button>
                       ))}

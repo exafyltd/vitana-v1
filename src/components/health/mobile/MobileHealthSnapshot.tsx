@@ -10,14 +10,14 @@ interface PillarData {
   mental?: number;
 }
 
-// Static so Tailwind's JIT compiler keeps each class — template literals get
-// purged for pillars not used elsewhere (e.g. sleep-tint, hydration-accent).
-const PILLAR_CLASSES: Record<string, { text: string; tint: string }> = {
-  nutrition: { text: "text-pill-nutrition-accent", tint: "bg-pill-nutrition-tint" },
-  hydration: { text: "text-pill-hydration-accent", tint: "bg-pill-hydration-tint" },
-  exercise: { text: "text-pill-exercise-accent", tint: "bg-pill-exercise-tint" },
-  sleep: { text: "text-pill-sleep-accent", tint: "bg-pill-sleep-tint" },
-  mental: { text: "text-pill-mental-accent", tint: "bg-pill-mental-tint" },
+// Static so Tailwind's JIT compiler keeps each class — `bg-pill-sleep-tint`
+// in particular isn't used anywhere else and would otherwise be purged.
+const PILLAR_TINT: Record<string, string> = {
+  nutrition: "bg-pill-nutrition-tint",
+  hydration: "bg-pill-hydration-tint",
+  exercise: "bg-pill-exercise-tint",
+  sleep: "bg-pill-sleep-tint",
+  mental: "bg-pill-mental-tint",
 };
 
 interface MobileHealthSnapshotProps {
@@ -121,16 +121,14 @@ export function MobileHealthSnapshot({
             const value = pillars[key as keyof PillarData];
             if (value === undefined) return null;
 
-            const palette = PILLAR_CLASSES[key];
-
             return (
               <div
                 key={key}
-                className={`${palette.tint} ${palette.text} rounded-xl px-1 py-2 flex flex-col items-center gap-0.5`}
+                className={`${PILLAR_TINT[key]} rounded-xl px-1 py-2 flex flex-col items-center gap-0.5`}
               >
                 <span className="text-base leading-none">{emoji}</span>
-                <span className="text-xs font-semibold">{value}</span>
-                <span className="text-[10px] opacity-70">/200</span>
+                <span className="text-xs font-semibold text-foreground">{value}</span>
+                <span className="text-[10px] text-muted-foreground">/200</span>
               </div>
             );
           })}
