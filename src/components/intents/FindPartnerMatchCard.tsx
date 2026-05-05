@@ -2,21 +2,29 @@
  * E6 — premium, image-led match preview card for the
  * Find a Match → My Matches list.
  *
- * News-style horizontal layout: a 16:10 cover banner across the top
- * with floating vertical/score badges and an identity overlay at the
- * bottom of the cover; a compact info/action area below with reason
- * chips and the Express interest / Pass CTAs. The whole card is
- * sized so the primary CTA is reachable in the first viewport,
- * above the fixed bottom nav and Orb FAB.
+ * News-style layout:
  *
- * The image is treated as a *cover photo*, not a portrait: avatars
- * are never stretched into the full banner. When a real cover photo
- * exists (`partner_match_cover_url` — populated by the user's
- * uploaded match cover, or by a backend AI-generated themed
- * dance/fitness image), it fills the banner with object-cover.
- * Otherwise we render a vertical-themed gradient with a small avatar
- * pill at the bottom-left so the partner's identity is still
- * present, just at a sensible size.
+ *   [ 16:10 cover banner ]
+ *     - floating vertical badge top-left
+ *     - floating "XX% match" badge top-right
+ *     - display name + @handle overlay bottom-left (no other text)
+ *
+ *   [ My-Posts-style body — same kind pill / title / description as IntentCard ]
+ *     - kind pill: counterparty's intent_kind (KIND_LABEL + KIND_COLOR)
+ *     - title: counterparty intent title (fallback: deriveFallbackTitle)
+ *     - description: counterparty intent scope (fallback: deriveIntentLine)
+ *
+ *   [ Express interest / Pass row, mutual-interest banner, or
+ *     declined/closed copy — match-state aware ]
+ *
+ * The card whole sits ≈ 360 px tall on a 360 px viewport so the
+ * primary CTA stays above the fixed bottom nav + Orb FAB.
+ *
+ * Per the user spec, the image is treated as a *cover photo* and
+ * never as a stretched portrait. When `partner_match_cover_url` is
+ * present we use it object-cover; otherwise a themed gradient is
+ * shown with the small avatar tucked into the bottom-left identity
+ * strip.
  */
 
 import { useState } from 'react';
@@ -31,9 +39,18 @@ import {
 } from '@/lib/intentApi';
 import {
   deriveIntentLine,
+  deriveFallbackTitle,
   humanizeMatchReasons,
   type MatchVertical,
 } from '@/lib/matchReasons';
+import {
+  KIND_COLOR,
+  KIND_LABEL,
+  counterpartyKindFromPairing,
+  kindColorClass,
+  kindLabel,
+} from '@/lib/intentKind';
+import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
@@ -41,7 +58,7 @@ interface FindPartnerMatchCardProps {
   match: IntentMatch;
   /** Vertical derived from the source intent — drives theming + intent line. */
   vertical: MatchVertical;
-  /** Source intent's category, e.g. "dance.salsa". Used for the intent line. */
+  /** Source intent's category, e.g. "dance.salsa". Used for fallback copy. */
   sourceCategory: string | null;
   perspective: 'outgoing' | 'incoming';
   onAction?: () => void;
@@ -49,58 +66,27 @@ interface FindPartnerMatchCardProps {
 
 const VERTICAL_THEME: Record<
   Exclude<MatchVertical, null> | 'default',
-  { icon: string; label: string; gradient: string; accent: string; deco: string }
+  { icon: string; label: string; gradient: string; deco: string }
 > = {
   dance: {
     icon: '💃',
     label: 'Dance',
     gradient: 'from-rose-300 via-pink-300 to-fuchsia-400',
-    accent: 'bg-rose-50 text-rose-700 border-rose-100',
     deco: '🎶',
   },
   fitness: {
     icon: '🏋️',
     label: 'Fitness',
     gradient: 'from-emerald-300 via-teal-300 to-cyan-400',
-    accent: 'bg-emerald-50 text-emerald-700 border-emerald-100',
     deco: '💪',
   },
   default: {
     icon: '✨',
     label: 'Match',
     gradient: 'from-indigo-200 via-purple-200 to-pink-200',
-    accent: 'bg-muted text-muted-foreground border-border',
     deco: '✨',
   },
 };
-
-function initialsFor(name: string | null | undefined): string {
-  if (!name) return '?';
-  return (
-    name
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((p) => p[0]?.toUpperCase())
-      .join('')
-      .slice(0, 2) || '?'
-  );
-}
-
-// Gender-aware DiceBear seed — same logic as IntentMatchCard so a user
-// keeps a consistent avatar across the app.
-function buildAvatarFallbackUrl(seed: string, gender: 'male' | 'female' | null): string {
-  const params = new URLSearchParams({ seed });
-  if (gender === 'male') {
-    params.set('topType', 'ShortHairShortFlat,ShortHairTheCaesar,ShortHairFrizzle,ShortHairShortCurly');
-    params.set('facialHairType', 'Default,BeardLight,BeardMedium');
-    params.set('clotheType', 'ShirtCrewNeck,Hoodie,GraphicShirt');
-  } else if (gender === 'female') {
-    params.set('topType', 'LongHairStraight,LongHairCurly,LongHairBob,LongHairCurvy,LongHairStraight2');
-    params.set('accessoriesType', 'Round,Sunglasses,Blank');
-    params.set('clotheType', 'BlazerShirt,Hoodie,ShirtVNeck');
-  }
-  return `https://api.dicebear.com/9.x/avataaars/svg?${params.toString()}`;
-}
 
 export function FindPartnerMatchCard({
   match,
@@ -119,24 +105,43 @@ export function FindPartnerMatchCard({
   const isPartnerSeek = match.kind_pairing.startsWith('partner_seek');
   const isRedacted = !counterpartyVid && (match.redacted || isPartnerSeek);
 
-  // Cover photo — landscape, used as the banner. Distinct from the
-  // avatar; only set when the user has uploaded a match cover or a
-  // themed AI image has been generated server-side.
-  const coverUrl = !isRedacted ? match.partner_match_cover_url ?? null : null;
-  const avatarUrl =
-    !isRedacted && counterpartyVid
-      ? match.partner_avatar_url ??
-        buildAvatarFallbackUrl(counterpartyVid, match.partner_gender ?? null)
-      : null;
+  // Cover banner is always a real photo: either the partner's
+  // uploaded cover, or a deterministic themed pick from the brand
+  // library (community-dance-group, wellness-yoga-nature, …) keyed
+  // on match_id so the same card keeps the same cover across renders.
+  const coverTheme: CoverTheme =
+    vertical === 'dance' ? 'dance' : vertical === 'fitness' ? 'fitness' : 'generic';
+  const coverUrl = !isRedacted
+    ? match.partner_match_cover_url ?? pickThemedCover(coverTheme, match.match_id)
+    : null;
 
   const displayName = match.partner_display_name ?? null;
   const handle = counterpartyVid;
-  const intentLine = deriveIntentLine(match.kind_pairing, sourceCategory);
+
+  // Body fields (My-Posts-style): kind pill, title, description.
+  // Prefer the counterparty's real intent (`partner_intent_*`) once
+  // the gateway emits it; otherwise fall back to humanised copy
+  // derived from kind_pairing + the user's source_category.
+  const counterpartyKind =
+    (match.partner_intent_kind as string | null | undefined) ??
+    counterpartyKindFromPairing(match.kind_pairing);
+  const bodyTitle =
+    match.partner_intent_title ?? deriveFallbackTitle(match.kind_pairing, sourceCategory);
+  const bodyDescription =
+    match.partner_intent_scope ??
+    deriveIntentLine(match.kind_pairing, sourceCategory);
+
   const reasons = humanizeMatchReasons(
     match.match_reasons as Record<string, unknown>,
     vertical,
     3,
   );
+  // `reasons` is intentionally not rendered: the user asked for the
+  // tags strip to be removed from the body. Kept here so a future
+  // surface (e.g. the full match detail) can reuse the same logic
+  // without re-deriving.
+  void reasons;
+
   const scorePct = Math.round((match.score ?? 0) * 100);
 
   const theme = VERTICAL_THEME[vertical ?? 'default'] ?? VERTICAL_THEME.default;
@@ -187,7 +192,7 @@ export function FindPartnerMatchCard({
 
   return (
     <article className="rounded-3xl bg-card overflow-hidden border border-black/5 shadow-[0_10px_30px_-12px_rgba(15,23,42,0.18)]">
-      {/* COVER BANNER — 16:10 horizontal, news-style */}
+      {/* COVER BANNER — image-only top region */}
       <button
         type="button"
         onClick={openProfile}
@@ -209,8 +214,7 @@ export function FindPartnerMatchCard({
             loading="lazy"
           />
         ) : (
-          // Themed gradient backdrop with subtle radial highlights and a
-          // discreet decorative emoji — never an inflated avatar/portrait.
+          // Themed gradient backdrop — never an inflated portrait.
           <>
             <div
               aria-hidden
@@ -234,15 +238,14 @@ export function FindPartnerMatchCard({
                   <div className="h-14 w-14 rounded-full bg-white/25 backdrop-blur flex items-center justify-center">
                     <Lock className="h-6 w-6" />
                   </div>
-                  <span className="text-[11px] uppercase tracking-wider">{t('screens.intents.mutualReveal')}
-                  </span>
+                  <span className="text-[11px] uppercase tracking-wider">{t('screens.intents.mutualReveal')}</span>
                 </div>
               </div>
             )}
           </>
         )}
 
-        {/* Bottom gradient for text readability on real photos */}
+        {/* Bottom gradient for legibility on real photos */}
         <div
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
@@ -263,59 +266,36 @@ export function FindPartnerMatchCard({
           </span>
         )}
 
-        {/* Bottom identity strip — small avatar + name + intent line */}
+        {/* Bottom identity strip — name + handle ONLY (no avatar pill, no intent line) */}
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white">
           {isRedacted ? (
-            <>
-              <h3 className="text-lg font-semibold leading-tight">{t('screens.intents.anonymousMatch')}</h3>
-              <p className="text-xs opacity-90 mt-0.5">{t('screens.intents.identityRevealedMutualInterest')}</p>
-            </>
+            <h3 className="text-lg font-semibold leading-tight">{t('screens.intents.anonymousMatch')}</h3>
           ) : (
-            <div className="flex items-end gap-3">
-              {avatarUrl && !coverUrl && (
-                <div className="h-11 w-11 shrink-0 rounded-full bg-white/90 ring-2 ring-white/60 overflow-hidden flex items-center justify-center">
-                  <img
-                    src={avatarUrl}
-                    alt=""
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold leading-tight truncate">
+                {displayName ?? (handle ? `@${handle}` : 'Member')}
+              </h3>
+              {displayName && handle && (
+                <p className="text-xs opacity-90 truncate">@{handle}</p>
               )}
-              {!avatarUrl && !coverUrl && (
-                <div className="h-11 w-11 shrink-0 rounded-full bg-white/30 ring-2 ring-white/40 flex items-center justify-center text-sm font-semibold">
-                  {initialsFor(displayName ?? handle)}
-                </div>
-              )}
-              <div className="min-w-0 flex-1">
-                <h3 className="text-lg font-semibold leading-tight truncate">
-                  {displayName ?? (handle ? `@${handle}` : 'Member')}
-                </h3>
-                {displayName && handle && (
-                  <p className="text-xs opacity-90 truncate">@{handle}</p>
-                )}
-                <p className="text-xs opacity-95 mt-0.5 line-clamp-1">{intentLine}</p>
-              </div>
             </div>
           )}
         </div>
       </button>
 
-      {/* INFO + ACTION AREA */}
-      <div className="px-4 pt-3 pb-4 space-y-3">
-        {reasons.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {reasons.map((r) => (
-              <span
-                key={r.key}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full border ${theme.accent}`}
-              >
-                <span aria-hidden>{r.icon}</span>
-                <span>{r.label}</span>
-              </span>
-            ))}
-          </div>
-        )}
+      {/* BODY — My-Posts shape: kind pill, title, description; then CTAs. */}
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <span
+            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
+              KIND_COLOR[counterpartyKind ?? ''] ?? kindColorClass(counterpartyKind)
+            }`}
+          >
+            {KIND_LABEL[counterpartyKind ?? ''] ?? kindLabel(counterpartyKind)}
+          </span>
+        </div>
+        <h3 className="font-semibold text-base leading-snug mb-1 line-clamp-2">{bodyTitle}</h3>
+        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{bodyDescription}</p>
 
         {isMutual ? (
           <div className="space-y-2">
@@ -355,7 +335,7 @@ export function FindPartnerMatchCard({
           <button
             type="button"
             onClick={() => setDisputeOpen(true)}
-            className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
+            className="mt-2 text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1"
           >
             <Flag className="h-3 w-3" />{t('screens.intents.report')}
           </button>

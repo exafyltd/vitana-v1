@@ -593,7 +593,14 @@
       "linkCopied": "Link kopiert",
       "couldNotCopy": "Konnte nicht kopieren",
       "passedForNow": "Für jetzt bestanden",
-      "couldNotPass": "Konnte nicht bestehen"
+      "couldNotPass": "Konnte nicht bestehen",
+      "uploadFailed": "Upload fehlgeschlagen",
+      "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF-Format wird von Browsern nicht unterstützt. Bitte zuerst in JPG oder PNG konvertieren.",
+      "coverPhotoUploaded": "Titelfoto hochgeladen",
+      "themedCoverReady": "Thematisches Titelbild bereit",
+      "youCanReplaceItAnyTime": "Du kannst es jederzeit ersetzen.",
+      "coverPhotoRequired": "Titelfoto erforderlich",
+      "uploadOneTapGenerateForMe": "Lade eines hoch oder tippe auf ✨ Für mich generieren."
     },
     "liverooms": {
       "linkCopied": "Link kopiert",

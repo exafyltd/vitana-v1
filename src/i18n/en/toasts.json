@@ -593,7 +593,14 @@
       "linkCopied": "Link copied",
       "couldNotCopy": "Could not copy",
       "passedForNow": "Passed for now",
-      "couldNotPass": "Could not pass"
+      "couldNotPass": "Could not pass",
+      "uploadFailed": "Upload failed",
+      "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.",
+      "coverPhotoUploaded": "Cover photo uploaded",
+      "themedCoverReady": "Themed cover ready",
+      "youCanReplaceItAnyTime": "You can replace it any time.",
+      "coverPhotoRequired": "Cover photo required",
+      "uploadOneTapGenerateForMe": "Upload one, or tap ✨ Generate for me."
     },
     "liverooms": {
       "linkCopied": "Link copied",

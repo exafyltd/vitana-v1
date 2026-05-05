@@ -32,6 +32,8 @@ interface NotificationsPanelProps {
   onNavigated?: () => void;
   /** Called when the "manage settings" footer link is clicked. */
   onOpenSettings?: () => void;
+  /** Called when the user taps the X close button. When provided, an X button is rendered in the header. */
+  onClose?: () => void;
   /** Cap on how many notifications to fetch from the hook. */
   limit?: number;
   /** Overrides the panel's max-height (Tailwind class). */
@@ -56,6 +58,7 @@ interface NotificationsPanelProps {
 export function NotificationsPanel({
   onNavigated,
   onOpenSettings,
+  onClose,
   limit = 20,
   maxHeightClassName = 'max-h-[min(80vh,560px)]',
   hideSettingsFooter = false,
@@ -159,6 +162,18 @@ export function NotificationsPanel({
               aria-label={t('screens.notifications.clearAllNotifications')}
             >
               <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="h-8 w-8"
+              title={t('screens.notifications.close')}
+              aria-label={t('screens.notifications.closeNotifications')}
+            >
+              <X className="h-4 w-4" />
             </Button>
           )}
         </div>

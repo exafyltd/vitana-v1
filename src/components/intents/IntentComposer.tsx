@@ -12,7 +12,7 @@
  * inline category pickers driven by /intent-categories.
  */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,6 +28,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { postIntent, type IntentKind } from "@/lib/intentApi";
+import type { CoverTheme } from "@/lib/intentCovers";
+import { CoverPhotoPicker } from "./CoverPhotoPicker";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntentComposerProps {
@@ -55,7 +57,17 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
   const [location, setLocation] = useState("");
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Drives the themed-cover picker. Today only dance/fitness have
+  // dedicated covers; other kinds fall back to the generic set.
+  // Once a real category picker lands in the composer this should
+  // read from the chosen category instead.
+  const coverTheme: CoverTheme = useMemo(() => {
+    if (kind === "activity_seek" || kind === "social_seek") return "dance";
+    return "generic";
+  }, [kind]);
 
   const reset = () => {
     setTitle("");
@@ -63,6 +75,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     setBudgetMin("");
     setBudgetMax("");
     setLocation("");
+    setCoverUrl(null);
   };
 
   const submit = async () => {
@@ -72,6 +85,10 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     }
     if (!scope.trim() || scope.trim().length < 20) {
       notifyError('toasts.intents.scopeTooShort', 'toasts.intents.minimum20Characters');
+      return;
+    }
+    if (!coverUrl) {
+      notifyError('toasts.intents.coverPhotoRequired', 'toasts.intents.uploadOneTapGenerateForMe');
       return;
     }
 
@@ -84,6 +101,10 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     } else if (location) {
       kindPayload.location_label = location;
     }
+    // Transit cover_url through kind_payload until the gateway
+    // ships a dedicated column. `getIntentCoverUrl()` reads either
+    // location, so consumers don't need to care.
+    kindPayload.cover_url = coverUrl;
 
     setSubmitting(true);
     try {
@@ -109,8 +130,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>{t('screens.intents.postCommunity')}</DialogTitle>
-          <DialogDescription>
-            {t('screens.intents.tellCommunityWhatYouNeedWhat')}
+          <DialogDescription>{t('screens.intents.tellCommunityWhatYouNeedWhat')}
           </DialogDescription>
         </DialogHeader>
 
@@ -119,15 +139,14 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             variant={mode === "form" ? "default" : "outline"}
             size="sm"
             onClick={() => setMode("form")}
-          >
-            {t('screens.intents.form')}
+          >{t('screens.intents.form')}
           </Button>
           <Button
             variant={mode === "voice" ? "default" : "outline"}
             size="sm"
             onClick={() => setMode("voice")}
           >
-            <Mic className="h-4 w-4 mr-1.5" /> {t('screens.intents.voice')}
+            <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
           </Button>
         </div>
 
@@ -140,15 +159,15 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
               <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
               <br />
               <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
-              <br />
-              {t('screens.intents.orbWillReadItBackYou')}
+              <br />{t('screens.intents.orbWillReadItBackYou')}
+            </p>
+            <p className="text-[11px] text-muted-foreground/80 pt-1">{t('screens.intents.donTWorryAboutCoverPhoto')}
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('screens.intents.kind')}
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.kind')}
               </Label>
               <select
                 value={kind}
@@ -164,8 +183,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             </div>
 
             <div>
-              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('screens.intents.title3140Chars')}
+              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.title3140Chars')}
               </Label>
               <Input
                 id="intent-title"
@@ -177,8 +195,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             </div>
 
             <div>
-              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('screens.intents.description20Chars')}
+              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.description20Chars')}
               </Label>
               <Textarea
                 id="intent-scope"
@@ -193,14 +210,12 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             {(kind === "commercial_buy" || kind === "commercial_sell") && (
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    {t('screens.intents.budgetMin')}
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMin')}
                   </Label>
                   <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
                 </div>
                 <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    {t('screens.intents.budgetMax')}
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMax')}
                   </Label>
                   <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
                 </div>
@@ -208,20 +223,30 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
             )}
 
             <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                {t('screens.intents.locationOptional')}
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.locationOptional')}
               </Label>
               <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
+            </div>
+
+            <div>
+              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.coverPhotoRequired')}
+              </Label>
+              <div className="mt-1">
+                <CoverPhotoPicker
+                  value={coverUrl}
+                  onChange={setCoverUrl}
+                  theme={coverTheme}
+                />
+              </div>
             </div>
           </div>
         )}
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            {t('screens.intents.cancel')}
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>{t('screens.intents.cancel')}
           </Button>
           {mode === "form" && (
-            <Button onClick={submit} disabled={submitting}>
+            <Button onClick={submit} disabled={submitting || !coverUrl}>
               {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
             </Button>
           )}

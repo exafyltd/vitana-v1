@@ -4754,7 +4754,12 @@
       "send": "Senden",
       "tracksWhoClickedFromYourShare": "Zeigt, wer von deinem Teilen geklickt hat. Öffentliche Beiträge sind für alle sichtbar; private Beiträge erfordern eine Anmeldung.",
       "scorepctMatch": "{scorePct}% Übereinstimmung",
-      "identityRevealedMutualInterest": "Identität bei gegenseitigem Interesse enthüllt"
+      "identityRevealedMutualInterest": "Identität bei gegenseitigem Interesse enthüllt",
+      "coverPreview": "Cover-Vorschau",
+      "addCoverPhoto": "Cover-Foto hinzufügen",
+      "generateForMe": "✨ Für mich generieren",
+      "donTWorryAboutCoverPhoto": "Mach dir keine Sorgen um ein Cover-Foto – Vitana wählt ein thematisch passendes für dich aus,\n              und du kannst es in „Meine Beiträge“ austauschen.",
+      "coverPhotoRequired": "Cover-Foto (erforderlich)"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",
@@ -5234,7 +5239,9 @@
       "clearAll": "Alle löschen",
       "clearAllNotifications": "Alle Benachrichtigungen löschen",
       "deleteThisNotification": "Diese Benachrichtigung löschen",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "close": "Schließen",
+      "closeNotifications": "Benachrichtigungen schließen"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Wähle den Namensteil deiner Vitana-ID",

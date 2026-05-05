@@ -32,6 +32,12 @@ export interface UserIntent {
   match_count: number;
   created_at: string;
   updated_at: string;
+  // E6 follow-up — landscape cover photo, used as the banner on
+  // match preview cards and at the top of My Posts cards. Optional;
+  // until the backend ships a dedicated column, we transit it
+  // through `kind_payload.cover_url` and `getIntentCoverUrl()`
+  // resolves whichever is set.
+  cover_url?: string | null;
 }
 
 export interface IntentMatch {
@@ -59,6 +65,15 @@ export interface IntentMatch {
   // themed dance/fitness image) sized for the match preview card.
   // Optional — when absent, the card renders a themed gradient fallback.
   partner_match_cover_url?: string | null;
+  // E6 follow-up — counterparty intent fields surfaced by
+  // intent-match-enrich so the match card body can read like the
+  // counterparty's own My Posts card (kind pill + title + scope).
+  // All optional: the card has graceful fallbacks while backend
+  // catches up.
+  partner_intent_title?: string | null;
+  partner_intent_scope?: string | null;
+  partner_intent_kind?: IntentKind | string | null;
+  partner_intent_status?: string | null;
 }
 
 export interface IntentCategory {

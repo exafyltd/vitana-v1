@@ -11,31 +11,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import type { UserIntent } from "@/lib/intentApi";
+import { KIND_COLOR, KIND_LABEL } from "@/lib/intentKind";
+import { getIntentCoverUrl } from "@/lib/intentCovers";
 import { IntentShareSheet } from "./IntentShareSheet";
 import { t } from '@/lib/i18n-toast';
-
-const KIND_LABEL: Record<string, string> = {
-  commercial_buy: "I'm buying",
-  commercial_sell: "I'm selling",
-  activity_seek: "Activity partner",
-  partner_seek: "Life partner",
-  social_seek: "Social / mentorship",
-  mutual_aid: "Mutual aid",
-  // VTID-DANCE-D2 — dance kinds
-  learning_seek: "Looking to learn",
-  mentor_seek: "Offering to teach",
-};
-
-const KIND_COLOR: Record<string, string> = {
-  commercial_buy: "bg-blue-100 text-blue-700 border-blue-200",
-  commercial_sell: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  activity_seek: "bg-orange-100 text-orange-700 border-orange-200",
-  partner_seek: "bg-rose-100 text-rose-700 border-rose-200",
-  social_seek: "bg-violet-100 text-violet-700 border-violet-200",
-  mutual_aid: "bg-amber-100 text-amber-700 border-amber-200",
-  learning_seek: "bg-cyan-100 text-cyan-700 border-cyan-200",
-  mentor_seek: "bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200",
-};
 
 function kindChips(intent: UserIntent): string[] {
   const p = intent.kind_payload as any;
@@ -134,11 +113,24 @@ export function IntentCard({
     setShareOpen(true);
   };
 
+  const coverUrl = getIntentCoverUrl(intent);
+
   const card = (
     <div
-      className="rounded-xl border border-border bg-card p-4 hover:border-primary/40 transition-colors cursor-pointer"
+      className="rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40 transition-colors cursor-pointer"
       onClick={onClick}
     >
+      {coverUrl && (
+        <div className="relative w-full aspect-[16/9] bg-muted">
+          <img
+            src={coverUrl}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
+      <div className="p-4">
       <div className="flex items-start justify-between gap-2 mb-2">
         <span
           className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${KIND_COLOR[intent.intent_kind] ?? "bg-muted"}`}
@@ -179,6 +171,7 @@ export function IntentCard({
       {intent.match_count > 0 && (
         <div className="mt-3 text-xs text-primary font-medium">{t('screens.intents.match_countMatchValue1', { match_count: intent.match_count, value1: intent.match_count === 1 ? "" : "es" })}</div>
       )}
+      </div>
     </div>
   );
 
