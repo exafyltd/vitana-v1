@@ -10,6 +10,36 @@ interface PillarData {
   mental?: number;
 }
 
+// Static so Tailwind's JIT compiler keeps each class — template literals get
+// purged for pillars not used elsewhere (hydration accent, sleep tint).
+const PILLAR_CLASSES: Record<string, { text: string; tint: string; bar: string }> = {
+  nutrition: {
+    text: "text-pill-nutrition-accent",
+    tint: "bg-pill-nutrition-tint",
+    bar: "bg-pill-nutrition-accent",
+  },
+  hydration: {
+    text: "text-pill-hydration-accent",
+    tint: "bg-pill-hydration-tint",
+    bar: "bg-pill-hydration-accent",
+  },
+  exercise: {
+    text: "text-pill-exercise-accent",
+    tint: "bg-pill-exercise-tint",
+    bar: "bg-pill-exercise-accent",
+  },
+  sleep: {
+    text: "text-pill-sleep-accent",
+    tint: "bg-pill-sleep-tint",
+    bar: "bg-pill-sleep-accent",
+  },
+  mental: {
+    text: "text-pill-mental-accent",
+    tint: "bg-pill-mental-tint",
+    bar: "bg-pill-mental-accent",
+  },
+};
+
 interface MobileHealthSnapshotProps {
   vitanaIndex: number;
   vitanaPercentile?: number;
@@ -56,60 +86,41 @@ export function MobileHealthSnapshot({
 
   return (
     <div className="mx-4 mt-0">
-      <div 
-        className="rounded-2xl p-4"
-        style={{
-          background: 'linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
-        }}
-      >
+      <div className="rounded-2xl p-4 bg-card border border-border/60 shadow-sm">
         {/* Header */}
         <div className="text-center mb-3">
-          <span className="text-base text-white/70">🧬 {translate('health.healthSnapshot')}</span>
+          <span className="text-base text-muted-foreground">🧬 {translate('health.healthSnapshot')}</span>
         </div>
 
         {/* Vitana Index - Dominant Visual */}
         <div className="relative flex flex-col items-center mb-3">
-          {/* Ambient glow */}
-          <div 
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%)',
-              filter: 'blur(30px)',
-              transform: 'scale(1.5)'
-            }}
+          {/* Soft pastel halo behind the score, mirroring the Index drawer's circle */}
+          <div
+            aria-hidden
+            className="absolute -top-2 w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 blur-xl pointer-events-none"
           />
-          
+
           {/* Score */}
-          <span 
-            className="relative text-5xl font-extrabold tracking-tight"
-            style={{
-              background: 'linear-gradient(135deg, hsl(199, 60%, 58%) 0%, hsl(239, 50%, 72%) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 25px rgba(14, 165, 233, 0.3))'
-            }}
-          >
+          <span className="relative text-5xl font-extrabold tracking-tight text-green-600">
             {vitanaIndex}
           </span>
 
           {/* Status Text */}
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-white/60 text-sm">
+            <span className="text-muted-foreground text-sm">
               {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
             </span>
-            <span className="text-white/30">·</span>
+            <span className="text-muted-foreground/50">·</span>
             <div className="flex items-center gap-1">
               <TrendIcon className={`w-4 h-4 ${
-                trend === 'up' ? 'text-emerald-400' : 
-                trend === 'down' ? 'text-red-400' : 
-                'text-white/50'
+                trend === 'up' ? 'text-emerald-600' :
+                trend === 'down' ? 'text-red-500' :
+                'text-muted-foreground'
               }`} />
               <span className={`text-sm ${
-                trend === 'up' ? 'text-emerald-400' : 
-                trend === 'down' ? 'text-red-400' : 
-                'text-white/50'
+                trend === 'up' ? 'text-emerald-600' :
+                trend === 'down' ? 'text-red-500' :
+                'text-muted-foreground'
               }`}>
                 {trendLabel}
               </span>
@@ -117,11 +128,11 @@ export function MobileHealthSnapshot({
           </div>
 
           {/* Tier Badge */}
-          <div 
+          <div
             className="mt-2 px-3 py-1 rounded-full text-xs font-medium"
-            style={{ 
-              backgroundColor: `${tier.color}20`,
-              color: tier.color
+            style={{
+              backgroundColor: `${tier.color}40`,
+              color: 'hsl(var(--foreground))'
             }}
           >
             {getTierLabel()}
@@ -129,33 +140,42 @@ export function MobileHealthSnapshot({
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-white/5 my-3" />
+        <div className="h-px bg-border/60 my-3" />
 
-        {/* Pillar Micro-bars */}
+        {/* Pillar Micro-bars — each in its own pillar tint */}
         <div className="space-y-2">
           {PILLAR_CONFIG.map(({ key, label, emoji }) => {
             const value = pillars[key as keyof PillarData];
             if (value === undefined) return null;
-            
+
             const isWeakest = key === weakestPillar[0];
-            
+            const palette = PILLAR_CLASSES[key];
+
             return (
               <div key={key} className="flex items-center gap-3">
                 <span className="text-sm w-5">{emoji}</span>
-                <span className={`text-sm w-20 ${isWeakest ? 'text-amber-400' : 'text-white/70'}`}>
+                <span
+                  className={`text-sm w-20 ${
+                    isWeakest ? 'text-amber-600 font-medium' : palette.text
+                  }`}
+                >
                   {label}
                 </span>
-                <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div 
+                <div className={`flex-1 h-2 rounded-full overflow-hidden ${palette.tint}`}>
+                  <div
                     className={`h-full rounded-full transition-all ${
-                      isWeakest 
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-400' 
-                        : 'bg-gradient-to-r from-sky-500 to-indigo-400'
+                      isWeakest
+                        ? 'bg-gradient-to-r from-amber-500 to-amber-400'
+                        : palette.bar
                     }`}
                     style={{ width: `${value}%` }}
                   />
                 </div>
-                <span className={`text-sm w-10 text-right ${isWeakest ? 'text-amber-400 font-medium' : 'text-white/50'}`}>
+                <span
+                  className={`text-sm w-10 text-right ${
+                    isWeakest ? 'text-amber-600 font-medium' : 'text-muted-foreground'
+                  }`}
+                >
                   {value}%
                 </span>
               </div>
