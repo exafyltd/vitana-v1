@@ -21,13 +21,16 @@
  * primary CTA stays above the fixed bottom nav + Orb FAB.
  *
  * Per the user spec, the image is treated as a *cover photo* and
- * never as a stretched portrait. When `partner_match_cover_url` is
- * present we use it object-cover; otherwise a themed gradient is
- * shown with the small avatar tucked into the bottom-left identity
- * strip.
+ * never as a stretched portrait. Cover priority:
+ *   1. partner's uploaded `partner_match_cover_url`,
+ *   2. MAXINA Vertex-AI Imagen cover from `useMaxinaMatchImages`
+ *      (category-aware: dance / fitness / wellness),
+ *   3. deterministic themed pick from the brand library
+ *      (`pickThemedCover(theme, match_id)`),
+ *   4. on `<img onError>`, the local brand asset for the theme.
  */
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Flag, Lock, Heart } from 'lucide-react';
 // (Heart powers the compact "♡ Interest" pill in the action row.)
@@ -56,6 +59,10 @@ import {
 import { pickThemedCover, coverFallbackForTheme, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import {
+  useMaxinaMatchImages,
+  type MaxinaCategory,
+} from '@/hooks/useMaxinaMatchImages';
 
 interface FindPartnerMatchCardProps {
   match: IntentMatch;
@@ -113,15 +120,48 @@ export function FindPartnerMatchCard({
   const isPartnerSeek = match.kind_pairing.startsWith('partner_seek');
   const isRedacted = !counterpartyVid && (match.redacted || isPartnerSeek);
 
-  // Cover banner is always a real photo: either the partner's
-  // uploaded cover, or a deterministic themed pick from the brand
-  // library (community-dance-group, wellness-yoga-nature, …) keyed
-  // on match_id so the same card keeps the same cover across renders.
+  // MAXINA premium fallback: ask the resolver for a category-aware
+  // cover image keyed on the counterparty. Returns the partner's own
+  // uploaded cover if any, else a Vertex-AI Imagen photograph that's
+  // generated once and reused on every load. We skip resolution when
+  // the match is anonymous so we don't burn Imagen calls on redacted
+  // cards.
+  const maxinaCategory: MaxinaCategory =
+    vertical === 'dance' ? 'dance' : vertical === 'fitness' ? 'fitness' : 'wellness';
+  const resolverIds = useMemo(
+    () => (counterpartyVid && !isRedacted ? [counterpartyVid] : []),
+    [counterpartyVid, isRedacted],
+  );
+  const { byUserId: maxinaImages } = useMaxinaMatchImages({
+    matchedUserIds: resolverIds,
+    category: maxinaCategory,
+  });
+  const maxinaCoverUrl = counterpartyVid
+    ? maxinaImages[counterpartyVid]?.matchCoverImageUrl ?? null
+    : null;
+  const maxinaCoverSource = counterpartyVid
+    ? maxinaImages[counterpartyVid]?.matchCoverSource ?? null
+    : null;
+
+  // Cover banner is always a real photo. Priority chain:
+  //   1. partner-uploaded `partner_match_cover_url`
+  //   2. MAXINA Imagen-generated cover (`maxinaCoverUrl`)
+  //   3. deterministic themed pick from brand library
+  // The `<img onError>` handler swaps in the local brand asset if the
+  // chosen URL fails to load, so the card never shows a broken image.
   const coverTheme: CoverTheme =
     vertical === 'dance' ? 'dance' : vertical === 'fitness' ? 'fitness' : 'generic';
   const coverUrl = !isRedacted
-    ? match.partner_match_cover_url ?? pickThemedCover(coverTheme, match.match_id)
+    ? match.partner_match_cover_url
+      ?? maxinaCoverUrl
+      ?? pickThemedCover(coverTheme, match.match_id)
     : null;
+  const coverImageSource: string =
+    match.partner_match_cover_url
+      ? 'uploaded'
+      : maxinaCoverUrl
+        ? maxinaCoverSource ?? 'generated'
+        : 'curated_library';
 
   const displayName = match.partner_display_name ?? null;
   const handle = counterpartyVid;
@@ -228,9 +268,11 @@ export function FindPartnerMatchCard({
             alt={displayName ?? handle ?? 'Match cover'}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
-            // CDN fall-back: if the themed photo fails to load,
-            // swap in the local brand asset for the same theme so
-            // the card never shows a broken image.
+            data-image-source={coverImageSource}
+            data-image-variant="cover"
+            // CDN fall-back: if the chosen photo fails to load, swap
+            // in the local brand asset for the same theme so the
+            // card never shows a broken image.
             onError={(e) => {
               const img = e.currentTarget;
               const fallback = coverFallbackForTheme(coverTheme);

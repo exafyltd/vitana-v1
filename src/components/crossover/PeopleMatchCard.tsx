@@ -6,12 +6,11 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
 import { notify, t } from '@/lib/i18n-toast';
-import { useMaxinaMatchImages } from "@/hooks/useMaxinaMatchImages";
 
 interface PeopleMatch {
   user_id: string;
@@ -33,24 +32,6 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
   const [matches, setMatches] = useState<PeopleMatch[]>([]);
   const [loading, setLoading] = useState(true);
   const [interacting, setInteracting] = useState<string | null>(null);
-
-  // Backend-resolved match images (uploaded > imported > generated > initials).
-  // Demo users are skipped so we don't burn Imagen calls during development.
-  const realUserIds = useMemo(
-    () =>
-      matches
-        .filter(
-          (m) =>
-            !m.user_id.startsWith('demo-') &&
-            !m.avatar_url?.includes('dicebear.com'),
-        )
-        .map((m) => m.user_id),
-    [matches],
-  );
-  const { byUserId: maxinaImages } = useMaxinaMatchImages({
-    matchedUserIds: realUserIds,
-    category: 'wellness',
-  });
 
   const getMatchReason = (index: number): string => {
     const reasons = [
@@ -195,24 +176,17 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
         </div>
       ) : (
         <>
-          {matches.map((match) => {
-            const resolved = maxinaImages[match.user_id];
-            // Priority: backend-resolved upload/import > existing avatar_url.
-            // When the resolver only knows about the user as `initials`/no photo,
-            // we fall through to ClickableAvatar's built-in initials fallback.
-            const avatarSrc = resolved?.profileImageUrl ?? match.avatar_url;
-            return (
+          {matches.map((match) => (
             <div key={match.user_id} className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.15)] hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 group">
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
                 <ClickableAvatar
                   userId={match.user_id}
-                  src={avatarSrc}
+                  src={match.avatar_url}
                   fallback={match.display_name.split(' ').map(n => n[0]).join('')}
                   alt={match.display_name}
                   className={`h-12 w-12 relative transition-all duration-300 ${getAvatarRingColor(match.compatibility_score)}`}
                   disabled={match.user_id.startsWith('demo-') || match.avatar_url?.includes('dicebear.com')}
-                  data-image-source={resolved?.profileImageSource ?? 'legacy'}
                 />
               </div>
               <div className="flex-1 min-w-0">
@@ -229,8 +203,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
               >{t('screens.crossover.chat')}
               </Button>
             </div>
-            );
-          })}
+          ))}
           
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center gap-2 text-xs">
