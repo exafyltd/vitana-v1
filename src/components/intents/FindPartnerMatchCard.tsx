@@ -339,19 +339,20 @@ export function FindPartnerMatchCard({
         </div>
       </button>
 
-      {/* BODY — My-Posts shape: kind pill, title, description; then CTAs. */}
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2 mb-2">
+      {/* BODY — compact (≈ 1/3 of the card). Kind pill + tight title +
+          one-line description, then a single inline action row. */}
+      <div className="px-4 pt-2.5 pb-3">
+        <div className="flex items-start justify-between gap-2 mb-1">
           <span
-            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
+            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border ${
               KIND_COLOR[counterpartyKind ?? ''] ?? kindColorClass(counterpartyKind)
             }`}
           >
             {KIND_LABEL[counterpartyKind ?? ''] ?? kindLabel(counterpartyKind)}
           </span>
         </div>
-        <h3 className="font-semibold text-base leading-snug mb-1 line-clamp-2">{bodyTitle}</h3>
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{bodyDescription}</p>
+        <h3 className="font-semibold text-[15px] leading-snug line-clamp-1">{bodyTitle}</h3>
+        <p className="text-xs text-muted-foreground line-clamp-1 mb-2">{bodyDescription}</p>
 
         {isMutual ? (
           <div className="space-y-2">
@@ -368,43 +369,37 @@ export function FindPartnerMatchCard({
         ) : isClosed ? (
           <p className="text-sm text-muted-foreground italic">{match.state}</p>
         ) : (
-          <>
-            {/* Meta row: strongest match reason · active status. Subtle,
-                inline, sized to feel like context rather than chips. */}
-            {(topReason || activeLabel) && (
-              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                {topReason && (
-                  <span className="inline-flex items-center gap-1.5">
-                    {/* Lead reason gets a small purple star — matches the
-                        reference's accent on "Similar activity goal". */}
-                    <span aria-hidden className="text-violet-500">★</span>
-                    <span>{topReason.label}</span>
-                  </span>
-                )}
-                {topReason && activeLabel && <span aria-hidden>·</span>}
-                {activeLabel && (
-                  <span className="inline-flex items-center gap-1">
-                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    <span>{activeLabel}</span>
-                  </span>
-                )}
-              </div>
-            )}
-            {/* Compact "♡ Interest" filled pill + outlined "Pass" pill —
-                matches the reference design. Interest is content-sized;
-                Pass mirrors its width so the right-side actions feel
-                paired. */}
-            <div className="flex items-center justify-end gap-2">
+          // Compact action row: meta strip on the left, "♡ Interest"
+          // + outlined "Pass" pills on the right. Sits inline so the
+          // body stays at ≈ 1/3 of the card height (cover keeps the
+          // visual weight).
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
+              {topReason && (
+                <span className="inline-flex items-center gap-1.5">
+                  <span aria-hidden className="text-violet-500">★</span>
+                  <span className="truncate">{topReason.label}</span>
+                </span>
+              )}
+              {topReason && activeLabel && <span aria-hidden>·</span>}
+              {activeLabel && (
+                <span className="inline-flex items-center gap-1">
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span className="truncate">{activeLabel}</span>
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0">
               <Button
                 onClick={expressInterest}
                 disabled={busy !== null}
-                className="maxina-cta-blue h-10 px-5 rounded-full font-semibold gap-1.5 shadow-sm"
+                className="maxina-cta-blue h-8 px-3.5 rounded-full text-xs font-semibold gap-1 shadow-sm"
               >
                 {busy === 'interest' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
                   <>
-                    <Heart className="h-4 w-4" />
+                    <Heart className="h-3.5 w-3.5" />
                     Interest
                   </>
                 )}
@@ -413,12 +408,12 @@ export function FindPartnerMatchCard({
                 variant="outline"
                 onClick={decline}
                 disabled={busy !== null}
-                className="h-10 px-5 rounded-full border-border text-foreground/80 hover:bg-muted font-medium"
+                className="h-8 px-3.5 rounded-full text-xs font-medium border-border text-foreground/80 hover:bg-muted"
               >
-                {busy === 'decline' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Pass'}
+                {busy === 'decline' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Pass'}
               </Button>
             </div>
-          </>
+          </div>
         )}
 
         {canDispute && !isMutual && !isClosed && (
