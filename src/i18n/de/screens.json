@@ -5233,7 +5233,7 @@
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",
-      "notifications": "Benachrichtigungen",
+      "notifications": "Notifications",
       "manageYourNotifications": "Verwalte deine Benachrichtigungen",
       "cancel": "Abbrechen",
       "unreadcountUnread": "{unreadCount} ungelesen",
