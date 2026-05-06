@@ -18,7 +18,11 @@
       "viewUpcoming": "Kommende Events ansehen",
       "followingTitle": "Beiträge von Personen, denen Sie folgen",
       "followingDesc": "Inhalte von Personen und Gruppen, denen Sie folgen, erscheinen hier",
-      "findPeople": "Personen zum Folgen finden"
+      "findPeople": "Personen zum Folgen finden",
+      "noPostsFromFollowing": "Noch keine Beiträge",
+      "noPostsFromFollowingDesc": "Personen, denen Sie folgen, haben noch keine Events oder Meetups erstellt.",
+      "youFollow": "Sie folgen",
+      "loadingFollowing": "Beiträge werden geladen…"
     }
   }
 }

@@ -23,6 +23,8 @@ import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
+import { useFollowingFeed } from '@/hooks/useFollowingFeed';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from '@/hooks/use-toast';
 import { cn } from "@/lib/utils";
@@ -342,6 +344,12 @@ const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
   const { events: dbEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
+  const {
+    followingIds,
+    profiles: followedProfiles,
+    loading: followingLoading,
+    isAuthenticated,
+  } = useFollowingFeed();
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -444,6 +452,20 @@ const EventsAndMeetups = () => {
       .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
       .map(event => ({ ...event, event_type: 'event' }));
   }, [dbEvents]);
+
+  const followingSet = useMemo(() => new Set(followingIds), [followingIds]);
+
+  const followedEvents = useMemo(() => {
+    if (followingSet.size === 0) return [];
+    const list = dbEvents.filter(event => followingSet.has(event.created_by));
+    if (!searchQuery.trim()) return list;
+    const query = searchQuery.toLowerCase();
+    return list.filter(event =>
+      event.title.toLowerCase().includes(query) ||
+      event.description?.toLowerCase().includes(query) ||
+      event.location?.toLowerCase().includes(query)
+    );
+  }, [dbEvents, followingSet, searchQuery]);
 
   // Get all events from current tab
   const currentEvents = activeTab === "today" ? filteredTodayEvents : 
@@ -949,14 +971,91 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="following" className={isMobile ? "mt-1" : "mt-6"}>
-                <div className="text-center py-12">
-                  <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">{translate('events.emptyStates.followingTitle')}</h3>
-                  <p className="text-muted-foreground mb-4">
-                    {translate('events.emptyStates.followingDesc')}
-                  </p>
-                  <Button variant="outline">{translate('events.emptyStates.findPeople')}</Button>
-                </div>
+                {followingLoading || (loading && followingIds.length > 0 && followedEvents.length === 0) ? (
+                  <EventCardSkeleton count={4} className="px-2" />
+                ) : !isAuthenticated || followingIds.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <h3 className="text-lg font-semibold mb-2">{translate('events.emptyStates.followingTitle')}</h3>
+                    <p className="text-muted-foreground mb-4">
+                      {translate('events.emptyStates.followingDesc')}
+                    </p>
+                    <Button variant="outline" onClick={() => navigate('/comm/members')}>
+                      {translate('events.emptyStates.findPeople')}
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="px-4 sm:px-6 mb-4">
+                      <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
+                        {translate('events.emptyStates.youFollow')}
+                      </p>
+                      <div className="flex gap-3 overflow-x-auto pb-2">
+                        {followedProfiles.map((p) => (
+                          <button
+                            key={p.user_id}
+                            type="button"
+                            onClick={() => navigate(`/profile/${p.user_id}`)}
+                            className="flex flex-col items-center gap-1 flex-shrink-0 w-16 focus:outline-none"
+                            aria-label={p.display_name || 'Member'}
+                          >
+                            <Avatar className="h-14 w-14 ring-2 ring-primary/20">
+                              {p.avatar_url ? (
+                                <AvatarImage src={p.avatar_url} alt={p.display_name || ''} />
+                              ) : null}
+                              <AvatarFallback>
+                                {(p.display_name || '?')
+                                  .split(/\s+/)
+                                  .filter(Boolean)
+                                  .map((s) => s[0]?.toUpperCase())
+                                  .join('')
+                                  .slice(0, 2) || '?'}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="text-[11px] truncate w-full text-center text-muted-foreground">
+                              {p.display_name || 'Member'}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {followedEvents.length === 0 ? (
+                      <div className="text-center py-12">
+                        <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">{translate('events.emptyStates.noPostsFromFollowing')}</h3>
+                        <p className="text-muted-foreground mb-4">
+                          {translate('events.emptyStates.noPostsFromFollowingDesc')}
+                        </p>
+                        <Button variant="outline" onClick={() => navigate('/comm/members')}>
+                          {translate('events.emptyStates.findPeople')}
+                        </Button>
+                      </div>
+                    ) : isMobile ? (
+                      <MobileEventCarousel
+                        events={followedEvents}
+                        onCardClick={handleCardClick}
+                        currentUserId={user?.id}
+                        onEdit={handleEditEvent}
+                        onDelete={handleDeleteEvent}
+                        onShare={handleShareEvent}
+                        initialEventId={selectedEventId || undefined}
+                        onRefresh={fetchEvents}
+                        onSlideChange={(eventId) => {
+                          setFocusedCardId(eventId);
+                        }}
+                      />
+                    ) : (
+                      <>
+                        {chunkEvents(followedEvents).map((chunk, chunkIndex) => (
+                          <div key={`following-chunk-${chunkIndex}`}>
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </>
+                )}
               </SplitBarContent>
 
               <SplitBarContent value="hot" className={isMobile ? "mt-1" : "mt-6"}>
