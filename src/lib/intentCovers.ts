@@ -6,13 +6,18 @@
  *     ships the column) or `kind_payload.cover_url` (interim transit
  *     through the existing JSONB blob).
  *
- *  2. `pickThemedCover(theme, seed)` deterministically picks one
- *     of the brand's real, themed photographs (imported from
- *     `src/assets/`) so the "✨ Generate for me" path always
- *     produces a presentable real photo. Every URL Vite emits here
- *     is content-hashed and CDN-cacheable. Once a backend AI image
- *     generator exists this util becomes a thin client around
- *     `POST /intents/cover/generate` with no consumer-side change.
+ *  2. `pickThemedCover(theme, seed)` returns a *real* themed photo
+ *     URL — Lorem Flickr (Flickr CC pool) tag-themed by category and
+ *     deterministic per `seed`. Same seed = same photo across
+ *     renders, different seeds = different photos, so every match
+ *     card gets its own picture instead of repeating the one local
+ *     brand asset. The local brand asset is kept as the
+ *     `coverFallbackForTheme(theme)` value, used by callers as the
+ *     `<img onError>` fallback if the CDN is unreachable.
+ *
+ * The proper long-term replacement is a backend `POST /intents/cover/generate`
+ * that runs real AI image-gen per user; this util will become a thin
+ * client around that endpoint with no consumer-side change.
  */
 
 import danceCommunity from '@/assets/actions/community-dance-group.jpg';
@@ -27,12 +32,34 @@ import type { UserIntent } from './intentApi';
 
 export type CoverTheme = 'dance' | 'fitness' | 'generic';
 
-const COVERS: Record<CoverTheme, string[]> = {
-  // Only one dance photo in the brand library today; backend AI
-  // generation or follow-up curation will add variety.
-  dance: [danceCommunity],
-  fitness: [wellnessYoga, morningYogaFlow, morningStretch, breathingExercise],
-  generic: [friendsMeetup, happyCoffeeGroup],
+const FALLBACK_BY_THEME: Record<CoverTheme, string> = {
+  dance: danceCommunity,
+  fitness: wellnessYoga,
+  generic: friendsMeetup,
+};
+
+/**
+ * Larger fallback pool, used when callers want extra variety on the
+ * onError path (e.g. cycling per-seed across the brand library
+ * instead of always landing on the single per-theme fallback).
+ * Currently exported for potential future use; the card today only
+ * needs the single per-theme fallback above.
+ */
+export const BRAND_COVER_LIBRARY: readonly string[] = [
+  danceCommunity,
+  wellnessYoga,
+  morningYogaFlow,
+  morningStretch,
+  breathingExercise,
+  friendsMeetup,
+  happyCoffeeGroup,
+];
+
+/** Tag bundles passed to Lorem Flickr's `/all` matcher. */
+const COVER_TAGS: Record<CoverTheme, string> = {
+  dance: 'dance,couple',
+  fitness: 'fitness,gym',
+  generic: 'people,community',
 };
 
 export function themeFromCategory(category: string | null | undefined): CoverTheme {
@@ -52,14 +79,24 @@ function hashString(s: string): number {
 }
 
 /**
- * Pick a themed cover deterministically. Same `seed` for the same
- * `theme` always returns the same URL, so a given intent keeps its
- * cover across renders and re-fetches.
+ * Pick a themed cover. Returns a Lorem Flickr URL keyed on (theme,
+ * seed) so each match card gets its own real photo and the same
+ * card keeps the same photo across renders / re-fetches. Tags steer
+ * the result toward the requested theme; quality varies (Flickr CC).
+ *
+ * Callers should pair this with `coverFallbackForTheme(theme)` on
+ * the `<img onError>` so a CDN outage degrades gracefully to a
+ * local brand asset rather than a broken image.
  */
 export function pickThemedCover(theme: CoverTheme, seed: string): string {
-  const list = COVERS[theme] ?? COVERS.generic;
-  const idx = hashString(seed) % list.length;
-  return list[idx];
+  const tags = COVER_TAGS[theme] ?? COVER_TAGS.generic;
+  const lock = hashString(seed);
+  return `https://loremflickr.com/1600/1000/${tags}/all?lock=${lock}`;
+}
+
+/** Local brand asset to use when the CDN cover fails to load. */
+export function coverFallbackForTheme(theme: CoverTheme): string {
+  return FALLBACK_BY_THEME[theme] ?? FALLBACK_BY_THEME.generic;
 }
 
 /** Resolve an intent's cover URL from any field that might carry it. */
