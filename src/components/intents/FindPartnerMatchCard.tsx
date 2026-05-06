@@ -29,7 +29,8 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Flag, Lock } from 'lucide-react';
+import { Loader2, Flag, Lock, Heart } from 'lucide-react';
+// (Heart powers the compact "♡ Interest" pill in the action row.)
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -38,6 +39,8 @@ import {
   type IntentMatch,
 } from '@/lib/intentApi';
 import {
+  activeStatusLabel,
+  coverTagsForMatch,
   deriveIntentLine,
   deriveFallbackTitle,
   humanizeMatchReasons,
@@ -66,25 +69,30 @@ interface FindPartnerMatchCardProps {
 
 const VERTICAL_THEME: Record<
   Exclude<MatchVertical, null> | 'default',
-  { icon: string; label: string; gradient: string; deco: string }
+  { icon: string; label: string; gradient: string; deco: string; pillClass: string }
 > = {
   dance: {
     icon: '💃',
     label: 'Dance',
     gradient: 'from-rose-300 via-pink-300 to-fuchsia-400',
     deco: '🎶',
+    // Solid pink pill on the cover (matches the reference design's
+    // vertical-tinted top-left badge).
+    pillClass: 'bg-pink-100 text-pink-900 ring-1 ring-pink-200/60',
   },
   fitness: {
     icon: '🏋️',
     label: 'Fitness',
     gradient: 'from-emerald-300 via-teal-300 to-cyan-400',
     deco: '💪',
+    pillClass: 'bg-emerald-100 text-emerald-900 ring-1 ring-emerald-200/60',
   },
   default: {
     icon: '✨',
     label: 'Match',
     gradient: 'from-indigo-200 via-purple-200 to-pink-200',
     deco: '✨',
+    pillClass: 'bg-white/90 text-foreground ring-1 ring-black/5',
   },
 };
 
@@ -131,16 +139,24 @@ export function FindPartnerMatchCard({
     match.partner_intent_scope ??
     deriveIntentLine(match.kind_pairing, sourceCategory);
 
-  const reasons = humanizeMatchReasons(
+  // Top match reason (rendered as a single subtle chip in the meta
+  // row above the CTAs). The card body has no chip strip per the
+  // user's earlier ask; the meta row carries one strongest signal
+  // alongside the active-status pill.
+  const topReason = humanizeMatchReasons(
     match.match_reasons as Record<string, unknown>,
     vertical,
-    3,
-  );
-  // `reasons` is intentionally not rendered: the user asked for the
-  // tags strip to be removed from the body. Kept here so a future
-  // surface (e.g. the full match detail) can reuse the same logic
-  // without re-deriving.
-  void reasons;
+    1,
+  )[0];
+
+  const coverTags = coverTagsForMatch({
+    kindPairing: match.kind_pairing,
+    partnerIntentKind: match.partner_intent_kind ?? null,
+    category: sourceCategory,
+    max: 3,
+  });
+
+  const activeLabel = activeStatusLabel(match.partner_last_active_at ?? null);
 
   const scorePct = Math.round((match.score ?? 0) * 100);
 
@@ -259,32 +275,64 @@ export function FindPartnerMatchCard({
           className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
         />
 
-        {/* Top-left vertical badge */}
-        <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-white/85 text-foreground backdrop-blur shadow-sm">
+        {/* Top-left vertical badge — tinted by theme to match the
+            reference design's pink-Dance / emerald-Fitness pills. */}
+        <span
+          className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full backdrop-blur shadow-sm ${theme.pillClass}`}
+        >
           <span aria-hidden>{theme.icon}</span>
           <span>{theme.label}</span>
         </span>
 
-        {/* Top-right match score */}
-        <span className="absolute top-3 right-3 px-3 py-1 text-xs font-semibold rounded-full bg-black/55 text-white backdrop-blur shadow-sm">{t('screens.intents.scorepctMatch', { scorePct })}
-        </span>
+        {/* Top-right card — single dark rounded panel with score on top
+            and (optional) active-status pill underneath. Compass-aligned
+            ribbon stays separate just below. */}
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+          <div
+            className={`flex flex-col items-end gap-0.5 rounded-2xl bg-black/65 text-white backdrop-blur px-3 py-1.5 shadow-sm ${
+              activeLabel ? '' : 'py-1'
+            }`}
+          >
+            <span className="text-xs font-semibold leading-tight">{scorePct}% match</span>
+            {activeLabel && (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-medium leading-tight">
+                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                {activeLabel}
+              </span>
+            )}
+          </div>
+          {match.compass_aligned && (
+            <span className="px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">
+              ⭐ Compass-aligned
+            </span>
+          )}
+        </div>
 
-        {match.compass_aligned && (
-          <span className="absolute top-12 right-3 px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">{t('screens.intents.compassaligned')}
-          </span>
-        )}
-
-        {/* Bottom identity strip — name + handle ONLY (no avatar pill, no intent line) */}
+        {/* Bottom identity strip — name, handle, plus 2-3 cover tags. */}
         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-left text-white">
           {isRedacted ? (
-            <h3 className="text-lg font-semibold leading-tight">{t('screens.intents.anonymousMatch')}</h3>
+            <h3 className="text-lg font-semibold leading-tight">Anonymous match</h3>
           ) : (
-            <div className="min-w-0">
-              <h3 className="text-lg font-semibold leading-tight truncate">
-                {displayName ?? (handle ? `@${handle}` : 'Member')}
-              </h3>
-              {displayName && handle && (
-                <p className="text-xs opacity-90 truncate">@{handle}</p>
+            <div className="min-w-0 space-y-1.5">
+              <div>
+                <h3 className="text-lg font-semibold leading-tight truncate">
+                  {displayName ?? (handle ? `@${handle}` : 'Member')}
+                </h3>
+                {displayName && handle && (
+                  <p className="text-xs opacity-90 truncate">@{handle}</p>
+                )}
+              </div>
+              {coverTags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                  {coverTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center px-2.5 py-1 text-[11px] font-medium rounded-full bg-black/65 text-white backdrop-blur"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
           )}
@@ -320,23 +368,57 @@ export function FindPartnerMatchCard({
         ) : isClosed ? (
           <p className="text-sm text-muted-foreground italic">{match.state}</p>
         ) : (
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={expressInterest}
-              disabled={busy !== null}
-              className="flex-1 h-10 rounded-full bg-foreground text-background hover:bg-foreground/90 font-medium"
-            >
-              {busy === 'interest' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Express interest'}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={decline}
-              disabled={busy !== null}
-              className="flex-1 h-10 rounded-full border-border bg-background text-foreground/80 hover:bg-muted"
-            >
-              {busy === 'decline' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Pass'}
-            </Button>
-          </div>
+          <>
+            {/* Meta row: strongest match reason · active status. Subtle,
+                inline, sized to feel like context rather than chips. */}
+            {(topReason || activeLabel) && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                {topReason && (
+                  <span className="inline-flex items-center gap-1.5">
+                    {/* Lead reason gets a small purple star — matches the
+                        reference's accent on "Similar activity goal". */}
+                    <span aria-hidden className="text-violet-500">★</span>
+                    <span>{topReason.label}</span>
+                  </span>
+                )}
+                {topReason && activeLabel && <span aria-hidden>·</span>}
+                {activeLabel && (
+                  <span className="inline-flex items-center gap-1">
+                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span>{activeLabel}</span>
+                  </span>
+                )}
+              </div>
+            )}
+            {/* Compact "♡ Interest" filled pill + outlined "Pass" pill —
+                matches the reference design. Interest is content-sized;
+                Pass mirrors its width so the right-side actions feel
+                paired. */}
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                onClick={expressInterest}
+                disabled={busy !== null}
+                className="maxina-cta-blue h-10 px-5 rounded-full font-semibold gap-1.5 shadow-sm"
+              >
+                {busy === 'interest' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <Heart className="h-4 w-4" />
+                    Interest
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={decline}
+                disabled={busy !== null}
+                className="h-10 px-5 rounded-full border-border text-foreground/80 hover:bg-muted font-medium"
+              >
+                {busy === 'decline' ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Pass'}
+              </Button>
+            </div>
+          </>
         )}
 
         {canDispute && !isMutual && !isClosed && (
