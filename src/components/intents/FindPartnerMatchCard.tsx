@@ -398,7 +398,7 @@ export function FindPartnerMatchCard({
               <Button
                 onClick={expressInterest}
                 disabled={busy !== null}
-                className="h-10 px-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-medium gap-1.5"
+                className="maxina-cta-blue h-10 px-5 rounded-full font-semibold gap-1.5 shadow-sm"
               >
                 {busy === 'interest' ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
