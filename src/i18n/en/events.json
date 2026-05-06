@@ -18,7 +18,11 @@
       "viewUpcoming": "View Upcoming Events",
       "followingTitle": "Posts from People You Follow",
       "followingDesc": "Content from people and groups you follow will appear here",
-      "findPeople": "Find People to Follow"
+      "findPeople": "Find People to Follow",
+      "noPostsFromFollowing": "No Posts Yet",
+      "noPostsFromFollowingDesc": "People you follow haven't created any events or meetups yet.",
+      "youFollow": "You follow",
+      "loadingFollowing": "Loading posts…"
     }
   }
 }
