@@ -50,7 +50,7 @@ import {
   kindColorClass,
   kindLabel,
 } from '@/lib/intentKind';
-import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
+import { pickThemedCover, coverFallbackForTheme, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
@@ -212,6 +212,14 @@ export function FindPartnerMatchCard({
             alt={displayName ?? handle ?? 'Match cover'}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
+            // CDN fall-back: if the themed photo fails to load,
+            // swap in the local brand asset for the same theme so
+            // the card never shows a broken image.
+            onError={(e) => {
+              const img = e.currentTarget;
+              const fallback = coverFallbackForTheme(coverTheme);
+              if (img.src !== fallback) img.src = fallback;
+            }}
           />
         ) : (
           // Themed gradient backdrop — never an inflated portrait.
