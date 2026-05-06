@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+// VTID-02789: Mobile-aware Navigator. Pipe `is_mobile` into the ORB session
+// context so the gateway can pick mobile_route overrides (e.g. /comm →
+// /comm/events-meetups?tab=hot) and block desktop sessions from
+// viewport_only='mobile' entries (e.g. /daily-diary).
+import { useIsMobile } from "@/hooks/use-mobile";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -68,6 +73,10 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  // VTID-02789: Pure viewport check (window.innerWidth < 1024px). Updates
+  // reactively via matchMedia, so any width change triggers the route-change
+  // updateContext effect below and re-syncs is_mobile to the gateway.
+  const isMobile = useIsMobile();
 
   // VTID-AUTH-BACKEND-PROBE: Shared token resolver. Refreshes if expiring,
   // probes the backend, and returns:
@@ -216,6 +225,8 @@ export function useOrbVoiceWidget() {
             current_route_entered_at: currentRouteEnteredAtRef.current,
             recent_routes: routeHistoryRef.current,
             journey_trail: journeyTrailRef.current,
+            // VTID-02789: viewport flag → gateway picks mobile_route over route
+            is_mobile: isMobile,
           },
         };
 
@@ -385,9 +396,12 @@ export function useOrbVoiceWidget() {
         current_route_entered_at: now,
         recent_routes: routeHistoryRef.current,
         journey_trail: journeyTrailRef.current,
+        // VTID-02789: re-emit is_mobile on every route change so a viewport
+        // resize mid-session is reflected in the next navigate decision.
+        is_mobile: isMobile,
       });
     }
-  }, [location.pathname]);
+  }, [location.pathname, isMobile]);
 
   // Cleanup on unmount
   useEffect(() => {
