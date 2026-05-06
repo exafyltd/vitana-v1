@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 325
-- **Distinct i18n keys consumed:** 5297
+- **Distinct i18n keys consumed:** 5298
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -186,11 +186,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/IntroExperience.tsx
 
-**Status:** ✅ clean — keys consumed: 7, namespaces: 2
+**Status:** ✅ clean — keys consumed: 8, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 5, total in shard: 8832
+- `screens` — used: 6, total in shard: 8832, **MISSING:** screens.foo.bar
 - `toasts` — used: 2, total in shard: 1222
 
 ### src/pages/InviteFriends.tsx
