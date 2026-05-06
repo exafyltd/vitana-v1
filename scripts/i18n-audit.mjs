@@ -26,6 +26,8 @@ function listShards(localeDir) {
   if (!existsSync(localeDir)) return [];
   return readdirSync(localeDir)
     .filter((f) => f.endsWith('.json'))
+    // Exclude audit metadata produced by scripts/i18n-audit-llm.mjs
+    .filter((f) => !f.endsWith('._audit.json'))
     .map((f) => f.replace(/\.json$/, ''))
     .sort();
 }

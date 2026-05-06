@@ -382,6 +382,76 @@ async function stage6c_lint_rules() {
   return true;
 }
 
+// ---------- STAGE 8: LLM audit verdicts (informational by default; gates GA flip) ----------
+// Reads `_audit.json` files produced by `scripts/i18n-audit-llm.mjs` and
+// checks: for each GA-flagged locale, the percentage of EDIT_SUGGESTED +
+// LOW_CONFIDENCE verdicts must be under 10%.
+//
+// If a locale has no audit files yet, it's INFORMATIONAL — the stage records
+// "no audit data" and passes (locales need an explicit audit run first).
+//
+// Locales are GA-flagged via `status: 'ga'` in src/contexts/LanguageContext.tsx.
+async function stage8_llm_audit() {
+  console.log('\n=== STAGE 8: LLM audit verdicts ===');
+  const ctxPath = join(ROOT, 'src/contexts/LanguageContext.tsx');
+  if (!existsSync(ctxPath)) {
+    record('STAGE 8: LLM audit', true, 'LanguageContext.tsx missing — skipped');
+    return true;
+  }
+  const ctxSrc = readFileSync(ctxPath, 'utf8');
+  // Parse the languageOptions array entries: { value: "<code>", status: 'ga'|'beta'|'draft' }
+  const entryRx = /value:\s*["']([a-z]{2}-[A-Z]{2})["'][^}]*status:\s*['"](\w+)['"]/g;
+  const gaCodes = [];
+  let m;
+  while ((m = entryRx.exec(ctxSrc)) !== null) {
+    if (m[2] === 'ga') gaCodes.push(m[1].split('-')[0]); // de-DE → de
+  }
+  if (gaCodes.length === 0) {
+    record('STAGE 8: LLM audit', true, 'no GA locales declared — nothing to audit');
+    return true;
+  }
+  const issues = [];
+  const summaries = [];
+  for (const code of gaCodes) {
+    const dir = join(I18N_DIR, code);
+    if (!existsSync(dir)) {
+      summaries.push(`${code}=no-dir`);
+      continue;
+    }
+    // Look for any *._audit.json files
+    const auditFiles = readdirSync(dir).filter((f) => f.endsWith('._audit.json'));
+    if (auditFiles.length === 0) {
+      summaries.push(`${code}=no-audit`);
+      continue;
+    }
+    let okTotal = 0, flaggedTotal = 0;
+    for (const af of auditFiles) {
+      const a = JSON.parse(readFileSync(join(dir, af), 'utf8'));
+      for (const v of Object.values(a.verdicts || {})) {
+        if (v.verdict === 'OK') okTotal++;
+        else flaggedTotal++;
+      }
+    }
+    const total = okTotal + flaggedTotal;
+    if (total === 0) {
+      summaries.push(`${code}=empty-audit`);
+      continue;
+    }
+    const flaggedPct = (100 * flaggedTotal) / total;
+    summaries.push(`${code}=${flaggedPct.toFixed(1)}%-flagged`);
+    if (flaggedPct > 10) {
+      issues.push(`${code}: ${flaggedTotal}/${total} flagged (${flaggedPct.toFixed(1)}% > 10% threshold)`);
+    }
+  }
+  if (issues.length > 0) {
+    record('STAGE 8: LLM audit', false, summaries.join(', '));
+    for (const i of issues) console.error(`    ${i}`);
+    return false;
+  }
+  record('STAGE 8: LLM audit', true, summaries.join(', ') || 'no GA locales');
+  return true;
+}
+
 // ---------- STAGE 7: Runtime / Playwright (optional, skipped if chromium libs missing) ----------
 async function stage7_runtime() {
   if (SKIP_RUNTIME) {
@@ -528,6 +598,7 @@ async function main() {
     stage6b_trans_component,
     stage6c_lint_rules,
     stage6d_t_shadow,
+    stage8_llm_audit,
     stage7_runtime,
   ];
   let allOk = true;
