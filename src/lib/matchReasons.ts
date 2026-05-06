@@ -185,3 +185,68 @@ export function deriveFallbackTitle(
 
   return 'Match';
 }
+
+/**
+ * Short "active" pill text for the cover overlay.
+ *
+ * Returns null when the timestamp is missing or older than ~30 days
+ * (we don't want to advertise stale presence). Otherwise:
+ *   < 24h        → "Active today"
+ *   < 3 days     → "Active recently"
+ *   < 30 days    → "Active {N} days ago"
+ */
+export function activeStatusLabel(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const ts = Date.parse(iso);
+  if (Number.isNaN(ts)) return null;
+  const ageMs = Date.now() - ts;
+  if (ageMs < 0) return 'Active today';
+  const day = 24 * 60 * 60 * 1000;
+  if (ageMs < day) return 'Active today';
+  if (ageMs < 3 * day) return 'Active recently';
+  if (ageMs < 30 * day) {
+    const days = Math.floor(ageMs / day);
+    return `Active ${days} days ago`;
+  }
+  return null;
+}
+
+/**
+ * Short, friendly chips rendered on the cover identity strip
+ * ("Social", "Dance practice", "Friendly", …). Two chips most of the
+ * time — mirrors the reference design without exposing internal
+ * taxonomy. Order: kind label → vertical activity → soft personality
+ * fallback. Caller can cap with `max`.
+ */
+export function coverTagsForMatch(args: {
+  kindPairing: string | null | undefined;
+  partnerIntentKind: string | null | undefined;
+  category: string | null | undefined;
+  max?: number;
+}): string[] {
+  const max = args.max ?? 3;
+  const tags: string[] = [];
+
+  // 1. Kind tag — derive from partner_intent_kind first, fall back
+  //    to the counterparty side of kind_pairing.
+  const counterpartyKind =
+    args.partnerIntentKind ?? (args.kindPairing ?? '').split('::')[1] ?? null;
+  if (counterpartyKind === 'social_seek') tags.push('Social');
+  else if (counterpartyKind === 'partner_seek') tags.push('Looking for a partner');
+  else if (counterpartyKind === 'activity_seek') tags.push('Activity');
+  else if (counterpartyKind === 'learning_seek') tags.push('Learning');
+  else if (counterpartyKind === 'mentor_seek') tags.push('Teaching');
+  else if (counterpartyKind === 'mutual_aid') tags.push('Mutual aid');
+
+  // 2. Vertical / category tag.
+  if (args.category?.startsWith('dance.')) tags.push('Dance practice');
+  else if (args.category?.startsWith('fitness.')) tags.push('Fitness');
+
+  // 3. Soft personality / vibe — short single-word chip until the
+  //    backend exposes real partner facets. Kept as a static
+  //    "Friendly" because the reference design carries it; safe
+  //    and theme-neutral.
+  if (tags.length < max) tags.push('Friendly');
+
+  return tags.slice(0, max);
+}

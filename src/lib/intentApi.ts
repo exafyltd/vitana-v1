@@ -74,6 +74,10 @@ export interface IntentMatch {
   partner_intent_scope?: string | null;
   partner_intent_kind?: IntentKind | string | null;
   partner_intent_status?: string | null;
+  // Last-seen timestamp for the partner. ISO string when present; the
+  // card renders a "Active today" / "Active recently" pill from it.
+  // Hidden on partner_seek redaction.
+  partner_last_active_at?: string | null;
 }
 
 export interface IntentCategory {
