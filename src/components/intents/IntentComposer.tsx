@@ -14,13 +14,14 @@
 
 import { useMemo, useState } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogDescription,
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -126,132 +127,134 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle>{t('screens.intents.postCommunity')}</DialogTitle>
-          <DialogDescription>{t('screens.intents.tellCommunityWhatYouNeedWhat')}
-          </DialogDescription>
-        </DialogHeader>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-lg">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle>{t('screens.intents.postCommunity')}</ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>{t('screens.intents.tellCommunityWhatYouNeedWhat')}
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <div className="flex gap-2 mb-3">
-          <Button
-            variant={mode === "form" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setMode("form")}
-          >{t('screens.intents.form')}
-          </Button>
-          <Button
-            variant={mode === "voice" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setMode("voice")}
-          >
-            <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
-          </Button>
-        </div>
-
-        {mode === "voice" ? (
-          <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
-            <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
-            <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
-            <p className="text-xs text-muted-foreground">{t('screens.intents.examples')}
-              <br />
-              <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
-              <br />
-              <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
-              <br />{t('screens.intents.orbWillReadItBackYou')}
-            </p>
-            <p className="text-[11px] text-muted-foreground/80 pt-1">{t('screens.intents.donTWorryAboutCoverPhoto')}
-            </p>
+        <ResponsiveDialogBody>
+          <div className="flex gap-2 mb-3">
+            <Button
+              variant={mode === "form" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setMode("form")}
+            >{t('screens.intents.form')}
+            </Button>
+            <Button
+              variant={mode === "voice" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setMode("voice")}
+            >
+              <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
+            </Button>
           </div>
-        ) : (
-          <div className="space-y-3">
-            <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.kind')}
-              </Label>
-              <select
-                value={kind}
-                onChange={(e) => setKind(e.target.value as IntentKind)}
-                className="w-full mt-1 px-3 py-2 rounded-md border border-input bg-background text-sm"
-              >
-                {KIND_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            <div>
-              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.title3140Chars')}
-              </Label>
-              <Input
-                id="intent-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder={t('screens.intents.shortHeadline')}
-                maxLength={140}
-              />
+          {mode === "voice" ? (
+            <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
+              <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
+              <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
+              <p className="text-xs text-muted-foreground">{t('screens.intents.examples')}
+                <br />
+                <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
+                <br />
+                <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
+                <br />{t('screens.intents.orbWillReadItBackYou')}
+              </p>
+              <p className="text-[11px] text-muted-foreground/80 pt-1">{t('screens.intents.donTWorryAboutCoverPhoto')}
+              </p>
             </div>
-
-            <div>
-              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.description20Chars')}
-              </Label>
-              <Textarea
-                id="intent-scope"
-                value={scope}
-                onChange={(e) => setScope(e.target.value)}
-                placeholder={t('screens.intents.describeWhatYouNeedWhat')}
-                rows={3}
-                maxLength={1500}
-              />
-            </div>
-
-            {(kind === "commercial_buy" || kind === "commercial_sell") && (
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMin')}
-                  </Label>
-                  <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
-                </div>
-                <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMax')}
-                  </Label>
-                  <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
-                </div>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.kind')}
+                </Label>
+                <select
+                  value={kind}
+                  onChange={(e) => setKind(e.target.value as IntentKind)}
+                  className="w-full mt-1 px-3 py-2 rounded-md border border-input bg-background text-sm"
+                >
+                  {KIND_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            )}
 
-            <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.locationOptional')}
-              </Label>
-              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
-            </div>
-
-            <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.coverPhotoRequired')}
-              </Label>
-              <div className="mt-1">
-                <CoverPhotoPicker
-                  value={coverUrl}
-                  onChange={setCoverUrl}
-                  theme={coverTheme}
+              <div>
+                <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.title3140Chars')}
+                </Label>
+                <Input
+                  id="intent-title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder={t('screens.intents.shortHeadline')}
+                  maxLength={140}
                 />
               </div>
-            </div>
-          </div>
-        )}
 
-        <DialogFooter>
+              <div>
+                <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.description20Chars')}
+                </Label>
+                <Textarea
+                  id="intent-scope"
+                  value={scope}
+                  onChange={(e) => setScope(e.target.value)}
+                  placeholder={t('screens.intents.describeWhatYouNeedWhat')}
+                  rows={3}
+                  maxLength={1500}
+                />
+              </div>
+
+              {(kind === "commercial_buy" || kind === "commercial_sell") && (
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMin')}
+                    </Label>
+                    <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
+                  </div>
+                  <div>
+                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMax')}
+                    </Label>
+                    <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.locationOptional')}
+                </Label>
+                <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
+              </div>
+
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.coverPhotoRequired')}
+                </Label>
+                <div className="mt-1">
+                  <CoverPhotoPicker
+                    value={coverUrl}
+                    onChange={setCoverUrl}
+                    theme={coverTheme}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </ResponsiveDialogBody>
+
+        <ResponsiveDialogFooter>
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>{t('screens.intents.cancel')}
           </Button>
           {mode === "form" && (
             <Button onClick={submit} disabled={submitting || !coverUrl}>
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('screens.intents.post')}
             </Button>
           )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

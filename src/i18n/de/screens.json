@@ -4759,7 +4759,8 @@
       "addCoverPhoto": "Cover-Foto hinzufügen",
       "generateForMe": "✨ Für mich generieren",
       "donTWorryAboutCoverPhoto": "Mach dir keine Sorgen um ein Cover-Foto – Vitana wählt ein thematisch passendes für dich aus,\n              und du kannst es in „Meine Beiträge“ austauschen.",
-      "coverPhotoRequired": "Cover-Foto (erforderlich)"
+      "coverPhotoRequired": "Cover-Foto (erforderlich)",
+      "post": "Posten"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",
