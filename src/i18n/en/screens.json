@@ -5233,6 +5233,11 @@
     },
     "notifications": {
       "markAllAsRead": "Mark all as read",
+      "markAllReadShort": "Mark all read",
+      "clearAllConfirmTitle": "Clear all notifications?",
+      "clearAllCategoryConfirmTitle": "Clear all {category}?",
+      "clearAllConfirmDescription": "This permanently removes the selected notifications. You can’t undo this.",
+      "markAllConfirmDescription": "This will mark every notification as read. You can still find them in the list.",
       "notifications": "Notifications",
       "manageYourNotifications": "Manage your notifications",
       "cancel": "Cancel",

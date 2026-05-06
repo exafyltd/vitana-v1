@@ -8,7 +8,7 @@
 const PER_KIND_SLOT_CAP = 20; // VTID-02719: must mirror MATURE_MAX_OPEN_PER_KIND in gateway intent-throttle.ts
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,7 @@ import { listMyIntents, type UserIntent, type IntentKind } from "@/lib/intentApi
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -28,6 +29,7 @@ const KIND_TABS: { value: IntentKind | "all"; label: string }[] = [
 ];
 
 export default function MyIntents() {
+  const isMobile = useIsMobile();
   const { toast } = useToast();
   const [intents, setIntents] = useState<UserIntent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,16 @@ export default function MyIntents() {
     }
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [tab]);
+  useEffect(() => {
+    if (isMobile) return;
+    load();
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [tab, isMobile]);
+
+  // Mobile users get the mobile-styled Find a Match → My Posts view.
+  if (isMobile) {
+    return <Navigate to="/comm/find-partner?view=posts" replace />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">

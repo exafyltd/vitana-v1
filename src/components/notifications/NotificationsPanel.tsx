@@ -124,10 +124,12 @@ export function NotificationsPanel({
 
   const confirmTitle =
     filter === 'unread'
-      ? 'Mark all as read'
+      ? t('screens.notifications.markAllAsRead')
       : filter === 'all'
-      ? 'Clear all notifications?'
-      : `Clear all ${getCategoryDisplay(filter).label.toLowerCase()}?`;
+      ? t('screens.notifications.clearAllConfirmTitle')
+      : t('screens.notifications.clearAllCategoryConfirmTitle', {
+          category: getCategoryDisplay(filter).label.toLowerCase(),
+        });
 
   return (
     <div className={`flex flex-col min-w-0 max-w-full ${maxHeightClassName} ${className ?? ''}`}>
@@ -283,8 +285,8 @@ export function NotificationsPanel({
             <AlertDialogTitle>{confirmTitle}</AlertDialogTitle>
             <AlertDialogDescription>
               {filter === 'unread'
-                ? 'This will mark every notification as read. You can still find them in the list.'
-                : 'This permanently removes the selected notifications. You can’t undo this.'}
+                ? t('screens.notifications.markAllConfirmDescription')
+                : t('screens.notifications.clearAllConfirmDescription')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -293,7 +295,7 @@ export function NotificationsPanel({
               onClick={handleConfirmDeleteAll}
               className={filter !== 'unread' ? 'bg-destructive hover:bg-destructive/90' : ''}
             >
-              {filter === 'unread' ? 'Mark all read' : 'Delete'}
+              {filter === 'unread' ? t('screens.notifications.markAllReadShort') : t('screens.notifications.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

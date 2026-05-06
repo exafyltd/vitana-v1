@@ -5233,6 +5233,11 @@
     },
     "notifications": {
       "markAllAsRead": "Alle als gelesen markieren",
+      "markAllReadShort": "Alle als gelesen markieren",
+      "clearAllConfirmTitle": "Alle Notifications löschen?",
+      "clearAllCategoryConfirmTitle": "Alle {category}-Notifications löschen?",
+      "clearAllConfirmDescription": "Dadurch werden die ausgewählten Notifications dauerhaft entfernt. Das kann nicht rückgängig gemacht werden.",
+      "markAllConfirmDescription": "Dadurch werden alle Notifications als gelesen markiert. Du findest sie weiterhin in der Liste.",
       "notifications": "Notifications",
       "manageYourNotifications": "Verwalte deine Benachrichtigungen",
       "cancel": "Abbrechen",
