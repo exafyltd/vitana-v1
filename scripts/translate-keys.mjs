@@ -8,7 +8,7 @@
 // Idempotent. Safe to interrupt — persists after every batch.
 //
 // Providers (env vars):
-//   --provider=gemini   GOOGLE_GEMINI_API_KEY  (gemini-2.0-flash, ~free tier)
+//   --provider=gemini   GOOGLE_GEMINI_API_KEY  (gemini-2.5-flash, ~free tier)
 //   --provider=deepseek DEEPSEEK_API_KEY       (deepseek-chat)
 //   --provider=anthropic ANTHROPIC_API_KEY     (claude-haiku-4-5; needs API credit)
 //
@@ -71,7 +71,7 @@ if (!existsSync(TARGET_DIR) || !existsSync(SRC_DIR)) {
 async function callGemini(prompt) {
   const key = process.env.GOOGLE_GEMINI_API_KEY;
   if (!key) throw new Error('GOOGLE_GEMINI_API_KEY is not set');
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(key)}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
