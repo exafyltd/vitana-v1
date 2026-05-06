@@ -6,18 +6,19 @@
  *     ships the column) or `kind_payload.cover_url` (interim transit
  *     through the existing JSONB blob).
  *
- *  2. `pickThemedCover(theme, seed)` returns a *real* themed photo
- *     URL — Lorem Flickr (Flickr CC pool) tag-themed by category and
- *     deterministic per `seed`. Same seed = same photo across
- *     renders, different seeds = different photos, so every match
- *     card gets its own picture instead of repeating the one local
- *     brand asset. The local brand asset is kept as the
- *     `coverFallbackForTheme(theme)` value, used by callers as the
- *     `<img onError>` fallback if the CDN is unreachable.
+ *  2. `pickThemedCover(theme, seed)` deterministically picks one
+ *     of the brand's curated landscape photos. Same `seed` for the
+ *     same `theme` always returns the same URL, so a given match
+ *     keeps its cover across renders and re-fetches.
  *
- * The proper long-term replacement is a backend `POST /intents/cover/generate`
- * that runs real AI image-gen per user; this util will become a thin
- * client around that endpoint with no consumer-side change.
+ * NOTE: an earlier iteration routed this through Lorem Flickr for
+ * per-card variety. That CDN's CC pool returned virtual-avatar
+ * adult content tagged as "couple" / "dance" — unacceptable on
+ * this surface — so we reverted to the curated brand library.
+ * Variety per match returns when the gateway ships a real,
+ * content-safety-checked image-gen pipeline behind
+ * `POST /intents/cover/generate`. The picker's signature is
+ * unchanged so the consumer doesn't change.
  */
 
 import danceCommunity from '@/assets/actions/community-dance-group.jpg';
@@ -32,34 +33,13 @@ import type { UserIntent } from './intentApi';
 
 export type CoverTheme = 'dance' | 'fitness' | 'generic';
 
-const FALLBACK_BY_THEME: Record<CoverTheme, string> = {
-  dance: danceCommunity,
-  fitness: wellnessYoga,
-  generic: friendsMeetup,
-};
-
-/**
- * Larger fallback pool, used when callers want extra variety on the
- * onError path (e.g. cycling per-seed across the brand library
- * instead of always landing on the single per-theme fallback).
- * Currently exported for potential future use; the card today only
- * needs the single per-theme fallback above.
- */
-export const BRAND_COVER_LIBRARY: readonly string[] = [
-  danceCommunity,
-  wellnessYoga,
-  morningYogaFlow,
-  morningStretch,
-  breathingExercise,
-  friendsMeetup,
-  happyCoffeeGroup,
-];
-
-/** Tag bundles passed to Lorem Flickr's `/all` matcher. */
-const COVER_TAGS: Record<CoverTheme, string> = {
-  dance: 'dance,couple',
-  fitness: 'fitness,gym',
-  generic: 'people,community',
+const COVERS: Record<CoverTheme, string[]> = {
+  // Only one curated dance photo today; backend AI gen will add
+  // variety. Until then dance covers will repeat — acceptable
+  // tradeoff vs. exposing the open Flickr CC pool.
+  dance: [danceCommunity],
+  fitness: [wellnessYoga, morningYogaFlow, morningStretch, breathingExercise],
+  generic: [friendsMeetup, happyCoffeeGroup],
 };
 
 export function themeFromCategory(category: string | null | undefined): CoverTheme {
@@ -79,24 +59,25 @@ function hashString(s: string): number {
 }
 
 /**
- * Pick a themed cover. Returns a Lorem Flickr URL keyed on (theme,
- * seed) so each match card gets its own real photo and the same
- * card keeps the same photo across renders / re-fetches. Tags steer
- * the result toward the requested theme; quality varies (Flickr CC).
- *
- * Callers should pair this with `coverFallbackForTheme(theme)` on
- * the `<img onError>` so a CDN outage degrades gracefully to a
- * local brand asset rather than a broken image.
+ * Pick a themed cover deterministically from the curated brand
+ * library. Same `seed` for the same `theme` always returns the
+ * same URL.
  */
 export function pickThemedCover(theme: CoverTheme, seed: string): string {
-  const tags = COVER_TAGS[theme] ?? COVER_TAGS.generic;
-  const lock = hashString(seed);
-  return `https://loremflickr.com/1600/1000/${tags}/all?lock=${lock}`;
+  const list = COVERS[theme] ?? COVERS.generic;
+  const idx = hashString(seed) % list.length;
+  return list[idx];
 }
 
-/** Local brand asset to use when the CDN cover fails to load. */
+/**
+ * Local brand asset to use as the `<img onError>` fallback for
+ * cover images. Same as `pickThemedCover()` today; kept as a
+ * separate function so the card's onError handler doesn't need to
+ * know which seed it was originally rendered with.
+ */
 export function coverFallbackForTheme(theme: CoverTheme): string {
-  return FALLBACK_BY_THEME[theme] ?? FALLBACK_BY_THEME.generic;
+  const list = COVERS[theme] ?? COVERS.generic;
+  return list[0];
 }
 
 /** Resolve an intent's cover URL from any field that might carry it. */
