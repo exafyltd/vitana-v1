@@ -4759,7 +4759,8 @@
       "addCoverPhoto": "Add a cover photo",
       "generateForMe": "✨ Generate for me",
       "donTWorryAboutCoverPhoto": "Don't worry about a cover photo — Vitana will pick a themed one for you,\n              and you can swap it from My Posts.",
-      "coverPhotoRequired": "Cover photo (required)"
+      "coverPhotoRequired": "Cover photo (required)",
+      "post": "Post"
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
