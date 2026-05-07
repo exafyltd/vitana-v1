@@ -7,10 +7,12 @@
  * whichever feels easiest:
  *
  *   • Upload a photo  → file input → Supabase Storage `avatars`
- *     bucket under an `intent-covers/{user_id}/{ts}.{ext}` prefix
+ *     bucket under a `{user_id}/intent-covers/{ts}.{ext}` prefix
  *     (re-uses the existing public bucket so this PR doesn't
- *     require new Supabase admin setup), validation lifted from
- *     the proven AvatarUploadField pattern.
+ *     require new Supabase admin setup). The user_id must be the
+ *     first path segment to satisfy the avatars-bucket RLS policy
+ *     `auth.uid()::text = (storage.foldername(name))[1]`. Validation
+ *     lifted from the proven AvatarUploadField pattern.
  *
  *   • ✨ Generate for me → deterministic themed picker from
  *     `pickThemedCover(theme, seed)` — V1 fallback so users always
@@ -87,7 +89,7 @@ export function CoverPhotoPicker({
       const uid = data.user?.id;
       if (!uid) throw new Error('Not authenticated');
 
-      const fileName = `intent-covers/${uid}/${Date.now()}.${fileExt}`;
+      const fileName = `${uid}/intent-covers/${Date.now()}.${fileExt}`;
       const arrayBuffer = await file.arrayBuffer();
       const blob = new Blob([arrayBuffer], { type: file.type });
 
