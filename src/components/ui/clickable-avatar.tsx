@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 
 interface ClickableAvatarProps {
   userId?: string;
@@ -67,7 +68,14 @@ export function ClickableAvatar({
         }
       }}
     >
-      <AvatarImage src={src} alt={alt} />
+      {/* VTID-02806i: when the user hasn't uploaded their own photo
+          yet, render a deterministic playful auto-avatar so no tile
+          is ever empty. The fallback (initials) only ever renders
+          if the auto-avatar URL itself fails to load. */}
+      <AvatarImage
+        src={src && src.length > 0 ? src : getAutoAvatarUrl(handle ?? userId ?? fallback)}
+        alt={alt}
+      />
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
   );

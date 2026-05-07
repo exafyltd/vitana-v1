@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -225,7 +226,7 @@ export function FollowListDialog({
                         navigate(`/profile/${u.handle || u.user_id}`);
                       }}
                     >
-                      <AvatarImage src={u.avatar_url || undefined} />
+                      <AvatarImage src={getDisplayAvatarUrl(u)} />
                       <AvatarFallback className="text-xs bg-muted">
                         {getInitials(u.display_name)}
                       </AvatarFallback>
