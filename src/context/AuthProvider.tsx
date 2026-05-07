@@ -323,6 +323,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
+  // Appilix native push targeting: the iOS/Android wrapper reads
+  // window.appilix_push_notification_user_identity to register the device
+  // against the signed-in user. The backend sends targeted pushes (chat
+  // messages, etc.) using the Supabase user_id as user_identity; without
+  // this sync, Appilix has no device matching the identity and silently
+  // drops the push.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    (window as any).appilix_push_notification_user_identity = user?.id ?? '';
+  }, [user?.id]);
+
   return (
     <AuthContext.Provider value={value}>
       {children}
