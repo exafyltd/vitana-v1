@@ -267,15 +267,16 @@ function verticalFromCategory(cat: string | null): 'dance' | 'fitness' | null {
 }
 
 export async function getFindPartnerMatches(perIntentLimit = 5): Promise<FindPartnerMatch[]> {
+  // Fetch matches across ALL of the user's open intents — not just
+  // dance.* / fitness.* — so posts created via the generic +New wish
+  // composer (which doesn't tag a category) still surface their
+  // matches here. The card falls back to the 'default' theme when
+  // `vertical` is null, so non-dance/fitness sources render fine.
   const mine = await listMyIntents({ status: 'open' });
-  const danceFitness = mine.filter((it) => {
-    const v = verticalFromCategory(it.category);
-    return v !== null;
-  });
-  if (danceFitness.length === 0) return [];
+  if (mine.length === 0) return [];
 
   const matches = await Promise.all(
-    danceFitness.map(async (it) => {
+    mine.map(async (it) => {
       try {
         const rows = await getIntentMatches(it.intent_id, perIntentLimit);
         return rows.map((m): FindPartnerMatch => ({
