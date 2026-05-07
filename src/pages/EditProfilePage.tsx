@@ -17,6 +17,7 @@ import { PartnerPreferencesDrawer } from "@/components/profile/drawers/PartnerPr
 import { ServiceOfferingsDrawer } from "@/components/profile/drawers/ServiceOfferingsDrawer";
 // VTID-02806 — per-user cover photo library (universal + activity-specific)
 import { CoverLibraryDrawer } from "@/components/profile/drawers/CoverLibraryDrawer";
+import { ImagePlus } from "lucide-react";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -451,6 +452,28 @@ export default function EditProfilePage() {
                 {/* Autopilot Banner */}
                 <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
 
+                {/* VTID-02806: cover photos for posts (universal + library) */}
+                <button
+                  type="button"
+                  onClick={() => setCoverLibraryDrawerOpen(true)}
+                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+                >
+                  <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                    <ImagePlus className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold">
+                      {translate('profileEditor.coverLibrary.tileTitle')}
+                    </h3>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {translate('profileEditor.coverLibrary.tileSubtitle')}
+                    </p>
+                  </div>
+                  <p className="text-xs text-primary shrink-0">
+                    {translate('editProfile.tapToEdit')}
+                  </p>
+                </button>
+
                 {/* Real Posts */}
                 <ProfilePostsTab
                   profile={profile}
@@ -613,6 +636,30 @@ export default function EditProfilePage() {
         onEditVisibility={handleEditVisibility}
         onEditAccount={handleEditAccount}
       />
+
+      {/* VTID-02806: discoverable entry to the Cover Library drawer */}
+      <div className="container mx-auto px-4 mt-4">
+        <button
+          type="button"
+          onClick={() => setCoverLibraryDrawerOpen(true)}
+          className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+        >
+          <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <ImagePlus className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold">
+              {translate('profileEditor.coverLibrary.tileTitle')}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {translate('profileEditor.coverLibrary.tileSubtitle')}
+            </p>
+          </div>
+          <p className="text-xs text-primary shrink-0">
+            {translate('editProfile.tapToEdit')}
+          </p>
+        </button>
+      </div>
 
       <IdentityDrawer
         open={identityDrawerOpen}
