@@ -26,10 +26,11 @@
 15. [Phase 11 — The Joint Moment](#phase-11--the-joint-moment)
 16. [Phase 12 — Web push](#phase-12--web-push)
 17. [Phase 13 — Activity-Kind Taxonomy & Concierge Depth](#phase-13--activity-kind-taxonomy--concierge-depth)
-18. [Suggested rollout & first slice](#suggested-rollout--first-slice)
-19. [Open questions](#open-questions)
-20. [Non-goals](#non-goals)
-21. [Glossary](#glossary)
+18. [Phase 14 — Active Communication Assist](#phase-14--active-communication-assist)
+19. [Suggested rollout & first slice](#suggested-rollout--first-slice)
+20. [Open questions](#open-questions)
+21. [Non-goals](#non-goals)
+22. [Glossary](#glossary)
 
 ---
 
@@ -1240,6 +1241,204 @@ out the existing schema. This keeps the Concierge logic uniform.
 
 ---
 
+## Phase 14 — Active Communication Assist
+
+[Phase 6](#phase-6--the-activity-concierge--activityplancard) fires the
+auto-seeded chat thread on `mutual_interest` and posts the first Plan Card
+into it. [Phase 5](#phase-5--the-who-is-service-post-match-consultant) sits
+beside it as a private side-channel consultant.
+
+This phase specifies what Vitana does **inside the main chat thread**:
+helping users *write the actual messages* that build the relationship
+between reps. Empty-chat-box anxiety is the silent killer of matches that
+otherwise had everything going for them; assist defuses it.
+
+### Scope boundary (the non-negotiable)
+
+Vitana assists *the user's message authoring*, **not the conversation
+itself.** She does not:
+
+- Auto-send anything.
+- Modify drafts without explicit user confirmation.
+- Speak to the other party in the user's voice without a marker (see
+  [Disclosure](#disclosure--the-per-message-marker) below).
+- Quote or summarise the conversation back to the user as if she were a
+  third participant in the room.
+
+She does:
+
+- Suggest drafts before sending (G mode).
+- Polish or translate tone for the user (T mode).
+- Both, plus on-demand interpretation of inbound messages (B mode).
+
+### Three modes (the user's voice fingerprint, kept)
+
+| Mode | Stance | What Vitana does |
+|---|---|---|
+| **G — Generate** | Empty box → first draft | User indicates intent (*"ask about Saturday"*); Vitana drafts 1–3 short options matching the **user's** voice fingerprint, not Vitana's persona. User picks / edits / sends. |
+| **T — Translate / tone** | User has draft → polish | User types something, asks Vitana to soften / sharpen / shorten / formalise. Vitana returns the edit; user sees a diff and accepts/rejects. |
+| **B — Both** | G + T plus interpret | All of the above plus on-demand interpretation of incoming messages (*"what does this mean?"*) — interpretation is private to the asker, never surfaces to the sender. |
+
+The user picks the mode per-conversation. **Default: off.** The mode
+persists per conversation until changed.
+
+Three rules govern all three modes:
+
+1. **The user's voice is preserved** — the assist mimics how the user
+   normally writes (length, emoji habit, cadence). Not Vitana's persona
+   voice (which belongs to Concierge / Consultant / Autopilot, not to
+   user-mediated messages).
+2. **Edits show a diff,** never a black-box rewrite.
+3. **Drafts never auto-send.** The send button is always the user's tap.
+
+### Voice-note assist
+
+For voice notes (already a chat feature in vitana-v1), the assist adds:
+
+- **Transcript** — automatically generated, shown beneath the audio for the
+  recipient. Improves accessibility; discoverable in chat search.
+- **Pre-record prompt** — for users in G mode, Vitana drafts a single
+  sentence to read or improvise from before recording: *"try: 'just want
+  to say I'm looking forward to Saturday — and a bit nervous, second
+  time.'"* Reduces voice-note hesitation.
+- **Voice fidelity preserved** — Vitana never converts voice → text →
+  voice. The recording is always real audio. Vitana only suggests *what
+  to say*; the saying remains the user's act.
+
+### Disclosure — the per-message marker
+
+Every assist-touched outbound message carries a small visible marker on
+the recipient's view, so they know what kind of help (if any) was used:
+
+| Mode used | Marker on recipient's view |
+|---|---|
+| Wholly user-written | (none) |
+| G — fully drafted by Vitana, user accepted as-is | 🪐 |
+| G — drafted, user edited > 30% | 🪐* (asterisk indicates substantial edit) |
+| T — user wrote, Vitana polished | ✨ |
+| B — interpretation help (sender side) | (none — interpretation is private to the asker) |
+
+Markers are **factual, not aesthetic.** They don't say *"AI helped"*; they
+say *which* help was used. Recipients learn to read them within days; the
+calibration is honest.
+
+### The trust dial (per conversation)
+
+Both sides see a 4-position dial in conversation settings, controlling
+marker visibility:
+
+| Position | Behaviour |
+|---|---|
+| **Default** | Markers shown |
+| **Show me how much was assisted** | Aggregate weekly ratio shown ("60% assisted last week") in addition to per-message markers |
+| **Markers + ratio (full)** | Both, with a sticky banner |
+| **Hide markers** | Markers hidden — but **only if both sides set this position**. Otherwise it falls back to the previous level. |
+
+The "Hide markers" position is **bilateral by design.** One-sided opacity
+isn't allowed; that would be deception by configuration. Mutual opacity is
+consent-based.
+
+### Sensitive-content boundary
+
+When a draft (or incoming message) is classified as sensitive (mental
+health, relationship dynamics, conflict, vulnerability), Vitana's assist
+**steps back**:
+
+| Mode | Sensitive-content behaviour |
+|---|---|
+| G | Refuses to draft. *"I'd rather you write this one yourself. Want a side-channel chat with me instead?"* |
+| T | Refuses to polish. Same redirect. |
+| B (interpretation) | Allows it, with a soft heads-up: *"This is sensitive — what I read could be off; trust your own."* |
+
+The boundary is enforced at the inference layer (sensitive-content
+classifier on every assist request), not at the surface. Drafts on
+sensitive content never even appear, which prevents the user from being
+nudged into a Vitana-mediated version of a conversation that should be
+their own.
+
+This boundary is what makes the assist safe to leave on by default in a
+longevity community where vulnerability is part of the territory.
+
+### Per-conversation settings
+
+Each conversation has settings for:
+
+- Mode (G / T / B / off)
+- Trust dial position
+- Voice-note transcript (on/off)
+- Pre-record prompt (on/off)
+- *"Don't learn from this conversation"* flag (hooks
+  [Phase 16 — Memory & Learning](#phase-16--memory--learning-architecture))
+
+### Implementation
+
+**Backend (vitana-platform):**
+
+1. New table `chat_assist_events (event_id, message_id, user_id, mode,
+   content_classification, accepted boolean, edit_distance numeric,
+   created_at)`. Audit + learning input. One row per assist invocation.
+2. New table `chat_assist_preferences (user_id, match_id, mode,
+   trust_dial, voice_transcripts boolean, prerecord_prompts boolean,
+   dont_learn boolean)`.
+3. **Drafting endpoint** — `POST /api/v1/chat/:matchId/draft`
+   `{ intent, mode }` → `{ drafts[], voice_fingerprint_match_score }`.
+4. **Polishing endpoint** — `POST /api/v1/chat/:matchId/polish`
+   `{ draft, instruction }` → `{ polished, diff }`.
+5. **Interpretation endpoint** — `POST /api/v1/chat/:matchId/interpret`
+   `{ message_id }` → `{ interpretation, sources[] }` (private to caller;
+   not visible to the message's sender).
+6. **Voice-fingerprint resolver** — derives the user's writing style from
+   their last ~50 messages; cached per user. Used to make G-mode drafts
+   sound like the user, not like Vitana.
+7. **Sensitive-content classifier** — small LLM/rules layer; gates G and
+   T endpoints. Hard refusal on sensitive classification.
+8. **Marker computation** — when a chat message is saved, it inherits its
+   `assist_marker` from the linked assist event (or `null` if no event).
+9. **Voice-note transcription** — existing audio infra + transcription
+   service (already used elsewhere; reuse).
+
+**Frontend (vitana-v1):**
+
+1. `<ChatAssistButton>` — small icon in the compose box; opens drafts
+   inline (G) or polish suggestions (T).
+2. `<DraftPicker>` — 1–3 draft cards with "use / edit / regenerate"
+   actions; matches user's voice fingerprint.
+3. `<PolishDiff>` — inline diff view for T mode; accept/reject token-level.
+4. `<InterpretBubble>` — long-press an incoming message → interpretation
+   appears in a private side-channel (separate from the main thread).
+5. `<AssistMarker>` — small render next to each message bubble
+   per its `assist_marker` field.
+6. `<TrustDial>` — per-conversation control in match settings; clearly
+   indicates "Hide markers" requires both sides.
+7. `<VoiceRecorderWithPrompt>` — adds the pre-record prompt for G-mode
+   users; transcript auto-attached on send.
+
+### Tuning (post-launch)
+
+| Parameter | Tuning signal |
+|---|---|
+| Voice-fingerprint match threshold | Below 0.7, users typically reject → tighten the matcher |
+| Default mode for new matches | If "off" but most users immediately enable G, consider G-default with explicit onboarding |
+| Sensitive-content classifier sensitivity | False-positive rate (refused drafts that weren't actually sensitive) |
+| Marker visibility default | A/B markers-on vs ratio-only for trust calibration |
+| Pre-record prompt acceptance rate | If < 20%, the prompts aren't pulling their weight; iterate or default off |
+
+### Cross-references
+
+- The auto-seeded chat thread is created by
+  [Phase 6](#phase-6--the-activity-concierge--activityplancard).
+- The Who-is consultant ([Phase 5](#phase-5--the-who-is-service-post-match-consultant))
+  lives in a *side-channel*, separate from the chat with the match. This
+  phase's assist operates inside the *main chat thread*.
+- The *"don't learn"* toggle hooks
+  [Phase 16 — Memory & Learning](#phase-16--memory--learning-architecture).
+- The hollow-conversation guardrail in
+  [Phase 15 — Hollow-Conversation Guardrail](#phase-15--hollow-conversation-guardrail)
+  consumes this phase's `chat_assist_events` log to detect when assist is
+  hollowing out a relationship.
+
+---
+
 ## Suggested rollout & first slice
 
 ### Rollout order
@@ -1343,3 +1542,12 @@ Everything else is built on this primitive once it's solid.
 - **Activity-kind taxonomy** — per-kind operational schema (group size,
   equipment, venue type, fit signals, progression ladder) the Concierge
   uses to fill Plan Cards. See [Phase 13](#phase-13--activity-kind-taxonomy--concierge-depth).
+- **Assist mode (G / T / B)** — three modes for in-thread message
+  assistance: Generate / Translate-tone / Both-with-interpretation.
+  Per-conversation, default off. See
+  [Phase 14](#phase-14--active-communication-assist).
+- **Voice fingerprint** — the user's writing style (length, emoji habit,
+  cadence) derived from their last ~50 messages; G-mode drafts are
+  generated to match it.
+- **Trust dial** — per-conversation 4-position control over assist-marker
+  visibility; the "hide markers" position requires bilateral consent.
