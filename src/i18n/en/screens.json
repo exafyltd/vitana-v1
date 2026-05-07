@@ -4760,6 +4760,13 @@
       "generateForMe": "✨ Generate for me",
       "donTWorryAboutCoverPhoto": "Don't worry about a cover photo — Vitana will pick a themed one for you,\n              and you can swap it from My Posts.",
       "coverPhotoRequired": "Cover photo (required)",
+      "coverPhotoOptional": "Cover photo (optional)",
+      "usingUniversalCoverHint": "When you don't upload one, Vitana will use the universal cover photo from your profile.",
+      "noCoverYetBannerTitle": "No cover photo yet",
+      "noCoverYetBannerBody": "You haven't added any of your own photos. Upload one now, set a universal cover photo in your profile, or let Vitana generate one with AI.",
+      "uploadCoverNow": "Upload photo",
+      "setUniversalCover": "Set universal cover",
+      "continueWithAi": "Continue with AI",
       "post": "Post"
     },
     "layout": {
