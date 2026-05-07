@@ -4744,7 +4744,7 @@
       "raiseDisputeThisMatchVitanaSupport": "Raise a dispute on this match. Vitana support will review and follow up. Both parties' identities are recorded for the audit trail.",
       "whatHappened102000Chars": "What happened? (10–2000 chars)",
       "describeIssueClearlyIncludeDatesAmounts": "Describe the issue clearly. Include dates, amounts, and any context that helps support investigate.",
-      "match_countMatchValue1": "{match_count}match{value1}",
+      "match_countMatchValue1": "{match_count} match{value1}",
       "examples": "Examples:",
       "shortHeadline": "Short headline",
       "describeWhatYouNeedWhat": "Describe what you need / what you're offering",

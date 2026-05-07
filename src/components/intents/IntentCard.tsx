@@ -130,7 +130,7 @@ export function IntentCard({
           />
         </div>
       )}
-      <div className="p-4">
+      <div className="p-3">
       <div className="flex items-start justify-between gap-2 mb-2">
         <span
           className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${KIND_COLOR[intent.intent_kind] ?? "bg-muted"}`}
@@ -155,9 +155,9 @@ export function IntentCard({
         </div>
       </div>
       <h3 className="font-semibold text-base leading-snug mb-1">{intent.title}</h3>
-      <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{intent.scope}</p>
-      {chips.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
+      <p className="text-sm text-muted-foreground line-clamp-1 mb-2">{intent.scope}</p>
+      {(chips.length > 0 || intent.match_count > 0) && (
+        <div className="flex flex-wrap items-center gap-1.5">
           {chips.map((c, i) => (
             <span
               key={i}
@@ -166,10 +166,12 @@ export function IntentCard({
               {c}
             </span>
           ))}
+          {intent.match_count > 0 && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+              {t('screens.intents.match_countMatchValue1', { match_count: intent.match_count, value1: intent.match_count === 1 ? "" : "es" })}
+            </span>
+          )}
         </div>
-      )}
-      {intent.match_count > 0 && (
-        <div className="mt-3 text-xs text-primary font-medium">{t('screens.intents.match_countMatchValue1', { match_count: intent.match_count, value1: intent.match_count === 1 ? "" : "es" })}</div>
       )}
       </div>
     </div>
