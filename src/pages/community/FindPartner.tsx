@@ -9,7 +9,11 @@
  *                     intents, sorted by score.
  * - Community Board → public board, scoped to dance.* + fitness.*, with
  *                     surface=find_a_partner so partner_seek is unredacted.
- * - My Posts        → user's own dance.* + fitness.* intents.
+ * - My Posts        → ALL of the user's open intents (any category). On
+ *                     mobile this page is also the destination for the
+ *                     `/intents/mine` redirect, so it has to surface
+ *                     posts the user made via the generic "+ New wish"
+ *                     composer — which doesn't always tag dance/fitness.
  * - Members         → community members directory (visible only while
  *                     total ≤ 1000; otherwise hidden).
  *
@@ -62,11 +66,6 @@ const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
 
 function viewMeta(v: View) {
   return VIEW_OPTIONS.find((o) => o.value === v) ?? VIEW_OPTIONS[0];
-}
-
-function isFindPartnerCategory(cat: string | null | undefined): boolean {
-  if (!cat) return false;
-  return cat.startsWith('dance.') || cat.startsWith('fitness.');
 }
 
 interface MemberRow {
@@ -147,7 +146,7 @@ export default function FindPartner() {
         setBoardIntents(resp.intents ?? []);
       } else if (view === 'posts') {
         const all = await listMyIntents({ status: 'open' });
-        setMyPosts(all.filter((it) => isFindPartnerCategory(it.category)));
+        setMyPosts(all);
       } else if (view === 'members') {
         if (!session?.access_token) {
           setMembers([]);
