@@ -46,28 +46,6 @@ const queryClient = new QueryClient({
 // Make QueryClient globally accessible for cache invalidation
 (window as any).queryClient = queryClient;
 
-// Appilix native push targeting bootstrap.
-// Sets window.appilix_push_notification_user_identity synchronously before
-// React mounts, so the iOS/Android wrapper SDK can register the device
-// against the signed-in user at page-load time. Reads the cached Supabase
-// session from localStorage; AuthProvider's effect keeps it in sync after
-// auth state changes thereafter.
-try {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-  const projectRef = supabaseUrl?.match(/https:\/\/([^.]+)\./)?.[1];
-  let userId = '';
-  if (projectRef) {
-    const stored = localStorage.getItem(`sb-${projectRef}-auth-token`);
-    if (stored) {
-      const session = JSON.parse(stored);
-      userId = session?.user?.id || session?.currentSession?.user?.id || '';
-    }
-  }
-  (window as any).appilix_push_notification_user_identity = userId;
-} catch {
-  (window as any).appilix_push_notification_user_identity = '';
-}
-
 /**
  * Persistent Cache via localStorage
  * 

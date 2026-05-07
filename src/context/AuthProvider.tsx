@@ -323,15 +323,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
-  // Appilix native push targeting: the iOS/Android wrapper reads
-  // window.appilix_push_notification_user_identity to register the device
-  // against the signed-in user. The backend sends targeted pushes (chat
-  // messages, etc.) using the Supabase user_id as user_identity; without
-  // this sync, Appilix has no device matching the identity and silently
-  // drops the push.
+  // Appilix native push targeting. The iOS/Android wrapper registers the
+  // device against the signed-in user via three coordinated mechanisms,
+  // all driven by the Supabase user.id:
+  //   1. window.appilix_push_notification_user_identity — the JS variable
+  //      some Appilix code paths read directly.
+  //   2. appilix_push_notification_user_identity cookie — persistence so
+  //      the inline bootstrap in index.html can register identity at
+  //      page-load time on subsequent visits, before any deferred module
+  //      script runs.
+  //   3. window.appilix.postMessage(firebase_record_user_identity) — the
+  //      documented native-shell bridge. Calling this on the active
+  //      session immediately registers the identity with Appilix's
+  //      server, covering the first-sign-in case where the cookie wasn't
+  //      yet present at page-load.
+  // Without identity registration the backend's targeted pushes (chat
+  // messages, etc.) are silently dropped by Appilix.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    (window as any).appilix_push_notification_user_identity = user?.id ?? '';
+    const userId = user?.id ?? '';
+
+    (window as any).appilix_push_notification_user_identity = userId;
+
+    if (userId) {
+      document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    } else {
+      document.cookie = 'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+    }
+
+    const appilix = (window as any).appilix;
+    if (userId && appilix?.postMessage) {
+      try {
+        appilix.postMessage(JSON.stringify({
+          type: 'firebase_record_user_identity',
+          props: { user_identity: userId },
+        }));
+      } catch (err) {
+        console.warn('[AuthProvider] Appilix postMessage failed:', err);
+      }
+    }
   }, [user?.id]);
 
   return (
