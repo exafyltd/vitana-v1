@@ -27,10 +27,11 @@
 16. [Phase 12 — Web push](#phase-12--web-push)
 17. [Phase 13 — Activity-Kind Taxonomy & Concierge Depth](#phase-13--activity-kind-taxonomy--concierge-depth)
 18. [Phase 14 — Active Communication Assist](#phase-14--active-communication-assist)
-19. [Suggested rollout & first slice](#suggested-rollout--first-slice)
-20. [Open questions](#open-questions)
-21. [Non-goals](#non-goals)
-22. [Glossary](#glossary)
+19. [Phase 15 — Hollow-Conversation Guardrail](#phase-15--hollow-conversation-guardrail)
+20. [Suggested rollout & first slice](#suggested-rollout--first-slice)
+21. [Open questions](#open-questions)
+22. [Non-goals](#non-goals)
+23. [Glossary](#glossary)
 
 ---
 
@@ -1439,6 +1440,247 @@ Each conversation has settings for:
 
 ---
 
+## Phase 15 — Hollow-Conversation Guardrail
+
+[Phase 14](#phase-14--active-communication-assist) gives users tools to
+write better messages. This phase specifies what happens when **both sides
+use those tools too much** — the conversation becomes polished and
+lifeless, neither person is really there, and the relationship stalls
+without anyone noticing.
+
+This failure mode is **unique to AI-mediated platforms.** Previous
+communication tools didn't need a guardrail like this. The guardrail's
+success metric isn't *"less AI usage"* — it is:
+
+> **More reps actually happen, and the reps recur.**
+
+Less Vitana, just less Vitana-as-mask.
+
+### The graduated response (5 levels)
+
+Vitana never goes from silent to nagging:
+
+| Level | What | When |
+|---|---|---|
+| **1. Silent observation** | Track signals; no surface | Most conversations are healthy; no firing |
+| **2. Subtle infrastructure shifts** | Suggest fewer drafts on inbound; reduce proactive nudges; one draft instead of two | Hollow score rising but below intervention threshold |
+| **3. Gentle prompt** (single-fire per match per quarter) | DM to most-active drafter: *"This thread's been mostly drafts lately. A 30-second voice note carries warmth that text can't. Not a critique, just an option."* | Hollow score crosses threshold |
+| **4. Activity intervention** | Concierge surfaces a small, easy first rep: *"Thread's been steady but no rep yet. Want me to propose a small one — even just a 30-min walk?"* | High AI ratio AND no rep in 4+ weeks |
+| **5. The "go meet" move** | *"Sometimes a 5-minute call cuts through. Want me to suggest a quick voice call before locking the next plan?"* | High AI ratio AND multiple plans cancelled |
+
+Levels 1–3 cover ~95% of cases. Levels 4–5 are rare interventions for the
+cases where the conversation has clearly substituted for action.
+
+### Detection signals
+
+**Quantitative concerning signals (the input):**
+
+| Signal | Healthy | Concerning |
+|---|---|---|
+| Per-side AI-draft ratio (last 7 d) | < 50% | > 60% sustained, both sides |
+| Message-length variance | High (humans vary) | Low (AI consistent) |
+| Edit-rate on accepted drafts | > 20% | < 5% (pure approval) |
+| Time-to-respond variance | Wide spread | Narrow band (~3–15 min, AI's natural read-and-suggest window) |
+| Voice-note / image / link count | ≥ 1 in 30 d | 0 in 30 d |
+| Rep completion (last 30 d) | ≥ 1 | 0, with chat continuing |
+
+**Counter-signals (suppress firing):**
+
+- Voice notes, images, links shared
+- Tangential conversation (humour, callbacks, off-topic)
+- High edit-rate on drafts
+- **Reps actually happening — strongest counter-signal**
+- Conversation surviving a missed rep
+
+Combined hollow score = quantitative concerning × (1 − counter-signals).
+Reps especially are heavily weighted; if reps are happening, the chat is
+*working* regardless of how AI-mediated it is.
+
+### The four hollow patterns (each gets a tailored intervention)
+
+| Pattern | Signature | Best Level-3 nudge |
+|---|---|---|
+| **Logistics-only** | 85%+ logistics over 30 d, 0 relational content | Voice-note prompt: *"how's your week been?"* |
+| **Polished pen-pals** | High-quality drafts, regular cadence, zero reps over 4 weeks | Skip to Level 4 (activity intervention) |
+| **Approve-and-send** | Edit rate < 5%, draft acceptance > 90% | Voice-note prompt + lower the rep bar |
+| **AI-thinking-out-loud** | Long messages, both using interpretation help heavily | *"Sometimes a 5-min call resolves this faster"* |
+
+### The Level-3 prompt — exact language
+
+Concrete examples, because the voice of this nudge determines whether it
+works.
+
+**1:1 version:**
+> 🪐 *"A small thought — this thread's been mostly drafts lately. Sometimes
+> a 30-second voice note carries warmth that text can't.*
+>
+> *Want me to suggest something to record? Like:*
+>
+> *🎙️ 'just want to say I'm looking forward to Saturday — and a bit
+> nervous, second time'*
+>
+> *Or pick your own. Adjust freely.*
+>
+> *— Don't suggest this here again*"
+
+**Group version (to most-active drafter):**
+> 🪐 *"This group's been mostly drafts this week. A voice note from one
+> of you might break the ice differently. You're the most active here —
+> want me to draft a prompt?*
+>
+> *🎙️ 'how's everyone really doing this week? quick voice notes, no
+> pressure'*
+>
+> *Send when ready. — Don't suggest this in this group again*"
+
+Notice: warmth without praise, honest naming, alternative medium, easy
+out.
+
+### Privacy of detection (the non-negotiable)
+
+Signals must never become surfaces:
+
+- ❌ Vitana **never** tells user A *"your AI ratio is 80%."*
+- ❌ Vitana **never** tells A anything about B's draft behaviour, edit
+  rate, or assist usage.
+- ❌ The hollow score, ratio, and signals are **internal infrastructure
+  only** — not in any user-visible API response.
+- ❌ The prompt itself **doesn't reveal a number** — qualitative only
+  (*"this thread's been mostly drafts lately"*).
+- ✅ The only output is the soft Level-2 / Level-3 nudge.
+
+If a user asks *"how do you measure this?"*, Vitana can explain the
+*idea* (*"I look at things like how often you're using my drafts and
+whether you've shared voice notes or met in person"*) — but **not the
+actual values**. Awareness of the mechanism is fine; surveillance numbers
+are not.
+
+### False-positive prevention (when NOT to fire)
+
+Heavy AI use ≠ unhealthy. Suppress firing when:
+
+| Suppression rule | Why |
+|---|---|
+| Match age < 4 weeks | New matches deserve breathing room |
+| Reps actively happening (≥ 1 per 30 d) | The activity is the goal; if it's happening, leave them alone |
+| User has opted into *"I prefer heavy assist permanently"* | Some users (cognitive load, language barrier, neurodiversity) genuinely benefit from sustained assist |
+| Last guardrail nudge < 90 d ago | Single-fire per quarter at most |
+| Per-match snooze active | User dismissed the prompt for this conversation |
+| Group with N ≥ 6, individual ratios moderate | Aggregated ratio high but no individual is over-relying |
+| Coordinating known-complex logistics (e.g., 4-person carpool) | High logistics-draft is *appropriate* in such cases |
+
+### Opt-in vs opt-out
+
+Recommended: **opt-out (default on) with strong escape hatches.**
+
+Justified because:
+
+1. The user explicitly *wants* the outcome (real reps, real connection) —
+   the guardrail enforces the user's *own* stated goal.
+2. The intervention is gentle, single-fire, and dismissable.
+3. Without it, retention degrades silently.
+
+The escape hatches make it non-paternalistic:
+
+- **Single-fire per match per 90 days** — dismissable.
+- **Per-match *"don't suggest this here"* snooze** — 90 days.
+- **Per-user *"I prefer heavy assist"* toggle** in settings (suppresses
+  entirely).
+- **Onboarding disclosure** — *"If I notice things getting too automated,
+  I might suggest a voice note once. You can always turn this off."*
+
+### What this guardrail can / cannot do
+
+- ✅ Notice when a chat is becoming machinery
+- ✅ Offer a different medium (voice) at the right moment
+- ✅ Lower the rep bar when chat has been substituting for action
+- ❌ Cannot fix mismatched chemistry (some matches just won't click)
+- ❌ Cannot replace human emotional labour
+- ❌ Cannot detect every nuance — some hollow conversations slip through;
+  some healthy ones get nudged
+
+The success criterion isn't perfection. It is:
+
+> **Most users feel that Vitana, on the rare occasions she nudges, is right.**
+
+If the nudge feels intrusive even once, users will turn it off. The bar
+for firing is high *because* the bar for suppression is low.
+
+### Implementation
+
+**Backend (vitana-platform):**
+
+1. **Hollow-conversation scorer** — nightly job per active match/group:
+   ```
+   inputs:  chat_assist_ratio (per side, last 7d)
+            edit_rate, draft_acceptance_rate
+            message_type_distribution
+            voice_note_count, image_count
+            rep_completion_count (last 30d)
+            match_age_days
+   output:  { score: 0..1,
+              pattern: 'logistics-only' | 'pen-pals' | 'approve-and-send'
+                        | 'thinking-out-loud' | null,
+              confidence: 0..1 }
+   ```
+2. **Threshold gates** (firing requires all):
+   - `score > 0.65 AND confidence > 0.7`
+   - `match_age >= 28 days`
+   - `last_guardrail_nudge_at < (today - 90 days) OR null`
+   - User did not opt out of guardrail
+   - Match did not opt out (snooze inactive)
+3. **`POST /api/v1/chat/:matchId/check-hollow`** — internal scheduled
+   call. If gates pass → posts the nudge into the elected member's
+   side-channel + records timestamp.
+4. **`chat_assist_preferences`** extension (added in Phase 14): adds
+   `prefer_heavy_assist boolean default false`.
+5. **`chat_assist_guardrail_snooze (match_id, snoozed_until,
+   snoozed_by_user_id)`** — per-match snooze table.
+6. **Audit (internal only)** — every nudge fire logged with the score
+   components for post-launch tuning. Never exposed to users.
+
+**Frontend (vitana-v1):**
+
+1. `<HollowConversationNudge>` — distinctive lower-key visual treatment
+   (smaller, no exclamation, muted accent). Inline voice-note recorder if
+   user accepts. Includes prominent *"don't suggest this here"* dismiss.
+2. **Settings:**
+   - Per-user *"I prefer heavy assist permanently"* toggle (in chat-assist
+     settings)
+   - Per-match snooze toggle (in match settings + on the nudge itself)
+3. **Onboarding** — first-time chat-assist user sees: *"If a thread
+   starts to feel like just drafts, I might gently suggest a voice note.
+   Once per match per quarter, max. You can always turn this off."*
+
+### Tuning (post-launch)
+
+| Parameter | Initial | Tune via |
+|---|---|---|
+| Hollow-score threshold | 0.65 | Watch dismissal rate; high → tighten |
+| Confidence threshold | 0.7 | False positives → raise |
+| Guardrail nudge cooldown | 90 days | If users find re-nudges acceptable, can shorten |
+| Match-age floor | 28 days | If false positives in early matches, raise |
+
+If false-positive rate exceeds ~15% (measured by dismissal rate), gates
+tighten by default. The guardrail's social licence depends on its
+accuracy.
+
+### Cross-references
+
+- Consumes `chat_assist_events` from
+  [Phase 14](#phase-14--active-communication-assist) as the primary
+  detection input.
+- The voice-note prompt uses the voice-note infrastructure from
+  [Phase 14](#phase-14--active-communication-assist).
+- Level-4 activity intervention uses
+  [Phase 6 — Activity Concierge](#phase-6--the-activity-concierge--activityplancard)'s
+  Plan Card generator with the *lower the bar* preset (taxonomy default
+  *walking-meeting* per [Phase 13](#phase-13--activity-kind-taxonomy--concierge-depth)).
+- Per-user preferences hook the deeper memory architecture in
+  [Phase 16 — Memory & Learning](#phase-16--memory--learning-architecture).
+
+---
+
 ## Suggested rollout & first slice
 
 ### Rollout order
@@ -1550,4 +1792,8 @@ Everything else is built on this primitive once it's solid.
   cadence) derived from their last ~50 messages; G-mode drafts are
   generated to match it.
 - **Trust dial** — per-conversation 4-position control over assist-marker
-  visibility; the "hide markers" position requires bilateral consent.
+  visibility; the *"hide markers"* position requires bilateral consent.
+- **Hollow conversation** — a chat thread where both sides rely heavily
+  on assist drafts, polished but lifeless, with no reps materialising.
+  Detected by [Phase 15](#phase-15--hollow-conversation-guardrail)'s
+  scorer; intervened with a graduated 5-level response.
