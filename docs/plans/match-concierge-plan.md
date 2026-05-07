@@ -28,10 +28,11 @@
 17. [Phase 13 — Activity-Kind Taxonomy & Concierge Depth](#phase-13--activity-kind-taxonomy--concierge-depth)
 18. [Phase 14 — Active Communication Assist](#phase-14--active-communication-assist)
 19. [Phase 15 — Hollow-Conversation Guardrail](#phase-15--hollow-conversation-guardrail)
-20. [Suggested rollout & first slice](#suggested-rollout--first-slice)
-21. [Open questions](#open-questions)
-22. [Non-goals](#non-goals)
-23. [Glossary](#glossary)
+20. [Phase 16 — Memory & Learning Architecture](#phase-16--memory--learning-architecture)
+21. [Suggested rollout & first slice](#suggested-rollout--first-slice)
+22. [Open questions](#open-questions)
+23. [Non-goals](#non-goals)
+24. [Glossary](#glossary)
 
 ---
 
@@ -211,8 +212,10 @@ is **not** anxious — she has been doing this a long time.
 | Activity outcomes you've reflected on | Pre-match Who-is queries (not logged for the target by default) |
 | Your stated preferences over time | Anything outside Vitana scope |
 
-**Boundary:** 30-day rolling memory window per `(viewer × target)`.
-Cleared on user request.
+**Boundary:** 30-day rolling memory window per `(viewer × target)` for
+Who-is conversations specifically. *(The deeper layered memory model — how
+Vitana learns and remembers user preferences over months and years — is
+specified in [Phase 16 — Memory & Learning Architecture](#phase-16--memory--learning-architecture).)*
 
 ### Enforcement
 
@@ -1681,6 +1684,302 @@ accuracy.
 
 ---
 
+## Phase 16 — Memory & Learning Architecture
+
+[Phase 1](#phase-1--vitana-persona-foundation) defines the 30-day rolling
+memory window per `(viewer × target)` for Who-is conversations. That is the
+*operational* memory for a single Q&A session. This phase specifies the
+*learning* layer underneath it: what Vitana remembers about *each user
+themselves* over time, how she infers preferences from behaviour, and how
+she keeps that infrastructure trustworthy.
+
+The core principle:
+
+> **Layered memory, layered trust.**
+
+Vitana doesn't have one memory. She has four distinct layers, each with
+different visibility, retention, and mutability properties.
+
+### The four layers
+
+| Layer | What it stores | Who sees it | Retention | Mutability |
+|---|---|---|---|---|
+| **L1 Profile** | Stated facts (age, location, activities, declared goals) | You + matched users (per visibility rules) | Indefinite | User-controlled |
+| **L2 History** | Reps completed, plans made/cancelled, matches formed/dissolved | You only | 24 months full-fidelity → aggregate beyond | Append-only, immutable |
+| **L3 Inferred** | "Probably prefers Saturday mornings" / "Hiking has higher engagement than padel" | You only — *as suggestions, never as facts* | 90-day half-life without reinforcement | Vitana proposes; you confirm/reject |
+| **L4 Relational** | "How Maya talks to Sam" — tone, in-jokes, shared history | Only Vitana's reasoning *for that pair*; never visible to either user as text | Per-match; deleted on unmatch | Auto-built from chat history (with chat-assist enabled) |
+
+The critical separation is **L3 vs L1.** Vitana never quietly upgrades a
+hypothesis into a fact. *"I think you prefer mornings"* never silently
+becomes *"You prefer mornings"* in your profile.
+
+This phase replaces Phase 1's simpler model: Phase 1's *"30-day rolling
+per (viewer × target)"* is one specific instance — the per-conversation
+memory used by Who-is — within this larger framework.
+
+### What feeds the learning
+
+| Strength | Signal types |
+|---|---|
+| 🟢 **Strong** | Profile edits, direct feedback to Vitana's suggestions, plan acceptance / attendance / no-show, completed-rep ratings, match accept/decline reasons, manual corrections |
+| 🟡 **Medium** | Edit-distance on accepted drafts, time-to-accept on chat-assist drafts, match-card dwell, re-rep frequency with same partner (strongest engagement signal) |
+| 🟠 **Weak (aggregate only)** | Chat cadence, time-of-day patterns, browse-without-commit signals |
+| 🔴 **Never** | Sensitive-content classified segments, *other* users' messages to you, device-sensor data outside check-in, paused/snoozed/`do_not_learn` conversations, non-platform people mentioned in chats |
+
+The escape hatch: a settings toggle *"Don't learn from my chats"* (default
+off, because the assist quality drops noticeably). When enabled, L1 + L2
+still feed; L3 freezes; L4 doesn't form for that user's matches.
+
+### The per-(viewer × target) memory model
+
+Vitana's understanding of Maya is **not a single object.** It's a set of
+contextual representations:
+
+```
+   maya_self             — what Maya knows/has stated about herself
+   maya_for_sam          — how Vitana presents Maya when reasoning with Sam
+   maya_for_alex         — how Vitana presents Maya when reasoning with Alex
+   maya_for_concierge    — how Vitana plans activities for Maya
+   maya_for_match_engine — what the match engine sees
+```
+
+Each is derived from a **shared core (L1 + L2)** but with **different
+visibility filters** applied:
+
+| Representation | L1 access | L2 access | L3 access | L4 access |
+|---|---|---|---|---|
+| `maya_self` | All | All | All (as suggestions) | None |
+| `maya_for_sam` | Visible-to-matched-users only | Reps with Sam + public | None | Maya↔Sam only |
+| `maya_for_alex` | Visible-to-matched-users only | Reps with Alex + public | None | Maya↔Alex only |
+| `maya_for_concierge` | All | All | All confirmed preferences | None |
+| `maya_for_match_engine` | Match-relevant fields only | Aggregate engagement only | None | None |
+
+The leakage that must be prevented: **anything Maya said in chat with Sam
+should not influence what Vitana says about Maya in Alex's context.** L4
+is hard-partitioned per match.
+
+The exception: engagement metadata aggregates upward (e.g., *"Maya does
+~2 reps per month"*) feeds the match engine and can be exposed to
+potential matches *only via the match score*, never as a number on the
+profile.
+
+### The L3 proposal cycle
+
+Learnings stay invisible unless they're useful. Surfacing rules:
+
+**When Vitana *will* surface an inference:**
+
+- Confidence > 0.75
+- Stable across at least 30 days
+- Hasn't been proposed in the last 180 days
+- Is actionable (would change a future suggestion)
+- User hasn't disabled inference proposals
+
+**The proposal:**
+
+> 🪐 *"A small observation, only if useful: looking at the last few months,
+> your reps almost always happen on Saturdays before noon. Want me to bias
+> suggestions toward that window? You can change it anytime."*
+>
+> *✓ Yes, use this    ✗ No, ignore   ↻ Ask me again later*
+
+| Response | Effect |
+|---|---|
+| ✓ Yes | Inference confirmed → moves to L1 with `source: 'vitana_proposal_<date>'`. Used in suggestions. |
+| ✗ No | Marked rejected. Won't re-propose for 180 days. Vitana doesn't act on it. |
+| ↻ Ask later | Re-proposed in 30 days if still valid. |
+| (no response in 14 days) | Soft-yes for *internal weighting* (used for ranking) but not surfaced or labelled as a fact. |
+
+**What Vitana never proposes:**
+
+- Sensitive inferences (mental-health hypotheses, relationship-status
+  guesses, anything from sensitive-content chat — by policy these don't
+  even enter L3)
+- Inferences about *other* users (*"I think Sam prefers shorter messages"*)
+- Inferences with confidence < 0.75
+- Negative inferences (*"I think you don't like X"*) — only positive bias,
+  never stated avoidance
+
+### The activity-completion feedback loop
+
+The single highest-quality signal is: **did the rep happen, and was it
+good?**
+
+```
+plan_proposed → plan_accepted → reminder_sent → rep_window
+                                                    ↓
+                                      [auto-detect: did it happen?]
+                                                    ↓
+                                              rep_completed
+                                                    ↓
+                                  [optional 1-tap: how was it? 😐 🙂 ✨]
+                                                    ↓
+                                          feeds L2 + L3 + L4
+```
+
+The morning after a planned rep, Vitana DMs once:
+
+> 🪐 *"How was the hike with Sam? (Tap one — or nothing.)"*
+>
+> 😐  🙂  ✨  *— or skip*
+
+**Three buttons, zero text required.** Friction kills the signal. Skipping
+is a valid signal (*"prefer not to say"*, not bad). The result feeds L3
+(reinforces preferences) and L4 (*"Sam reps go well"*).
+
+⚠️ **The rating is never shown to Sam.** It's private feedback to the
+system.
+
+### What the rating teaches
+
+| Rating | What it reinforces |
+|---|---|
+| ✨ Excellent | Strong reinforcement of activity-kind, partner, time-of-day, location |
+| 🙂 Good | Light reinforcement; default state |
+| 😐 Meh | Small negative on the *combination* (not just partner — could be activity, time, or pairing) |
+| skip | Treated as 🙂 with lower weight |
+
+### Three-rep rule for partner-fit inference
+
+Vitana doesn't conclude *"Sam isn't a good fit for Maya"* until **at
+least 3 rated reps**, with at least 2 of them 😐. **One bad rep = bad
+day. Three = pattern.** This prevents false-negative match dissolution.
+
+### Decay and forgetting
+
+Memory must forget, or it ossifies.
+
+| Layer | Decay rule |
+|---|---|
+| **L1 Profile** | Never auto-decays. User-edited or user-deleted only. |
+| **L2 History** | Full-fidelity for 24 months → aggregated to monthly summaries → fully purged at 5 years (unless user opts to retain). |
+| **L3 Inferences** | 90-day half-life on confidence without reinforcement. Below 0.3 confidence, purged. |
+| **L4 Relational** | Reset to summary on 30 days of match inactivity. Hard-deleted on unmatch. |
+
+The half-life on L3 is critical: **people change.** Without decay, Vitana
+would freeze users into outdated personas.
+
+### Manual forgetting
+
+Settings → Memory → 4 buttons:
+
+| Button | Action |
+|---|---|
+| **Forget this conversation** | Hard-delete L4 for that match; doesn't break the match itself |
+| **Forget all my inferences** | Wipe L3 entirely; Vitana starts fresh from L1 + L2 |
+| **Show me what you've inferred** | Display all L3 entries (proposed + unproposed). Critical for trust. |
+| **Export my memory** | JSON export of L1 + L2 + L3 (not L4 — that's per-pair and would expose mutual content) |
+
+The *"Show me what you've inferred"* button is **non-negotiable.** If
+Vitana stores hypotheses about you, you must be able to see them. No
+black-box inference.
+
+### The boundary: what Vitana *never* learns
+
+Hard policy walls (not soft preferences):
+
+| Domain | Why excluded |
+|---|---|
+| Sensitive-content chat segments | Already protected per Phase 14 boundary; never enters L3 / L4 |
+| Health data beyond stated activity goals | Out of scope |
+| Inferences about race, religion, sexuality, political views, mental-health diagnoses | Even if signals exist, never stored |
+| Other people in user's life (mentioned, not platform users) | We don't build profiles of non-users |
+| Cross-match inference | What Maya said to Sam never influences Maya↔Alex reasoning |
+| Anything from paused / deleted / `dont_learn` conversations | Period |
+
+Enforced at the **inference-extraction layer** (not at surfacing).
+Refusing to surface is too late — by then it's stored. The check is:
+*should this become a stored hypothesis at all?*
+
+### Implementation
+
+**Backend (vitana-platform):**
+
+1. **`memory_engine` service** orchestrating the four layers.
+2. **L1**: existing `user_profile` + `disclosure_preferences` fields.
+3. **L2**: append-only event stream
+   `user_activity_log (user_id, event_type, payload, occurred_at)`.
+4. **L3**: `user_inferences (user_id, inference_key, inference_value,
+   confidence numeric, last_reinforced_at, last_proposed_at,
+   user_status enum('unproposed','proposed','confirmed','rejected','expired'))`.
+5. **L4**: `match_relational_memory (match_id, summary_blob,
+   shared_topics[], shared_jokes[], last_rep_summary, dont_learn_flag,
+   last_chat_assist_event_at)`. Hard-deleted on unmatch.
+6. **`inference_extractor` worker** — nightly job; scans recent events;
+   proposes new L3 entries (gated by confidence + sensitivity rules).
+7. **`memory_proposer` worker** — daily; rate-limited globally per user
+   (max 1 proposal per 14 days).
+8. **`memory_decay` worker** — daily; applies half-life to L3,
+   summarises aged L2, deletes orphaned L4.
+9. **API endpoints:**
+   - `GET /api/v1/memory/inferences` — *"Show me what you've inferred"*.
+   - `POST /api/v1/memory/inferences/:id/confirm | /reject | /snooze`.
+   - `DELETE /api/v1/memory/conversation/:matchId` — forget that conversation.
+   - `DELETE /api/v1/memory/inferences` — wipe all L3.
+   - `GET /api/v1/memory/export` — JSON export.
+   - `PATCH /api/v1/preferences { do_not_learn_from_chats: bool }`.
+10. **Per-message learning gate** — every chat-assist event (and other
+    learning input) passes through `should_learn(event, user, match) →
+    bool` before any L3 / L4 mutation. Single chokepoint to enforce all
+    exclusion rules.
+11. **Per-(viewer × target) view derivation** — single function
+    `derive_view(target_user, viewer_context) → filtered_profile`. All
+    Vitana reasoning calls go through this. **No raw user object ever
+    reaches an LLM context.**
+12. **Activity-completion rating endpoint** —
+    `POST /api/v1/reps/:repId/rate { rating: 'meh' | 'good' | 'great' | 'skip' }`.
+    Rating is private — never visible to the partner.
+
+**Frontend (vitana-v1):**
+
+1. **Memory dashboard** (Settings → Memory):
+   - List of L3 inferences (proposed + confirmed + unproposed) with
+     status + last-reinforced date.
+   - The four buttons (forget conversation / forget all inferences /
+     show inferred / export).
+   - The *"Don't learn from my chats"* toggle (with honest copy:
+     *"Vitana's suggestions will get less personal. You can re-enable
+     anytime."*).
+2. **Inference proposal modal** — clean, low-pressure design with three
+   options. Never blocks anything.
+3. **Post-rep rating prompt** — three-emoji + skip; max 1 per rep;
+   auto-dismisses after 24 h.
+4. **Match-dissolution memory message** — when user unmatches, brief
+   one-sentence confirmation: *"I've also forgotten what I learned about
+   your conversations together."* Reinforces data hygiene.
+
+### Tuning (post-launch)
+
+| Parameter | Initial | Tune via |
+|---|---|---|
+| Inference confidence threshold | 0.75 | Target ~70% accept rate on proposals; low → too aggressive, high → too conservative |
+| L3 half-life | 90 days | Whether re-proposed inferences after decay still get accepted |
+| Three-rep rule threshold | 3 | Verify enough to detect bad fits without false negatives |
+| Proposal cadence | 1 per 14 days max | Higher cadence acceptable if accept rate stays > 60% |
+
+### Cross-references
+
+- Replaces the simpler memory model in
+  [Phase 1 — Vitana Persona Foundation](#phase-1--vitana-persona-foundation).
+  Phase 1's *"30-day rolling per (viewer × target)"* is one specific
+  instance (Who-is conversation memory) within this layered framework.
+- The rating prompt UX hooks
+  [Phase 6 — Activity Concierge](#phase-6--the-activity-concierge--activityplancard)
+  via the `activity_plan_events` lifecycle.
+- The *"don't learn"* toggle from
+  [Phase 14 — Active Communication Assist](#phase-14--active-communication-assist)
+  flows to L4's `dont_learn_flag`.
+- The hollow-conversation scorer in
+  [Phase 15 — Hollow-Conversation Guardrail](#phase-15--hollow-conversation-guardrail)
+  is a direct consumer of L2 / L4 signals, but the *signals it computes
+  remain internal* — they don't enter L3 (no
+  *"this user has hollow conversations"* hypothesis is ever stored).
+- L3 confirmed preferences feed the match-engine refinement in
+  [Phase 17 — Match-Engine Refinement](#phase-17--match-engine-refinement)
+  *(forthcoming commit)*.
+
+---
+
 ## Suggested rollout & first slice
 
 ### Rollout order
@@ -1797,3 +2096,10 @@ Everything else is built on this primitive once it's solid.
   on assist drafts, polished but lifeless, with no reps materialising.
   Detected by [Phase 15](#phase-15--hollow-conversation-guardrail)'s
   scorer; intervened with a graduated 5-level response.
+- **Memory layers (L1 / L2 / L3 / L4)** — Vitana's four-layer memory
+  model: stated facts / event history / inferred preferences / per-pair
+  relational. See [Phase 16](#phase-16--memory--learning-architecture).
+- **Three-rep rule** — Vitana doesn't conclude a partner-fit pattern
+  until at least 3 rated reps with at least 2 negative ratings. Prevents
+  false-negative match dissolution. See
+  [Phase 16](#phase-16--memory--learning-architecture).
