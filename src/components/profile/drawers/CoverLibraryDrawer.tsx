@@ -42,7 +42,7 @@ import {
   getIntentCategories,
   type IntentCategory,
 } from "@/lib/intentApi";
-import { processCoverImageTo16x9 } from "@/lib/coverImageTo16x9";
+import { prepareIntentCoverUpload } from "@/lib/coverImageTo16x9";
 
 interface CoverLibraryDrawerProps {
   open: boolean;
@@ -73,35 +73,41 @@ function isHeicFile(file: File): boolean {
 
 async function uploadToIntentCovers(
   file: File,
-  remotePath: string,
+  remotePathPrefix: string,
+  userId: string,
 ): Promise<string> {
-  // VTID-02806h: every upload is normalised to a 16:9 JPEG so cover
-  // tiles render edge-to-edge in the Find-a-Match listings,
-  // regardless of the source aspect (portrait, square, landscape).
-  // Falls back to the original bytes only if conversion throws.
-  let body: Blob = file;
-  let contentType: string = file.type;
-  let storedPath = remotePath;
+  // VTID-02806h: every upload is normalised to a 16:9 cover photo so
+  // the Find-a-Match tiles render edge-to-edge regardless of source
+  // aspect. The orchestrator decides the method:
+  //   - passthrough / centered-crop → 16:9 JPEG rendered client-side
+  //   - portrait / square / 4:3 → Vertex Imagen outpaint server-side
+  //     (with a client-side letterbox-blur fallback if Imagen fails)
+  // Either way we get a public URL on the intent-covers bucket.
   try {
-    const processed = await processCoverImageTo16x9(file);
-    body = processed.blob;
-    contentType = processed.mime;
-    // Force a `.jpg` suffix on the stored path since we always emit
-    // JPEG. Keeps the public URL Content-Type header honest.
-    storedPath = remotePath.replace(/\.[a-zA-Z0-9]+$/, "") + "." + processed.ext;
-  } catch {
-    // Use the original. Worst case the cover renders letterboxed in
-    // CSS — better than blocking the upload entirely on a decode
-    // failure (HEIC, animated GIF first frame, etc.).
+    const result = await prepareIntentCoverUpload({
+      file,
+      userId,
+      targetPathPrefix: remotePathPrefix,
+    });
+    return result.url;
+  } catch (err) {
+    // Last-ditch fallback: upload the raw file untouched. Keeps the
+    // user's content available even if the whole 16:9 pipeline
+    // somehow fails (e.g. the browser can't decode the source).
+    const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+    const finalPath = `${remotePathPrefix}.${ext}`;
+    const arrayBuffer = await file.arrayBuffer();
+    const blob = new Blob([arrayBuffer], { type: file.type });
+    const { error } = await supabase.storage
+      .from("intent-covers")
+      .upload(finalPath, blob, { upsert: true, contentType: file.type });
+    if (error) throw error;
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("intent-covers").getPublicUrl(finalPath);
+    console.warn("[cover-library] used raw upload fallback:", err);
+    return publicUrl;
   }
-  const { error } = await supabase.storage
-    .from("intent-covers")
-    .upload(storedPath, body, { upsert: true, contentType });
-  if (error) throw error;
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from("intent-covers").getPublicUrl(storedPath);
-  return publicUrl;
 }
 
 export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerProps) {
@@ -203,8 +209,10 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
     }
     setUniversalUploading(true);
     try {
-      const remotePath = `user-universal/${userId}/${Date.now()}.${ext}`;
-      const publicUrl = await uploadToIntentCovers(file, remotePath);
+      // Pass a prefix without extension; the orchestrator picks
+      // .jpg or .png based on the chosen 16:9 method.
+      const remotePathPrefix = `user-universal/${userId}/${Date.now()}`;
+      const publicUrl = await uploadToIntentCovers(file, remotePathPrefix, userId);
       type ProfilesUpdate = {
         from: (t: string) => {
           update: (patch: Record<string, unknown>) => {
@@ -279,8 +287,8 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
     setLibraryUploading(true);
     try {
       const photoId = crypto.randomUUID();
-      const remotePath = `user-library/${userId}/${photoId}.${ext}`;
-      const publicUrl = await uploadToIntentCovers(file, remotePath);
+      const remotePathPrefix = `user-library/${userId}/${photoId}`;
+      const publicUrl = await uploadToIntentCovers(file, remotePathPrefix, userId);
       type LibraryInsert = {
         from: (t: string) => {
           insert: (row: Record<string, unknown>) => {
