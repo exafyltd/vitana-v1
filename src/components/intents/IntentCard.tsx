@@ -167,7 +167,7 @@ export function IntentCard({
             </span>
           ))}
           {intent.match_count > 0 && (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted text-muted-foreground text-xs">
               {t('screens.intents.match_countMatchValue1', { match_count: intent.match_count, value1: intent.match_count === 1 ? "" : "es" })}
             </span>
           )}
