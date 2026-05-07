@@ -513,15 +513,6 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
             </div>
           )}
         </section>
-
-        <div className="pt-4 flex justify-end">
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            {translate("profileEditor.cancel")}
-          </Button>
-        </div>
       </DialogContent>
     </Dialog>
   );
