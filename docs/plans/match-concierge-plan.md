@@ -25,10 +25,11 @@
 14. [Phase 10 — The Longevity Progression Ladder](#phase-10--the-longevity-progression-ladder)
 15. [Phase 11 — The Joint Moment](#phase-11--the-joint-moment)
 16. [Phase 12 — Web push](#phase-12--web-push)
-17. [Suggested rollout & first slice](#suggested-rollout--first-slice)
-18. [Open questions](#open-questions)
-19. [Non-goals](#non-goals)
-20. [Glossary](#glossary)
+17. [Phase 13 — Activity-Kind Taxonomy & Concierge Depth](#phase-13--activity-kind-taxonomy--concierge-depth)
+18. [Suggested rollout & first slice](#suggested-rollout--first-slice)
+19. [Open questions](#open-questions)
+20. [Non-goals](#non-goals)
+21. [Glossary](#glossary)
 
 ---
 
@@ -1016,6 +1017,229 @@ Backend already sends FCM. Web app needs:
 
 ---
 
+## Phase 13 — Activity-Kind Taxonomy & Concierge Depth
+
+The [Activity Concierge](#phase-6--the-activity-concierge--activityplancard)
+generates a Plan Card within seconds of `mutual_interest`. To do that *for
+any activity*, it needs a per-kind taxonomy: the operational facts (group
+size, equipment, venue, safety, progression) that distinguish hiking from
+salsa from cold plunge. Without this layer, every Plan Card is a generic
+*"meet up and do something."*
+
+This phase resolves [Open Question #10](#open-questions).
+
+### The single durable rule
+
+> **Every Plan Card must specify time, place, duration, equipment check,
+> and post-rep ritual. Missing any → not surfaced.**
+
+Everything below is what makes the planner able to fill those slots
+correctly per kind.
+
+### The shared schema
+
+Every supported activity-kind is a structured record with the same fields:
+
+| Group | Fields |
+|---|---|
+| **identity** | `name`, `aliases`, `one_line`, `longevity_profile` |
+| **participation_shape** | `group_size {min, ideal, max}`, `1_to_1_viable`, `synchrony_required`, `solitary_in_company_ratio`, `social_intensity` |
+| **logistics** | `venue_type`, `equipment_tiers`, `skill_floor`, `safety_considerations`, `weather_dependence`, `seasonal_window`, `typical_duration_minutes`, `prep_time_minutes`, `cleanup_time_minutes` |
+| **pacing** | `first_rep_template`, `typical_frequency`, `progression_ladder`, `plateau_risk_window` |
+| **fit_signals** | `physical_intensity_band`, `social_intensity_band`, `skill_compatibility_required`, `schedule_overlap_required` |
+| **concierge_planning_hooks** | `default_first_rep`, `common_pitfalls`, `good_plan_signals`, `bad_plan_signals`, `post_rep_rituals` |
+| **retention_pattern** | `typical_dropoff_window`, `reinforcers`, `partnership_friction_modes` |
+
+The schema is **stable across kinds.** New kinds fill out the schema; the
+schema doesn't bend to fit unusual kinds. If a proposed kind genuinely
+doesn't fit, that signals it's outside scope.
+
+### The seven launch kinds (summary)
+
+| Kind | Group | 1:1 | Synchrony | Venue | First-rep template |
+|---|---|---|---|---|---|
+| 🥾 **Hiking** | 1–6 | ✅ | Low | Outdoor trail | Known easy local trail, ~90 min, low elevation. Coffee/snack at trailhead after. |
+| 💃 **Salsa** | 8+ | ⚠️ | Very high | Studio | Beginner class together (**not** a social), 60 min. Drink after to debrief. |
+| 🎾 **Padel** | **exactly 4** | ❌ | High | Specialised court | Casual hit-around, 60 min court. Drinks at the club bar after. |
+| ❄️ **Cold plunge** | 2–4 | ✅ | Medium | Cold-water access | Under 1 min at shore/edge with an experienced partner present. Warm tea + dry clothes ready. 20-min warm-conversation after — *the warmth is the rep, not the cold.* |
+| 🌬️ **Breath work** | 1–8 | ✅ | High in group | Anywhere quiet | Short guided box-breathing / simple pranayama, 15–20 min. **Skip Wim Hof / holotropic for first rep.** |
+| 🏋️ **Strength** | 1:1 (often + coach) | ✅ | Medium | Gym | 45-min movement assessment + light bodyweight + light loading. **No PRs.** Coffee/protein shake after. |
+| 🚶 **Walking-meeting** | 1–4 | ✅ | Low | Anywhere walkable | 30 min on a known easy loop near both. Optional coffee waypoint. |
+
+**Walking-meeting is the starter primitive.** Lowest barrier, highest
+base-rate of completion. The Concierge defaults to this when confidence is
+low, or one user is new, or any other kind's prerequisites can't be met
+(no court bookable, weather bad, equipment missing).
+
+### Per-kind operational notes
+
+Beyond the summary, each kind has at least one non-obvious rule the
+Concierge must respect.
+
+- **🥾 Hiking** — pace mismatch is the #1 friction source. The Concierge
+  biases first reps to flat/gentle routes regardless of either user's
+  stated fitness. Weather backup is mandatory.
+- **💃 Salsa** — first rep is a *class*, never a *social*. Socials are too
+  intense for a first co-arrival. The cohort (other class attendees)
+  becomes the real retention engine after rep ~5.
+- **🎾 Padel** — the unit isn't an individual, it's a *pair-of-pairs*.
+  After a couple of base reps, matching becomes pair-vs-pair. The
+  Concierge surfaces a fourth person + a court; if either is unsolved at
+  plan-time, the plan isn't surfaced.
+- **❄️ Cold plunge** — pairings with **asymmetric experience** (novice +
+  veteran) are a *feature*, not a bug. Safety + warming infrastructure are
+  mandatory plan fields. The post-plunge warm conversation is the rep;
+  cold without warming is an incomplete plan.
+- **🌬️ Breath work** — protocol selection must respect contraindications
+  (pregnancy, heart conditions, certain medications). Wim Hof / holotropic
+  are gated behind a contraindication check and never used for first reps
+  regardless of stated experience.
+- **🏋️ Strength** — heaviest schedule-fit weight in the matcher;
+  consistent partner is the single highest predictor of long-term
+  adherence. Concierge proactively suggests *"have you considered a
+  session or two with a coach to align on form?"* at first-rep planning.
+- **🚶 Walking-meeting** — risk isn't dropoff, it's silent
+  deprioritisation. The Concierge should ritualise (same day, same loop,
+  same time) as soon as a pair completes 3 reps.
+
+### Cross-cutting patterns
+
+A handful of patterns emerge across kinds. The Concierge uses these as
+planning heuristics:
+
+| Pattern | Implication |
+|---|---|
+| Synchrony-required scales scheduling difficulty | High-synchrony kinds (salsa, padel) need stricter schedule overlap; low-synchrony (hiking, walking) tolerate looser schedules |
+| Skill-compatibility importance varies by kind | High (padel, salsa, strength), medium (hiking, breath work), low (cold plunge — gap can be a feature; walking-meeting — irrelevant) |
+| Post-rep ritual is a plan field, not an afterthought | Plans without a post-rep slot complete less reliably; the ritual is what builds rapport |
+| Dropoff window is per-kind | Cold plunge (rep 1–3), strength (rep 1–8), salsa (rep 3–5); walking / hiking / padel rare |
+
+The dropoff-window awareness lets the Concierge **proactively check in**
+during a known fragile rep range: *"You've done 2 cold plunges so far —
+typical window for it to either click or not. Want me to plan a third
+while the rhythm's there?"* Phase 10's progression ladder consumes this.
+
+### The Concierge planning sequence (per Plan Card)
+
+```
+input  : match_pair (or group), activity_kind, current_rep_number_for_this_pair,
+         each user's L1/L3 profile, schedule, location, equipment
+
+step 1 : choose first_rep_template if rep_number == 1, else
+         progression-appropriate template
+step 2 : fill venue_slot using location + venue_type
+step 3 : fill duration_slot (clamped to typical_duration; first rep biased shorter)
+step 4 : fill schedule_slot from schedule overlap (high-synchrony kinds tighter)
+step 5 : equipment_check across both users vs equipment_tiers
+step 6 : safety_check applies safety_considerations; surface any contraindications
+step 7 : weather_backup if weather_dependence > none
+step 8 : post_rep_ritual always included; specific to kind
+step 9 : output structured plan + rationale
+```
+
+The output is a **structured Plan object**, not free text. The frontend
+renders it; the system holds structure for downstream events (recurrence,
+progression, completion-feedback).
+
+### Progression ladder
+
+Each kind has a five-rung ladder (rep 1 → 5 → 20 → 50 → 200) embedded in
+its taxonomy entry. The ladder serves three purposes:
+
+1. **Right-sizing each rep** — rep 5 of hiking should look different than
+   rep 1; the ladder gives anchor points.
+2. **Surfacing milestones** — *"That's your 20th hike together. You've
+   gone from 4 km to 8 km loops. Want to try something longer?"* — drives
+   [Phase 10 Progression Ladder](#phase-10--the-longevity-progression-ladder).
+3. **Longitudinal data structure** — every rep is positioned in a known
+   curve; over years, reveals which progressions actually sustain.
+
+**Ladder positions are anchors, not gates.** A pair can stay at rung 5
+forever and that's fine. The Concierge nudges occasionally; never forces.
+
+### Adding a new kind
+
+The seven covered are the launch set. Future kinds (yoga, running,
+cycling, swimming, pickleball, tai chi, climbing, group fitness,
+pilates…) are added via:
+
+| Step | What happens |
+|---|---|
+| **1. Demand signal** | Tracked via posted intents not classifying to a known kind. Threshold: ~50 distinct intents in 90 days, or strong cluster in one geography. |
+| **2. SME consultation** | Internal review with practitioners to fill schema fields. |
+| **3. Beta cohort** | New kind launched to a small geographic cohort with hand-checked Plan Cards for the first ~50. |
+| **4. Schema validation** | After 200 reps, retrospective: did the schema-derived plans hold up? Adjust fields. |
+| **5. General release** | Once stable, add to the global taxonomy and matcher activity pool. |
+
+The schema doesn't change to accommodate a new kind. The new kind fills
+out the existing schema. This keeps the Concierge logic uniform.
+
+### Implementation
+
+**Backend (vitana-platform):**
+
+1. New table `activity_kinds (kind_id text pk, schema_version int, payload
+   jsonb, status text, effective_from timestamptz, effective_to
+   timestamptz null)`. Versioned + jsonb so definitions can evolve and be
+   A/B-tested in production without code deploys.
+2. **Activity-kinds loader** — `getActivityKind(kindId, atVersion?)`.
+   Fetches the active version of a taxonomy entry for the planner.
+3. **Concierge planner extension** — `generateActivityPlan(matchId,
+   kindId, repNumber)` implements steps 1–9 above against the loaded
+   taxonomy.
+4. **Progression tracker** — per-pair-per-kind rung position; updated
+   after each rated rep.
+5. **Milestone detector** — daily job; surfaces optional acknowledgements
+   when a pair hits a ladder rung.
+6. **Weather resolver** — integration with weather API; called at
+   plan-time and 24 h before rep for outdoor kinds.
+7. **Venue resolver** — for venue-typed kinds (padel, gym, salsa studio),
+   pulls actual local venues from a venue index.
+8. Endpoints:
+   - `GET /api/v1/activity-kinds` — list active kinds (UI selectors).
+   - `GET /api/v1/activity-kinds/:id` — full taxonomy entry (admin/dev only).
+   - `POST /api/v1/activity-kinds/:id/preview-plan` — given
+     `(matchId, repNumber)` return a non-persisted Plan Card preview
+     (used by the Concierge UI).
+   - `GET /api/v1/progression/:matchId/:kindId` — current ladder position.
+
+**Frontend (vitana-v1):**
+
+1. **Activity-kind selector** — visual picker in onboarding and
+   match-formation, with brief descriptions.
+2. **Plan Card** — already specced in
+   [Phase 6](#phase-6--the-activity-concierge--activityplancard); this
+   phase adds collapsible sections for equipment check, safety, and
+   weather backup, populated from the taxonomy.
+3. **Progression badge** — small indicator on a pair's profile showing
+   rung position per shared kind ("Hiking: rep 7 / Castle Hill regulars").
+4. **Milestone surfaces** — light, infrequent acknowledgements ("That's
+   your 20th rep with Sam.").
+
+### Tuning (post-launch)
+
+| Parameter | Tuning signal |
+|---|---|
+| First-rep template per kind | If first-rep dropout > 30%, simplify the template |
+| Progression ladder rung-spacing | If pairs cluster at one rung, the next rung may be too aggressive |
+| Weather-backup logic | Track how often backups activate; refine confidence thresholds |
+| Equipment-check sensitivity | False-positive rate ("flagged missing equipment that wasn't actually missing") |
+| Per-kind weight in matcher | Adjust based on actual retention curves |
+
+### Cross-references
+
+- The seven kinds' Plan-Card examples in
+  [Phase 6](#phase-6--the-activity-concierge--activityplancard)
+  (hiking, salsa, cold plunge, padel, strength) become the *first-rep
+  templates* in this taxonomy.
+- The progression ladder feeds
+  [Phase 10 — Longevity Progression Ladder](#phase-10--the-longevity-progression-ladder).
+- The activity-kind selector surface ties into
+  [Phase 7 — Group Orchestration](#phase-7--group-orchestration-3-people)
+  for group-specific kinds (padel needs 4, salsa scales with attendance).
+
+---
+
 ## Suggested rollout & first slice
 
 ### Rollout order
@@ -1072,9 +1296,13 @@ Everything else is built on this primitive once it's solid.
    rules-based bootstrap?
 9. **Pre-match audit log** — opt-in for posters who *want* to see anonymized
    query-volume aggregates? Default off — confirm.
-10. **Activity-kind taxonomy** — full list of supported kinds with per-kind
+10. ~~**Activity-kind taxonomy** — full list of supported kinds with per-kind
     defaults (group size, equipment, venue type, fit signals, progression
-    ladder). Likely a follow-up planning round.
+    ladder). Likely a follow-up planning round.~~ **Resolved in
+    [Phase 13 — Activity-Kind Taxonomy & Concierge Depth](#phase-13--activity-kind-taxonomy--concierge-depth).**
+    Seven launch kinds (hiking, salsa, padel, cold plunge, breath work,
+    strength, walking-meeting), shared schema, and onboarding process for
+    new kinds.
 
 ---
 
@@ -1112,3 +1340,6 @@ Everything else is built on this primitive once it's solid.
 - **Quorum** — the threshold of interest-presses required before a group
   match transitions to `quorum_met` and triggers the Plan Card. See
   [Phase 7](#phase-7--group-orchestration-3-people).
+- **Activity-kind taxonomy** — per-kind operational schema (group size,
+  equipment, venue type, fit signals, progression ladder) the Concierge
+  uses to fill Plan Cards. See [Phase 13](#phase-13--activity-kind-taxonomy--concierge-depth).
