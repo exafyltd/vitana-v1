@@ -583,6 +583,7 @@
       "minimum20Characters": "Mindestens 20 Zeichen.",
       "postedCommunity": "In der Community gepostet",
       "couldNotPost": "Konnte nicht posten",
+      "couldNotPostReason": "Server: {reason}",
       "interestRecorded": "Interesse registriert",
       "ifTheyReInterestedTooWe": "Wenn sie auch interessiert sind, verbinden wir euch.",
       "couldNotRecordInterest": "Interesse konnte nicht registriert werden",
