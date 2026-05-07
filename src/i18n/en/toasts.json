@@ -583,6 +583,7 @@
       "minimum20Characters": "Minimum 20 characters.",
       "postedCommunity": "Posted to community",
       "couldNotPost": "Could not post",
+      "couldNotPostReason": "Server: {reason}",
       "interestRecorded": "Interest recorded",
       "ifTheyReInterestedTooWe": "If they're interested too, we'll connect you.",
       "couldNotRecordInterest": "Could not record interest",

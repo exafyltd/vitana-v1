@@ -120,7 +120,14 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
       onPosted?.(result.intent_id);
       onOpenChange(false);
     } catch (err: any) {
-      notifyError('toasts.intents.couldNotPost');
+      // eslint-disable-next-line no-console
+      console.error('[IntentComposer] Post failed:', err);
+      const reason = err instanceof Error && err.message ? err.message : '';
+      if (reason) {
+        notifyError('toasts.intents.couldNotPost', 'toasts.intents.couldNotPostReason', { reason });
+      } else {
+        notifyError('toasts.intents.couldNotPost');
+      }
     } finally {
       setSubmitting(false);
     }
