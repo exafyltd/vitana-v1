@@ -29,10 +29,11 @@
 18. [Phase 14 — Active Communication Assist](#phase-14--active-communication-assist)
 19. [Phase 15 — Hollow-Conversation Guardrail](#phase-15--hollow-conversation-guardrail)
 20. [Phase 16 — Memory & Learning Architecture](#phase-16--memory--learning-architecture)
-21. [Suggested rollout & first slice](#suggested-rollout--first-slice)
-22. [Open questions](#open-questions)
-23. [Non-goals](#non-goals)
-24. [Glossary](#glossary)
+21. [Phase 17 — Match-Engine Refinement](#phase-17--match-engine-refinement)
+22. [Suggested rollout & first slice](#suggested-rollout--first-slice)
+23. [Open questions](#open-questions)
+24. [Non-goals](#non-goals)
+25. [Glossary](#glossary)
 
 ---
 
@@ -1975,8 +1976,359 @@ Refusing to surface is too late — by then it's stored. The check is:
   remain internal* — they don't enter L3 (no
   *"this user has hollow conversations"* hypothesis is ever stored).
 - L3 confirmed preferences feed the match-engine refinement in
-  [Phase 17 — Match-Engine Refinement](#phase-17--match-engine-refinement)
-  *(forthcoming commit)*.
+  [Phase 17 — Match-Engine Refinement](#phase-17--match-engine-refinement).
+
+---
+
+## Phase 17 — Match-Engine Refinement
+
+[Phase 8 — Notification Rules](#phase-8--notification-rules-existing--new)
+and [Phase 9 — Matches Hub](#phase-9--matches-hub--notification-centre)
+live downstream of an existing matchmaker — the Gemini D12 layer that
+`computeForIntent()` invokes. This phase specifies how Vitana
+**refines, ranks, paces, and explains** that matchmaker's candidate
+output. The matchmaker stays — this is the post-processing layer between
+candidate generation and what the user sees.
+
+> **Scope reframe:** this phase does *not* replace `computeForIntent()`
+> or the Gemini D12 scorer. It specifies the layer that **consumes** the
+> matchmaker's output and produces ranked, paced, explained surface
+> decisions. See updated [Non-goals](#non-goals).
+
+### The longevity-context principle
+
+Matching for **sustained activity partnership** ≠ matching for **romantic
+spark.** That changes the weighting:
+
+| What dating apps optimise | What we optimise |
+|---|---|
+| First-message reply rate | Rep-2 completion rate |
+| Spark | Schedule fit (boring but predictive) |
+| Photo attraction | Show-up reliability |
+| One-shot decisions | Slow-build pairings (rep 1 → 5 → 50) |
+| 1:1 only | 1:1 + small group + cohort blending |
+
+A **7/10 chemistry with great schedule fit** beats a **10/10 chemistry
+with no schedule fit**. The refinement layer reflects this inversion.
+
+### Seven dimensions (the refinement scoring)
+
+The matchmaker outputs a candidate score. The refinement layer overlays
+seven dimensions, weighted, to produce the final surface ranking:
+
+| # | Dimension | Source layers | Default weight |
+|---|---|---|---|
+| 1 | Activity overlap | L1 + L3 confirmed | 18% |
+| 2 | Logistical fit | L1 + L3 | 22% |
+| 3 | Pacing fit (reps/month target) | L1 + L2 + L3 | 18% |
+| 4 | Personality / communication | L1 + L3 + L4-aggregate | 12% |
+| 5 | Operational reliability | L2 only | 15% |
+| 6 | Relational signals | L2 only | 8% |
+| 7 | Safety & comfort | L1 + verification | 7% (gating) |
+
+(Memory-layer terminology: see
+[Phase 16](#phase-16--memory--learning-architecture).)
+
+Two are non-negotiable **gates**:
+
+| Gate | Rule |
+|---|---|
+| **Logistical-fit floor** | If logistical fit < 0.4 → never surface, regardless of other scores |
+| **Safety gate** | Hard filters (gender prefs, age bands, identity-verified-only) absolute |
+
+The logistical floor is the most important rule in the engine. *"Soulmate
+200 km away who only trains Tuesday 3 am"* is not a match.
+
+### The user preference dial
+
+A 4-position dial in match preferences shifts weights within bounds:
+
+| Position | What shifts | Best for |
+|---|---|---|
+| 🎯 **Optimise fit** | Heavier on activity + pacing + reliability | Users who know exactly what they want |
+| ⚖️ **Balanced** (default) | Defaults from above | Most users |
+| 🌱 **Stretch me** | More diversity injection; lower fit threshold | Users in plateau or wanting to grow |
+| 🤝 **Just reliable** | Heavier on operational reliability + logistical fit | Users who care most about consistency |
+
+The dial doesn't override gates. Only re-weights within the matched zone.
+
+### Cold-start (the hardest part)
+
+A new user has L1 only — no L2 reps, no L3 inferences, no L4 relations.
+Pure fit calculation is dangerous. Four-layer strategy:
+
+| Layer | Mechanism |
+|---|---|
+| **A. Stronger onboarding priors** | Beyond *"what activities"*, ask: *energy level (1–5)*, *frequency target (per month)*, *what makes a rep feel good (challenge / connection / consistency)*, *what makes you cancel*. Build a thicker L1 from the start. |
+| **B. Reliability-biased first 90 days** | New users matched with **high-reliability established users**, not optimal-fit ones. The first match is for *good experience*, not *perfect fit*. New users are fragile; one bad first experience kills retention. |
+| **C. Cohort pairing (opt-in)** | New users matched with other new users joined within ~30 days. Shared *"we're both new"* framing reduces awkwardness. |
+| **D. Group-first default** | First suggestion is a small group rep (3–4 people) before any 1:1. Lower social pressure, more learning signal per rep. |
+
+The **first match** a new user accepts gets special treatment:
+
+- Vitana drafts the first chat message proactively (Mode T users).
+- Concierge proposes a small, safe first rep (≤ 30 min, low equipment,
+  low commitment) using
+  [Phase 13's](#phase-13--activity-kind-taxonomy--concierge-depth)
+  walking-meeting starter primitive.
+- Post-rep rating prompt is slightly more prominent (we *really* want
+  this signal).
+- If the rep is rated 😐 or skipped, no immediate re-suggestion of that
+  partner — wait for second data point (per the
+  [three-rep rule](#three-rep-rule-for-partner-fit-inference)).
+
+The principle: **first match must feel like a win, not an experiment.**
+
+### The reciprocity model
+
+The hard problem: A scores B at 0.85, B scores A at 0.45. Show A this
+match? Three approaches:
+
+| Model | Mechanic | Tradeoff |
+|---|---|---|
+| **Mutual-only** (recommended default) | Surface only if both `score(A,B) ≥ 0.65` and `score(B,A) ≥ 0.65` | No one-sided rejections; cleanest UX, sparser pool |
+| **Soft-mutual** (opt-in) | Surface to A if `score(A,B) ≥ 0.65` and `score(B,A) ≥ 0.45`; B notified separately | More volume; some asymmetric pursuit possible |
+| **Open reach-out** (rejected) | A can express interest at any score | Recreates dating-app rejection dynamics; antithetical to longevity community goals |
+
+**Mutual-only as default**, with soft-mutual opt-in for users in
+low-density geographies. **Open reach-out is explicitly out of scope** —
+we're choosing a different game from dating apps.
+
+### Diversity injection (the anti-echo-chamber)
+
+Pure fit-optimization creates echo chambers:
+
+- Always matching you with people exactly like you.
+- Locking you into one activity-kind preference.
+- Reinforcing demographic bubbles.
+- Stagnating your activity range over time.
+
+**The 80/20 rule:**
+
+- ~80% of suggested matches are fit-optimised (high score across the
+  seven dimensions).
+- ~20% are **stretch suggestions** along one dimension.
+
+Five stretch dimensions:
+
+| Dimension | What "stretching" means |
+|---|---|
+| **Activity** | Someone whose primary kind is adjacent (e.g., trail hiker meets cold-plunge enthusiast) |
+| **Intensity** | Someone slightly more or less intense than usual |
+| **Demographic** | Meaningfully older / younger, with shared activity |
+| **Geography** | Slightly farther than usual radius, with strong other fit |
+| **Modality** | If you mostly do 1:1, occasionally suggest a small group with strong-fit members |
+
+Each stretch is **labelled honestly**:
+
+> 🪐 *"A stretch suggestion — Lina's intensity is a step above your usual
+> hiking pace. Could be a stretch in a good way, or not your speed. Up
+> to you."*
+
+User can disable stretches entirely. Default on, because longevity-community
+thriving requires growth.
+
+### "Why this person" — the explanation
+
+Three-layer progressive depth, before the user accepts/declines:
+
+**Layer 1 — One-line summary** (visible on the card):
+
+> *"Same trail-hiking pace, both Saturday mornings, lives 2 km away."*
+
+Three concrete reasons. Specific, not abstract.
+
+**Layer 2 — Confidence breakdown** (tap to expand):
+
+| Dimension | Confidence | Note |
+|---|---|---|
+| Activity overlap | ✓ High | Both prioritise trail hiking; both 2x/month |
+| Schedule fit | ✓ High | Saturday 7–10am works for both |
+| Location | ✓ High | 2.1 km between you |
+| Communication | ✓ Medium | Similar conciseness; both use voice notes |
+| Reliability | ◯ Unknown | Lina is new — first match for both |
+
+**Layer 3 — Honest limitations** (the most important):
+
+> *"What might not click:*
+> *— Lina prefers slightly longer rest between reps than you (4 days vs
+> your 2). May want to talk pacing.*
+> *— She's competitive on summit-time; you've described yours as 'no
+> rush'. Could be a stretch."*
+
+Without honest limitations, the user feels manipulated when reality
+differs. With them, the user enters with calibrated expectations and the
+match is more likely to survive its first imperfection.
+
+**This is where the engine builds — or breaks — long-term trust.**
+
+### Pacing & queue mechanics
+
+You cannot show users 100 matches per day. Match fatigue destroys
+decision quality. Rate limits:
+
+| User state | Match suggestions per week |
+|---|---|
+| Brand new (first 14 days) | 3 in week 1, then 2/week |
+| Active searcher | 1–2 per week |
+| Currently in active matches | 0–1 per week |
+| Saturated (*"I'm good for now"* toggle on) | 0 per week, with override always available |
+| Inactive (no reps in 60+ days) | 1 per 2 weeks max, gentle re-engagement framing |
+
+Cooldowns:
+
+| Event | Cooldown |
+|---|---|
+| Declined a match | 90 days before re-suggesting same person |
+| Passed without action (queue expired) | 60 days |
+| Match formed but dissolved cleanly | 180 days |
+| Match dissolved with reported friction | Never re-suggest |
+| Mutual block | Permanent, both directions, no surface anywhere |
+
+Queue refreshes **once per week** (a quiet *"new suggestions are ready"*
+nudge), not constantly. Constant refresh creates compulsive checking
+patterns we don't want.
+
+### Bias, fairness, and equity
+
+| Risk | Mitigation |
+|---|---|
+| Demographic bubble formation | Quarterly bias audit on match-pair distributions; flag systematic over/under-pairing of any group |
+| Geographic inequity | Users in low-density areas use modified logic (broader radius, lower logistical floor, more cohort + group suggestions) |
+| Newcomer suppression | Established users' queues include ≥ 1 newcomer per refresh when fit allows |
+| Lock-in to existing partners | If user has matched with the same 3 people repeatedly, gently introduce variety after rep #5 with each |
+| Activity-kind monoculture | Stretch suggestion (above) prevents lock-in |
+| Algorithmic discrimination | Engine never uses race, religion, sexuality, political views, or mental-health diagnoses as inputs. Audited. |
+
+**Honest under-supply > deceptive over-supply.** The engine's outputs
+should be **explainable per-user**: *"Why didn't I get more matches this
+week?"* gets answered honestly:
+
+- *"Your pool is smaller because you've narrowed your geography to 3 km."*
+- *"Your pool is currently rich; I'm pacing you."*
+- *"I haven't found a strong-fit match this week and didn't want to send
+  a low-confidence one."*
+
+Users trust the queue more if it sometimes says *"nothing strong this
+week, I'll keep looking."*
+
+### Dissolution & re-circulation
+
+Three paths:
+
+| Type | Behaviour |
+|---|---|
+| **Clean dissolution** | Optional reason (*"schedules drifted / not the right pace / found regular partners elsewhere / other"*); L4 hard-deleted; both return to queue; 180-day cooldown |
+| **Friction-flagged** | Permanent no-re-suggest between this pair; reporting user can share friction context to influence future matches; the other side just sees the match has ended (not the friction report) |
+| **Silent dissolution** (no reps in 60 d, no explicit end) | Vitana DMs both: *"I notice it's been a while since you and Sam matched up. Is that the natural rhythm, or has it drifted?"* — options: *active rhythm / drifted apart / not sure / unmatch* |
+
+Silent-dissolution detection is critical. Without it, the platform fills
+up with zombie matches that pollute L4 and make future matching harder.
+
+### Group-match dynamics
+
+Group matches (3–6 people) are calculated differently:
+
+```
+group_fit = average_pairwise_score
+            × min_pairwise_score_floor   (penalty if any pair scores < 0.5)
+            × diversity_bonus            (small reward for cognitive/style diversity)
+            × logistics_intersection     (do all schedules align?)
+```
+
+Two formation strategies:
+
+| Strategy | When |
+|---|---|
+| **Anchor-and-add** | Start with a strong 1:1 pair, add 1–2 compatible thirds | Best for users with an existing partner who want to expand |
+| **Synthesis-from-scratch** | Build the group from the activity-kind pool directly | Best for users who joined wanting group-only experience |
+
+Group matches require *all* members to opt in (no friend-chain
+dragging). First rep must be small (≤ 90 min, low commitment) before
+scaling up.
+
+### Implementation
+
+**Backend (vitana-platform):**
+
+1. **`match_refinement_layer` service** — sits downstream of
+   `computeForIntent()` (existing). Input: candidate matches with Gemini
+   D12 score. Output: ranked, gated, explained match queue.
+2. **`match_scorer`** — given two users, returns the seven-dimension
+   score breakdown.
+3. **`match_queue_builder` worker** — runs weekly per user; builds 5–10
+   candidate matches with three-layer explanations.
+4. **`diversity_injector`** — overlays the 20% stretch suggestions onto
+   the queue.
+5. **`reciprocity_filter`** — applies mutual-only / soft-mutual logic
+   before surfacing.
+6. **`pacing_governor`** — enforces rate limits and cooldowns.
+7. **`fairness_auditor`** — quarterly job; produces internal
+   bias-distribution reports.
+8. **`silent_dissolution_detector`** — daily; identifies inactive matches
+   for the gentle nudge.
+9. **API endpoints:**
+   - `GET /api/v1/matches/queue` — current week's suggestions with
+     three-layer explanations.
+   - `POST /api/v1/matches/:id/accept | /decline | /snooze`.
+   - `POST /api/v1/matches/dissolution` — clean / friction / silent paths.
+   - `PATCH /api/v1/preferences/match_dial` — preference dial position.
+
+**Frontend (vitana-v1):**
+
+1. **Match card** — clean visual with one-line summary, photo, activity
+   tags, *"why this person"* tap-to-expand.
+2. **Three-layer explanation modal** — summary → confidence breakdown →
+   honest limitations, in that order.
+3. **Preference dial** — 4-position toggle in match settings, with copy
+   explaining each.
+4. **Stretch suggestion badge** — distinct subtle visual marker (not
+   gamified) so users always know which are stretches.
+5. **Queue saturation toggle** — *"I'm good for now"* one-tap mute with
+   the *"introduce me to someone new"* override always visible.
+6. **Dissolution flow** — gentle 3-option screen; never punitive;
+   emphasises that endings are natural.
+
+### Tuning (post-launch)
+
+| Parameter | Initial | Tune via |
+|---|---|---|
+| Logistical-fit floor | 0.4 | Watch dissolution-by-logistics rate |
+| Per-dimension weights | Defaults from §"Seven dimensions" | Quarterly retro on rep-2 completion |
+| Stretch ratio | 20% | A/B on retention; stretch users should retain *more*, not less |
+| New-user queue rate | 3 in week 1 | New-user satisfaction surveys |
+| Re-match cooldown | 90 days | Watch re-decline rate after cooldown |
+| Mutual-only threshold | 0.65 each side | Tune toward ~50% acceptance rate |
+
+The single most important post-launch question:
+
+> **Does rep-2 completion go up over the prior matchmaker-only system?**
+
+That is the metric this layer exists to move. Everything else is
+process detail.
+
+### Cross-references
+
+- Sits **downstream of** the existing matchmaker (`computeForIntent()`
+  in `services/gateway/src/routes/intents.ts`). Does not replace it.
+- Consumes L3 confirmed preferences from
+  [Phase 16 — Memory & Learning](#phase-16--memory--learning-architecture)
+  for cold-start onboarding priors and per-user weighting.
+- Consumes L2 reliability data (show-up rate, cancellation patterns)
+  from Phase 16 for the **reliability** dimension.
+- Group-fit calculation feeds
+  [Phase 7 — Group Orchestration](#phase-7--group-orchestration-3-people).
+- The "why this person" three-layer explanation surfaces in
+  [Phase 9 — Matches Hub](#phase-9--matches-hub--notification-centre)'s
+  match cards.
+- The first-match treatment hooks
+  [Phase 6 — Activity Concierge](#phase-6--the-activity-concierge--activityplancard)'s
+  Plan Card generator with the *small/safe* preset (taxonomy default
+  *walking-meeting* per
+  [Phase 13](#phase-13--activity-kind-taxonomy--concierge-depth)).
+- Cohort pairing for new users uses
+  [Phase 16](#phase-16--memory--learning-architecture)'s L2 data on
+  match-formation-time clustering.
 
 ---
 
@@ -2048,15 +2400,20 @@ Everything else is built on this primitive once it's solid.
 
 ## Non-goals
 
-- Replacing the existing matchmaker (Gemini D12 layer). Concierge consumes
-  its output.
+- **Replacing the existing matchmaker (Gemini D12 layer).** The
+  matchmaker stays — it generates candidate matches with a score.
+  [Phase 17](#phase-17--match-engine-refinement) specifies the
+  refinement, ranking, pacing, and explanation layer that sits between
+  matchmaker output and user-facing surfaces. The Concierge consumes
+  that ranked output.
 - Building a generic chat product. Auto-seeded thread is the surface;
-  concierge / consultant is the value.
+  concierge / consultant / chat-assist (Phase 14) is the value.
 - Group-of-N orchestration beyond ~6 in v1.
 - In-app payments infrastructure. Concierge can split costs via existing
   payment links / external rails first.
-- Numerical compatibility scores or stack-rankings. Vitana speaks like a
-  friend, not a recommendation engine.
+- Numerical compatibility scores or stack-rankings exposed *to users*.
+  Internal scoring exists; users see qualitative explanations only.
+  Vitana speaks like a friend, not a recommendation engine.
 
 ---
 
@@ -2103,3 +2460,16 @@ Everything else is built on this primitive once it's solid.
   until at least 3 rated reps with at least 2 negative ratings. Prevents
   false-negative match dissolution. See
   [Phase 16](#phase-16--memory--learning-architecture).
+- **Match refinement layer** — Vitana's ranking, pacing, gating, and
+  explanation overlay between the matchmaker's candidate output
+  (`computeForIntent()` / Gemini D12) and the user-facing match queue.
+  Specified in [Phase 17](#phase-17--match-engine-refinement).
+- **Mutual-only reciprocity** — match surfaces require both
+  `score(A,B) ≥ 0.65` AND `score(B,A) ≥ 0.65`. Default for surfacing;
+  soft-mutual is opt-in for low-density geographies; open reach-out is
+  out of scope. See [Phase 17](#phase-17--match-engine-refinement).
+- **Logistical-fit floor** — non-negotiable gate: any candidate match
+  with logistical fit < 0.4 is never surfaced, regardless of other
+  scores. Prevents the most common failure mode (chemistry-rich matches
+  that never materialise). See
+  [Phase 17](#phase-17--match-engine-refinement).
