@@ -42,6 +42,7 @@ import {
   getIntentCategories,
   type IntentCategory,
 } from "@/lib/intentApi";
+import { processCoverImageTo16x9 } from "@/lib/coverImageTo16x9";
 
 interface CoverLibraryDrawerProps {
   open: boolean;
@@ -74,15 +75,32 @@ async function uploadToIntentCovers(
   file: File,
   remotePath: string,
 ): Promise<string> {
-  const arrayBuffer = await file.arrayBuffer();
-  const blob = new Blob([arrayBuffer], { type: file.type });
+  // VTID-02806h: every upload is normalised to a 16:9 JPEG so cover
+  // tiles render edge-to-edge in the Find-a-Match listings,
+  // regardless of the source aspect (portrait, square, landscape).
+  // Falls back to the original bytes only if conversion throws.
+  let body: Blob = file;
+  let contentType: string = file.type;
+  let storedPath = remotePath;
+  try {
+    const processed = await processCoverImageTo16x9(file);
+    body = processed.blob;
+    contentType = processed.mime;
+    // Force a `.jpg` suffix on the stored path since we always emit
+    // JPEG. Keeps the public URL Content-Type header honest.
+    storedPath = remotePath.replace(/\.[a-zA-Z0-9]+$/, "") + "." + processed.ext;
+  } catch {
+    // Use the original. Worst case the cover renders letterboxed in
+    // CSS — better than blocking the upload entirely on a decode
+    // failure (HEIC, animated GIF first frame, etc.).
+  }
   const { error } = await supabase.storage
     .from("intent-covers")
-    .upload(remotePath, blob, { upsert: true, contentType: file.type });
+    .upload(storedPath, body, { upsert: true, contentType });
   if (error) throw error;
   const {
     data: { publicUrl },
-  } = supabase.storage.from("intent-covers").getPublicUrl(remotePath);
+  } = supabase.storage.from("intent-covers").getPublicUrl(storedPath);
   return publicUrl;
 }
 

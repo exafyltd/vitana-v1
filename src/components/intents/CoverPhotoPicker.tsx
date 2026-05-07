@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import type { CoverTheme } from '@/lib/intentCovers';
+import { processCoverImageTo16x9 } from '@/lib/coverImageTo16x9';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CoverPhotoPickerProps {
@@ -90,13 +91,28 @@ export function CoverPhotoPicker({
       const uid = data.user?.id;
       if (!uid) throw new Error('Not authenticated');
 
-      const fileName = `${uid}/intent-covers/${Date.now()}.${fileExt}`;
-      const arrayBuffer = await file.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: file.type });
+      // VTID-02806h: normalise the upload to a 16:9 JPEG so the
+      // resulting cover always fills the Find-a-Match tile cleanly.
+      // Falls back to the raw bytes if conversion fails.
+      let body: Blob;
+      let contentType: string;
+      let outExt: string;
+      try {
+        const processed = await processCoverImageTo16x9(file);
+        body = processed.blob;
+        contentType = processed.mime;
+        outExt = processed.ext;
+      } catch {
+        const arrayBuffer = await file.arrayBuffer();
+        body = new Blob([arrayBuffer], { type: file.type });
+        contentType = file.type;
+        outExt = fileExt;
+      }
+      const fileName = `${uid}/intent-covers/${Date.now()}.${outExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(fileName, blob, { upsert: true, contentType: file.type });
+        .upload(fileName, body, { upsert: true, contentType });
       if (uploadError) throw uploadError;
 
       const {
