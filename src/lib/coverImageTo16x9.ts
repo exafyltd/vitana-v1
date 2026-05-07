@@ -1,30 +1,41 @@
 /**
- * VTID-02806h — Browser-side conversion of any uploaded cover photo
- * to a 16:9 aspect ratio. Three cases:
+ * VTID-02806h — Cover-photo conversion to 16:9.
  *
- *   1. Already 16:9 (within ±3 %)  → pass through unchanged.
- *   2. Wider than 16:9 (panorama)  → centered horizontal crop.
- *   3. Narrower than 16:9 (portrait, square, 4:3 …)
- *        → letterbox-with-blurred-bg: place the original centered
- *          on a 16:9 canvas; fill the side margins with a heavily
- *          blurred + scaled copy of the same image, so the result
- *          looks intentional (like Spotify / YouTube thumbnails)
- *          and never bare-bars.
+ * Two layers:
  *
- * Phase 2 (follow-up PR) will replace path 3 with a server-side
- * Imagen outpaint that *generates* plausible side content instead
- * of blurring. The classifier output below already includes a
- * `method` field so consumers can branch on the chosen path.
+ *   1. processCoverImageTo16x9(file)  — pure browser-side; emits a
+ *      16:9 JPEG using passthrough / centered-crop /
+ *      letterbox-with-blurred-bg-fill depending on the source aspect.
+ *      Used everywhere a synchronous "give me 16:9 bytes" answer is
+ *      enough (e.g. the per-post composer's `avatars`-bucket path).
  *
- * Output is always a JPEG blob (good size/quality compromise) at
- * the target 16:9 dimensions, regardless of source format.
+ *   2. prepareIntentCoverUpload(args) — high-level orchestrator for
+ *      uploads to the `intent-covers` Supabase Storage bucket. For
+ *      passthrough / crop sources it renders the JPEG client-side
+ *      and uploads directly. For narrower-than-16:9 sources it
+ *      uploads the original to `staging/<uid>/...` and calls the
+ *      gateway's POST /api/v1/cover-images/outpaint, which extends
+ *      the photo to 16:9 via Vertex Imagen and writes the result to
+ *      the final path. On any outpaint failure, it falls back to the
+ *      client-side letterbox-blur path so the user always gets a
+ *      cover.
+ *
+ * Phase 1 shipped (1) + the letterbox-blur method.
+ * Phase 2 (this file) adds (2) — Imagen outpaint via the gateway.
  */
 
-export type AspectMethod = "passthrough" | "crop" | "letterbox_blur";
+import { supabase } from "@/integrations/supabase/client";
+import { communityFetch } from "@/lib/community-gateway";
+
+export type AspectMethod =
+  | "passthrough"
+  | "crop"
+  | "letterbox_blur"
+  | "outpaint";
 
 export interface ProcessedCover {
   blob: Blob;
-  method: AspectMethod;
+  method: Exclude<AspectMethod, "outpaint">;
   width: number;
   height: number;
   ext: "jpg" | "png" | "webp";
@@ -32,10 +43,8 @@ export interface ProcessedCover {
 }
 
 const TARGET_RATIO = 16 / 9;
-const TOLERANCE = 0.03; // ±3% counts as already-16:9.
+const TOLERANCE = 0.03; // ±3 % counts as already-16:9.
 
-// Output canvas. 1600×900 is plenty for a hero cover image and
-// keeps the JPEG payload under ~250 kB at 0.88 quality.
 const OUT_W = 1600;
 const OUT_H = 900;
 
@@ -65,11 +74,10 @@ function canvasToJpeg(canvas: HTMLCanvasElement): Promise<Blob> {
   });
 }
 
-/**
- * Decide the conversion method for a given source aspect ratio.
- * Exported so callers can show the chosen method in toasts / logs.
- */
-export function classifyAspect(srcW: number, srcH: number): AspectMethod {
+export function classifyAspect(
+  srcW: number,
+  srcH: number,
+): "passthrough" | "crop" | "letterbox_blur" {
   if (srcW <= 0 || srcH <= 0) return "letterbox_blur";
   const r = srcW / srcH;
   if (Math.abs(r - TARGET_RATIO) / TARGET_RATIO <= TOLERANCE) return "passthrough";
@@ -77,9 +85,7 @@ export function classifyAspect(srcW: number, srcH: number): AspectMethod {
   return "letterbox_blur";
 }
 
-async function passthrough(file: File, img: HTMLImageElement): Promise<ProcessedCover> {
-  // We still re-encode to JPEG to normalise size + strip EXIF orientation
-  // so the rendered cover looks the same on every device.
+async function passthrough(_file: File, img: HTMLImageElement): Promise<ProcessedCover> {
   const canvas = document.createElement("canvas");
   canvas.width = img.naturalWidth;
   canvas.height = img.naturalHeight;
@@ -98,7 +104,6 @@ async function passthrough(file: File, img: HTMLImageElement): Promise<Processed
 }
 
 async function centeredCrop(img: HTMLImageElement): Promise<ProcessedCover> {
-  // Source is wider than 16:9 — keep full height, crop horizontally.
   const srcH = img.naturalHeight;
   const cropW = Math.round(srcH * TARGET_RATIO);
   const offX = Math.round((img.naturalWidth - cropW) / 2);
@@ -108,7 +113,6 @@ async function centeredCrop(img: HTMLImageElement): Promise<ProcessedCover> {
   canvas.height = OUT_H;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("canvas_unavailable");
-
   ctx.drawImage(img, offX, 0, cropW, srcH, 0, 0, OUT_W, OUT_H);
 
   const blob = await canvasToJpeg(canvas);
@@ -123,19 +127,12 @@ async function centeredCrop(img: HTMLImageElement): Promise<ProcessedCover> {
 }
 
 async function letterboxWithBlurredBg(img: HTMLImageElement): Promise<ProcessedCover> {
-  // Source is narrower than 16:9 (portrait, square, 4:3, …).
-  // Strategy: fill the 16:9 canvas with a blurred + zoomed copy of the
-  // source as the background, then composite the unblurred source
-  // centered on top, contained within the canvas height.
-
   const canvas = document.createElement("canvas");
   canvas.width = OUT_W;
   canvas.height = OUT_H;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("canvas_unavailable");
 
-  // 1) Blurred + cover-fitted background. Scale the image so it
-  //    covers the canvas, then heavily blur to wash out detail.
   const srcRatio = img.naturalWidth / img.naturalHeight;
   let bgW: number;
   let bgH: number;
@@ -153,14 +150,12 @@ async function letterboxWithBlurredBg(img: HTMLImageElement): Promise<ProcessedC
   ctx.drawImage(img, bgX, bgY, bgW, bgH);
   ctx.restore();
 
-  // 2) Soft dark vignette to keep the focus on the foreground.
   const grad = ctx.createLinearGradient(0, 0, 0, OUT_H);
   grad.addColorStop(0, "rgba(0,0,0,0.18)");
   grad.addColorStop(1, "rgba(0,0,0,0.32)");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, OUT_W, OUT_H);
 
-  // 3) Foreground: contain the source within the canvas height.
   const fgH = OUT_H;
   const fgW = fgH * srcRatio;
   const fgX = (OUT_W - fgW) / 2;
@@ -178,11 +173,6 @@ async function letterboxWithBlurredBg(img: HTMLImageElement): Promise<ProcessedC
   };
 }
 
-/**
- * Process the given file into a 16:9 cover image. Throws on
- * unrecognised mime or undecodable content; callers should fall back
- * to uploading the original on failure.
- */
 export async function processCoverImageTo16x9(file: File): Promise<ProcessedCover> {
   if (!ALLOWED_MIMES.includes(file.type as (typeof ALLOWED_MIMES)[number])) {
     throw new Error(`unsupported_mime:${file.type}`);
@@ -192,4 +182,128 @@ export async function processCoverImageTo16x9(file: File): Promise<ProcessedCove
   if (method === "passthrough") return passthrough(file, img);
   if (method === "crop") return centeredCrop(img);
   return letterboxWithBlurredBg(img);
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Phase-2 orchestrator: prepareIntentCoverUpload
+// Tries gateway Imagen outpaint for narrower-than-16:9 sources;
+// otherwise (and on outpaint failure) renders 16:9 client-side and
+// uploads directly to the intent-covers bucket.
+// ────────────────────────────────────────────────────────────────────
+
+const INTENT_COVERS_BUCKET = "intent-covers";
+
+export interface PrepareCoverArgs {
+  file: File;
+  userId: string;
+  /**
+   * Path PREFIX inside the intent-covers bucket — without a file
+   * extension. The orchestrator appends `.jpg` (client paths) or
+   * `.png` (outpaint path) and returns the full URL of whichever
+   * was used. Examples:
+   *   `user-universal/${uid}/${Date.now()}`
+   *   `user-library/${uid}/${photoId}`
+   */
+  targetPathPrefix: string;
+}
+
+export interface PrepareCoverResult {
+  url: string;
+  method: AspectMethod;
+}
+
+async function uploadStaged(
+  file: File,
+  userId: string,
+): Promise<{ stagedPath: string }> {
+  const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+  const stagedPath = `staging/${userId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}.${ext}`;
+  const arrayBuffer = await file.arrayBuffer();
+  const blob = new Blob([arrayBuffer], { type: file.type });
+  const { error } = await supabase.storage
+    .from(INTENT_COVERS_BUCKET)
+    .upload(stagedPath, blob, { upsert: true, contentType: file.type });
+  if (error) throw error;
+  return { stagedPath };
+}
+
+async function uploadProcessed(
+  processed: ProcessedCover,
+  targetPath: string,
+): Promise<string> {
+  const { error } = await supabase.storage
+    .from(INTENT_COVERS_BUCKET)
+    .upload(targetPath, processed.blob, {
+      upsert: true,
+      contentType: processed.mime,
+    });
+  if (error) throw error;
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from(INTENT_COVERS_BUCKET).getPublicUrl(targetPath);
+  return publicUrl;
+}
+
+async function callGatewayOutpaint(args: {
+  sourcePath: string;
+  targetPath: string;
+}): Promise<string> {
+  const res = await communityFetch("/api/v1/cover-images/outpaint", {
+    method: "POST",
+    body: JSON.stringify({
+      source_path: args.sourcePath,
+      target_path: args.targetPath,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(
+      `outpaint ${res.status}: ${err.error ?? err.message ?? res.statusText}`,
+    );
+  }
+  const json = (await res.json()) as { url?: string };
+  if (!json.url) throw new Error("outpaint returned no url");
+  return json.url;
+}
+
+/**
+ * High-level: take a user-picked file, ensure the result is a 16:9
+ * cover photo on the intent-covers bucket, and return its public URL.
+ */
+export async function prepareIntentCoverUpload(
+  args: PrepareCoverArgs,
+): Promise<PrepareCoverResult> {
+  const { file, userId, targetPathPrefix } = args;
+
+  // We need to know the aspect to decide the path. Decode once.
+  if (!ALLOWED_MIMES.includes(file.type as (typeof ALLOWED_MIMES)[number])) {
+    throw new Error(`unsupported_mime:${file.type}`);
+  }
+  const img = await loadImage(file);
+  const method = classifyAspect(img.naturalWidth, img.naturalHeight);
+
+  // Passthrough + crop: render JPEG client-side, upload directly.
+  if (method === "passthrough" || method === "crop") {
+    const processed =
+      method === "passthrough" ? await passthrough(file, img) : await centeredCrop(img);
+    const url = await uploadProcessed(processed, `${targetPathPrefix}.jpg`);
+    return { url, method };
+  }
+
+  // Narrow source: try server-side Imagen outpaint first.
+  try {
+    const { stagedPath } = await uploadStaged(file, userId);
+    const url = await callGatewayOutpaint({
+      sourcePath: stagedPath,
+      targetPath: `${targetPathPrefix}.png`,
+    });
+    return { url, method: "outpaint" };
+  } catch (err) {
+    console.warn("[cover] outpaint failed, falling back to letterbox-blur:", err);
+    const processed = await letterboxWithBlurredBg(img);
+    const url = await uploadProcessed(processed, `${targetPathPrefix}.jpg`);
+    return { url, method: "letterbox_blur" };
+  }
 }
