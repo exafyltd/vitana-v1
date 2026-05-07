@@ -15,6 +15,8 @@ import { AccountEditDrawer } from "@/components/profile/drawers/AccountEditDrawe
 import { DancePreferencesDrawer } from "@/components/profile/drawers/DancePreferencesDrawer";
 import { PartnerPreferencesDrawer } from "@/components/profile/drawers/PartnerPreferencesDrawer";
 import { ServiceOfferingsDrawer } from "@/components/profile/drawers/ServiceOfferingsDrawer";
+// VTID-02806 — per-user cover photo library (universal + activity-specific)
+import { CoverLibraryDrawer } from "@/components/profile/drawers/CoverLibraryDrawer";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +70,8 @@ export default function EditProfilePage() {
   const [partnerPrefsDrawerOpen, setPartnerPrefsDrawerOpen] = useState(false);
   // E2 — service offerings (public-by-default profile section)
   const [serviceOfferingsDrawerOpen, setServiceOfferingsDrawerOpen] = useState(false);
+  // VTID-02806 — cover library (universal photo + activity-tagged grid)
+  const [coverLibraryDrawerOpen, setCoverLibraryDrawerOpen] = useState(false);
   // Open the right drawer when ?drawer=<name> is present in URL (deep-link).
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -75,6 +79,7 @@ export default function EditProfilePage() {
     if (which === "dance") setDanceDrawerOpen(true);
     if (which === "partner") setPartnerPrefsDrawerOpen(true);
     if (which === "offerings") setServiceOfferingsDrawerOpen(true);
+    if (which === "cover-library") setCoverLibraryDrawerOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
@@ -660,6 +665,12 @@ export default function EditProfilePage() {
       <ServiceOfferingsDrawer
         open={serviceOfferingsDrawerOpen}
         onOpenChange={setServiceOfferingsDrawerOpen}
+      />
+
+      {/* VTID-02806: cover library drawer (deep-linkable via ?drawer=cover-library) */}
+      <CoverLibraryDrawer
+        open={coverLibraryDrawerOpen}
+        onOpenChange={setCoverLibraryDrawerOpen}
       />
 
       {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}
