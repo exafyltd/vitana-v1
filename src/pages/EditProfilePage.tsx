@@ -578,6 +578,13 @@ export default function EditProfilePage() {
           }}
         />
 
+        {/* VTID-02806c: cover library drawer must be mounted on mobile too,
+            otherwise the new tile sets state but no dialog renders. */}
+        <CoverLibraryDrawer
+          open={coverLibraryDrawerOpen}
+          onOpenChange={setCoverLibraryDrawerOpen}
+        />
+
         {/* Autopilot Popup */}
         <AutopilotProfilePopup
           open={showAutopilotPopup}
