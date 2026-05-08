@@ -246,14 +246,11 @@ export default function FindPartner() {
                 body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
                 cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
-              // Single narrow-column layout on both mobile and desktop —
-              // the cards keep their familiar mobile size so a desktop
-              // viewport doesn't blow them up to full-width banners.
-              // Bottom padding leaves ~ a card height of clear space so
-              // the primary CTA on the last card stays above the fixed
-              // mobile bottom nav and the central Orb FAB.
-              <div className="space-y-5 pb-32 sm:pb-8 max-w-md mx-auto">
+            ) : isMobile ? (
+              // Bottom padding leaves ~ a card height of clear space so the
+              // primary CTA on the last card stays above the fixed mobile
+              // bottom nav and the central Orb FAB.
+              <div className="space-y-5 pb-32 max-w-md mx-auto">
                 {matches.map((m) => (
                   <FindPartnerMatchCard
                     key={m.match_id}
@@ -265,6 +262,20 @@ export default function FindPartner() {
                   />
                 ))}
               </div>
+            ) : (
+              // Desktop: keep the same card design as mobile, but lay it
+              // out in the News surface's alternating big+small+small /
+              // small+small+big grid so the page reads like News.
+              renderNewsGrid(matches, (m) => (
+                <FindPartnerMatchCard
+                  key={m.match_id}
+                  match={m}
+                  vertical={m.vertical}
+                  sourceCategory={m.source_category}
+                  perspective="outgoing"
+                  onAction={() => void refresh()}
+                />
+              ))
             )
           )}
 
@@ -293,12 +304,21 @@ export default function FindPartner() {
                 body="Post your dance or fitness wish — Vitana will match you with people who fit."
                 cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
+            ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
                 {myPosts.map((it) => (
                   <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} variant="my-posts" />
                 ))}
               </div>
+            ) : (
+              renderNewsGrid(myPosts, (it) => (
+                <IntentCard
+                  key={it.intent_id}
+                  intent={it}
+                  to={`/intents/match/${it.intent_id}`}
+                  variant="my-posts"
+                />
+              ))
             )
           )}
 
@@ -396,6 +416,37 @@ export default function FindPartner() {
       />
     </>
   );
+}
+
+/**
+ * Render a list of items in the same alternating big+small+small /
+ * small+small+big news-style grid used by the Community News surface
+ * (Community.tsx). Even rows are col-span-6 + col-span-3 + col-span-3;
+ * odd rows mirror the layout. Items themselves are unchanged — only
+ * the desktop arrangement is news-styled.
+ */
+function renderNewsGrid<T>(
+  items: T[],
+  renderItem: (item: T) => React.ReactNode,
+): React.ReactNode {
+  const rows: React.ReactNode[] = [];
+  for (let i = 0; i < items.length; i += 3) {
+    const rowItems = items.slice(i, i + 3);
+    const isEvenRow = (i / 3) % 2 === 0;
+    const sizes: Array<'col-span-6' | 'col-span-3'> = isEvenRow
+      ? ['col-span-6', 'col-span-3', 'col-span-3']
+      : ['col-span-3', 'col-span-3', 'col-span-6'];
+    rows.push(
+      <div key={i} className="grid grid-cols-12 gap-6 mb-6">
+        {rowItems.map((it, idx) => (
+          <div key={idx} className={sizes[idx]}>
+            {renderItem(it)}
+          </div>
+        ))}
+      </div>,
+    );
+  }
+  return <>{rows}</>;
 }
 
 interface EmptyStateProps {
