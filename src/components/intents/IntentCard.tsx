@@ -7,12 +7,18 @@
  */
 
 import { useState, MouseEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import type { UserIntent } from "@/lib/intentApi";
 import { KIND_COLOR, KIND_LABEL } from "@/lib/intentKind";
-import { getIntentCoverUrl } from "@/lib/intentCovers";
+import {
+  getIntentCoverUrl,
+  pickThemedCover,
+  coverFallbackForTheme,
+  themeFromCategory,
+} from "@/lib/intentCovers";
+import { NewsCard } from "@/components/crossover/NewsCard";
 import { IntentShareSheet } from "./IntentShareSheet";
 import { t } from '@/lib/i18n-toast';
 
@@ -105,6 +111,16 @@ interface IntentCardProps {
    * layout when there's no cover photo to overlay on.
    */
   variant?: 'default' | 'my-posts';
+  /**
+   * Desktop News-style layout — full-bleed cover photo with the kind
+   * pill as the pillar badge, share button at top-right, and a match
+   * count badge as the bottom action. Used on Find a Match → My Posts
+   * (and Community Board) at >= lg viewports so cards read identically
+   * to the News surface.
+   */
+  desktop?: boolean;
+  /** Forwarded to the outer card (desktop only) so the parent grid can size it. */
+  className?: string;
 }
 
 export function IntentCard({
@@ -114,7 +130,10 @@ export function IntentCard({
   to,
   onClick,
   variant = 'default',
+  desktop = false,
+  className,
 }: IntentCardProps) {
+  const navigate = useNavigate();
   const [shareOpen, setShareOpen] = useState(false);
   const chips = kindChips(intent);
 
@@ -139,6 +158,72 @@ export function IntentCard({
       : null;
   const overlayHasContent = overlayLocationChips.length > 0 || (showOverlay && matchesLabel !== null);
   const stripMatchesLabel = !showOverlay && matchesLabel !== null ? matchesLabel : null;
+
+  // Desktop News-style layout: reuse the NewsCard component so the
+  // grid reads identically to the News surface — full cover image with
+  // the kind pill as the pillar badge, scope as the description, and a
+  // share button (or match-count badge) overlaid on top.
+  if (desktop) {
+    const coverTheme = themeFromCategory(intent.category);
+    const desktopImage =
+      coverUrl ?? pickThemedCover(coverTheme, intent.intent_id);
+    const handleClick = () => {
+      if (onClick) {
+        onClick();
+        return;
+      }
+      if (to) navigate(to);
+    };
+    return (
+      <>
+        <NewsCard
+          title={intent.title}
+          description={intent.scope}
+          imageUrl={desktopImage}
+          fallbackImageUrl={coverFallbackForTheme(coverTheme)}
+          pillar={KIND_LABEL[intent.intent_kind] ?? intent.intent_kind}
+          onClick={handleClick}
+          utilityTopRight={
+            showShare ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60"
+                onClick={handleShareClick}
+                aria-label={t('screens.intents.sharePost')}
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+            ) : undefined
+          }
+          actionButton={
+            intent.match_count > 0 ? (
+              <span className="rounded-full bg-emerald-500/90 text-white text-xs font-semibold px-3 py-1.5 shadow-lg backdrop-blur-sm">
+                {t('screens.intents.match_countMatchValue1', {
+                  match_count: intent.match_count,
+                  value1: intent.match_count === 1 ? '' : 'es',
+                })}
+              </span>
+            ) : showStatus ? (
+              <span className="rounded-full bg-white/15 text-white text-xs font-medium px-3 py-1.5 shadow-lg backdrop-blur-sm border border-white/20">
+                {intent.status}
+              </span>
+            ) : null
+          }
+          className={className}
+        />
+        {showShare && (
+          <IntentShareSheet
+            open={shareOpen}
+            onOpenChange={setShareOpen}
+            intentId={intent.intent_id}
+            intentTitle={intent.title}
+            intentScopeExcerpt={intent.scope?.slice(0, 240) ?? null}
+          />
+        )}
+      </>
+    );
+  }
 
   const card = (
     <div

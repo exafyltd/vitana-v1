@@ -4767,7 +4767,9 @@
       "uploadCoverNow": "Upload photo",
       "setUniversalCover": "Set universal cover",
       "continueWithAi": "Continue with AI",
-      "post": "Post"
+      "post": "Post",
+      "interest": "Interest",
+      "mutual": "Mutual"
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
