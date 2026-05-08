@@ -348,6 +348,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // user's id and stayed there.
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    // Wait for the initial auth bootstrap to complete before deciding
+    // whether the user is signed out vs. just hydrating. Otherwise the
+    // initial null user (loading state) would clear the registration
+    // marker and trap logged-in users in a reload loop on every refresh.
+    if (loading) return;
+
     const userId = user?.id ?? '';
     const REGISTERED_KEY = 'appilix_registered_identity_v1';
 
@@ -379,7 +385,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log('[AuthProvider] Appilix identity changed, reloading to re-register with native shell');
       window.location.reload();
     }
-  }, [user?.id]);
+  }, [user?.id, loading]);
 
   return (
     <AuthContext.Provider value={value}>
