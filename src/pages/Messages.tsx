@@ -98,9 +98,6 @@ export default function Messages() {
     if (urlThreadId) {
       console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
       setSelectedThreadId(urlThreadId);
-      // Also set recipientId — for notification deep-links, urlThreadId is the
-      // sender's user_id, not a thread UUID. Setting recipientId ensures the
-      // DM conversation opens even if no thread has that exact ID.
       setSelectedRecipientId(urlThreadId);
 
       if (urlContext && (urlContext === 'global' || urlContext === 'tenant')) {
@@ -114,6 +111,23 @@ export default function Messages() {
       setSearchParams(newParams, { replace: true });
     }
   }, [urlThreadId, urlContext, setSearchParams]);
+
+  // BOOTSTRAP-NOTIF-CATEGORIES: When deep-linking from a notification, the URL
+  // contains ?thread=<sender_user_id> (not a thread UUID). After threads load,
+  // resolve the user_id to the actual thread by matching participants.
+  useEffect(() => {
+    if (!selectedRecipientId || threads.length === 0) return;
+    // If selectedThreadId already matches a real thread, nothing to do
+    if (threads.some(t => t.id === selectedThreadId)) return;
+    // Find the direct thread with this participant
+    const match = threads.find(t =>
+      t.type === 'direct' && t.participants?.some((p: any) => p.user_id === selectedRecipientId)
+    );
+    if (match) {
+      console.log('[Messages] Resolved recipient to thread:', match.id);
+      setSelectedThreadId(match.id);
+    }
+  }, [threads, selectedRecipientId, selectedThreadId]);
 
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
