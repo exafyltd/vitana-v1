@@ -3,6 +3,7 @@ import { X, Share2, Copy, Download, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { QRCodeSVG } from "qrcode.react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useState, useCallback } from "react";
@@ -130,7 +131,11 @@ export function MobileQRShareScreen({
           >
             {/* Avatar */}
             <Avatar className="h-20 w-20 border-[3px] border-white/20 shadow-xl mb-4">
-              <AvatarImage src={avatarUrl || undefined} alt={profileName} style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)} />
+              <AvatarImage
+                src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(profileHandle ?? profileName ?? "vitana")}
+                alt={profileName}
+                style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
+              />
               <AvatarFallback className="text-lg font-bold bg-white/10 text-white">
                 {initials}
               </AvatarFallback>
