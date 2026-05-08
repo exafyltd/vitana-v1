@@ -323,25 +323,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
-  // Appilix native push targeting. The iOS/Android wrapper registers the
-  // device against the signed-in user via three coordinated mechanisms,
-  // all driven by the Supabase user.id:
-  //   1. window.appilix_push_notification_user_identity — the JS variable
-  //      some Appilix code paths read directly.
-  //   2. appilix_push_notification_user_identity cookie — persistence so
-  //      the inline bootstrap in index.html can register identity at
-  //      page-load time on subsequent visits, before any deferred module
-  //      script runs.
-  //   3. window.appilix.postMessage(firebase_record_user_identity) — the
-  //      documented native-shell bridge. Calling this on the active
-  //      session immediately registers the identity with Appilix's
-  //      server, covering the first-sign-in case where the cookie wasn't
-  //      yet present at page-load.
-  // Without identity registration the backend's targeted pushes (chat
-  // messages, etc.) are silently dropped by Appilix.
+  // Appilix native push targeting. The iOS/Android wrapper records its
+  // user_identity at page-load time (reading the cookie via the inline
+  // bootstrap in index.html) and does NOT update on SPA route changes or
+  // React state updates. So when a user signs in (or a different user
+  // signs in on the same device), the wrapper keeps its previously-baked
+  // identity until the page hard-reloads.
+  //
+  // Mechanism:
+  //   1. Always sync window.appilix_push_notification_user_identity and the
+  //      appilix_push_notification_user_identity cookie with the active
+  //      Supabase user.id (cleared on sign-out).
+  //   2. Track the last user.id we forced a reload for in localStorage.
+  //      When the active user.id differs from that marker, force one
+  //      window.location.reload() so the inline bootstrap in index.html
+  //      re-runs and the Appilix wrapper picks up the new identity at the
+  //      next page-load read.
+  //
+  // Without this, the backend's targeted pushes route to whichever
+  // identity the wrapper baked in first (e.g. a previous sign-in's user)
+  // and never reach the currently-signed-in user. Verified by observing
+  // identical FCM tokens in user_device_tokens for two different users:
+  // the iPhone was registered with Appilix under the first signed-in
+  // user's id and stayed there.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const userId = user?.id ?? '';
+    const REGISTERED_KEY = 'appilix_registered_identity_v1';
 
     (window as any).appilix_push_notification_user_identity = userId;
 
@@ -349,10 +357,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=31536000; SameSite=Lax; Secure`;
     } else {
       document.cookie = 'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+      localStorage.removeItem(REGISTERED_KEY);
+      return;
     }
 
     const appilix = (window as any).appilix;
-    if (userId && appilix?.postMessage) {
+    if (appilix?.postMessage) {
       try {
         appilix.postMessage(JSON.stringify({
           type: 'firebase_record_user_identity',
@@ -361,6 +371,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (err) {
         console.warn('[AuthProvider] Appilix postMessage failed:', err);
       }
+    }
+
+    const lastRegistered = localStorage.getItem(REGISTERED_KEY);
+    if (lastRegistered !== userId) {
+      localStorage.setItem(REGISTERED_KEY, userId);
+      console.log('[AuthProvider] Appilix identity changed, reloading to re-register with native shell');
+      window.location.reload();
     }
   }, [user?.id]);
 
