@@ -98,7 +98,10 @@ export default function Messages() {
     if (urlThreadId) {
       console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
       setSelectedThreadId(urlThreadId);
-      setSelectedRecipientId(null);
+      // Also set recipientId — for notification deep-links, urlThreadId is the
+      // sender's user_id, not a thread UUID. Setting recipientId ensures the
+      // DM conversation opens even if no thread has that exact ID.
+      setSelectedRecipientId(urlThreadId);
 
       if (urlContext && (urlContext === 'global' || urlContext === 'tenant')) {
         setMessageContext(urlContext);
