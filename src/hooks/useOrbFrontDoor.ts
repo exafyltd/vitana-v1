@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useOnboardingStatus } from "@/hooks/useOnboardingStatus";
+import { useOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 
 // Routes a freshly-authenticated MAXINA user can land on right after
 // sign-in, OAuth, or post-onboarding redirect (see MaxinaPortal +
@@ -60,6 +61,12 @@ export function useOrbFrontDoor() {
   const { needsOnboarding, loading: onboardingLoading } = useOnboardingStatus();
   const location = useLocation();
   const shownForUserRef = useRef<string | null>(null);
+  // Gate the auto-open on the widget being initialized with a backend-verified
+  // token. Without this gate, show() can fire before useOrbVoiceWidget has
+  // resolved /auth/me, and the resulting session-start lands at the gateway
+  // anonymous — which routes the user to the multi-minute pre-login intro
+  // speech instead of the post-login proactive guidance.
+  const orbAuthenticated = useOrbWidgetAuthenticated();
 
   const userId = user?.id;
   const tenantSlug = tenant?.slug;
@@ -78,6 +85,7 @@ export function useOrbFrontDoor() {
     if (tenantSlug !== "maxina") return;
     if (!isMaxinaLandingRoute(location.pathname)) return;
     if (shownForUserRef.current === userId) return;
+    if (!orbAuthenticated) return;
 
     // Try once immediately; if the external widget script hasn't injected
     // window.VitanaOrb yet, poll briefly. Same 60s ceiling as the widget
@@ -108,5 +116,6 @@ export function useOrbFrontDoor() {
     tenantSlug,
     needsOnboarding,
     location.pathname,
+    orbAuthenticated,
   ]);
 }

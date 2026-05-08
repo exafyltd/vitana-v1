@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 // /comm/events-meetups?tab=hot) and block desktop sessions from
 // viewport_only='mobile' entries (e.g. /daily-diary).
 import { useIsMobile } from "@/hooks/use-mobile";
+import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -246,13 +247,16 @@ export function useOrbVoiceWidget() {
 
           if (validToken) {
             orb.init({ ...navOpts, authToken: validToken });
+            setOrbWidgetAuthenticated(true);
             console.log("[ORB] Widget initialized (authenticated, backend-verified token)");
           } else {
             orb.init(navOpts);
+            setOrbWidgetAuthenticated(false);
             console.log("[ORB] Widget initialized (anonymous — no session)");
           }
         } else {
           orb.init(navOpts);
+          setOrbWidgetAuthenticated(false);
           console.log("[ORB] Widget initialized (anonymous)");
         }
         initialized.current = true;
@@ -291,6 +295,7 @@ export function useOrbVoiceWidget() {
     // Auth state changed — destroy and reinit with correct mode
     orb.destroy();
     initialized.current = false;
+    setOrbWidgetAuthenticated(false);
 
     const navOpts = {
       showFab: true,
@@ -314,11 +319,14 @@ export function useOrbVoiceWidget() {
         }
         if (validToken) {
           orb.init({ ...navOpts, authToken: validToken });
+          setOrbWidgetAuthenticated(true);
         } else {
           orb.init(navOpts);
+          setOrbWidgetAuthenticated(false);
         }
       } else {
         orb.init(navOpts);
+        setOrbWidgetAuthenticated(false);
       }
       initialized.current = true;
       console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
@@ -410,6 +418,7 @@ export function useOrbVoiceWidget() {
       if (orb && initialized.current) {
         orb.destroy();
         initialized.current = false;
+        setOrbWidgetAuthenticated(false);
       }
     };
   }, []);
