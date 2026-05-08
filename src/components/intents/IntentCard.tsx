@@ -12,7 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import type { UserIntent } from "@/lib/intentApi";
 import { KIND_COLOR, KIND_LABEL } from "@/lib/intentKind";
-import { getIntentCoverUrl } from "@/lib/intentCovers";
+import {
+  coverFallbackForTheme,
+  getIntentCoverUrl,
+  pickThemedCover,
+  themeFromCategory,
+} from "@/lib/intentCovers";
 import { IntentShareSheet } from "./IntentShareSheet";
 import { t } from '@/lib/i18n-toast';
 
@@ -105,6 +110,15 @@ interface IntentCardProps {
    * layout when there's no cover photo to overlay on.
    */
   variant?: 'default' | 'my-posts';
+  /**
+   * When true, render a deterministic themed cover from the brand
+   * library if the intent doesn't carry an explicit `cover_url`. Used
+   * on the Find a Match → Community Board so every open ask/offer
+   * shows an image, matching the visual treatment on the My Matches
+   * cards. Off by default so surfaces that intentionally show text-only
+   * cards (e.g. plain lists) keep their current behaviour.
+   */
+  themedFallback?: boolean;
 }
 
 export function IntentCard({
@@ -114,6 +128,7 @@ export function IntentCard({
   to,
   onClick,
   variant = 'default',
+  themedFallback = false,
 }: IntentCardProps) {
   const [shareOpen, setShareOpen] = useState(false);
   const chips = kindChips(intent);
@@ -124,7 +139,11 @@ export function IntentCard({
     setShareOpen(true);
   };
 
-  const coverUrl = getIntentCoverUrl(intent);
+  const explicitCoverUrl = getIntentCoverUrl(intent);
+  const coverTheme = themeFromCategory(intent.category);
+  const coverUrl =
+    explicitCoverUrl ??
+    (themedFallback ? pickThemedCover(coverTheme, intent.intent_id) : null);
 
   const showOverlay = variant === 'my-posts' && !!coverUrl;
   const isLocationChip = (c: string) => c.startsWith('📍');
@@ -152,6 +171,11 @@ export function IntentCard({
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
+            onError={(e) => {
+              const img = e.currentTarget;
+              const fallback = coverFallbackForTheme(coverTheme);
+              if (img.src !== fallback) img.src = fallback;
+            }}
           />
           {showOverlay && overlayHasContent && (
             <div className="absolute bottom-2 left-2 flex flex-wrap items-center gap-1.5">
