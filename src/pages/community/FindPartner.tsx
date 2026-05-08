@@ -289,7 +289,7 @@ export default function FindPartner() {
             ) : (
               <div className="space-y-3">
                 {myPosts.map((it) => (
-                  <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} />
+                  <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} variant="my-posts" />
                 ))}
               </div>
             )

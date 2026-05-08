@@ -95,6 +95,16 @@ interface IntentCardProps {
   showShare?: boolean;
   to?: string;
   onClick?: () => void;
+  /**
+   * `my-posts`: when the cover photo is present, render the location
+   * and match-count chips as a frosted-glass strip in the bottom-left
+   * of the photo instead of the chip strip below the body. Used on
+   * Find a Match → My Posts and the desktop My Intents list so the
+   * user's own card reads at a glance — title + scope + photo, with
+   * the meta chips sitting on the photo. Falls back to the default
+   * layout when there's no cover photo to overlay on.
+   */
+  variant?: 'default' | 'my-posts';
 }
 
 export function IntentCard({
@@ -103,6 +113,7 @@ export function IntentCard({
   showShare = true,
   to,
   onClick,
+  variant = 'default',
 }: IntentCardProps) {
   const [shareOpen, setShareOpen] = useState(false);
   const chips = kindChips(intent);
@@ -114,6 +125,20 @@ export function IntentCard({
   };
 
   const coverUrl = getIntentCoverUrl(intent);
+
+  const showOverlay = variant === 'my-posts' && !!coverUrl;
+  const isLocationChip = (c: string) => c.startsWith('📍');
+  const overlayLocationChips = showOverlay ? chips.filter(isLocationChip) : [];
+  const stripChips = showOverlay ? chips.filter((c) => !isLocationChip(c)) : chips;
+  const matchesLabel =
+    intent.match_count > 0
+      ? t('screens.intents.match_countMatchValue1', {
+          match_count: intent.match_count,
+          value1: intent.match_count === 1 ? '' : 'es',
+        })
+      : null;
+  const overlayHasContent = overlayLocationChips.length > 0 || (showOverlay && matchesLabel !== null);
+  const stripMatchesLabel = !showOverlay && matchesLabel !== null ? matchesLabel : null;
 
   const card = (
     <div
@@ -128,6 +153,23 @@ export function IntentCard({
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
           />
+          {showOverlay && overlayHasContent && (
+            <div className="absolute bottom-2 left-2 flex flex-wrap items-center gap-1.5">
+              {overlayLocationChips.map((c, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-foreground text-xs shadow-sm"
+                >
+                  {c}
+                </span>
+              ))}
+              {matchesLabel && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-foreground text-xs shadow-sm">
+                  {matchesLabel}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
       <div className="p-3">
@@ -156,9 +198,9 @@ export function IntentCard({
       </div>
       <h3 className="font-semibold text-base leading-snug mb-1">{intent.title}</h3>
       <p className="text-sm text-muted-foreground line-clamp-1 mb-2">{intent.scope}</p>
-      {(chips.length > 0 || intent.match_count > 0) && (
+      {(stripChips.length > 0 || stripMatchesLabel !== null) && (
         <div className="flex flex-wrap items-center gap-1.5">
-          {chips.map((c, i) => (
+          {stripChips.map((c, i) => (
             <span
               key={i}
               className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted text-muted-foreground text-xs"
@@ -166,9 +208,9 @@ export function IntentCard({
               {c}
             </span>
           ))}
-          {intent.match_count > 0 && (
+          {stripMatchesLabel && (
             <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted text-muted-foreground text-xs">
-              {t('screens.intents.match_countMatchValue1', { match_count: intent.match_count, value1: intent.match_count === 1 ? "" : "es" })}
+              {stripMatchesLabel}
             </span>
           )}
         </div>
