@@ -197,9 +197,9 @@ export function IntentCard({
         </div>
       </div>
       <h3 className="font-semibold text-base leading-snug mb-1">{intent.title}</h3>
-      <p className="text-sm text-muted-foreground line-clamp-1 mb-2">{intent.scope}</p>
+      <p className="text-sm text-muted-foreground line-clamp-1">{intent.scope}</p>
       {(stripChips.length > 0 || stripMatchesLabel !== null) && (
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
           {stripChips.map((c, i) => (
             <span
               key={i}
