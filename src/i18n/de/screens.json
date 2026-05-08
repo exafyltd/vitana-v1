@@ -4767,7 +4767,9 @@
       "uploadCoverNow": "Foto hochladen",
       "setUniversalCover": "Universelles Cover wählen",
       "continueWithAi": "Mit KI fortfahren",
-      "post": "Posten"
+      "post": "Posten",
+      "interest": "Interesse",
+      "mutual": "Gegenseitig"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",
