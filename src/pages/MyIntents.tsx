@@ -118,6 +118,7 @@ export default function MyIntents() {
               key={intent.intent_id}
               intent={intent}
               to={`/intents/match/${intent.intent_id}`}
+              variant="my-posts"
             />
           ))}
         </div>
