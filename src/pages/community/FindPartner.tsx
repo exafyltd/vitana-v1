@@ -289,7 +289,7 @@ export default function FindPartner() {
             ) : (
               <div className="space-y-3">
                 {boardIntents.map((it) => (
-                  <IntentCard key={it.intent_id} intent={it} />
+                  <IntentCard key={it.intent_id} intent={it} themedFallback />
                 ))}
               </div>
             )
