@@ -32,6 +32,7 @@ import { ExpandableSearchButton } from '@/components/ui/expandable-search-button
 import { SplitBar, SplitBarList, SplitBarTrigger } from '@/components/ui/split-bar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import { Button } from '@/components/ui/button';
 import { Loader2, MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
@@ -318,7 +319,7 @@ export default function FindPartner() {
                     className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
                   >
                     <Avatar className="h-12 w-12 flex-shrink-0">
-                      {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ''} /> : null}
+                      <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name ?? ''} />
                       <AvatarFallback>{initialsFor(m.display_name)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">

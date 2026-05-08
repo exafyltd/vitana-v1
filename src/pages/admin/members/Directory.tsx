@@ -15,6 +15,7 @@ import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import {
   Table,
   TableBody,
@@ -129,7 +130,7 @@ export default function MembersDirectory() {
                   <TableRow key={m.user_id} className="cursor-pointer hover:bg-muted/50">
                     <TableCell>
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={m.avatar_url || undefined} alt={m.display_name || m.email} />
+                        <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name || m.email} />
                         <AvatarFallback className="text-xs">
                           {(m.display_name || m.email || "?").slice(0, 2).toUpperCase()}
                         </AvatarFallback>
