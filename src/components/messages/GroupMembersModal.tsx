@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal } from "lucide-react";
@@ -407,7 +408,7 @@ export default function GroupMembersModal({
                         onClick={() => addMember(searchUser)}
                       >
                         <Avatar className="w-6 h-6">
-                          <AvatarImage src={searchUser.avatar_url || undefined} />
+                          <AvatarImage src={getDisplayAvatarUrl(searchUser)} />
                           <AvatarFallback className="text-xs">
                             {searchUser.display_name?.[0] || searchUser.full_name?.[0] || '?'}
                           </AvatarFallback>
@@ -444,7 +445,7 @@ export default function GroupMembersModal({
                       className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
                     >
                       <Avatar className="w-10 h-10">
-                        <AvatarImage src={profile?.avatar_url || undefined} />
+                        <AvatarImage src={getDisplayAvatarUrl(profile)} />
                         <AvatarFallback>
                           {displayName[0]?.toUpperCase() || '?'}
                         </AvatarFallback>
