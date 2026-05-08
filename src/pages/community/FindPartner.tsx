@@ -196,8 +196,11 @@ export default function FindPartner() {
             <ExpandableSearchButton
               placeholder={t('screens.community.searchPostsMatches')}
               onSearch={() => { /* search wiring is per-view; leave as no-op for v1 */ }}
-              filterLabel={filterLabel}
-              onFilterClick={() => setPickerOpen(true)}
+              // Mobile uses the chip + sheet picker to switch views;
+              // desktop has the SplitBar tab bar directly below this
+              // utility row, so the chip would be redundant.
+              filterLabel={isMobile ? filterLabel : undefined}
+              onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
             />
             <Button
               onClick={() => setComposerOpen(true)}
@@ -243,11 +246,11 @@ export default function FindPartner() {
                 body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
                 cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
+            ) : isMobile ? (
               // Bottom padding leaves ~ a card height of clear space so the
               // primary CTA on the last card stays above the fixed mobile
               // bottom nav and the central Orb FAB.
-              <div className="space-y-5 pb-32 sm:pb-8 max-w-md mx-auto sm:max-w-none">
+              <div className="space-y-5 pb-32 max-w-md mx-auto">
                 {matches.map((m) => (
                   <FindPartnerMatchCard
                     key={m.match_id}
@@ -259,6 +262,19 @@ export default function FindPartner() {
                   />
                 ))}
               </div>
+            ) : (
+              renderNewsGrid(matches, (m, sizeClass) => (
+                <FindPartnerMatchCard
+                  key={m.match_id}
+                  match={m}
+                  vertical={m.vertical}
+                  sourceCategory={m.source_category}
+                  perspective="outgoing"
+                  onAction={() => void refresh()}
+                  desktop
+                  className={`h-full ${sizeClass === 'col-span-6' ? 'min-h-[320px] md:min-h-[360px]' : 'min-h-[280px]'}`}
+                />
+              ))
             )
           )}
 
@@ -287,12 +303,22 @@ export default function FindPartner() {
                 body="Post your dance or fitness wish — Vitana will match you with people who fit."
                 cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
+            ) : isMobile ? (
               <div className="space-y-3">
                 {myPosts.map((it) => (
                   <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} variant="my-posts" />
                 ))}
               </div>
+            ) : (
+              renderNewsGrid(myPosts, (it, sizeClass) => (
+                <IntentCard
+                  key={it.intent_id}
+                  intent={it}
+                  to={`/intents/match/${it.intent_id}`}
+                  desktop
+                  className={`h-full ${sizeClass === 'col-span-6' ? 'min-h-[320px] md:min-h-[360px]' : 'min-h-[280px]'}`}
+                />
+              ))
             )
           )}
 
@@ -390,6 +416,42 @@ export default function FindPartner() {
       />
     </>
   );
+}
+
+/**
+ * Render a list of items in the same alternating big+small+small /
+ * small+small+big news-style grid used by the Community News surface.
+ * Even rows render col-span-6 + col-span-3 + col-span-3; odd rows
+ * mirror the layout. The renderItem callback receives the matching
+ * Tailwind size class so cards can pick a min-height that suits the
+ * column width.
+ */
+function renderNewsGrid<T>(
+  items: T[],
+  renderItem: (item: T, sizeClass: 'col-span-6' | 'col-span-3') => React.ReactNode,
+): React.ReactNode {
+  const rows: React.ReactNode[] = [];
+  for (let i = 0; i < items.length; i += 3) {
+    const rowItems = items.slice(i, i + 3);
+    const isEvenRow = (i / 3) % 2 === 0;
+    const sizes: Array<'col-span-6' | 'col-span-3'> = isEvenRow
+      ? ['col-span-6', 'col-span-3', 'col-span-3']
+      : ['col-span-3', 'col-span-3', 'col-span-6'];
+    rows.push(
+      <div
+        key={i}
+        className="grid grid-cols-12 gap-6 mb-6"
+        style={{ minHeight: '280px' }}
+      >
+        {rowItems.map((it, idx) => (
+          <div key={idx} className={sizes[idx]}>
+            {renderItem(it, sizes[idx])}
+          </div>
+        ))}
+      </div>,
+    );
+  }
+  return <>{rows}</>;
 }
 
 interface EmptyStateProps {
