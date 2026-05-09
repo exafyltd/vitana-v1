@@ -2,6 +2,7 @@ import { UnifiedGroupCard } from "@/types/community";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface GroupImageCardProps {
   group: UnifiedGroupCard;
@@ -49,8 +50,7 @@ export const GroupImageCard = ({
       {/* Match Score Badge */}
       {showMatchScore && group.match_score && (
         <div className="absolute top-3 right-3 z-20">
-          <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white shadow-lg">
-            {group.match_score}% Match
+          <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white shadow-lg">{t('screens.groups.match_scoreMatch', { match_score: group.match_score })}
           </span>
         </div>
       )}
@@ -100,8 +100,7 @@ export const GroupImageCard = ({
             ? "top-2 right-2 px-2.5 py-1 text-[11px]"
             : "top-3 right-3 px-3 py-1.5 text-[12px]"
         )}
-      >
-        Join
+      >{t('screens.groups.join')}
       </button>
     </div>
   );

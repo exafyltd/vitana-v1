@@ -19,6 +19,7 @@ import { useReminderStream, ReminderFirePayload } from "@/hooks/useReminderStrea
 import { ackReminder, completeReminder, snoozeReminder, deleteReminder } from "@/lib/reminders-api";
 import { Button } from "@/components/ui/button";
 import { Bell, Check, Clock, X } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 let sharedCtx: AudioContext | null = null;
 function getCtx(): AudioContext | null {
@@ -154,7 +155,7 @@ export const ReminderInterruptOverlay: React.FC = () => {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Reminder"
+      aria-label={t('screens.reminders.reminder')}
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
     >
       <div className="w-full max-w-md rounded-2xl bg-background p-6 shadow-2xl border-2 border-primary">
@@ -173,15 +174,15 @@ export const ReminderInterruptOverlay: React.FC = () => {
         <div className="flex flex-col gap-2 mt-4">
           <Button onClick={onComplete} disabled={busy} size="lg" className="w-full">
             <Check className="h-4 w-4 mr-2" />
-            Mark done
+            {t('screens.reminders.markDone')}
           </Button>
           <Button onClick={onSnooze} disabled={busy} size="lg" variant="outline" className="w-full">
             <Clock className="h-4 w-4 mr-2" />
-            Snooze 10 min
+            {t('screens.reminders.snooze10Min')}
           </Button>
           <Button onClick={onDismiss} disabled={busy} size="lg" variant="ghost" className="w-full">
             <X className="h-4 w-4 mr-2" />
-            Dismiss
+            {t('screens.reminders.dismiss')}
           </Button>
         </div>
       </div>

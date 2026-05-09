@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle, XCircle, Copy } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 const SQL_SCRIPT = `INSERT INTO public.global_community_events (title, description, event_type, location, virtual_link, start_time, end_time, max_participants, participant_count, image_url, created_by, metadata) 
 VALUES
@@ -57,10 +58,7 @@ export default function InitEvents() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(SQL_SCRIPT);
     setCopied(true);
-    toast({
-      title: "Copied!",
-      description: "SQL script copied to clipboard",
-    });
+    notify('toasts.admin.copied2', 'toasts.admin.sqlScriptCopiedClipboard');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -81,15 +79,15 @@ export default function InitEvents() {
       <div className="max-w-3xl w-full bg-card rounded-lg shadow-lg p-8 space-y-6">
         <div className="text-center space-y-4">
           <CheckCircle className="w-16 h-16 mx-auto text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">Generate 40 Summer Events</h1>
+          <h1 className="text-2xl font-bold text-foreground">{t('screens.admin.generate40SummerEvents')}</h1>
           <p className="text-muted-foreground">
-            Run the SQL script below in your Supabase SQL Editor to instantly create all 40 Maxina Summer 2026 events.
+            {t('screens.admin.runSqlScriptBelowYourSupabase')}
           </p>
         </div>
 
         <div className="bg-muted/50 rounded-lg p-6 space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-foreground">SQL Script (Copy This):</h2>
+            <h2 className="font-semibold text-foreground">{t('screens.admin.sqlScriptCopyThis')}</h2>
             <button
               onClick={copyToClipboard}
               className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
@@ -104,13 +102,13 @@ export default function InitEvents() {
         </div>
 
         <div className="bg-muted/50 rounded-lg p-6 space-y-4">
-          <h2 className="font-semibold text-foreground">Instructions:</h2>
+          <h2 className="font-semibold text-foreground">{t('screens.admin.instructions')}</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-            <li>Click "Copy SQL" button above</li>
-            <li>Click "Open SQL Editor" below</li>
-            <li>Paste the SQL into the editor</li>
-            <li>Click "Run" to insert all 40 events</li>
-            <li>Click "View Events" to see them</li>
+            <li>{t('screens.admin.clickCopySqlButtonAbove')}</li>
+            <li>{t('screens.admin.clickOpenSqlEditorBelow')}</li>
+            <li>{t('screens.admin.pasteSqlIntoEditor')}</li>
+            <li>{t('screens.admin.clickRunInsertAll40Events')}</li>
+            <li>{t('screens.admin.clickViewEventsSeeThem')}</li>
           </ol>
         </div>
 
@@ -120,14 +118,12 @@ export default function InitEvents() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            Open SQL Editor →
+          >{t('screens.admin.openSqlEditor')}
           </a>
           <button
             onClick={() => navigate('/admin/community/events')}
             className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors font-medium"
-          >
-            View Events
+          >{t('screens.admin.viewEvents')}
           </button>
         </div>
       </div>

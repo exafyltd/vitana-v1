@@ -7,6 +7,7 @@ import { NotificationComposer, ComposeFormData } from "@/components/admin/Notifi
 import { NotificationPreview } from "@/components/admin/NotificationPreview";
 import { adminNotificationsNavigation } from "@/config/navigation";
 import { useComposeNotification } from "@/hooks/useAdminNotifications";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 // TODO: Replace with dynamic tenant selection when multi-tenant admin is built
 const DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000000";
@@ -52,16 +53,9 @@ export default function NotificationsCompose() {
 
       const result = await composeMutation.mutateAsync(payload as any);
 
-      toast({
-        title: "Notification Sent",
-        description: `Dispatched to ${result.sent_to} user(s)`,
-      });
+      notify('toasts.admin.notificationSent');
     } catch (err: any) {
-      toast({
-        title: "Send Failed",
-        description: err.message || "Failed to send notification",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.sendFailed2');
     }
   };
 
@@ -70,7 +64,7 @@ export default function NotificationsCompose() {
       <SubNavigation items={adminNotificationsNavigation} />
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Compose Notification"
+          title={t('screens.admin.composeNotification')}
           description="Send push and in-app notifications to your users"
         />
 

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Brain, Calendar, Clock, TrendingUp, Sparkles } from "lucide-react";
 import { NutritionPlanData } from "@/types/recipe";
+import { t } from '@/lib/i18n-toast';
 
 interface NutritionOverviewCardProps {
   planData: NutritionPlanData;
@@ -21,15 +22,15 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-xl font-bold">Your Nutrition Plan, Powered by Autopilot</h2>
+            <h2 className="text-xl font-bold">{t('screens.health.yourNutritionPlanPoweredByAutopilot')}</h2>
           </div>
           <p className="text-sm text-muted-foreground">
-            AI-optimized meal guidance tailored to your preferences, health score, and activity goals
+            {t('screens.health.aioptimizedMealGuidanceTailoredYourPreferences')}
           </p>
         </div>
         <Badge variant="secondary" className="gap-1">
           <Sparkles className="w-3 h-3" />
-          AI Optimized
+          {t('screens.health.aiOptimized')}
         </Badge>
       </div>
       
@@ -39,7 +40,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-xs font-medium text-muted-foreground">Goal Focus</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.goalFocus')}</span>
           </div>
           <p className="text-lg font-bold">{planData.goalFocus || 'Balanced Nutrition'}</p>
         </div>
@@ -48,7 +49,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <span className="text-xs font-medium text-muted-foreground">Schedule</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.schedule')}</span>
           </div>
           <p className="text-lg font-bold">
             {planData.schedule || '3 meals + 2 snacks'}
@@ -62,13 +63,10 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <div className="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-            <span className="text-xs font-medium text-muted-foreground">Progress</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('screens.health.progress')}</span>
           </div>
-          <p className="text-lg font-bold">
-            Week {planData.currentWeek || 1} of {planData.totalWeeks || 4}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {planData.completionPercentage || 0}% complete
+          <p className="text-lg font-bold">{t('screens.health.weekValue0Value1', { value0: planData.currentWeek || 1, value1: planData.totalWeeks || 4 })}</p>
+          <p className="text-xs text-muted-foreground">{t('screens.health.value0Complete2', { value0: planData.completionPercentage || 0 })}
           </p>
         </div>
       </div>
@@ -77,7 +75,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">
-            Tracking your weekly consistency...
+            {t('screens.health.trackingYourWeeklyConsistency')}
           </span>
           <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
             {planData.completionPercentage || 0}%
@@ -95,11 +93,9 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         <Brain className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
         <div className="flex-1">
           <div className="flex items-start justify-between gap-3 mb-1">
-            <p className="text-sm font-medium">AI Insight</p>
+            <p className="text-sm font-medium">{t('screens.health.aiInsight')}</p>
             {planData.lastUpdated && (
-              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                Last updated {planData.lastUpdated}
-              </span>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">{t('screens.health.lastUpdatedLastupdated', { lastUpdated: planData.lastUpdated })}</span>
             )}
           </div>
           <p className="text-sm text-muted-foreground italic">
@@ -115,7 +111,7 @@ export function NutritionOverviewCard({ planData, onRecalibrate }: NutritionOver
         onClick={onRecalibrate}
       >
         <Sparkles className="w-4 h-4 mr-2" />
-        Recalibrate Plan
+        {t('screens.health.recalibratePlan')}
       </Button>
     </Card>
   );

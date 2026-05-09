@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
-// VTID-LIVEKIT-FOUNDATION: useOrbVoiceUnified picks Vertex or LiveKit at
-// runtime based on system_config['voice.active_provider']. Surface contract
-// matches useOrbVoiceClient — drop-in swap.
-import { useOrbVoiceUnified as useOrbVoiceClient } from '@/hooks/useOrbVoiceUnified';
+// VTID-02695: ROLLBACK of useOrbVoiceUnified wire-up — useLiveKitVoice's
+// livekit-client import was crashing the overlay on iOS WebView and the
+// production ORB disappeared from mobile. Reverting to the original
+// Vertex-only useOrbVoiceClient until the LiveKit hook is hardened
+// (lazy-loaded SDK / try/catch around imports / WebRTC capability gate).
+import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
@@ -16,10 +18,10 @@ import { AutopilotPopup } from '@/components/AutopilotPopup';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
-import { toast } from 'sonner';
 import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
 import { useAIConsent } from '@/hooks/useAIConsent';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 export function VitanaAudioOverlay() {
   const { 
@@ -198,16 +200,16 @@ export function VitanaAudioOverlay() {
         setConfig(prev => ({ ...prev, enableCamera: false }));
         stopCapture();
         setCameraActive(false);
-        toast.success('Camera stopped');
+        notifySuccess('toasts.audio.cameraStopped');
       } else {
         setConfig(prev => ({ ...prev, enableCamera: true, enableScreen: false }));
         await startCapture();
         setCameraActive(true);
-        toast.success('Camera started');
+        notifySuccess('toasts.audio.cameraStarted');
       }
     } catch (error) {
       console.error('Camera toggle error:', error);
-      toast.error('Failed to toggle camera');
+      notifyError('toasts.audio.failedToggleCamera');
     }
   };
 
@@ -217,16 +219,16 @@ export function VitanaAudioOverlay() {
         setConfig(prev => ({ ...prev, enableScreen: false }));
         stopCapture();
         setScreenShareActive(false);
-        toast.success('Screen sharing stopped');
+        notifySuccess('toasts.audio.screenSharingStopped');
       } else {
         setConfig(prev => ({ ...prev, enableScreen: true, enableCamera: false }));
         await startCapture();
         setScreenShareActive(true);
-        toast.success('Screen sharing started');
+        notifySuccess('toasts.audio.screenSharingStarted');
       }
     } catch (error) {
       console.error('Screen share toggle error:', error);
-      toast.error('Failed to toggle screen sharing');
+      notifyError('toasts.audio.failedToggleScreenSharing');
     }
   };
 
@@ -266,7 +268,7 @@ export function VitanaAudioOverlay() {
         transition={{ duration: 0.3 }}
         className="fixed inset-0 z-[100] bg-background/10 backdrop-blur-xl"
         role="dialog"
-        aria-label="VITANA Audio Mode"
+        aria-label={t('screens.audio.vitanaAudioMode')}
         style={{ pointerEvents: 'auto' }}
       >
         {/* Subtle radial gradient */}
@@ -317,7 +319,7 @@ export function VitanaAudioOverlay() {
                   <Textarea
                     value={textInputValue}
                     onChange={(e) => setTextInputValue(e.target.value)}
-                    placeholder="Type your message..."
+                    placeholder={t('screens.audio.typeYourMessage')}
                     className="min-h-[80px] resize-none bg-transparent border-0 focus-visible:ring-0"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
@@ -332,8 +334,7 @@ export function VitanaAudioOverlay() {
                       size="sm"
                       onClick={() => setTextInputVisible(false)}
                       className="text-xs text-muted-foreground"
-                    >
-                      Return to voice
+                    >{t('screens.audio.returnVoice')}
                     </Button>
                     <Button
                       size="sm"
@@ -342,7 +343,7 @@ export function VitanaAudioOverlay() {
                       className="gap-2"
                     >
                       <Send className="h-3.5 w-3.5" />
-                      Send
+                      {t('screens.audio.send')}
                     </Button>
                   </div>
                 </div>

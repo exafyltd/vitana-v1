@@ -34,7 +34,7 @@ export function MobileHealthSupplementsTab() {
             onClick={() => setActiveFilter(cat)}
             className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
               activeFilter === cat
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-pill-nutrition-tint text-pill-nutrition-accent'
                 : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >

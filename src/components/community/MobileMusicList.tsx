@@ -2,7 +2,7 @@ import { Play, Pause, Heart, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { useBookmarks } from '@/hooks/useBookmarks';
-import { toast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface MusicTrack {
   id: string;
@@ -69,11 +69,7 @@ export function MobileMusicList({ tracks }: MobileMusicListProps) {
       }
     } else {
       await navigator.clipboard.writeText(shareData.url);
-      toast({
-        title: "Link copied",
-        description: "Music link copied to clipboard",
-        duration: 2000,
-      });
+      notify('toasts.community.linkCopied', 'toasts.community.musicLinkCopiedClipboard');
     }
   };
 
@@ -83,8 +79,8 @@ export function MobileMusicList({ tracks }: MobileMusicListProps) {
         <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
           <Play className="h-8 w-8 text-muted-foreground" />
         </div>
-        <p className="text-muted-foreground">No music uploaded yet</p>
-        <p className="text-sm text-muted-foreground/70 mt-1">Be the first to share!</p>
+        <p className="text-muted-foreground">{t('screens.community.noMusicUploadedYet')}</p>
+        <p className="text-sm text-muted-foreground/70 mt-1">{t('screens.community.firstShare')}</p>
       </div>
     );
   }

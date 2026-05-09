@@ -11,9 +11,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { adminSystemNavigation } from "@/config/navigation";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BootstrapResult {
   email: string;
@@ -44,15 +45,15 @@ export default function Bootstrap() {
   if (!hasPermission("exafy.admin")) {
     return (
       <AppLayout>
-        <SEO title="Admin Bootstrap - Access Denied" />
+        <SEO title={t('screens.admin.adminBootstrapAccessDenied')} />
         <div className="min-h-screen flex items-center justify-center p-4">
           <Card className="max-w-md w-full">
             <CardContent className="flex flex-col items-center space-y-4 p-6">
               <AlertCircle className="h-16 w-16 text-destructive" />
               <div className="text-center space-y-2">
-                <h2 className="text-xl font-semibold">Access Restricted</h2>
+                <h2 className="text-xl font-semibold">{t('screens.admin.accessRestricted')}</h2>
                 <p className="text-muted-foreground">
-                  You must be an Exafy administrator to access the bootstrap interface.
+                  {t('screens.admin.youMustExafyAdministratorAccessBootstrap')}
                 </p>
               </div>
             </CardContent>
@@ -69,17 +70,10 @@ export default function Bootstrap() {
       if (error) throw error;
 
       setCurrentAdmins(data.admins || []);
-      toast({
-        title: "Admins loaded",
-        description: `Found ${data.admins?.length || 0} super administrators`,
-      });
+      notify('toasts.admin.adminsLoaded');
     } catch (error) {
       console.error('Error loading admins:', error);
-      toast({
-        title: "Error loading admins",
-        description: "Failed to load current administrators",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.errorLoadingAdmins', 'toasts.admin.failedLoadCurrentAdministrators');
     } finally {
       setLoadingAdmins(false);
     }
@@ -93,20 +87,13 @@ export default function Bootstrap() {
 
       if (error) throw error;
 
-      toast({
-        title: "Admin removed",
-        description: `${email} is no longer a super administrator`,
-      });
+      notify('toasts.admin.adminRemoved');
 
       // Reload the admin list
       await loadCurrentAdmins();
     } catch (error) {
       console.error('Error removing admin:', error);
-      toast({
-        title: "Error removing admin",
-        description: error instanceof Error ? error.message : "Failed to remove administrator",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.errorRemovingAdmin');
     }
   };
 
@@ -117,20 +104,12 @@ export default function Bootstrap() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (!emailRegex.test(email)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.invalidEmail', 'toasts.admin.pleaseEnterValidEmailAddress');
       return;
     }
 
     if (adminEmails.includes(email)) {
-      toast({
-        title: "Email already added",
-        description: "This email is already in the list",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.emailAlreadyAdded', 'toasts.admin.thisEmailAlreadyList');
       return;
     }
 
@@ -144,11 +123,7 @@ export default function Bootstrap() {
 
   const runBootstrap = async () => {
     if (adminEmails.length === 0) {
-      toast({
-        title: "No emails to process",
-        description: "Please add at least one email address",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.noEmailsProcess', 'toasts.admin.pleaseAddAtLeastOneEmail');
       return;
     }
 
@@ -167,10 +142,7 @@ export default function Bootstrap() {
       // Show success notification
       const successful = data.results?.filter((r: BootstrapResult) => r.status === 'elevated').length || 0;
       if (successful > 0) {
-        toast({
-          title: "Bootstrap completed",
-          description: `Successfully elevated ${successful} user(s) to admin`,
-        });
+        notify('toasts.admin.bootstrapCompleted');
       }
 
       // Reload current admins
@@ -181,11 +153,7 @@ export default function Bootstrap() {
       
     } catch (error) {
       console.error('Bootstrap error:', error);
-      toast({
-        title: "Bootstrap failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.bootstrapFailed');
     } finally {
       setIsLoading(false);
       setShowConfirmDialog(false);
@@ -223,12 +191,12 @@ export default function Bootstrap() {
 
   return (
     <AppLayout>
-      <SEO title="Admin Bootstrap" description="Manage super administrator accounts" />
+      <SEO title={t('screens.admin.adminBootstrap')} description="Manage super administrator accounts" />
       <SubNavigation items={adminSystemNavigation} />
       
       <div className="p-6 space-y-6">
         <AdminHeader
-          title="Admin Bootstrap"
+          title={t('screens.admin.adminBootstrap')}
           description="Elevate users to Exafy super administrators and manage admin accounts"
           emoji="🛡️"
         />
@@ -239,17 +207,17 @@ export default function Bootstrap() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="h-5 w-5" />
-                Add Admin Emails
+                {t('screens.admin.addAdminEmails')}
               </CardTitle>
               <CardDescription>
-                Add email addresses to elevate to super administrator status
+                {t('screens.admin.addEmailAddressesElevateSuperAdministrator')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Input
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder={t('screens.admin.adminExampleCom')}
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addEmail()}
@@ -261,7 +229,7 @@ export default function Bootstrap() {
 
               {adminEmails.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium">Emails to process ({adminEmails.length})</h4>
+                  <h4 className="text-sm font-medium">{t('screens.admin.emailsProcessLength', { length: adminEmails.length })}</h4>
                   <div className="space-y-1">
                     {adminEmails.map((email) => (
                       <div key={email} className="flex items-center justify-between p-2 bg-muted rounded">
@@ -296,10 +264,10 @@ export default function Bootstrap() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Current Super Admins
+                {t('screens.admin.currentSuperAdmins')}
               </CardTitle>
               <CardDescription>
-                List of current Exafy super administrators
+                {t('screens.admin.listCurrentExafySuperAdministrators')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -326,7 +294,7 @@ export default function Bootstrap() {
                         <div className="flex items-center gap-2">
                           <Badge variant="secondary">
                             <Shield className="h-3 w-3 mr-1" />
-                            Admin
+                            {t('screens.admin.admin')}
                           </Badge>
                           <Button
                             variant="ghost"
@@ -342,7 +310,7 @@ export default function Bootstrap() {
                   </div>
                 ) : (
                   <div className="text-center py-4 text-muted-foreground">
-                    No administrators loaded. Click refresh to load current admins.
+                    {t('screens.admin.noAdministratorsLoadedClickRefreshLoad')}
                   </div>
                 )}
               </div>
@@ -354,8 +322,8 @@ export default function Bootstrap() {
         {bootstrapResults.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Bootstrap Results</CardTitle>
-              <CardDescription>Results from the last bootstrap operation</CardDescription>
+              <CardTitle>{t('screens.admin.bootstrapResults')}</CardTitle>
+              <CardDescription>{t('screens.admin.resultsFromLastBootstrapOperation')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -384,8 +352,7 @@ export default function Bootstrap() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            <strong>Security Notice:</strong> Super administrators have full access to all tenant data and administrative functions. 
-            Only elevate trusted team members to this role. All bootstrap actions are logged for security auditing.
+            <strong>{t('screens.admin.securityNotice')}</strong>{t('screens.admin.superAdministratorsHaveFullAccessAll')}
           </AlertDescription>
         </Alert>
       </div>
@@ -394,14 +361,12 @@ export default function Bootstrap() {
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm Admin Bootstrap</DialogTitle>
-            <DialogDescription>
-              You are about to elevate {adminEmails.length} user(s) to Exafy super administrator status.
-              This action cannot be undone through this interface.
+            <DialogTitle>{t('screens.admin.confirmAdminBootstrap')}</DialogTitle>
+            <DialogDescription>{t('screens.admin.youAboutElevateLengthUserS', { length: adminEmails.length })}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">
-            <p className="text-sm font-medium">Emails to be processed:</p>
+            <p className="text-sm font-medium">{t('screens.admin.emailsProcessed')}</p>
             <div className="bg-muted p-2 rounded text-sm">
               {adminEmails.map((email, index) => (
                 <div key={email}>{index + 1}. {email}</div>
@@ -410,7 +375,7 @@ export default function Bootstrap() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
             <Button onClick={runBootstrap} disabled={isLoading}>
               {isLoading ? "Processing..." : "Confirm Bootstrap"}

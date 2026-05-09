@@ -14,9 +14,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { communityNavigation } from "@/config/navigation";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 type Kind = "bug" | "ux_issue" | "support_question" | "account_issue" | "marketplace_claim" | "feature_request" | "feedback";
 
@@ -102,7 +103,7 @@ export default function TalkToVitana() {
 
   const handleSubmit = async () => {
     if (!text.trim()) {
-      toast({ title: "Add a description", description: "Tell Vitana what's on your mind.", variant: "destructive" });
+      notifyError('toasts.community.addDescription', 'toasts.community.tellVitanaWhatSYourMind');
       return;
     }
     setSubmitting(true);
@@ -128,16 +129,9 @@ export default function TalkToVitana() {
       setText("");
       setKind("feedback");
       await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-      toast({
-        title: "Thanks — Vitana has it",
-        description: `Ticket ${created.ticket_number} logged. We'll follow up here.`,
-      });
+      notify('toasts.community.thanksVitanaHasIt');
     } catch (err) {
-      toast({
-        title: "Couldn't submit",
-        description: err instanceof Error ? err.message : "Try again in a moment.",
-        variant: "destructive",
-      });
+      notifyError('toasts.community.couldnTSubmit');
     } finally {
       setSubmitting(false);
     }
@@ -146,11 +140,11 @@ export default function TalkToVitana() {
   return (
     <AppLayout>
       <SEO
-        title="Talk to Vitana"
+        title={t('screens.community.talkVitana')}
         description="Report bugs, ask questions, or share feedback. Vitana and her colleagues will follow up."
       />
       <StandardHeader
-        title="Talk to Vitana"
+        title={t('screens.community.talkVitana')}
         description="Bugs, questions, feedback — Vitana hands off to a specialist colleague when the topic is outside her domain."
       />
       <SubNavigation items={communityNavigation} activeId="overview" />
@@ -159,10 +153,10 @@ export default function TalkToVitana() {
         <Card className="space-y-3 p-4">
           <div className="flex items-center gap-2 text-sm font-medium">
             <MessageSquare className="h-4 w-4" />
-            What's on your mind?
+            {t('screens.community.whatSYourMind')}
           </div>
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">Topic</label>
+            <label className="mb-1 block text-xs text-muted-foreground">{t('screens.community.topic')}</label>
             <Select value={kind} onValueChange={v => setKind(v as Kind)}>
               <SelectTrigger>
                 <SelectValue />
@@ -178,7 +172,7 @@ export default function TalkToVitana() {
             </Select>
           </div>
           <Textarea
-            placeholder="Describe what happened, what you tried, what you expected…"
+            placeholder={t('screens.community.describeWhatHappenedWhatYouTried')}
             value={text}
             onChange={e => setText(e.target.value)}
             rows={6}
@@ -192,18 +186,18 @@ export default function TalkToVitana() {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Vitana, Devon, Sage, Atlas, and Mira are AI specialists. A human reviews actions before they apply to your account.
+            {t('screens.community.vitanaDevonSageAtlasMiraAi')}
           </p>
         </Card>
 
         <div className="space-y-2">
-          <h2 className="text-sm font-semibold">Your reports</h2>
-          {ticketsQuery.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+          <h2 className="text-sm font-semibold">{t('screens.community.yourReports')}</h2>
+          {ticketsQuery.isLoading && <p className="text-sm text-muted-foreground">{t('screens.community.loading2')}</p>}
           {ticketsQuery.error && (
-            <p className="text-sm text-destructive">Couldn't load your reports.</p>
+            <p className="text-sm text-destructive">{t('screens.community.couldnTLoadYourReports')}</p>
           )}
           {ticketsQuery.data?.length === 0 && (
-            <p className="text-sm text-muted-foreground">Nothing here yet — your reports will appear above.</p>
+            <p className="text-sm text-muted-foreground">{t('screens.community.nothingHereYetYourReportsWill')}</p>
           )}
           {ticketsQuery.data?.map(t => {
             const pill = STATUS_PILL[t.status] ?? { label: t.status, tone: "outline" as const };
@@ -214,9 +208,9 @@ export default function TalkToVitana() {
                 const res = await communityFetch(`/api/v1/feedback/tickets/${t.id}/confirm`, { method: "POST" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-                toast({ title: "Thanks", description: "We'll keep an eye on it." });
+                notify('toasts.community.thanks', 'toasts.community.weLlKeepEyeIt');
               } catch (err) {
-                toast({ title: "Couldn't confirm", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+                notifyError('toasts.community.couldnTConfirm');
               }
             };
             const handleReopen = async () => {
@@ -227,9 +221,9 @@ export default function TalkToVitana() {
                   throw new Error(body.details ?? body.error ?? `HTTP ${res.status}`);
                 }
                 await queryClient.invalidateQueries({ queryKey: ["feedback-tickets-mine"] });
-                toast({ title: "Reopened", description: "Vitana will follow up." });
+                notify('toasts.community.reopened', 'toasts.community.vitanaWillFollowUp');
               } catch (err) {
-                toast({ title: "Couldn't reopen", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+                notifyError('toasts.community.couldnTReopen');
               }
             };
 
@@ -241,10 +235,10 @@ export default function TalkToVitana() {
                       <span className="font-medium">{t.ticket_number}</span>
                       <Badge variant={pill.tone} className="text-[10px]">{pill.label}</Badge>
                       {t.structured_fields?.voice_origin && (
-                        <Badge variant="outline" className="text-[10px]">via voice</Badge>
+                        <Badge variant="outline" className="text-[10px]">{t('screens.community.viaVoice')}</Badge>
                       )}
                       {t.resolver_agent && (
-                        <span className="text-xs text-muted-foreground">handled by {t.resolver_agent}</span>
+                        <span className="text-xs text-muted-foreground">{t('screens.community.handledByResolver_agent', { resolver_agent: t.resolver_agent })}</span>
                       )}
                     </div>
                     <div className="text-xs text-muted-foreground">
@@ -254,15 +248,13 @@ export default function TalkToVitana() {
                 </div>
                 {awaitingConfirm && (
                   <div className="rounded-md border border-primary/40 bg-primary/5 p-3 text-sm">
-                    <div className="mb-2 font-medium">
-                      {t.resolver_agent
+                    <div className="mb-2 font-medium">{t('screens.community.value0Value1DidItWork', { value0: t.resolver_agent
                         ? `${t.resolver_agent.charAt(0).toUpperCase() + t.resolver_agent.slice(1)} says this is fixed.`
-                        : "We think this is fixed."}{" "}
-                      Did it work?
+                        : "We think this is fixed.", value1: " " })}
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" onClick={handleConfirm}>Yes, fixed</Button>
-                      <Button size="sm" variant="outline" onClick={handleReopen}>No, still broken</Button>
+                      <Button size="sm" onClick={handleConfirm}>{t('screens.community.yesFixed')}</Button>
+                      <Button size="sm" variant="outline" onClick={handleReopen}>{t('screens.community.noStillBroken')}</Button>
                     </div>
                   </div>
                 )}

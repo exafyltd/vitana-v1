@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar as CalendarIcon, Clock, Users, Bell, ChevronRight, AlertCircle, CheckCircle, Plus, Target, TrendingUp } from "lucide-react";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -50,10 +51,10 @@ export default function Calendar() {
 
   return (
     <AppLayout>
-      <SEO title="Calendar Overview | VITANA" description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
+      <SEO title={t('screens.calendar.calendarOverviewVitana')} description="Your comprehensive calendar and scheduling hub" canonical={window.location.href} />
       
       <StandardHeader
-        title="Calendar Overview"
+        title={t('screens.calendar.calendarOverview')}
         description="Your comprehensive calendar and scheduling hub with AI-powered insights and reminders."
         emoji="📅"
       />
@@ -64,39 +65,39 @@ export default function Calendar() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Today's Events</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.todaySEvents')}</CardTitle>
                 <CalendarIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{todaysEvents.length}</div>
                 <p className="text-xs text-muted-foreground">
-                  {todaysEvents.filter(e => e.urgent).length} urgent
+                  {todaysEvents.filter(e => e.urgent).length}{t('screens.calendar.urgent')}
                 </p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Pending Reminders</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.pendingReminders')}</CardTitle>
                 <Bell className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{upcomingReminders.length}</div>
                 <p className="text-xs text-muted-foreground">
-                  {upcomingReminders.filter(r => r.priority === 'high').length} high priority
+                  {upcomingReminders.filter(r => r.priority === 'high').length}{t('screens.calendar.highPriority')}
                 </p>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Week Completion</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('screens.calendar.weekCompletion')}</CardTitle>
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">68%</div>
                 <p className="text-xs text-muted-foreground">
-                  Average across all goals
+                  {t('screens.calendar.averageAcrossAllGoals')}
                 </p>
               </CardContent>
             </Card>
@@ -109,7 +110,7 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  Today's Schedule
+                  {t('screens.calendar.todaySSchedule')}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{todayFormatted}</p>
               </CardHeader>
@@ -138,16 +139,16 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="h-5 w-5" />
-                  Active Reminders
+                  {t('screens.calendar.activeReminders')}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">Upcoming notifications</p>
+                <p className="text-sm text-muted-foreground">{t('screens.calendar.upcomingNotifications')}</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 {upcomingReminders.map((reminder, index) => (
                   <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
                     <div>
                       <div className="font-medium">{reminder.title}</div>
-                      <div className="text-sm text-muted-foreground">Due: {reminder.due}</div>
+                      <div className="text-sm text-muted-foreground">{t('screens.calendar.dueDue', { due: reminder.due })}</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`px-2 py-1 rounded text-xs ${
@@ -169,9 +170,9 @@ export default function Calendar() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  Weekly Progress
+                  {t('screens.calendar.weeklyProgress')}
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">Your goal achievements this week</p>
+                <p className="text-sm text-muted-foreground">{t('screens.calendar.yourGoalAchievementsThisWeek')}</p>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -187,7 +188,7 @@ export default function Calendar() {
                           style={{ width: `${goal.percentage}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-muted-foreground">{goal.percentage}% complete</div>
+                      <div className="text-xs text-muted-foreground">{t('screens.calendar.percentageComplete', { percentage: goal.percentage })}</div>
                     </div>
                   ))}
                 </div>
@@ -198,8 +199,8 @@ export default function Calendar() {
           {/* Quick Access */}
           <Card className="mt-8">
             <CardHeader>
-              <CardTitle>Quick Access</CardTitle>
-              <p className="text-sm text-muted-foreground">Jump to different calendar views</p>
+              <CardTitle>{t('screens.calendar.quickAccess')}</CardTitle>
+              <p className="text-sm text-muted-foreground">{t('screens.calendar.jumpDifferentCalendarViews')}</p>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -209,7 +210,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/month')}
                 >
                   <CalendarIcon className="h-6 w-6" />
-                  <span>Month</span>
+                  <span>{t('screens.calendar.month')}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -217,7 +218,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/appointments')}
                 >
                   <Users className="h-6 w-6" />
-                  <span>Appointments</span>
+                  <span>{t('screens.calendar.appointments')}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -225,7 +226,7 @@ export default function Calendar() {
                   onClick={() => navigate('/calendar/motivation')}
                 >
                   <Target className="h-6 w-6" />
-                  <span>Motivation</span>
+                  <span>{t('screens.calendar.motivation')}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -233,7 +234,7 @@ export default function Calendar() {
                   onClick={() => navigate('/ai/insights')}
                 >
                   <TrendingUp className="h-6 w-6" />
-                  <span>AI Insights</span>
+                  <span>{t('screens.calendar.aiInsights')}</span>
                 </Button>
               </div>
             </CardContent>

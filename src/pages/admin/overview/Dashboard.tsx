@@ -17,7 +17,9 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { useOverviewSummary, useAtRiskMembers, useOverviewAlerts } from "@/hooks/useAdminOverview";
+import { t } from '@/lib/i18n-toast';
 
 function DeltaIndicator({ pct }: { pct: number }) {
   if (pct > 0) return <span className="inline-flex items-center text-xs text-green-600"><TrendingUp className="h-3 w-3 mr-0.5" />+{pct}%</span>;
@@ -43,12 +45,12 @@ export default function OverviewDashboard() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="📊"
-          title="Dashboard"
+          title={t('screens.admin.dashboard')}
           description="Real-time overview of your tenant community"
         />
 
         {summaryQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading dashboard...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingDashboard')}</p>
         )}
 
         {summaryQuery.isError && (
@@ -64,15 +66,12 @@ export default function OverviewDashboard() {
               <div className="flex flex-wrap gap-2">
                 {inbox.pending_invitations > 0 && (
                   <Link to="/admin/members/invitations">
-                    <AdminStatusBadge variant="warning">
-                      {inbox.pending_invitations} pending invitation{inbox.pending_invitations !== 1 ? "s" : ""}
-                    </AdminStatusBadge>
+                    <AdminStatusBadge variant="warning">{t('screens.admin.pending_invitationsPendingInvitationValue1', { pending_invitations: inbox.pending_invitations, value1: inbox.pending_invitations !== 1 ? "s" : "" })}</AdminStatusBadge>
                   </Link>
                 )}
                 {alerts.length > 0 && (
                   <Link to="/admin/alerts">
-                    <AdminStatusBadge variant="error">
-                      {alerts.length} alert{alerts.length !== 1 ? "s" : ""} (24h)
+                    <AdminStatusBadge variant="error">{t('screens.admin.lengthAlertValue124h', { length: alerts.length, value1: alerts.length !== 1 ? "s" : "" })}
                     </AdminStatusBadge>
                   </Link>
                 )}
@@ -86,7 +85,7 @@ export default function OverviewDashboard() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-xs uppercase text-muted-foreground">Total Members</div>
+                        <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.totalMembers')}</div>
                         <div className="text-3xl font-bold mt-1">{kpi.total_members}</div>
                       </div>
                       <Users className="h-8 w-8 text-muted-foreground/30" />
@@ -99,7 +98,7 @@ export default function OverviewDashboard() {
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-xs uppercase text-muted-foreground">New Signups (7d)</div>
+                      <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.newSignups7d')}</div>
                       <div className="text-3xl font-bold mt-1">{kpi.new_signups_7d}</div>
                       <DeltaIndicator pct={kpi.new_signups_delta_pct} />
                     </div>
@@ -113,7 +112,7 @@ export default function OverviewDashboard() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-xs uppercase text-muted-foreground">Pending Invitations</div>
+                        <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.pendingInvitations')}</div>
                         <div className="text-3xl font-bold mt-1">{kpi.pending_invitations}</div>
                       </div>
                       <Mail className="h-8 w-8 text-muted-foreground/30" />
@@ -127,7 +126,7 @@ export default function OverviewDashboard() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-xs uppercase text-muted-foreground">KB Documents</div>
+                        <div className="text-xs uppercase text-muted-foreground">{t('screens.admin.kbDocuments')}</div>
                         <div className="text-3xl font-bold mt-1">{kpi.kb_documents}</div>
                       </div>
                       <FileText className="h-8 w-8 text-muted-foreground/30" />
@@ -142,7 +141,7 @@ export default function OverviewDashboard() {
               {/* Role Distribution */}
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Role Distribution</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.roleDistribution')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -173,22 +172,20 @@ export default function OverviewDashboard() {
               <Card>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base">At-Risk Members</CardTitle>
-                    <AdminStatusBadge variant={atRisk.length > 0 ? "warning" : "active"}>
-                      {atRisk.length} member{atRisk.length !== 1 ? "s" : ""}
-                    </AdminStatusBadge>
+                    <CardTitle className="text-base">{t('screens.admin.atriskMembers')}</CardTitle>
+                    <AdminStatusBadge variant={atRisk.length > 0 ? "warning" : "active"}>{t('screens.admin.lengthMemberValue1', { length: atRisk.length, value1: atRisk.length !== 1 ? "s" : "" })}</AdminStatusBadge>
                   </div>
-                  <p className="text-xs text-muted-foreground">No activity in 14+ days</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.admin.noActivity14Days')}</p>
                 </CardHeader>
                 <CardContent>
                   {atRisk.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-4">No at-risk members — everyone is active!</p>
+                    <p className="text-sm text-muted-foreground text-center py-4">{t('screens.admin.noAtriskMembersEveryoneActive')}</p>
                   ) : (
                     <div className="space-y-2 max-h-48 overflow-y-auto">
                       {atRisk.slice(0, 10).map((m) => (
                         <div key={m.user_id} className="flex items-center gap-2 text-sm">
                           <Avatar className="h-6 w-6">
-                            <AvatarImage src={m.avatar_url || undefined} />
+                            <AvatarImage src={getDisplayAvatarUrl(m)} />
                             <AvatarFallback className="text-[10px]">
                               {(m.display_name || m.email || "?").slice(0, 2).toUpperCase()}
                             </AvatarFallback>
@@ -213,7 +210,7 @@ export default function OverviewDashboard() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-destructive" />
-                    <CardTitle className="text-base">Recent Alerts (24h)</CardTitle>
+                    <CardTitle className="text-base">{t('screens.admin.recentAlerts24h')}</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>

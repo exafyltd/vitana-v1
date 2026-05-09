@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { formatDistanceToNow } from 'date-fns';
+import { t } from '@/lib/i18n-toast';
 
 interface StreamRecordingPlayerProps {
   recording: {
@@ -164,16 +165,16 @@ export const StreamRecordingPlayer = ({ recording }: StreamRecordingPlayerProps)
             onClick={handleDownload}
           >
             <Download className="h-4 w-4 mr-2" />
-            Download
+            {t('screens.common.download')}
           </Button>
         </div>
       </div>
 
       {/* Recording Info */}
       <div className="text-sm text-muted-foreground space-y-1">
-        <div>Recorded {formatDistanceToNow(new Date(recording.created_at), { addSuffix: true })}</div>
+        <div>{t('screens.common.recordedValue0', { value0: formatDistanceToNow(new Date(recording.created_at), { addSuffix: true }) })}</div>
         {recording.file_size_bytes && (
-          <div>Size: {(recording.file_size_bytes / 1024 / 1024).toFixed(2)} MB</div>
+          <div>{t('screens.common.sizeValue0Mb', { value0: (recording.file_size_bytes / 1024 / 1024).toFixed(2) })}</div>
         )}
       </div>
     </div>

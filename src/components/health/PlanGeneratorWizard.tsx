@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Apple, Dumbbell, Droplet, Moon, Brain, Plus, Sparkles } from "lucide-react";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
+import { t } from '@/lib/i18n-toast';
 
 const PLAN_OPTIONS = [
   { value: 'nutrition', label: 'Nutrition Plan', icon: Apple, description: 'Personalized meal planning and nutrition guidance' },
@@ -100,7 +101,7 @@ export function PlanGeneratorWizard({ open, onOpenChange, defaultPlanType }: Pla
         
         <div className="flex justify-end gap-3">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.health.cancel')}
           </Button>
           <Button 
             onClick={handleGenerate}

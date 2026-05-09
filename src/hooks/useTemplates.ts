@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export type Template = Database["public"]["Tables"]["templates"]["Row"];
 export type TemplateInsert = Database["public"]["Tables"]["templates"]["Insert"];
@@ -35,7 +36,7 @@ export function useTemplates() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["templates"] });
-      toast.success("Template saved");
+      notifySuccess('toasts.hooks.templateSaved');
     },
     onError: (error: Error) => {
       toast.error(`Failed to save template: ${error.message}`);
@@ -56,7 +57,7 @@ export function useTemplates() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["templates"] });
-      toast.success("Template updated");
+      notifySuccess('toasts.hooks.templateUpdated');
     },
     onError: (error: Error) => {
       toast.error(`Failed to update template: ${error.message}`);

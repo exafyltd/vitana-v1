@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface Task {
   id: string;
@@ -241,7 +242,7 @@ export function OpenTasksList() {
                             </span>
                             {task.vtid && (
                               <span className="flex items-center gap-1 text-primary">
-                                <span className="font-medium">VTID:</span>{" "}
+                                <span className="font-medium">{t('screens.dev.vtid')}</span>{" "}
                                 {task.vtid}
                               </span>
                             )}

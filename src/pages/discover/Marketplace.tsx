@@ -31,6 +31,7 @@ import {
   type UserIntent,
   type IntentKind,
 } from "@/lib/intentApi";
+import { t } from '@/lib/i18n-toast';
 
 type View = "open" | "mine";
 
@@ -100,18 +101,18 @@ export default function Marketplace() {
 
   return (
     <>
-      <SEO title="Marketplace — Vitana" description="Discover and post things to buy or sell in the Vitana community." />
+      <SEO title={t('screens.discover.marketplaceVitana')} description="Discover and post things to buy or sell in the Vitana community." />
 
       <div className="container mx-auto px-4 py-4 max-w-4xl">
         <StandardHeader
-          title="Marketplace"
+          title={t('screens.discover.marketplace')}
           description="Buy and sell with the Vitana community."
         />
 
         <UtilityActionButton className="min-w-0" compact={isMobile}>
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder="Search marketplace..."
+              placeholder={t('screens.discover.searchMarketplace')}
               onSearch={() => { /* per-view search wiring — defer */ }}
               filterLabel={filterLabel}
               onFilterClick={() => setPickerOpen(true)}
@@ -123,7 +124,7 @@ export default function Marketplace() {
               className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
             >
               <Plus className="h-4 w-4" />
-              <span className="text-sm">Post</span>
+              <span className="text-sm">{t('screens.discover.post')}</span>
             </Button>
           </div>
         </UtilityActionButton>
@@ -148,13 +149,13 @@ export default function Marketplace() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <div className="text-sm text-destructive py-4">{t('screens.discover.couldnTLoadError', { error })}</div>
           )}
 
           {!loading && !error && view === "open" && (
             openItems.length === 0 ? (
               <EmptyState
-                title="The marketplace is quiet"
+                title={t('screens.discover.marketplaceQuiet')}
                 body="Be the first to post. Anything community-worth — supplies, services, used gear."
                 cta={{ label: "Post a listing", onClick: () => setComposerOpen(true) }}
               />
@@ -168,7 +169,7 @@ export default function Marketplace() {
           {!loading && !error && view === "mine" && (
             myItems.length === 0 ? (
               <EmptyState
-                title="No listings yet"
+                title={t('screens.discover.noListingsYet')}
                 body="Post a buy or sell request — the matchmaker will surface buyers/sellers."
                 cta={{ label: "New listing", onClick: () => setComposerOpen(true) }}
               />
@@ -186,7 +187,7 @@ export default function Marketplace() {
       <Sheet open={pickerOpen} onOpenChange={setPickerOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
-            <SheetTitle>Choose a view</SheetTitle>
+            <SheetTitle>{t('screens.discover.chooseView')}</SheetTitle>
           </SheetHeader>
           <div className="space-y-2 mt-4 pb-6">
             {VIEW_OPTIONS.map((o) => (

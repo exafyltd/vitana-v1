@@ -16,6 +16,7 @@ import {
   XCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletTransactionCardProps {
   id: string;
@@ -266,9 +267,9 @@ export function WalletTransactionCard({
                     {transaction.fees !== undefined && (
                       <div className="text-xs">
                         {transaction.fees > 0 ? (
-                          <span className="text-orange-600">Fee: {transaction.fees}</span>
+                          <span className="text-orange-600">{t('screens.wallet.feeFees', { fees: transaction.fees })}</span>
                         ) : (
-                          <span className="text-green-600">No fees! ✨</span>
+                          <span className="text-green-600">{t('screens.wallet.noFees')}</span>
                         )}
                       </div>
                     )}
@@ -320,7 +321,7 @@ export function WalletTransactionCard({
           <div className="flex items-center justify-between pt-2 border-t">
             <span className="text-xs text-muted-foreground">{timestamp}</span>
             <Button size="sm" variant="ghost">
-              View Details
+              {t('screens.wallet.viewDetails')}
             </Button>
           </div>
         </div>

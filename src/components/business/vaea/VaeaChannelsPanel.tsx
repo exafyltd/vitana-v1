@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useVaeaChannels, type VaeaChannel } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const PLATFORMS: VaeaChannel["platform"][] = ["maxina", "slack", "discord", "telegram", "reddit", "custom"];
 
@@ -28,9 +29,9 @@ export function VaeaChannelsPanel() {
       <CardHeader>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <CardTitle>Autopilot channels</CardTitle>
+            <CardTitle>{t('screens.business.autopilotChannels')}</CardTitle>
             <CardDescription>
-              Channels Autopilot listens to for referral opportunities. Each channel can be paused, set to dry-run, or removed.
+              {t('screens.business.channelsAutopilotListensForReferralOpportunities')}
             </CardDescription>
           </div>
           <Button size="sm" onClick={() => setShowForm((v) => !v)}>
@@ -43,7 +44,7 @@ export function VaeaChannelsPanel() {
         {error && (
           <div className="rounded border border-destructive/20 bg-destructive/10 p-3 flex items-center justify-between gap-2">
             <p className="text-sm text-destructive">{error}</p>
-            <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+            <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
           </div>
         )}
 
@@ -52,8 +53,7 @@ export function VaeaChannelsPanel() {
         )}
 
         {channels.length === 0 && !showForm ? (
-          <p className="text-sm text-muted-foreground text-center py-6">
-            No channels yet. Autopilot won't hear anything until you add at least one.
+          <p className="text-sm text-muted-foreground text-center py-6">{t('screens.business.noChannelsYetAutopilotWonT')}
           </p>
         ) : (
           channels.map((channel) => (
@@ -62,8 +62,8 @@ export function VaeaChannelsPanel() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="outline" className="capitalize">{channel.platform}</Badge>
                   <span className="font-medium text-sm">{channel.display_name || channel.channel_key}</span>
-                  {channel.dry_run && <Badge variant="secondary" className="text-xs">dry-run</Badge>}
-                  {!channel.active && <Badge variant="destructive" className="text-xs">paused</Badge>}
+                  {channel.dry_run && <Badge variant="secondary" className="text-xs">{t('screens.business.dryrun')}</Badge>}
+                  {!channel.active && <Badge variant="destructive" className="text-xs">{t('screens.business.paused')}</Badge>}
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
@@ -88,7 +88,7 @@ export function VaeaChannelsPanel() {
                 </div>
               </div>
               {channel.last_error && (
-                <p className="text-xs text-destructive italic">Last error: {channel.last_error}</p>
+                <p className="text-xs text-destructive italic">{t('screens.business.lastErrorLast_error', { last_error: channel.last_error })}</p>
               )}
             </div>
           ))
@@ -109,7 +109,7 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
     <div className="rounded border bg-muted/30 p-3 space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <label className="text-xs space-y-1">
-          <span className="text-muted-foreground">Platform</span>
+          <span className="text-muted-foreground">{t('screens.business.platform')}</span>
           <select
             className="w-full h-11 rounded-md border px-3 text-sm bg-background"
             value={platform}
@@ -119,13 +119,13 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
           </select>
         </label>
         <label className="text-xs space-y-1">
-          <span className="text-muted-foreground">Channel key / ID</span>
-          <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder="Platform-specific identifier" />
+          <span className="text-muted-foreground">{t('screens.business.channelKeyId')}</span>
+          <Input className="h-11" value={channelKey} onChange={(e) => setChannelKey(e.target.value)} placeholder={t('screens.business.platformspecificIdentifier')} />
         </label>
       </div>
       <label className="text-xs space-y-1 block">
-        <span className="text-muted-foreground">Display name (optional)</span>
-        <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Friendly label" />
+        <span className="text-muted-foreground">{t('screens.business.displayNameOptional')}</span>
+        <Input className="h-11" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={t('screens.business.friendlyLabel')} />
       </label>
       {err && <p className="text-xs text-destructive">{err}</p>}
       <div className="flex justify-end">
@@ -144,8 +144,7 @@ function AddChannelForm({ onSubmit }: { onSubmit: (payload: Partial<VaeaChannel>
             }
           }}
         >
-          {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
-          Add channel
+          {busy && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}{t('screens.business.addChannel')}
         </Button>
       </div>
     </div>

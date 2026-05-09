@@ -18,7 +18,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface HydrationModalProps {
   data: DailyHydrationData | null;
@@ -112,8 +112,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             </div>
             
             {/* Title */}
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">
-              {data.day} - Hydration
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">{t('screens.health.dayHydration', { day: data.day })}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -128,21 +127,21 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-50 to-sky-50 
               dark:from-cyan-950/30 dark:to-sky-950/30 text-center">
               <Droplets className="w-5 h-5 mx-auto mb-1 text-cyan-600 dark:text-cyan-400" />
-              <p className="text-xs text-muted-foreground">Current</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.current')}</p>
               <p className="text-sm font-bold">{(data.currentAmount / 1000).toFixed(1)}L</p>
             </div>
             
             <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 
               dark:from-blue-950/30 dark:to-indigo-950/30 text-center">
               <TrendingUp className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
-              <p className="text-xs text-muted-foreground">Target</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.target')}</p>
               <p className="text-sm font-bold">{(data.targetAmount / 1000).toFixed(1)}L</p>
             </div>
             
             <div className="p-3 rounded-xl bg-gradient-to-br from-sky-50 to-cyan-50 
               dark:from-sky-950/30 dark:to-cyan-950/30 text-center">
               <Clock className="w-5 h-5 mx-auto mb-1 text-sky-600 dark:text-sky-400" />
-              <p className="text-xs text-muted-foreground">Remaining</p>
+              <p className="text-xs text-muted-foreground">{t('screens.health.remaining')}</p>
               <p className="text-sm font-bold">
                 {remaining > 0 ? `${(remaining / 1000).toFixed(1)}L` : 'Goal Met!'}
               </p>
@@ -155,9 +154,9 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
               dark:from-green-500/20 dark:to-emerald-500/20 border border-green-200/30 dark:border-green-700/30">
               <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Goal Achieved! 🎉</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.goalAchieved')}</p>
                 <p className="text-sm text-muted-foreground">
-                  You're perfectly hydrated today. Great consistency!
+                  {t('screens.health.youRePerfectlyHydratedTodayGreat')}
                 </p>
               </div>
             </div>
@@ -167,7 +166,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
                 dark:from-cyan-500/20 dark:to-blue-500/20 border border-cyan-200/30 dark:border-cyan-700/30">
                 <Brain className="w-5 h-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium mb-1">AI Insight</p>
+                  <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
                   <p className="text-sm text-muted-foreground italic">
                     {data.aiNote}
                   </p>
@@ -180,7 +179,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           <div className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Next Reminder</span>
+              <span className="text-sm font-medium">{t('screens.health.nextReminder')}</span>
             </div>
             <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400">
               {data.nextReminder}
@@ -193,7 +192,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
               <Droplets className="w-5 h-5 text-cyan-600" />
-              Hydration Timeline
+              {t('screens.health.hydrationTimeline')}
             </h3>
             <div className="space-y-3">
               {data.intakes.map((intake, idx) => (
@@ -218,7 +217,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
                         <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
                       )}
                     </div>
-                    <p className="text-sm font-semibold">{intake.amount}ml</p>
+                    <p className="text-sm font-semibold">{t('screens.health.amountMl', { amount: intake.amount })}</p>
                   </div>
                   
                   {/* Icon */}
@@ -231,7 +230,7 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
           {/* Tags */}
           {data.tags.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Tags</h4>
+              <h4 className="text-sm font-semibold mb-2">{t('screens.health.tags')}</h4>
               <div className="flex flex-wrap gap-2">
                 {data.tags.map(tag => (
                   <Badge key={tag} variant="secondary" className="capitalize">
@@ -249,19 +248,19 @@ export function HydrationModal({ data, open, onOpenChange }: HydrationModalProps
             <Button 
               variant="outline" 
               className="flex-1 gap-2"
-              onClick={() => toast.info('Reminder settings opened')}
+              onClick={() => notifyInfo('toasts.health.reminderSettingsOpened')}
             >
               <Clock className="w-4 h-4" />
-              Set Reminder
+              {t('screens.health.setReminder')}
             </Button>
             
             <Button 
               className="flex-1 gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 
                 hover:from-cyan-600 hover:to-blue-600"
-              onClick={() => toast.success('Water intake logged! 💧')}
+              onClick={() => notifySuccess('toasts.health.waterIntakeLogged')}
             >
               <Plus className="w-4 h-4" />
-              Log Water
+              {t('screens.health.logWater')}
             </Button>
           </div>
         </SheetFooter>

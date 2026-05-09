@@ -20,7 +20,7 @@ import { AddMemoryDialog } from "./AddMemoryDialog";
 import { CategoryDetailDialog } from "./CategoryDetailDialog";
 import { Button } from "@/components/ui/button";
 import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
-import { toast } from "sonner";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
   "personal-identity": ["Name", "Languages", "Personality", "Strengths", "Life Vision", "Values", "Goals", "Decision Style", "Roles"],
@@ -163,7 +163,7 @@ export function MemoryCategoryGrid() {
 
   const handleRefresh = async () => {
     await refreshMetadata();
-    toast.success("Memory garden updated!");
+    notifySuccess('toasts.memory.memoryGardenUpdated');
   };
 
   const selectedCategoryData = MEMORY_CATEGORIES.find(
@@ -174,9 +174,8 @@ export function MemoryCategoryGrid() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Memory Garden</h2>
-          <p className="text-sm text-muted-foreground">
-            {metadata?.total_memories_count || 0} total memories across all categories
+          <h2 className="text-2xl font-bold">{t('screens.memory.memoryGarden')}</h2>
+          <p className="text-sm text-muted-foreground">{t('screens.memory.value0TotalMemoriesAcrossAllCategories', { value0: metadata?.total_memories_count || 0 })}
           </p>
         </div>
         <Button
@@ -187,7 +186,7 @@ export function MemoryCategoryGrid() {
           className="gap-2"
         >
           <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
-          Refresh Progress
+          {t('screens.memory.refreshProgress')}
         </Button>
       </div>
 

@@ -5,7 +5,7 @@ import { ProfileCardStack } from "./ProfileCardStack";
 import { BookFlipView } from "./BookFlipView";
 import { Button } from "@/components/ui/button";
 import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import confetti from "canvas-confetti";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface DailyMatch {
   id: string;
@@ -181,10 +182,7 @@ export function PeopleDiscoveryHero() {
       colors: ['#10b981', '#34d399', '#6ee7b7']
     });
     
-    toast({
-      title: "Connection request sent! 💚",
-      description: "They'll be notified of your interest.",
-    });
+    notify('toasts.discovery.connectionRequestSent', 'toasts.discovery.theyLlNotifiedYourInterest');
   };
 
   const handlePass = (userId: string) => {
@@ -210,10 +208,7 @@ export function PeopleDiscoveryHero() {
       startVelocity: 45,
     });
     
-    toast({
-      title: "Super Connect sent! ⭐",
-      description: "You'll appear at the top of their matches!",
-    });
+    notify('toasts.discovery.superConnectSent', 'toasts.discovery.youLlAppearAtTopTheir');
   };
 
   const handleProfileTap = (userId: string) => {
@@ -347,12 +342,11 @@ export function PeopleDiscoveryHero() {
         <div className="text-center pt-2 pb-1">
           {/* Title with inline emoji */}
           <h2 className="text-lg font-semibold text-foreground">
-            Meet Vitanaland Citizens 👋
+            {t('screens.discovery.meetVitanalandCitizens')}
           </h2>
           
           {/* Status line - standard metadata */}
-          <p className="text-xs text-muted-foreground mt-1">
-            {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
+          <p className="text-xs text-muted-foreground mt-1">{t('screens.discovery.value0NewTodayViewedcountTotalcount', { value0: totalCount - viewedCount, viewedCount, totalCount })}
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-4 w-4 p-0 ml-1.5 opacity-40 hover:opacity-80 inline-flex items-center justify-center">
               <RefreshCw className="h-2.5 w-2.5" />
             </Button>
@@ -406,7 +400,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
+              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">{t('screens.discovery.pass')}</div>
             </div>
           </button>
 
@@ -430,7 +424,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">Super</div>
+              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">{t('screens.discovery.super')}</div>
             </div>
           </button>
 
@@ -454,7 +448,7 @@ export function PeopleDiscoveryHero() {
             </div>
             
             <div className="text-center">
-              <div className="text-sm font-bold text-green-600 dark:text-green-400">Connect</div>
+              <div className="text-sm font-bold text-green-600 dark:text-green-400">{t('screens.discovery.connect')}</div>
             </div>
           </button>
         </div>
@@ -464,34 +458,34 @@ export function PeopleDiscoveryHero() {
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-[10px] font-medium text-muted-foreground">Filters:</span>
+              <span className="text-[10px] font-medium text-muted-foreground">{t('screens.discovery.filters')}</span>
             </div>
             
             <Select value={interestFilter} onValueChange={setInterestFilter}>
               <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-                <SelectValue placeholder="Interests ▾" />
+                <SelectValue placeholder={t('screens.discovery.interests')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Interests</SelectItem>
-                <SelectItem value="yoga">Yoga</SelectItem>
-                <SelectItem value="nutrition">Nutrition</SelectItem>
-                <SelectItem value="biohacking">Biohacking</SelectItem>
-                <SelectItem value="running">Running</SelectItem>
-                <SelectItem value="meditation">Meditation</SelectItem>
+                <SelectItem value="all">{t('screens.discovery.allInterests')}</SelectItem>
+                <SelectItem value="yoga">{t('screens.discovery.yoga')}</SelectItem>
+                <SelectItem value="nutrition">{t('screens.discovery.nutrition')}</SelectItem>
+                <SelectItem value="biohacking">{t('screens.discovery.biohacking')}</SelectItem>
+                <SelectItem value="running">{t('screens.discovery.running')}</SelectItem>
+                <SelectItem value="meditation">{t('screens.discovery.meditation')}</SelectItem>
               </SelectContent>
             </Select>
             
             <Select value={regionFilter} onValueChange={setRegionFilter}>
               <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-                <SelectValue placeholder="Region ▾" />
+                <SelectValue placeholder={t('screens.discovery.region')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Regions</SelectItem>
-                <SelectItem value="san francisco">San Francisco</SelectItem>
-                <SelectItem value="los angeles">Los Angeles</SelectItem>
-                <SelectItem value="new york">New York</SelectItem>
-                <SelectItem value="austin">Austin</SelectItem>
-                <SelectItem value="seattle">Seattle</SelectItem>
+                <SelectItem value="all">{t('screens.discovery.allRegions')}</SelectItem>
+                <SelectItem value="san francisco">{t('screens.discovery.sanFrancisco')}</SelectItem>
+                <SelectItem value="los angeles">{t('screens.discovery.losAngeles')}</SelectItem>
+                <SelectItem value="new york">{t('screens.discovery.newYork')}</SelectItem>
+                <SelectItem value="austin">{t('screens.discovery.austin')}</SelectItem>
+                <SelectItem value="seattle">{t('screens.discovery.seattle')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -504,14 +498,13 @@ export function PeopleDiscoveryHero() {
                   setRegionFilter("all");
                   setPillarFilter("all");
                 }}
-              >
-                Clear Filters
+              >{t('screens.discovery.clearFilters')}
               </Button>
             )}
             
             {/* Keyboard Shortcuts in same line */}
             <span className="text-[10px] text-muted-foreground ml-4">
-              ← Pass • → Connect • ↑ Super
+              {t('screens.discovery.passConnectSuper')}
             </span>
           </div>
         </div>

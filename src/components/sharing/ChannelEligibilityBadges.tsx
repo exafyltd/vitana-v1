@@ -1,6 +1,7 @@
 import { Mail, MessageSquare, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { AudienceData } from "@/types/audience";
+import { t } from '@/lib/i18n-toast';
 
 interface ChannelEligibilityBadgesProps {
   audienceData: AudienceData;
@@ -44,7 +45,7 @@ export function ChannelEligibilityBadges({
   return (
     <div className="space-y-3">
       <div>
-        <h4 className="text-sm font-medium mb-2">Channel Eligibility</h4>
+        <h4 className="text-sm font-medium mb-2">{t('screens.sharing.channelEligibility')}</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           {channels.map(channel => {
             const Icon = channel.icon;
@@ -65,8 +66,7 @@ export function ChannelEligibilityBadges({
                 <Icon className="h-4 w-4" />
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-medium">{channel.label}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {channel.count.toLocaleString()} eligible
+                  <div className="text-xs text-muted-foreground">{t('screens.sharing.value0Eligible', { value0: channel.count.toLocaleString() })}
                   </div>
                 </div>
                 {hasZeroEligible && (
@@ -83,17 +83,17 @@ export function ChannelEligibilityBadges({
       {hasWarnings && (
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
           <p className="text-xs font-medium text-destructive">
-            ⚠️ Warning: Some selected channels have 0 eligible recipients
+            {t('screens.sharing.warningSomeSelectedChannelsHave0')}
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Messages will only be sent to contacts with the required contact information
+            {t('screens.sharing.messagesWillOnlySentContactsWith')}
           </p>
         </div>
       )}
 
       {eligibility.total > 0 && (
         <div className="text-sm">
-          <span className="font-medium">Total Unique Recipients:</span>{' '}
+          <span className="font-medium">{t('screens.sharing.totalUniqueRecipients')}</span>{' '}
           <span className="text-muted-foreground">{eligibility.total.toLocaleString()}</span>
         </div>
       )}

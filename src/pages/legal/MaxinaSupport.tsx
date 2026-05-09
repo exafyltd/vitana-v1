@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import SEO from "@/components/SEO";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 const MaxinaSupport = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const MaxinaSupport = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Maxina Support | Help & FAQ"
+        title={t('screens.legal.maxinaSupportHelpFaq')}
         description="Get help with your Maxina account. Find answers to common questions about events, payments, and your wellness journey."
         canonical="https://vitanaland.com/maxina_support"
       />
@@ -87,7 +88,7 @@ const MaxinaSupport = () => {
             variant="ghost" 
             size="icon"
             onClick={() => navigate(-1)}
-            aria-label="Go back"
+            aria-label={t('screens.legal.goBack')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -187,7 +188,7 @@ const MaxinaSupport = () => {
                     href="mailto:support@exafy.io"
                     className="text-[#FF7BAC] hover:underline font-medium"
                   >
-                    support@exafy.io
+                    {t('screens.legal.supportExafyIo')}
                   </a>
                 </div>
               </div>
@@ -225,9 +226,7 @@ const MaxinaSupport = () => {
 
         {/* Footer */}
         <footer className="pt-8 border-t border-border text-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Maxina by EXAFY. {translate("support.maxina.footer")}
-          </p>
+          <p className="text-sm text-muted-foreground">{t('screens.legal.value0MaxinaByExafyValue1', { value0: new Date().getFullYear(), value1: translate("support.maxina.footer") })}</p>
         </footer>
       </main>
     </div>

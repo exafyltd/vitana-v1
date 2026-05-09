@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePodcastFavorite } from "@/hooks/usePodcastFavorite";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { format, isToday, isThisWeek, isThisYear } from "date-fns";
 import { useAuth } from "@/context/AuthProvider";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface PodcastCardProps {
   id: string;
@@ -91,11 +92,7 @@ export function PodcastCard({
     } else {
       // Fallback to clipboard
       await navigator.clipboard.writeText(shareData.url);
-      toast({
-        title: "Link copied",
-        description: "Podcast link copied to clipboard",
-        duration: 2000,
-      });
+      notify('toasts.crossover.linkCopied', 'toasts.crossover.podcastLinkCopiedClipboard');
     }
   };
 
@@ -159,7 +156,7 @@ export function PodcastCard({
         {/* Title with Language Flag and Equalizer */}
         <div className="flex items-center gap-2">
           {isThisPodcastPlaying && (
-            <div className="flex items-center gap-0.5 h-3 flex-shrink-0" aria-label="Now playing">
+            <div className="flex items-center gap-0.5 h-3 flex-shrink-0" aria-label={t('screens.crossover.nowPlaying')}>
               <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0s' }}></div>
               <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.2s' }}></div>
               <div className="w-0.5 bg-purple-500 rounded-full" style={{ animation: 'equalizer 0.8s ease-in-out infinite', animationDelay: '0.4s' }}></div>
@@ -246,7 +243,7 @@ export function PodcastCard({
             variant="ghost"
             onClick={handleShare}
             className="h-7 w-7 hover:bg-purple-50/80"
-            aria-label="Share episode"
+            aria-label={t('screens.crossover.shareEpisode')}
           >
             <Share2 className="h-3.5 w-3.5 text-muted-foreground/60 hover:text-purple-500" />
           </Button>
@@ -259,7 +256,7 @@ export function PodcastCard({
                   className="text-destructive cursor-pointer"
                   onClick={onDelete}
                 >
-                  Delete Podcast
+                  {t('screens.crossover.deletePodcast')}
                 </DropdownMenuItem>
               </KebabMenu>
             </>

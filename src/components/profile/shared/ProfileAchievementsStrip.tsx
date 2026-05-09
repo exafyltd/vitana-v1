@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Target, ChevronRight, Zap, Users, Calendar } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileAchievementsStripProps {
   achievements: string[];
@@ -31,10 +32,10 @@ export function ProfileAchievementsStrip({
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-yellow-600" />
-                Achievements & Progress
+                {t('screens.profile.achievementsProgress')}
               </h3>
               <Button variant="outline" size="sm" className="text-xs">
-                View All <ChevronRight className="h-3 w-3 ml-1" />
+                {t('screens.profile.viewAll')} <ChevronRight className="h-3 w-3 ml-1" />
               </Button>
             </div>
             
@@ -66,13 +67,13 @@ export function ProfileAchievementsStrip({
                     <Zap className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-foreground">Next Milestone</h4>
+                    <h4 className="text-sm font-semibold text-foreground">{t('screens.profile.nextMilestone')}</h4>
                     <p className="text-xs text-muted-foreground">{nextMilestone.title}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-bold text-foreground">{nextMilestone.progress}%</div>
-                  <div className="text-xs text-muted-foreground">Complete</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.profile.complete')}</div>
                 </div>
               </div>
               <Progress value={nextMilestone.progress} className="mb-2 h-2" />

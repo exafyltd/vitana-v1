@@ -1,5 +1,6 @@
 import { Bell, Smartphone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { t } from '@/lib/i18n-toast';
 
 interface NotificationPreviewProps {
   title: string;
@@ -19,7 +20,7 @@ export function NotificationPreview({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-sm font-medium text-muted-foreground">Live Preview</h3>
+      <h3 className="text-sm font-medium text-muted-foreground">{t('screens.admin.livePreview')}</h3>
 
       {/* Push notification mockup */}
       {showPush && (
@@ -27,7 +28,7 @@ export function NotificationPreview({
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Smartphone className="h-4 w-4" />
-              Push Notification
+              {t('screens.admin.pushNotification')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4">
@@ -39,7 +40,7 @@ export function NotificationPreview({
                 <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
                   Vitana
                 </span>
-                <span className="ml-auto text-xs text-muted-foreground">now</span>
+                <span className="ml-auto text-xs text-muted-foreground">{t('screens.admin.now')}</span>
               </div>
               <p className="text-sm font-semibold leading-tight">
                 {title || "Notification Title"}
@@ -58,7 +59,7 @@ export function NotificationPreview({
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm">
               <Bell className="h-4 w-4" />
-              In-App Card
+              {t('screens.admin.inappCard')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-4">
@@ -74,7 +75,7 @@ export function NotificationPreview({
                   <p className="text-xs text-muted-foreground mt-0.5 line-clamp-3">
                     {body || "Notification body text will appear here..."}
                   </p>
-                  <p className="text-xs text-muted-foreground/60 mt-1">Just now</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">{t('screens.admin.justNow')}</p>
                 </div>
                 <div className="h-2 w-2 rounded-full bg-primary shrink-0 mt-1" />
               </div>
@@ -87,7 +88,7 @@ export function NotificationPreview({
       {channel === "silent" && (
         <Card>
           <CardContent className="py-6 text-center text-sm text-muted-foreground">
-            Silent notifications are written to the database but not shown to the user.
+            {t('screens.admin.silentNotificationsWrittenDatabaseButNot')}
           </CardContent>
         </Card>
       )}
@@ -95,15 +96,15 @@ export function NotificationPreview({
       {/* Meta info */}
       <div className="rounded-lg border p-3 space-y-1 text-xs text-muted-foreground">
         <div className="flex justify-between">
-          <span>Channel</span>
+          <span>{t('screens.admin.channel')}</span>
           <span className="font-medium text-foreground">{channel || "push_and_inapp"}</span>
         </div>
         <div className="flex justify-between">
-          <span>Priority</span>
+          <span>{t('screens.admin.priority')}</span>
           <span className="font-medium text-foreground">{priority || "p1"}</span>
         </div>
         <div className="flex justify-between">
-          <span>DND Bypass</span>
+          <span>{t('screens.admin.dndBypass')}</span>
           <span className="font-medium text-foreground">
             {priority === "p0" ? "Yes (Critical)" : "No"}
           </span>

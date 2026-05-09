@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Heart, MessageCircle, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface ContentItem {
   id: string;
@@ -70,7 +71,7 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
         <CardTitle className="flex items-center justify-between text-lg">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-[hsl(var(--pill-nutrition-accent))]" />
-            Featured Content
+            {t('screens.profile.featuredContent')}
           </div>
           {displayContent.length > 1 && (
             <div className="flex gap-1">
@@ -105,7 +106,7 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <Badge className="absolute top-3 right-3 bg-black/50 text-white border-0 backdrop-blur-sm">
-                Video
+                {t('screens.profile.video')}
               </Badge>
             </div>
           )}

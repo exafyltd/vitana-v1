@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { PlayCircle, Copy, Check, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface APITesterProps {
   integrationId?: string;
@@ -40,11 +41,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
       try {
         parsedHeaders = JSON.parse(headers);
       } catch (e) {
-        toast({
-          title: "Invalid headers",
-          description: "Headers must be valid JSON",
-          variant: "destructive"
-        });
+        notifyError('toasts.admin.invalidHeaders', 'toasts.admin.headersMustValidJson');
         setLoading(false);
         return;
       }
@@ -65,11 +62,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
         try {
           fetchOptions.body = JSON.stringify(JSON.parse(body));
         } catch (e) {
-          toast({
-            title: "Invalid request body",
-            description: "Body must be valid JSON",
-            variant: "destructive"
-          });
+          notifyError('toasts.admin.invalidRequestBody', 'toasts.admin.bodyMustValidJson');
           setLoading(false);
           return;
         }
@@ -122,11 +115,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
         stack: error.stack
       });
 
-      toast({
-        title: "Request failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.requestFailed');
 
       // Log error
       if (integrationId) {
@@ -146,10 +135,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
     navigator.clipboard.writeText(JSON.stringify(response, null, 2));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast({
-      title: "Copied",
-      description: "Response copied to clipboard"
-    });
+    notify('toasts.admin.copied', 'toasts.admin.responseCopiedClipboard');
   };
 
   const getStatusColor = (status: number) => {
@@ -164,10 +150,10 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <PlayCircle className="w-5 h-5" />
-          API Tester
+          {t('screens.admin.apiTester')}
         </CardTitle>
         <CardDescription>
-          Test API endpoints and view responses in real-time
+          {t('screens.admin.testApiEndpointsViewResponsesRealtime')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -180,15 +166,15 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="GET">GET</SelectItem>
-                <SelectItem value="POST">POST</SelectItem>
-                <SelectItem value="PUT">PUT</SelectItem>
-                <SelectItem value="PATCH">PATCH</SelectItem>
-                <SelectItem value="DELETE">DELETE</SelectItem>
+                <SelectItem value="GET">{t('screens.admin.get')}</SelectItem>
+                <SelectItem value="POST">{t('screens.admin.post')}</SelectItem>
+                <SelectItem value="PUT">{t('screens.admin.put')}</SelectItem>
+                <SelectItem value="PATCH">{t('screens.admin.patch')}</SelectItem>
+                <SelectItem value="DELETE">{t('screens.admin.delete')}</SelectItem>
               </SelectContent>
             </Select>
             <Input
-              placeholder="/api/endpoint"
+              placeholder={t('screens.admin.apiendpoint')}
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
               className="flex-1"
@@ -200,21 +186,20 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
 
           {/* Base URL Display */}
           {baseUrl && (
-            <div className="text-sm text-muted-foreground">
-              Full URL: <code className="bg-muted px-2 py-1 rounded">{baseUrl}{endpoint}</code>
+            <div className="text-sm text-muted-foreground">{t('screens.admin.fullUrl')} <code className="bg-muted px-2 py-1 rounded">{baseUrl}{endpoint}</code>
             </div>
           )}
 
           {/* Tabs for additional config */}
           <Tabs defaultValue="headers" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="headers">Headers</TabsTrigger>
-              <TabsTrigger value="body">Body</TabsTrigger>
-              <TabsTrigger value="params">Query Params</TabsTrigger>
+              <TabsTrigger value="headers">{t('screens.admin.headers')}</TabsTrigger>
+              <TabsTrigger value="body">{t('screens.admin.body')}</TabsTrigger>
+              <TabsTrigger value="params">{t('screens.admin.queryParams')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="headers" className="space-y-2">
-              <Label>Request Headers (JSON)</Label>
+              <Label>{t('screens.admin.requestHeadersJson')}</Label>
               <Textarea
                 value={headers}
                 onChange={(e) => setHeaders(e.target.value)}
@@ -224,7 +209,7 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
             </TabsContent>
 
             <TabsContent value="body" className="space-y-2">
-              <Label>Request Body (JSON)</Label>
+              <Label>{t('screens.admin.requestBodyJson')}</Label>
               <Textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
@@ -235,14 +220,13 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
             </TabsContent>
 
             <TabsContent value="params" className="space-y-2">
-              <Label>Query Parameters</Label>
+              <Label>{t('screens.admin.queryParameters')}</Label>
               <Input
-                placeholder="key=value&another=value"
+                placeholder={t('screens.admin.keyValueAnotherValue')}
                 value={queryParams}
                 onChange={(e) => setQueryParams(e.target.value)}
               />
-              <p className="text-xs text-muted-foreground">
-                Enter parameters in URL format (key=value&key2=value2)
+              <p className="text-xs text-muted-foreground">{t('screens.admin.enterParametersUrlFormatKeyValue')}
               </p>
             </TabsContent>
           </Tabs>
@@ -253,14 +237,14 @@ export default function APITester({ integrationId, baseUrl = "", authType = "bea
           <div className="space-y-3 mt-6 pt-6 border-t">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Response</span>
+                <span className="text-sm font-medium">{t('screens.admin.response')}</span>
                 {response.status && (
                   <Badge className={getStatusColor(response.status)}>
                     {response.status} {response.statusText}
                   </Badge>
                 )}
                 {responseTime > 0 && (
-                  <Badge variant="outline">{responseTime}ms</Badge>
+                  <Badge variant="outline">{t('screens.admin.responsetimeMs', { responseTime })}</Badge>
                 )}
               </div>
               <Button variant="ghost" size="sm" onClick={copyResponse}>

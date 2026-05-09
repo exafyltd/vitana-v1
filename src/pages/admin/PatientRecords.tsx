@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, FileText, Clock, Shield, Eye } from "lucide-react";
 import { adminClinicalNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 const mockPatients = [
   { id: "1", name: "Sarah Johnson", dob: "1985-03-15", lastVisit: "2024-12-10", recordCount: 12 },
@@ -19,13 +20,13 @@ const mockPatients = [
 function PatientRecords() {
   return (
     <AppLayout>
-      <SEO title="Patient Records | Admin" description="View and manage patient medical records" canonical={window.location.href} />
+      <SEO title={t('screens.admin.patientRecordsAdmin')} description="View and manage patient medical records" canonical={window.location.href} />
       <SubNavigation items={adminClinicalNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Patient Record Viewer"
+            title={t('screens.admin.patientRecordViewer')}
             description="Secure access to patient medical records and health data"
             emoji="📋"
           />
@@ -38,7 +39,7 @@ function PatientRecords() {
                   <FileText className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">1,247</p>
-                    <p className="text-sm text-muted-foreground">Total Records</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.totalRecords')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -50,7 +51,7 @@ function PatientRecords() {
                   <Clock className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">156</p>
-                    <p className="text-sm text-muted-foreground">Recent Updates</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.recentUpdates')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -62,7 +63,7 @@ function PatientRecords() {
                   <Shield className="w-8 h-8 text-purple-500" />
                   <div>
                     <p className="text-2xl font-bold">100%</p>
-                    <p className="text-sm text-muted-foreground">HIPAA Compliant</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.hipaaCompliant')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -74,7 +75,7 @@ function PatientRecords() {
                   <Eye className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">43</p>
-                    <p className="text-sm text-muted-foreground">Views Today</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.viewsToday')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -83,22 +84,22 @@ function PatientRecords() {
 
           <Tabs defaultValue="search" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="search">Patient Search</TabsTrigger>
-              <TabsTrigger value="recent">Recent Records</TabsTrigger>
-              <TabsTrigger value="audit">Access Audit</TabsTrigger>
+              <TabsTrigger value="search">{t('screens.admin.patientSearch')}</TabsTrigger>
+              <TabsTrigger value="recent">{t('screens.admin.recentRecords')}</TabsTrigger>
+              <TabsTrigger value="audit">{t('screens.admin.accessAudit')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="search" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Search Patient Records</CardTitle>
+                  <CardTitle>{t('screens.admin.searchPatientRecords')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex gap-2">
-                    <Input placeholder="Search by name, DOB, or patient ID..." className="flex-1" />
+                    <Input placeholder={t('screens.admin.searchByNameDobPatientId')} className="flex-1" />
                     <Button>
                       <Search className="w-4 h-4 mr-2" />
-                      Search
+                      {t('screens.admin.search')}
                     </Button>
                   </div>
                   
@@ -107,11 +108,11 @@ function PatientRecords() {
                       <div key={patient.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div>
                           <p className="font-medium">{patient.name}</p>
-                          <p className="text-sm text-muted-foreground">DOB: {patient.dob} • Last Visit: {patient.lastVisit}</p>
+                          <p className="text-sm text-muted-foreground">{t('screens.admin.dobDobLastVisitLastvisit', { dob: patient.dob, lastVisit: patient.lastVisit })}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">{patient.recordCount} records</span>
-                          <Button size="sm" variant="outline">View Records</Button>
+                          <span className="text-sm text-muted-foreground">{t('screens.admin.recordcountRecords', { recordCount: patient.recordCount })}</span>
+                          <Button size="sm" variant="outline">{t('screens.admin.viewRecords')}</Button>
                         </div>
                       </div>
                     ))}
@@ -123,10 +124,10 @@ function PatientRecords() {
             <TabsContent value="recent" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Recently Accessed Records</CardTitle>
+                  <CardTitle>{t('screens.admin.recentlyAccessedRecords')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Recently viewed patient records for quick access.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.recentlyViewedPatientRecordsForQuick')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -134,10 +135,10 @@ function PatientRecords() {
             <TabsContent value="audit" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Access Audit Log</CardTitle>
+                  <CardTitle>{t('screens.admin.accessAuditLog')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">HIPAA-compliant access logs and audit trail.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.hipaacompliantAccessLogsAuditTrail')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

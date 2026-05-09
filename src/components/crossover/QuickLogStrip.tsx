@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Droplets, Apple, Dumbbell, Moon, Heart, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface QuickLogStripProps {
   className?: string;
@@ -68,8 +69,8 @@ function QuickLogStripBase({ className }: QuickLogStripProps) {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-semibold text-foreground">Quick Logging</h3>
-            <p className="text-xs text-muted-foreground">Track daily activities</p>
+            <h3 className="text-base font-semibold text-foreground">{t('screens.crossover.quickLogging')}</h3>
+            <p className="text-xs text-muted-foreground">{t('screens.crossover.trackDailyActivities')}</p>
           </div>
         </div>
         

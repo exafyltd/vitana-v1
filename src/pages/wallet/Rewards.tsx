@@ -18,6 +18,7 @@ import { SocialEarningIntelligenceCard } from "@/components/wallet/intelligence/
 import { EarningIntelligenceSplitScreen } from "@/components/wallet/intelligence/EarningIntelligenceSplitScreen";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 const rewardsData = {
   earned: [
@@ -93,7 +94,7 @@ function Rewards() {
   return (
     <AppLayout>
       <SEO 
-        title="Rewards & Commissions - Vitana Wallet" 
+        title={t('screens.wallet.rewardsCommissionsVitanaWallet')} 
         description="Track your rewards, commissions, and achievements. Manage your referral program and earning opportunities."
       />
       <SubNavigation items={walletNavigation} />
@@ -101,25 +102,25 @@ function Rewards() {
       <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
         <StandardHeader 
-          title="Rewards & Commissions 🎁"
+          title={t('screens.wallet.rewardsCommissions')}
           description="Track your earnings, achievements, and referral rewards"
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search rewards, commissions, or achievements..." />
+          <ExpandableSearchButton placeholder={t('screens.wallet.searchRewardsCommissionsAchievements')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Quick Actions
+            {t('screens.wallet.quickActions')}
           </Button>
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
           <SplitBarList>
-            <SplitBarTrigger value="earned">🎁 Earned Rewards</SplitBarTrigger>
-            <SplitBarTrigger value="pending">⏳ Pending Commissions</SplitBarTrigger>
-            <SplitBarTrigger value="referral">💸 Withdrawal & Referral</SplitBarTrigger>
-            <SplitBarTrigger value="intelligence">🧠 Earning Intelligence</SplitBarTrigger>
+            <SplitBarTrigger value="earned">{t('screens.wallet.earnedRewards')}</SplitBarTrigger>
+            <SplitBarTrigger value="pending">{t('screens.wallet.pendingCommissions')}</SplitBarTrigger>
+            <SplitBarTrigger value="referral">{t('screens.wallet.withdrawalReferral')}</SplitBarTrigger>
+            <SplitBarTrigger value="intelligence">{t('screens.wallet.earningIntelligence')}</SplitBarTrigger>
           </SplitBarList>
 
           <WalletMotivationalBanner variant="rewards" />
@@ -193,12 +194,12 @@ function Rewards() {
         <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Quick Actions</DialogTitle>
+              <DialogTitle>{t('screens.wallet.quickActions')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               {activeTab === "earned" && (
                 <div className="space-y-4">
-                  <p className="text-muted-foreground">Select rewards to claim and convert to your wallet balance.</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.selectRewardsClaimConvertYourWallet')}</p>
                   <div className="space-y-2">
                     {rewardsData.earned.filter(r => r.status === "available").map((reward) => (
                       <div key={reward.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -207,7 +208,7 @@ function Rewards() {
                           <p className="text-sm text-muted-foreground">{reward.amount}</p>
                         </div>
                         <Button size="sm" onClick={() => console.log('Claim:', reward.id)}>
-                          Claim
+                          {t('screens.wallet.claim')}
                         </Button>
                       </div>
                     ))}
@@ -217,7 +218,7 @@ function Rewards() {
               
               {activeTab === "pending" && (
                 <div className="space-y-4">
-                  <p className="text-muted-foreground">Request payout for your pending commissions.</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.requestPayoutForYourPendingCommissions')}</p>
                   <div className="space-y-2">
                     {rewardsData.pending.map((commission) => (
                       <div key={commission.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -237,9 +238,9 @@ function Rewards() {
 
               {activeTab === "referral" && (
                 <div className="space-y-4">
-                  <p className="text-muted-foreground">Share your referral link to earn commissions.</p>
+                  <p className="text-muted-foreground">{t('screens.wallet.shareYourReferralLinkEarnCommissions')}</p>
                   <div className="p-4 bg-muted rounded-lg">
-                    <h4 className="font-medium mb-2">Your Referral Link</h4>
+                    <h4 className="font-medium mb-2">{t('screens.wallet.yourReferralLink')}</h4>
                     <div className="flex gap-2">
                       <input 
                         value="https://vitana.app/join/your-referral-code" 
@@ -247,12 +248,12 @@ function Rewards() {
                         className="flex-1 px-3 py-2 text-sm border rounded"
                       />
                       <Button size="sm" onClick={() => console.log('Copy link')}>
-                        Copy
+                        {t('screens.wallet.copy')}
                       </Button>
                     </div>
                   </div>
                   <Button className="w-full" onClick={() => console.log('Share via social')}>
-                    Share via Social Media
+                    {t('screens.wallet.shareViaSocialMedia')}
                   </Button>
                 </div>
               )}

@@ -7,16 +7,18 @@
  */
 
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { getIntent, getIntentMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function IntentMatchDetail() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [intent, setIntent] = useState<UserIntent | null>(null);
   const [matches, setMatches] = useState<IntentMatch[]>([]);
@@ -33,7 +35,7 @@ export default function IntentMatchDetail() {
       setIntent(intentData);
       setMatches(matchesData);
     } catch (err: any) {
-      toast({ title: "Could not load match detail", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentmatchdetail.couldNotLoadMatchDetail');
     } finally {
       setLoading(false);
     }
@@ -45,10 +47,11 @@ export default function IntentMatchDetail() {
     if (!id || !intent) return;
     try {
       await closeIntent(id);
-      toast({ title: "Intent closed" });
-      load();
+      notify('toasts.intentmatchdetail.intentClosed');
+      // VTID-02719: jump straight to /intents/mine so the user sees the freed slot.
+      navigate("/intents/mine", { replace: true });
     } catch (err: any) {
-      toast({ title: "Could not close", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.intentmatchdetail.couldNotClose');
     }
   };
 
@@ -64,9 +67,9 @@ export default function IntentMatchDetail() {
     return (
       <div className="container mx-auto px-4 py-12 max-w-3xl space-y-4">
         <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back to My Intents
+          <ArrowLeft className="h-4 w-4" /> {t('screens.intentmatchdetail.backMyIntents')}
         </Link>
-        <p className="text-muted-foreground">Intent not found.</p>
+        <p className="text-muted-foreground">{t('screens.intentmatchdetail.intentNotFound')}</p>
       </div>
     );
   }
@@ -74,7 +77,7 @@ export default function IntentMatchDetail() {
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 max-w-3xl">
       <Link to="/intents/mine" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to My Intents
+        <ArrowLeft className="h-4 w-4" /> {t('screens.intentmatchdetail.backMyIntents')}
       </Link>
 
       <IntentCard intent={intent} />
@@ -82,18 +85,17 @@ export default function IntentMatchDetail() {
       {intent.status === "open" && (
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={handleClose}>
-            <X className="h-4 w-4 mr-1" /> Close intent
+            <X className="h-4 w-4 mr-1" /> {t('screens.intentmatchdetail.closeIntent')}
           </Button>
         </div>
       )}
 
       <div>
-        <h2 className="text-lg font-semibold mb-3">
-          Matches ({matches.length})
+        <h2 className="text-lg font-semibold mb-3">{t('screens.intentmatchdetail.matchesLength', { length: matches.length })}
         </h2>
         {matches.length === 0 ? (
           <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-            No matches yet. We'll keep looking and notify you when someone matches.
+            {t('screens.intentmatchdetail.noMatchesYetWeLlKeep')}
           </div>
         ) : (
           <div className="space-y-3">

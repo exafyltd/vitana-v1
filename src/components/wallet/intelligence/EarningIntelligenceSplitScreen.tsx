@@ -8,6 +8,7 @@ import { Brain, Zap, Target, TrendingUp, Globe, Layers } from "lucide-react";
 import { EarningStreaksAnalyticsCard } from "./EarningStreaksAnalyticsCard";
 import { CommissionForecastingCard } from "./CommissionForecastingCard";
 import { SocialEarningIntelligenceCard } from "./SocialEarningIntelligenceCard";
+import { t } from '@/lib/i18n-toast';
 
 interface CrossPlatformOpportunity {
   id: string;
@@ -142,7 +143,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            Cross-Platform Intelligence
+            {t('screens.wallet.crossplatformIntelligence')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -151,19 +152,19 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
             <div className="grid grid-cols-3 gap-3 mb-2">
               <div className="text-center">
                 <div className="text-lg font-bold text-primary">{totalCrossPlatformPotential}</div>
-                <div className="text-xs text-muted-foreground">VTN Potential</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnPotential')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-purple-600">{avgSynergy}%</div>
-                <div className="text-xs text-muted-foreground">Avg Synergy</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgSynergy')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">{avgConfidence}%</div>
-                <div className="text-xs text-muted-foreground">Confidence</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.confidence')}</div>
               </div>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              <span className="font-semibold text-primary">Cross-platform strategies</span> unlock highest earning potential
+              <span className="font-semibold text-primary">{t('screens.wallet.crossplatformStrategies')}</span>{t('screens.wallet.unlockHighestEarningPotential')}
             </p>
           </div>
 
@@ -171,7 +172,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Layers className="h-4 w-4 text-green-500" />
-              Platform Synergies
+              {t('screens.wallet.platformSynergies')}
             </h4>
             
             {mockCrossPlatformOpportunities.map((opportunity) => (
@@ -187,21 +188,20 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                       <p className="text-xs text-muted-foreground">{opportunity.opportunity}</p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-purple-500/10 text-purple-600">
-                    {opportunity.synergy}% synergy
+                  <Badge variant="outline" className="bg-purple-500/10 text-purple-600">{t('screens.wallet.synergySynergy', { synergy: opportunity.synergy })}
                   </Badge>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3 mb-2">
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-muted-foreground">Effort</span>
+                      <span className="text-xs text-muted-foreground">{t('screens.wallet.effort')}</span>
                       <span className="text-xs text-muted-foreground">{opportunity.effort}%</span>
                     </div>
                     <Progress value={opportunity.effort} className="h-1.5" />
                   </div>
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-emerald-600">+{opportunity.potential} VTN</div>
+                    <div className="text-sm font-semibold text-emerald-600">{t('screens.wallet.potentialVtn', { potential: opportunity.potential })}</div>
                     <div className="text-xs text-muted-foreground">{opportunity.timeframe}</div>
                   </div>
                 </div>
@@ -216,7 +216,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            AI Intelligence Insights
+            {t('screens.wallet.aiIntelligenceInsights')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -224,7 +224,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="space-y-3">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Zap className="h-4 w-4 text-yellow-500" />
-              Strategic Insights
+              {t('screens.wallet.strategicInsights')}
             </h4>
             
             {mockIntelligenceInsights.map((insight) => (
@@ -234,8 +234,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                     <h5 className="text-sm font-medium">{insight.title}</h5>
                     <p className="text-xs text-muted-foreground">{insight.description}</p>
                   </div>
-                  <Badge variant="outline" className="bg-blue-500/10 text-blue-600">
-                    {insight.confidence}% confidence
+                  <Badge variant="outline" className="bg-blue-500/10 text-blue-600">{t('screens.wallet.confidenceConfidence', { confidence: insight.confidence })}
                   </Badge>
                 </div>
                 
@@ -247,14 +246,12 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
                       </Badge>
                     ))}
                   </div>
-                  <div className="text-xs text-emerald-600 font-semibold">
-                    +{insight.impact}% impact
+                  <div className="text-xs text-emerald-600 font-semibold">{t('screens.wallet.impactImpact2', { impact: insight.impact })}
                   </div>
                 </div>
 
                 {insight.actionable && (
-                  <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">
-                    Apply Strategy
+                  <Button size="sm" variant="outline" className="text-xs h-6 px-2 w-full">{t('screens.wallet.applyStrategy')}
                   </Button>
                 )}
               </div>
@@ -265,31 +262,31 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-yellow-500/5 border-amber-200/50">
             <div className="flex items-center gap-2 mb-2">
               <Target className="h-4 w-4 text-amber-600" />
-              <span className="text-sm font-medium">Master Strategy</span>
+              <span className="text-sm font-medium">{t('screens.wallet.masterStrategy')}</span>
             </div>
             <p className="text-xs text-muted-foreground mb-2">
-              Combine all three insights for a potential 725% earning multiplier
+              {t('screens.wallet.combineAllThreeInsightsForPotential')}
             </p>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-amber-600 font-medium">Estimated monthly impact: +$2,400</span>
+              <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.estimatedMonthlyImpact2400')}</span>
               <Button size="sm" variant="outline" className="text-xs h-6 px-2">
                 <Zap className="h-3 w-3 mr-1" />
-                Activate All
+                {t('screens.wallet.activateAll')}
               </Button>
             </div>
           </div>
 
           {/* Performance Tracking */}
           <div className="p-3 rounded-lg bg-muted/50">
-            <div className="text-sm font-medium mb-2">Intelligence Performance</div>
+            <div className="text-sm font-medium mb-2">{t('screens.wallet.intelligencePerformance')}</div>
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center">
                 <div className="text-lg font-bold text-emerald-600">87%</div>
-                <div className="text-xs text-muted-foreground">Prediction Accuracy</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.predictionAccuracy')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-bold text-blue-600">+340%</div>
-                <div className="text-xs text-muted-foreground">Avg User Improvement</div>
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.avgUserImprovement')}</div>
               </div>
             </div>
           </div>
@@ -297,7 +294,7 @@ export function EarningIntelligenceSplitScreen({ className }: EarningIntelligenc
           {/* Action Button */}
           <Button className="w-full">
             <Brain className="h-4 w-4 mr-2" />
-            Optimize All Earnings
+            {t('screens.wallet.optimizeAllEarnings')}
           </Button>
         </CardContent>
       </Card>

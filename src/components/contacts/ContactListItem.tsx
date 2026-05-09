@@ -15,6 +15,7 @@ import {
   ResponsiveConfirmDialogTitle,
   ResponsiveConfirmDialogTrigger,
 } from "@/components/ui/responsive-confirm-dialog";
+import { t } from '@/lib/i18n-toast';
 
 interface ContactListItemProps {
   contact: Contact;
@@ -67,7 +68,7 @@ export default function ContactListItem({
             {contact.is_on_platform && (
               <Badge variant="secondary" className="text-xs flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" />
-                On VITANA
+                {t('screens.contacts.vitana')}
               </Badge>
             )}
           </div>
@@ -75,9 +76,7 @@ export default function ContactListItem({
             <p className="text-sm text-muted-foreground truncate">{contactInfo}</p>
           )}
           {contact.invite_sent_at && !contact.is_on_platform && (
-            <p className="text-xs text-muted-foreground mt-1">
-              Invited {new Date(contact.invite_sent_at).toLocaleDateString()}
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.contacts.invitedValue0', { value0: new Date(contact.invite_sent_at).toLocaleDateString() })}</p>
           )}
         </div>
 
@@ -89,7 +88,7 @@ export default function ContactListItem({
               className="flex items-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
-              Message
+              {t('screens.contacts.message')}
             </Button>
           )}
 
@@ -119,18 +118,16 @@ export default function ContactListItem({
               </ResponsiveConfirmDialogTrigger>
               <ResponsiveConfirmDialogContent>
                 <ResponsiveConfirmDialogHeader>
-                  <ResponsiveConfirmDialogTitle>Delete Contact</ResponsiveConfirmDialogTitle>
-                  <ResponsiveConfirmDialogDescription>
-                    Are you sure you want to delete {displayName}? This action cannot be undone.
+                  <ResponsiveConfirmDialogTitle>{t('screens.contacts.deleteContact')}</ResponsiveConfirmDialogTitle>
+                  <ResponsiveConfirmDialogDescription>{t('screens.contacts.youSureYouWantDeleteDisplayname', { displayName })}
                   </ResponsiveConfirmDialogDescription>
                 </ResponsiveConfirmDialogHeader>
                 <ResponsiveConfirmDialogFooter>
-                  <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                  <ResponsiveConfirmDialogCancel>{t('screens.contacts.cancel')}</ResponsiveConfirmDialogCancel>
                   <ResponsiveConfirmDialogAction
                     onClick={() => onDelete(contact.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    Delete
+                  >{t('screens.contacts.delete')}
                   </ResponsiveConfirmDialogAction>
                 </ResponsiveConfirmDialogFooter>
               </ResponsiveConfirmDialogContent>

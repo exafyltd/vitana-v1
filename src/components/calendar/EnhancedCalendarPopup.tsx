@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { de as deLocale } from "date-fns/locale/de";
 import { 
   format, 
@@ -43,6 +44,7 @@ import {
   Edit,
   Trash2,
   MessageCircle,
+  Bell,
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -59,6 +61,7 @@ import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { VitanaPillarKey } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
   nutrition: "Nutrition",
@@ -162,6 +165,7 @@ export function EnhancedCalendarPopup({
   const { toast } = useToast();
   const { translate, isGerman } = useTranslation();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const ownHook = useCalendarEvents();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = calendarHook ?? ownHook;
   
@@ -517,9 +521,7 @@ export function EnhancedCalendarPopup({
                         const totalCount = tagged.length;
                         return (
                           <div className="rounded-xl border ring-1 ring-border/60 px-3 py-2 mb-3">
-                            <div className="text-xs text-muted-foreground mb-1.5">
-                              Today's Index pulse: completing your {totalCount} pillar-tagged event
-                              {totalCount === 1 ? "" : "s"} will move your Index.
+                            <div className="text-xs text-muted-foreground mb-1.5">{t('screens.calendar.todaySIndexPulseCompletingYour', { totalCount, value1: totalCount === 1 ? "" : "s" })}
                             </div>
                             <div className="flex h-1.5 rounded-full overflow-hidden bg-muted">
                               {(Object.entries(counts) as Array<[VitanaPillarKey, number]>).map(
@@ -880,9 +882,22 @@ export function EnhancedCalendarPopup({
                 {translate('calendar.lastSynced', 'Last synced')} {getTimeSinceSync()}
               </p>
             </div>
-            <Button variant="secondary" onClick={() => onOpenChange(false)}>
-              {translate('calendar.close', 'Close')}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  onOpenChange(false);
+                  navigate('/reminders?filter=upcoming');
+                }}
+              >
+                <Bell className="h-4 w-4 mr-1.5" />
+                {translate('calendar.viewAllReminders', 'View all reminders')}
+              </Button>
+              <Button variant="secondary" onClick={() => onOpenChange(false)}>
+                {translate('calendar.close', 'Close')}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

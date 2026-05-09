@@ -1,4 +1,5 @@
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface BiometricContextVisualCardProps {
   heartRate?: number;
@@ -17,7 +18,7 @@ export function BiometricContextVisualCard({
 }: BiometricContextVisualCardProps) {
   return (
     <NewsCard
-      title="Biometric Context 📊"
+      title={t('screens.context.biometricContext')}
       description={`HR ${heartRate} BPM · ${steps.toLocaleString()} Steps · Hydration ${hydration}% · Energy ${energy}%`}
       imageUrl="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop"
       pillar="Exercise"

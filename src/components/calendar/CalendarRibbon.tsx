@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { cn } from "@/lib/utils";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { EnhancedCalendarPopup } from "./EnhancedCalendarPopup";
+import { t } from '@/lib/i18n-toast';
 
 const getTypeColor = (type: string) => {
   switch (type) {
@@ -79,7 +80,7 @@ export function CalendarRibbon() {
               </TooltipProvider>
             ))
           ) : (
-            <span className="text-xs text-muted-foreground">No upcoming events</span>
+            <span className="text-xs text-muted-foreground">{t('screens.calendar.noUpcomingEvents')}</span>
           )}
         </div>
 
@@ -105,7 +106,7 @@ export function CalendarRibbon() {
           className="h-8 gap-1"
         >
           <Plus className="h-3 w-3" />
-          <span className="hidden sm:inline">Add</span>
+          <span className="hidden sm:inline">{t('screens.calendar.add')}</span>
         </Button>
       </div>
 

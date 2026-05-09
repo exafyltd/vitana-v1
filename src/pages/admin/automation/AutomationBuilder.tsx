@@ -19,6 +19,7 @@ import ConditionBuilder from "@/components/admin/automation/ConditionBuilder";
 import ActionConfigurator from "@/components/admin/automation/ActionConfigurator";
 import { useAutomationRules } from "@/hooks/useAutomationRules";
 import { useToast } from "@/hooks/use-toast";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function AutomationBuilder() {
   const navigate = useNavigate();
@@ -72,18 +73,11 @@ export default function AutomationBuilder() {
           setActions(pattern.suggested_actions as any[]);
         }
 
-        toast({
-          title: "Pattern Loaded",
-          description: "Automation pre-filled from discovered pattern",
-        });
+        notify('toasts.admin.patternLoaded', 'toasts.admin.automationPrefilledFromDiscoveredPattern');
       }
     } catch (error) {
       console.error("Error loading pattern:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load pattern data",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error', 'toasts.admin.failedLoadPatternData');
     } finally {
       setLoadingPattern(false);
     }
@@ -91,40 +85,24 @@ export default function AutomationBuilder() {
 
   const handleSave = async (isDraft = false) => {
     if (!name.trim()) {
-      toast({
-        title: "Name Required",
-        description: "Please enter a name for this automation",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.nameRequired', 'toasts.admin.pleaseEnterNameForThisAutomation');
       return;
     }
 
     if (!trigger) {
-      toast({
-        title: "Trigger Required",
-        description: "Please select a trigger event",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.triggerRequired', 'toasts.admin.pleaseSelectTriggerEvent');
       return;
     }
 
     if (actions.length === 0) {
-      toast({
-        title: "Actions Required",
-        description: "Please configure at least one action",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.actionsRequired', 'toasts.admin.pleaseConfigureAtLeastOneAction');
       return;
     }
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to create automations",
-          variant: "destructive",
-        });
+        notifyError('toasts.admin.authenticationRequired', 'toasts.admin.pleaseSignCreateAutomations');
         return;
       }
 
@@ -159,18 +137,14 @@ export default function AutomationBuilder() {
 
       navigate("/admin/automation");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save automation rule",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.error', 'toasts.admin.failedSaveAutomationRule');
     }
   };
 
   return (
     <AppLayout>
       <SEO 
-        title="Automation Builder | AI Assistant | Admin" 
+        title={t('screens.admin.automationBuilderAiAssistantAdmin')} 
         description="Create and configure automation rules" 
         canonical={window.location.href} 
       />
@@ -188,51 +162,50 @@ export default function AutomationBuilder() {
             rightAction={
               <Button variant="outline" size="sm" onClick={() => navigate("/admin/ai-assistant")}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Overview
+                {t('screens.admin.backOverview')}
               </Button>
             }
           />
 
           {loadingPattern && (
             <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Loading pattern data...
+              <CardContent className="py-8 text-center text-muted-foreground">{t('screens.admin.loadingPatternData')}
               </CardContent>
             </Card>
           )}
 
           <Card>
             <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>Give your automation a name and description</CardDescription>
+              <CardTitle>{t('screens.admin.basicInformation')}</CardTitle>
+              <CardDescription>{t('screens.admin.giveYourAutomationNameDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Automation Name *</Label>
+                <Label htmlFor="name">{t('screens.admin.automationName')}</Label>
                 <Input 
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g., Welcome New Users"
+                  placeholder={t('screens.admin.eGWelcomeNewUsers')}
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('screens.admin.description')}</Label>
                 <Textarea 
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe what this automation does..."
+                  placeholder={t('screens.admin.describeWhatThisAutomationDoes')}
                   rows={3}
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>Enable Immediately</Label>
+                  <Label>{t('screens.admin.enableImmediately')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Automation will start running once saved
+                    {t('screens.admin.automationWillStartRunningOnceSaved')}
                   </p>
                 </div>
                 <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
@@ -250,7 +223,7 @@ export default function AutomationBuilder() {
 
           <div className="flex gap-3 justify-end">
             <Button variant="outline" onClick={() => handleSave(true)}>
-              Save as Draft
+              {t('screens.admin.saveAsDraft')}
             </Button>
             <Button onClick={() => handleSave(false)} disabled={createRule.isPending}>
               <Save className="h-4 w-4 mr-2" />

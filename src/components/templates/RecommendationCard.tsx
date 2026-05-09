@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, ArrowRight, MapPin, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface RecommendationItem {
   id: string;
@@ -95,8 +96,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
                     )}
                     {item.spots && (
                       <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        {item.spots} spots
+                        <Users className="w-3 h-3" />{t('screens.templates.spotsSpots', { spots: item.spots })}
                       </div>
                     )}
                   </div>
@@ -104,8 +104,7 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               ))}
             </div>
             {!showAll && items.length > maxItems && (
-              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">
-                View all {items.length} recommendations <ArrowRight className="w-4 h-4 ml-1" />
+              <Button variant="ghost" size="sm" onClick={onViewAll} className="mt-3">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             )}
           </CardContent>
@@ -161,21 +160,20 @@ const RecommendationCardBase = React.forwardRef<HTMLDivElement, RecommendationCa
               </div>
               
               {item.with && (
-                <p className="text-xs text-muted-foreground mt-2">With {item.with}</p>
+                <p className="text-xs text-muted-foreground mt-2">{t('screens.templates.withWith', { with: item.with })}</p>
               )}
             </div>
           ))}
           
           {displayItems.length === 0 && (
             <div className="text-center py-6 text-muted-foreground">
-              <p className="text-sm">No recommendations available right now.</p>
-              <p className="text-xs mt-1">Check back later for personalized suggestions!</p>
+              <p className="text-sm">{t('screens.templates.noRecommendationsAvailableRightNow')}</p>
+              <p className="text-xs mt-1">{t('screens.templates.checkBackLaterForPersonalizedSuggestions')}</p>
             </div>
           )}
           
           {!showAll && items.length > maxItems && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">
-              View all {items.length} recommendations <ArrowRight className="w-4 h-4 ml-1" />
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="w-full mt-2">{t('screens.templates.viewAllLengthRecommendations', { length: items.length })} <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           )}
         </CardContent>

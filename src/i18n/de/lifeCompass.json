@@ -1,0 +1,53 @@
+{
+  "lifeCompass": {
+    "title": "Lebenskompass",
+    "description": "Dein Lebenskompass leitet alle KI-Empfehlungen und Entscheidungen. Wähle ein Hauptziel, das dir gerade am wichtigsten ist. Die KI priorisiert Vorschläge, die zu dieser Richtung passen.",
+    "currentCompass": "Aktueller Kompass",
+    "alignment": "Ausrichtung: {value}%",
+    "confidence": "Vertrauen: {value}%",
+    "suggestedGoals": "Vorgeschlagene Ziele",
+    "customGoal": "Eigenes Ziel",
+    "customGoalPlaceholder": "Beschreibe dein Hauptziel in deinen eigenen Worten...",
+    "setCustomGoal": "Eigenes Ziel festlegen",
+    "closeAria": "Schließen",
+    "categoryLabels": {
+      "wealth": "Wohlstand",
+      "relationship": "Beziehung",
+      "health": "Gesundheit",
+      "career": "Karriere",
+      "learning": "Lernen",
+      "spiritual": "Spirituell",
+      "longevity": "Langlebigkeit"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Finanzielle Freiheit aufbauen",
+        "description": "Finanzielle Unabhängigkeit und Wohlstand erreichen"
+      },
+      "relationship": {
+        "title": "Lebenspartner finden",
+        "description": "Bedeutungsvolle romantische Beziehungen aufbauen"
+      },
+      "health": {
+        "title": "Gesundheit transformieren",
+        "description": "Optimales körperliches und geistiges Wohlbefinden erreichen"
+      },
+      "career": {
+        "title": "Karriere vorantreiben",
+        "description": "Eine erfüllende und erfolgreiche Karriere aufbauen"
+      },
+      "learning": {
+        "title": "Neue Fähigkeiten meistern",
+        "description": "Durch Wissen lernen und wachsen"
+      },
+      "spiritual": {
+        "title": "Spirituelles Leben",
+        "description": "Sinn, Präsenz und inneren Frieden vertiefen"
+      },
+      "longevity": {
+        "title": "Lebensqualität verbessern und Lebensdauer verlängern",
+        "description": "Fokus auf Healthspan, Energie und Langlebigkeit – die Mission von Vitanaland"
+      }
+    }
+  }
+}

@@ -46,10 +46,11 @@ import { useFollow } from "@/hooks/useFollow";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from "react-router-dom";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -163,7 +164,7 @@ export function ProfileLayout({
 
   const handleMessageClick = () => {
     if (!user) {
-      toast({ title: "Authentication required", description: "Please sign in to send messages", variant: "destructive" });
+      notifyError('toasts.profile.authenticationRequired', 'toasts.profile.pleaseSignSendMessages');
       return;
     }
     setMessageModalOpen(true);
@@ -176,10 +177,10 @@ export function ProfileLayout({
       if (!thread?.id) throw new Error('Failed to create thread');
       await sendMessage({ context: 'global', threadId: thread.id, content: message, type: 'text' });
       logMessageSend(thread.id, 'text', 'global');
-      toast({ title: "Message sent", description: "Your message has been sent successfully" });
+      notify('toasts.profile.messageSent', 'toasts.profile.yourMessageHasSentSuccessfully');
       navigate('/inbox', { state: { selectedThreadId: thread.id } });
     } catch (error) {
-      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+      notifyError('toasts.profile.error', 'toasts.profile.failedSendMessagePleaseTryAgain');
       throw error;
     } finally {
       setIsCreatingThread(false);
@@ -226,7 +227,7 @@ export function ProfileLayout({
             <div className="p-4">
               <MobileShowcaseHeader onManage={onEditShowcase} />
               <div className="px-4 py-2 text-sm text-muted-foreground">
-                Select posts and content to feature
+                {t('screens.profile.selectPostsContentFeature')}
               </div>
               <MobileAutopilotBanner onTry={() => {
                 const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
@@ -250,9 +251,9 @@ export function ProfileLayout({
                 onClick={onEditAbout}
                 className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
               >
-                <h3 className="text-sm font-semibold mb-2">About</h3>
+                <h3 className="text-sm font-semibold mb-2">{t('screens.profile.about')}</h3>
                 <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
-                {effectiveEditMode && <p className="text-xs text-primary mt-2">Tap to edit</p>}
+                {effectiveEditMode && <p className="text-xs text-primary mt-2">{t('screens.profile.tapEdit')}</p>}
               </button>
 
               {/* Life Milestones */}
@@ -389,14 +390,14 @@ export function ProfileLayout({
             {effectiveEditMode && onEditShowcase && (
               <div className="bg-background rounded-lg border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold">Showcase</h3>
+                  <h3 className="text-lg font-semibold">{t('screens.profile.showcase')}</h3>
                   <Button variant="outline" size="sm" onClick={onEditShowcase}>
                     <Star className="h-4 w-4 mr-2" />
-                    Manage Featured Content
+                    {t('screens.profile.manageFeaturedContent')}
                   </Button>
                 </div>
                 <p className="text-muted-foreground">
-                  Select posts and content to feature at the top of your profile
+                  {t('screens.profile.selectPostsContentFeatureAtTop')}
                 </p>
               </div>
             )}

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -63,18 +64,16 @@ export function VitanaPillarAgentsPanel() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bot className="w-5 h-5 text-calendar-primary" />
-            <CardTitle className="text-base">Active agents</CardTitle>
+            <CardTitle className="text-base">{t('screens.health.activeAgents')}</CardTitle>
           </div>
-          <Badge variant="outline" className="text-[10px]">
-            {outputs.length}/5 ran today
+          <Badge variant="outline" className="text-[10px]">{t('screens.health.length5RanToday', { length: outputs.length })}
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        {isLoading && <p className="text-sm text-muted-foreground">Checking agents…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">{t('screens.health.checkingAgents')}</p>}
         {!isLoading && outputs.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            No agent output today yet. The five pillar agents run on each Index recompute and when you mark a journey event complete.
+          <p className="text-sm text-muted-foreground">{t('screens.health.noAgentOutputTodayYetFive')}
           </p>
         )}
         {!isLoading && outputs.length > 0 && (
@@ -92,7 +91,7 @@ export function VitanaPillarAgentsPanel() {
                     ) : (
                       <span className="w-4 h-4 rounded-full border border-dashed border-muted-foreground/40" />
                     )}
-                    <span className="font-medium">Pillar Agent — {PILLAR_LABELS[p]}</span>
+                    <span className="font-medium">{t('screens.health.pillarAgentValue0', { value0: PILLAR_LABELS[p] })}</span>
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {out ? `${total}/200 · ${out.agent_version}` : "no output yet"}
@@ -102,10 +101,7 @@ export function VitanaPillarAgentsPanel() {
             })}
           </ul>
         )}
-        <p className="text-xs text-muted-foreground pt-1">
-          Each pillar is watched by its own specialist agent. v1 mirrors the
-          compute engine's math; v2+ adds third-party integrations
-          (Apple Health, Oura, MyFitnessPal, and more) per pillar.
+        <p className="text-xs text-muted-foreground pt-1">{t('screens.health.eachPillarWatchedByItsOwn')}
         </p>
       </CardContent>
     </Card>

@@ -17,6 +17,9 @@ import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, V
 import { toast } from "sonner";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useTranslation } from "@/hooks/useTranslation";
+// `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
+// using `lookup` (the same singleton, different name) avoids the conflict.
+import { lookup } from '@/lib/i18n-toast';
 
 type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
@@ -578,7 +581,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   <Input
                     id="recipientEmail"
                     type="email"
-                    placeholder="friend@example.com"
+                    placeholder={lookup('screens.voucher.friendExampleCom')}
                     value={recipientEmail}
                     onChange={(e) => setRecipientEmail(e.target.value)}
                     className="mt-1"
@@ -590,7 +593,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   <Input
                     id="recipientName"
                     type="text"
-                    placeholder="Jane"
+                    placeholder={lookup('screens.voucher.jane')}
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     className="mt-1"

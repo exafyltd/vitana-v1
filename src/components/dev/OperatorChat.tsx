@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useCommandHub } from "@/state/commandHubStore";
 import { fetchThread, postChat } from "@/lib/commandHubApi";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function OperatorChat() {
   const { activeVTID, threads, upsertThread, appendChat, setActiveVTID } = useCommandHub();
@@ -26,7 +26,7 @@ export default function OperatorChat() {
           if (err.message?.includes("404")) {
             console.log("No thread history for", activeVTID);
           } else if (err.message?.includes("401")) {
-            toast({ title: "Session expired", description: "Please sign in." });
+            notify('toasts.dev.sessionExpired', 'toasts.dev.pleaseSign');
           }
         });
     }
@@ -78,7 +78,7 @@ export default function OperatorChat() {
       appendChat(useVTID, { role: "operator", ts: new Date().toISOString(), text: res.reply, links: res.links });
     } catch (err) {
       console.error("Chat error:", err);
-      toast({ title: "Failed to send message", description: String(err), variant: "destructive" });
+      notifyError('toasts.dev.failedSendMessage');
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +91,7 @@ export default function OperatorChat() {
   if (!chatEnabled) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground">
-        <p className="text-sm">Chat is currently disabled</p>
+        <p className="text-sm">{t('screens.dev.chatCurrentlyDisabled')}</p>
       </div>
     );
   }
@@ -100,13 +100,13 @@ export default function OperatorChat() {
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between p-3 border-b">
         <div className="flex items-center gap-2">
-          <span className="font-semibold">OASIS Operator</span>
+          <span className="font-semibold">{t('screens.dev.oasisOperator')}</span>
           <Badge variant="outline" className="text-xs">AI</Badge>
         </div>
         {activeVTID ? (
           <Badge variant="secondary" className="text-xs font-mono">{activeVTID}</Badge>
         ) : (
-          <span className="text-xs text-muted-foreground">No VTID selected</span>
+          <span className="text-xs text-muted-foreground">{t('screens.dev.noVtidSelected2')}</span>
         )}
       </div>
 
@@ -117,7 +117,7 @@ export default function OperatorChat() {
               <p className="text-sm">
                 {activeVTID ? "No thread history yet" : "Select an event or start a conversation"}
               </p>
-              <p className="text-xs opacity-70">Try: /task [description] or /status [VTID]</p>
+              <p className="text-xs opacity-70">{t('screens.dev.trytaskDescriptionstatusVtid')}</p>
             </div>
           </div>
         ) : (
@@ -154,8 +154,7 @@ export default function OperatorChat() {
                 </div>
               </TooltipTrigger>
               {isChatOffline && (
-                <TooltipContent>
-                  Cannot send message: Chat API is offline
+                <TooltipContent>{t('screens.dev.cannotSendMessageChatApiOffline')}
                 </TooltipContent>
               )}
             </Tooltip>

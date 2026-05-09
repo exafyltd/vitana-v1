@@ -9,6 +9,7 @@ import { ExternalLink, Clock, Activity, ChevronDown } from "lucide-react";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface CommandChatProps {
   isFocused?: boolean;
@@ -123,7 +124,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b bg-card">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm tracking-wide">COMMAND CHAT</h3>
+          <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.commandChat')}</h3>
           {hasUnread && !isFocused && (
             <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
               •
@@ -158,7 +159,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
             <CardContent className="space-y-4">
               {/* Event Title */}
               <div>
-                <h4 className="text-sm font-semibold mb-1">Event</h4>
+                <h4 className="text-sm font-semibold mb-1">{t('screens.dev.event')}</h4>
                 <p className="text-sm text-muted-foreground">{selectedEvent.title}</p>
               </div>
 
@@ -171,7 +172,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
               {/* Reference */}
               {selectedEvent.ref && (
                 <div>
-                  <h4 className="text-sm font-semibold mb-1">Reference</h4>
+                  <h4 className="text-sm font-semibold mb-1">{t('screens.dev.reference')}</h4>
                   <code className="text-xs bg-muted px-2 py-1 rounded block overflow-x-auto">
                     {selectedEvent.ref}
                   </code>
@@ -189,7 +190,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                 {/* Timeline View */}
                 {vtidTimeline.length > 0 && (
                   <div className="space-y-2 pt-4 border-t">
-                    <h4 className="text-sm font-semibold mb-3">Event Timeline ({vtidTimeline.length} events)</h4>
+                    <h4 className="text-sm font-semibold mb-3">{t('screens.dev.eventTimelineLengthEvents', { length: vtidTimeline.length })}</h4>
                     <div className="space-y-2">
                       {vtidTimeline.map((evt, idx) => (
                         <div key={idx} className="relative">
@@ -208,7 +209,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                                 />
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>Source: {getSourceLabel(evt.source)}</p>
+                                <p>{t('screens.dev.sourceValue0', { value0: getSourceLabel(evt.source) })}</p>
                               </TooltipContent>
                             </Tooltip>
 
@@ -256,7 +257,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
 
               {/* Action Links */}
               <div className="space-y-2 pt-4 border-t">
-                <h4 className="text-sm font-semibold mb-2">Actions</h4>
+                <h4 className="text-sm font-semibold mb-2">{t('screens.dev.actions')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedEvent.link && (
                     <Button
@@ -270,15 +271,15 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        View Workflow <ExternalLink className="h-3 w-3 ml-1" />
+                        {t('screens.dev.viewWorkflow')} <ExternalLink className="h-3 w-3 ml-1" />
                       </a>
                     </Button>
                   )}
                   <Button variant="outline" size="sm" className="text-xs">
-                    View Logs <ExternalLink className="h-3 w-3 ml-1" />
+                    {t('screens.dev.viewLogs')} <ExternalLink className="h-3 w-3 ml-1" />
                   </Button>
                   <Button variant="outline" size="sm" className="text-xs">
-                    View Deployment <ExternalLink className="h-3 w-3 ml-1" />
+                    {t('screens.dev.viewDeployment')} <ExternalLink className="h-3 w-3 ml-1" />
                   </Button>
                 </div>
               </div>
@@ -286,7 +287,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
               {/* Raw Event Data */}
               <details className="pt-4 border-t">
                 <summary className="text-sm font-semibold cursor-pointer hover:text-primary">
-                  Raw Event Data
+                  {t('screens.dev.rawEventData')}
                 </summary>
                 <pre className="mt-2 text-xs bg-muted p-3 rounded overflow-x-auto">
                   {JSON.stringify(selectedEvent, null, 2)}
@@ -303,7 +304,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
                     : "Click a VTID in the Live Console to open its details"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  The card view will show event timeline, status, logs, and actionable links.
+                  {t('screens.dev.cardViewWillShowEventTimeline')}
                 </p>
               </div>
             </div>
@@ -314,7 +315,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
       {/* Footer */}
       <div className="px-3 py-1.5 border-t bg-muted/30">
         <p className="text-[10px] text-muted-foreground">
-          Command chat ready • AI-powered workflow assistance
+          {t('screens.dev.commandChatReadyAipoweredWorkflowAssistance')}
         </p>
       </div>
     </div>

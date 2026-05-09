@@ -1,0 +1,71 @@
+{
+  "discover": {
+    "title": "Discover your Longevity Marketplace",
+    "mobileTitle": "Discover",
+    "mobileDescription": "Explore experiences, people, and wellness",
+    "description": "Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey.",
+    "searchPlaceholder": "What are you looking for? (e.g., yoga classes, longevity doctor, meetups)",
+    "doctorsCoaches": "Doctors & Coaches",
+    "doctorsCoachesDesc": "Find longevity specialists, health coaches, and medical experts",
+    "wellnessServices": "Wellness Services",
+    "wellnessServicesDesc": "Discover yoga, massage, dance, therapy, and recovery services",
+    "communityGroups": "Community Groups",
+    "communityGroupsDesc": "Join meetups, groups, and connect with like-minded people",
+    "explore": "Explore",
+    "aiPicksForYou": "AI Picks for You",
+    "recommendedForYou": "Recommended for you",
+    "moreToExplore": "More to explore",
+    "seeAll": "See all",
+    "suggestedForYou": "Suggested For You",
+    "browseCategories": "Browse Categories",
+    "all": "All",
+    "shareAndEarn": "Share & Earn",
+    "shareAndEarnDesc": "Recommend products, earn commissions",
+    "start": "Start",
+    "view": "View",
+    "noResults": "No results found",
+    "noResultsDesc": "Try different search terms or browse categories.",
+    "categories": {
+      "sleep": "Sleep",
+      "nutrition": "Nutrition",
+      "movement": "Movement",
+      "mind": "Mind",
+      "supplements": "Supplements",
+      "experts": "Experts"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "viewCart": "View Cart",
+      "bookAppointment": "Book Appointment",
+      "quickCheckout": "Quick Checkout",
+      "trackOrders": "Track Orders",
+      "reorderPrevious": "Reorder Previous",
+      "managePayment": "Manage Payment",
+      "findServicesNearMe": "Find Services Near Me",
+      "viewSavedItems": "View Saved Items"
+    },
+    "aiPicks": {
+      "title": "AI Picks for You",
+      "description": "Personalized recommendations based on your Vitana Index, biomarkers, and health goals",
+      "backToDiscover": "Back to Discover",
+      "loading": "Loading AI recommendations...",
+      "unavailable": "AI Picks unavailable",
+      "unavailableDesc": "We couldn't load your personalized recommendations right now",
+      "recommendationsFound": "{count} recommendations found",
+      "noRecommendations": "No recommendations found",
+      "noRecommendationsDesc": "Try selecting a different filter to see more recommendations",
+      "viewAllPicks": "View All Picks"
+    },
+    "filters": {
+      "all": "All",
+      "services": "Services",
+      "supplements": "Supplements",
+      "experts": "Experts",
+      "deals": "Deals"
+    },
+    "toast": {
+      "actionSelected": "Action Selected",
+      "comingSoon": "{action} feature coming soon!"
+    }
+  }
+}

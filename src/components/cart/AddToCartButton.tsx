@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/hooks/useCart";
 import { useAuth } from "@/context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { notifyError } from '@/lib/i18n-toast';
 
 interface AddToCartButtonProps {
   item: {
@@ -43,11 +44,7 @@ export function AddToCartButton({
     e.stopPropagation();
     
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to add items to your cart",
-        variant: "destructive",
-      });
+      notifyError('toasts.cart.signRequired', 'toasts.cart.pleaseSignAddItemsYourCart');
       navigate('/');
       return;
     }

@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
+import { t } from '@/lib/i18n-toast';
 
 interface TodaysPlanCardProps {
   schedule?: string;
@@ -29,7 +30,7 @@ export function TodaysPlanCard({
 
   return (
     <NewsCard
-      title="Today's Plan 🗓️"
+      title={t('screens.context.todaySPlan')}
       description={generatedSchedule}
       imageUrl="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
       pillar="Mental"

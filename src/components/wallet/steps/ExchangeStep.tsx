@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface ExchangeStepProps {
   onBack: () => void;
@@ -56,11 +57,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
 
   const handleExchange = async () => {
     if (!amount || parseFloat(amount) <= 0) {
-      toast({
-        title: 'Invalid Amount',
-        description: 'Please enter a valid amount',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount', 'toasts.wallet.pleaseEnterValidAmount');
       return;
     }
 
@@ -68,11 +65,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
     const currentBalance = getBalance(fromCurrency) || 0;
 
     if (exchangeAmount > currentBalance) {
-      toast({
-        title: 'Insufficient Balance',
-        description: `You only have ${currentBalance} ${fromCurrency}`,
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientBalance2');
       return;
     }
 
@@ -103,14 +96,14 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <ArrowUpDown className="h-5 w-5 text-primary" />
-          Exchange Currency
+          {t('screens.wallet.exchangeCurrency')}
         </DialogTitle>
       </DialogHeader>
 
       <div className="space-y-4">
         {/* From Currency */}
         <div className="space-y-2">
-          <Label htmlFor="from-amount">From</Label>
+          <Label htmlFor="from-amount">{t('screens.wallet.from')}</Label>
           <div className="flex gap-2">
             <Input
               id="from-amount"
@@ -136,9 +129,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
               </SelectContent>
             </Select>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Available: {fromBalance} {fromCurrency}
-          </p>
+          <p className="text-xs text-muted-foreground">{t('screens.wallet.availableFrombalanceFromcurrency', { fromBalance, fromCurrency })}</p>
         </div>
 
         {/* Swap Button */}
@@ -155,7 +146,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
 
         {/* To Currency */}
         <div className="space-y-2">
-          <Label htmlFor="to-currency">To</Label>
+          <Label htmlFor="to-currency">{t('screens.wallet.text')}</Label>
           <Select value={toCurrency} onValueChange={(value: any) => setToCurrency(value)}>
             <SelectTrigger>
               <SelectValue />
@@ -178,16 +169,16 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
           <Card>
             <CardContent className="p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>You'll receive:</span>
+                <span>{t('screens.wallet.youLlReceive')}</span>
                 <span className="font-medium">{calculation.toAmount.toFixed(2)} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Exchange rate:</span>
+                <span>{t('screens.wallet.exchangeRate')}</span>
                 <span>1 {fromCurrency} = {calculation.rate} {toCurrency}</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>No fees:</span>
-                <span>Free exchange</span>
+                <span>{t('screens.wallet.noFees2')}</span>
+                <span>{t('screens.wallet.freeExchange')}</span>
               </div>
             </CardContent>
           </Card>
@@ -196,7 +187,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="outline" onClick={onBack} className="flex-1">
-            Cancel
+            {t('screens.wallet.cancel')}
           </Button>
           <Button 
             onClick={handleExchange}
@@ -205,8 +196,7 @@ export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepP
           >
             {isProcessing ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Exchanging...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('screens.wallet.exchanging')}
               </>
             ) : (
               'Exchange'

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Ticket, Calendar } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from '@/lib/i18n-toast';
 
 interface TopPerformerCardProps {
   name: string;
@@ -58,9 +59,9 @@ export function TopPerformerCard({
               <Trophy className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-medium">No top performer yet</p>
+              <p className="text-sm font-medium">{t('screens.business.noTopPerformerYet')}</p>
               <p className="text-xs text-muted-foreground/70">
-                Start selling to see your best performer
+                {t('screens.business.startSellingSeeYourBestPerformer')}
               </p>
             </div>
           </div>
@@ -79,7 +80,7 @@ export function TopPerformerCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
-                Top Performer
+                {t('screens.business.topPerformer')}
               </p>
               <Badge variant="outline" className="text-[10px] px-1.5 py-0">
                 {type === "event" ? (
@@ -95,8 +96,7 @@ export function TopPerformerCard({
               </span>
               {ticketsSold !== undefined && (
                 <span className="flex items-center gap-1">
-                  <Ticket className="h-3 w-3" />
-                  {ticketsSold} tickets
+                  <Ticket className="h-3 w-3" />{t('screens.business.ticketssoldTickets', { ticketsSold })}
                 </span>
               )}
             </div>

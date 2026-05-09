@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Memory Actions",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Record Voice Diary",
+        "description": "Capture thoughts and reflections with voice"
+      },
+      "addMemoryNote": {
+        "title": "Add Memory Note",
+        "description": "Write down important health moments"
+      },
+      "viewTimeline": {
+        "title": "View Timeline",
+        "description": "See your complete wellness journey"
+      },
+      "searchMemories": {
+        "title": "Search Memories",
+        "description": "Find specific moments and insights"
+      },
+      "photoMemory": {
+        "title": "Photo Memory",
+        "description": "Add visual memories to your journey"
+      },
+      "aiMemoryAnalysis": {
+        "title": "AI Memory Analysis",
+        "description": "Get insights from your memory patterns"
+      }
+    }
+  }
+}

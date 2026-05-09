@@ -50,20 +50,48 @@ export function useNotifications(limit = 20) {
 
   const fetchNotifications = useCallback(async () => {
     if (!user) return;
-    try {
-      const jwt = await getJwt();
-      if (!jwt) return;
-      const res = await fetch(`${GATEWAY_URL}/api/v1/notifications?limit=${limit}`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
-      if (!res.ok) return;
-      const { data } = await res.json();
-      setNotifications(data || []);
-      setUnreadCount((data || []).filter((n: VitanaNotification) => !n.read_at).length);
-    } catch (err) {
-      console.error('[Notifications] Fetch failed:', err);
-    } finally {
-      setLoading(false);
+    // Retry-with-backoff: a single fetch racing a Cloud Run cold start or a
+    // bundle-still-hydrating moment used to silently leave the panel empty
+    // (no error UI, no realtime backfill — realtime only delivers future
+    // INSERTs). 3 attempts × 1.5s linear backoff covers a typical cold start.
+    const MAX_ATTEMPTS = 3;
+    const BACKOFF_MS = 1500;
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        const jwt = await getJwt();
+        if (!jwt) {
+          setLoading(false);
+          return;
+        }
+        const res = await fetch(`${GATEWAY_URL}/api/v1/notifications?limit=${limit}`, {
+          headers: { Authorization: `Bearer ${jwt}` },
+        });
+        // Auth-shaped failure: retrying won't help, bail quietly.
+        if (res.status === 401 || res.status === 403) {
+          setLoading(false);
+          return;
+        }
+        if (!res.ok) {
+          if (attempt < MAX_ATTEMPTS) {
+            await new Promise((r) => setTimeout(r, BACKOFF_MS * attempt));
+            continue;
+          }
+          setLoading(false);
+          return;
+        }
+        const { data } = await res.json();
+        setNotifications(data || []);
+        setUnreadCount((data || []).filter((n: VitanaNotification) => !n.read_at).length);
+        setLoading(false);
+        return;
+      } catch (err) {
+        if (attempt < MAX_ATTEMPTS) {
+          await new Promise((r) => setTimeout(r, BACKOFF_MS * attempt));
+          continue;
+        }
+        console.error('[Notifications] Fetch failed after retries:', err);
+        setLoading(false);
+      }
     }
   }, [user, limit]);
 

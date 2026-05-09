@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Search, Send, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface GlobalSendFundsProps {
   isOpen: boolean;
@@ -96,11 +97,7 @@ export default function GlobalSendFunds({
       }
     } catch (error) {
       console.error('Search error:', error);
-      toast({
-        title: "Search Error",
-        description: "Failed to search users. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.searchError', 'toasts.payment.failedSearchUsersPleaseTryAgain');
     } finally {
       setIsSearching(false);
     }
@@ -108,21 +105,13 @@ export default function GlobalSendFunds({
 
   const handleSendFunds = async () => {
     if (!selectedRecipient || !amount || !currency) {
-      toast({
-        title: "Missing Information",
-        description: "Please select a recipient, enter an amount, and choose a currency.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseSelectRecipientEnterAmountChoose');
       return;
     }
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount greater than 0.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.invalidAmount', 'toasts.payment.pleaseEnterValidAmountGreaterThan');
       return;
     }
 
@@ -146,11 +135,7 @@ export default function GlobalSendFunds({
       }
     } catch (error) {
       console.error('Transfer error:', error);
-      toast({
-        title: "Transfer Failed",
-        description: error instanceof Error ? error.message : "Failed to send funds. Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.payment.transferFailed');
     } finally {
       setIsLoading(false);
     }
@@ -164,7 +149,7 @@ export default function GlobalSendFunds({
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-green-600" />
-            Send Funds
+            {t('screens.payment.sendFunds')}
           </ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
 
@@ -173,12 +158,12 @@ export default function GlobalSendFunds({
             {/* Recipient Selection */}
             {!selectedRecipient ? (
               <div>
-                <Label htmlFor="search">Search Users</Label>
+                <Label htmlFor="search">{t('screens.payment.searchUsers')}</Label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="search"
-                    placeholder="Search by name or email..."
+                    placeholder={t('screens.payment.searchByNameEmail')}
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -222,13 +207,13 @@ export default function GlobalSendFunds({
                 {isSearching && (
                   <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                     <Users className="w-4 h-4 animate-pulse" />
-                    Searching users...
+                    {t('screens.payment.searchingUsers')}
                   </div>
                 )}
               </div>
             ) : (
               <div>
-                <Label>Recipient</Label>
+                <Label>{t('screens.payment.recipient')}</Label>
                 <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={selectedRecipient.avatar_url} />
@@ -245,7 +230,7 @@ export default function GlobalSendFunds({
                     size="sm"
                     onClick={() => setSelectedRecipient(null)}
                   >
-                    Change
+                    {t('screens.payment.change')}
                   </Button>
                 </div>
               </div>
@@ -253,25 +238,23 @@ export default function GlobalSendFunds({
 
             {/* Currency Selection */}
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="VTNA">VTNA Tokens</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="CREDITS">Credits</SelectItem>
+                  <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
+                  <SelectItem value="USD">{t('screens.payment.usd')}</SelectItem>
+                  <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-xs text-muted-foreground mt-1">
-                Available: {currentBalance.toLocaleString()} {currency}
-              </p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.payment.availableValue0Currency', { value0: currentBalance.toLocaleString(), currency })}</p>
             </div>
 
             {/* Amount Input */}
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -291,7 +274,7 @@ export default function GlobalSendFunds({
             onClick={onClose}
             className="flex-1"
           >
-            Cancel
+            {t('screens.payment.cancel')}
           </Button>
           <Button 
             onClick={handleSendFunds}

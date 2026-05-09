@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 export interface TicketType {
   id: string;
@@ -109,11 +110,7 @@ export function useMyTickets() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load your tickets",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedLoadYourTickets');
       setTickets([]);
     } else {
       setTickets(data || []);
@@ -240,11 +237,7 @@ export function usePurchaseTicket() {
 
       return response.data;
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to purchase ticket",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error');
       throw error;
     } finally {
       setLoading(false);

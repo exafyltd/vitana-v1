@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, X, Clock, DollarSign, Calendar } from "lucide-react";
 import { ServiceOffering } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 export function ServicesForm() {
   const [hostSessions, setHostSessions] = useState(false);
@@ -56,9 +57,9 @@ export function ServicesForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Services & Pricing</h3>
+        <h3 className="text-lg font-medium mb-4">{t('screens.profile.servicesPricing')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Offer sessions and services to the community. Available to all roles.
+          {t('screens.profile.offerSessionsServicesCommunityAvailableAll')}
         </p>
       </div>
 
@@ -67,10 +68,10 @@ export function ServicesForm() {
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <Label htmlFor="host-sessions" className="text-base font-medium">
-              Host Sessions
+              {t('screens.profile.hostSessions')}
             </Label>
             <p className="text-sm text-muted-foreground">
-              Enable this to start offering services to other users
+              {t('screens.profile.enableThisStartOfferingServicesOther')}
             </p>
           </div>
           <Switch
@@ -84,17 +85,17 @@ export function ServicesForm() {
       {hostSessions && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <Label className="text-base font-medium">Your Offerings</Label>
+            <Label className="text-base font-medium">{t('screens.profile.yourOfferings')}</Label>
             <Button variant="outline" size="sm" onClick={addOffering}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Offering
+              {t('screens.profile.addOffering')}
             </Button>
           </div>
 
           {offerings.length === 0 && (
             <Card className="p-8 text-center">
-              <p className="text-muted-foreground mb-4">No offerings yet</p>
-              <Button onClick={addOffering}>Create Your First Offering</Button>
+              <p className="text-muted-foreground mb-4">{t('screens.profile.noOfferingsYet')}</p>
+              <Button onClick={addOffering}>{t('screens.profile.createYourFirstOffering')}</Button>
             </Card>
           )}
 
@@ -121,16 +122,16 @@ export function ServicesForm() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Title</Label>
+                    <Label>{t('screens.profile.title')}</Label>
                     <Input
-                      placeholder="e.g., Wellness Consultation"
+                      placeholder={t('screens.profile.eGWellnessConsultation')}
                       value={offering.title}
                       onChange={(e) => updateOffering(offering.id, "title", e.target.value)}
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Duration</Label>
+                    <Label>{t('screens.profile.duration')}</Label>
                     <div className="flex items-center gap-2">
                       <Clock className="w-4 h-4 text-muted-foreground" />
                       <Select 
@@ -141,18 +142,18 @@ export function ServicesForm() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="30">30 minutes</SelectItem>
-                          <SelectItem value="45">45 minutes</SelectItem>
-                          <SelectItem value="60">1 hour</SelectItem>
-                          <SelectItem value="90">1.5 hours</SelectItem>
-                          <SelectItem value="120">2 hours</SelectItem>
+                          <SelectItem value="30">{t('screens.profile.text30Minutes')}</SelectItem>
+                          <SelectItem value="45">{t('screens.profile.text45Minutes')}</SelectItem>
+                          <SelectItem value="60">{t('screens.profile.text1Hour')}</SelectItem>
+                          <SelectItem value="90">{t('screens.profile.text15Hours')}</SelectItem>
+                          <SelectItem value="120">{t('screens.profile.text2Hours')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Price</Label>
+                    <Label>{t('screens.profile.price')}</Label>
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <Input
@@ -173,7 +174,7 @@ export function ServicesForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Currency</Label>
+                    <Label>{t('screens.profile.currency')}</Label>
                     <Select 
                       value={offering.currency} 
                       onValueChange={(value) => updateOffering(offering.id, "currency", value)}
@@ -182,20 +183,20 @@ export function ServicesForm() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="GBP">GBP</SelectItem>
-                        <SelectItem value="CAD">CAD</SelectItem>
+                        <SelectItem value="USD">{t('screens.profile.usd')}</SelectItem>
+                        <SelectItem value="EUR">{t('screens.profile.eur')}</SelectItem>
+                        <SelectItem value="GBP">{t('screens.profile.gbp')}</SelectItem>
+                        <SelectItem value="CAD">{t('screens.profile.cad')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Available Times</Label>
+                  <Label>{t('screens.profile.availableTimes')}</Label>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="w-4 h-4" />
-                    <span>Calendar integration coming soon</span>
+                    <span>{t('screens.profile.calendarIntegrationComingSoon')}</span>
                   </div>
                 </div>
               </div>
@@ -205,7 +206,7 @@ export function ServicesForm() {
       )}
 
       <div className="pt-4 border-t">
-        <Button className="w-full">Save Changes</Button>
+        <Button className="w-full">{t('screens.profile.saveChanges')}</Button>
       </div>
     </div>
   );

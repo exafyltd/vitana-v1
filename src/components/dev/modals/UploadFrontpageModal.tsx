@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { devConfig } from "@/config/dev-config";
 import { Upload } from "lucide-react";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface UploadFrontpageModalProps {
   open: boolean;
@@ -21,10 +22,7 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
   const [description, setDescription] = useState("");
 
   const handleUpload = () => {
-    toast({
-      title: "Frontpage uploaded",
-      description: `${portal} frontpage v${version} has been uploaded successfully.`,
-    });
+    notify('toasts.dev.frontpageUploaded');
     onOpenChange(false);
     setPortal("");
     setVersion("");
@@ -35,27 +33,27 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-white/95 dark:bg-card/95 backdrop-blur-xl border-white/20 rounded-2xl p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Upload Frontpage</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('screens.dev.uploadFrontpage')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="portal">Portal</Label>
+            <Label htmlFor="portal">{t('screens.dev.portal')}</Label>
             <Select value={portal} onValueChange={setPortal}>
               <SelectTrigger id="portal">
-                <SelectValue placeholder="Select portal" />
+                <SelectValue placeholder={t('screens.dev.selectPortal')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="maxina">Maxina</SelectItem>
-                <SelectItem value="alkalma">Alkalma</SelectItem>
-                <SelectItem value="earthlinks">Earthlinks</SelectItem>
-                <SelectItem value="community">Community</SelectItem>
+                <SelectItem value="alkalma">{t('screens.dev.alkalma')}</SelectItem>
+                <SelectItem value="earthlinks">{t('screens.dev.earthlinks')}</SelectItem>
+                <SelectItem value="community">{t('screens.dev.community')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="version">Version</Label>
+            <Label htmlFor="version">{t('screens.dev.version')}</Label>
             <Input 
               id="version" 
               value={version}
@@ -65,21 +63,21 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="file">Frontpage Document</Label>
+            <Label htmlFor="file">{t('screens.dev.frontpageDocument')}</Label>
             <div className="border-2 border-dashed rounded-lg p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
               <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
-              <p className="text-xs text-muted-foreground mt-1">PDF, Figma file, or design spec</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.clickUploadDragDrop')}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.dev.pdfFigmaFileDesignSpec')}</p>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.dev.description')}</Label>
             <Textarea 
               id="description" 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's new in this frontpage version?"
+              placeholder={t('screens.dev.whatSNewThisFrontpageVersion')}
               rows={3}
             />
           </div>
@@ -87,14 +85,14 @@ export function UploadFrontpageModal({ open, onOpenChange }: UploadFrontpageModa
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.dev.cancel')}
           </Button>
           <Button 
             onClick={handleUpload}
             disabled={devConfig.readonly}
             title={devConfig.readonly ? "Available in Phase 2" : undefined}
           >
-            Upload Frontpage
+            {t('screens.dev.uploadFrontpage')}
           </Button>
         </DialogFooter>
       </DialogContent>

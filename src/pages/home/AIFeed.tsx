@@ -34,7 +34,8 @@ import { isFeatureEnabled } from "@/lib/feature-flags";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -110,10 +111,7 @@ export default function AIFeed() {
                 newMap.delete(activityId);
                 return newMap;
               });
-              toast({
-                title: "Removed from Memory",
-                description: "Activity has been removed from your knowledge base.",
-              });
+              notify('toasts.home.removedFromMemory', 'toasts.home.activityHasRemovedFromYourKnowledge');
             }
           } else {
             // Save: create knowledge item with metadata
@@ -134,10 +132,7 @@ export default function AIFeed() {
                   if (data?.id) {
                     setSavedActivityIds(prev => new Map(prev).set(activityId, data.id));
                   }
-                  toast({
-                    title: "Saved to Memory",
-                    description: "Activity has been saved to your knowledge base.",
-                  });
+                  notify('toasts.home.savedMemory', 'toasts.home.activityHasSavedYourKnowledgeBase');
                 }
               }
             );
@@ -150,12 +145,12 @@ export default function AIFeed() {
 
   return (
     <AppLayout>
-      <SEO title="AI Feed | Dashboard" description="AI Feed & Automations" canonical={window.location.href} />
+      <SEO title={t('screens.home.aiFeedDashboard')} description="AI Feed & Automations" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
           <StandardHeader
-            title="AI Feed & Automations"
+            title={t('screens.home.aiFeedAutomations')}
             description="The magic window – where Autopilot shows its work."
             emoji="⚡"
             className="mb-4 xl:mb-3"
@@ -164,23 +159,23 @@ export default function AIFeed() {
           {/* Action Buttons */}
           <UtilityActionButton className="mb-6">
             <ExpandableSearchButton 
-              placeholder="Search feed, routines, ideas, or history…"
+              placeholder={t('screens.home.searchFeedRoutinesIdeasHistory')}
               onSearch={(query) => console.log('Search AI Feed:', query)}
             />
             <UniversalCalendarButton />
             <Button variant="default" size="sm" onClick={() => setAddToFeedOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Feed
+              {t('screens.home.feed')}
             </Button>
           </UtilityActionButton>
 
           {/* Split-Screen Navigation */}
           <SplitBar defaultValue="feed" className="w-full">
             <SplitBarList className="grid w-full grid-cols-4">
-              <SplitBarTrigger value="feed">📰 Feed</SplitBarTrigger>
-              <SplitBarTrigger value="routines">🔄 Routines</SplitBarTrigger>
-              <SplitBarTrigger value="ideas">💡 Ideas</SplitBarTrigger>
-              <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
+              <SplitBarTrigger value="feed">{t('screens.home.feed')}</SplitBarTrigger>
+              <SplitBarTrigger value="routines">{t('screens.home.routines')}</SplitBarTrigger>
+              <SplitBarTrigger value="ideas">{t('screens.home.ideas')}</SplitBarTrigger>
+              <SplitBarTrigger value="history">{t('screens.home.history')}</SplitBarTrigger>
             </SplitBarList>
 
             {/* Activity Feed Tab */}
@@ -199,8 +194,8 @@ export default function AIFeed() {
                         <Zap className="w-6 h-6 text-yellow-600 animate-pulse" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">Activity Feed 🏃</h2>
-                        <p className="text-sm text-muted-foreground">Real-time AI actions and insights</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.activityFeed')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.realtimeAiActionsInsights')}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -211,9 +206,9 @@ export default function AIFeed() {
                         className="h-9"
                       >
                         <History className="w-4 h-4 mr-1" />
-                        Autopilot History
+                        {t('screens.home.autopilotHistory')}
                       </Button>
-                      <Badge variant="outline">Live</Badge>
+                      <Badge variant="outline">{t('screens.home.live')}</Badge>
                     </div>
                   </div>
 
@@ -250,19 +245,19 @@ export default function AIFeed() {
                         <Repeat className="w-6 h-6 text-blue-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">My Routines 🔁</h2>
-                        <p className="text-sm text-muted-foreground">Automated habits building your best self</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.myRoutines')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.automatedHabitsBuildingYourBestSelf')}</p>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
-                        <Pause className="w-4 h-4 mr-1" />Pause All
+                        <Pause className="w-4 h-4 mr-1" />{t('screens.home.pauseAll')}
                       </Button>
                       <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
-                        <Settings className="w-4 h-4 mr-1" />Edit
+                        <Settings className="w-4 h-4 mr-1" />{t('screens.home.edit')}
                       </Button>
                       <Button size="sm" className="h-9 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-                        <Play className="w-4 h-4 mr-1" />Run Now
+                        <Play className="w-4 h-4 mr-1" />{t('screens.home.runNow')}
                       </Button>
                     </div>
                   </div>
@@ -277,8 +272,7 @@ export default function AIFeed() {
                       gap="sm"
                       className="pb-4"
                       emptyState={
-                        <div className="text-center py-8 text-muted-foreground">
-                          No routines yet. Create your first routine to get started!
+                        <div className="text-center py-8 text-muted-foreground">{t('screens.home.noRoutinesYetCreateYourFirst')}
                         </div>
                       }
                     />
@@ -307,13 +301,12 @@ export default function AIFeed() {
                         <Lightbulb className="w-6 h-6 text-purple-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">AI Ideas 💡</h2>
-                        <p className="text-sm text-muted-foreground">Experimental suggestions from your AI companion</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.aiIdeas')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.experimentalSuggestionsFromYourAiCompanion')}</p>
                       </div>
                     </div>
                     <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
-                      <Lightbulb className="w-3 h-3 mr-1" />
-                      4 new ideas
+                      <Lightbulb className="w-3 h-3 mr-1" />{t('screens.home.text4NewIdeas')}
                     </Badge>
                   </div>
 
@@ -341,13 +334,13 @@ export default function AIFeed() {
                         <History className="w-6 h-6 text-gray-600" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold">Your Journey 📚</h2>
-                        <p className="text-sm text-muted-foreground">Milestones, achievements, and growth over time</p>
+                        <h2 className="text-lg font-semibold">{t('screens.home.yourJourney')}</h2>
+                        <p className="text-sm text-muted-foreground">{t('screens.home.milestonesAchievementsGrowthOverTime')}</p>
                       </div>
                     </div>
                     <Button variant="outline" size="sm" className="h-9 bg-white/20 backdrop-blur-sm border-white/30 hover:bg-white/30">
                       <RotateCcw className="w-4 h-4 mr-1" />
-                      Export History
+                      {t('screens.home.exportHistory')}
                     </Button>
                   </div>
 
@@ -364,16 +357,16 @@ export default function AIFeed() {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
                     <Zap className="w-5 h-5 text-yellow-600 animate-pulse" />
-                    <span className="font-medium">Autopilot Status:</span>
-                    <Badge variant="default">Active</Badge>
+                    <span className="font-medium">{t('screens.home.autopilotStatus')}</span>
+                    <Badge variant="default">{t('screens.home.active')}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Central feed of everything AI does • Feels alive with real-time updates
+                    {t('screens.home.centralFeedEverythingAiDoesFeels')}
                   </p>
                 </div>
                 <Button variant="outline" size="sm">
                   <Settings className="w-4 h-4 mr-1" />
-                  Configure
+                  {t('screens.home.configure')}
                 </Button>
               </div>
             </CardContent>

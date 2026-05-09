@@ -17,9 +17,10 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface Persona {
   id: string;
@@ -143,7 +144,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
     try {
       parsedExtras = JSON.parse(intakeExtras || "{}");
     } catch {
-      toast({ title: "Intake schema must be valid JSON", variant: "destructive" });
+      notifyError('toasts.admin.intakeSchemaMustValidJson');
       return;
     }
     try {
@@ -152,27 +153,27 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
         intake_schema_extras: parsedExtras,
         notes: notes || null,
       });
-      toast({ title: "Saved", description: `${personaKey} configuration updated.` });
+      notify('toasts.admin.saved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
   const saveKb = async () => {
     try {
       await kbMutation.mutateAsync(kbScopes);
-      toast({ title: "KB bindings saved" });
+      notify('toasts.admin.kbBindingsSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
   const saveKeywords = async () => {
     try {
       await keywordsMutation.mutateAsync(keywords);
-      toast({ title: "Routing keywords saved" });
+      notify('toasts.admin.routingKeywordsSaved');
     } catch (err) {
-      toast({ title: "Save failed", description: err instanceof Error ? err.message : "Try again", variant: "destructive" });
+      notifyError('toasts.admin.saveFailed');
     }
   };
 
@@ -209,9 +210,9 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold">Loading specialist…</h2>
+              <h2 className="text-xl font-bold">{t('screens.admin.loadingSpecialist')}</h2>
             </div>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
         </div>
       </div>
@@ -230,18 +231,16 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
         <div className="h-full w-full max-w-2xl overflow-y-auto bg-background p-6">
           <div className="mb-4 flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold">Couldn't load {personaKey}</h2>
+              <h2 className="text-xl font-bold">{t('screens.admin.couldnTLoadPersonakey', { personaKey })}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{errMsg}</p>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Possible causes: the gateway hasn't redeployed the tenant-overlay endpoint yet (PR #1153),
-                your role isn't permitted on this tenant, or the persona key doesn't exist server-side.
+              <p className="mt-2 text-xs text-muted-foreground">{t('screens.admin.possibleCausesGatewayHasnTRedeployed')}
               </p>
             </div>
-            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label="Close">×</button>
+            <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground" aria-label={t('screens.admin.close')}>×</button>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => overridesQuery.refetch()}>Retry</Button>
-            <Button variant="ghost" onClick={onClose}>Close</Button>
+            <Button variant="outline" onClick={() => overridesQuery.refetch()}>{t('screens.admin.retry')}</Button>
+            <Button variant="ghost" onClick={onClose}>{t('screens.admin.close')}</Button>
           </div>
         </div>
       </div>
@@ -259,11 +258,9 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
             <h2 className="text-xl font-bold">{data.persona.display_name}</h2>
             <p className="text-sm text-muted-foreground">{data.persona.role}</p>
             <div className="mt-2 flex gap-2 text-xs">
-              <Badge variant="outline">key: {data.persona.key}</Badge>
-              <Badge variant="outline">voice: {data.persona.voice_id || "(language default)"}</Badge>
-              <Badge variant={data.persona.status === "active" ? "default" : "secondary"}>
-                platform: {data.persona.status}
-              </Badge>
+              <Badge variant="outline">{t('screens.admin.keyKey', { key: data.persona.key })}</Badge>
+              <Badge variant="outline">{t('screens.admin.voiceValue02', { value0: data.persona.voice_id || "(language default)" })}</Badge>
+              <Badge variant={data.persona.status === "active" ? "default" : "secondary"}>{t('screens.admin.platformStatus', { status: data.persona.status })}</Badge>
             </div>
           </div>
           <button onClick={onClose} className="text-2xl text-muted-foreground hover:text-foreground">×</button>
@@ -273,15 +270,11 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
         <Card className="mb-4 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold">Enabled for this tenant</h3>
-              <p className="text-xs text-muted-foreground">
-                When off, your members never hear from {data.persona.display_name} on voice handoffs and the routing
-                keywords below have no effect.
+              <h3 className="font-semibold">{t('screens.admin.enabledForThisTenant')}</h3>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.whenOffYourMembersNeverHear', { display_name: data.persona.display_name })}
               </p>
               {platformDefaults && (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Platform default: {platformDefaults.enabled ? "active" : "inactive"}
-                </p>
+                <p className="mt-1 text-xs text-muted-foreground">{t('screens.admin.platformDefaultValue0', { value0: platformDefaults.enabled ? "active" : "inactive" })}</p>
               )}
             </div>
             <Switch checked={enabled} onCheckedChange={setEnabled} />
@@ -290,10 +283,8 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
 
         {/* 2. Knowledge */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Knowledge bindings</h3>
-          <p className="text-xs text-muted-foreground">
-            KB scopes from your tenant that {data.persona.display_name} retrieves from. Add a scope key (e.g.{" "}
-            <code>tenant</code>, or a topic key like <code>tenant-runbook-billing</code>).
+          <h3 className="font-semibold">{t('screens.admin.knowledgeBindings')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.kbScopesFromYourTenantThat', { display_name: data.persona.display_name, value1: " " })}<code>{t('screens.admin.tenant')}</code>{t('screens.admin.topicKeyLike')} <code>{t('screens.admin.tenantrunbookbilling')}</code>).
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {kbScopes.map(s => (
@@ -302,32 +293,30 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
                 <button onClick={() => removeKbScope(s)} className="ml-1"><X className="h-3 w-3" /></button>
               </Badge>
             ))}
-            {kbScopes.length === 0 && <span className="text-xs text-muted-foreground">(none)</span>}
+            {kbScopes.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder="Scope key, e.g. tenant or tenant-billing"
+              placeholder={t('screens.admin.scopeKeyEGTenantTenantbilling')}
               value={kbScopeDraft}
               onChange={e => setKbScopeDraft(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addKbScope(); } }}
             />
-            <Button variant="outline" onClick={addKbScope}>Add</Button>
+            <Button variant="outline" onClick={addKbScope}>{t('screens.admin.add')}</Button>
           </div>
           <div className="mt-3 flex justify-end">
-            <Button size="sm" onClick={saveKb} disabled={kbMutation.isPending}>Save knowledge</Button>
+            <Button size="sm" onClick={saveKb} disabled={kbMutation.isPending}>{t('screens.admin.saveKnowledge')}</Button>
           </div>
         </Card>
 
         {/* 3. Routing keywords */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Routing keywords</h3>
-          <p className="text-xs text-muted-foreground">
-            Tenant-specific phrases that route the user to {data.persona.display_name} (in addition to the platform
-            defaults). Examples: company jargon, internal acronyms, your domain-specific terms.
+          <h3 className="font-semibold">{t('screens.admin.routingKeywords')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.tenantspecificPhrasesThatRouteUserDisplay_name', { display_name: data.persona.display_name })}
           </p>
           {platformDefaults?.handoff_keywords && platformDefaults.handoff_keywords.length > 0 && (
             <p className="mt-1 text-xs text-muted-foreground">
-              Platform defaults: <code>{platformDefaults.handoff_keywords.slice(0, 6).join(", ")}
+              {t('screens.admin.platformDefaults')} <code>{platformDefaults.handoff_keywords.slice(0, 6).join(", ")}
               {platformDefaults.handoff_keywords.length > 6 ? "…" : ""}</code>
             </p>
           )}
@@ -338,28 +327,26 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
                 <button onClick={() => removeKeyword(k.keyword)} className="ml-1"><X className="h-3 w-3" /></button>
               </Badge>
             ))}
-            {keywords.length === 0 && <span className="text-xs text-muted-foreground">(none)</span>}
+            {keywords.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.admin.none')}</span>}
           </div>
           <div className="mt-3 flex gap-2">
             <Input
-              placeholder="Add a keyword and press Enter"
+              placeholder={t('screens.admin.addKeywordPressEnter')}
               value={keywordDraft}
               onChange={e => setKeywordDraft(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addKeyword(); } }}
             />
-            <Button variant="outline" onClick={addKeyword}>Add</Button>
+            <Button variant="outline" onClick={addKeyword}>{t('screens.admin.add')}</Button>
           </div>
           <div className="mt-3 flex justify-end">
-            <Button size="sm" onClick={saveKeywords} disabled={keywordsMutation.isPending}>Save keywords</Button>
+            <Button size="sm" onClick={saveKeywords} disabled={keywordsMutation.isPending}>{t('screens.admin.saveKeywords')}</Button>
           </div>
         </Card>
 
         {/* 4. Intake additions + notes */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">Intake additions</h3>
-          <p className="text-xs text-muted-foreground">
-            Extra fields {data.persona.display_name} should ask for during voice intake (JSON object). E.g. for Atlas
-            in a finance-heavy tenant: <code>{`{"policy_number": "string"}`}</code>.
+          <h3 className="font-semibold">{t('screens.admin.intakeAdditions')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.extraFieldsDisplay_nameShouldAskFor', { display_name: data.persona.display_name })} <code>{`{"policy_number": "string"}`}</code>.
           </p>
           <Textarea
             value={intakeExtras}
@@ -367,32 +354,30 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
             rows={6}
             className="mt-3 font-mono text-xs"
           />
-          <h3 className="mt-4 font-semibold">Notes (private)</h3>
-          <p className="text-xs text-muted-foreground">Visible only to your tenant admins.</p>
+          <h3 className="mt-4 font-semibold">{t('screens.admin.notesPrivate')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.visibleOnlyYourTenantAdmins')}</p>
           <Textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} className="mt-2" />
           <div className="mt-3 flex justify-end">
             <Button size="sm" onClick={saveOverlayBasics} disabled={overrideMutation.isPending}>
-              Save enabled / intake / notes
+              {t('screens.admin.saveEnabledIntakeNotes')}
             </Button>
           </div>
         </Card>
 
         {/* 5. Connections (read-only summary in v1) */}
         <Card className="mb-4 p-4">
-          <h3 className="font-semibold">3rd-party connections</h3>
-          <p className="text-xs text-muted-foreground">
-            Tenant-scoped connections (your Stripe, your Auth0, etc). Adding new connections is supported via the API
-            today; UI add-flow ships in a follow-up.
+          <h3 className="font-semibold">{t('screens.admin.text3rdpartyConnections')}</h3>
+          <p className="text-xs text-muted-foreground">{t('screens.admin.tenantscopedConnectionsYourStripeYourAuth0')}
           </p>
           <div className="mt-3 space-y-1">
             {data.connections.length === 0 && (
-              <p className="text-xs text-muted-foreground">(none)</p>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.none')}</p>
             )}
             {data.connections.map(c => (
               <div key={c.id} className="flex items-center gap-2 text-xs">
                 <Badge variant="outline">{c.provider}</Badge>
                 <Badge variant={c.status === "active" ? "default" : "secondary"}>{c.status}</Badge>
-                <span className="text-muted-foreground">added {new Date(c.created_at).toLocaleDateString()}</span>
+                <span className="text-muted-foreground">{t('screens.admin.addedValue0', { value0: new Date(c.created_at).toLocaleDateString() })}</span>
               </div>
             ))}
           </div>

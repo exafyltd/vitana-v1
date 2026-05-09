@@ -102,6 +102,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
+import { I18nLeakDetector } from './i18n/leak-detector'
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
@@ -112,6 +113,7 @@ createRoot(document.getElementById("root")!).render(
             <LanguageProvider>
               <TenantProvider>
                 <VitanaIndexProvider>
+                  <I18nLeakDetector />
                   <App />
                 </VitanaIndexProvider>
               </TenantProvider>

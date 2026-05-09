@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Service-Hub",
+    "subtitle": "Zugang zu umfassenden Gesundheits- und Wellness-Diensten",
+    "categories": {
+      "preventive": "Präventive Untersuchungen",
+      "labTests": "Labortests",
+      "coaching": "Coaching & Personal Training",
+      "groupPrograms": "Gruppenprogramme & Challenges"
+    },
+    "actions": {
+      "book": "Buchen",
+      "addToPlan": "Zum Plan hinzufügen",
+      "askAI": "KI fragen",
+      "joinRoom": "Raum beitreten",
+      "setReminder": "Erinnerung setzen"
+    },
+    "details": {
+      "duration": "Dauer",
+      "price": "Preis",
+      "location": "Ort",
+      "nextAvailable": "Nächster Termin",
+      "whatsIncluded": "Was enthalten ist",
+      "healthBenefits": "Gesundheitsvorteile",
+      "availableProviders": "Verfügbare Anbieter",
+      "requirements": "Anforderungen & Vorbereitung",
+      "tags": "Tags"
+    }
+  }
+}

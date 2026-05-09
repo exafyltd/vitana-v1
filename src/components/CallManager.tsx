@@ -5,6 +5,7 @@ import { IncomingCallModal } from './IncomingCallModal';
 import { CallingScreen } from './CallingScreen';
 import { useToast } from '@/hooks/use-toast';
 import { callSounds } from '@/utils/callSounds';
+import { notify } from '@/lib/i18n-toast';
 
 interface CallManagerProps {
   userId: string;
@@ -23,10 +24,7 @@ export const CallManager = ({ userId, userName }: CallManagerProps) => {
       console.log('🔔 Playing incoming ringtone for call from:', incomingCall.callerName);
       callSounds.playIncomingRingtone();
       
-      toast({
-        title: "Incoming call",
-        description: `${incomingCall.isVideoCall ? 'Video' : 'Audio'} call from ${incomingCall.callerName || 'Unknown'}`,
-      });
+      notify('toasts.common.incomingCall');
     } else {
       callSounds.stopAll();
     }

@@ -283,7 +283,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const updateAccount = async (data: Partial<AccountInfo>) => {
     if (!user) return;
 
-    const row: Record<string, unknown> = { user_id: user.id };
+    const row: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
       const column = accountFieldToColumn[key as keyof AccountInfo];
       if (column) row[column] = value ?? null;
@@ -303,9 +303,14 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
     row.updated_at = new Date().toISOString();
 
+    // Use UPDATE rather than UPSERT: the profiles row is created on signup
+    // and always exists here. UPSERT would attempt an INSERT first, which
+    // fails the profiles.vitana_id NOT NULL constraint because vitana_id is
+    // not part of this patch payload.
     const { error } = await supabase
       .from('profiles' as any)
-      .upsert(row as any, { onConflict: 'user_id' });
+      .update(row as any)
+      .eq('user_id', user.id);
 
     if (error) {
       console.error('Failed to update account:', error);

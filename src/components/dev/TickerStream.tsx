@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface TickerEvent {
   ts: string;
@@ -138,7 +139,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b bg-card">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-sm tracking-wide">TICKER</h3>
+          <h3 className="font-semibold text-sm tracking-wide">{t('screens.dev.ticker')}</h3>
           {hasUnread && !isFocused && (
             <Badge variant="destructive" className="h-5 w-5 p-0 flex items-center justify-center rounded-full">
               •
@@ -146,11 +147,11 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
           )}
           {connectionState === "LIVE" ? (
             <Badge variant="default" className="text-xs bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/30">
-              LIVE
+              {t('screens.dev.live')}
             </Badge>
           ) : (
             <Badge variant="secondary" className="text-xs">
-              OFFLINE (mock)
+              {t('screens.dev.offlineMock')}
             </Badge>
           )}
         </div>
@@ -165,8 +166,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
                 ? "border-primary bg-primary/10 text-primary font-medium" 
                 : "border-border bg-background hover:bg-accent"
             )}
-          >
-            ALL
+          >{t('screens.dev.all')}
           </button>
           <button
             onClick={() => setScope(currentVTID)}
@@ -190,7 +190,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
       >
         {events.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <p className="text-xs text-muted-foreground">No events yet...</p>
+            <p className="text-xs text-muted-foreground">{t('screens.dev.noEventsYet')}</p>
           </div>
         ) : (
           <div className="inline-flex items-center gap-3">
@@ -228,8 +228,7 @@ export function TickerStream({ onVTIDClick, isFocused = true, hasUnread = false 
 
       {/* Footer Info */}
       <div className="px-4 py-2 border-t bg-muted/30">
-        <p className="text-xs text-muted-foreground">
-          {events.length > 0 ? `${events.length} events • ` : ''}Auto-scroll • Click VTID to focus
+        <p className="text-xs text-muted-foreground">{t('screens.dev.value0AutoscrollClickVtidFocus', { value0: events.length > 0 ? `${events.length} events • ` : '' })}
         </p>
       </div>
     </div>

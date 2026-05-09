@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { EventImageCard } from "@/components/events/EventImageCard";
 import { transformRecommendationToCard } from "@/lib/eventCardTransformers";
 import { UnifiedEventCard, UnifiedGroupCard } from "@/types/community";
 import { GroupImageCard } from "@/components/groups/GroupImageCard";
 import { transformGroupRecommendationToCard } from "@/lib/groupCardTransformers";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface GroupMatchCardProps {
   className?: string;
@@ -142,11 +143,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
   const handleJoinGroup = (group: UnifiedGroupCard) => {
     if (group.id.startsWith('demo-')) {
-      toast({
-        title: "✓ Joined",
-        description: `You're now part of ${group.name}!`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.joined');
       return;
     }
     navigate(`/comm/groups/${group.id}`);
@@ -154,11 +151,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
   const handleEventClick = (event: UnifiedEventCard) => {
     if (event.id.startsWith('demo-')) {
-      toast({
-        title: "✓ Event Selected",
-        description: `Viewing ${event.title}`,
-        duration: 2000,
-      });
+      notify('toasts.crossover.eventSelected');
       return;
     }
     navigate(`/community/events/${event.id}`);
@@ -172,24 +165,24 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <Users2 className="w-5 h-5" />
-              Groups & Communities
+              {t('screens.crossover.groupsCommunities')}
             </h2>
-            <p className="text-sm text-muted-foreground">Communities that match your vibe</p>
+            <p className="text-sm text-muted-foreground">{t('screens.crossover.communitiesThatMatchYourVibe')}</p>
           </div>
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => navigate('/comm/groups')}
           >
-            View All
+            {t('screens.crossover.viewAll')}
           </Button>
         </div>
 
         {groups.length === 0 ? (
           <div className="text-center py-12">
             <Users2 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No groups found</h3>
-            <p className="text-muted-foreground">Check back soon for community groups!</p>
+            <h3 className="text-lg font-semibold mb-2">{t('screens.crossover.noGroupsFound')}</h3>
+            <p className="text-muted-foreground">{t('screens.crossover.checkBackSoonForCommunityGroups')}</p>
           </div>
         ) : (
           <>
@@ -207,7 +200,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
 
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex items-center gap-2 text-sm">
-                <span className="font-medium text-foreground">Perfect for your interests</span>
+                <span className="font-medium text-foreground">{t('screens.crossover.perfectForYourInterests')}</span>
                 <div className="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse" />
               </div>
               <Button 
@@ -216,7 +209,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
                 onClick={() => navigate('/comm/groups?recommended=1')}
                 className="text-sm"
               >
-                See more →
+                {t('screens.crossover.seeMore')}
               </Button>
             </div>
           </>
@@ -230,16 +223,16 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
             <div>
               <h3 className="text-lg font-bold flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
-                Upcoming Events
+                {t('screens.crossover.upcomingEvents')}
               </h3>
-              <p className="text-sm text-muted-foreground">Events happening soon</p>
+              <p className="text-sm text-muted-foreground">{t('screens.crossover.eventsHappeningSoon')}</p>
             </div>
             <Button 
               variant="outline" 
               size="sm" 
               onClick={() => navigate('/community/events')}
             >
-              View All
+              {t('screens.crossover.viewAll')}
             </Button>
           </div>
 

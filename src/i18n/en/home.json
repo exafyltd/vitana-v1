@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Home",
+    "welcomeBack": "Welcome back",
+    "todaysSchedule": "Today's Schedule",
+    "mediaContent": "Media for You",
+    "eventsAndMeetups": "Events & Meetups",
+    "communityNews": "Community News",
+    "inspiration": "Inspiration",
+    "dailyMatches": "Daily Matches"
+  }
+}

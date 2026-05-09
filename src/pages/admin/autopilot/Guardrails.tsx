@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAutopilotSettings, useUpdateAutopilotSettings } from "@/hooks/useAdminAutopilot";
 import type { AutopilotSettings } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const ALL_DOMAINS = ["health", "community", "longevity", "professional", "general"];
 const ALL_RISK_LEVELS = ["low", "medium", "high"];
@@ -68,12 +69,12 @@ export default function AutopilotGuardrails() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🛡️"
-          title="Guardrails"
+          title={t('screens.admin.guardrails')}
           description="Control what the autopilot is allowed to do in your tenant"
         />
 
         {settingsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading settings...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSettings')}</p>
         )}
 
         {settingsQuery.isError && (
@@ -89,9 +90,9 @@ export default function AutopilotGuardrails() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-base">Autopilot Enabled</CardTitle>
+                    <CardTitle className="text-base">{t('screens.admin.autopilotEnabled')}</CardTitle>
                     <CardDescription>
-                      When disabled, no recommendations are generated or shown for this tenant.
+                      {t('screens.admin.whenDisabledNoRecommendationsGeneratedShown')}
                     </CardDescription>
                   </div>
                   <Switch
@@ -105,9 +106,9 @@ export default function AutopilotGuardrails() {
             {/* Allowed domains */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Allowed Domains</CardTitle>
+                <CardTitle className="text-sm">{t('screens.admin.allowedDomains')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Which recommendation domains are visible to this tenant.
+                  {t('screens.admin.whichRecommendationDomainsVisibleThisTenant')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -127,9 +128,9 @@ export default function AutopilotGuardrails() {
             {/* Allowed risk levels */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Allowed Risk Levels</CardTitle>
+                <CardTitle className="text-sm">{t('screens.admin.allowedRiskLevels')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Maximum risk level the autopilot can recommend.
+                  {t('screens.admin.maximumRiskLevelAutopilotCanRecommend')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
@@ -143,7 +144,7 @@ export default function AutopilotGuardrails() {
                     <Label htmlFor={`risk-${level}`} className="text-sm capitalize">
                       {level}
                       {level === "high" && (
-                        <span className="ml-1 text-xs text-destructive">(destructive actions possible)</span>
+                        <span className="ml-1 text-xs text-destructive">{t('screens.admin.destructiveActionsPossible')}</span>
                       )}
                     </Label>
                   </div>
@@ -154,14 +155,14 @@ export default function AutopilotGuardrails() {
             {/* Rate limits */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Rate Limits</CardTitle>
+                <CardTitle className="text-sm">{t('screens.admin.rateLimits')}</CardTitle>
                 <CardDescription className="text-xs">
-                  Cap how many recommendations and activations per day.
+                  {t('screens.admin.capHowManyRecommendationsActivationsPer')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <Label className="text-xs">Max recommendations / day</Label>
+                  <Label className="text-xs">{t('screens.admin.maxRecommendationsDay')}</Label>
                   <Input
                     type="number"
                     min={1}
@@ -172,7 +173,7 @@ export default function AutopilotGuardrails() {
                   />
                 </div>
                 <div>
-                  <Label className="text-xs">Max activations / day</Label>
+                  <Label className="text-xs">{t('screens.admin.maxActivationsDay')}</Label>
                   <Input
                     type="number"
                     min={1}
@@ -188,14 +189,13 @@ export default function AutopilotGuardrails() {
             {/* Auto-activation */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm">Auto-Activation</CardTitle>
-                <CardDescription className="text-xs">
-                  Recommendations above this confidence threshold auto-execute without manual approval. Leave empty to require manual approval for all.
+                <CardTitle className="text-sm">{t('screens.admin.autoactivation')}</CardTitle>
+                <CardDescription className="text-xs">{t('screens.admin.recommendationsAboveThisConfidenceThresholdAutoexe')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div>
-                  <Label className="text-xs">Confidence threshold (0.0 - 1.0)</Label>
+                  <Label className="text-xs">{t('screens.admin.confidenceThreshold001')}</Label>
                   <Input
                     type="number"
                     min={0}
@@ -206,12 +206,12 @@ export default function AutopilotGuardrails() {
                       const v = e.target.value === "" ? null : parseFloat(e.target.value);
                       updateField("auto_activate_threshold", v as any);
                     }}
-                    placeholder="Disabled (manual only)"
+                    placeholder={t('screens.admin.disabledManualOnly')}
                     className="mt-1"
                   />
                 </div>
                 <div className="mt-2">
-                  <Label className="text-xs">Retention (days)</Label>
+                  <Label className="text-xs">{t('screens.admin.retentionDays')}</Label>
                   <Input
                     type="number"
                     min={7}
@@ -244,8 +244,7 @@ export default function AutopilotGuardrails() {
                   setDirty(false);
                 }
               }}
-            >
-              Cancel
+            >{t('screens.admin.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={updateSettings.isPending}>
               {updateSettings.isPending ? "Saving..." : "Save Changes"}
@@ -254,7 +253,7 @@ export default function AutopilotGuardrails() {
         )}
 
         {updateSettings.isSuccess && !dirty && (
-          <p className="text-sm text-green-600 dark:text-green-400 text-center">Settings saved successfully.</p>
+          <p className="text-sm text-green-600 dark:text-green-400 text-center">{t('screens.admin.settingsSavedSuccessfully')}</p>
         )}
       </div>
     </AppLayout>

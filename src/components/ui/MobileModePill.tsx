@@ -7,6 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { t } from '@/lib/i18n-toast';
 
 export interface ModeOption {
   value: string;
@@ -81,7 +82,7 @@ export function MobileModePill({ modes, activeMode, onModeChange, className }: M
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl px-2 pb-8">
           <SheetHeader className="pb-2">
-            <SheetTitle className="text-base">Select Mode</SheetTitle>
+            <SheetTitle className="text-base">{t('screens.ui.selectMode')}</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col gap-1">
             {modes.map((mode) => {

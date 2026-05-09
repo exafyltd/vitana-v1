@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTenantSettings, useUpdateTenantSettings } from "@/hooks/useAdminSettings";
 import { toast } from "sonner";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 export default function SettingsProfile() {
   const settingsQuery = useTenantSettings();
@@ -36,7 +37,7 @@ export default function SettingsProfile() {
     updateMutation.mutate(
       { profile: { name, description, support_email: supportEmail, logo_url: logoUrl } },
       {
-        onSuccess: () => toast.success("Profile saved"),
+        onSuccess: () => notifySuccess('toasts.admin.profileSaved'),
         onError: (err) => toast.error((err as Error).message || "Failed to save"),
       }
     );
@@ -48,48 +49,48 @@ export default function SettingsProfile() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🏢"
-          title="Profile"
+          title={t('screens.admin.profile')}
           description="Basic information about your tenant organization"
         />
 
         {settingsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading settings...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSettings')}</p>
         )}
 
         {settingsQuery.isError && (
           <div className="text-sm text-destructive py-8 text-center space-y-2">
-            <p>Failed to load settings: {(settingsQuery.error as Error)?.message || "Unknown error"}</p>
-            <p className="text-xs text-muted-foreground">Check browser console for details</p>
+            <p>{t('screens.admin.failedLoadSettingsValue0', { value0: (settingsQuery.error as Error)?.message || "Unknown error" })}</p>
+            <p className="text-xs text-muted-foreground">{t('screens.admin.checkBrowserConsoleForDetails')}</p>
           </div>
         )}
 
         {!settingsQuery.isLoading && !settingsQuery.isError && !settingsQuery.data && (
-          <p className="text-sm text-muted-foreground py-8 text-center">No settings data available. Tenant ID may not be resolved yet.</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.noSettingsDataAvailableTenantId')}</p>
         )}
 
         {settingsQuery.data && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Tenant Profile</CardTitle>
+              <CardTitle className="text-base">{t('screens.admin.tenantProfile')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Tenant Name</label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="My Organization" />
+                <label className="text-sm font-medium">{t('screens.admin.tenantName')}</label>
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('screens.admin.myOrganization')} />
               </div>
               <div>
-                <label className="text-sm font-medium">Description</label>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Short description of your organization" rows={3} />
+                <label className="text-sm font-medium">{t('screens.admin.description')}</label>
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t('screens.admin.shortDescriptionYourOrganization')} rows={3} />
               </div>
               <div>
-                <label className="text-sm font-medium">Support Email</label>
-                <Input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} placeholder="support@example.com" />
+                <label className="text-sm font-medium">{t('screens.admin.supportEmail')}</label>
+                <Input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} placeholder={t('screens.admin.supportExampleCom')} />
               </div>
               <div>
-                <label className="text-sm font-medium">Logo URL</label>
-                <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://..." />
+                <label className="text-sm font-medium">{t('screens.admin.logoUrl')}</label>
+                <Input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder={t('screens.admin.https')} />
                 {logoUrl && (
-                  <img src={logoUrl} alt="Logo preview" className="mt-2 h-12 object-contain rounded" />
+                  <img src={logoUrl} alt={t('screens.admin.logoPreview')} className="mt-2 h-12 object-contain rounded" />
                 )}
               </div>
               <Button onClick={handleSave} disabled={updateMutation.isPending}>

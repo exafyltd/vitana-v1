@@ -1,0 +1,20 @@
+{
+  "drawerNav": {
+    "journey": "My Journey",
+    "news": "News",
+    "events": "Events & MeetUps",
+    "findPartner": "Find a Match",
+    "live": "Live Rooms",
+    "media": "Media HUB",
+    "business": "Business HUB",
+    "discover": "Discover",
+    "orders": "Orders",
+    "wallet": "Wallet",
+    "health": "Health",
+    "diary": "Daily Diary",
+    "connectors": "Connectors",
+    "inbox": "Inbox",
+    "settings": "Settings",
+    "logout": "Log Out"
+  }
+}

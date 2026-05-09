@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function DocsFrontpagesView() {
   const frontpages = [
@@ -25,10 +26,10 @@ export function DocsFrontpagesView() {
                 </Badge>
               </div>
               <CardTitle className="mt-4">{frontpage.portal}</CardTitle>
-              <CardDescription>Version {frontpage.version}</CardDescription>
+              <CardDescription>{t('screens.dev.versionVersion', { version: frontpage.version })}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">Last updated: {frontpage.date}</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.lastUpdatedDate', { date: frontpage.date })}</p>
             </CardContent>
           </Card>
         </div>

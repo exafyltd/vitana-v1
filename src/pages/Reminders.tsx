@@ -1,16 +1,21 @@
 /**
  * VTID-02601 — Reminders list page.
  *
- * - Upcoming + Recent sections
- * - Per-row red trash (single-click + AlertDialog confirm)
- * - "Delete all" link (AlertDialog with count)
- * - "+ New reminder" modal with action_text + datetime-local picker
+ * Layered model:
+ *   1. Suggested by Vitana — created_via='system' (Autopilot-driven; placeholder
+ *      until the autopilot-worker starts populating these).
+ *   2. Scheduled by you — created_via in ('voice','ui'), still pending/dispatching.
+ *   3. Recent — any origin, fired/completed/cancelled (last 30).
  *
- * Aligns with the plan: simple, fast surface for users who want to manage
- * their reminders. Voice path via ORB stays the primary creation flow.
+ * Voice (ORB) is the primary creation path. Manual "Add" is available as a
+ * de-emphasized ghost-button — present, not promoted.
+ *
+ * Filter modes (?filter=upcoming|completed|missed) bypass the layered grouping
+ * and render a single titled section. See PR #347 for filter details.
  */
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useReminders, useCreateReminder, useDeleteReminder, useDeleteAllReminders, useCompleteReminder } from "@/hooks/useReminders";
 import { ReminderRow } from "@/lib/reminders-api";
 import EnableRemindersPrompt from "@/components/reminders/EnableRemindersPrompt";
@@ -36,8 +41,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Bell, Check, Plus, Trash2 } from "lucide-react";
+import { Bell, Check, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 function formatTime(iso: string): string {
   try {
@@ -61,10 +67,19 @@ function isoLocalNow(plusMinutes = 5): string {
 }
 
 const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderRow) => void; onComplete: (r: ReminderRow) => void }> = ({ reminder, onDelete, onComplete }) => {
+  const isSystem = reminder.created_via === "system";
   return (
     <div className="flex items-center justify-between gap-3 p-3 rounded-lg border bg-card">
       <div className="min-w-0 flex-1">
-        <div className="font-medium truncate">{reminder.action_text}</div>
+        <div className="flex items-center gap-2">
+          <div className="font-medium truncate">{reminder.action_text}</div>
+          {isSystem ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+              <Sparkles className="h-3 w-3" />
+              Vitana
+            </span>
+          ) : null}
+        </div>
         <div className="text-sm text-muted-foreground">{formatTime(reminder.next_fire_at)}</div>
         {reminder.description ? (
           <div className="text-xs text-muted-foreground mt-1 truncate">{reminder.description}</div>
@@ -72,14 +87,14 @@ const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderR
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {reminder.status === "pending" || reminder.status === "fired" ? (
-          <Button size="icon" variant="ghost" aria-label="Mark done" onClick={() => onComplete(reminder)}>
+          <Button size="icon" variant="ghost" aria-label={t('screens.reminders.markDone')} onClick={() => onComplete(reminder)}>
             <Check className="h-4 w-4 text-muted-foreground" />
           </Button>
         ) : null}
         <Button
           size="icon"
           variant="ghost"
-          aria-label="Delete reminder"
+          aria-label={t('screens.reminders.deleteReminder')}
           onClick={() => onDelete(reminder)}
           className="hover:bg-destructive/10"
         >
@@ -90,12 +105,20 @@ const ReminderRowItem: React.FC<{ reminder: ReminderRow; onDelete: (r: ReminderR
   );
 };
 
+type ReminderFilter = "upcoming" | "completed" | "missed";
+const VALID_FILTERS: readonly ReminderFilter[] = ["upcoming", "completed", "missed"];
+
 const Reminders: React.FC = () => {
   const { data: list = [], isLoading } = useReminders({ include_fired: true, limit: 100 });
   const createMut = useCreateReminder();
   const deleteMut = useDeleteReminder();
   const deleteAllMut = useDeleteAllReminders();
   const completeMut = useCompleteReminder();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterParam = searchParams.get("filter");
+  const activeFilter: ReminderFilter | null =
+    VALID_FILTERS.includes(filterParam as ReminderFilter) ? (filterParam as ReminderFilter) : null;
 
   const [openCreate, setOpenCreate] = useState(false);
   const [actionText, setActionText] = useState("");
@@ -113,6 +136,16 @@ const Reminders: React.FC = () => {
         .sort((a, b) => a.next_fire_at.localeCompare(b.next_fire_at)),
     [list],
   );
+  // Split the active queue by origin so the UI can lead with what Vitana
+  // is scheduling and follow with what the user manually added.
+  const suggestedByVitana = useMemo(
+    () => upcoming.filter((r) => r.created_via === "system"),
+    [upcoming],
+  );
+  const scheduledByYou = useMemo(
+    () => upcoming.filter((r) => r.created_via === "voice" || r.created_via === "ui"),
+    [upcoming],
+  );
   const recent = useMemo(
     () =>
       list
@@ -121,20 +154,51 @@ const Reminders: React.FC = () => {
         .slice(0, 30),
     [list],
   );
+  // Fired-but-not-yet-completed: the reminder went off but the user hasn't
+  // acknowledged it. This is what a `custom_reminder` push deep-link wants.
+  const missed = useMemo(
+    () =>
+      list
+        .filter((r) => r.status === "fired")
+        .sort((a, b) => b.next_fire_at.localeCompare(a.next_fire_at)),
+    [list],
+  );
+  const completed = useMemo(
+    () =>
+      list
+        .filter((r) => r.status === "completed")
+        .sort((a, b) => b.next_fire_at.localeCompare(a.next_fire_at)),
+    [list],
+  );
+
+  const filteredView: { title: string; items: ReminderRow[]; emptyText: string } | null = useMemo(() => {
+    switch (activeFilter) {
+      case "upcoming":
+        return { title: "Upcoming", items: upcoming, emptyText: "No upcoming reminders." };
+      case "completed":
+        return { title: "Completed", items: completed, emptyText: "No completed reminders yet." };
+      case "missed":
+        return { title: "Missed", items: missed, emptyText: "No missed reminders — you're all caught up." };
+      default:
+        return null;
+    }
+  }, [activeFilter, upcoming, completed, missed]);
+
+  const clearFilter = () => setSearchParams({});
 
   const handleCreate = async () => {
     const text = actionText.trim();
     if (!text) {
-      toast.error("Please enter what to remind you about");
+      notifyError('toasts.reminders.pleaseEnterWhatRemindYouAbout');
       return;
     }
     if (!whenLocal) {
-      toast.error("Please pick a time");
+      notifyError('toasts.reminders.pleasePickTime');
       return;
     }
     const fireAt = new Date(whenLocal);
     if (isNaN(fireAt.getTime())) {
-      toast.error("Invalid time");
+      notifyError('toasts.reminders.invalidTime');
       return;
     }
     try {
@@ -144,7 +208,7 @@ const Reminders: React.FC = () => {
         scheduled_for_iso: fireAt.toISOString(),
         description: description.trim() || undefined,
       });
-      toast.success("Reminder created");
+      notifySuccess('toasts.reminders.reminderCreated');
       setOpenCreate(false);
       setActionText("");
       setSpokenMessage("");
@@ -159,7 +223,7 @@ const Reminders: React.FC = () => {
     if (!confirmDelete) return;
     try {
       await deleteMut.mutateAsync(confirmDelete.id);
-      toast.success("Reminder deleted");
+      notifySuccess('toasts.reminders.reminderDeleted');
     } catch (err: any) {
       toast.error(err?.message || "Failed to delete reminder");
     } finally {
@@ -181,7 +245,7 @@ const Reminders: React.FC = () => {
   const handleComplete = async (r: ReminderRow) => {
     try {
       await completeMut.mutateAsync(r.id);
-      toast.success("Marked done");
+      notifySuccess('toasts.reminders.markedDone');
     } catch (err: any) {
       toast.error(err?.message || "Failed to mark done");
     }
@@ -189,92 +253,149 @@ const Reminders: React.FC = () => {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Reminders | Vitana";
+    document.title = filteredView ? `${filteredView.title} reminders | Vitana` : "Reminders | Vitana";
     return () => {
       document.title = prev;
     };
-  }, []);
+  }, [filteredView]);
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Bell className="h-6 w-6" />
-            Reminders
-          </h1>
-          <p className="text-sm text-muted-foreground">Voice or tap. We chime + speak at the right moment.</p>
-        </div>
-        <Button onClick={() => setOpenCreate(true)}>
-          <Plus className="h-4 w-4 mr-1" />
-          New
-        </Button>
+      <div>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <Bell className="h-6 w-6" />
+          {t('screens.reminders.reminders')}
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {filteredView
+            ? `Showing ${filteredView.title.toLowerCase()} reminders.`
+            : "What Vitana is scheduling for you. Talk to the ORB to add naturally."}
+        </p>
       </div>
 
       <EnableRemindersPrompt />
 
-      {upcoming.length >= 2 ? (
-        <button
-          type="button"
-          onClick={() => setConfirmDeleteAll(true)}
-          className="text-xs text-muted-foreground hover:text-destructive underline self-end"
-        >
-          Delete all {upcoming.length} reminders
-        </button>
+      {!filteredView ? (
+        <div className="flex items-center justify-between gap-3 -mt-2">
+          {upcoming.length >= 2 ? (
+            <button
+              type="button"
+              onClick={() => setConfirmDeleteAll(true)}
+              className="text-xs text-muted-foreground hover:text-destructive underline"
+            >{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}
+            </button>
+          ) : (
+            <span />
+          )}
+          <Button variant="ghost" size="sm" onClick={() => setOpenCreate(true)}>
+            <Plus className="h-4 w-4 mr-1" />
+            {t('screens.reminders.addManually')}
+          </Button>
+        </div>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Upcoming</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {isLoading ? (
-            <div className="text-sm text-muted-foreground">Loading…</div>
-          ) : upcoming.length === 0 ? (
-            <div className="text-sm text-muted-foreground py-6 text-center">
-              No reminders yet. Tap the ORB and say <em>"Remind me at 8pm to take my magnesium."</em>
-            </div>
-          ) : (
-            upcoming.map((r) => (
-              <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
-            ))
-          )}
-        </CardContent>
-      </Card>
-
-      {recent.length > 0 ? (
+      {filteredView ? (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Recent</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-lg">{filteredView.title}</CardTitle>
+            <button
+              type="button"
+              onClick={clearFilter}
+              className="text-xs text-muted-foreground hover:text-foreground underline"
+            >
+              {t('screens.reminders.showAll')}
+            </button>
           </CardHeader>
           <CardContent className="space-y-2">
-            {recent.map((r) => (
-              <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
-            ))}
+            {isLoading ? (
+              <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
+            ) : filteredView.items.length === 0 ? (
+              <div className="text-sm text-muted-foreground py-6 text-center">{filteredView.emptyText}</div>
+            ) : (
+              filteredView.items.map((r) => (
+                <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+              ))
+            )}
           </CardContent>
         </Card>
-      ) : null}
+      ) : (
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                {t('screens.reminders.suggestedByVitana')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
+              ) : suggestedByVitana.length === 0 ? (
+                <div className="text-sm text-muted-foreground py-6 text-center">
+                  {t('screens.reminders.vitanaHasnTSuggestedAnyReminders')}
+                </div>
+              ) : (
+                suggestedByVitana.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">{t('screens.reminders.scheduledByYou')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {isLoading ? (
+                <div className="text-sm text-muted-foreground">{t('screens.reminders.loading')}</div>
+              ) : scheduledByYou.length === 0 ? (
+                <div className="text-sm text-muted-foreground py-6 text-center">
+                  {t('screens.reminders.tapOrbSay')} <em>{t('screens.reminders.remindMeAt8pmTakeMy')}</em>
+                </div>
+              ) : (
+                scheduledByYou.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))
+              )}
+            </CardContent>
+          </Card>
+
+          {recent.length > 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">{t('screens.reminders.recent')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {recent.map((r) => (
+                  <ReminderRowItem key={r.id} reminder={r} onDelete={setConfirmDelete} onComplete={handleComplete} />
+                ))}
+              </CardContent>
+            </Card>
+          ) : null}
+        </>
+      )}
 
       {/* Create modal */}
       <Dialog open={openCreate} onOpenChange={setOpenCreate}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New reminder</DialogTitle>
-            <DialogDescription>Vitana will chime and speak at the scheduled time.</DialogDescription>
+            <DialogTitle>{t('screens.reminders.newReminder')}</DialogTitle>
+            <DialogDescription>{t('screens.reminders.vitanaWillChimeSpeakAtScheduled')}</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <div>
-              <Label htmlFor="reminder-action">What to remind you about</Label>
+              <Label htmlFor="reminder-action">{t('screens.reminders.whatRemindYouAbout')}</Label>
               <Input
                 id="reminder-action"
                 value={actionText}
                 onChange={(e) => setActionText(e.target.value)}
-                placeholder="Take magnesium"
+                placeholder={t('screens.reminders.takeMagnesium')}
                 autoFocus
               />
             </div>
             <div>
-              <Label htmlFor="reminder-when">When</Label>
+              <Label htmlFor="reminder-when">{t('screens.reminders.when')}</Label>
               <Input
                 id="reminder-when"
                 type="datetime-local"
@@ -283,16 +404,16 @@ const Reminders: React.FC = () => {
               />
             </div>
             <div>
-              <Label htmlFor="reminder-spoken">Spoken message (optional)</Label>
+              <Label htmlFor="reminder-spoken">{t('screens.reminders.spokenMessageOptional')}</Label>
               <Input
                 id="reminder-spoken"
                 value={spokenMessage}
                 onChange={(e) => setSpokenMessage(e.target.value)}
-                placeholder="Time to take your magnesium pills"
+                placeholder={t('screens.reminders.timeTakeYourMagnesiumPills')}
               />
             </div>
             <div>
-              <Label htmlFor="reminder-desc">Notes (optional)</Label>
+              <Label htmlFor="reminder-desc">{t('screens.reminders.notesOptional')}</Label>
               <Input
                 id="reminder-desc"
                 value={description}
@@ -302,7 +423,7 @@ const Reminders: React.FC = () => {
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setOpenCreate(false)}>
-              Cancel
+              {t('screens.reminders.cancel')}
             </Button>
             <Button onClick={handleCreate} disabled={createMut.isPending}>
               {createMut.isPending ? "Creating…" : "Create reminder"}
@@ -315,13 +436,13 @@ const Reminders: React.FC = () => {
       <AlertDialog open={!!confirmDelete} onOpenChange={(o) => !o && setConfirmDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete this reminder?</AlertDialogTitle>
+            <AlertDialogTitle>{t('screens.reminders.deleteThisReminder')}</AlertDialogTitle>
             <AlertDialogDescription>{confirmDelete?.action_text}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+              {t('screens.reminders.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -331,15 +452,14 @@ const Reminders: React.FC = () => {
       <AlertDialog open={confirmDeleteAll} onOpenChange={setConfirmDeleteAll}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete all {upcoming.length} reminders?</AlertDialogTitle>
-            <AlertDialogDescription>
-              They will be removed from your list. This can't be easily undone.
+            <AlertDialogTitle>{t('screens.reminders.deleteAllLengthReminders', { length: upcoming.length })}</AlertDialogTitle>
+            <AlertDialogDescription>{t('screens.reminders.theyWillRemovedFromYourList')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('screens.reminders.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteAll} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete All
+              {t('screens.reminders.deleteAll')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -6,6 +6,7 @@ import { useTaskStore } from "@/state/taskStore";
 import { Card } from "@/components/ui/card";
 import { BarChart3, Clock, TrendingUp, Zap } from "lucide-react";
 import { useMemo } from "react";
+import { t } from '@/lib/i18n-toast';
 
 export function TaskAnalytics() {
   const tasks = useTaskStore((state) => state.tasks);
@@ -48,7 +49,7 @@ export function TaskAnalytics() {
             <BarChart3 className="h-5 w-5 text-sys-vitana-accent" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Total Tasks</p>
+            <p className="text-sm text-muted-foreground">{t('screens.dev.totalTasks')}</p>
             <p className="text-2xl font-bold">{analytics.total}</p>
           </div>
         </div>
@@ -60,7 +61,7 @@ export function TaskAnalytics() {
             <TrendingUp className="h-5 w-5 text-sys-autopilot-accent" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">In Progress</p>
+            <p className="text-sm text-muted-foreground">{t('screens.dev.progress2')}</p>
             <p className="text-2xl font-bold">{analytics.inProgressPercent}%</p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export function TaskAnalytics() {
             <Clock className="h-5 w-5 text-pill-hydration-accent" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Avg Completion</p>
+            <p className="text-sm text-muted-foreground">{t('screens.dev.avgCompletion')}</p>
             <p className="text-2xl font-bold">{analytics.avgCompletionHours}h</p>
           </div>
         </div>
@@ -84,7 +85,7 @@ export function TaskAnalytics() {
             <Zap className="h-5 w-5 text-sys-ai-accent" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">AI Created</p>
+            <p className="text-sm text-muted-foreground">{t('screens.dev.aiCreated')}</p>
             <p className="text-2xl font-bold">{analytics.aiRatio}%</p>
           </div>
         </div>

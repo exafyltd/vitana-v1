@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { t } from '@/lib/i18n-toast';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function Cart() {
   return (
     <AppLayout>
       <SEO 
-        title="Shopping Cart | VITANA"
+        title={t('screens.cart.shoppingCartVitana')}
         description="Review your cart and complete your purchase"
         canonical={window.location.href}
       />
@@ -43,11 +44,11 @@ export default function Cart() {
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t('screens.cart.back')}
           </Button>
 
           <StandardHeader
-            title="Shopping Cart"
+            title={t('screens.cart.shoppingCart')}
             description={`${cartCount} ${cartCount === 1 ? 'item' : 'items'} in your cart`}
             emoji="🛒"
           />
@@ -56,12 +57,11 @@ export default function Cart() {
             <Card className="bg-white/80 backdrop-blur-sm">
               <CardContent className="p-12 text-center">
                 <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-xl font-semibold mb-2">Your cart is empty</h3>
-                <p className="text-muted-foreground mb-6">
-                  Start adding items from the Discover marketplace
+                <h3 className="text-xl font-semibold mb-2">{t('screens.cart.yourCartEmpty')}</h3>
+                <p className="text-muted-foreground mb-6">{t('screens.cart.startAddingItemsFromDiscoverMarketplace')}
                 </p>
                 <Button onClick={() => navigate('/discover')}>
-                  Browse Marketplace
+                  {t('screens.cart.browseMarketplace')}
                 </Button>
               </CardContent>
             </Card>
@@ -86,13 +86,10 @@ export default function Cart() {
                                 )}
                                 <div className="flex-1">
                                   <h3 className="font-semibold mb-1">{item.item_name}</h3>
-                                  <p className="text-sm text-muted-foreground mb-2">
-                                    ${item.item_price.toFixed(2)} each
+                                  <p className="text-sm text-muted-foreground mb-2">{t('screens.cart.value0Each', { value0: item.item_price.toFixed(2) })}
                                   </p>
                                   {item.item_metadata?.provider && (
-                                    <p className="text-xs text-muted-foreground">
-                                      by {item.item_metadata.provider}
-                                    </p>
+                                    <p className="text-xs text-muted-foreground">{t('screens.cart.byProvider', { provider: item.item_metadata.provider })}</p>
                                   )}
                                 </div>
                                 <div className="flex flex-col items-end justify-between">
@@ -139,7 +136,7 @@ export default function Cart() {
                   onClick={clearCart}
                   className="w-full"
                 >
-                  Clear Cart
+                  {t('screens.cart.clearCart')}
                 </Button>
               </div>
 
@@ -147,28 +144,28 @@ export default function Cart() {
               <div className="lg:col-span-1">
                 <Card className="bg-white/80 backdrop-blur-sm sticky top-6">
                   <CardContent className="p-6 space-y-4">
-                    <h3 className="text-xl font-semibold">Order Summary</h3>
+                    <h3 className="text-xl font-semibold">{t('screens.cart.orderSummary')}</h3>
                     <Separator />
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="text-muted-foreground">{t('screens.cart.subtotal')}</span>
                         <span>${cartTotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Shipping</span>
-                        <span className="text-green-600">FREE</span>
+                        <span className="text-muted-foreground">{t('screens.cart.shipping')}</span>
+                        <span className="text-green-600">{t('screens.cart.free')}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Tax</span>
-                        <span>Calculated at checkout</span>
+                        <span className="text-muted-foreground">{t('screens.cart.tax')}</span>
+                        <span>{t('screens.cart.calculatedAtCheckout')}</span>
                       </div>
                     </div>
 
                     <Separator />
 
                     <div className="flex justify-between text-lg font-bold">
-                      <span>Total</span>
+                      <span>{t('screens.cart.total')}</span>
                       <span>${cartTotal.toFixed(2)}</span>
                     </div>
 
@@ -182,7 +179,7 @@ export default function Cart() {
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                      Secure checkout powered by Stripe
+                      {t('screens.cart.secureCheckoutPoweredByStripe')}
                     </p>
                   </CardContent>
                 </Card>

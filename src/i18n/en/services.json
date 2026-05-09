@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Services HUB",
+    "subtitle": "Access comprehensive healthcare and wellness services",
+    "categories": {
+      "preventive": "Preventive Screenings",
+      "labTests": "Lab Tests",
+      "coaching": "Coaching & Personal Training",
+      "groupPrograms": "Group Programs & Challenges"
+    },
+    "actions": {
+      "book": "Book",
+      "addToPlan": "Add to Plan",
+      "askAI": "Ask AI",
+      "joinRoom": "Join Room",
+      "setReminder": "Set Reminder"
+    },
+    "details": {
+      "duration": "Duration",
+      "price": "Price",
+      "location": "Location",
+      "nextAvailable": "Next available",
+      "whatsIncluded": "What's Included",
+      "healthBenefits": "Health Benefits",
+      "availableProviders": "Available Providers",
+      "requirements": "Requirements & Preparation",
+      "tags": "Tags"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PersonalShareButtons } from "./PersonalShareButtons";
+import { t } from '@/lib/i18n-toast';
 
 interface ShareCampaignModalProps {
   open: boolean;
@@ -26,9 +27,9 @@ export function ShareCampaignModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Share this campaign</DialogTitle>
+          <DialogTitle>{t('screens.sharing.shareThisCampaign')}</DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Send a personal invite – no extra setup needed.
+            {t('screens.sharing.sendPersonalInviteNoExtraSetup')}
           </p>
         </DialogHeader>
 
@@ -53,7 +54,7 @@ export function ShareCampaignModal({
 
         {/* Quick Share Buttons - Using unified component */}
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-muted-foreground">Quick share</h4>
+          <h4 className="text-sm font-medium text-muted-foreground">{t('screens.sharing.quickShare')}</h4>
           <PersonalShareButtons
             shareUrl={publicUrl}
             shareText={shareText}
@@ -62,7 +63,7 @@ export function ShareCampaignModal({
             showCopyLink={true}
           />
           <p className="text-xs text-muted-foreground">
-            Opens your personal apps to share directly
+            {t('screens.sharing.opensYourPersonalAppsShareDirectly')}
           </p>
         </div>
       </DialogContent>

@@ -2,6 +2,12 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+// VTID-02789: Mobile-aware Navigator. Pipe `is_mobile` into the ORB session
+// context so the gateway can pick mobile_route overrides (e.g. /comm →
+// /comm/events-meetups?tab=hot) and block desktop sessions from
+// viewport_only='mobile' entries (e.g. /daily-diary).
+import { useIsMobile } from "@/hooks/use-mobile";
+import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -68,6 +74,10 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  // VTID-02789: Pure viewport check (window.innerWidth < 1024px). Updates
+  // reactively via matchMedia, so any width change triggers the route-change
+  // updateContext effect below and re-syncs is_mobile to the gateway.
+  const isMobile = useIsMobile();
 
   // VTID-AUTH-BACKEND-PROBE: Shared token resolver. Refreshes if expiring,
   // probes the backend, and returns:
@@ -126,19 +136,56 @@ export function useOrbVoiceWidget() {
       }
       const parsed = new URL(url, window.location.origin);
       const openTarget = parsed.searchParams.get('open');
-      // VTID-CAL-OPEN: If the backend sends ?open=calendar, do NOT navigate —
-      // just open the calendar popup as an overlay on the current screen.
-      if (openTarget === 'calendar') {
-        window.dispatchEvent(new CustomEvent('calendar:open'));
-        return;
-      }
-      // Life Compass overlay: voice "open my goals" / "open my life compass"
-      // resolves to ?open=life_compass. Keep the user on their current screen
-      // and surface the popup so they can pick or customize their goal without
-      // losing context.
-      if (openTarget === 'life_compass' || openTarget === 'goals') {
-        window.dispatchEvent(new CustomEvent('vitana:open-life-compass'));
-        return;
+      // VTID-02770: Catalog-driven overlay dispatch. The gateway emits
+      // `${host_route}?open=<query_marker>` for any catalog entry whose
+      // `entry_kind === 'overlay'`. We route the `open` param to the
+      // matching CustomEvent so popups can render on the user's current
+      // screen without a full route change.
+      //
+      // Each entry takes the full URL detail (the entire URLSearchParams) so
+      // entity-id params like `meetup_id`, `event_id`, `user_id` arrive on the
+      // event so listeners can fetch the right resource.
+      if (openTarget) {
+        const detail = Object.fromEntries(parsed.searchParams.entries());
+        const dispatch = (eventName: string) => {
+          window.dispatchEvent(new CustomEvent(eventName, { detail }));
+        };
+        switch (openTarget) {
+          case 'calendar':
+            // VTID-CAL-OPEN
+            dispatch('calendar:open');
+            return;
+          case 'life_compass':
+          case 'goals':
+            dispatch('vitana:open-life-compass');
+            return;
+          case 'index':
+          case 'vitana_index':
+            dispatch('vitana:open-index');
+            return;
+          case 'profile_preview':
+            dispatch('profile:open');
+            return;
+          case 'meetup':
+            dispatch('meetup:open');
+            return;
+          case 'event':
+            dispatch('event:open');
+            return;
+          case 'wallet':
+            dispatch('wallet:open');
+            return;
+          case 'master_action':
+            dispatch('master_action:open');
+            return;
+          case 'presence':
+            dispatch('presence-debug:open');
+            return;
+          // Unknown overlay marker: log and fall through to a regular
+          // navigation so the URL is at least visible to the user.
+          default:
+            console.warn(`[ORB] Unknown overlay marker: ?open=${openTarget} — falling back to navigation`);
+        }
       }
       navigateRef.current(url);
     } catch (err) {
@@ -158,9 +205,15 @@ export function useOrbVoiceWidget() {
       const orb = (window as any).VitanaOrb;
       if (!orb) return false;
 
-      // If we think we're initialized but the widget was destroyed externally, reset
+      // VTID-02720: If the FAB DOM was torn down externally (route change,
+      // layout reflow, framework remount) while we still think the widget is
+      // initialized, the underlying mic stream + SSE + AudioContext on the
+      // VitanaOrb global are still live — just invisible. The user perceives
+      // "orb closed but still listening". Call destroy() before reinit so the
+      // session is actually stopped, then re-init cleanly.
       if (initialized.current && !isOrbAlive()) {
-        console.log("[ORB] Widget was destroyed externally, resetting state");
+        console.log("[ORB] Widget DOM destroyed externally — tearing down stale session before reinit");
+        try { orb.destroy(); } catch (e) { /* widget may already be partially gone */ }
         initialized.current = false;
       }
 
@@ -173,6 +226,8 @@ export function useOrbVoiceWidget() {
             current_route_entered_at: currentRouteEnteredAtRef.current,
             recent_routes: routeHistoryRef.current,
             journey_trail: journeyTrailRef.current,
+            // VTID-02789: viewport flag → gateway picks mobile_route over route
+            is_mobile: isMobile,
           },
         };
 
@@ -192,13 +247,16 @@ export function useOrbVoiceWidget() {
 
           if (validToken) {
             orb.init({ ...navOpts, authToken: validToken });
+            setOrbWidgetAuthenticated(true);
             console.log("[ORB] Widget initialized (authenticated, backend-verified token)");
           } else {
             orb.init(navOpts);
+            setOrbWidgetAuthenticated(false);
             console.log("[ORB] Widget initialized (anonymous — no session)");
           }
         } else {
           orb.init(navOpts);
+          setOrbWidgetAuthenticated(false);
           console.log("[ORB] Widget initialized (anonymous)");
         }
         initialized.current = true;
@@ -208,14 +266,19 @@ export function useOrbVoiceWidget() {
 
     tryInit();
 
-    // Polling fallback for when VitanaOrb script hasn't loaded yet
+    // Polling fallback for when VitanaOrb script hasn't loaded yet.
+    // The orb-widget script tag is `defer`, so on slow mobile (4G/3G WebView)
+    // it executes only after the 1.7MB main bundle finishes parsing — easily
+    // 15-30s in the wild. 60s ceiling keeps the FAB appearing eventually
+    // instead of permanently.
     let attempts = 0;
+    const MAX_ATTEMPTS = 120; // 120 × 500ms = 60s
     const interval = setInterval(() => {
       attempts++;
       tryInit().then((done) => {
-        if (done || attempts >= 20) {
+        if (done || attempts >= MAX_ATTEMPTS) {
           clearInterval(interval);
-          if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
+          if (attempts >= MAX_ATTEMPTS) console.warn("[ORB] Widget script never loaded");
         }
       });
     }, 500);
@@ -232,6 +295,7 @@ export function useOrbVoiceWidget() {
     // Auth state changed — destroy and reinit with correct mode
     orb.destroy();
     initialized.current = false;
+    setOrbWidgetAuthenticated(false);
 
     const navOpts = {
       showFab: true,
@@ -255,11 +319,14 @@ export function useOrbVoiceWidget() {
         }
         if (validToken) {
           orb.init({ ...navOpts, authToken: validToken });
+          setOrbWidgetAuthenticated(true);
         } else {
           orb.init(navOpts);
+          setOrbWidgetAuthenticated(false);
         }
       } else {
         orb.init(navOpts);
+        setOrbWidgetAuthenticated(false);
       }
       initialized.current = true;
       console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
@@ -337,9 +404,12 @@ export function useOrbVoiceWidget() {
         current_route_entered_at: now,
         recent_routes: routeHistoryRef.current,
         journey_trail: journeyTrailRef.current,
+        // VTID-02789: re-emit is_mobile on every route change so a viewport
+        // resize mid-session is reflected in the next navigate decision.
+        is_mobile: isMobile,
       });
     }
-  }, [location.pathname]);
+  }, [location.pathname, isMobile]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -348,6 +418,7 @@ export function useOrbVoiceWidget() {
       if (orb && initialized.current) {
         orb.destroy();
         initialized.current = false;
+        setOrbWidgetAuthenticated(false);
       }
     };
   }, []);

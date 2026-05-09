@@ -47,6 +47,7 @@ import {
   transformEventRankingToCard,
   transformCreatorRankingToCard
 } from '@/lib/rankingsCardTransformers';
+import { notifyError, notifyInfo, t } from '@/lib/i18n-toast';
 
 // Mock fallback data for Today Highlights
 const todayHighlights = [
@@ -719,12 +720,12 @@ const renderEventGrid = (
         const targetUserId = event.authorId || event.id;
         
         if (targetUserId?.startsWith('demo-')) {
-          toast.info("This is a demo profile. Follow functionality available for real users.");
+          notifyInfo('toasts.community.thisDemoProfileFollowFunctionalityAvailable');
           return;
         }
         
         if (!followContext.user) {
-          toast.error("Please sign in to follow users");
+          notifyError('toasts.community.pleaseSignFollowUsers');
           return;
         }
         
@@ -759,7 +760,7 @@ const renderEventGrid = (
         } catch (error) {
           followContext.setFollowStatus(prev => new Map(prev).set(targetUserId, isCurrentlyFollowing));
           console.error('Error toggling follow:', error);
-          toast.error("Failed to update follow status. Please try again.");
+          notifyError('toasts.community.failedUpdateFollowStatusPleaseTry');
         } finally {
           followContext.setFollowLoading(prev => {
             const next = new Set(prev);
@@ -1233,19 +1234,16 @@ export default withScreenId(function Community() {
   if (isMobile) {
     return (
       <AppLayout>
-        <SEO title="Community" description="Connect with the community" canonical={window.location.href} />
+        <SEO title={t('screens.community.community')} description="Connect with the community" canonical={window.location.href} />
         <MobileCommunityNav items={communityNavigation} />
         
         <div className="flex flex-col gap-4 p-4 pb-32 min-h-dvh bg-gradient-to-b from-primary/5 to-background">
           {/* Compact Header */}
           <div className="space-y-1 pt-2">
-            <h1 className="text-xl font-bold text-foreground">Community</h1>
-            <p className="text-sm text-muted-foreground">Connect, share, and grow together</p>
+            <h1 className="text-xl font-bold text-foreground">{t('screens.community.community')}</h1>
+            <p className="text-sm text-muted-foreground">{t('screens.community.connectShareGrowTogether')}</p>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                🧬 Vitana {activityMetrics.totalMembers || 742}
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Live
+              <span className="inline-flex items-center gap-1">{t('screens.community.vitanaValue0', { value0: activityMetrics.totalMembers || 742 })}<span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>{t('screens.community.live2')}
               </span>
             </div>
           </div>
@@ -1254,19 +1252,19 @@ export default withScreenId(function Community() {
           <div className="space-y-3 mt-4">
             <MobileEntryCard
               icon={<Calendar className="h-5 w-5" />}
-              title="Browse Events & MeetUps"
+              title={t('screens.community.browseEventsMeetups')}
               subtitle="Discover local wellness gatherings"
               to="/comm/events-meetups"
             />
             <MobileEntryCard
               icon={<Radio className="h-5 w-5" />}
-              title="Join Live Rooms"
+              title={t('screens.community.joinLiveRooms')}
               subtitle="Drop into real-time conversations"
               to="/comm/live-rooms"
             />
             <MobileEntryCard
               icon={<Play className="h-5 w-5" />}
-              title="Watch Shorts"
+              title={t('screens.community.watchShorts')}
               subtitle="Quick wellness inspiration"
               to="/comm/media-hub?tab=shorts"
             />
@@ -1303,12 +1301,12 @@ export default withScreenId(function Community() {
   // Desktop layout
   return (
     <AppLayout>
-      <SEO title="Community" description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
+      <SEO title={t('screens.community.community')} description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Your Community Hub"
+            title={t('screens.community.yourCommunityHub')}
             description="Connect, share, and grow together with your wellness community."
             emoji="✨"
           />
@@ -1321,20 +1319,20 @@ export default withScreenId(function Community() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.community.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search Community…"
+              placeholder={t('screens.community.searchCommunity')}
               onSearch={(query) => console.log('Search Community:', query)}
             />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Hub
+              {t('screens.community.hub')}
             </Button>
           </UtilityActionButton>
 
@@ -1347,10 +1345,10 @@ export default withScreenId(function Community() {
             }}
           >
           <SplitBarList>
-            <SplitBarTrigger value="overview">🏠 Overview</SplitBarTrigger>
-            <SplitBarTrigger value="rankings">🏆 Rankings</SplitBarTrigger>
-            <SplitBarTrigger value="spotlight">⭐ Spotlight</SplitBarTrigger>
-            <SplitBarTrigger value="find_partner">💑 Find a Partner</SplitBarTrigger>
+            <SplitBarTrigger value="overview">{t('screens.community.overview')}</SplitBarTrigger>
+            <SplitBarTrigger value="rankings">{t('screens.community.rankings')}</SplitBarTrigger>
+            <SplitBarTrigger value="spotlight">{t('screens.community.spotlight')}</SplitBarTrigger>
+            <SplitBarTrigger value="find_partner">{t('screens.community.findMatch')}</SplitBarTrigger>
           </SplitBarList>
 
         <SplitBarContent value="overview">
@@ -1359,22 +1357,22 @@ export default withScreenId(function Community() {
             <div className="flex items-center justify-center gap-6 text-sm flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="font-medium">{activityMetrics.totalMembers} community members</span>
+                <span className="font-medium">{t('screens.community.totalmembersCommunityMembers', { totalMembers: activityMetrics.totalMembers })}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                <span>{activityMetrics.eventsToday} events today</span>
+                <span>{t('screens.community.eventstodayEventsToday', { eventsToday: activityMetrics.eventsToday })}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-accent" />
-                <span>{todayEvents.length + upcomingEvents.length} upcoming activities</span>
+                <span>{t('screens.community.value0UpcomingActivities', { value0: todayEvents.length + upcomingEvents.length })}</span>
               </div>
             </div>
           </Card>
 
           {/* Today Highlights */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.todayHighlights')}</h3>
                 {(() => {
                   const result = renderEventGrid(
                     todayHighlights, 
@@ -1395,7 +1393,7 @@ export default withScreenId(function Community() {
 
               {/* This Week in Community */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">This Week in Community</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.thisWeekCommunity')}</h3>
                 {(() => {
                   const result = renderEventGrid(
                     weeklyEvents, 
@@ -1417,7 +1415,7 @@ export default withScreenId(function Community() {
               {/* Community Highlights */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4 px-6">
-                  <h3 className="text-xl font-bold">🏆 Community Highlights</h3>
+                  <h3 className="text-xl font-bold">{t('screens.community.communityHighlights')}</h3>
                   <Button 
                     size="sm" 
                     variant="outline" 
@@ -1429,7 +1427,7 @@ export default withScreenId(function Community() {
                     }}
                   >
                     <Trophy className="w-3 h-3 mr-1" />
-                    View All Rankings
+                    {t('screens.community.viewAllRankings')}
                   </Button>
                 </div>
                 {(() => {
@@ -1448,17 +1446,16 @@ export default withScreenId(function Community() {
               {/* Discover People - Phase 1: Real Community Members */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-4 px-6">
-                  <h3 className="text-xl font-bold">Discover People</h3>
+                  <h3 className="text-xl font-bold">{t('screens.community.discoverPeople')}</h3>
                   {membersLoading && (
                     <Badge variant="outline" className="animate-pulse">
                       <Users className="w-3 h-3 mr-1" />
-                      Loading...
+                      {t('screens.community.loading')}
                     </Badge>
                   )}
                   {!membersLoading && realCommunityPeople.length > 0 && (
                     <Badge variant="secondary">
-                      <Users className="w-3 h-3 mr-1" />
-                      {members.length} members
+                      <Users className="w-3 h-3 mr-1" />{t('screens.community.lengthMembers', { length: members.length })}
                     </Badge>
                   )}
                 </div>
@@ -1482,7 +1479,7 @@ export default withScreenId(function Community() {
 
               {/* Community Media Hub */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.communityMedia')}</h3>
                 {(() => {
                   const result = renderEventGrid(
                     communityMedia, 
@@ -1498,12 +1495,12 @@ export default withScreenId(function Community() {
 
               {/* Community Music */}
               <div className="mb-8 px-6">
-                <h3 className="text-xl font-bold mb-4">Community Music 🎵</h3>
+                <h3 className="text-xl font-bold mb-4">{t('screens.community.communityMusic')}</h3>
                 <div className="grid grid-cols-12 gap-4">
                   <div className="col-span-12">
                     <MusicListCard 
                       tracks={communityMusic || []}
-                      title="Trending in Your Community"
+                      title={t('screens.community.trendingYourCommunity')}
                       className="h-[280px]"
                     />
                   </div>
@@ -1512,12 +1509,12 @@ export default withScreenId(function Community() {
 
               {/* Community Podcasts */}
               <div className="mb-8 px-6">
-                <h3 className="text-xl font-bold mb-4">Community Podcasts 🎙️</h3>
+                <h3 className="text-xl font-bold mb-4">{t('screens.community.communityPodcasts')}</h3>
                 <div className="grid grid-cols-12 gap-4">
                   <div className="col-span-12">
                     <PodcastListCard 
                       episodes={communityPodcasts || []}
-                      title="Trending Podcast Episodes"
+                      title={t('screens.community.trendingPodcastEpisodes')}
                       className="h-[280px]"
                     />
                   </div>
@@ -1533,45 +1530,45 @@ export default withScreenId(function Community() {
                 "bg-white/50"
               )}>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Timeframe:</span>
+                  <span className="text-sm font-medium">{t('screens.community.timeframe')}</span>
                   <Select value={timeframe} onValueChange={setTimeframe}>
                     <SelectTrigger className="w-24 h-10 xl:h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="today">Today</SelectItem>
-                      <SelectItem value="7d">7 Days</SelectItem>
-                      <SelectItem value="30d">30 Days</SelectItem>
-                      <SelectItem value="all">All-time</SelectItem>
+                      <SelectItem value="today">{t('screens.community.today')}</SelectItem>
+                      <SelectItem value="7d">{t('screens.community.text7Days')}</SelectItem>
+                      <SelectItem value="30d">{t('screens.community.text30Days')}</SelectItem>
+                      <SelectItem value="all">{t('screens.community.alltime')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Scope:</span>
+                  <span className="text-sm font-medium">{t('screens.community.scope')}</span>
                   <Select value={scope} onValueChange={setScope}>
                     <SelectTrigger className="w-32 h-10 xl:h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="global">Global</SelectItem>
-                      <SelectItem value="region">Region</SelectItem>
-                      <SelectItem value="group">My Groups</SelectItem>
+                      <SelectItem value="global">{t('screens.community.global')}</SelectItem>
+                      <SelectItem value="region">{t('screens.community.region')}</SelectItem>
+                      <SelectItem value="group">{t('screens.community.myGroups')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Category:</span>
+                  <span className="text-sm font-medium">{t('screens.community.category')}</span>
                   <Select defaultValue="all">
                     <SelectTrigger className="w-32 h-10 xl:h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      <SelectItem value="sleep">Sleep</SelectItem>
-                      <SelectItem value="exercise">Exercise</SelectItem>
-                      <SelectItem value="nutrition">Nutrition</SelectItem>
-                      <SelectItem value="hydration">Hydration</SelectItem>
-                      <SelectItem value="mental">Mental</SelectItem>
+                      <SelectItem value="all">{t('screens.community.allCategories')}</SelectItem>
+                      <SelectItem value="sleep">{t('screens.community.sleep')}</SelectItem>
+                      <SelectItem value="exercise">{t('screens.community.exercise')}</SelectItem>
+                      <SelectItem value="nutrition">{t('screens.community.nutrition')}</SelectItem>
+                      <SelectItem value="hydration">{t('screens.community.hydration')}</SelectItem>
+                      <SelectItem value="mental">{t('screens.community.mental')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1579,7 +1576,7 @@ export default withScreenId(function Community() {
 
               {/* Top 3 Groups */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top 3 Groups 🏆</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.top3Groups')}</h3>
                 <HorizontalCardList
                   items={topGroups.map((group, idx) => 
                     transformGroupRankingToCard(group, idx + 1)
@@ -1592,8 +1589,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No group rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noGroupRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1606,7 +1602,7 @@ export default withScreenId(function Community() {
 
               {/* Top Events This Week */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top Events (This Week) 📅</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.topEventsThisWeek')}</h3>
                 <HorizontalCardList
                   items={topEvents.map((event, idx) => 
                     transformEventRankingToCard(event, idx + 1)
@@ -1619,8 +1615,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No event rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noEventRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1633,7 +1628,7 @@ export default withScreenId(function Community() {
 
               {/* Top Creators */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top Creators ⭐</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.topCreators')}</h3>
                 <HorizontalCardList
                   items={topCreators.map((creator, idx) => 
                     transformCreatorRankingToCard(creator, idx + 1)
@@ -1646,8 +1641,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No creator rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noCreatorRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1655,7 +1649,7 @@ export default withScreenId(function Community() {
 
               {/* Top VITANA Members */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Top VITANA Members 💎</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.topVitanaMembers')}</h3>
                 <HorizontalCardList
                   items={topVitanaMembers.map((member, idx) => 
                     transformMemberRankingToCard(member, idx + 1, 'vitana_index')
@@ -1668,8 +1662,7 @@ export default withScreenId(function Community() {
                   enableVirtualization={false}
                   allowMultipleExpanded={false}
                   emptyState={
-                    <div className="text-center py-8 text-muted-foreground">
-                      No member rankings available yet
+                    <div className="text-center py-8 text-muted-foreground">{t('screens.community.noMemberRankingsAvailableYet')}
                     </div>
                   }
                 />
@@ -1677,22 +1670,22 @@ export default withScreenId(function Community() {
 
               {/* Badges Section */}
               <div className="px-6 mb-8">
-                <h3 className="text-xl font-bold mb-4">Community Badges</h3>
+                <h3 className="text-xl font-bold mb-4">{t('screens.community.communityBadges')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="p-4 text-center border-2 border-orange-200">
                     <Trophy className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                    <h4 className="font-bold">Rising Star</h4>
-                    <p className="text-sm text-muted-foreground">Dr. Roberts</p>
+                    <h4 className="font-bold">{t('screens.community.risingStar')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('screens.community.drRoberts')}</p>
                   </Card>
                   <Card className="p-4 text-center border-2 border-yellow-200">
                     <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
-                    <h4 className="font-bold">Top Host</h4>
-                    <p className="text-sm text-muted-foreground">Lisa Chen</p>
+                    <h4 className="font-bold">{t('screens.community.topHost')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('screens.community.lisaChen')}</p>
                   </Card>
                   <Card className="p-4 text-center border-2 border-purple-200">
                     <Heart className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                    <h4 className="font-bold">Most Inspiring</h4>
-                    <p className="text-sm text-muted-foreground">Sarah Miller</p>
+                    <h4 className="font-bold">{t('screens.community.mostInspiring')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('screens.community.sarahMiller')}</p>
                   </Card>
                 </div>
               </div>
@@ -1704,9 +1697,9 @@ export default withScreenId(function Community() {
                 <div className="px-6 mb-8">
                   <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-purple-50">
                     <Sparkles className="w-12 h-12 mx-auto mb-3 text-blue-600" />
-                    <h3 className="text-lg font-semibold mb-2">Get Personalized AI Recommendations</h3>
+                    <h3 className="text-lg font-semibold mb-2">{t('screens.community.getPersonalizedAiRecommendations')}</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Let AI analyze your wellness goals and suggest the perfect events for you
+                      {t('screens.community.letAiAnalyzeYourWellnessGoals')}
                     </p>
                     <Button 
                       onClick={() => generateRecommendations('events')} 
@@ -1715,13 +1708,12 @@ export default withScreenId(function Community() {
                     >
                       {generating ? (
                         <>
-                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                          Analyzing Your Profile...
+                          <RefreshCw className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.analyzingYourProfile')}
                         </>
                       ) : (
                         <>
                           <Sparkles className="w-4 h-4 mr-2" />
-                          Generate AI Recommendations
+                          {t('screens.community.generateAiRecommendations')}
                         </>
                       )}
                     </Button>
@@ -1734,10 +1726,10 @@ export default withScreenId(function Community() {
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-4 px-6">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-bold">AI Recommended For You</h3>
+                      <h3 className="text-xl font-bold">{t('screens.community.aiRecommendedForYou')}</h3>
                       <Badge className="bg-gradient-to-r from-blue-500 to-purple-500">
                         <Sparkles className="w-3 h-3 mr-1" />
-                        AI Powered
+                        {t('screens.community.aiPowered')}
                       </Badge>
                     </div>
                     <Button 
@@ -1747,7 +1739,7 @@ export default withScreenId(function Community() {
                       disabled={generating}
                     >
                       <RefreshCw className={`w-3 h-3 mr-1 ${generating ? 'animate-spin' : ''}`} />
-                      Refresh
+                      {t('screens.community.refresh')}
                     </Button>
                   </div>
                   {(() => {
@@ -1766,7 +1758,7 @@ export default withScreenId(function Community() {
 
               {/* Featured Content */}
               <div className="mb-8">
-                <h3 className="text-xl font-bold mb-4 px-6">Featured Content</h3>
+                <h3 className="text-xl font-bold mb-4 px-6">{t('screens.community.featuredContent')}</h3>
                 {(() => {
                   let spotlightRowIndex = recommendations.length > 0 ? 3 : 0;
                   const result = renderEventGrid(

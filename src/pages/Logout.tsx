@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 /**
  * Logout Page - For Appilix Mobile Drawer Integration
@@ -55,7 +56,7 @@ export default function Logout() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">Signing out...</p>
+        <p className="text-muted-foreground">{t('screens.logout.signingOut')}</p>
       </div>
     </div>
   );

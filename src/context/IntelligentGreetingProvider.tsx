@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useIntelligentGreeting } from '@/hooks/useIntelligentGreeting';
 import { useAuth } from './AuthProvider';
+import { t } from '@/lib/i18n-toast';
 
 interface IntelligentGreetingContextValue {
   triggerGreeting: () => Promise<void>;
@@ -95,7 +96,7 @@ export function IntelligentGreetingProvider({
       {isSpeaking && (
         <div className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse z-50">
           <span className="text-lg">🔊</span>
-          <span className="text-sm font-medium">Vitana is speaking...</span>
+          <span className="text-sm font-medium">{t('screens.common.vitanaSpeaking')}</span>
         </div>
       )}
     </IntelligentGreetingContext.Provider>

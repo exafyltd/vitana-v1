@@ -21,9 +21,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { settingsNavigation } from "@/config/navigation";
 import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility, Loader2 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
@@ -105,11 +106,10 @@ function TagEditor({
       </div>
       <div className="flex flex-wrap gap-2">
         {values.map((v) => (
-          <Badge key={v} variant="secondary" className="cursor-pointer" onClick={() => remove(v)}>
-            {v} &nbsp;×
+          <Badge key={v} variant="secondary" className="cursor-pointer" onClick={() => remove(v)}>{t('screens.settings.vNbsp', { v })}
           </Badge>
         ))}
-        {values.length === 0 && <span className="text-xs text-muted-foreground">None added yet</span>}
+        {values.length === 0 && <span className="text-xs text-muted-foreground">{t('screens.settings.noneAddedYet')}</span>}
       </div>
       <div className="flex gap-2">
         <Input
@@ -125,7 +125,7 @@ function TagEditor({
           className="max-w-sm"
         />
         <Button type="button" variant="outline" onClick={add} disabled={!input.trim()}>
-          Add
+          {t('screens.settings.add')}
         </Button>
       </div>
     </div>
@@ -163,7 +163,7 @@ export default function Limitations() {
 
   async function loadAll() {
     if (!GATEWAY_URL) {
-      toast({ title: "Gateway URL not configured", variant: "destructive" });
+      notifyError('toasts.settings.gatewayUrlNotConfigured');
       setLoading(false);
       return;
     }
@@ -198,7 +198,7 @@ export default function Limitations() {
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Could not load limitations", description: message, variant: "destructive" });
+      notifyError('toasts.settings.couldNotLoadLimitations');
     } finally {
       setLoading(false);
     }
@@ -219,13 +219,13 @@ export default function Limitations() {
         body: JSON.stringify(partial),
       });
       if (!resp.ok) throw new Error(`Save failed: ${resp.status}`);
-      toast({ title: "Saved" });
+      notify('toasts.settings.saved');
       // Refresh impact counter
       const impactResp = await fetch(`${GATEWAY_URL}/api/v1/user/limitations/impact`, { headers });
       if (impactResp.ok) setImpact(await impactResp.json());
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast({ title: "Save failed", description: message, variant: "destructive" });
+      notifyError('toasts.settings.saveFailed');
     } finally {
       setSaving(false);
     }
@@ -237,7 +237,7 @@ export default function Limitations() {
         <SubNavigation items={settingsNavigation} />
         <div className="p-8 flex items-center gap-2 text-muted-foreground">
           <Loader2 className="w-4 h-4 animate-spin" />
-          Loading your preferences...
+          {t('screens.settings.loadingYourPreferences')}
         </div>
       </AppLayout>
     );
@@ -248,12 +248,12 @@ export default function Limitations() {
 
   return (
     <AppLayout>
-      <SEO title="Limitations | Vitana" description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
+      <SEO title={t('screens.settings.limitationsVitana')} description="Edit the non-negotiable filters that shape your Discover marketplace." canonical={typeof window !== "undefined" ? window.location.href : ""} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
         <div className="max-w-4xl mx-auto space-y-6">
           <StandardHeader
-            title="Preferences & Limitations"
+            title={t('screens.settings.preferencesLimitations')}
             description="These are the non-negotiable rules we apply to every product recommendation. Allergies, medical contraindications, and medication interactions are never overridable."
           />
 
@@ -261,11 +261,10 @@ export default function Limitations() {
           <Card>
             <CardContent className="pt-6 flex items-center justify-between">
               <div>
-                <div className="text-sm text-muted-foreground">Currently filtered from your feed</div>
+                <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
                 <div className="text-2xl font-semibold">
                   {hiddenTotal.toLocaleString()}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">
-                    of {totalProducts.toLocaleString()} active products
+                  <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: totalProducts.toLocaleString() })}
                   </span>
                 </div>
               </div>
@@ -278,12 +277,10 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
-                Allergies
-                <span className="text-xs font-normal text-muted-foreground">• Never overridable</span>
+                {t('screens.settings.allergies')}
+                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
               </CardTitle>
-              <CardDescription>
-                We will never recommend products containing these, period. Last confirmed:{" "}
-                {lastVerified.allergies ? new Date(lastVerified.allergies).toLocaleDateString() : "never"}.
+              <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? new Date(lastVerified.allergies).toLocaleDateString() : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -294,10 +291,10 @@ export default function Limitations() {
                 onChange={(next) => {
                   setState((s) => ({ ...s, allergies: next }));
                 }}
-                placeholder="e.g. peanuts, shellfish, latex"
+                placeholder={t('screens.settings.eGPeanutsShellfishLatex')}
               />
               <Button className="mt-4" onClick={() => save({ allergies: state.allergies })} disabled={saving}>
-                Save allergies
+                {t('screens.settings.saveAllergies')}
               </Button>
             </CardContent>
           </Card>
@@ -307,9 +304,9 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="w-5 h-5 text-orange-600" />
-                Dietary restrictions
+                {t('screens.settings.dietaryRestrictions')}
               </CardTitle>
-              <CardDescription>Preferences we apply unless you explicitly override a single query.</CardDescription>
+              <CardDescription>{t('screens.settings.preferencesWeApplyUnlessYouExplicitly')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <DietaryPicker
@@ -317,7 +314,7 @@ export default function Limitations() {
                 onChange={(next) => setState((s) => ({ ...s, dietary_restrictions: next }))}
               />
               <Button onClick={() => save({ dietary_restrictions: state.dietary_restrictions })} disabled={saving}>
-                Save dietary
+                {t('screens.settings.saveDietary')}
               </Button>
             </CardContent>
           </Card>
@@ -327,12 +324,10 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Pill className="w-5 h-5 text-indigo-600" />
-                Current medications
-                <span className="text-xs font-normal text-muted-foreground">• Interaction checks apply</span>
+                {t('screens.settings.currentMedications')}
+                <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
               </CardTitle>
-              <CardDescription>
-                We use this to avoid recommending supplements that may interact with your prescriptions. Last confirmed:{" "}
-                {lastVerified.current_medications ? new Date(lastVerified.current_medications).toLocaleDateString() : "never"}.
+              <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? new Date(lastVerified.current_medications).toLocaleDateString() : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -341,10 +336,10 @@ export default function Limitations() {
                 icon={Pill}
                 values={state.current_medications}
                 onChange={(next) => setState((s) => ({ ...s, current_medications: next }))}
-                placeholder="e.g. ssri, blood-thinner, statin"
+                placeholder={t('screens.settings.eGSsriBloodthinnerStatin')}
               />
               <Button className="mt-4" onClick={() => save({ current_medications: state.current_medications })} disabled={saving}>
-                Save medications
+                {t('screens.settings.saveMedications')}
               </Button>
             </CardContent>
           </Card>
@@ -354,28 +349,28 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Baby className="w-5 h-5 text-pink-600" />
-                Pregnancy / Nursing
+                {t('screens.settings.pregnancyNursing')}
               </CardTitle>
-              <CardDescription>Some supplements are contraindicated during pregnancy or nursing.</CardDescription>
+              <CardDescription>{t('screens.settings.someSupplementsContraindicatedDuringPregnancyNursi')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="max-w-sm space-y-2">
-                <Label>Status</Label>
+                <Label>{t('screens.settings.status')}</Label>
                 <Select
                   value={state.pregnancy_status ?? "prefer_not_say"}
                   onValueChange={(v) => setState((s) => ({ ...s, pregnancy_status: v }))}
                 >
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="not_pregnant">Not pregnant</SelectItem>
-                    <SelectItem value="pregnant">Pregnant</SelectItem>
-                    <SelectItem value="nursing">Nursing</SelectItem>
-                    <SelectItem value="prefer_not_say">Prefer not to say</SelectItem>
+                    <SelectItem value="not_pregnant">{t('screens.settings.notPregnant')}</SelectItem>
+                    <SelectItem value="pregnant">{t('screens.settings.pregnant')}</SelectItem>
+                    <SelectItem value="nursing">{t('screens.settings.nursing')}</SelectItem>
+                    <SelectItem value="prefer_not_say">{t('screens.settings.preferNotSay')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <Button onClick={() => save({ pregnancy_status: state.pregnancy_status as Limitations["pregnancy_status"] })} disabled={saving}>
-                Save pregnancy status
+                {t('screens.settings.savePregnancyStatus')}
               </Button>
             </CardContent>
           </Card>
@@ -385,14 +380,14 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Wallet className="w-5 h-5 text-emerald-600" />
-                Budget
+                {t('screens.settings.budget')}
               </CardTitle>
-              <CardDescription>Products above your per-product ceiling are hidden. Band influences ranking.</CardDescription>
+              <CardDescription>{t('screens.settings.productsAboveYourPerproductCeilingHidden')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Max per product (EUR)</Label>
+                  <Label>{t('screens.settings.maxPerProductEur')}</Label>
                   <Input
                     type="number"
                     min={0}
@@ -405,7 +400,7 @@ export default function Limitations() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Monthly cap (EUR, optional)</Label>
+                  <Label>{t('screens.settings.monthlyCapEurOptional')}</Label>
                   <Input
                     type="number"
                     min={0}
@@ -418,17 +413,17 @@ export default function Limitations() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Preferred price band</Label>
+                  <Label>{t('screens.settings.preferredPriceBand')}</Label>
                   <Select
                     value={state.budget_preferred_band ?? "any"}
                     onValueChange={(v) => setState((s) => ({ ...s, budget_preferred_band: v }))}
                   >
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="budget">Budget-friendly</SelectItem>
-                      <SelectItem value="mid">Mid-range</SelectItem>
-                      <SelectItem value="premium">Premium</SelectItem>
+                      <SelectItem value="any">{t('screens.settings.any')}</SelectItem>
+                      <SelectItem value="budget">{t('screens.settings.budgetfriendly')}</SelectItem>
+                      <SelectItem value="mid">{t('screens.settings.midrange')}</SelectItem>
+                      <SelectItem value="premium">{t('screens.settings.premium')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -442,8 +437,7 @@ export default function Limitations() {
                   })
                 }
                 disabled={saving}
-              >
-                Save budget
+              >{t('screens.settings.saveBudget')}
               </Button>
             </CardContent>
           </Card>
@@ -453,9 +447,9 @@ export default function Limitations() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Accessibility className="w-5 h-5 text-sky-600" />
-                Accessibility
+                {t('screens.settings.accessibility')}
               </CardTitle>
-              <CardDescription>Preferences for form factor and usability.</CardDescription>
+              <CardDescription>{t('screens.settings.preferencesForFormFactorUsability')}</CardDescription>
             </CardHeader>
             <CardContent>
               <TagEditor
@@ -463,16 +457,15 @@ export default function Limitations() {
                 icon={Accessibility}
                 values={state.physical_accessibility_needs}
                 onChange={(next) => setState((s) => ({ ...s, physical_accessibility_needs: next }))}
-                placeholder="e.g. liquid-form, large-label"
+                placeholder={t('screens.settings.eGLiquidformLargelabel')}
               />
               <Button className="mt-4" onClick={() => save({ physical_accessibility_needs: state.physical_accessibility_needs })} disabled={saving}>
-                Save accessibility
+                {t('screens.settings.saveAccessibility')}
               </Button>
             </CardContent>
           </Card>
 
-          <p className="text-xs text-muted-foreground text-center pt-4">
-            Safety-critical fields (allergies, medications, pregnancy) are re-confirmed every 90 days. These rules apply to every product recommendation you see, including those spoken by the Vitana Assistant.
+          <p className="text-xs text-muted-foreground text-center pt-4">{t('screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR')}
           </p>
         </div>
       </div>

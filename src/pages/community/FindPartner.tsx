@@ -1,5 +1,5 @@
 /**
- * E6 — Find a Partner: unified dance + fitness destination.
+ * E6 — Find a Match: unified dance + fitness destination.
  *
  * Single page with four sub-views switched via a pill-dropdown next to the
  * search box (mobile) or a SplitBar (desktop). Sub-view selected via
@@ -9,7 +9,11 @@
  *                     intents, sorted by score.
  * - Community Board → public board, scoped to dance.* + fitness.*, with
  *                     surface=find_a_partner so partner_seek is unredacted.
- * - My Posts        → user's own dance.* + fitness.* intents.
+ * - My Posts        → ALL of the user's open intents (any category). On
+ *                     mobile this page is also the destination for the
+ *                     `/intents/mine` redirect, so it has to surface
+ *                     posts the user made via the generic "+ New wish"
+ *                     composer — which doesn't always tag dance/fitness.
  * - Members         → community members directory (visible only while
  *                     total ≤ 1000; otherwise hidden).
  *
@@ -20,17 +24,21 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import StandardHeader from '@/components/StandardHeader';
+import AppLayout from '@/components/AppLayout';
+import SubNavigation from '@/components/SubNavigation';
+import { communityNavigation } from '@/config/navigation';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { SplitBar, SplitBarList, SplitBarTrigger } from '@/components/ui/split-bar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import { Button } from '@/components/ui/button';
 import { Loader2, MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
-import { IntentMatchCard } from '@/components/intents/IntentMatchCard';
+import { FindPartnerMatchCard } from '@/components/intents/FindPartnerMatchCard';
 import { IntentComposer } from '@/components/intents/IntentComposer';
 import {
   listMyIntents,
@@ -40,6 +48,7 @@ import {
   type FindPartnerMatch,
   type UserIntent,
 } from '@/lib/intentApi';
+import { t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -50,26 +59,14 @@ const MEMBERS_TAB_THRESHOLD = 1000;
 type View = 'matches' | 'board' | 'posts' | 'members';
 
 const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: 'matches', icon: '💞', label: 'My Matches' },
-  { value: 'board',   icon: '📣', label: 'Community Board' },
-  { value: 'posts',   icon: '📝', label: 'My Posts' },
-  { value: 'members', icon: '👥', label: 'Members' },
+  { value: 'matches', icon: '💃', label: 'My Matches' },
+  { value: 'board',   icon: '📣',   label: 'Community Board' },
+  { value: 'posts',   icon: '📝',   label: 'My Posts' },
+  { value: 'members', icon: '👥',   label: 'Members' },
 ];
 
 function viewMeta(v: View) {
   return VIEW_OPTIONS.find((o) => o.value === v) ?? VIEW_OPTIONS[0];
-}
-
-function isFindPartnerCategory(cat: string | null | undefined): boolean {
-  if (!cat) return false;
-  return cat.startsWith('dance.') || cat.startsWith('fitness.');
-}
-
-function verticalChip(category: string | null) {
-  if (!category) return null;
-  if (category.startsWith('dance.')) return { icon: '💃', label: 'Dance', tone: 'bg-pink-100 text-pink-700 border-pink-200' };
-  if (category.startsWith('fitness.')) return { icon: '💪', label: 'Fitness', tone: 'bg-emerald-100 text-emerald-700 border-emerald-200' };
-  return null;
 }
 
 interface MemberRow {
@@ -150,7 +147,7 @@ export default function FindPartner() {
         setBoardIntents(resp.intents ?? []);
       } else if (view === 'posts') {
         const all = await listMyIntents({ status: 'open' });
-        setMyPosts(all.filter((it) => isFindPartnerCategory(it.category)));
+        setMyPosts(all);
       } else if (view === 'members') {
         if (!session?.access_token) {
           setMembers([]);
@@ -183,21 +180,27 @@ export default function FindPartner() {
 
   return (
     <>
-      <SEO title="Find a Partner — Vitana" description="Find a dance or fitness partner in the Vitana community." />
+      <SEO title={t('screens.community.findMatchVitana')} description="Find a dance or fitness match in the Vitana community." />
 
-      <div className="container mx-auto px-4 py-4 max-w-4xl">
+      <AppLayout>
+        {!isMobile && <SubNavigation items={communityNavigation} />}
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
         <StandardHeader
-          title="Find a Partner"
+          title={t('screens.community.findMatch')}
           description="Dance and fitness partners — matched by AI, ranked by fit."
         />
 
         <UtilityActionButton className="min-w-0" compact={isMobile}>
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder="Search posts and matches..."
+              placeholder={t('screens.community.searchPostsMatches')}
               onSearch={() => { /* search wiring is per-view; leave as no-op for v1 */ }}
-              filterLabel={filterLabel}
-              onFilterClick={() => setPickerOpen(true)}
+              // Mobile uses the chip + sheet picker to switch views;
+              // desktop has the SplitBar tab bar directly below this
+              // utility row, so the chip would be redundant.
+              filterLabel={isMobile ? filterLabel : undefined}
+              onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
             />
             <Button
               onClick={() => setComposerOpen(true)}
@@ -206,7 +209,7 @@ export default function FindPartner() {
               className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
             >
               <Plus className="h-4 w-4" />
-              <span className="text-sm">New wish</span>
+              <span className="text-sm">{t('screens.community.newWish')}</span>
             </Button>
           </div>
         </UtilityActionButton>
@@ -231,7 +234,7 @@ export default function FindPartner() {
           )}
 
           {error && !loading && (
-            <div className="text-sm text-destructive py-4">Couldn't load — {error}</div>
+            <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
           )}
 
           {/* My Matches */}
@@ -239,31 +242,39 @@ export default function FindPartner() {
             matches.length === 0 ? (
               <EmptyState
                 icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
-                title="No matches yet"
+                title={t('screens.community.noMatchesYet')}
                 body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
                 cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
-              <div className="space-y-3">
-                {matches.map((m) => {
-                  const chip = verticalChip(m.source_category);
-                  const scorePct = Math.round((m.score ?? 0) * 100);
-                  return (
-                    <div key={m.match_id} className="rounded-lg border border-border bg-card">
-                      <div className="flex items-center justify-between px-4 pt-3 text-xs">
-                        {chip && (
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border ${chip.tone}`}>
-                            <span>{chip.icon}</span>
-                            <span>{chip.label}</span>
-                          </span>
-                        )}
-                        <span className="font-medium text-primary">{scorePct}% match</span>
-                      </div>
-                      <IntentMatchCard match={m} perspective="outgoing" onAction={() => void refresh()} />
-                    </div>
-                  );
-                })}
+            ) : isMobile ? (
+              // Bottom padding leaves ~ a card height of clear space so the
+              // primary CTA on the last card stays above the fixed mobile
+              // bottom nav and the central Orb FAB.
+              <div className="space-y-5 pb-32 max-w-md mx-auto">
+                {matches.map((m) => (
+                  <FindPartnerMatchCard
+                    key={m.match_id}
+                    match={m}
+                    vertical={m.vertical}
+                    sourceCategory={m.source_category}
+                    perspective="outgoing"
+                    onAction={() => void refresh()}
+                  />
+                ))}
               </div>
+            ) : (
+              renderNewsGrid(matches, (m, sizeClass) => (
+                <FindPartnerMatchCard
+                  key={m.match_id}
+                  match={m}
+                  vertical={m.vertical}
+                  sourceCategory={m.source_category}
+                  perspective="outgoing"
+                  onAction={() => void refresh()}
+                  desktop
+                  className={`h-full ${sizeClass === 'col-span-6' ? 'min-h-[320px] md:min-h-[360px]' : 'min-h-[280px]'}`}
+                />
+              ))
             )
           )}
 
@@ -271,14 +282,14 @@ export default function FindPartner() {
           {!loading && !error && view === 'board' && (
             boardIntents.length === 0 ? (
               <EmptyState
-                title="The board is quiet right now"
+                title={t('screens.community.boardQuietRightNow')}
                 body="Be the first to post a dance or fitness wish — others will see it here."
                 cta={{ label: 'Post yours', onClick: () => setComposerOpen(true) }}
               />
             ) : (
               <div className="space-y-3">
                 {boardIntents.map((it) => (
-                  <IntentCard key={it.intent_id} intent={it} />
+                  <IntentCard key={it.intent_id} intent={it} themedFallback />
                 ))}
               </div>
             )
@@ -288,16 +299,26 @@ export default function FindPartner() {
           {!loading && !error && view === 'posts' && (
             myPosts.length === 0 ? (
               <EmptyState
-                title="You haven't posted yet"
+                title={t('screens.community.youHavenTPostedYet')}
                 body="Post your dance or fitness wish — Vitana will match you with people who fit."
                 cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
+            ) : isMobile ? (
               <div className="space-y-3">
                 {myPosts.map((it) => (
-                  <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} />
+                  <IntentCard key={it.intent_id} intent={it} to={`/intents/match/${it.intent_id}`} variant="my-posts" />
                 ))}
               </div>
+            ) : (
+              renderNewsGrid(myPosts, (it, sizeClass) => (
+                <IntentCard
+                  key={it.intent_id}
+                  intent={it}
+                  to={`/intents/match/${it.intent_id}`}
+                  desktop
+                  className={`h-full ${sizeClass === 'col-span-6' ? 'min-h-[320px] md:min-h-[360px]' : 'min-h-[280px]'}`}
+                />
+              ))
             )
           )}
 
@@ -305,13 +326,13 @@ export default function FindPartner() {
           {!loading && !error && view === 'members' && (
             !showMembersTab ? (
               <EmptyState
-                title="Browse the full members list"
+                title={t('screens.community.browseFullMembersList')}
                 body="The community is growing — see everyone in the dedicated members directory."
                 cta={{ label: 'Open Members', onClick: () => navigate('/comm/members') }}
               />
             ) : members.length === 0 ? (
               <EmptyState
-                title="No members yet"
+                title={t('screens.community.noMembersYet')}
                 body="Be the first — invite a friend to join Vitana."
               />
             ) : (
@@ -324,7 +345,7 @@ export default function FindPartner() {
                     className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
                   >
                     <Avatar className="h-12 w-12 flex-shrink-0">
-                      {m.avatar_url ? <AvatarImage src={m.avatar_url} alt={m.display_name ?? ''} /> : null}
+                      <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name ?? ''} />
                       <AvatarFallback>{initialsFor(m.display_name)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
@@ -334,9 +355,7 @@ export default function FindPartner() {
                           <span className="text-sm text-muted-foreground">@{m.vitana_id}</span>
                         )}
                         {m.registration_seq != null && (
-                          <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">
-                            Member #{m.registration_seq}
-                          </span>
+                          <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">{t('screens.community.memberRegistration_seq', { registration_seq: m.registration_seq })}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
@@ -361,13 +380,15 @@ export default function FindPartner() {
             )
           )}
         </div>
-      </div>
+          </div>
+        </div>
+      </AppLayout>
 
       {/* Mobile sub-view picker sheet */}
       <Sheet open={pickerOpen} onOpenChange={setPickerOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
-            <SheetTitle>Choose a view</SheetTitle>
+            <SheetTitle>{t('screens.community.chooseView')}</SheetTitle>
           </SheetHeader>
           <div className="space-y-2 mt-4 pb-6">
             {visibleViewOptions.map((o) => (
@@ -395,6 +416,42 @@ export default function FindPartner() {
       />
     </>
   );
+}
+
+/**
+ * Render a list of items in the same alternating big+small+small /
+ * small+small+big news-style grid used by the Community News surface.
+ * Even rows render col-span-6 + col-span-3 + col-span-3; odd rows
+ * mirror the layout. The renderItem callback receives the matching
+ * Tailwind size class so cards can pick a min-height that suits the
+ * column width.
+ */
+function renderNewsGrid<T>(
+  items: T[],
+  renderItem: (item: T, sizeClass: 'col-span-6' | 'col-span-3') => React.ReactNode,
+): React.ReactNode {
+  const rows: React.ReactNode[] = [];
+  for (let i = 0; i < items.length; i += 3) {
+    const rowItems = items.slice(i, i + 3);
+    const isEvenRow = (i / 3) % 2 === 0;
+    const sizes: Array<'col-span-6' | 'col-span-3'> = isEvenRow
+      ? ['col-span-6', 'col-span-3', 'col-span-3']
+      : ['col-span-3', 'col-span-3', 'col-span-6'];
+    rows.push(
+      <div
+        key={i}
+        className="grid grid-cols-12 gap-6 mb-6"
+        style={{ minHeight: '280px' }}
+      >
+        {rowItems.map((it, idx) => (
+          <div key={idx} className={sizes[idx]}>
+            {renderItem(it, sizes[idx])}
+          </div>
+        ))}
+      </div>,
+    );
+  }
+  return <>{rows}</>;
 }
 
 interface EmptyStateProps {

@@ -18,6 +18,7 @@ import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFro
 import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
 import { useProfileTheme } from "@/hooks/useProfileTheme";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 // Dummy data for the profile stats
 const dummyProfileStats = {
@@ -110,11 +111,11 @@ export default function Profile() {
     return (
       <AppLayout>
         <SEO
-          title="My Profile"
+          title={t('screens.profile.myProfile')}
           description="View and manage your personal profile"
         />
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-muted-foreground">Loading profile...</div>
+          <div className="text-muted-foreground">{t('screens.profile.loadingProfile')}</div>
         </div>
       </AppLayout>
     );
@@ -123,7 +124,7 @@ export default function Profile() {
   return (
     <AppLayout>
       <SEO
-        title="My Profile"
+        title={t('screens.profile.myProfile')}
         description="View and manage your personal profile"
       />
 
@@ -131,7 +132,7 @@ export default function Profile() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50/30 via-blue-50/20 to-pink-50/30 dark:from-purple-950/10 dark:via-blue-950/10 dark:to-pink-950/10">
         <section className="mx-auto max-w-6xl px-4 py-8">
           <div className="w-full max-w-6xl">
-            <h1 className="sr-only">User Profile - Vitana ID Card</h1>
+            <h1 className="sr-only">{t('screens.profile.userProfileVitanaIdCard')}</h1>
 
             {/* Two ID Cards Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -160,32 +161,27 @@ export default function Profile() {
                 <TabsTrigger 
                   value="overview" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--sys-vitana-accent))] data-[state=active]:to-[hsl(var(--pill-nutrition-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Posts
+                >{t('screens.profile.posts')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="highlights" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-mental-accent))] data-[state=active]:to-[hsl(var(--pill-sleep-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Media
+                >{t('screens.profile.media')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="connections" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--domain-community-accent))] data-[state=active]:to-[hsl(var(--pill-mental-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Groups
+                >{t('screens.profile.groups')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="activity" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-hydration-accent))] data-[state=active]:to-[hsl(var(--pill-exercise-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Events
+                >{t('screens.profile.events')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="health" 
                   className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-[hsl(var(--pill-nutrition-accent))] data-[state=active]:to-[hsl(var(--pill-hydration-accent))] data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
-                >
-                  Health
+                >{t('screens.profile.health')}
                 </TabsTrigger>
               </TabsList>
 
@@ -204,7 +200,7 @@ export default function Profile() {
 
                   <Card className="rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
                     <CardHeader>
-                      <CardTitle>Motivations</CardTitle>
+                      <CardTitle>{t('screens.profile.motivations')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {[
@@ -227,7 +223,7 @@ export default function Profile() {
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Personality</CardTitle>
+                      <CardTitle>{t('screens.profile.personality')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {[
@@ -249,33 +245,33 @@ export default function Profile() {
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Frustrations</CardTitle>
+                      <CardTitle>{t('screens.profile.frustrations')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                        <li>Too much time spent planning when busy</li>
-                        <li>Too many apps for one purpose</li>
-                        <li>Prefers simple flows over complex settings</li>
+                        <li>{t('screens.profile.tooMuchTimeSpentPlanningWhen')}</li>
+                        <li>{t('screens.profile.tooManyAppsForOnePurpose')}</li>
+                        <li>{t('screens.profile.prefersSimpleFlowsOverComplexSettings')}</li>
                       </ul>
                     </CardContent>
                   </Card>
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Goals</CardTitle>
+                      <CardTitle>{t('screens.profile.goals')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-2">
-                        <li>Spend less time booking and organizing</li>
-                        <li>Keep healthy habits while traveling</li>
+                        <li>{t('screens.profile.spendLessTimeBookingOrganizing')}</li>
+                        <li>{t('screens.profile.keepHealthyHabitsWhileTraveling')}</li>
                       </ul>
                     </CardContent>
                   </Card>
 
                   <Card className="rounded-xl shadow-sm">
                     <CardHeader>
-                      <CardTitle>Favourite Brands</CardTitle>
-                      <CardDescription>Sample interests</CardDescription>
+                      <CardTitle>{t('screens.profile.favouriteBrands')}</CardTitle>
+                      <CardDescription>{t('screens.profile.sampleInterests')}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-wrap gap-2">
                       {['adidas', 'nike', 'netflix', 'airbnb', 'zara'].map((b) => (
@@ -294,11 +290,11 @@ export default function Profile() {
             <TabsContent value="highlights">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Highlights</CardTitle>
-                  <CardDescription>Achievements, featured content, spotlight stories</CardDescription>
+                  <CardTitle>{t('screens.profile.highlights')}</CardTitle>
+                  <CardDescription>{t('screens.profile.achievementsFeaturedContentSpotlightStories')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Coming soon: badges, featured photos/videos, and spotlight stories curated by the user.
+                  {t('screens.profile.comingSoonBadgesFeaturedPhotosvideosSpotlight')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -306,11 +302,11 @@ export default function Profile() {
             <TabsContent value="connections">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Connections</CardTitle>
-                  <CardDescription>Friends, followers, and requests</CardDescription>
+                  <CardTitle>{t('screens.profile.connections')}</CardTitle>
+                  <CardDescription>{t('screens.profile.friendsFollowersRequests')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Mutual connections: 12 • Featured connections shown on Overview.
+                  {t('screens.profile.mutualConnections12FeaturedConnectionsShown')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -318,11 +314,11 @@ export default function Profile() {
             <TabsContent value="activity">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>Posts, comments, events</CardDescription>
+                  <CardTitle>{t('screens.profile.recentActivity')}</CardTitle>
+                  <CardDescription>{t('screens.profile.postsCommentsEvents')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  Recent community actions will appear here.
+                  {t('screens.profile.recentCommunityActionsWillAppearHere')}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -330,8 +326,8 @@ export default function Profile() {
             <TabsContent value="health">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Health Snapshot</CardTitle>
-                  <CardDescription>Mini dashboard of Health Index + pillars</CardDescription>
+                  <CardTitle>{t('screens.profile.healthSnapshot')}</CardTitle>
+                  <CardDescription>{t('screens.profile.miniDashboardHealthIndexPillars')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -349,11 +345,11 @@ export default function Profile() {
             <TabsContent value="privacy">
               <Card className="rounded-xl shadow-sm">
                 <CardHeader>
-                  <CardTitle>Privacy View</CardTitle>
-                  <CardDescription>See how others view your profile</CardDescription>
+                  <CardTitle>{t('screens.profile.privacyView')}</CardTitle>
+                  <CardDescription>{t('screens.profile.seeHowOthersViewYourProfile')}</CardDescription>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  This preview mode will reflect your current privacy settings.
+                  {t('screens.profile.thisPreviewModeWillReflectYour')}
                 </CardContent>
               </Card>
             </TabsContent>

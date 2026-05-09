@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Instagram, Apple, Heart, Target, Users, CheckCircle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface OnboardingOverlayProps {
   open: boolean;
@@ -154,8 +155,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
                     {getItemIcon(item)}
                     <span className="flex-1 text-left">{item}</span>
                     {isSelected && (
-                      <Badge variant="secondary" className="text-xs">
-                        Selected
+                      <Badge variant="secondary" className="text-xs">{t('screens.common.selected')}
                       </Badge>
                     )}
                   </Button>
@@ -164,7 +164,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">Ready to begin your wellness journey?</p>
+              <p className="text-muted-foreground">{t('screens.common.readyBeginYourWellnessJourney')}</p>
             </div>
           )}
         </div>
@@ -173,7 +173,7 @@ export default function OnboardingOverlay({ open, onOpenChange }: OnboardingOver
         <div className="flex gap-3">
           {currentStep > 0 && (
             <Button variant="outline" onClick={handlePrevious} className="flex-1">
-              Previous
+              {t('screens.common.previous')}
             </Button>
           )}
           <Button onClick={handleNext} className="flex-1">

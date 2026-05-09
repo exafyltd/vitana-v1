@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useAssistantSurface, useUpdateAssistantSurface } from "@/hooks/useAdminAssistant";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 const LANGUAGES = [
   { value: "de-DE", label: "Deutsch" },
@@ -51,7 +52,7 @@ export default function AssistantVoice() {
         surfaceKey: "voice_live",
         updates: { voice_config_override: { voice_id: voiceId, language } },
       });
-      toast.success("Voice configuration saved");
+      notifySuccess('toasts.admin.voiceConfigurationSaved');
       setDirty(false);
     } catch (err: any) {
       toast.error(err.message || "Failed to save");
@@ -64,23 +65,23 @@ export default function AssistantVoice() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🎙️"
-          title="Voice Configuration"
+          title={t('screens.admin.voiceConfiguration')}
           description="Configure voice settings for the ORB live assistant surface."
         />
 
         {surfaceQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading voice config...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingVoiceConfig')}</p>
         )}
 
         {surface && (
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base">Voice Live (ORB)</CardTitle>
+                <CardTitle className="text-base">{t('screens.admin.voiceLiveOrb')}</CardTitle>
                 {surface.has_tenant_override ? (
-                  <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
+                  <AdminStatusBadge variant="active">{t('screens.admin.customized')}</AdminStatusBadge>
                 ) : (
-                  <AdminStatusBadge variant="inactive">Using global</AdminStatusBadge>
+                  <AdminStatusBadge variant="inactive">{t('screens.admin.usingGlobal')}</AdminStatusBadge>
                 )}
               </div>
             </CardHeader>
@@ -88,7 +89,7 @@ export default function AssistantVoice() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                    Current voice config (effective)
+                    {t('screens.admin.currentVoiceConfigEffective')}
                   </label>
                   <pre className="text-xs font-mono bg-muted/50 rounded p-3 max-h-40 overflow-y-auto whitespace-pre-wrap">
                     {JSON.stringify(voiceConfig, null, 2) || "—"}
@@ -97,16 +98,16 @@ export default function AssistantVoice() {
 
                 <div className="space-y-3">
                   <div>
-                    <label className="text-xs font-medium mb-1 block">Voice ID</label>
+                    <label className="text-xs font-medium mb-1 block">{t('screens.admin.voiceId')}</label>
                     <Input
                       value={voiceId}
                       onChange={(e) => { setVoiceId(e.target.value); setDirty(true); }}
-                      placeholder="e.g. Aoede, Charon, Puck..."
+                      placeholder={t('screens.admin.eGAoedeCharonPuck')}
                       className="text-sm"
                     />
                   </div>
                   <div>
-                    <label className="text-xs font-medium mb-1 block">Language</label>
+                    <label className="text-xs font-medium mb-1 block">{t('screens.admin.language')}</label>
                     <Select value={language} onValueChange={(v) => { setLanguage(v); setDirty(true); }}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>

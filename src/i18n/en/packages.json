@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Are you sure you want to delete this package?",
+    "types": {
+      "bundle": "Bundle",
+      "subscription": "Subscription",
+      "program": "Program"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Live",
+      "archived": "Archived"
+    },
+    "item": "item",
+    "items": "items",
+    "total": "total",
+    "validDays": "Valid {days} days",
+    "save": "Save {percent}%",
+    "unpublish": "Unpublish",
+    "publish": "Publish"
+  }
+}

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useWallet } from "@/hooks/useWallet";
 import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
+import { t } from '@/lib/i18n-toast';
 
 interface WalletIntegratedPaymentRequestProps {
   isOpen: boolean;
@@ -94,7 +95,7 @@ export default function WalletIntegratedPaymentRequest({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-blue-600" />
-            Request Payment
+            {t('screens.payment.requestPayment')}
           </DialogTitle>
         </DialogHeader>
 
@@ -112,7 +113,7 @@ export default function WalletIntegratedPaymentRequest({
                 <p className="font-medium text-sm">
                   {effectiveRecipient.name}
                 </p>
-                <p className="text-xs text-muted-foreground">Will receive your request</p>
+                <p className="text-xs text-muted-foreground">{t('screens.payment.willReceiveYourRequest')}</p>
               </div>
             </div>
           )}
@@ -121,7 +122,7 @@ export default function WalletIntegratedPaymentRequest({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Current Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourCurrentBalance')}</span>
                 <div className="flex items-center gap-3">
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
@@ -137,7 +138,7 @@ export default function WalletIntegratedPaymentRequest({
           {/* Amount & Currency */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -147,7 +148,7 @@ export default function WalletIntegratedPaymentRequest({
               />
             </div>
             <div>
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t('screens.payment.currency')}</Label>
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -168,10 +169,10 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -180,7 +181,7 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Due Date (Optional) */}
           <div>
-            <Label htmlFor="dueDate">Due Date (Optional)</Label>
+            <Label htmlFor="dueDate">{t('screens.payment.dueDateOptional')}</Label>
             <Input
               id="dueDate"
               type="date"
@@ -191,12 +192,10 @@ export default function WalletIntegratedPaymentRequest({
 
           {/* Payment Type Badge */}
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="capitalize">
-              {paymentType} Payment Request
+            <Badge variant="outline" className="capitalize">{t('screens.payment.paymenttypePaymentRequest', { paymentType })}
             </Badge>
             {currency === 'CREDITS' && (
-              <Badge variant="secondary">
-                Platform Credits
+              <Badge variant="secondary">{t('screens.payment.platformCredits')}
               </Badge>
             )}
           </div>
@@ -204,7 +203,7 @@ export default function WalletIntegratedPaymentRequest({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleSendRequest} 
@@ -212,7 +211,7 @@ export default function WalletIntegratedPaymentRequest({
               disabled={!effectiveRecipient}
             >
               <Send className="w-4 h-4 mr-2" />
-              Send Request
+              {t('screens.payment.sendRequest')}
             </Button>
           </div>
         </div>

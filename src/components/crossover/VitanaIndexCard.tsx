@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getVitanaIndexTier, getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface VitanaBreakdown {
   nutrition: number;
@@ -79,7 +80,7 @@ function VitanaIndexCardBase({
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <div className="text-xl font-bold" style={{ color: scoreStatus.color }}>{isComputing ? "…" : score}</div>
-            <div className="text-xs text-muted-foreground">Index</div>
+            <div className="text-xs text-muted-foreground">{t('screens.crossover.index')}</div>
           </div>
         </div>
       </div>
@@ -106,7 +107,7 @@ function VitanaIndexCardBase({
     <CrossoverCard
       icon={Activity}
       category="vitana"
-      title="Vitana Health Index"
+      title={t('screens.crossover.vitanaHealthIndex')}
       subtitle="The five pillars: Nutrition, Hydration, Exercise, Sleep, Mental."
       content={content}
       buttonText="View Full Report"

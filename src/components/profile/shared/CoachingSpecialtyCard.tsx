@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CoachingSpecialty } from "@/types/profile";
 import { Star, Users, Trophy, Award } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface CoachingSpecialtyCardProps {
   specialty: CoachingSpecialty;
@@ -47,17 +48,17 @@ export function CoachingSpecialtyCard({ specialty }: CoachingSpecialtyCardProps)
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="text-center">
             <div className="text-lg font-bold text-foreground">{specialty.sessionsHeld}</div>
-            <div className="text-xs text-muted-foreground">Sessions</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.sessions')}</div>
           </div>
           <div className="text-center">
             <div className="text-lg font-bold text-foreground">{specialty.participantsHelped}</div>
-            <div className="text-xs text-muted-foreground">Participants</div>
+            <div className="text-xs text-muted-foreground">{t('screens.profile.participants')}</div>
           </div>
         </div>
 
         <div className="text-center mb-3">
           <div className="text-sm font-semibold text-foreground">{specialty.subscribers}</div>
-          <div className="text-xs text-muted-foreground">Subscribers</div>
+          <div className="text-xs text-muted-foreground">{t('screens.profile.subscribers')}</div>
         </div>
 
         {specialty.certifications.length > 0 && (

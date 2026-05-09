@@ -15,8 +15,9 @@ import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
@@ -97,18 +98,11 @@ export default function ProviderProfile() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['provider-appointments', 'upcoming'] });
-      toast({
-        title: "Appointment Booked! 🎉",
-        description: "Your appointment has been confirmed"
-      });
+      notify('toasts.discover.appointmentBooked', 'toasts.discover.yourAppointmentHasConfirmed');
     },
     onError: (error) => {
       console.error('Error saving appointment:', error);
-      toast({
-        title: "Booking Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.discover.bookingFailed', 'toasts.discover.pleaseTryAgain');
     }
   });
 
@@ -135,9 +129,9 @@ export default function ProviderProfile() {
     return (
       <AppLayout>
         <div className="p-8 text-center">
-          <h1 className="text-2xl font-bold mb-4">Provider Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('screens.discover.providerNotFound')}</h1>
           <Button onClick={() => navigate('/discover/doctors-coaches')}>
-            Back to Providers
+            {t('screens.discover.backProviders')}
           </Button>
         </div>
       </AppLayout>
@@ -159,7 +153,7 @@ export default function ProviderProfile() {
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
+          {t('screens.discover.back')}
         </Button>
         
         {/* Profile Header */}
@@ -217,11 +211,11 @@ export default function ProviderProfile() {
                   <div className="flex items-center gap-1">
                     <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-bold text-lg">{provider.rating}</span>
-                    <span className="text-muted-foreground">({provider.reviews} reviews)</span>
+                    <span className="text-muted-foreground">{t('screens.discover.reviewsReviews', { reviews: provider.reviews })}</span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{provider.bookings.toLocaleString()} bookings</span>
+                    <span>{t('screens.discover.value0Bookings', { value0: provider.bookings.toLocaleString() })}</span>
                   </div>
                 </div>
                 
@@ -232,11 +226,11 @@ export default function ProviderProfile() {
                     onClick={() => setBookingOpen(true)}
                   >
                     <Calendar className="h-4 w-4 mr-2" />
-                    Book Appointment
+                    {t('screens.discover.bookAppointment')}
                   </Button>
                   <Button size="lg" variant="outline">
                     <MessageCircle className="h-4 w-4 mr-2" />
-                    Message
+                    {t('screens.discover.message')}
                   </Button>
                   <Button size="lg" variant="outline">
                     <Share2 className="h-4 w-4" />
@@ -254,7 +248,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Location</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.location')}</p>
                   <p className="font-medium">{provider.location}</p>
                 </div>
               </div>
@@ -266,7 +260,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <Clock className="h-5 w-5 text-green-500" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Next Available</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.nextAvailable')}</p>
                   <p className="font-medium text-green-600">{provider.nextAvailable}</p>
                 </div>
               </div>
@@ -278,7 +272,7 @@ export default function ProviderProfile() {
               <div className="flex items-center gap-3">
                 <Shield className="h-5 w-5 text-muted-foreground" />
                 <div>
-                  <p className="text-sm text-muted-foreground">Experience</p>
+                  <p className="text-sm text-muted-foreground">{t('screens.discover.experience')}</p>
                   <p className="font-medium">{provider.experience}</p>
                 </div>
               </div>
@@ -289,16 +283,16 @@ export default function ProviderProfile() {
         {/* Tabs */}
         <Tabs defaultValue="about" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="availability">Availability</TabsTrigger>
+            <TabsTrigger value="about">{t('screens.discover.about')}</TabsTrigger>
+            <TabsTrigger value="services">{t('screens.discover.services')}</TabsTrigger>
+            <TabsTrigger value="reviews">{t('screens.discover.reviews')}</TabsTrigger>
+            <TabsTrigger value="availability">{t('screens.discover.availability')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="about" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-3">About {provider.name}</h3>
+                <h3 className="text-lg font-semibold mb-3">{t('screens.discover.aboutName', { name: provider.name })}</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   {provider.about}
                 </p>
@@ -306,12 +300,12 @@ export default function ProviderProfile() {
                 <div className="mt-6 space-y-3">
                   <div className="flex items-center gap-2">
                     <GraduationCap className="h-5 w-5 text-muted-foreground" />
-                    <span className="font-medium">Specialty:</span>
+                    <span className="font-medium">{t('screens.discover.specialty2')}</span>
                     <span className="text-muted-foreground">{provider.specialty}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-muted-foreground" />
-                    <span className="font-medium">Experience:</span>
+                    <span className="font-medium">{t('screens.discover.experience')}</span>
                     <span className="text-muted-foreground">{provider.experience}</span>
                   </div>
                 </div>
@@ -322,19 +316,19 @@ export default function ProviderProfile() {
           <TabsContent value="services" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Services & Pricing</h3>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.servicesPricing')}</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-4 border border-border rounded-lg">
                     <div>
-                      <p className="font-medium">Initial Consultation</p>
-                      <p className="text-sm text-muted-foreground">60 minutes</p>
+                      <p className="font-medium">{t('screens.discover.initialConsultation')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.discover.text60Minutes')}</p>
                     </div>
                     <p className="text-lg font-bold">{provider.priceRange.split('-')[0].trim()}</p>
                   </div>
                   <div className="flex justify-between items-center p-4 border border-border rounded-lg">
                     <div>
-                      <p className="font-medium">Follow-up Session</p>
-                      <p className="text-sm text-muted-foreground">30 minutes</p>
+                      <p className="font-medium">{t('screens.discover.followupSession')}</p>
+                      <p className="text-sm text-muted-foreground">{t('screens.discover.text30Minutes')}</p>
                     </div>
                     <p className="text-lg font-bold">$150</p>
                   </div>
@@ -346,8 +340,8 @@ export default function ProviderProfile() {
           <TabsContent value="reviews" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Patient Reviews</h3>
-                <p className="text-muted-foreground">Reviews feature coming soon...</p>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.patientReviews')}</h3>
+                <p className="text-muted-foreground">{t('screens.discover.reviewsFeatureComingSoon')}</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -355,8 +349,8 @@ export default function ProviderProfile() {
           <TabsContent value="availability" className="space-y-4">
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Availability</h3>
-                <p className="text-muted-foreground">Calendar integration coming soon...</p>
+                <h3 className="text-lg font-semibold mb-4">{t('screens.discover.availability')}</h3>
+                <p className="text-muted-foreground">{t('screens.discover.calendarIntegrationComingSoon')}</p>
               </CardContent>
             </Card>
           </TabsContent>

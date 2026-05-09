@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { UserProfile } from "@/types/profile";
+import { t } from '@/lib/i18n-toast';
 
 interface MessageComposeModalProps {
   isOpen: boolean;
@@ -71,7 +72,7 @@ export function MessageComposeModal({
 
         <ResponsiveDialogBody className="p-4 sm:p-6 space-y-4">
           <Textarea
-            placeholder="Type your message..."
+            placeholder={t('screens.profile.typeYourMessage')}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -79,7 +80,7 @@ export function MessageComposeModal({
             autoFocus
           />
           <p className="text-xs text-muted-foreground text-center">
-            Press <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">↵</kbd> to send
+            {t('screens.profile.press')} <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">⌘</kbd> + <kbd className="px-2 py-1 rounded-lg bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 font-mono text-[10px]">↵</kbd>{t('screens.profile.send')}
           </p>
         </ResponsiveDialogBody>
 
@@ -99,8 +100,7 @@ export function MessageComposeModal({
                 onClick={() => onOpenChange(false)}
                 disabled={isSending}
                 className="rounded-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
-              >
-                Cancel
+              >{t('screens.profile.cancel')}
               </Button>
               <Button
                 onClick={handleSend}

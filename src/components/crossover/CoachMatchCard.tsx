@@ -5,7 +5,8 @@ import { withCardId } from "@/lib/withCardId";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface CoachMatchCardProps {
   className?: string;
@@ -26,11 +27,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
 
   const handleBookCoach = (coachId: string, coachName: string) => {
     if (coachId.startsWith('demo-')) {
-      toast({
-        title: "📅 Booking started",
-        description: `Opening booking for ${coachName}...`,
-        duration: 3000,
-      });
+      notify('toasts.crossover.bookingStarted');
       return;
     }
     navigate(`/discover/doctors-coaches/${coachId}`);
@@ -39,7 +36,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
   const content = (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        Vetted professionals, tailored to your goals.
+        {t('screens.crossover.vettedProfessionalsTailoredYourGoals')}
       </p>
       
       {coaches.map((coach) => (
@@ -66,7 +63,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
               </div>
             </div>
             <p className="text-xs text-muted-foreground truncate mb-1">{coach.specialty}</p>
-            <p className="text-xs font-medium text-primary">from €{coach.sessions_from}</p>
+            <p className="text-xs font-medium text-primary">{t('screens.crossover.fromSessions_from', { sessions_from: coach.sessions_from })}</p>
             <p className="text-xs italic text-muted-foreground mt-1 line-clamp-1">"{coach.tagline}"</p>
           </div>
           <div className="flex flex-col items-end gap-1">
@@ -80,7 +77,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
 
       <div className="mt-4 p-3 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-medium text-foreground">Expert help available</span>
+          <span className="font-medium text-foreground">{t('screens.crossover.expertHelpAvailable')}</span>
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
         </div>
       </div>
@@ -91,7 +88,7 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
     <CrossoverCard
       icon={UserCheck}
       category="health"
-      title="Expert Helpers 🧑‍⚕️"
+      title={t('screens.crossover.expertHelpers')}
       subtitle="Professional support when you need it"
       content={content}
       buttonText="Book Now"

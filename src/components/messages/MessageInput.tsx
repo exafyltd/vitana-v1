@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from "@/context/AuthProvider";
 import { 
   validateFile, 
@@ -31,6 +31,7 @@ import {
 import { AttachmentMenu } from '@/components/messages/AttachmentMenu';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { ReplyPreview } from '@/components/messages/ReplyPreview';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface MessageInputProps {
   onSendMessage: (content: string, messageType?: string, contentData?: any, actionButtons?: any[], parentMessageId?: string) => Promise<void>;
@@ -200,11 +201,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       
       const errorMessage = error instanceof Error ? error.message : "unknown";
       
-      toast({
-        title: "Message failed",
-        description: `Message failed: ${errorMessage}`,
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.messageFailed');
       
       console.error({
         stage: "send", 
@@ -250,11 +247,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     for (const file of files) {
       const validation = validateFile(file);
       if (!validation.valid) {
-        toast({
-          title: "File not allowed",
-          description: `${file.name}: ${validation.error}`,
-          variant: "destructive"
-        });
+        notifyError('toasts.messages.fileNotAllowed');
         if (fileInputRef.current) fileInputRef.current.value = '';
         return;
       }
@@ -262,11 +255,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     // Ensure we have a thread to attach to
     if (!threadId) {
-      toast({
-        title: 'Open a conversation',
-        description: 'Select or open a conversation before attaching files.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.messages.openConversation', 'toasts.messages.selectOpenConversationBeforeAttachingFiles');
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
@@ -315,11 +304,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         });
       } catch (error) {
         console.error('Upload error:', error);
-        toast({
-          title: "Upload failed",
-          description: error instanceof Error ? error.message : "Failed to upload file",
-          variant: "destructive"
-        });
+        notifyError('toasts.messages.uploadFailed');
         setUploadProgress(prev => {
           const newProgress = { ...prev };
           delete newProgress[uploadId];
@@ -375,11 +360,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     } catch (error) {
       console.error('Voice message error:', error);
-      toast({
-        title: "Failed to send voice message",
-        description: "There was an error sending your voice message",
-        variant: "destructive",
-      });
+      notifyError('toasts.messages.failedSendVoiceMessage', 'toasts.messages.thereErrorSendingYourVoiceMessage');
     } finally {
       setIsUploading(false);
     }
@@ -514,8 +495,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 className="flex items-center gap-2 bg-secondary/50 rounded-lg px-3 py-2 text-sm"
               >
                 <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                <span className="text-muted-foreground">
-                  Uploading... {progress.percentage}%
+                <span className="text-muted-foreground">{t('screens.messages.uploadingPercentage', { percentage: progress.percentage })}
                 </span>
               </div>
             ))}
@@ -582,7 +562,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
               disabled={disabled}
               className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
               rows={1}
-              aria-label="Message composer"
+              aria-label={t('screens.messages.messageComposer')}
               aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
             />
           </div>
@@ -590,7 +570,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
         {/* Send/Mic button outside the pill */}
         {canSend ? (
-          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label="Send message">
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label={t('screens.messages.sendMessage')}>
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
@@ -605,7 +585,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             onClick={() => setShowVoiceRecorder(true)}
             disabled={isUploading || showVoiceRecorder}
             className="h-9 w-9 p-0 rounded-full shrink-0"
-            aria-label="Record voice message"
+            aria-label={t('screens.messages.recordVoiceMessage')}
           >
             <Mic className="h-4 w-4" />
           </Button>

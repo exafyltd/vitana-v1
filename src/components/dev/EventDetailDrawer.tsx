@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EventDetailDrawerProps {
   event: Event;
@@ -21,7 +22,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            Event Details
+            {t('screens.dev.eventDetails')}
             <Badge variant={getBadgeVariant(event.status)}>
               {event.status.toUpperCase()}
             </Badge>
@@ -33,12 +34,12 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
         <div className="mt-6 space-y-4">
           <div>
-            <h4 className="text-sm font-semibold mb-1">Title</h4>
+            <h4 className="text-sm font-semibold mb-1">{t('screens.dev.title')}</h4>
             <p className="text-sm">{event.title}</p>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold mb-1">Kind</h4>
+            <h4 className="text-sm font-semibold mb-1">{t('screens.dev.kind')}</h4>
             <p className="text-sm font-mono text-xs bg-muted px-2 py-1 rounded">
               {event.kind}
             </p>
@@ -46,12 +47,12 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h4 className="text-sm font-semibold mb-1">Layer</h4>
+              <h4 className="text-sm font-semibold mb-1">{t('screens.dev.layer')}</h4>
               <p className="text-sm">{event.layer}</p>
             </div>
             {event.module && (
               <div>
-                <h4 className="text-sm font-semibold mb-1">Module</h4>
+                <h4 className="text-sm font-semibold mb-1">{t('screens.dev.module')}</h4>
                 <p className="text-sm">{event.module}</p>
               </div>
             )}
@@ -59,7 +60,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           {event.vtid && (
             <div>
-              <h4 className="text-sm font-semibold mb-1">VTID</h4>
+              <h4 className="text-sm font-semibold mb-1">{t('screens.dev.vtid')}</h4>
               <p className="text-sm font-mono text-xs bg-muted px-2 py-1 rounded">
                 {event.vtid}
               </p>
@@ -68,7 +69,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           {event.data && Object.keys(event.data).length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-1">Data</h4>
+              <h4 className="text-sm font-semibold mb-1">{t('screens.dev.data')}</h4>
               <pre className="text-xs bg-muted p-3 rounded overflow-auto max-h-[200px]">
                 {JSON.stringify(event.data, null, 2)}
               </pre>
@@ -77,7 +78,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
 
           {event.links && event.links.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Links</h4>
+              <h4 className="text-sm font-semibold mb-2">{t('screens.dev.links')}</h4>
               <div className="space-y-2">
                 {event.links.map((link, idx) => (
                   <a
@@ -96,7 +97,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
           )}
 
           <div>
-            <h4 className="text-sm font-semibold mb-1">Event ID</h4>
+            <h4 className="text-sm font-semibold mb-1">{t('screens.dev.eventId')}</h4>
             <p className="text-xs font-mono text-muted-foreground">
               {event.id}
             </p>

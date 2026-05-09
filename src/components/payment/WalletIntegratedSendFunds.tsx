@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useWallet } from '@/hooks/useWallet';
 import { Send, Loader2 } from 'lucide-react';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
+import { t } from '@/lib/i18n-toast';
 
 interface WalletIntegratedSendFundsProps {
   isOpen: boolean;
@@ -94,7 +95,7 @@ export default function WalletIntegratedSendFunds({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-green-600" />
-            Send Funds
+            {t('screens.payment.sendFunds')}
           </DialogTitle>
         </DialogHeader>
 
@@ -107,13 +108,13 @@ export default function WalletIntegratedSendFunds({
             </Avatar>
             <div>
               <p className="font-medium text-sm">{effectiveRecipient.name}</p>
-              <p className="text-xs text-muted-foreground">Recipient</p>
+              <p className="text-xs text-muted-foreground">{t('screens.payment.recipient')}</p>
             </div>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
             <div className="flex gap-2">
               <Input
                 id="amount"
@@ -144,7 +145,7 @@ export default function WalletIntegratedSendFunds({
             
             {/* Balance Display */}
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Available Balance:</span>
+              <span className="text-muted-foreground">{t('screens.payment.availableBalance')}</span>
               <div className="flex items-center gap-1">
                 {getCurrencyIcon(currency)}
                 <span className={`font-medium ${!canAfford && amount ? 'text-destructive' : ''}`}>
@@ -156,10 +157,10 @@ export default function WalletIntegratedSendFunds({
 
           {/* Description (Optional) */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description (Optional)</Label>
+            <Label htmlFor="description">{t('screens.payment.descriptionOptional')}</Label>
             <Textarea
               id="description"
-              placeholder="What's this payment for?"
+              placeholder={t('screens.payment.whatSThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="min-h-[60px] resize-none"
@@ -170,19 +171,19 @@ export default function WalletIntegratedSendFunds({
           {amount && parseFloat(amount) > 0 && (
             <div className="p-3 bg-muted rounded-lg space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span>Sending:</span>
+                <span>{t('screens.payment.sending')}</span>
                 <div className="flex items-center gap-1 font-medium">
                   {getCurrencyIcon(currency)}
                   {parseFloat(amount).toLocaleString()} {currency}
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span>Fee:</span>
-                <span className="text-muted-foreground">Free</span>
+                <span>{t('screens.payment.fee')}</span>
+                <span className="text-muted-foreground">{t('screens.payment.free')}</span>
               </div>
               <div className="border-t pt-2">
                 <div className="flex items-center justify-between text-sm font-medium">
-                  <span>Total:</span>
+                  <span>{t('screens.payment.total')}</span>
                   <div className="flex items-center gap-1">
                     {getCurrencyIcon(currency)}
                     {parseFloat(amount).toLocaleString()} {currency}
@@ -199,7 +200,7 @@ export default function WalletIntegratedSendFunds({
               onClick={onClose}
               className="flex-1"
             >
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleSend}
@@ -212,7 +213,7 @@ export default function WalletIntegratedSendFunds({
               }
             >
               <Send className="w-4 h-4 mr-2" />
-              Send Funds
+              {t('screens.payment.sendFunds')}
             </Button>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ScheduleDialogProps {
   open: boolean;
@@ -43,16 +44,16 @@ export function ScheduleDialog({
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent className="sm:max-w-[500px]">
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>Schedule Post</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle>{t('screens.sharing.schedulePost')}</ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
-            Choose when you want this post to be distributed
+            {t('screens.sharing.chooseWhenYouWantThisPost')}
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
         <ResponsiveDialogBody>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Select Date</Label>
+              <Label>{t('screens.sharing.selectDate')}</Label>
               <Calendar
                 mode="single"
                 selected={selectedDate}
@@ -63,7 +64,7 @@ export function ScheduleDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="time">Select Time</Label>
+              <Label htmlFor="time">{t('screens.sharing.selectTime')}</Label>
               <input
                 id="time"
                 type="time"
@@ -81,13 +82,12 @@ export function ScheduleDialog({
             onClick={() => onOpenChange(false)}
             disabled={isLoading}
           >
-            Cancel
+            {t('screens.sharing.cancel')}
           </Button>
           <Button onClick={handleConfirm} disabled={!selectedDate || isLoading}>
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Scheduling...
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.sharing.scheduling')}
               </>
             ) : (
               "Schedule Post"

@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "Status updated successfully",
+      "updateFailed": "Failed to update status",
+      "deleteSuccess": "Successfully deleted",
+      "deleteFailed": "Failed to delete",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast deleted",
+      "musicDeleted": "Music deleted",
+      "videoDeleted": "Video deleted",
+      "searchPodcasts": "Search podcasts...",
+      "searchMusic": "Search music...",
+      "searchVideos": "Search videos...",
+      "filterByStatus": "Filter by status",
+      "allStatus": "All Status",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "flagged": "Flagged",
+      "podcastManagement": "Podcast Management",
+      "podcastManagementDesc": "Review and moderate podcast uploads"
+    }
+  }
+}

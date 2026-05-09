@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap, Download, BarChart3, Search, ArrowUp, Eye, MessageSquare, Share2, Filter } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface TimelineEvent {
   id: string;
@@ -434,7 +435,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
           <div className="relative w-full sm:w-64">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="Search history..."
+              placeholder={t('screens.ai-feed.searchHistory')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -450,10 +451,10 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
             <div className="flex items-center gap-6 text-sm">
               <span className="text-muted-foreground">{getRangeLabel()}</span>
               <div className="flex items-center gap-4">
-                <span><strong>Entries {stats.entries}</strong></span>
-                {stats.longestStreak > 0 && <span><strong>Streak {stats.longestStreak}d</strong></span>}
-                <span><strong>+{stats.credits} Credits</strong></span>
-                <span><strong>Completion {stats.completionRate}%</strong></span>
+                <span><strong>{t('screens.ai-feed.entriesEntries', { entries: stats.entries })}</strong></span>
+                {stats.longestStreak > 0 && <span><strong>{t('screens.ai-feed.streakLongeststreakD', { longestStreak: stats.longestStreak })}</strong></span>}
+                <span><strong>{t('screens.ai-feed.creditsCredits', { credits: stats.credits })}</strong></span>
+                <span><strong>{t('screens.ai-feed.completionCompletionrate', { completionRate: stats.completionRate })}</strong></span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -463,12 +464,11 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                 onClick={() => setShowTrends(!showTrends)}
                 className="h-8 px-3 text-xs"
               >
-                <TrendingUp className="w-3 h-3 mr-1" />
-                {showTrends ? "Hide" : "Show"} trends
+                <TrendingUp className="w-3 h-3 mr-1" />{t('screens.ai-feed.value0Trends', { value0: showTrends ? "Hide" : "Show" })}
               </Button>
               <Button variant="secondary" size="sm" className="h-8 px-3 text-xs">
                 <Download className="w-3 h-3 mr-1" />
-                Export History
+                {t('screens.ai-feed.exportHistory')}
               </Button>
             </div>
           </div>
@@ -481,9 +481,9 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
           <Card className="bg-white/60 border-dashed border-muted-foreground/30">
             <CardContent className="p-8 text-center">
               <Filter className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">No events found</p>
+              <p className="text-sm text-muted-foreground">{t('screens.ai-feed.noEventsFound')}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Try adjusting your filters or search query
+                {t('screens.ai-feed.tryAdjustingYourFiltersSearchQuery')}
               </p>
             </CardContent>
           </Card>
@@ -553,16 +553,16 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                             <KebabMenu>
                               <DropdownMenuItem>
                                 <Eye className="w-4 h-4 mr-2" />
-                                View details
+                                {t('screens.ai-feed.viewDetails')}
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <MessageSquare className="w-4 h-4 mr-2" />
-                                Add note
+                                {t('screens.ai-feed.addNote')}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem>
                                 <Share2 className="w-4 h-4 mr-2" />
-                                Share
+                                {t('screens.ai-feed.share')}
                               </DropdownMenuItem>
                             </KebabMenu>
                           </div>
@@ -581,7 +581,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                             {event.details.streakCount && (
                               <div className="flex items-center gap-1 text-orange-600 bg-orange-50 px-2 py-1 rounded-full">
                                 <Zap className="w-3 h-3" />
-                                <span>{event.details.streakCount} day streak 🔥</span>
+                                <span>{t('screens.ai-feed.streakcountDayStreak', { streakCount: event.details.streakCount })}</span>
                               </div>
                             )}
                             {event.details.improvement && (
@@ -604,7 +604,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                           <div className="mt-3 pt-2 border-t border-border/20">
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
                               <BarChart3 className="w-3 h-3" />
-                              <span>7-day trend</span>
+                              <span>{t('screens.ai-feed.text7dayTrend')}</span>
                               <div className="flex-1 h-1 bg-gradient-to-r from-muted/50 via-primary/30 to-primary/60 rounded-full" />
                             </div>
                           </div>
@@ -625,9 +625,8 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
           <Card className="bg-white/60 border-dashed border-muted-foreground/30 hover:bg-white/80 transition-colors duration-300">
             <CardContent className="p-6">
               <RotateCcw className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Load more history</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {filteredEvents.length} events shown
+              <p className="text-sm text-muted-foreground">{t('screens.ai-feed.loadMoreHistory')}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.ai-feed.lengthEventsShown', { length: filteredEvents.length })}
               </p>
             </CardContent>
           </Card>
@@ -641,7 +640,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
           size="sm"
           className="fixed bottom-6 right-6 z-50 shadow-lg rounded-full w-12 h-12 p-0"
           onClick={scrollToTop}
-          aria-label="Back to top"
+          aria-label={t('screens.ai-feed.backTop')}
         >
           <ArrowUp className="w-4 h-4" />
         </Button>

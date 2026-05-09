@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "Kampagne löschen?",
+      "description": "Das Löschen von \"{name}\" wird alle zugehörigen Entwürfe und Analysen dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "dontAskAgain": "Bei Entwürfen nicht mehr fragen",
+      "deletePermanently": "Dauerhaft löschen"
+    },
+    "creation": {
+      "title": "Kampagne erstellen",
+      "stepOf": "Schritt {current} von {total}",
+      "yourCampaigns": "Ihre Kampagnen",
+      "drafts": "Entwürfe",
+      "live": "Live",
+      "proTip": "Profi-Tipp",
+      "tips": {
+        "1": "Klare Namen helfen Ihnen, Kampagnen später zu finden",
+        "2": "Verbinden Sie Kanäle jetzt für sofortige Planung",
+        "3": "Die Launch-Vorlage funktioniert für die meisten Ankündigungen",
+        "4": "Intelligente Planung verwendet Ihre bisherigen Engagement-Daten"
+      }
+    }
+  }
+}

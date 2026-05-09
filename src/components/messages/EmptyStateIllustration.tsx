@@ -1,5 +1,6 @@
 import { MessageSquare, Users, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { t } from '@/lib/i18n-toast';
 
 interface EmptyStateIllustrationProps {
   type: 'inbox' | 'conversation';
@@ -34,16 +35,14 @@ export default function EmptyStateIllustration({
             </div>
           </div>
           
-          <h3 className="text-lg font-semibold mb-2">No groups yet</h3>
-          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-            Create your first group to collaborate with multiple people at once in your{' '}
-            {context === 'global' ? 'global community' : 'professional network'}.
+          <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noGroupsYet')}</h3>
+          <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t('screens.messages.createYourFirstGroupCollaborateWith', { value0: ' ', value1: context === 'global' ? 'global community' : 'professional network' })}
           </p>
           
           {onCreateGroup && (
             <Button onClick={onCreateGroup} className="gap-2">
               <Users className="w-4 h-4" />
-              Create your first group
+              {t('screens.messages.createYourFirstGroup')}
             </Button>
           )}
         </div>
@@ -62,17 +61,14 @@ export default function EmptyStateIllustration({
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold mb-2">No conversations yet</h3>
-        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-          Start connecting with others in your{' '}
-          {context === 'global' ? 'global community' : 'professional network'}.
-          Your conversations will appear here.
+        <h3 className="text-lg font-semibold mb-2">{t('screens.messages.noConversationsYet')}</h3>
+        <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t('screens.messages.startConnectingWithOthersYourValue0', { value0: ' ', value1: context === 'global' ? 'global community' : 'professional network' })}
         </p>
         
         {onAction && (
           <Button onClick={onAction} className="gap-2">
             <Plus className="w-4 h-4" />
-            Start a conversation
+            {t('screens.messages.startConversation')}
           </Button>
         )}
       </div>
@@ -87,9 +83,9 @@ export default function EmptyStateIllustration({
         </div>
       </div>
       
-      <h3 className="text-lg font-medium mb-2">No messages yet</h3>
+      <h3 className="text-lg font-medium mb-2">{t('screens.messages.noMessagesYet')}</h3>
       <p className="text-muted-foreground">
-        Start the conversation! Send your first message below.
+        {t('screens.messages.startConversationSendYourFirstMessage')}
       </p>
     </div>
   );

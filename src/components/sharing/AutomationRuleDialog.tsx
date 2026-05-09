@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAutomationRules } from "@/hooks/useAutomationRules";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 interface AutomationRuleDialogProps {
   open: boolean;
@@ -46,58 +47,58 @@ export function AutomationRuleDialog({ open, onOpenChange }: AutomationRuleDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Automation Rule</DialogTitle>
+          <DialogTitle>{t('screens.sharing.createAutomationRule')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="rule-name">Rule Name</Label>
+            <Label htmlFor="rule-name">{t('screens.sharing.ruleName')}</Label>
             <Input
               id="rule-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Auto-publish on schedule"
+              placeholder={t('screens.sharing.eGAutopublishSchedule')}
               required
             />
           </div>
           <div>
-            <Label htmlFor="rule-description">Description</Label>
+            <Label htmlFor="rule-description">{t('screens.sharing.description')}</Label>
             <Textarea
               id="rule-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe what this rule does..."
+              placeholder={t('screens.sharing.describeWhatThisRuleDoes')}
               rows={2}
             />
           </div>
           <div>
-            <Label htmlFor="trigger">Trigger Type</Label>
+            <Label htmlFor="trigger">{t('screens.sharing.triggerType')}</Label>
             <Select value={triggerType} onValueChange={(v) => setTriggerType(v as any)}>
               <SelectTrigger id="trigger">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="schedule">Schedule</SelectItem>
-                <SelectItem value="event">Event</SelectItem>
-                <SelectItem value="condition">Condition</SelectItem>
+                <SelectItem value="schedule">{t('screens.sharing.schedule')}</SelectItem>
+                <SelectItem value="event">{t('screens.sharing.event')}</SelectItem>
+                <SelectItem value="condition">{t('screens.sharing.condition')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="action">Action Type</Label>
+            <Label htmlFor="action">{t('screens.sharing.actionType')}</Label>
             <Select value={actionType} onValueChange={(v) => setActionType(v as any)}>
               <SelectTrigger id="action">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="publish">Publish Post</SelectItem>
-                <SelectItem value="notify">Send Notification</SelectItem>
-                <SelectItem value="update">Update Status</SelectItem>
+                <SelectItem value="publish">{t('screens.sharing.publishPost')}</SelectItem>
+                <SelectItem value="notify">{t('screens.sharing.sendNotification')}</SelectItem>
+                <SelectItem value="update">{t('screens.sharing.updateStatus')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.sharing.cancel')}
             </Button>
             <Button type="submit" disabled={createRule.isPending}>
               {createRule.isPending ? "Creating..." : "Create Rule"}

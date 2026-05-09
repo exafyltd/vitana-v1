@@ -3,6 +3,7 @@ import { Copy, Check, QrCode, Download, ExternalLink, CheckCircle2 } from "lucid
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { UserProfile } from "@/types/profile";
 import { QRCodeSVG } from "qrcode.react";
-import { toast } from "@/hooks/use-toast";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
 import { XIcon } from "@/components/icons/XIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
@@ -19,6 +19,7 @@ import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { useTranslation } from "@/hooks/useTranslation";
+import { notify } from '@/lib/i18n-toast';
 
 export interface ConnectedPlatforms {
   linkedin?: boolean;
@@ -97,10 +98,7 @@ export function ShareProfileModal({
           a.download = `${profile.handle}-qr.png`;
           a.click();
           URL.revokeObjectURL(url);
-          toast({
-            title: "QR Code downloaded",
-            description: "QR code saved successfully"
-          });
+          notify('toasts.profile.qrCodeDownloaded2', 'toasts.profile.qrCodeSavedSuccessfully');
         }
       });
     };
@@ -154,7 +152,7 @@ export function ShareProfileModal({
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-nutrition-accent))]/5 rounded-2xl pointer-events-none" />
             <div className="relative flex items-center gap-4">
               <Avatar className="h-16 w-16 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+                <AvatarImage src={getDisplayAvatarUrl(profile)} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                 <AvatarFallback className="text-lg font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
                   {profile.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>

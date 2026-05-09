@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 
 import { useIsMobile } from "@/hooks/use-mobile";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -147,7 +149,11 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         <DrawerHeader className="text-center">
           <div className="flex flex-col items-center gap-3 mb-2">
             <Avatar className="h-16 w-16 ring-2 ring-border">
-              <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+              <AvatarImage
+                src={profile.avatar && profile.avatar.length > 0 ? profile.avatar : getAutoAvatarUrl(profile.displayName ?? profile.initials ?? "vitana")}
+                alt={profile.displayName}
+                style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)}
+              />
               <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-lg">
                 {profile.initials}
               </AvatarFallback>
@@ -161,8 +167,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 {ROLE_LABELS[profile.role]}
               </Badge>
               {activeTenantId && (
-                <p className="text-xs text-muted-foreground">
-                  Tenant: {activeTenantId.substring(0, 8)}...
+                <p className="text-xs text-muted-foreground">{t('screens.profile.tenantValue0', { value0: activeTenantId.substring(0, 8) })}
                 </p>
               )}
             </div>
@@ -174,7 +179,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
           <div className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" onClick={handleEditProfile}>
               <User className="mr-2 h-4 w-4" />
-              Profile
+              {t('screens.profile.profile')}
             </Button>
           </div>
 
@@ -186,7 +191,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                   <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
                     <Link to="/delete-account">
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete Account
+                      {t('screens.profile.deleteAccount')}
                     </Link>
                   </Button>
                 </DrawerClose>
@@ -201,8 +206,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
               <Separator />
               <div className="space-y-2">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
-                  Switch Role {isExafyAdmin && <Badge variant="outline" className="text-xs">Admin Access</Badge>}
+                  <Shield className="h-4 w-4" />{t('screens.profile.switchRole')} {isExafyAdmin && <Badge variant="outline" className="text-xs">{t('screens.profile.adminAccess')}</Badge>}
                 </label>
                 <Select value={currentRole || profile.role || availableRoles[0]} onValueChange={handleRoleChange}>
                   <SelectTrigger>
@@ -236,7 +240,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             {isLoggingOut ? "Signing Out..." : "Sign Out"}
           </Button>
           <DrawerClose asChild>
-            <Button variant="ghost" disabled={isLoggingOut}>Cancel</Button>
+            <Button variant="ghost" disabled={isLoggingOut}>{t('screens.profile.cancel')}</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

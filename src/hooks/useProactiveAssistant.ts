@@ -4,6 +4,7 @@ import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAIConsent } from '@/hooks/useAIConsent';
+import { notify, notifyError } from '@/lib/i18n-toast';
 interface ProactiveMessage {
   id: string;
   text: string;
@@ -41,11 +42,7 @@ export function useProactiveAssistant() {
     // Gate on AI consent
     if (!hasConsent) {
       console.log('[ProactiveAssistant] No AI consent — skipping');
-      toast({
-        title: 'AI consent required',
-        description: 'Please grant AI data sharing consent in Settings > Privacy to use this feature.',
-        variant: 'default',
-      });
+      notify('toasts.hooks.aiConsentRequired', 'toasts.hooks.pleaseGrantAiDataSharingConsent');
       return;
     }
 
@@ -61,11 +58,7 @@ export function useProactiveAssistant() {
     if (lastMessageTime) {
       const secondsSinceLast = (Date.now() - lastMessageTime.getTime()) / 1000;
       if (secondsSinceLast < 30) {
-        toast({
-          title: "Please wait",
-          description: `You can request another message in ${Math.ceil(30 - secondsSinceLast)} seconds.`,
-          variant: "default",
-        });
+        notify('toasts.hooks.pleaseWait');
         return;
       }
     }
@@ -117,35 +110,15 @@ const accessToken = session?.access_token;
       const msg = typeof serverMsg === 'string' ? serverMsg : JSON.stringify(serverMsg);
 
       if (msg.includes('Rate limits') || anyErr?.status === 429) {
-        toast({
-          title: 'Rate limit reached',
-          description: 'Please wait a few seconds and try again.',
-          variant: 'destructive',
-        });
+        notifyError('toasts.hooks.rateLimitReached2', 'toasts.hooks.pleaseWaitFewSecondsTryAgain');
       } else if (msg.includes('Payment required') || anyErr?.status === 402) {
-        toast({
-          title: 'AI usage limit',
-          description: 'Please add credits to the Lovable AI workspace.',
-          variant: 'destructive',
-        });
+        notifyError('toasts.hooks.aiUsageLimit', 'toasts.hooks.pleaseAddCreditsLovableAiWorkspace');
       } else if (msg.includes('Authentication') || msg.includes('JWT') || msg.toLowerCase().includes('auth')) {
-        toast({
-          title: 'Session not detected',
-          description: 'Log in for personalized tips. Showing generic guidance instead.',
-          variant: 'destructive',
-        });
+        notifyError('toasts.hooks.sessionNotDetected', 'toasts.hooks.logForPersonalizedTipsShowingGeneric');
       } else if (msg.includes('LOVABLE_API_KEY')) {
-        toast({
-          title: 'Configuration error',
-          description: 'AI service is not configured. Please contact support.',
-          variant: 'destructive',
-        });
+        notifyError('toasts.hooks.configurationError', 'toasts.hooks.aiServiceNotConfiguredPleaseContact');
       } else {
-        toast({
-          title: 'Unable to generate message',
-          description: msg || 'Please try again in a moment.',
-          variant: 'destructive',
-        });
+        notifyError('toasts.hooks.unableGenerateMessage');
       }
     } finally {
       setIsGenerating(false);

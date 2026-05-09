@@ -417,11 +417,11 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   // ═══════════════════════════════════════════════════════════
   custom_reminder: {
     icon: '⏰', label: 'Reminder', category: 'reminder',
-    channel: 'push_and_inapp', priority: 'p1', route: '/reminders/{id}',
+    channel: 'push_and_inapp', priority: 'p1', route: '/reminders?filter=missed',
   },
   task_reminder: {
     icon: '✅', label: 'Task Reminder', category: 'reminder',
-    channel: 'push_and_inapp', priority: 'p1', route: '/tasks/{id}',
+    channel: 'push_and_inapp', priority: 'p1', route: '/reminders?filter=missed',
   },
   event_reminder: {
     icon: '📅', label: 'Event Reminder', category: 'reminder',

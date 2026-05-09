@@ -15,7 +15,7 @@ import {
   CheckCircle2,
   Plus,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
@@ -23,6 +23,7 @@ import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons"
 import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useNativeShare } from "@/hooks/useNativeShare";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
@@ -90,10 +91,7 @@ export default function SocialShareButton({
   const handlePlatformClick = (platform: SocialPlatform) => {
     try {
       if (platform.id === 'messenger') {
-        toast({
-          title: "Opening Messenger...",
-          description: "Share via Vitana Messenger"
-        });
+        notify('toasts.sharing.openingMessenger', 'toasts.sharing.shareViaVitanaMessenger');
         navigate('/messenger');
         setIsOpen(false);
         return;
@@ -109,19 +107,13 @@ export default function SocialShareButton({
         
         if (shareUrls[platform.id]) {
           window.open(shareUrls[platform.id], '_blank', 'width=600,height=400');
-          toast({
-            title: "Share opened",
-            description: `Complete your share on ${platform.name}`,
-          });
+          notify('toasts.sharing.shareOpened');
         }
         return;
       }
 
       if (!platform.connected) {
-        toast({
-          title: "Connect account",
-          description: `Connect your ${platform.name} account to share content`,
-        });
+        notify('toasts.sharing.connectAccount');
         return;
       }
 
@@ -136,11 +128,11 @@ export default function SocialShareButton({
         },
         youtube: async () => {
           await navigator.clipboard.writeText(shareLink);
-          toast({ title: "YouTube", description: "Link copied! Share on YouTube" });
+          notify('toasts.sharing.youtube', 'toasts.sharing.linkCopiedShareYoutube');
         },
         tiktok: async () => {
           await navigator.clipboard.writeText(shareLink);
-          toast({ title: "TikTok", description: "Link copied! Share on TikTok" });
+          notify('toasts.sharing.tiktok', 'toasts.sharing.linkCopiedShareTiktok');
         },
       };
 
@@ -148,11 +140,7 @@ export default function SocialShareButton({
       setIsOpen(false);
     } catch (error) {
       console.error('Share error:', error);
-      toast({
-        title: "Share Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.sharing.shareFailed', 'toasts.sharing.pleaseTryAgain');
     }
   };
 
@@ -225,9 +213,7 @@ export default function SocialShareButton({
         <DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:right-4 [&>button]:top-4">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Share2 className="w-5 h-5 text-primary" />
-              Share {type.charAt(0).toUpperCase() + type.slice(1)}
-            </DialogTitle>
+              <Share2 className="w-5 h-5 text-primary" />{t('screens.sharing.shareValue0', { value0: type.charAt(0).toUpperCase() + type.slice(1) })}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -248,9 +234,7 @@ export default function SocialShareButton({
                     </div>
                   )}
                   {data.referralCode && (
-                    <div className="text-xs text-muted-foreground">
-                      Code: {data.referralCode}
-                    </div>
+                    <div className="text-xs text-muted-foreground">{t('screens.sharing.codeReferralcode', { referralCode: data.referralCode })}</div>
                   )}
                 </div>
               </CardContent>
@@ -259,10 +243,10 @@ export default function SocialShareButton({
             {/* Quick Share (Personal) - Using unified component */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">💬 Quick Share (Personal)</span>
+                <span className="text-sm font-medium">{t('screens.sharing.quickSharePersonal')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Opens your personal apps - no setup needed
+                {t('screens.sharing.opensYourPersonalAppsNo')}
               </p>
               <PersonalShareButtons
                 shareUrl={shareLink}
@@ -284,10 +268,10 @@ export default function SocialShareButton({
             {/* Social Media (Auto-Post) */}
             <div className="space-y-2 pt-2 border-t">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">📣 Social Media (Auto-Post)</span>
+                <span className="text-sm font-medium">{t('screens.sharing.socialMediaAutopost2')}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Select connected accounts to share automatically
+                {t('screens.sharing.selectConnectedAccountsShareAutomatically')}
               </p>
               
               {loading ? (
@@ -321,12 +305,11 @@ export default function SocialShareButton({
                             {option.name}
                           </span>
                           {isConnected ? (
-                            <Badge variant="secondary" className="text-[9px] px-1 py-0">
-                              Connected
+                            <Badge variant="secondary" className="text-[9px] px-1 py-0">{t('screens.sharing.connected')}
                             </Badge>
                           ) : (
                             <Badge variant="outline" className="text-[9px] px-1 py-0">
-                              Connect
+                              {t('screens.sharing.connect')}
                             </Badge>
                           )}
                         </Button>

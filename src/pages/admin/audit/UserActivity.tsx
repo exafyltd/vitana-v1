@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const columns = [
   {
@@ -73,13 +74,13 @@ export default function AuditUserActivity() {
     <AppLayout>
       <SubNavigation items={adminAuditNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="User Activity" description="Authentication events, role changes, and user-related actions" />
+        <AdminHeader title={t('screens.admin.userActivity')} description="Authentication events, role changes, and user-related actions" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Events" value={total} icon={UserCog} loading={isLoading} />
-          <AdminStatsCard title="Auth Events" value={events.filter((e: any) => e.kind?.includes("auth")).length} icon={LogIn} loading={isLoading} />
-          <AdminStatsCard title="Role Events" value={events.filter((e: any) => e.kind?.includes("role")).length} icon={ShieldCheck} loading={isLoading} />
-          <AdminStatsCard title="On Page" value={events.length} icon={Clock} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalEvents')} value={total} icon={UserCog} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.authEvents')} value={events.filter((e: any) => e.kind?.includes("auth")).length} icon={LogIn} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.roleEvents')} value={events.filter((e: any) => e.kind?.includes("role")).length} icon={ShieldCheck} loading={isLoading} />
+          <AdminStatsCard title={t('screens.admin.page')} value={events.length} icon={Clock} loading={isLoading} />
         </div>
 
         <AdminTable

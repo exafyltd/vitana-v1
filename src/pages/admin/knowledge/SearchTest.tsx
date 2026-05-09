@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useKBSearch } from "@/hooks/useAdminKnowledge";
+import { t } from '@/lib/i18n-toast';
 
 export default function KnowledgeSearchTest() {
   const [query, setQuery] = useState("");
@@ -33,7 +34,7 @@ export default function KnowledgeSearchTest() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🔍"
-          title="Search Test"
+          title={t('screens.admin.searchTest')}
           description="Test your knowledge base configuration. Type a question to see which documents would be retrieved."
         />
 
@@ -44,7 +45,7 @@ export default function KnowledgeSearchTest() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Type a question to test KB retrieval..."
+                placeholder={t('screens.admin.typeQuestionTestKbRetrieval')}
                 className="flex-1"
               />
               <Button onClick={handleSearch} disabled={!query.trim() || searchQuery.isLoading}>
@@ -56,7 +57,7 @@ export default function KnowledgeSearchTest() {
 
         {activeQuery && !searchQuery.isLoading && results.length === 0 && (
           <AdminEmptyState
-            title="No results"
+            title={t('screens.admin.noResults')}
             description={`No documents matched "${activeQuery}". Try a different query or add more documents.`}
           />
         )}
@@ -64,8 +65,7 @@ export default function KnowledgeSearchTest() {
         {results.length > 0 && (
           <Card>
             <CardContent className="pt-6 space-y-3">
-              <p className="text-xs text-muted-foreground mb-2">
-                {results.length} result{results.length !== 1 ? "s" : ""} for "{activeQuery}"
+              <p className="text-xs text-muted-foreground mb-2">{t('screens.admin.lengthResultValue1ForActivequery', { length: results.length, value1: results.length !== 1 ? "s" : "", activeQuery })}
               </p>
               {results.map((r, i) => (
                 <div key={r.id} className="flex items-start justify-between border rounded-lg p-3">

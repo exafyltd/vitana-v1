@@ -73,3 +73,24 @@ Use this user when an authenticated user is needed for testing (e.g., Playwright
 - **Multi-tenant:** TenantProvider for portal-specific branding
 - **Offline support:** OfflineProvider + LocalStorage query persistence
 - **Auth flow:** Supabase Auth → role check → route guard
+
+## i18n Hard Rule (must follow)
+
+Every string a user can see must come from `src/i18n/<locale>/**`. The
+ESLint rules `i18n/no-raw-jsx-text` and `i18n/no-raw-toast-arg` are at
+**error** level — any new hardcoded user-visible string fails the build.
+
+- New strings: add to the German shard FIRST (`src/i18n/de/<screen>.json`),
+  then mirror to `en/`.
+- JSX text & attributes: `{t('screens.<ns>.<slug>')}` from `@/lib/i18n-toast`.
+  For text with placeholders: `t('key', { name })`.
+- JSX with nested elements: wrap with `<Trans i18nKey="..." values={{...}}>`
+  from `@/components/Trans`.
+- Toasts: `notify(...)`/`notifyError(...)` from `@/lib/i18n-toast`. Never raw
+  `toast()`/`sonner.toast()` with English.
+- Backend-supplied UI text: gateway ships `{ key, params }`, never raw strings.
+- New languages: run `node scripts/translate-keys.mjs --provider=deepseek
+  --locale=<code>` (or `--provider=gemini`). Mark `_pending_review` until
+  reviewed via `/dev/i18n-review`.
+- Run `npm run i18n:inventory` before opening a PR; commit the regenerated
+  `docs/SCREEN_INVENTORY.md`.

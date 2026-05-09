@@ -11,6 +11,7 @@ import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { toast } from "sonner";
+import { t } from '@/lib/i18n-toast';
 
 
 const providers = [
@@ -145,23 +146,23 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
           <div className="flex items-center gap-4 mb-6">
             <div className="h-px bg-border flex-1" />
-            <span className="text-xs text-muted-foreground">OR</span>
+            <span className="text-xs text-muted-foreground">{t('screens.authpages.text')}</span>
             <div className="h-px bg-border flex-1" />
           </div>
 
           <form onSubmit={handleSubmit} className="grid gap-4">
             {isRegister && (
               <div className="grid gap-2">
-                <Label htmlFor="name">Full name</Label>
-                <Input id="name" name="name" placeholder="Your full name" />
+                <Label htmlFor="name">{t('screens.authpages.fullName')}</Label>
+                <Input id="name" name="name" placeholder={t('screens.authpages.yourFullName')} />
               </div>
             )}
             <div className="grid gap-2">
-              <Label htmlFor="email">Your Email Address</Label>
-              <Input id="email" name="email" type="email" placeholder="Your Email Address" required />
+              <Label htmlFor="email">{t('screens.authpages.yourEmailAddress')}</Label>
+              <Input id="email" name="email" type="email" placeholder={t('screens.authpages.yourEmailAddress')} required />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('screens.authpages.password')}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -205,17 +206,13 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
           <footer className="mt-4 text-center text-sm text-muted-foreground">
             {isRegister ? (
-              <span>
-                Already have an account? {" "}
-                <Link className="text-primary underline-offset-4 hover:underline" to="/login">
-                  Login
+              <span>{t('screens.authpages.alreadyHaveAccountValue0', { value0: " " })}<Link className="text-primary underline-offset-4 hover:underline" to="/login">
+                  {t('screens.authpages.login')}
                 </Link>
               </span>
             ) : (
-              <span>
-                Don&apos;t have an account? {" "}
-                <Link className="text-primary underline-offset-4 hover:underline" to="/register">
-                  Sign up
+              <span>{t('screens.authpages.donAposTHaveAccountValue0', { value0: " " })}<Link className="text-primary underline-offset-4 hover:underline" to="/register">
+                  {t('screens.authpages.signUp')}
                 </Link>
               </span>
             )}

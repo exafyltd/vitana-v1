@@ -13,6 +13,7 @@ import {
   Server
 } from "lucide-react";
 import { ConnectionStatus } from "@/components/ui/ConnectionStatus";
+import { t } from '@/lib/i18n-toast';
 
 interface TestLog {
   id: string;
@@ -39,28 +40,28 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
         return (
           <Badge className="bg-success/10 text-success border-success/20">
             <CheckCircle2 className="w-3 h-3 mr-1" />
-            Success
+            {t('screens.admin.success')}
           </Badge>
         );
       case 'failed':
         return (
           <Badge className="bg-destructive/10 text-destructive border-destructive/20">
             <XCircle className="w-3 h-3 mr-1" />
-            Failed
+            {t('screens.admin.failed')}
           </Badge>
         );
       case 'warning':
         return (
           <Badge className="bg-warning/10 text-warning border-warning/20">
             <AlertTriangle className="w-3 h-3 mr-1" />
-            Warning
+            {t('screens.admin.warning')}
           </Badge>
         );
       default:
         return (
           <Badge variant="outline">
             <Clock className="w-3 h-3 mr-1" />
-            Pending
+            {t('screens.admin.pending')}
           </Badge>
         );
     }
@@ -92,8 +93,8 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
           <div className="flex items-center gap-3">
             <Activity className="w-5 h-5 text-primary" />
             <div>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Live test results and status updates</CardDescription>
+              <CardTitle>{t('screens.admin.recentActivity')}</CardTitle>
+              <CardDescription>{t('screens.admin.liveTestResultsStatusUpdates')}</CardDescription>
             </div>
           </div>
           <ConnectionStatus />
@@ -104,7 +105,7 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
           <div className="flex items-center justify-center py-12">
             <div className="flex flex-col items-center gap-2">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-              <p className="text-sm text-muted-foreground">Loading activity...</p>
+              <p className="text-sm text-muted-foreground">{t('screens.admin.loadingActivity')}</p>
             </div>
           </div>
         ) : testLogs && testLogs.length > 0 ? (
@@ -137,8 +138,7 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
                     
                     <div className="flex items-center gap-3 mt-2">
                       {log.response_time_ms !== null && (
-                        <span className={`text-xs font-mono ${getResponseTimeColor(log.response_time_ms)}`}>
-                          {log.response_time_ms}ms
+                        <span className={`text-xs font-mono ${getResponseTimeColor(log.response_time_ms)}`}>{t('screens.admin.response_time_msMs', { response_time_ms: log.response_time_ms })}
                         </span>
                       )}
                       {log.api_integrations?.metadata?.deployment_type && (
@@ -165,9 +165,9 @@ export function RecentActivityFeed({ testLogs, isLoading }: RecentActivityFeedPr
         ) : (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <Activity className="w-12 h-12 text-muted-foreground/50 mb-3" />
-            <p className="text-muted-foreground font-medium">No activity yet</p>
+            <p className="text-muted-foreground font-medium">{t('screens.admin.noActivityYet')}</p>
             <p className="text-sm text-muted-foreground mt-1">
-              Run tests or discover integrations to see activity
+              {t('screens.admin.runTestsDiscoverIntegrationsSeeActivity')}
             </p>
           </div>
         )}

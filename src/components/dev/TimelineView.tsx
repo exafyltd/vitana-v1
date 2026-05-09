@@ -17,6 +17,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface TimelineEvent {
   id: string;
@@ -113,15 +114,15 @@ export function TimelineView() {
       {/* Time Range Filter */}
       <Card className="p-4 bg-white/50 dark:bg-card/50 backdrop-blur-sm border-border/50">
         <div className="flex items-center gap-4">
-          <label className="text-sm font-medium">Time Range</label>
+          <label className="text-sm font-medium">{t('screens.dev.timeRange')}</label>
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger className="w-[200px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
+              <SelectItem value="today">{t('screens.dev.today')}</SelectItem>
+              <SelectItem value="week">{t('screens.dev.thisWeek')}</SelectItem>
+              <SelectItem value="month">{t('screens.dev.thisMonth')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -192,7 +193,7 @@ export function TimelineView() {
       {MOCK_EVENTS.length === 0 && (
         <Card className="p-12 text-center bg-white/50 dark:bg-card/50 backdrop-blur-sm">
           <p className="text-muted-foreground">
-            No timeline events for the selected time range.
+            {t('screens.dev.noTimelineEventsForSelectedTime')}
           </p>
         </Card>
       )}

@@ -3,6 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { t } from '@/lib/i18n-toast';
 
 interface AutopilotSettingsPanelProps {
   preferences: any;
@@ -16,14 +17,14 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
       {/* Master Switch */}
       <Card>
         <CardHeader>
-          <CardTitle>Enable Autopilot</CardTitle>
+          <CardTitle>{t('screens.assistant.enableAutopilot')}</CardTitle>
           <CardDescription>
-            Turn on autopilot to receive automated suggestions and actions
+            {t('screens.assistant.turnAutopilotReceiveAutomatedSuggestionsActions')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
-            <Label htmlFor="autopilot-enabled">Autopilot Active</Label>
+            <Label htmlFor="autopilot-enabled">{t('screens.assistant.autopilotActive')}</Label>
             <Switch
               id="autopilot-enabled"
               checked={preferences.autopilot_enabled}
@@ -39,14 +40,14 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
       {/* Action Categories */}
       <Card>
         <CardHeader>
-          <CardTitle>Action Categories</CardTitle>
+          <CardTitle>{t('screens.assistant.actionCategories')}</CardTitle>
           <CardDescription>
-            Choose which types of autopilot actions you want to receive
+            {t('screens.assistant.chooseWhichTypesAutopilotActionsYou')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <Label htmlFor="health-actions">Health Actions</Label>
+            <Label htmlFor="health-actions">{t('screens.assistant.healthActions')}</Label>
             <Switch
               id="health-actions"
               checked={preferences.autopilot_categories.health}
@@ -62,7 +63,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
             />
           </div>
           <div className="flex items-center justify-between">
-            <Label htmlFor="community-actions">Community Actions</Label>
+            <Label htmlFor="community-actions">{t('screens.assistant.communityActions')}</Label>
             <Switch
               id="community-actions"
               checked={preferences.autopilot_categories.community}
@@ -78,7 +79,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
             />
           </div>
           <div className="flex items-center justify-between">
-            <Label htmlFor="discovery-actions">Discovery Actions</Label>
+            <Label htmlFor="discovery-actions">{t('screens.assistant.discoveryActions')}</Label>
             <Switch
               id="discovery-actions"
               checked={preferences.autopilot_categories.discovery}
@@ -94,7 +95,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
             />
           </div>
           <div className="flex items-center justify-between">
-            <Label htmlFor="memory-actions">Memory Actions</Label>
+            <Label htmlFor="memory-actions">{t('screens.assistant.memoryActions')}</Label>
             <Switch
               id="memory-actions"
               checked={preferences.autopilot_categories.memory}
@@ -115,14 +116,14 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
       {/* Frequency & Timing */}
       <Card>
         <CardHeader>
-          <CardTitle>Frequency & Timing</CardTitle>
+          <CardTitle>{t('screens.assistant.frequencyTiming')}</CardTitle>
           <CardDescription>
-            Control when and how often you receive autopilot suggestions
+            {t('screens.assistant.controlWhenHowOftenYouReceive')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="max-actions">Maximum Actions Per Day</Label>
+            <Label htmlFor="max-actions">{t('screens.assistant.maximumActionsPerDay')}</Label>
             <Input
               id="max-actions"
               type="number"
@@ -140,7 +141,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="quiet-start">Quiet Hours Start</Label>
+              <Label htmlFor="quiet-start">{t('screens.assistant.quietHoursStart')}</Label>
               <Input
                 id="quiet-start"
                 type="time"
@@ -154,7 +155,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="quiet-end">Quiet Hours End</Label>
+              <Label htmlFor="quiet-end">{t('screens.assistant.quietHoursEnd')}</Label>
               <Input
                 id="quiet-end"
                 type="time"
@@ -170,7 +171,7 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="priority-filter">Priority Filter</Label>
+            <Label htmlFor="priority-filter">{t('screens.assistant.priorityFilter')}</Label>
             <Select
               value={preferences.autopilot_priority_filter}
               onValueChange={(value: any) => 
@@ -182,9 +183,9 @@ export default function AutopilotSettingsPanel({ preferences, isUpdating, update
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priorities</SelectItem>
-                <SelectItem value="high_medium">High & Medium Only</SelectItem>
-                <SelectItem value="high">High Priority Only</SelectItem>
+                <SelectItem value="all">{t('screens.assistant.allPriorities')}</SelectItem>
+                <SelectItem value="high_medium">{t('screens.assistant.highMediumOnly')}</SelectItem>
+                <SelectItem value="high">{t('screens.assistant.highPriorityOnly')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

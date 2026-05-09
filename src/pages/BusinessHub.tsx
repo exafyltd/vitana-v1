@@ -51,6 +51,7 @@ import {
 } from "@/components/ui/split-bar";
 import { useTranslation } from "@/hooks/useTranslation";
 import { MobileModePill } from "@/components/ui/MobileModePill";
+import { t } from '@/lib/i18n-toast';
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -124,7 +125,7 @@ export default function BusinessHub() {
     return (
       <AppLayout>
         <SEO 
-          title="Business Hub | VITANA" 
+          title={t('screens.businesshub.businessHubVitana')} 
           description="Grow your wellness business" 
           canonical={window.location.href} 
         />
@@ -252,13 +253,13 @@ export default function BusinessHub() {
               {mobileTab === "services.services" && (
                 <div className="text-center py-12">
                   <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">No Services Yet</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.noServicesYet')}</h3>
                   <p className="text-muted-foreground mb-4">
-                    Create coaching sessions, consultations, or other services to offer.
+                    {t('screens.businesshub.createCoachingSessionsConsultationsOtherServices')}
                   </p>
                   <Button onClick={() => setShowCreateService(true)} className="gap-2">
                     <Plus className="w-4 h-4" />
-                    Create Service
+                    {t('screens.businesshub.createService')}
                   </Button>
                 </div>
               )}
@@ -278,9 +279,9 @@ export default function BusinessHub() {
                   ) : packages.length === 0 ? (
                     <div className="text-center py-12">
                       <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                      <h3 className="text-lg font-semibold text-foreground mb-2">Create Session Packages</h3>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.createSessionPackages')}</h3>
                       <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-                        Bundle multiple sessions, events, or perks into packages.
+                        {t('screens.businesshub.bundleMultipleSessionsEventsPerksInto')}
                       </p>
                     </div>
                   ) : (
@@ -323,8 +324,8 @@ export default function BusinessHub() {
               {mobileTab === "insights.performance" && (
                 <div className="text-center py-12">
                   <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Performance</h3>
-                  <p className="text-sm text-muted-foreground">Booking analytics coming soon</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.performance')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('screens.businesshub.bookingAnalyticsComingSoon')}</p>
                 </div>
               )}
 
@@ -332,8 +333,8 @@ export default function BusinessHub() {
               {mobileTab === "insights.earnings" && (
                 <div className="text-center py-12">
                   <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Earnings</h3>
-                  <p className="text-sm text-muted-foreground">Earnings breakdown coming soon</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.earnings')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('screens.businesshub.earningsBreakdownComingSoon')}</p>
                 </div>
               )}
 
@@ -341,8 +342,8 @@ export default function BusinessHub() {
               {mobileTab === "insights.growth" && (
                 <div className="text-center py-12">
                   <Users className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Growth</h3>
-                  <p className="text-sm text-muted-foreground">Growth analytics coming soon</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{t('screens.businesshub.growth')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('screens.businesshub.growthAnalyticsComingSoon')}</p>
                 </div>
               )}
             </div>
@@ -397,7 +398,7 @@ export default function BusinessHub() {
   return (
     <AppLayout>
       <SEO 
-        title="Business Hub | VITANA" 
+        title={t('screens.businesshub.businessHubVitana')} 
         description="Grow your wellness business and manage clients effortlessly" 
         canonical={window.location.href} 
       />
@@ -411,10 +412,10 @@ export default function BusinessHub() {
             <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Business Hub 💼
+                  {t('screens.businesshub.businessHub')}
                 </h1>
                 <p className="text-muted-foreground">
-                  Grow your wellness business and manage clients effortlessly
+                  {t('screens.businesshub.growYourWellnessBusinessManageClients')}
                 </p>
               </div>
             </div>
@@ -444,7 +445,7 @@ export default function BusinessHub() {
               {/* Hover Preview */}
               {showPreview && pendingCount > 0 && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                  <div className="text-xs font-medium text-muted-foreground mb-2">{t('screens.businesshub.latestActions')}</div>
                   {latestActions.map((action) => (
                     <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                       <span>{action.icon}</span>
@@ -452,8 +453,7 @@ export default function BusinessHub() {
                     </div>
                   ))}
                   {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">{t('screens.businesshub.value0MoreActions', { value0: pendingCount - 2 })}
                     </div>
                   )}
                 </div>
@@ -476,7 +476,7 @@ export default function BusinessHub() {
           {/* Action Buttons */}
           <UtilityActionButton>
             <ExpandableSearchButton 
-              placeholder="Search Business…"
+              placeholder={t('screens.businesshub.searchBusiness')}
               onSearch={(query) => console.log('Search Business:', query)}
             />
             <UniversalCalendarButton />
@@ -486,7 +486,7 @@ export default function BusinessHub() {
               onClick={() => setShowBusinessTypeSelector(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Business
+              {t('screens.businesshub.business')}
             </Button>
           </UtilityActionButton>
 

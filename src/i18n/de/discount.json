@@ -1,0 +1,31 @@
+{
+  "discount": {
+    "welcomeTitle": "Ihr Willkommensgeschenk",
+    "welcomeMessage": "Nutzen Sie diesen Code für 10% Rabatt auf Ihr erstes Event",
+    "validFor": "90 Tage gültig",
+    "applyCode": "Rabattcode einlösen",
+    "applied": "Rabatt angewendet!",
+    "expired": "Dieser Code ist abgelaufen",
+    "invalid": "Ungültiger Rabattcode",
+    "bannerAvailable": "Willkommensrabatt verfügbar",
+    "tapToApply": "Anwenden",
+    "discountAppliedAmount": "{percent}% Rabatt angewendet",
+    "remove": "Entfernen",
+    "ticketsComing": "Tickets demnächst verfügbar",
+    "contactOrganizer": "Kontaktieren Sie den Veranstalter für Ticketinformationen.",
+    "contactOrganizerPrice": "Dieses Event kostet ${price}. Kontaktieren Sie den Veranstalter für Ticketverfügbarkeit.",
+    "soldOut": "Ausverkauft",
+    "salesEnded": "Verkauf beendet",
+    "salesStart": "Verkauf startet {date}",
+    "free": "Kostenlos",
+    "ticketsSelected": "{count} Ticket(s) ausgewählt",
+    "useAccountEmail": "Meine Konto-E-Mail verwenden",
+    "buyAsGuest": "Als Gast kaufen (kein Konto nötig)",
+    "guestDetails": "Geben Sie Ihre Daten ein, um Ihr Ticket zu erhalten. Kein Konto erforderlich.",
+    "fullName": "Vollständiger Name",
+    "email": "E-Mail",
+    "ticketEmailNote": "Ihr Ticket und die Bestätigung werden an diese E-Mail gesendet.",
+    "left": "{count} übrig",
+    "loadFailed": "Tickets konnten nicht geladen werden"
+  }
+}

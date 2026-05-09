@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
 import { useShortHoverPreview } from '@/hooks/useShortHoverPreview';
 import { ImageWithFallback } from '@/components/diary/ImageWithFallback';
+import { t } from '@/lib/i18n-toast';
 
 interface ShortPreviewCardProps {
   video: {
@@ -127,7 +128,7 @@ export function ShortPreviewCard({
                 }}
               >
                 <Edit className="w-4 h-4 mr-2" />
-                Edit details
+                {t('screens.community.editDetails')}
               </DropdownMenuItem>
             )}
             {onDelete && (
@@ -139,7 +140,7 @@ export function ShortPreviewCard({
                 }}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Delete
+                {t('screens.community.delete')}
               </DropdownMenuItem>
             )}
           </KebabMenu>
@@ -203,7 +204,7 @@ export function ShortPreviewCard({
           {video.isLive && (
             <div className="absolute top-3 left-3 z-10">
               <Badge className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full border-0 animate-pulse">
-                • LIVE
+                {t('screens.community.live2')}
               </Badge>
             </div>
           )}

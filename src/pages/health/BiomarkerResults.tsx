@@ -33,6 +33,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
 import { useHealthLogger } from '@/hooks/useHealthLogger';
+import { t } from '@/lib/i18n-toast';
 
 
 interface TestResult {
@@ -219,14 +220,14 @@ export default function BiomarkerResults() {
   if (isLoading) {
     return (
       <AppLayout>
-        <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+        <SEO title={t('screens.health.biomarkerResultsHealth')} description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
         
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Loading lab results..."
+            title={t('screens.health.loadingLabResults')}
             description="Please wait while we fetch your biomarker analysis."
             emoji="⏳"
           />
@@ -249,26 +250,26 @@ export default function BiomarkerResults() {
   if (results.length === 0) {
     return (
       <AppLayout>
-        <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+        <SEO title={t('screens.health.biomarkerResultsHealth')} description="View your lab test results and biomarker analysis" canonical={window.location.href} />
         <SubNavigation items={healthNavigation} />
         
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto">
             <StandardHeader
-              title="No lab results yet"
+              title={t('screens.health.noLabResultsYet2')}
               description="Order your first lab test to get started."
               emoji="🧪"
             />
             <Card className="text-center py-12">
               <CardContent>
                 <div className="text-6xl mb-4">🧪</div>
-                <h3 className="text-xl font-semibold mb-2">No Lab Results Yet</h3>
+                <h3 className="text-xl font-semibold mb-2">{t('screens.health.noLabResultsYet')}</h3>
                 <p className="text-muted-foreground mb-6">
-                  Your lab test results will appear here once they're ready.
+                  {t('screens.health.yourLabTestResultsWillAppear')}
                 </p>
                 <Button onClick={() => { window.history.pushState({}, '', '/discover'); window.dispatchEvent(new PopStateEvent('popstate')); }}>
-                  Order Lab Tests
+                  {t('screens.health.orderLabTests')}
                 </Button>
               </CardContent>
             </Card>
@@ -280,20 +281,20 @@ export default function BiomarkerResults() {
 
   return (
     <AppLayout>
-      <SEO title="Biomarker Results | Health" description="View your lab test results and biomarker analysis" canonical={window.location.href} />
+      <SEO title={t('screens.health.biomarkerResultsHealth')} description="View your lab test results and biomarker analysis" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
       
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Your lab results are in!"
+            title={t('screens.health.yourLabResults')}
             description="View your biomarker analysis and lab test results."
             emoji="🧪"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search lab results, biomarkers, or test types..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchLabResultsBiomarkersTestTypes')} />
             <UniversalCalendarButton />
             <Button
               variant="default"
@@ -301,20 +302,19 @@ export default function BiomarkerResults() {
               onClick={() => setBiomarkerActionsOpen(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Biomarker Actions
+              {t('screens.health.biomarkerActions')}
             </Button>
           </UtilityActionButton>
           
           <div className="flex items-center justify-between">
-            <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">
-              {results.length} test{results.length !== 1 ? 's' : ''} available
+            <div className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-md">{t('screens.health.lengthTestValue1Available', { length: results.length, value1: results.length !== 1 ? 's' : '' })}
             </div>
           </div>
 
           <SplitScreen value={activeSection} onValueChange={setActiveSection} className="w-full">
             <SplitScreenList>
-              <SplitScreenTrigger value="new">✨ New Results</SplitScreenTrigger>
-              <SplitScreenTrigger value="history">📜 History</SplitScreenTrigger>
+              <SplitScreenTrigger value="new">{t('screens.health.newResults')}</SplitScreenTrigger>
+              <SplitScreenTrigger value="history">{t('screens.health.history')}</SplitScreenTrigger>
             </SplitScreenList>
 
             <SplitScreenContent value="new">
@@ -364,12 +364,10 @@ export default function BiomarkerResults() {
                             className="flex items-center gap-2 min-w-[100px]"
                           >
                             {isExpanded ? (
-                              <>
-                                Hide <ChevronUp className="h-4 w-4" />
+                              <>{t('screens.health.hide')} <ChevronUp className="h-4 w-4" />
                               </>
                             ) : (
-                              <>
-                                View More <ChevronDown className="h-4 w-4" />
+                              <>{t('screens.health.viewMore')} <ChevronDown className="h-4 w-4" />
                               </>
                             )}
                           </Button>
@@ -382,7 +380,7 @@ export default function BiomarkerResults() {
                             <div className="p-6 bg-muted/20">
                               {/* Biomarker Table */}
                               <div className="mb-6">
-                                <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
+                                <h4 className="font-semibold mb-4 text-foreground">{t('screens.health.biomarkerDetails')}</h4>
                                 <div className="grid gap-3">
                                   {mockBiomarkers.map((biomarker) => (
                                     <div
@@ -421,7 +419,7 @@ export default function BiomarkerResults() {
                                   onClick={() => logBiomarkerDownload(result.lab_test.name)}
                                 >
                                   <Download className="h-4 w-4" />
-                                  Download PDF
+                                  {t('screens.health.downloadPdf')}
                                 </Button>
                                 <Button 
                                   variant="outline" 
@@ -429,11 +427,11 @@ export default function BiomarkerResults() {
                                   onClick={() => logBiomarkerShare(result.lab_test.name, 'Doctor')}
                                 >
                                   <Share2 className="h-4 w-4" />
-                                  Share with Doctor
+                                  {t('screens.health.shareWithDoctor')}
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>
@@ -493,12 +491,10 @@ export default function BiomarkerResults() {
                             className="flex items-center gap-2 min-w-[100px]"
                           >
                             {isExpanded ? (
-                              <>
-                                Hide <ChevronUp className="h-4 w-4" />
+                              <>{t('screens.health.hide')} <ChevronUp className="h-4 w-4" />
                               </>
                             ) : (
-                              <>
-                                View More <ChevronDown className="h-4 w-4" />
+                              <>{t('screens.health.viewMore')} <ChevronDown className="h-4 w-4" />
                               </>
                             )}
                           </Button>
@@ -511,7 +507,7 @@ export default function BiomarkerResults() {
                             <div className="p-6 bg-muted/20">
                               {/* Biomarker Table */}
                               <div className="mb-6">
-                                <h4 className="font-semibold mb-4 text-foreground">Biomarker Details</h4>
+                                <h4 className="font-semibold mb-4 text-foreground">{t('screens.health.biomarkerDetails')}</h4>
                                 <div className="grid gap-3">
                                   {mockBiomarkers.map((biomarker) => (
                                     <div
@@ -546,15 +542,15 @@ export default function BiomarkerResults() {
                               <div className="flex items-center gap-3">
                                 <Button variant="outline" className="flex items-center gap-2">
                                   <Download className="h-4 w-4" />
-                                  Download PDF
+                                  {t('screens.health.downloadPdf')}
                                 </Button>
                                 <Button variant="outline" className="flex items-center gap-2">
                                   <Share2 className="h-4 w-4" />
-                                  Share with Doctor
+                                  {t('screens.health.shareWithDoctor')}
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>Processed {format(new Date(result.completed_at), 'MMM dd, HH:mm')}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>

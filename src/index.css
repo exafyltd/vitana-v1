@@ -1154,3 +1154,14 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   background: linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%);
   color: rgba(255, 255, 255, 0.95);
 }
+
+/* Same sky-blue gradient as the App Bar — used by the Find-a-Match
+   "Interest" CTA so the primary brand colour carries across surfaces. */
+.maxina-cta-blue {
+  background: linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%);
+  color: rgba(255, 255, 255, 0.98);
+}
+.maxina-cta-blue:hover:not(:disabled) {
+  background: linear-gradient(180deg, hsl(201 90% 74%) 0%, hsl(201 75% 65%) 100%);
+}
+

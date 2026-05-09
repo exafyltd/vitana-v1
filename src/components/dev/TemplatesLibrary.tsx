@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Play, Edit, Copy, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Template {
   id: string;
@@ -102,7 +103,7 @@ export function TemplatesLibrary() {
         <div className="relative flex-1 min-w-[250px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search templates..."
+            placeholder={t('screens.dev.searchTemplates')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -138,13 +139,13 @@ export function TemplatesLibrary() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Used {template.usageCount} times</span>
-                {template.lastUsed && <span>Last: {template.lastUsed}</span>}
+                <span>{t('screens.dev.usedUsagecountTimes', { usageCount: template.usageCount })}</span>
+                {template.lastUsed && <span>{t('screens.dev.lastLastused', { lastUsed: template.lastUsed })}</span>}
               </div>
               <div className="flex gap-2">
                 <Button size="sm" className="flex-1">
                   <Play className="w-3 h-3 mr-2" />
-                  Run Now
+                  {t('screens.dev.runNow')}
                 </Button>
                 <Button size="sm" variant="outline">
                   <Edit className="w-3 h-3" />
@@ -160,7 +161,7 @@ export function TemplatesLibrary() {
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No templates found matching your criteria</p>
+          <p className="text-muted-foreground">{t('screens.dev.noTemplatesFoundMatchingYourCriteria')}</p>
         </div>
       )}
     </div>

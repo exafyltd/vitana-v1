@@ -2,6 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Shield, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface HealthReport {
   type: string;
@@ -53,8 +54,7 @@ function DataWalletCardBase({
       ))}
       
       {readyReports.length > 0 && (
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          {readyReports.length} report{readyReports.length !== 1 ? 's' : ''} ready to share
+        <p className="text-xs text-muted-foreground text-center mt-2">{t('screens.crossover.lengthReportValue1ReadyShare', { length: readyReports.length, value1: readyReports.length !== 1 ? 's' : '' })}
         </p>
       )}
     </div>
@@ -64,7 +64,7 @@ function DataWalletCardBase({
     <CrossoverCard
       icon={Shield}
       category="data"
-      title="Health Data Wallet"
+      title={t('screens.crossover.healthDataWallet')}
       subtitle="Secure access to your health reports and analytics"
       content={content}
       buttonText="View Reports"

@@ -1,0 +1,108 @@
+{
+  "inbox": {
+    "title": "Inbox",
+    "subtitle": "Stay connected with your community!",
+    "description": "Your conversations, updates, and notifications",
+    "desktopTitle": "Messages",
+    "desktopDescription": "Connect with your community and network",
+    "tabs": {
+      "all": "All",
+      "groups": "Groups",
+      "direct": "Direct",
+      "contacts": "Contacts",
+      "notifications": "Notifications",
+      "archived": "Archived"
+    },
+    "contextTabs": {
+      "community": "Community",
+      "network": "Network"
+    },
+    "actions": {
+      "new": "New",
+      "newMessage": "New Message",
+      "createGroup": "Create Group"
+    },
+    "composer": {
+      "placeholder": "Type your message...",
+      "send": "Send",
+      "attachments": "Attachments",
+      "recipients": "To:",
+      "add": "Add"
+    },
+    "states": {
+      "empty": "No messages yet",
+      "loading": "Loading messages...",
+      "error": "Failed to load messages"
+    },
+    "newConversation": {
+      "title": "Start New Conversation",
+      "titleGroup": "Create Group Chat",
+      "groupName": "Group Name",
+      "groupNamePlaceholder": "Enter group name...",
+      "members": "Members",
+      "recipient": "Recipient",
+      "addMore": "Add more people",
+      "searchPeople": "Search for people",
+      "searchPlaceholder": "Enter name or email to search...",
+      "searchMinChars": "Type at least 2 characters to search",
+      "searchResults": "Search Results",
+      "noResults": "No users found. Try a different search term.",
+      "add": "Add",
+      "added": "Added",
+      "cancel": "Cancel",
+      "startChat": "Start Chat",
+      "createGroup": "Create Group",
+      "creating": "Creating..."
+    },
+    "createGroup": {
+      "title": "Create Group",
+      "avatarSoon": "Avatar upload will be available soon.",
+      "groupName": "Group Name",
+      "addMembers": "Add Members",
+      "searchPlaceholder": "Search users...",
+      "groupNameRequired": "Group name required",
+      "groupNameRequiredDesc": "Please enter a name for your group.",
+      "addMembersRequired": "Add members",
+      "addMembersRequiredDesc": "Please add at least one member to the group.",
+      "groupExists": "Group already exists",
+      "groupExistsDesc": "A group with these members was created recently.",
+      "created": "Group created",
+      "createdDesc": "\"{name}\" has been created successfully.",
+      "failed": "Failed to create group",
+      "failedDesc": "Please try again."
+    },
+    "toast": {
+      "success": "Success",
+      "error": "Error",
+      "conversationStarted": "Conversation started!",
+      "authRequired": "Authentication required",
+      "noTenantContext": "No tenant context available",
+      "searchFailed": "Search failed",
+      "accessDenied": "Access denied",
+      "communityOnly": "Only community users can create global conversations",
+      "pleaseLogin": "Please log in to start conversations",
+      "groupRecipientsRequired": "Group name and recipients are required",
+      "singleRecipientRequired": "Select exactly one recipient for direct message",
+      "groupCreated": "Group \"{name}\" created successfully!",
+      "groupFailed": "Failed to create group"
+    },
+    "createGroupAction": "Create New Group",
+    "newConversationAction": "New Conversation",
+    "noGroups": "No groups yet",
+    "noGroupsDesc": "Groups help you collaborate with multiple people at once.",
+    "createFirstGroup": "Create first group",
+    "loading": "Loading messages...",
+    "searchConversations": "Search conversations...",
+    "searchPlaceholder": "Search...",
+    "noMessages": "No messages yet",
+    "noMessagesDesc": "Start a conversation to get going.",
+    "startConversation": "Start Conversation",
+    "emptyState": {
+      "title": "Your inbox is quiet for now",
+      "globalDescription": "Start a conversation or join a community to connect with others.",
+      "tenantDescription": "Connect with colleagues and team members in your professional network.",
+      "startConversation": "Start a conversation",
+      "discoverPeople": "Discover people"
+    }
+  }
+}

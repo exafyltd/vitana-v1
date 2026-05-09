@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Users, Network, TrendingUp, Star, Target, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface NetworkAnalysis {
   id: string;
@@ -130,11 +131,9 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Network className="h-5 w-5 text-primary" />
-            Social Earning Intelligence
+            {t('screens.wallet.socialEarningIntelligence')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            Rank #{avgRank}
-          </Badge>
+          <Badge variant="secondary" className="bg-primary/10 text-primary">{t('screens.wallet.rankAvgrank', { avgRank })}</Badge>
         </div>
       </CardHeader>
       
@@ -144,19 +143,19 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
           <div className="grid grid-cols-3 gap-3 mb-2">
             <div className="text-center">
               <div className="text-lg font-bold text-blue-600">{totalNetworkValue}</div>
-              <div className="text-xs text-muted-foreground">Network Score</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.networkScore')}</div>
             </div>
             <div className="text-center">
               <div className={`text-lg font-bold ${getRankColor(avgRank)}`}>#{avgRank}</div>
-              <div className="text-xs text-muted-foreground">Avg Rank</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.avgRank')}</div>
             </div>
             <div className="text-center">
               <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
-              <div className="text-xs text-muted-foreground">VTN Available</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.vtnAvailable')}</div>
             </div>
           </div>
           <p className="text-xs text-muted-foreground text-center">
-            Your social earning potential is <span className="font-semibold text-blue-600">above average</span>
+            {t('screens.wallet.yourSocialEarningPotential')} <span className="font-semibold text-blue-600">{t('screens.wallet.aboveAverage')}</span>
           </p>
         </div>
 
@@ -164,7 +163,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Users className="h-4 w-4 text-green-500" />
-            Network Analysis
+            {t('screens.wallet.networkAnalysis')}
           </h4>
           
           {mockNetworkAnalysis.slice(0, 2).map((analysis) => (
@@ -172,9 +171,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <h5 className="text-sm font-medium">{analysis.metric}</h5>
-                  <p className="text-xs text-muted-foreground">
-                    Current: {analysis.value} • Rank: #{analysis.rank}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t('screens.wallet.currentValueRankRank', { value: analysis.value, rank: analysis.rank })}</p>
                 </div>
                 <div className="text-right">
                   <Badge variant="outline" className={analysis.change >= 0 ? 
@@ -188,7 +185,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               
               <div className="mb-2">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-muted-foreground">Potential</span>
+                  <span className="text-xs text-muted-foreground">{t('screens.wallet.potential')}</span>
                   <span className="text-xs text-muted-foreground">{analysis.potential}%</span>
                 </div>
                 <Progress value={analysis.potential} className="h-1.5" />
@@ -201,7 +198,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="space-y-3">
           <h4 className="text-sm font-medium flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-purple-500" />
-            Social Opportunities
+            {t('screens.wallet.socialOpportunities')}
           </h4>
           
           {mockSocialOpportunities.slice(0, 2).map((opportunity) => (
@@ -220,20 +217,17 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
               </div>
               
               <div className="flex items-center justify-between mb-2">
-                <div className="text-xs text-muted-foreground">
-                  {opportunity.network} • {opportunity.participants} participants
+                <div className="text-xs text-muted-foreground">{t('screens.wallet.networkParticipantsParticipants', { network: opportunity.network, participants: opportunity.participants })}
                 </div>
-                <div className="text-xs text-purple-600 font-semibold">
-                  {opportunity.multiplier}x multiplier
+                <div className="text-xs text-purple-600 font-semibold">{t('screens.wallet.multiplierXMultiplier', { multiplier: opportunity.multiplier })}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="text-sm font-bold text-emerald-600">
-                  +{opportunity.reward} VTN
+                <div className="text-sm font-bold text-emerald-600">{t('screens.wallet.rewardVtn', { reward: opportunity.reward })}
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Join Now
+                  {t('screens.wallet.joinNow')}
                 </Button>
               </div>
             </div>
@@ -244,16 +238,16 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         <div className="p-3 rounded-lg border bg-gradient-to-r from-amber-500/5 to-orange-500/5 border-amber-200/50">
           <div className="flex items-center gap-2 mb-2">
             <Star className="h-4 w-4 text-amber-600" />
-            <span className="text-sm font-medium">Growth Opportunity</span>
+            <span className="text-sm font-medium">{t('screens.wallet.growthOpportunity')}</span>
           </div>
           <p className="text-xs text-muted-foreground mb-2">
-            Increase your collaboration rate by 15% to move into top 25 earners
+            {t('screens.wallet.increaseYourCollaborationRateBy15')}
           </p>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600 font-medium">Potential: +40% monthly earnings</span>
+            <span className="text-xs text-amber-600 font-medium">{t('screens.wallet.potential40MonthlyEarnings')}</span>
             <Button size="sm" variant="outline" className="text-xs h-6 px-2">
               <Target className="h-3 w-3 mr-1" />
-              Focus Here
+              {t('screens.wallet.focusHere')}
             </Button>
           </div>
         </div>
@@ -261,7 +255,7 @@ export function SocialEarningIntelligenceCard({ className }: SocialEarningIntell
         {/* Quick Action */}
         <Button className="w-full" variant="outline">
           <Network className="h-4 w-4 mr-2" />
-          Expand Network
+          {t('screens.wallet.expandNetwork')}
         </Button>
       </CardContent>
     </Card>

@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 interface RestoreSessionButtonProps {
   onClick: () => void;
@@ -26,7 +27,7 @@ export function RestoreSessionButton({ onClick }: RestoreSessionButtonProps) {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Restore previous session</p>
+          <p>{t('screens.dev.restorePreviousSession')}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

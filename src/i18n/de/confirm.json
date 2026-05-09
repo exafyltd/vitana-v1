@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "Sind Sie sicher, dass Sie dies löschen möchten?",
+    "deleteDesc": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "cancel": "Sind Sie sicher, dass Sie abbrechen möchten?",
+    "cancelDesc": "Ihre Änderungen gehen verloren.",
+    "unsavedChanges": "Sie haben ungespeicherte Änderungen",
+    "unsavedChangesDesc": "Möchten Sie wirklich verlassen? Ihre Änderungen gehen verloren.",
+    "leave": "Möchten Sie diese Seite wirklich verlassen?",
+    "leaveDesc": "Ungespeicherte Änderungen gehen verloren.",
+    "logout": "Möchten Sie sich wirklich abmelden?",
+    "logoutDesc": "Sie müssen sich erneut anmelden.",
+    "remove": "Möchten Sie dieses Element wirklich entfernen?",
+    "removeDesc": "Das Element wird aus der Liste entfernt.",
+    "disconnect": "Möchten Sie diese Verbindung wirklich trennen?",
+    "disconnectDesc": "Sie können sich später erneut verbinden.",
+    "proceed": "Möchten Sie fortfahren?",
+    "proceedDesc": "Diese Aktion wird ausgeführt."
+  }
+}

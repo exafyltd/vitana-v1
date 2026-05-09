@@ -49,7 +49,10 @@ export default function NotificationBell() {
         className="w-[calc(100vw-2rem)] sm:w-96 rounded-2xl shadow-lg p-0 overflow-hidden"
         align="end"
       >
-        <NotificationsPanel onNavigated={() => setDropdownOpen(false)} />
+        <NotificationsPanel
+          onNavigated={() => setDropdownOpen(false)}
+          onClose={() => setDropdownOpen(false)}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

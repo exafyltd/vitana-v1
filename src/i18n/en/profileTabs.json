@@ -1,0 +1,13 @@
+{
+  "profileTabs": {
+    "posts": "Posts",
+    "about": "About",
+    "media": "Media",
+    "groups": "Groups",
+    "events": "Events",
+    "health": "Health",
+    "services": "Services",
+    "insight": "Insight",
+    "milestones": "Milestones"
+  }
+}

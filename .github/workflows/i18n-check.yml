@@ -1,0 +1,49 @@
+name: i18n check
+
+# Wave 1: warn-only. Reports leaks and catalog drift but does NOT block PRs.
+# Wave 2 graduates the toast-args lint to error.
+# Wave 6 graduates the audit and lint to fully blocking.
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'scripts/i18n-*'
+      - 'scripts/generate-screen-inventory.mjs'
+      - 'scripts/split-i18n.mjs'
+      - 'eslint-rules/**'
+      - 'eslint.config.js'
+      - 'docs/SCREEN_INVENTORY.md'
+      - '.github/workflows/i18n-check.yml'
+  push:
+    branches: [main]
+
+jobs:
+  i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Catalog audit (DE↔EN parity, _pending_review check)
+        run: node scripts/i18n-audit.mjs --report-only
+
+      - name: ESLint i18n rule (no-raw-jsx-text, warn-level in Wave 1)
+        run: npm run lint -- --quiet || echo "lint warnings noted; not blocking in Wave 1"
+
+      - name: Regenerate screen inventory
+        run: node scripts/generate-screen-inventory.mjs
+
+      - name: Inventory drift check
+        run: |
+          if ! git diff --exit-code docs/SCREEN_INVENTORY.md; then
+            echo "::warning::docs/SCREEN_INVENTORY.md is out of date. Run 'npm run i18n:inventory' and commit the result."
+          fi

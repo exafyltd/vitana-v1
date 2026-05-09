@@ -6,6 +6,7 @@ import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, M
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMemoryReinforce } from "@/hooks/useMemoryReinforce";
+import { t } from '@/lib/i18n-toast';
 
 interface MemoryCardProps {
   id: string;
@@ -131,7 +132,7 @@ export function MemoryCard({
             )}
 
             {conversationId && (
-              <span className="text-xs text-muted-foreground">• Conversation</span>
+              <span className="text-xs text-muted-foreground">{t('screens.memory.conversation')}</span>
             )}
           </div>
 
@@ -146,7 +147,7 @@ export function MemoryCard({
                 variant="ghost"
                 onClick={() => onEdit(id)}
                 className="h-7 w-7 p-0"
-                title="Edit memory"
+                title={t('screens.memory.editMemory')}
               >
                 <Edit2 className="w-3.5 h-3.5" />
               </Button>
@@ -158,7 +159,7 @@ export function MemoryCard({
                   variant="ghost"
                   onClick={handleConfirm}
                   className="h-7 w-7 p-0 text-green-600 hover:text-green-700"
-                  title="Confirm (increases confidence)"
+                  title={t('screens.memory.confirmIncreasesConfidence')}
                 >
                   <Check className="w-3.5 h-3.5" />
                 </Button>
@@ -167,7 +168,7 @@ export function MemoryCard({
                   variant="ghost"
                   onClick={handleContradict}
                   className="h-7 w-7 p-0 text-red-600 hover:text-red-700"
-                  title="Mark as incorrect (decreases confidence)"
+                  title={t('screens.memory.markAsIncorrectDecreasesConfidence')}
                 >
                   <X className="w-3.5 h-3.5" />
                 </Button>

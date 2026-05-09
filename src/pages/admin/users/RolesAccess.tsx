@@ -22,6 +22,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminUsersNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 // Placeholder dev-access users (would come from /api/v1/dev-access/users in production)
 const DEV_ACCESS_USERS = [
@@ -60,7 +61,7 @@ export default function RolesAccess() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Roles & Access"
+            title={t('screens.admin.rolesAccess')}
             description="Manage role assignments and developer access control."
             emoji="🔐"
           />
@@ -72,10 +73,9 @@ export default function RolesAccess() {
                 <div className="flex items-center gap-2">
                   <Key className="h-5 w-5 text-amber-600" />
                   <div>
-                    <CardTitle>Dev Access</CardTitle>
+                    <CardTitle>{t('screens.admin.devAccess')}</CardTitle>
                     <CardDescription>
-                      Users with <code className="text-xs bg-muted px-1 py-0.5 rounded">exafy_admin=true</code>.
-                      Data sourced from <code className="text-xs bg-muted px-1 py-0.5 rounded">/api/v1/dev-access/users</code>.
+                      {t('screens.admin.usersWith')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.exafy_adminTrue')}</code>{t('screens.admin.dataSourcedFrom')} <code className="text-xs bg-muted px-1 py-0.5 rounded">{t('screens.admin.apiv1devaccessusers')}</code>.
                     </CardDescription>
                   </div>
                 </div>
@@ -86,9 +86,9 @@ export default function RolesAccess() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Granted</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>{t('screens.admin.email')}</TableHead>
+                        <TableHead>{t('screens.admin.granted')}</TableHead>
+                        <TableHead>{t('screens.admin.status')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -118,7 +118,7 @@ export default function RolesAccess() {
                 {/* Grant access form */}
                 <div className="flex gap-2">
                   <Input
-                    placeholder="user@example.com"
+                    placeholder={t('screens.admin.userExampleCom')}
                     value={grantEmail}
                     onChange={(e) => setGrantEmail(e.target.value)}
                     type="email"
@@ -140,9 +140,8 @@ export default function RolesAccess() {
                 <div className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-violet-600" />
                   <div>
-                    <CardTitle>Role Distribution</CardTitle>
-                    <CardDescription>
-                      Breakdown of user roles across the platform ({totalUsers} total users).
+                    <CardTitle>{t('screens.admin.roleDistribution')}</CardTitle>
+                    <CardDescription>{t('screens.admin.breakdownUserRolesAcrossPlatformTotalusers', { totalUsers })}
                     </CardDescription>
                   </div>
                 </div>
@@ -177,12 +176,12 @@ export default function RolesAccess() {
                 <div className="pt-4 border-t grid grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 text-sm">
                     <Users className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Total:</span>
+                    <span className="text-muted-foreground">{t('screens.admin.total')}</span>
                     <span className="font-semibold">{totalUsers}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <UserCog className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">Roles:</span>
+                    <span className="text-muted-foreground">{t('screens.admin.roles')}</span>
                     <span className="font-semibold">{ROLE_DISTRIBUTION.length}</span>
                   </div>
                 </div>

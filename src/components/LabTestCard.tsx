@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Droplets, Building2, Star } from 'lucide-react';
 import { withCardId } from '@/lib/withCardId';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import { t } from '@/lib/i18n-toast';
 
 interface LabTest {
   id: string;
@@ -54,8 +55,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
             <div className="text-2xl font-bold text-primary">
               ${labTest.price.toFixed(0)}
             </div>
-            <div className="text-sm text-muted-foreground">
-              ${(labTest.price / labTest.biomarkers.length).toFixed(0)}/marker
+            <div className="text-sm text-muted-foreground">{t('screens.common.value0marker', { value0: (labTest.price / labTest.biomarkers.length).toFixed(0) })}
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
-            <span>{labTest.turnaround_days} days</span>
+            <span>{t('screens.common.turnaround_daysDays', { turnaround_days: labTest.turnaround_days })}</span>
           </div>
           <div className="flex items-center gap-1">
             <Droplets className="h-4 w-4" />
@@ -87,8 +87,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
         </div>
 
         <div>
-          <div className="text-sm font-medium mb-2">
-            Biomarkers ({labTest.biomarkers.length}):
+          <div className="text-sm font-medium mb-2">{t('screens.common.biomarkersLength', { length: labTest.biomarkers.length })}
           </div>
           <div className="flex flex-wrap gap-1">
             {labTest.biomarkers.slice(0, 4).map((biomarker, index) => (
@@ -97,8 +96,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
               </Badge>
             ))}
             {labTest.biomarkers.length > 4 && (
-              <Badge variant="outline" className="text-xs">
-                +{labTest.biomarkers.length - 4} more
+              <Badge variant="outline" className="text-xs">{t('screens.common.value0More', { value0: labTest.biomarkers.length - 4 })}
               </Badge>
             )}
           </div>
@@ -126,7 +124,7 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
             className="flex-1"
             size="sm"
           >
-            Order Now
+            {t('screens.common.orderNow')}
           </Button>
         </div>
       </CardContent>

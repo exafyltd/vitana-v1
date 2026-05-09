@@ -12,6 +12,7 @@ import { adminAIAssistantNavigation } from "@/config/navigation";
 import { usePatternDiscovery } from "@/hooks/usePatternDiscovery";
 import PatternCard from "@/components/admin/patterns/PatternCard";
 import PatternDetails from "@/components/admin/patterns/PatternDetails";
+import { t } from '@/lib/i18n-toast';
 
 export default function PatternDiscovery() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ export default function PatternDiscovery() {
   return (
     <AppLayout>
       <SEO 
-        title="Pattern Discovery | AI Assistant | Admin" 
+        title={t('screens.admin.patternDiscoveryAiAssistantAdmin')} 
         description="AI-discovered behavioral patterns and opportunities" 
         canonical={window.location.href} 
       />
@@ -61,7 +62,7 @@ export default function PatternDiscovery() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Pattern Discovery"
+            title={t('screens.admin.patternDiscovery')}
             description="AI-discovered behavioral patterns and automation opportunities"
             emoji="📊"
           />
@@ -69,9 +70,9 @@ export default function PatternDiscovery() {
           {/* Analysis Controls */}
           <Card>
             <CardHeader>
-              <CardTitle>Discover New Patterns</CardTitle>
+              <CardTitle>{t('screens.admin.discoverNewPatterns')}</CardTitle>
               <CardDescription>
-                Analyze system data to automatically discover recurring patterns and automation opportunities
+                {t('screens.admin.analyzeSystemDataAutomaticallyDiscoverRecurring')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -84,8 +85,7 @@ export default function PatternDiscovery() {
                 {runAnalysis.isPending ? "Analyzing..." : "Analyze for Patterns"}
               </Button>
               {patterns && patterns.length > 0 && (
-                <p className="text-sm text-muted-foreground mt-4">
-                  Last analysis discovered {patterns.length} patterns
+                <p className="text-sm text-muted-foreground mt-4">{t('screens.admin.lastAnalysisDiscoveredLengthPatterns', { length: patterns.length })}
                 </p>
               )}
             </CardContent>
@@ -96,9 +96,8 @@ export default function PatternDiscovery() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Discovered Patterns</CardTitle>
-                  <CardDescription>
-                    {patterns?.length || 0} patterns discovered
+                  <CardTitle>{t('screens.admin.discoveredPatterns')}</CardTitle>
+                  <CardDescription>{t('screens.admin.value0PatternsDiscovered', { value0: patterns?.length || 0 })}
                   </CardDescription>
                 </div>
                 <Filter className="h-5 w-5 text-muted-foreground" />
@@ -109,29 +108,29 @@ export default function PatternDiscovery() {
                 <div className="flex-1">
                   <Select value={typeFilter} onValueChange={setTypeFilter}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Filter by type..." />
+                      <SelectValue placeholder={t('screens.admin.filterByType')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="user_behavior">User Behavior</SelectItem>
-                      <SelectItem value="temporal">Temporal</SelectItem>
-                      <SelectItem value="communication">Communication</SelectItem>
-                      <SelectItem value="workflow">Workflow</SelectItem>
-                      <SelectItem value="health_metric">Health Metric</SelectItem>
+                      <SelectItem value="all">{t('screens.admin.allTypes')}</SelectItem>
+                      <SelectItem value="user_behavior">{t('screens.admin.userBehavior')}</SelectItem>
+                      <SelectItem value="temporal">{t('screens.admin.temporal')}</SelectItem>
+                      <SelectItem value="communication">{t('screens.admin.communication')}</SelectItem>
+                      <SelectItem value="workflow">{t('screens.admin.workflow')}</SelectItem>
+                      <SelectItem value="health_metric">{t('screens.admin.healthMetric')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex-1">
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Filter by status..." />
+                      <SelectValue placeholder={t('screens.admin.filterByStatus')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="discovered">Discovered</SelectItem>
-                      <SelectItem value="reviewed">Reviewed</SelectItem>
-                      <SelectItem value="implemented">Implemented</SelectItem>
-                      <SelectItem value="dismissed">Dismissed</SelectItem>
+                      <SelectItem value="all">{t('screens.admin.allStatuses')}</SelectItem>
+                      <SelectItem value="discovered">{t('screens.admin.discovered')}</SelectItem>
+                      <SelectItem value="reviewed">{t('screens.admin.reviewed')}</SelectItem>
+                      <SelectItem value="implemented">{t('screens.admin.implemented')}</SelectItem>
+                      <SelectItem value="dismissed">{t('screens.admin.dismissed')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -144,7 +143,7 @@ export default function PatternDiscovery() {
             <Card>
               <CardContent className="py-12">
                 <div className="text-center text-muted-foreground">
-                  Loading patterns...
+                  {t('screens.admin.loadingPatterns')}
                 </div>
               </CardContent>
             </Card>
@@ -167,9 +166,9 @@ export default function PatternDiscovery() {
                 <div className="text-center space-y-4">
                   <Sparkles className="h-12 w-12 mx-auto text-muted-foreground" />
                   <div>
-                    <p className="text-lg font-medium">No Patterns Discovered Yet</p>
+                    <p className="text-lg font-medium">{t('screens.admin.noPatternsDiscoveredYet')}</p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Click "Analyze for Patterns" to start discovering automation opportunities
+                      {t('screens.admin.clickAnalyzeForPatternsStartDiscovering')}
                     </p>
                   </div>
                 </div>

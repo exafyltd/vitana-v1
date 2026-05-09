@@ -13,6 +13,7 @@ import { VertexMediaPreview } from "@/components/vertex/VertexMediaPreview";
 import { VertexDebugConsole } from "@/components/vertex/VertexDebugConsole";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface LogEntry {
   timestamp: string;
@@ -452,11 +453,7 @@ export default function VertexTesting() {
       });
       
     } catch (error) {
-      toast({
-        title: "❌ Test Failed",
-        description: error instanceof Error ? error.message : "Unknown error",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.testFailed2');
     } finally {
       disconnect();
       setIsTestRunning(false);
@@ -472,10 +469,7 @@ export default function VertexTesting() {
     a.download = `vertex-debug-${new Date().toISOString()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-    toast({
-      title: "Logs Exported",
-      description: "Debug logs downloaded successfully",
-    });
+    notify('toasts.admin.logsExported', 'toasts.admin.debugLogsDownloadedSuccessfully');
   };
 
   const getTestIcon = (step: string) => {
@@ -493,7 +487,7 @@ export default function VertexTesting() {
   return (
     <AppLayout>
       <SEO 
-        title="Vertex AI Testing | Admin | VITANA" 
+        title={t('screens.admin.vertexAiTestingAdminVitana')} 
         description="Automated multimodal testing for Vertex AI with visual feedback" 
         canonical={window.location.href} 
       />
@@ -502,7 +496,7 @@ export default function VertexTesting() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Vertex AI Testing Wizard 🧪"
+            title={t('screens.admin.vertexAiTestingWizard')}
             description="Automated multimodal testing with one-click validation"
             emoji="🚀"
           />
@@ -513,7 +507,7 @@ export default function VertexTesting() {
               {/* Test Configuration */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Test Configuration</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.testConfiguration')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -537,8 +531,7 @@ export default function VertexTesting() {
                           });
                         }}
                         disabled={isTestRunning}
-                      >
-                        ⚡ Quick (5 tests, ~20s)
+                      >{t('screens.admin.quick5Tests20s')}
                       </Button>
                       
                       <Button 
@@ -559,8 +552,7 @@ export default function VertexTesting() {
                           });
                         }}
                         disabled={isTestRunning}
-                      >
-                        🔬 Full (9 tests, ~45s)
+                      >{t('screens.admin.full9Tests45s')}
                       </Button>
                       
                       <Button 
@@ -568,8 +560,7 @@ export default function VertexTesting() {
                         size="sm"
                         onClick={() => setTestMode('custom')}
                         disabled={isTestRunning}
-                      >
-                        ⚙️ Custom
+                      >{t('screens.admin.custom')}
                       </Button>
                     </div>
                     
@@ -586,8 +577,7 @@ export default function VertexTesting() {
                               audioResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          🎤 Audio
+                          />{t('screens.admin.audio')}
                         </label>
                         
                         <label className="flex items-center gap-2 text-sm">
@@ -600,8 +590,7 @@ export default function VertexTesting() {
                               screenResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          🖥️ Screen
+                          />{t('screens.admin.screen')}
                         </label>
                         
                         <label className="flex items-center gap-2 text-sm">
@@ -614,8 +603,7 @@ export default function VertexTesting() {
                               cameraResponse: e.target.checked
                             }))}
                             disabled={isTestRunning}
-                          />
-                          📹 Camera
+                          />{t('screens.admin.camera')}
                         </label>
                       </div>
                     )}
@@ -626,8 +614,8 @@ export default function VertexTesting() {
               {/* Test Control */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Automated Test Wizard</CardTitle>
-                  <CardDescription>One-click multimodal validation</CardDescription>
+                  <CardTitle className="text-base">{t('screens.admin.automatedTestWizard')}</CardTitle>
+                  <CardDescription>{t('screens.admin.oneclickMultimodalValidation')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Big Start Button */}
@@ -636,8 +624,7 @@ export default function VertexTesting() {
                       onClick={runAutomatedTest}
                       size="lg"
                       className="w-full h-16 text-lg"
-                    >
-                      🚀 Start Automated Test ({totalEnabledTests} tests)
+                    >{t('screens.admin.startAutomatedTestTotalenabledtestsTests', { totalEnabledTests })}
                     </Button>
                   )}
                   
@@ -645,13 +632,10 @@ export default function VertexTesting() {
                   {isTestRunning && (
                     <div className="space-y-2">
                       <Progress value={(passedTests / totalEnabledTests) * 100} />
-                      <p className="text-sm text-center text-muted-foreground">
-                        {passedTests} / {totalEnabledTests} tests passed
+                      <p className="text-sm text-center text-muted-foreground">{t('screens.admin.passedtestsTotalenabledtestsTestsPassed', { passedTests, totalEnabledTests })}
                       </p>
                       <div className="space-y-2">
-                        <p className="text-xs text-center text-muted-foreground">
-                          Connection: {connectionState}
-                          {connectionState === 'connecting' && (
+                        <p className="text-xs text-center text-muted-foreground">{t('screens.admin.connectionConnectionstate', { connectionState })}{connectionState === 'connecting' && (
                             <span className="ml-2 inline-block align-middle">
                               <span className="inline-block h-3 w-3 animate-spin border-2 border-current border-t-transparent rounded-full" />
                             </span>
@@ -711,9 +695,8 @@ export default function VertexTesting() {
                     <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200">
                       <div className="text-center space-y-2">
                         <div className="text-5xl">🎉</div>
-                        <h3 className="text-lg font-bold text-green-900">All Tests Passed!</h3>
-                        <p className="text-sm text-green-700">
-                          {testMode === 'full' ? 'All multimodal features' : 'Core features'} working perfectly
+                        <h3 className="text-lg font-bold text-green-900">{t('screens.admin.allTestsPassed')}</h3>
+                        <p className="text-sm text-green-700">{t('screens.admin.value0WorkingPerfectly', { value0: testMode === 'full' ? 'All multimodal features' : 'Core features' })}
                         </p>
                         <Button 
                           onClick={() => {
@@ -723,8 +706,7 @@ export default function VertexTesting() {
                           variant="outline"
                           size="sm"
                           className="mt-3"
-                        >
-                          Run Tests Again
+                        >{t('screens.admin.runTestsAgain')}
                         </Button>
                       </div>
                     </div>
@@ -741,8 +723,7 @@ export default function VertexTesting() {
                       variant="destructive"
                       size="sm"
                       className="w-full"
-                    >
-                      Cancel Test
+                    >{t('screens.admin.cancelTest')}
                     </Button>
                   )}
 
@@ -773,14 +754,14 @@ export default function VertexTesting() {
               {/* Tips */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Testing Tips</CardTitle>
+                  <CardTitle className="text-base">{t('screens.admin.testingTips')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
-                  <p>✅ <strong>Quick Mode:</strong> Tests core features (~20s)</p>
-                  <p>✅ <strong>Full Mode:</strong> Tests all multimodal inputs (~45s)</p>
-                  <p>✅ <strong>Custom Mode:</strong> Select specific tests to run</p>
-                  <p>✅ <strong>Camera Test:</strong> Point at an object for AI to see</p>
-                  <p>✅ <strong>Screen Test:</strong> Open a document for AI to analyze</p>
+                  <p>✅ <strong>{t('screens.admin.quickMode')}</strong> {t('screens.admin.testsCoreFeatures20s')}</p>
+                  <p>✅ <strong>{t('screens.admin.fullMode')}</strong> {t('screens.admin.testsAllMultimodalInputs45s')}</p>
+                  <p>✅ <strong>{t('screens.admin.customMode')}</strong> {t('screens.admin.selectSpecificTestsRun')}</p>
+                  <p>✅ <strong>{t('screens.admin.cameraTest')}</strong> {t('screens.admin.pointAtObjectForAiSee')}</p>
+                  <p>✅ <strong>{t('screens.admin.screenTest')}</strong> {t('screens.admin.openDocumentForAiAnalyze')}</p>
                 </CardContent>
               </Card>
             </div>

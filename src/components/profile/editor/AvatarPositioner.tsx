@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface AvatarPositionerProps {
   open: boolean;
@@ -100,7 +101,7 @@ export function AvatarPositioner({
           >
             <img
               src={imageUrl}
-              alt="Position preview"
+              alt={t('screens.profile.positionPreview')}
               className="w-full h-full object-cover pointer-events-none"
               style={{
                 objectPosition: `${offsetX}% ${offsetY}%`,

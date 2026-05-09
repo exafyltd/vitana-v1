@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { TicketOrder } from "@/hooks/useOrderManagement";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
-import { toast } from "@/hooks/use-toast";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface OrderDetailViewProps {
   order: TicketOrder;
@@ -28,27 +28,17 @@ interface OrderDetailViewProps {
 export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) {
   const handlePrintTickets = () => {
     // TODO: Implement print functionality
-    toast({
-      title: "Print Tickets",
-      description: "Ticket printing will be available soon.",
-    });
+    notify('toasts.business.printTickets', 'toasts.business.ticketPrintingWillAvailableSoon');
   };
 
   const handleResendConfirmation = () => {
     // TODO: Implement resend email
-    toast({
-      title: "Confirmation Sent",
-      description: `Confirmation email sent to ${order.buyer_email}`,
-    });
+    notify('toasts.business.confirmationSent');
   };
 
   const handleRefund = () => {
     // TODO: Implement refund flow
-    toast({
-      title: "Refund",
-      description: "Refund functionality will be available soon.",
-      variant: "destructive",
-    });
+    notifyError('toasts.business.refund', 'toasts.business.refundFunctionalityWillAvailableSoon');
   };
 
   return (
@@ -57,16 +47,16 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={handlePrintTickets}>
           <Printer className="w-4 h-4 mr-2" />
-          Print Tickets
+          {t('screens.business.printTickets')}
         </Button>
         <Button variant="outline" size="sm" onClick={handleResendConfirmation}>
           <Mail className="w-4 h-4 mr-2" />
-          Resend Confirmation
+          {t('screens.business.resendConfirmation')}
         </Button>
         {order.status === "completed" && (
           <Button variant="outline" size="sm" onClick={handleRefund} className="text-destructive hover:text-destructive">
             <RefreshCw className="w-4 h-4 mr-2" />
-            Refund
+            {t('screens.business.refund')}
           </Button>
         )}
       </div>
@@ -75,7 +65,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
         {/* Event Card */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Event</CardTitle>
+            <CardTitle className="text-base">{t('screens.business.event')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex gap-3">
@@ -106,32 +96,32 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
         {/* Order Details Card */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Order Details</CardTitle>
+            <CardTitle className="text-base">{t('screens.business.orderDetails')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <User className="w-3.5 h-3.5" />
-                Buyer
+                {t('screens.business.buyer')}
               </span>
               <span className="font-medium">{order.buyer_name}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5" />
-                Email
+                {t('screens.business.email')}
               </span>
               <span className="text-sm">{order.buyer_email}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Order Total</span>
+              <span className="text-sm text-muted-foreground">{t('screens.business.orderTotal')}</span>
               <span className="text-lg font-bold">${order.total_amount.toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground flex items-center gap-2">
                 <Calendar className="w-3.5 h-3.5" />
-                Purchase Date
+                {t('screens.business.purchaseDate')}
               </span>
               <span className="text-sm">
                 {format(new Date(order.created_at), "MMM d, yyyy 'at' h:mm a")}
@@ -141,9 +131,9 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground flex items-center gap-2">
                   <CreditCard className="w-3.5 h-3.5" />
-                  Payment
+                  {t('screens.business.payment')}
                 </span>
-                <span className="text-sm font-mono">Stripe</span>
+                <span className="text-sm font-mono">{t('screens.business.stripe')}</span>
               </div>
             )}
           </CardContent>
@@ -154,8 +144,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Ticket className="w-4 h-4" />
-            Attendees ({order.quantity})
+            <Ticket className="w-4 h-4" />{t('screens.business.attendeesQuantity', { quantity: order.quantity })}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -163,11 +152,11 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
             <table className="w-full">
               <thead>
                 <tr className="bg-muted/50 text-sm">
-                  <th className="text-left px-4 py-2 font-semibold">Ticket #</th>
-                  <th className="text-left px-4 py-2 font-semibold">Name</th>
-                  <th className="text-left px-4 py-2 font-semibold">Type</th>
-                  <th className="text-right px-4 py-2 font-semibold">Price</th>
-                  <th className="text-center px-4 py-2 font-semibold">Check-in</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.ticket')}</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.name')}</th>
+                  <th className="text-left px-4 py-2 font-semibold">{t('screens.business.type')}</th>
+                  <th className="text-right px-4 py-2 font-semibold">{t('screens.business.price')}</th>
+                  <th className="text-center px-4 py-2 font-semibold">{t('screens.business.checkin')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -187,10 +176,10 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                       {order.checked_in_at ? (
                         <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                           <Check className="w-3 h-3 mr-1" />
-                          Checked In
+                          {t('screens.business.checked')}
                         </Badge>
                       ) : (
-                        <Badge variant="secondary">Not Yet</Badge>
+                        <Badge variant="secondary">{t('screens.business.notYet')}</Badge>
                       )}
                     </td>
                   </tr>
@@ -203,7 +192,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
           <div className="mt-4 p-3 bg-muted/30 rounded-lg flex items-center gap-3">
             <QrCode className="w-8 h-8 text-muted-foreground" />
             <div className="flex-1">
-              <p className="text-sm font-medium">QR Code Token</p>
+              <p className="text-sm font-medium">{t('screens.business.qrCodeToken')}</p>
               <p className="text-xs text-muted-foreground font-mono">
                 {order.qr_code_token}
               </p>

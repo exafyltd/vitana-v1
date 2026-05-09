@@ -1,0 +1,50 @@
+{
+  "connectedApps": {
+    "title": "Verbundene Apps",
+    "description": "Verwalten Sie Ihre verbundenen Geräte und Dienste",
+    "searchPlaceholder": "Apps suchen...",
+    "addApp": "App hinzufügen",
+    "connected": "verbunden",
+    "syncing": "synchronisiert",
+    "sections": {
+      "social": "Social & Teilen",
+      "fitness": "Fitness & Wearables",
+      "health": "Gesundheit & Labore",
+      "other": "Weitere"
+    },
+    "status": {
+      "connected": "Verbunden",
+      "notConnected": "Nicht verbunden",
+      "comingSoon": "Demnächst",
+      "soon": "Bald"
+    },
+    "actions": {
+      "connect": "Verbinden",
+      "disconnect": "Trennen",
+      "configure": "Sync konfigurieren",
+      "manage": "Verwalten"
+    },
+    "lastSync": "Letzte Sync",
+    "dataSync": "Daten-Synchronisation",
+    "comingSoonMessage": "{appName}-Integration kommt bald",
+    "popup": {
+      "title": "Apps & Services verbinden",
+      "searchPlaceholder": "Apps und Services suchen...",
+      "categories": {
+        "all": "Alle Apps",
+        "health": "Gesundheit & Fitness",
+        "social": "Social"
+      },
+      "availableApps": "Verfügbare Apps",
+      "verified": "Verifiziert",
+      "connected": "Verbunden",
+      "settings": "Einstellungen",
+      "disconnect": "Trennen",
+      "connect": "Verbinden",
+      "done": "Fertig",
+      "noResults": "Keine Apps gefunden",
+      "connectionSuccess": "Verbindung erfolgreich",
+      "connectionPlaceholder": "{appName}-Verbindung kommt bald"
+    }
+  }
+}

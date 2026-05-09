@@ -5,6 +5,7 @@ import { useWebRTC } from '@/hooks/useWebRTC';
 import { Mic, MicOff, Video, VideoOff, PhoneOff, Monitor, Maximize, Minimize } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface LiveRoomProps {
   roomId: string;
@@ -36,11 +37,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
     if (joinedRef.current) return;
     joinedRef.current = true;
     joinRoom().catch(error => {
-      toast({
-        title: "Failed to join room",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.common.failedJoinRoom');
     });
 
     return () => {
@@ -96,8 +93,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
             muted
             className="w-full h-full object-cover"
           />
-          <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">
-            {userName} (You)
+          <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">{t('screens.common.usernameYou', { userName })}
           </div>
           {!isVideoEnabled && (
             <div className="absolute inset-0 flex items-center justify-center bg-muted">
@@ -114,7 +110,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
         {/* Empty slots */}
         {peers.length === 0 && (
           <Card className="aspect-video bg-muted flex items-center justify-center">
-            <p className="text-muted-foreground">Waiting for others to join...</p>
+            <p className="text-muted-foreground">{t('screens.common.waitingForOthersJoin')}</p>
           </Card>
         )}
       </div>
@@ -169,8 +165,7 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
         </div>
 
         {isConnected && (
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            {peers.length + 1} participant{peers.length !== 0 ? 's' : ''} in the room
+          <p className="text-center text-sm text-muted-foreground mt-4">{t('screens.common.value0ParticipantValue1Room', { value0: peers.length + 1, value1: peers.length !== 0 ? 's' : '' })}
           </p>
         )}
       </div>
@@ -200,7 +195,7 @@ const RemoteVideo = ({ peer }: RemoteVideoProps) => {
         className="w-full h-full object-cover"
       />
       <div className="absolute bottom-2 left-2 bg-black/50 px-2 py-1 rounded text-sm text-white">
-        Participant
+        {t('screens.common.participant')}
       </div>
     </Card>
   );

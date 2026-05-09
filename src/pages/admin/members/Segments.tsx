@@ -13,6 +13,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Card, CardContent } from "@/components/ui/card";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
+import { t } from '@/lib/i18n-toast';
 
 const EXAMPLE_SEGMENTS = [
   { name: "Active last 7 days", description: "Members with at least one session in the last 7 days", count: null },
@@ -28,7 +29,7 @@ export default function MembersSegments() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="📊"
-          title="Segments"
+          title={t('screens.admin.segments')}
           description="Define cohorts of members for targeted notifications and autopilot actions"
         />
 
@@ -51,7 +52,7 @@ export default function MembersSegments() {
         </div>
 
         <AdminEmptyState
-          title="Segment builder coming soon"
+          title={t('screens.admin.segmentBuilderComingSoon')}
           description="Custom segments with saved queries will ship in a future update. The examples above show the structure."
         />
       </div>

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { X, Upload, Loader2, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface EditShortVideoModalProps {
   isOpen: boolean;
@@ -119,17 +119,10 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
         videoElement.src = video.src_url;
       });
       
-      toast({
-        title: 'Thumbnail captured',
-        description: 'Preview the new thumbnail below.',
-      });
+      notify('toasts.community.thumbnailCaptured', 'toasts.community.previewNewThumbnailBelow');
     } catch (error) {
       console.error('Thumbnail capture error:', error);
-      toast({
-        title: 'Capture failed',
-        description: 'Could not capture thumbnail from video. Try uploading a custom image instead.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.captureFailed', 'toasts.community.couldNotCaptureThumbnailFromVideo');
     } finally {
       setIsRegenerating(false);
     }
@@ -137,11 +130,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
   const handleSave = async () => {
     if (!title.trim()) {
-      toast({
-        title: 'Validation error',
-        description: 'Title is required',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.validationError', 'toasts.community.titleRequired');
       return;
     }
 
@@ -186,20 +175,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
       if (updateError) throw updateError;
 
-      toast({
-        title: 'Success',
-        description: 'Video updated successfully',
-      });
+      notify('toasts.community.success', 'toasts.community.videoUpdatedSuccessfully');
 
       onSave();
       onClose();
     } catch (error) {
       console.error('Save error:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update video. Please try again.',
-        variant: 'destructive',
-      });
+      notifyError('toasts.community.error', 'toasts.community.failedUpdateVideoPleaseTryAgain');
     } finally {
       setIsSaving(false);
     }
@@ -209,30 +191,30 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Video Details</DialogTitle>
+          <DialogTitle>{t('screens.community.editVideoDetails')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Title *</Label>
+            <Label htmlFor="title">{t('screens.community.title')}</Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter video title"
+              placeholder={t('screens.community.enterVideoTitle')}
               maxLength={100}
             />
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.community.description')}</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter video description (optional)"
+              placeholder={t('screens.community.enterVideoDescriptionOptional')}
               rows={3}
               maxLength={500}
             />
@@ -240,7 +222,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
           {/* Tags */}
           <div className="space-y-2">
-            <Label htmlFor="tags">Tags (max 5)</Label>
+            <Label htmlFor="tags">{t('screens.community.tagsMax5')}</Label>
             <div className="flex gap-2">
               <Input
                 id="tags"
@@ -252,7 +234,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                     handleAddTag();
                   }
                 }}
-                placeholder="Type tag and press Enter"
+                placeholder={t('screens.community.typeTagPressEnter')}
                 disabled={tags.length >= 5}
               />
               <Button
@@ -261,7 +243,7 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 disabled={!tagInput.trim() || tags.length >= 5}
                 variant="outline"
               >
-                Add
+                {t('screens.community.add')}
               </Button>
             </div>
             {tags.length > 0 && (
@@ -283,13 +265,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
           {/* Thumbnail Update */}
           <div className="space-y-3 pt-4 border-t">
-            <Label>Update Thumbnail</Label>
+            <Label>{t('screens.community.updateThumbnail')}</Label>
             
             {/* Current or preview thumbnail */}
             <div className="relative aspect-video w-full max-w-xs rounded-lg overflow-hidden bg-muted">
               <img
                 src={thumbnailPreview || video.thumbnail_url || ''}
-                alt="Thumbnail preview"
+                alt={t('screens.community.thumbnailPreview')}
                 className="w-full h-full object-contain"
               />
             </div>
@@ -309,14 +291,13 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isSaving || isRegenerating}
               >
-                <Upload className="w-4 h-4 mr-2" />
-                Upload Image
+                <Upload className="w-4 h-4 mr-2" />{t('screens.community.uploadImage')}
               </Button>
             </div>
 
             {/* Regenerate from video */}
             <div className="space-y-2">
-              <Label htmlFor="captureTime">Or capture from video at {captureTime}%</Label>
+              <Label htmlFor="captureTime">{t('screens.community.captureFromVideoAtCapturetime', { captureTime })}</Label>
               <div className="flex gap-2 items-center">
                 <input
                   id="captureTime"
@@ -337,13 +318,12 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
                 >
                   {isRegenerating ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Capturing...
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.capturing')}
                     </>
                   ) : (
                     <>
                       <ImageIcon className="w-4 h-4 mr-2" />
-                      Capture
+                      {t('screens.community.capture')}
                     </>
                   )}
                 </Button>
@@ -354,13 +334,12 @@ export function EditShortVideoModal({ isOpen, onClose, video, onSave }: EditShor
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose} disabled={isSaving}>
-            Cancel
+            {t('screens.community.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving || !title.trim()}>
             {isSaving ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.community.saving')}
               </>
             ) : (
               'Save Changes'

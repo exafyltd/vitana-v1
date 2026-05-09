@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { notifySuccess } from '@/lib/i18n-toast';
 
 export function useHealthPlans() {
   const queryClient = useQueryClient();
@@ -29,7 +30,7 @@ export function useHealthPlans() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['health-plans'] });
-      toast.success('Plan generated successfully! 🎯');
+      notifySuccess('toasts.hooks.planGeneratedSuccessfully');
     },
     onError: (error: any) => {
       toast.error(`Failed to generate plan: ${error.message}`);
@@ -78,7 +79,7 @@ export function useHealthPlans() {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success('Progress logged! 📝');
+      notifySuccess('toasts.hooks.progressLogged');
       queryClient.invalidateQueries({ queryKey: ['health-plans'] });
     }
   });

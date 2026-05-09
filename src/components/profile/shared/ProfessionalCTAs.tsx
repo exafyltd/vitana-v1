@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProfessionalCredentials } from "@/types/profile";
 import { Video, Users, Calendar, MessageCircle, Play, Zap } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfessionalCTAsProps {
   credentials?: ProfessionalCredentials;
@@ -33,12 +34,12 @@ export function ProfessionalCTAs({
           <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-red-700">LIVE NOW</span>
+              <span className="text-sm font-semibold text-red-700">{t('screens.profile.liveNow')}</span>
             </div>
             <p className="text-sm text-red-700 mb-2">{credentials.liveSessionTitle}</p>
             <div className="flex items-center gap-1 text-xs text-red-600">
               <Users className="h-3 w-3" />
-              <span>{credentials.liveViewerCount || 0} watching</span>
+              <span>{t('screens.profile.value0Watching', { value0: credentials.liveViewerCount || 0 })}</span>
             </div>
           </div>
         )}
@@ -56,20 +57,19 @@ export function ProfessionalCTAs({
                 >
                   {isCurrentlyLive ? (
                     <>
-                      <Zap className="h-4 w-4 mr-2" />
-                      Manage Live Session
+                      <Zap className="h-4 w-4 mr-2" />{t('screens.profile.manageLiveSession')}
                     </>
                   ) : (
                     <>
                       <Video className="h-4 w-4 mr-2" />
-                      Go Live
+                      {t('screens.profile.goLive')}
                     </>
                   )}
                 </Button>
               )}
               <Button variant="outline" onClick={onBookSession} className="w-full">
                 <Calendar className="h-4 w-4 mr-2" />
-                Manage Availability
+                {t('screens.profile.manageAvailability')}
               </Button>
             </>
           ) : (
@@ -82,17 +82,17 @@ export function ProfessionalCTAs({
                   size="lg"
                 >
                   <Play className="h-4 w-4 mr-2" />
-                  Join LIVE Session
+                  {t('screens.profile.joinLiveSession')}
                 </Button>
               )}
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={onBookSession} className="flex-1">
                   <Calendar className="h-4 w-4 mr-2" />
-                  Book Session
+                  {t('screens.profile.bookSession')}
                 </Button>
                 <Button variant="outline" onClick={onMessage} className="flex-1">
                   <MessageCircle className="h-4 w-4 mr-2" />
-                  Message
+                  {t('screens.profile.message')}
                 </Button>
               </div>
             </>
@@ -102,8 +102,8 @@ export function ProfessionalCTAs({
         {/* Quick Stats */}
         <div className="mt-4 pt-3 border-t border-muted/50">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Response Rate: 95%</span>
-            <span>Avg Response: 2h</span>
+            <span>{t('screens.profile.responseRate95')}</span>
+            <span>{t('screens.profile.avgResponse2h')}</span>
           </div>
         </div>
       </CardContent>

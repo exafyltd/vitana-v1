@@ -8,8 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Copy, ExternalLink, RefreshCw, CheckCircle, XCircle } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ServiceStatus {
   name: string;
@@ -67,16 +67,16 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
     `.trim();
 
     navigator.clipboard.writeText(text);
-    toast({ title: "Diagnostics copied to clipboard" });
+    notify('toasts.dev.diagnosticsCopiedClipboard');
   };
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent className="w-[500px] sm:max-w-[500px]">
         <SheetHeader>
-          <SheetTitle>System Status Details</SheetTitle>
+          <SheetTitle>{t('screens.dev.systemStatusDetails')}</SheetTitle>
           <SheetDescription>
-            Real-time backend connectivity and diagnostic information
+            {t('screens.dev.realtimeBackendConnectivityDiagnosticInformation')}
           </SheetDescription>
         </SheetHeader>
 
@@ -84,7 +84,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
           <div className="space-y-6">
             {/* Service Matrix */}
             <div>
-              <h3 className="font-semibold text-sm mb-3">Service Status</h3>
+              <h3 className="font-semibold text-sm mb-3">{t('screens.dev.serviceStatus')}</h3>
               <div className="space-y-2">
                 {services.map((service) => (
                   <div
@@ -100,9 +100,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                       <div>
                         <div className="font-medium text-sm">{service.name}</div>
                         {service.lastCode && (
-                          <div className="text-xs text-muted-foreground">
-                            Status: {service.lastCode}
-                          </div>
+                          <div className="text-xs text-muted-foreground">{t('screens.dev.statusLastcode', { lastCode: service.lastCode })}</div>
                         )}
                       </div>
                     </div>
@@ -116,7 +114,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
 
             {/* Connection Timeline */}
             <div>
-              <h3 className="font-semibold text-sm mb-3">Connection Timeline</h3>
+              <h3 className="font-semibold text-sm mb-3">{t('screens.dev.connectionTimeline')}</h3>
               <div className="space-y-2">
                 {connectionEvents.slice(0, 10).map((event, i) => (
                   <div key={i} className="flex items-start gap-2 text-xs">
@@ -143,32 +141,32 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
 
             {/* Advanced Diagnostics */}
             <div>
-              <h3 className="font-semibold text-sm mb-3">Diagnostic Info</h3>
+              <h3 className="font-semibold text-sm mb-3">{t('screens.dev.diagnosticInfo')}</h3>
               <div className="space-y-2 text-xs">
                 <div className="p-3 bg-muted/50 rounded border font-mono break-all">
                   <div className="mb-2">
-                    <span className="text-muted-foreground">Events API:</span>
+                    <span className="text-muted-foreground">{t('screens.dev.eventsApi')}</span>
                     <div className="text-foreground">{diagnosticInfo.eventsUrl}</div>
                   </div>
                   <div className="mb-2">
-                    <span className="text-muted-foreground">Operator API:</span>
+                    <span className="text-muted-foreground">{t('screens.dev.operatorApi')}</span>
                     <div className="text-foreground">{diagnosticInfo.operatorUrl}</div>
                   </div>
                   <div className="mb-2">
-                    <span className="text-muted-foreground">SSE Stream:</span>
+                    <span className="text-muted-foreground">{t('screens.dev.sseStream')}</span>
                     <div className="text-foreground">{diagnosticInfo.sseUrl}</div>
                   </div>
                   <div className="mb-2">
-                    <span className="text-muted-foreground">Origin:</span>
+                    <span className="text-muted-foreground">{t('screens.dev.origin')}</span>
                     <div className="text-foreground">{diagnosticInfo.origin}</div>
                   </div>
                   <div className="mb-2">
-                    <span className="text-muted-foreground">Allowed Origin:</span>
+                    <span className="text-muted-foreground">{t('screens.dev.allowedOrigin')}</span>
                     <div className="text-foreground">{diagnosticInfo.allowOrigin || "N/A"}</div>
                   </div>
                   {diagnosticInfo.userId && (
                     <div>
-                      <span className="text-muted-foreground">User ID:</span>
+                      <span className="text-muted-foreground">{t('screens.dev.userId')}</span>
                       <div className="text-foreground">{diagnosticInfo.userId}</div>
                     </div>
                   )}
@@ -184,7 +182,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 onClick={onRetryAll}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Retry All Connections
+                {t('screens.dev.retryAllConnections')}
               </Button>
               <Button
                 variant="outline"
@@ -192,7 +190,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                 onClick={copyDiagnostics}
               >
                 <Copy className="w-4 h-4 mr-2" />
-                Copy Diagnostic Info
+                {t('screens.dev.copyDiagnosticInfo')}
               </Button>
               <Button
                 variant="outline"
@@ -205,7 +203,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                   rel="noopener noreferrer"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Open Documentation
+                  {t('screens.dev.openDocumentation')}
                 </a>
               </Button>
             </div>

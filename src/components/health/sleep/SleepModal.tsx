@@ -21,7 +21,7 @@ import {
   Bed
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface SleepModalProps {
   data: DailySleepData | null;
@@ -100,13 +100,12 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                 <span className="text-3xl font-bold text-indigo-700 dark:text-indigo-300">
                   {data.sleepScore}
                 </span>
-                <span className="text-xs text-slate-600 dark:text-slate-400">Score</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.score')}</span>
               </div>
             </div>
             
             {/* Title */}
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">
-              {data.day} - Sleep
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">{t('screens.health.daySleep', { day: data.day })}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -121,21 +120,21 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 
               dark:from-indigo-950/30 dark:to-purple-950/30 text-center">
               <Clock className="w-5 h-5 mx-auto mb-1 text-indigo-600 dark:text-indigo-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">Duration</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.duration')}</p>
               <p className="text-sm font-bold">{data.duration}</p>
             </div>
             
             <div className="p-3 rounded-2xl bg-gradient-to-br from-purple-50 to-sky-50 
               dark:from-purple-950/30 dark:to-sky-950/30 text-center">
               <Bed className="w-5 h-5 mx-auto mb-1 text-purple-600 dark:text-purple-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">Bedtime</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.bedtime')}</p>
               <p className="text-sm font-bold">{data.bedtime}</p>
             </div>
             
             <div className="p-3 rounded-2xl bg-gradient-to-br from-sky-50 to-indigo-50 
               dark:from-sky-950/30 dark:to-indigo-950/30 text-center">
               <TrendingUp className="w-5 h-5 mx-auto mb-1 text-sky-600 dark:text-sky-400" />
-              <p className="text-xs text-slate-600 dark:text-slate-400">Wake</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{t('screens.health.wake')}</p>
               <p className="text-sm font-bold">{data.wakeTime}</p>
             </div>
           </div>
@@ -146,9 +145,9 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
               dark:from-emerald-500/20 dark:to-green-500/20 border border-emerald-200/30 dark:border-emerald-700/30">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Excellent Sleep! 🌙</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.excellentSleep')}</p>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Your sleep quality was outstanding. Keep maintaining this routine!
+                  {t('screens.health.yourSleepQualityOutstandingKeepMaintaining')}
                 </p>
               </div>
             </div>
@@ -158,7 +157,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                 dark:from-indigo-500/20 dark:to-purple-500/20 border border-indigo-200/30 dark:border-indigo-700/30">
                 <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium mb-1">AI Insight</p>
+                  <p className="text-sm font-medium mb-1">{t('screens.health.aiInsight')}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400 italic">
                     {data.aiNote}
                   </p>
@@ -173,7 +172,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
               <Moon className="w-5 h-5 text-indigo-600" />
-              Sleep Stages
+              {t('screens.health.sleepStages')}
             </h3>
             <div className="space-y-3">
               {data.stages.map((stage, idx) => {
@@ -202,7 +201,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
                     {/* Details */}
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-semibold capitalize">{stage.stage} Sleep</p>
+                        <p className="text-sm font-semibold capitalize">{t('screens.health.stageSleep', { stage: stage.stage })}</p>
                         <Badge variant="outline" className="text-xs">
                           {stage.percentage}%
                         </Badge>
@@ -220,7 +219,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
           {/* Tags */}
           {data.tags.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold mb-2">Tags</h4>
+              <h4 className="text-sm font-semibold mb-2">{t('screens.health.tags')}</h4>
               <div className="flex flex-wrap gap-2">
                 {data.tags.map(tag => (
                   <Badge key={tag} variant="secondary" className="capitalize">
@@ -238,19 +237,19 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             <Button 
               variant="outline" 
               className="flex-1 gap-2"
-              onClick={() => toast.info('Sleep insights opened')}
+              onClick={() => notifyInfo('toasts.health.sleepInsightsOpened')}
             >
               <TrendingUp className="w-4 h-4" />
-              View Trends
+              {t('screens.health.viewTrends')}
             </Button>
             
             <Button 
               className="flex-1 gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 
                 hover:from-indigo-600 hover:to-purple-600"
-              onClick={() => toast.success('Sleep data logged! 🌙')}
+              onClick={() => notifySuccess('toasts.health.sleepDataLogged')}
             >
               <Sparkles className="w-4 h-4" />
-              Log Sleep
+              {t('screens.health.logSleep')}
             </Button>
           </div>
         </SheetFooter>

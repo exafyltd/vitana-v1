@@ -2,6 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   children: ReactNode;
@@ -52,9 +53,9 @@ export class DevErrorBoundary extends Component<Props, State> {
               <div className="flex items-center gap-3">
                 <AlertTriangle className="h-6 w-6 text-destructive" />
                 <div>
-                  <CardTitle>Something went wrong</CardTitle>
+                  <CardTitle>{t('screens.dev.somethingWentWrong')}</CardTitle>
                   <CardDescription>
-                    The Dev Hub encountered an unexpected error
+                    {t('screens.dev.devHubEncounteredUnexpectedError')}
                   </CardDescription>
                 </div>
               </div>
@@ -68,19 +69,18 @@ export class DevErrorBoundary extends Component<Props, State> {
               
               <div className="flex gap-2">
                 <Button onClick={this.handleReset} variant="default">
-                  Try Again
+                  {t('screens.dev.tryAgain')}
                 </Button>
                 <Button
                   onClick={() => window.location.reload()}
                   variant="outline"
                 >
-                  Refresh Page
+                  {t('screens.dev.refreshPage')}
                 </Button>
                 <Button
                   onClick={() => { window.history.pushState({}, '', '/dev/dashboard'); window.dispatchEvent(new PopStateEvent('popstate')); }}
                   variant="ghost"
-                >
-                  Go to Dashboard
+                >{t('screens.dev.goDashboard')}
                 </Button>
               </div>
             </CardContent>

@@ -1,0 +1,16 @@
+{
+  "groupDetail": {
+    "members": "Members",
+    "public": "Public",
+    "private": "Private",
+    "leaveGroup": "Leave Group",
+    "leaving": "Leaving...",
+    "joinGroup": "Join Group",
+    "joining": "Joining...",
+    "back": "Back",
+    "notFound": "Group not found",
+    "notFoundDesc": "This group may have been removed or doesn't exist.",
+    "browseGroups": "Browse Groups",
+    "support": "Support"
+  }
+}

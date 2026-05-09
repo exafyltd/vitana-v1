@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownLeft, ArrowUpRight, RefreshCw, Gift, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { t } from '@/lib/i18n-toast';
 
 interface Transaction {
   id: string;
@@ -109,7 +110,7 @@ export function MobileWalletTransactionList({
       <Card className={className}>
         {showHeader && (
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Recent Activity</CardTitle>
+            <CardTitle className="text-base">{t('screens.wallet.recentActivity')}</CardTitle>
           </CardHeader>
         )}
         <CardContent className={showHeader ? "pt-0" : "p-4"}>
@@ -137,12 +138,12 @@ export function MobileWalletTransactionList({
       <Card className={className}>
         {showHeader && (
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Recent Activity</CardTitle>
+            <CardTitle className="text-base">{t('screens.wallet.recentActivity')}</CardTitle>
           </CardHeader>
         )}
         <CardContent className={showHeader ? "pt-0" : "p-4"}>
           <div className="text-center py-6 text-muted-foreground">
-            <p className="text-sm">No transactions yet</p>
+            <p className="text-sm">{t('screens.wallet.noTransactionsYet')}</p>
           </div>
         </CardContent>
       </Card>
@@ -153,7 +154,7 @@ export function MobileWalletTransactionList({
     <Card className={className}>
       {showHeader && (
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Recent Activity</CardTitle>
+          <CardTitle className="text-base">{t('screens.wallet.recentActivity')}</CardTitle>
         </CardHeader>
       )}
       <CardContent className={showHeader ? "pt-0" : "p-4"}>

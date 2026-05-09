@@ -1,5 +1,6 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { JOURNEY_WAVES, type JourneyWave } from "@/config/journeyWaves";
+import { t } from '@/lib/i18n-toast';
 
 interface JourneyWaveMapProps {
   /** Day number relative to registration. Pass `dayNumber` from the page; the
@@ -34,18 +35,17 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
       <div className="rounded-2xl border ring-1 ring-border/60 shadow-sm bg-card p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            90-day arc
+            {t('screens.health.text90dayArc')}
           </span>
           {currentId && (
-            <span className="text-[10px] text-muted-foreground">
-              You are here
+            <span className="text-[10px] text-muted-foreground">{t('screens.health.youHere')}
             </span>
           )}
         </div>
         <div
           className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
           role="list"
-          aria-label="90-day journey waves"
+          aria-label={t('screens.health.text90dayJourneyWaves')}
         >
           {JOURNEY_WAVES.map((w) => {
             const isCurrent = w.id === currentId;
@@ -57,9 +57,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
                 <TooltipTrigger asChild>
                   <span className={className} role="listitem">
                     {w.name}{" "}
-                    <span className="opacity-70">
-                      · Day {w.timeline.start_day}–{w.timeline.end_day}
-                    </span>
+                    <span className="opacity-70">{t('screens.health.dayStart_dayEnd_day', { start_day: w.timeline.start_day, end_day: w.timeline.end_day })}</span>
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs">

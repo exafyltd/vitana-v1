@@ -15,6 +15,7 @@ import { EnablePaymentsButton } from '@/components/creator/EnablePaymentsButton'
 import { useState } from 'react';
 import { Plus, AlertCircle } from 'lucide-react';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 export function CreateLiveRoomDialog() {
   const [open, setOpen] = useState(false);
@@ -51,48 +52,48 @@ export function CreateLiveRoomDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Create Live Room
+          {t('screens.liverooms.createLiveRoom')}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Live Room</DialogTitle>
+          <DialogTitle>{t('screens.liverooms.createLiveRoom')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="title">Title *</Label>
+            <Label htmlFor="title">{t('screens.liverooms.title')}</Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="My Live Session"
+              placeholder={t('screens.liverooms.myLiveSession')}
             />
           </div>
 
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.liverooms.description')}</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's this session about?"
+              placeholder={t('screens.liverooms.whatSThisSessionAbout')}
               rows={3}
             />
           </div>
 
           {!isIAPRestricted() && (
             <div>
-              <Label>Access Level *</Label>
+              <Label>{t('screens.liverooms.accessLevel')}</Label>
               <RadioGroup value={accessLevel} onValueChange={(v) => setAccessLevel(v as any)}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="public" id="public" />
-                  <Label htmlFor="public">Free (Public)</Label>
+                  <Label htmlFor="public">{t('screens.liverooms.freePublic')}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="group" id="group" />
-                  <Label htmlFor="group">Paid (Group)</Label>
+                  <Label htmlFor="group">{t('screens.liverooms.paidGroup')}</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -107,10 +108,10 @@ export function CreateLiveRoomDialog() {
                     <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800">
-                        ⛔ Cannot create paid rooms
+                        {t('screens.liverooms.cannotCreatePaidRooms')}
                       </p>
                       <p className="text-sm text-red-700 mt-1">
-                        Complete payment setup first to enable paid room creation and receive 90% of revenue.
+                        {t('screens.liverooms.completePaymentSetupFirstEnablePaid')}
                       </p>
                     </div>
                   </div>
@@ -119,7 +120,7 @@ export function CreateLiveRoomDialog() {
               )}
 
               <div>
-                <Label htmlFor="price">Price (USD) *</Label>
+                <Label htmlFor="price">{t('screens.liverooms.priceUsd')}</Label>
                 <Input
                   id="price"
                   type="number"
@@ -129,7 +130,7 @@ export function CreateLiveRoomDialog() {
                   placeholder="9.99"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  You'll receive 90% of the price. Vitana platform fee: 10%.
+                  {t('screens.liverooms.youLlReceive90PriceVitana')}
                 </p>
               </div>
             </>

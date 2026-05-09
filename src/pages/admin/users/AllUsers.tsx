@@ -20,6 +20,7 @@ import { UserDetailPanel } from "@/components/admin/UserDetailPanel";
 import { adminUsersNavigation } from "@/config/navigation";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useSendInvitation, useRepairProvisioning } from "@/hooks/useSignupFunnel";
+import { t } from '@/lib/i18n-toast';
 
 const ROLE_OPTIONS = [
   { value: "all", label: "All Roles" },
@@ -175,7 +176,7 @@ export default function AllUsers() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="All Users"
+            title={t('screens.admin.allUsers')}
             description="Browse, search, and manage all platform users across tenants."
             emoji="👥"
           />
@@ -183,20 +184,20 @@ export default function AllUsers() {
           {/* Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <AdminStatsCard
-              title="Total Users"
+              title={t('screens.admin.totalUsers')}
               value={total}
               icon={Users}
               loading={isLoading}
             />
             <AdminStatsCard
-              title="New Today"
+              title={t('screens.admin.newToday')}
               value="--"
               subtitle="Placeholder"
               icon={UserPlus}
               loading={isLoading}
             />
             <AdminStatsCard
-              title="Active Roles"
+              title={t('screens.admin.activeRoles')}
               value={uniqueRoles}
               subtitle="Unique roles in current page"
               icon={ShieldCheck}
@@ -207,7 +208,7 @@ export default function AllUsers() {
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Input
-              placeholder="Search by email or name..."
+              placeholder={t('screens.admin.searchByEmailName')}
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -223,7 +224,7 @@ export default function AllUsers() {
               }}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder={t('screens.admin.filterByRole')} />
               </SelectTrigger>
               <SelectContent>
                 {ROLE_OPTIONS.map((opt) => (

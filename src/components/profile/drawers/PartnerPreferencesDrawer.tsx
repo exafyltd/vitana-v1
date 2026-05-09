@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Lock, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import {
   getProfilePrefs,
   patchPartnerPreferences,
@@ -38,6 +38,7 @@ import {
   type GenderPref,
   type RelationshipIntent,
 } from "@/lib/profilePrefsApi";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PartnerPreferencesDrawerProps {
   open: boolean;
@@ -74,7 +75,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
         setDealBreakersText((p.deal_breakers ?? []).join(", "));
       })
       .catch((e) => {
-        toast({ title: "Could not load preferences", description: e?.message ?? "", variant: "destructive" });
+        notifyError('toasts.profile.couldNotLoadPreferences');
       })
       .finally(() => setLoading(false));
   }, [open, toast]);
@@ -101,11 +102,11 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
       if (db.length > 0) payload.deal_breakers = db;
 
       const saved = await patchPartnerPreferences(payload);
-      toast({ title: "Partner preferences saved" });
+      notify('toasts.profile.partnerPreferencesSaved');
       onSaved?.(saved);
       onOpenChange(false);
     } catch (e: any) {
-      toast({ title: "Save failed", description: e?.message ?? "", variant: "destructive" });
+      notifyError('toasts.profile.saveFailed');
     } finally {
       setSaving(false);
     }
@@ -115,12 +116,12 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Partner preferences</DialogTitle>
+          <DialogTitle>{t('screens.profile.partnerPreferences')}</DialogTitle>
         </DialogHeader>
 
         <p className="text-xs text-muted-foreground flex items-center gap-1.5 -mt-2">
           <Lock className="h-3 w-3" />
-          Private by default. Adjust visibility per field in Privacy & Visibility.
+          {t('screens.profile.privateByDefaultAdjustVisibilityPer')}
         </p>
 
         {loading ? (
@@ -130,21 +131,21 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
         ) : (
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label>I'm looking for</Label>
+              <Label>{t('screens.profile.iMLookingFor')}</Label>
               <Select value={genderPref} onValueChange={(v) => setGenderPref(v as GenderPref)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose..." />
+                  <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="female">Women</SelectItem>
-                  <SelectItem value="male">Men</SelectItem>
-                  <SelectItem value="any">Anyone</SelectItem>
+                  <SelectItem value="female">{t('screens.profile.women')}</SelectItem>
+                  <SelectItem value="male">{t('screens.profile.men')}</SelectItem>
+                  <SelectItem value="any">{t('screens.profile.anyone')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label>Age range — {ageRange[0]} to {ageRange[1]}</Label>
+              <Label>{t('screens.profile.ageRangeValue0Value1', { value0: ageRange[0], value1: ageRange[1] })}</Label>
               <Slider
                 min={18}
                 max={90}
@@ -157,7 +158,7 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label>Within {maxRadius} km</Label>
+              <Label>{t('screens.profile.withinMaxradiusKm', { maxRadius })}</Label>
               <Slider
                 min={0}
                 max={500}
@@ -168,10 +169,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Where</Label>
+              <Label htmlFor="location">{t('screens.profile.where')}</Label>
               <Input
                 id="location"
-                placeholder="e.g. Vienna, Austria"
+                placeholder={t('screens.profile.eGViennaAustria')}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 maxLength={200}
@@ -179,25 +180,25 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label>What I'm looking for</Label>
+              <Label>{t('screens.profile.whatIMLookingFor')}</Label>
               <Select value={intent} onValueChange={(v) => setIntent(v as RelationshipIntent)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose..." />
+                  <SelectValue placeholder={t('screens.profile.choose')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="dating">Dating</SelectItem>
-                  <SelectItem value="life_partner">Life partner</SelectItem>
-                  <SelectItem value="companionship">Companionship</SelectItem>
-                  <SelectItem value="open">Open</SelectItem>
+                  <SelectItem value="dating">{t('screens.profile.dating')}</SelectItem>
+                  <SelectItem value="life_partner">{t('screens.profile.lifePartner')}</SelectItem>
+                  <SelectItem value="companionship">{t('screens.profile.companionship')}</SelectItem>
+                  <SelectItem value="open">{t('screens.profile.open')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="must-haves">Must-haves (comma-separated, up to 10)</Label>
+              <Label htmlFor="must-haves">{t('screens.profile.musthavesCommaseparatedUp10')}</Label>
               <Textarea
                 id="must-haves"
-                placeholder="kind, curious, active outdoors"
+                placeholder={t('screens.profile.kindCuriousActiveOutdoors')}
                 value={mustHavesText}
                 onChange={(e) => setMustHavesText(e.target.value)}
                 rows={2}
@@ -205,10 +206,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="deal-breakers">Deal-breakers (comma-separated, up to 10)</Label>
+              <Label htmlFor="deal-breakers">{t('screens.profile.dealbreakersCommaseparatedUp10')}</Label>
               <Textarea
                 id="deal-breakers"
-                placeholder="smoker, long-distance only"
+                placeholder={t('screens.profile.smokerLongdistanceOnly')}
                 value={dealBreakersText}
                 onChange={(e) => setDealBreakersText(e.target.value)}
                 rows={2}
@@ -217,11 +218,10 @@ export function PartnerPreferencesDrawer({ open, onOpenChange, onSaved }: Partne
 
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-                Cancel
+                {t('screens.profile.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={saving}>
-                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Save
+                {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}{t('screens.profile.save')}
               </Button>
             </div>
           </div>

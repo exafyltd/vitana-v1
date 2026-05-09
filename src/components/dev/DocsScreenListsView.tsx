@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Layout } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 export function DocsScreenListsView() {
   const screenLists = [
@@ -25,10 +26,10 @@ export function DocsScreenListsView() {
                 </Badge>
               </div>
               <CardTitle className="mt-4">{list.name}</CardTitle>
-              <CardDescription>{list.count} screens defined</CardDescription>
+              <CardDescription>{t('screens.dev.countScreensDefined', { count: list.count })}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">Portal: {list.portal}</p>
+              <p className="text-sm text-muted-foreground">{t('screens.dev.portalPortal', { portal: list.portal })}</p>
             </CardContent>
           </Card>
         </div>

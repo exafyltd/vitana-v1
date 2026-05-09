@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import { toast } from "@/hooks/use-toast";
 import { analytics } from "@/lib/analytics";
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface ShareOptions {
   handle: string;
@@ -30,16 +30,21 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
   // the Maxina app instead of opening WhatsApp/Telegram's in-app browser.
   // Crawlers still get rich previews via the `vitanaland-og-proxy`
   // worker, which is bound to `vitanaland.com/profiles/*` and proxies the
-  // OG render through the gateway. When we have an avatar_url we append
-  // ?v=<hash(avatar_url)> so that WhatsApp/Facebook/Telegram invalidate
-  // their per-URL preview cache the moment the avatar changes — without
-  // busting cache on unrelated re-shares.
+  // OG render through the gateway.
+  //
+  // We ALWAYS append `?v=<hash>` — even when avatarUrl is null. WhatsApp/
+  // Facebook/Telegram cache previews per-URL for ~7d, and a profile that
+  // had no avatar at first-share would otherwise be permanently stuck on
+  // whatever the worker rendered that first time (often "no image" while
+  // the default-images bucket was 403'ing). Hashing `noavatar:<id>` gives
+  // those URLs a distinct, stable key that flips the moment an avatar is
+  // added, forcing a fresh scrape.
   const getShareUrl = useCallback(() => {
     const base = `https://vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
-    if (avatarUrl) {
-      return `${base}?v=${hashString(avatarUrl)}`;
-    }
-    return base;
+    const versionInput = avatarUrl && avatarUrl.length > 0
+      ? avatarUrl
+      : `noavatar:${profileId}`;
+    return `${base}?v=${hashString(versionInput)}`;
   }, [profileId, avatarUrl]);
 
   // Check if Web Share API is available
@@ -50,11 +55,7 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
   // Open share sheet and track
   const openShare = useCallback(() => {
     if (!isPublic) {
-      toast({
-        title: "Cannot share private profile",
-        description: "Profile must be public to share",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.cannotSharePrivateProfile', 'toasts.hooks.profileMustPublicShare');
       return;
     }
 
@@ -67,18 +68,11 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
     try {
       const url = getShareUrl();
       await navigator.clipboard.writeText(url);
-      toast({
-        title: "Profile link copied",
-        description: "Share link has been copied to clipboard"
-      });
+      notify('toasts.hooks.profileLinkCopied', 'toasts.hooks.shareLinkHasCopiedClipboard');
       analytics.trackShare('share_completed', 'copy_link', profileId, handle);
       setIsShareOpen(false);
     } catch (error) {
-      toast({
-        title: "Failed to copy",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.hooks.failedCopy', 'toasts.hooks.pleaseTryAgain');
     }
   }, [getShareUrl, profileId, handle]);
 
@@ -136,14 +130,11 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
     try {
       const url = getShareUrl();
       await navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied!",
-        description: "Paste it in your Instagram story or post"
-      });
+      notify('toasts.hooks.linkCopied', 'toasts.hooks.pasteItYourInstagramStoryPost');
       analytics.trackShare('share_completed', 'instagram', profileId, handle);
       setIsShareOpen(false);
     } catch {
-      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+      notifyError('toasts.hooks.failedCopy', 'toasts.hooks.pleaseTryAgain');
     }
   }, [getShareUrl, profileId, handle]);
 
@@ -152,14 +143,11 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
     try {
       const url = getShareUrl();
       await navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied!",
-        description: "Paste it in your TikTok bio or video description"
-      });
+      notify('toasts.hooks.linkCopied', 'toasts.hooks.pasteItYourTiktokBioVideo');
       analytics.trackShare('share_completed', 'tiktok', profileId, handle);
       setIsShareOpen(false);
     } catch {
-      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+      notifyError('toasts.hooks.failedCopy', 'toasts.hooks.pleaseTryAgain');
     }
   }, [getShareUrl, profileId, handle]);
 
@@ -168,14 +156,11 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
     try {
       const url = getShareUrl();
       await navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied!",
-        description: "Paste it in your YouTube video description or community post"
-      });
+      notify('toasts.hooks.linkCopied', 'toasts.hooks.pasteItYourYoutubeVideoDescription');
       analytics.trackShare('share_completed', 'youtube', profileId, handle);
       setIsShareOpen(false);
     } catch {
-      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+      notifyError('toasts.hooks.failedCopy', 'toasts.hooks.pleaseTryAgain');
     }
   }, [getShareUrl, profileId, handle]);
 
@@ -194,11 +179,7 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
       setIsShareOpen(false);
     } catch (error) {
       if ((error as Error).name !== 'AbortError') {
-        toast({
-          title: "Share failed",
-          description: "Please try another sharing method",
-          variant: "destructive"
-        });
+        notifyError('toasts.hooks.shareFailed', 'toasts.hooks.pleaseTryAnotherSharingMethod');
       }
     }
   }, [canUseNativeShare, getShareUrl, name, profileId, handle]);

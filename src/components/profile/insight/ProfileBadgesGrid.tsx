@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 interface BadgeItem {
   id: string;
@@ -99,7 +100,7 @@ export function ProfileBadgesGrid({ badges, className }: ProfileBadgesGridProps)
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Trophy className="h-5 w-5 text-[hsl(var(--pill-mental-accent))]" />
-          Badges & Achievements
+          {t('screens.profile.badgesAchievements')}
         </CardTitle>
       </CardHeader>
       <CardContent>

@@ -1,0 +1,67 @@
+{
+  "health": {
+    "title": "Gesundheit",
+    "description": "Ihr persönliches Gesundheits-Dashboard",
+    "overview": "Übersicht",
+    "overviewDesc": "Ihr umfassendes Gesundheits-Dashboard",
+    "servicesHub": "Service-Hub",
+    "servicesHubDesc": "Ärzte, Coaching, Programme & Screenings buchen",
+    "biomarkers": "Biomarker",
+    "biomarkersDesc": "Ihre neuesten Testergebnisse und Biomarker",
+    "healthTracker": "Mein Gesundheitstracker",
+    "healthTrackerDesc": "Tägliche Ernährung, Schlaf, Bewegung verfolgen",
+    "education": "Bildung & Wissenschaft",
+    "educationDesc": "Gesundheitsthemen lernen und Ressourcen",
+    "priorityFocus": "Priorität heute",
+    "priorityFocusExplanation": "Dieser Bereich hat derzeit den größten Einfluss auf Ihre langfristige Gesundheit.",
+    "autopilotGuidance": "Autopilot-Empfehlungen",
+    "autopilotSuggests": "Autopilot empfiehlt",
+    "takeAction": "Aktion ausführen",
+    "uploadBloodTest": "Bluttest hochladen",
+    "orderBloodTest": "Bluttest bestellen",
+    "viewPlans": "Pläne anzeigen",
+    "vitanaIndex": "Vitana Index",
+    "healthSnapshot": "Dein Gesundheits-Überblick",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Verbessernd",
+      "declining": "Abnehmend",
+      "stable": "Stabil"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Bluttestergebnisse hochladen",
+      "startFitnessChallenge": "30-Tage-Fitness-Challenge starten"
+    },
+    "pillars": {
+      "sleep": "Schlaf",
+      "exercise": "Bewegung",
+      "nutrition": "Ernährung",
+      "hydration": "Hydration",
+      "mental": "Mental"
+    },
+    "emptyStates": {
+      "noSleepPlan": "Noch kein Schlafplan",
+      "noSleepPlanDesc": "Generieren Sie Ihren personalisierten Schlafplan mit KI-optimierten Zielen, abgestimmt auf Ihren Biorhythmus, Erholungsbedürfnisse und tägliche Leistung.",
+      "noExercisePlan": "Noch kein Trainingsplan",
+      "noExercisePlanDesc": "Generieren Sie Ihren personalisierten Trainingsplan mit KI-optimierten Übungen, abgestimmt auf Ihr Fitnesslevel, Ziele und Erholungsbedürfnisse.",
+      "noNutritionPlan": "Noch kein Ernährungsplan",
+      "noNutritionPlanDesc": "Generieren Sie Ihren personalisierten Ernährungsplan mit leckeren, ausgewogenen Rezepten, abgestimmt auf Ihre Ziele und Ernährungsvorlieben.",
+      "noHydrationPlan": "Noch kein Hydratationsplan",
+      "noHydrationPlanDesc": "Generieren Sie Ihren personalisierten Hydratationsplan mit KI-optimierten Tageszielen, abgestimmt auf Ihr Aktivitätslevel, Umgebung und Erholungsbedürfnisse.",
+      "noMentalPlan": "Noch kein Mental-Plan",
+      "noMentalPlanDesc": "Generieren Sie Ihren personalisierten Mental-Wellness-Plan, um Stress, Fokus und emotionales Gleichgewicht mit KI-Unterstützung zu verfolgen.",
+      "generatePlan": "Plan generieren",
+      "generating": "Wird generiert..."
+    },
+    "noSupplements": "Noch keine Nahrungsergänzungsmittel",
+    "noSupplementsDesc": "Verfolgen Sie Ihre täglichen Vitamine, Mineralien und Nahrungsergänzungsmittel. Fügen Sie Ihr erstes Supplement hinzu.",
+    "noReports": "Noch keine Gesundheitsberichte",
+    "noReportsDesc": "Laden Sie Ihre Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
+    "medical": "Medizin",
+    "supplements": "Supplemente",
+    "uploadDescription": "Bluttests, Bildgebung, Laborergebnisse",
+    "unknownProvider": "Unbekannter Anbieter",
+    "addSupplement": "Supplement hinzufügen",
+    "uploadFirstReport": "Ersten Bericht hochladen"
+  }
+}

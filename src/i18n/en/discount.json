@@ -1,0 +1,31 @@
+{
+  "discount": {
+    "welcomeTitle": "Your Welcome Gift",
+    "welcomeMessage": "Use this code for 10% off your first event",
+    "validFor": "Valid for 90 days",
+    "applyCode": "Apply discount code",
+    "applied": "Discount applied!",
+    "expired": "This code has expired",
+    "invalid": "Invalid discount code",
+    "bannerAvailable": "Welcome discount available",
+    "tapToApply": "Apply",
+    "discountAppliedAmount": "{percent}% discount applied",
+    "remove": "Remove",
+    "ticketsComing": "Tickets coming soon",
+    "contactOrganizer": "Contact the event organizer for ticket information.",
+    "contactOrganizerPrice": "This event costs ${price}. Contact the organizer for ticket availability.",
+    "soldOut": "Sold Out",
+    "salesEnded": "Sales ended",
+    "salesStart": "Sales start {date}",
+    "free": "Free",
+    "ticketsSelected": "{count} ticket(s) selected",
+    "useAccountEmail": "Use my account email",
+    "buyAsGuest": "Buy as guest (no account)",
+    "guestDetails": "Enter your details to receive your ticket. No account required.",
+    "fullName": "Full Name",
+    "email": "Email",
+    "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
+    "left": "{count} left",
+    "loadFailed": "Failed to load tickets"
+  }
+}

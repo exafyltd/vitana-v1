@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Lightbulb, ArrowRight, Sparkles, Target } from "lucide-react";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface Suggestion {
   title: string;
@@ -163,7 +164,7 @@ function SmartSuggestionsBase({
         {displaySuggestions.length === 0 && (
           <div className="text-center py-6 text-muted-foreground">
             <Lightbulb className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">All caught up! Check back later for new insights.</p>
+            <p className="text-sm">{t('screens.health.allCaughtUpCheckBackLater')}</p>
           </div>
         )}
       </CardContent>

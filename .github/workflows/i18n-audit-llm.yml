@@ -1,0 +1,171 @@
+name: i18n LLM audit
+
+# Reviews translation quality across locales using a different LLM than the
+# one that produced the translations. Two-phase: cheap static checks
+# (placeholder integrity, length, brand preservation, HTML leak) + LLM
+# semantic review on the rest.
+#
+# Per-language reports:
+#   docs/i18n-audit-<locale>.md           (human summary)
+#   src/i18n/<locale>/<shard>._audit.json (machine-readable verdicts)
+#
+# Triggers:
+#   - workflow_dispatch (manual, with locale + provider inputs)
+#   - schedule (nightly cron — drains the audit queue across all GA + draft locales)
+#
+# Secrets needed (in repo Settings → Secrets):
+#   GOOGLE_GEMINI_API_KEY  — preferred auditor (different from DeepSeek translator)
+#   ANTHROPIC_API_KEY      — fallback
+#   DEEPSEEK_API_KEY       — only as a last resort (correlated-error risk)
+
+on:
+  workflow_dispatch:
+    inputs:
+      locale:
+        description: 'Target locale (de, sr, ar, es, ru, zh, fr, pt, pl)'
+        required: true
+        default: 'de'
+      provider:
+        description: 'Auditor LLM provider'
+        required: true
+        default: 'gemini'
+        type: choice
+        options:
+          - gemini
+          - anthropic
+          - deepseek
+      shard:
+        description: 'Single shard name (omit for all)'
+        required: false
+        default: ''
+      threshold:
+        description: 'Max % flagged before failing the run'
+        required: false
+        default: '10'
+      resume:
+        description: 'Skip keys already marked OK in _audit.json'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+  schedule:
+    # Nightly at 03:30 UTC — runs the audit for every GA + draft locale that
+    # has a target dir under src/i18n/. The matrix below picks them up
+    # automatically.
+    - cron: '30 3 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: i18n-audit-llm-${{ github.event.inputs.locale || 'all' }}
+  cancel-in-progress: false
+
+jobs:
+  audit-single:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Run audit
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          ARGS="--locale=${{ inputs.locale }} --provider=${{ inputs.provider }} --threshold=${{ inputs.threshold }}"
+          if [ -n "${{ inputs.shard }}" ]; then
+            ARGS="$ARGS --shard=${{ inputs.shard }}"
+          fi
+          if [ "${{ inputs.resume }}" = "true" ]; then
+            ARGS="$ARGS --resume"
+          fi
+          echo "Running: node scripts/i18n-audit-llm.mjs $ARGS"
+          set +e
+          node scripts/i18n-audit-llm.mjs $ARGS
+          AUDIT_EXIT=$?
+          echo "audit_exit=$AUDIT_EXIT" >> $GITHUB_OUTPUT
+          # Don't fail the step on audit exit 1 — we still want to commit the report
+          exit 0
+
+      - name: Commit audit results
+        run: |
+          if git diff --quiet src/i18n/ docs/; then
+            echo "No audit changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/i18n/ docs/
+          git commit -m "chore(i18n): audit ${{ inputs.locale }} via ${{ inputs.provider }}
+
+Auto-generated audit verdicts (OK / EDIT_SUGGESTED / LOW_CONFIDENCE).
+See docs/i18n-audit-${{ inputs.locale }}.md for the human summary.
+"
+          git push origin HEAD:${{ github.ref_name }}
+
+  audit-nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        locale: [de, sr, ar, es, ru, zh, fr, pt, pl]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Skip if locale dir absent
+        id: precheck
+        run: |
+          if [ ! -d "src/i18n/${{ matrix.locale }}" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Skipping ${{ matrix.locale }} (no shards)"
+          fi
+
+      - name: Run audit
+        if: steps.precheck.outputs.skip != 'true'
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          set +e
+          node scripts/i18n-audit-llm.mjs --locale=${{ matrix.locale }} --provider=gemini --resume --threshold=10
+          exit 0
+
+      - name: Open auto-PR with audit results
+        if: steps.precheck.outputs.skip != 'true'
+        run: |
+          if git diff --quiet src/i18n/ docs/; then
+            echo "No new audit findings for ${{ matrix.locale }}."
+            exit 0
+          fi
+          BRANCH="auto/i18n-audit-${{ matrix.locale }}-$(date +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add src/i18n/ docs/
+          git commit -m "chore(i18n): nightly audit — ${{ matrix.locale }}"
+          git push -u origin "$BRANCH" || true

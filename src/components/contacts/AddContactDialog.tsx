@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
+import { t } from '@/lib/i18n-toast';
 
 interface SearchResult {
   user_id: string;
@@ -235,9 +236,9 @@ export default function AddContactDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add Contact</DialogTitle>
+          <DialogTitle>{t('screens.contacts.addContact')}</DialogTitle>
           <DialogDescription>
-            Search for VITANA users or add manually
+            {t('screens.contacts.searchForVitanaUsersAddManually')}
           </DialogDescription>
         </DialogHeader>
         
@@ -247,11 +248,11 @@ export default function AddContactDialog({
               <>
                 {/* Search Input */}
                 <div className="space-y-2">
-                  <Label>Search VITANA Users</Label>
+                  <Label>{t('screens.contacts.searchVitanaUsers')}</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                     <Input
-                      placeholder="Type name, email, or phone..."
+                      placeholder={t('screens.contacts.typeNameEmailPhone')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-9"
@@ -324,8 +325,7 @@ export default function AddContactDialog({
                     type="button"
                     onClick={() => setManualMode(true)}
                     className="w-full"
-                  >
-                    Can't find them? Add manually
+                  >{t('screens.contacts.canTFindThemAddManually')}
                   </Button>
                 )}
               </>
@@ -335,12 +335,11 @@ export default function AddContactDialog({
             {manualMode && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="name">
-                    Name <span className="text-destructive">*</span>
+                  <Label htmlFor="name">{t('screens.contacts.name')} <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="name"
-                    placeholder="John Doe"
+                    placeholder={t('screens.contacts.johnDoe')}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -349,7 +348,7 @@ export default function AddContactDialog({
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">{t('screens.contacts.phoneNumber')}</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -360,11 +359,11 @@ export default function AddContactDialog({
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">{t('screens.contacts.emailAddress')}</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder={t('screens.contacts.johnExampleCom')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -376,8 +375,7 @@ export default function AddContactDialog({
                   type="button"
                   onClick={() => setManualMode(false)}
                   className="w-full"
-                >
-                  Search users instead
+                >{t('screens.contacts.searchUsersInstead')}
                 </Button>
               </>
             )}
@@ -390,7 +388,7 @@ export default function AddContactDialog({
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('screens.contacts.cancel')}
             </Button>
             <Button 
               type="submit" 
@@ -398,8 +396,7 @@ export default function AddContactDialog({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Adding...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.contacts.adding')}
                 </>
               ) : (
                 "Add Contact"

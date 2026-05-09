@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ImageWithFallbackProps {
   src: string;
@@ -50,7 +51,7 @@ export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWi
         onClick={onClick}
       >
         <RefreshCw className="h-6 w-6 mb-2" />
-        <p className="text-xs text-center px-2">Image unavailable</p>
+        <p className="text-xs text-center px-2">{t('screens.diary.imageUnavailable')}</p>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -58,7 +59,7 @@ export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWi
           }}
           className="text-xs text-primary hover:underline mt-1"
         >
-          Retry
+          {t('screens.diary.retry')}
         </button>
       </div>
     );

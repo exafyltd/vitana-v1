@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 const GATEWAY_URL =
   (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
@@ -81,7 +82,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
   const handleSubmit = async () => {
     const numericValue = Number(value);
     if (!Number.isFinite(numericValue)) {
-      toast({ title: "Enter a number", variant: "destructive" });
+      notifyError('toasts.health.enterNumber');
       return;
     }
     setSubmitting(true);
@@ -105,21 +106,14 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
       if (!res.ok || !json.ok) {
         throw new Error(json.detail || json.error || "Log failed");
       }
-      toast({
-        title: "Logged — your Index is recomputing",
-        description: `${PILLAR_LABELS[pillar]} · ${selected.label}: ${numericValue} ${selected.unit}`,
-      });
+      notify('toasts.health.loggedYourIndexRecomputing');
       // Invalidate Index + agent queries so the badge + Detail refresh.
       queryClient.invalidateQueries({ queryKey: ["vitana_index"] });
       queryClient.invalidateQueries({ queryKey: ["pillar_agents_outputs"] });
       setValue("");
       onOpenChange(false);
     } catch (err: any) {
-      toast({
-        title: "Could not save",
-        description: (err.message || "Try again in a moment.").slice(0, 300),
-        variant: "destructive",
-      });
+      notifyError('toasts.health.couldNotSave');
     } finally {
       setSubmitting(false);
     }
@@ -129,17 +123,14 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Log a data point</DialogTitle>
-          <DialogDescription>
-            Add a single health data point today. The corresponding pillar agent will
-            see it within a second and the Connected Data segment on that pillar's
-            bar will grow.
+          <DialogTitle>{t('screens.health.logDataPoint')}</DialogTitle>
+          <DialogDescription>{t('screens.health.addSingleHealthDataPointToday')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4 space-y-4">
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Pillar</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.pillar')}</Label>
             <div className="grid grid-cols-5 gap-1 mt-2">
               {(Object.keys(FEATURES) as PillarKey[]).map((p) => (
                 <button
@@ -159,7 +150,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
           </div>
 
           <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Metric</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.metric')}</Label>
             <select
               value={featureKey}
               onChange={(e) => setFeatureKey(e.target.value)}
@@ -174,8 +165,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
           </div>
 
           <div>
-            <Label htmlFor="log-data-value" className="text-xs uppercase tracking-wider text-muted-foreground">
-              Value ({selected.unit})
+            <Label htmlFor="log-data-value" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.health.valueUnit', { unit: selected.unit })}
             </Label>
             <Input
               id="log-data-value"
@@ -191,7 +181,7 @@ export default function VitanaLogDataDialog({ open, onOpenChange }: Props) {
 
         <DialogFooter className="flex justify-end gap-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t('screens.health.cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={submitting || !value}>
             {submitting ? "Saving…" : "Log data"}

@@ -40,6 +40,7 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -236,10 +237,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         if (reward) toast.success(`+${reward} VTN earned!`);
         fetchRecommendations();
       } else {
-        toast.error("Could not complete task");
+        notifyError('toasts.common.couldNotCompleteTask');
       }
     } catch {
-      toast.error("Could not complete task");
+      notifyError('toasts.common.couldNotCompleteTask');
     } finally {
       setCompletingId(null);
     }
@@ -300,14 +301,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   {completingId === action.id ? (
                     <Loader2 className="w-3 h-3 animate-spin" />
                   ) : (
-                    <>Complete ✓</>
+                    <>{t('screens.common.complete')}</>
                   )}
                 </Button>
               )}
               {isCompleted && (
                 <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
                   <Check className="w-3 h-3 mr-1" />
-                  Erledigt
+                  {t('screens.common.erledigt')}
                 </Badge>
               )}
               {isPending && action.timeEstimate && (
@@ -349,7 +350,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         </div>
         <div>
           <h3 className="text-lg font-bold text-foreground">
-            Erledigt!
+            {t('screens.common.erledigt2')}
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
             {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
@@ -363,7 +364,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderLoading = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-      <p className="text-sm text-muted-foreground">Loading recommendations…</p>
+      <p className="text-sm text-muted-foreground">{t('screens.common.loadingRecommendations')}</p>
     </div>
   );
 
@@ -371,10 +372,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderError = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <WifiOff className="w-10 h-10 text-destructive mb-4" />
-      <p className="text-sm font-medium mb-1">Could not load recommendations</p>
+      <p className="text-sm font-medium mb-1">{t('screens.common.couldNotLoadRecommendations')}</p>
       <p className="text-xs text-muted-foreground mb-4">{error}</p>
       <Button size="sm" variant="outline" onClick={() => fetchRecommendations()}>
-        Try Again
+        {t('screens.common.tryAgain')}
       </Button>
     </div>
   );
@@ -383,8 +384,8 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const renderEmpty = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
       <PartyPopper className="w-10 h-10 text-primary mb-4" />
-      <p className="text-sm font-medium mb-1">All caught up!</p>
-      <p className="text-xs text-muted-foreground">No new recommendations right now. Check back later.</p>
+      <p className="text-sm font-medium mb-1">{t('screens.common.allCaughtUp')}</p>
+      <p className="text-xs text-muted-foreground">{t('screens.common.noNewRecommendationsRightNowCheck')}</p>
     </div>
   );
 
@@ -401,12 +402,9 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         <div className="rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 px-3 py-2 mb-3 text-sm flex items-center justify-between">
           <span>
             {currentTotal !== null ? (
-              <>
-                Now: <strong>{currentTotal}</strong>
+              <>{t('screens.common.now')} <strong>{currentTotal}</strong>
                 {selectedLift > 0 ? (
-                  <>
-                    {" "}→ After GO:{" "}
-                    <strong className="text-green-600 font-semibold">
+                  <>{t('screens.common.value0AfterGoValue1', { value0: " ", value1: " " })}<strong className="text-green-600 font-semibold">
                       {currentTotal + selectedLift}
                     </strong>
                   </>
@@ -441,8 +439,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   )}
                   {showGroupHeaders && isUnassigned && (
                     <div className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-muted-foreground`}>
-                      <span aria-hidden="true">✨</span>
-                      Other
+                      <span aria-hidden="true">✨</span>{t('screens.common.other')}
                     </div>
                   )}
                   <div className="space-y-2">
@@ -475,8 +472,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <Zap className="w-4 h-4 mr-2" />
-                )}
-                GO ({selectedActions.length})
+                )}{t('screens.common.goLength', { length: selectedActions.length })}
               </Button>
               <Button variant="outline" onClick={handleNotNow}>
                 {translate('autopilot.popup.notNow')}

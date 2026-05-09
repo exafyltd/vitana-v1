@@ -8,6 +8,7 @@ import { CsvContactUploader } from "./CsvContactUploader";
 import { ManualContactEntry } from "./ManualContactEntry";
 import { ChannelEligibilityBadges } from "./ChannelEligibilityBadges";
 import type { AudienceData, ExternalContact } from "@/types/audience";
+import { t } from '@/lib/i18n-toast';
 
 interface AudienceSelectorProps {
   audienceData?: AudienceData;
@@ -126,7 +127,7 @@ export function AudienceSelector({
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Calendar className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
-              Event-Based Audiences
+              {t('screens.sharing.eventbasedAudiences')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -145,10 +146,10 @@ export function AudienceSelector({
               />
               <div className="flex-1">
                 <Label htmlFor="organizer-followers" className="font-medium cursor-pointer">
-                  Your Followers
+                  {t('screens.sharing.yourFollowers')}
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  People who follow you will be notified about this event
+                  {t('screens.sharing.peopleWhoFollowYouWillNotified')}
                 </p>
               </div>
             </div>
@@ -169,10 +170,10 @@ export function AudienceSelector({
               />
               <div className="flex-1">
                 <Label htmlFor="event-attendees" className="font-medium cursor-pointer">
-                  Past Event Attendees
+                  {t('screens.sharing.pastEventAttendees')}
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  People who attended your previous events
+                  {t('screens.sharing.peopleWhoAttendedYourPreviousEvents')}
                 </p>
               </div>
             </div>
@@ -181,9 +182,9 @@ export function AudienceSelector({
       )}
       
       <div>
-        <h3 className="font-semibold mb-2">Select Your Audience</h3>
+        <h3 className="font-semibold mb-2">{t('screens.sharing.selectYourAudience')}</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Choose one or more audience sources. You can combine multiple sources.
+          {t('screens.sharing.chooseOneMoreAudienceSourcesYou')}
         </p>
         
         {/* Vitana Contacts */}
@@ -196,14 +197,13 @@ export function AudienceSelector({
             />
             <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">Vitana Contacts</div>
-              <div className="text-sm text-muted-foreground">
-                Choose from your saved contacts
+              <div className="font-medium">{t('screens.sharing.vitanaContacts')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.sharing.chooseFromYourSavedContacts')}
               </div>
               {vitanaContactsEnabled && (
                 <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
                   {contacts.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No contacts available</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.sharing.noContactsAvailable')}</p>
                   ) : (
                     contacts.map(contact => (
                       <div
@@ -239,9 +239,8 @@ export function AudienceSelector({
             />
             <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">External Contacts (CSV)</div>
-              <div className="text-sm text-muted-foreground mb-3">
-                Import contacts from a CSV file
+              <div className="font-medium">{t('screens.sharing.externalContactsCsv')}</div>
+              <div className="text-sm text-muted-foreground mb-3">{t('screens.sharing.importContactsFromCsvFile')}
               </div>
               {csvEnabled && (
                 <CsvContactUploader
@@ -263,9 +262,9 @@ export function AudienceSelector({
             />
             <PenLine className="h-5 w-5 text-muted-foreground mt-0.5" />
             <div className="flex-1">
-              <div className="font-medium">Manual Entry</div>
+              <div className="font-medium">{t('screens.sharing.manualEntry')}</div>
               <div className="text-sm text-muted-foreground mb-3">
-                Add contacts manually (up to 10)
+                {t('screens.sharing.addContactsManuallyUp10')}
               </div>
               {manualEnabled && (
                 <ManualContactEntry
@@ -283,8 +282,8 @@ export function AudienceSelector({
             <Checkbox disabled />
             <Target className="h-5 w-5 text-muted-foreground" />
             <div className="flex-1">
-              <div className="font-medium">Community Segments</div>
-              <div className="text-sm text-muted-foreground">Coming soon</div>
+              <div className="font-medium">{t('screens.sharing.communitySegments')}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.sharing.comingSoon')}</div>
             </div>
           </div>
         </div>

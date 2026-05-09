@@ -17,6 +17,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useContacts } from "@/hooks/useContacts";
 import useContactSync from "@/hooks/useContactSync";
 import { Upload, Smartphone, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface LocalContact {
   name: string;
@@ -128,8 +129,8 @@ export default function InviteFriends() {
   }, [addContact]);
 
   const handleManualAdd = useCallback(async () => {
-    if (!manualName.trim()) { toast.error("Name is required"); return; }
-    if (!manualEmail.trim() && !manualPhone.trim()) { toast.error("Please provide email or phone"); return; }
+    if (!manualName.trim()) { notifyError('toasts.invitefriends.nameRequired'); return; }
+    if (!manualEmail.trim() && !manualPhone.trim()) { notifyError('toasts.invitefriends.pleaseProvideEmailPhone'); return; }
 
     await addContact({
       contact_name: manualName.trim(),
@@ -146,7 +147,7 @@ export default function InviteFriends() {
     setManualName("");
     setManualEmail("");
     setManualPhone("");
-    toast.success("Contact added");
+    notifySuccess('toasts.invitefriends.contactAdded');
   }, [manualName, manualEmail, manualPhone, addContact]);
 
   const toggleSelect = (idx: number) => {
@@ -195,10 +196,10 @@ export default function InviteFriends() {
         toast.success(`${sentCount} invites sent!`);
         setContacts([]);
       } else {
-        toast.error("Failed to send invites");
+        notifyError('toasts.invitefriends.failedSendInvites');
       }
     } catch {
-      toast.error("Failed to send invites");
+      notifyError('toasts.invitefriends.failedSendInvites');
     } finally {
       setSending(false);
     }
@@ -206,11 +207,11 @@ export default function InviteFriends() {
 
   return (
     <AppLayout>
-      <SEO title="Invite Friends" />
+      <SEO title={t('screens.invitefriends.inviteFriends')} />
       <div className={`min-h-screen bg-gradient-subtle ${isMobile ? "p-4 pb-24" : "p-6"}`}>
         <div className={isMobile ? "" : "max-w-3xl mx-auto"}>
           <StandardHeader
-            title="Invite Friends"
+            title={t('screens.invitefriends.inviteFriends')}
             description="Import your contacts and invite them to Vitana"
             emoji="🎯"
           />
@@ -226,8 +227,8 @@ export default function InviteFriends() {
                       <Smartphone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm">Phone Contacts</CardTitle>
-                      <CardDescription className="text-xs">Import from your phone</CardDescription>
+                      <CardTitle className="text-sm">{t('screens.invitefriends.phoneContacts')}</CardTitle>
+                      <CardDescription className="text-xs">{t('screens.invitefriends.importFromYourPhone')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -239,12 +240,11 @@ export default function InviteFriends() {
                       onClick={handleImportPhone}
                       disabled={importingPhone}
                     >
-                      {importingPhone ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Smartphone className="w-4 h-4 mr-1" />}
-                      Import Contacts
+                      {importingPhone ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Smartphone className="w-4 h-4 mr-1" />}{t('screens.invitefriends.importContacts')}
                     </Button>
                   ) : (
                     <Button size="sm" className="w-full" disabled>
-                      Not available in this browser
+                      {t('screens.invitefriends.notAvailableThisBrowser')}
                     </Button>
                   )}
                 </CardContent>
@@ -259,8 +259,8 @@ export default function InviteFriends() {
                     <Upload className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <CardTitle className="text-sm">Upload CSV</CardTitle>
-                    <CardDescription className="text-xs">Upload a contacts file</CardDescription>
+                    <CardTitle className="text-sm">{t('screens.invitefriends.uploadCsv')}</CardTitle>
+                    <CardDescription className="text-xs">{t('screens.invitefriends.uploadContactsFile')}</CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -278,7 +278,7 @@ export default function InviteFriends() {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="w-4 h-4 mr-1" />
-                  Choose File
+                  {t('screens.invitefriends.chooseFile')}
                 </Button>
               </CardContent>
             </Card>
@@ -290,23 +290,22 @@ export default function InviteFriends() {
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base">{contacts.length} contacts</CardTitle>
-                    <Badge variant="secondary" className="text-xs">
-                      {selectedCount} selected
+                    <CardTitle className="text-base">{t('screens.invitefriends.lengthContacts', { length: contacts.length })}</CardTitle>
+                    <Badge variant="secondary" className="text-xs">{t('screens.invitefriends.selectedcountSelected', { selectedCount })}
                     </Badge>
                   </div>
                   <Button variant="ghost" size="sm" onClick={toggleAll}>
                     {contacts.every(c => c.selected) ? (
-                      <><X className="w-3 h-3 mr-1" /> Deselect All</>
+                      <><X className="w-3 h-3 mr-1" /> {t('screens.invitefriends.deselectAll')}</>
                     ) : (
-                      <><Check className="w-3 h-3 mr-1" /> Select All</>
+                      <><Check className="w-3 h-3 mr-1" /> {t('screens.invitefriends.selectAll')}</>
                     )}
                   </Button>
                 </div>
                 <div className="relative mt-2">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search contacts..."
+                    placeholder={t('screens.invitefriends.searchContacts')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     className="pl-8 h-9 text-sm"
@@ -352,7 +351,7 @@ export default function InviteFriends() {
                       );
                     })}
                     {filtered.length === 0 && search && (
-                      <p className="text-sm text-muted-foreground text-center py-8">No contacts match "{search}"</p>
+                      <p className="text-sm text-muted-foreground text-center py-8">{t('screens.invitefriends.noContactsMatchSearch', { search })}</p>
                     )}
                   </div>
                 </ScrollArea>
@@ -366,7 +365,7 @@ export default function InviteFriends() {
               <CardContent className="py-12 text-center">
                 <Share2 className="w-10 h-10 mx-auto text-muted-foreground/50 mb-3" />
                 <p className="text-sm text-muted-foreground">
-                  Import contacts using the methods above to get started
+                  {t('screens.invitefriends.importContactsUsingMethodsAboveGet')}
                 </p>
               </CardContent>
             </Card>
@@ -378,7 +377,7 @@ export default function InviteFriends() {
               <Button variant="ghost" className="w-full justify-between text-muted-foreground">
                 <span className="flex items-center gap-2">
                   <Plus className="w-4 h-4" />
-                  Or add manually
+                  {t('screens.invitefriends.addManually')}
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${manualOpen ? "rotate-180" : ""}`} />
               </Button>
@@ -387,21 +386,21 @@ export default function InviteFriends() {
               <Card className="mt-2">
                 <CardContent className="p-4 space-y-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="manual-name">Name *</Label>
-                    <Input id="manual-name" placeholder="Contact name" value={manualName} onChange={e => setManualName(e.target.value)} />
+                    <Label htmlFor="manual-name">{t('screens.invitefriends.name')}</Label>
+                    <Input id="manual-name" placeholder={t('screens.invitefriends.contactName')} value={manualName} onChange={e => setManualName(e.target.value)} />
                   </div>
                   <div className={`grid gap-3 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
                     <div className="space-y-1.5">
-                      <Label htmlFor="manual-email">Email</Label>
-                      <Input id="manual-email" type="email" placeholder="email@example.com" value={manualEmail} onChange={e => setManualEmail(e.target.value)} />
+                      <Label htmlFor="manual-email">{t('screens.invitefriends.email')}</Label>
+                      <Input id="manual-email" type="email" placeholder={t('screens.invitefriends.emailExampleCom')} value={manualEmail} onChange={e => setManualEmail(e.target.value)} />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="manual-phone">Phone</Label>
+                      <Label htmlFor="manual-phone">{t('screens.invitefriends.phone')}</Label>
                       <Input id="manual-phone" type="tel" placeholder="+1 234 567 890" value={manualPhone} onChange={e => setManualPhone(e.target.value)} />
                     </div>
                   </div>
                   <Button onClick={handleManualAdd} size="sm">
-                    <Plus className="w-4 h-4 mr-1" /> Add Contact
+                    <Plus className="w-4 h-4 mr-1" /> {t('screens.invitefriends.addContact')}
                   </Button>
                 </CardContent>
               </Card>
@@ -416,8 +415,7 @@ export default function InviteFriends() {
               onClick={handleSend}
             >
               {sending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-              <Share2 className="w-4 h-4 mr-2" />
-              Send Invites ({selectedCount})
+              <Share2 className="w-4 h-4 mr-2" />{t('screens.invitefriends.sendInvitesSelectedcount', { selectedCount })}
             </Button>
           )}
         </div>
@@ -432,8 +430,7 @@ export default function InviteFriends() {
             onClick={handleSend}
           >
             {sending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-            <Share2 className="w-4 h-4 mr-2" />
-            Send Invites ({selectedCount})
+            <Share2 className="w-4 h-4 mr-2" />{t('screens.invitefriends.sendInvitesSelectedcount', { selectedCount })}
           </Button>
         </div>
       )}

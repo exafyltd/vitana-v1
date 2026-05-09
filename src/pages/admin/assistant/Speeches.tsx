@@ -26,6 +26,7 @@ import {
   type SpeechDto,
   type SpeechJourneyStage,
 } from "@/hooks/useAdminAssistantSpeeches";
+import { t } from '@/lib/i18n-toast';
 
 const STAGE_ORDER: SpeechJourneyStage[] = ["pre_login", "onboarding", "proactive"];
 
@@ -76,19 +77,16 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {speech.has_override ? (
-              <AdminStatusBadge variant="active">Customized</AdminStatusBadge>
+              <AdminStatusBadge variant="active">{t('screens.admin.customized')}</AdminStatusBadge>
             ) : (
-              <AdminStatusBadge variant="inactive">Default</AdminStatusBadge>
+              <AdminStatusBadge variant="inactive">{t('screens.admin.default')}</AdminStatusBadge>
             )}
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
         {speech.plays_prerecorded_audio && (
-          <div className="rounded-md border border-amber-300 bg-amber-50 dark:border-amber-700/60 dark:bg-amber-900/20 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
-            This speech is currently played from a pre-recorded audio file. Editing the text here updates the
-            storage, but end users will continue to hear the existing recording until audio regeneration is
-            wired up.
+          <div className="rounded-md border border-amber-300 bg-amber-50 dark:border-amber-700/60 dark:bg-amber-900/20 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">{t('screens.admin.thisSpeechCurrentlyPlayedFromPrerecorded')}
           </div>
         )}
 
@@ -97,7 +95,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
           onChange={(e) => setDraft(e.target.value)}
           rows={6}
           className="text-sm resize-y"
-          placeholder="Enter the text Vitana should say..."
+          placeholder={t('screens.admin.enterTextVitanaShouldSay')}
         />
 
         <div className="flex flex-wrap gap-2">
@@ -116,7 +114,7 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
           )}
           {dirty && (
             <Button size="sm" variant="ghost" onClick={handleCancel} disabled={saving}>
-              Cancel
+              {t('screens.admin.cancel')}
             </Button>
           )}
         </div>
@@ -124,10 +122,10 @@ function SpeechCard({ speech, onSave, onReset, saving, resetting }: SpeechCardPr
         {speech.has_override && (speech.updated_at || speech.updated_by) && (
           <p className="text-xs text-muted-foreground">
             {speech.updated_at && (
-              <>Updated {formatDistanceToNow(new Date(speech.updated_at), { addSuffix: true })}</>
+              <>{t('screens.admin.updatedValue0', { value0: formatDistanceToNow(new Date(speech.updated_at), { addSuffix: true }) })}</>
             )}
             {speech.updated_at && speech.updated_by && " · "}
-            {speech.updated_by && <>by {speech.updated_by}</>}
+            {speech.updated_by && <>{t('screens.admin.byUpdated_by', { updated_by: speech.updated_by })}</>}
           </p>
         )}
       </CardContent>
@@ -175,12 +173,12 @@ export default function AssistantSpeeches() {
       <AdminTabs sectionKey="assistant" />
       <div className="p-6 space-y-4">
         <AdminHeader
-          title="Assistant Speeches"
+          title={t('screens.admin.assistantSpeeches')}
           description="Manage what Vitana says at each phase of the user journey. Overrides layer on top of global defaults."
         />
 
         {speechesQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading speeches...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingSpeeches')}</p>
         )}
 
         {speechesQuery.isError && !speechesQuery.isLoading && (
@@ -190,7 +188,7 @@ export default function AssistantSpeeches() {
         )}
 
         {!speechesQuery.isLoading && !speechesQuery.isError && speeches.length === 0 && (
-          <p className="text-sm text-muted-foreground py-8 text-center">No speeches configured.</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.noSpeechesConfigured')}</p>
         )}
 
         {STAGE_ORDER.map((stage) => {

@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Eye, EyeOff } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import SEO from "@/components/SEO";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { notifyError } from '@/lib/i18n-toast';
 
 export default function DevLogin() {
   const { user } = useAuth();
@@ -56,11 +57,7 @@ export default function DevLogin() {
 
       // Navigation is handled by onAuthStateChange
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign in",
-        variant: "destructive",
-      });
+      notifyError('toasts.dev.error');
     } finally {
       setLoading(false);
     }
@@ -81,11 +78,7 @@ export default function DevLogin() {
 
       if (error) throw error;
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign in with Google",
-        variant: "destructive",
-      });
+      notifyError('toasts.dev.error');
       setLoading(false);
     }
   };

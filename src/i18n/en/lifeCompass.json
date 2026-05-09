@@ -1,0 +1,53 @@
+{
+  "lifeCompass": {
+    "title": "Life Compass",
+    "description": "Your Life Compass guides all AI recommendations and decisions. Choose a primary goal that matters most to you right now. The AI will prioritize suggestions that align with this direction.",
+    "currentCompass": "Current Compass",
+    "alignment": "Alignment: {value}%",
+    "confidence": "Confidence: {value}%",
+    "suggestedGoals": "Suggested Goals",
+    "customGoal": "Custom Goal",
+    "customGoalPlaceholder": "Describe your primary goal in your own words...",
+    "setCustomGoal": "Set Custom Goal",
+    "closeAria": "Close",
+    "categoryLabels": {
+      "wealth": "wealth",
+      "relationship": "relationship",
+      "health": "health",
+      "career": "career",
+      "learning": "learning",
+      "spiritual": "spiritual",
+      "longevity": "longevity"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Build Financial Freedom",
+        "description": "Achieve financial independence and wealth"
+      },
+      "relationship": {
+        "title": "Find Life Partner",
+        "description": "Build meaningful romantic relationships"
+      },
+      "health": {
+        "title": "Transform Health",
+        "description": "Achieve optimal physical and mental wellness"
+      },
+      "career": {
+        "title": "Advance Career",
+        "description": "Build a fulfilling and successful career"
+      },
+      "learning": {
+        "title": "Master New Skills",
+        "description": "Learn and grow through knowledge"
+      },
+      "spiritual": {
+        "title": "Spiritual Life",
+        "description": "Deepen purpose, presence, and inner peace"
+      },
+      "longevity": {
+        "title": "Improve quality of life and extend lifespan",
+        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
+      }
+    }
+  }
+}

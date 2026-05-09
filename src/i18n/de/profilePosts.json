@@ -1,0 +1,13 @@
+{
+  "profilePosts": {
+    "createPost": "Beitrag erstellen",
+    "placeholder": "Was mich gerade bewegt?",
+    "post": "Posten",
+    "posted": "Gepostet!",
+    "deleted": "Beitrag gelöscht",
+    "emptyTitle": "Noch keine Beiträge",
+    "emptyDescription": "Teile dein erstes Update mit der Community",
+    "deleteConfirm": "Beitrag löschen?",
+    "error": "Etwas ist schiefgelaufen"
+  }
+}

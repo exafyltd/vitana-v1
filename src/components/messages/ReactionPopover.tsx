@@ -7,6 +7,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { ReactionSummary } from '@/hooks/useMessageReactions';
+import { t } from '@/lib/i18n-toast';
 
 interface ReactionPopoverProps {
   reactions: ReactionSummary[];
@@ -36,7 +37,7 @@ export function ReactionPopover({
         {children}
       </ResponsivePopoverTrigger>
       <ResponsivePopoverContent 
-        title="Reactions"
+        title={t('screens.messages.reactions')}
         className="w-64 p-3" 
         align="start"
         side="top"

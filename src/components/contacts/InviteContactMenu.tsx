@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Send, Mail, MessageSquare, Share2 } from "lucide-react";
 import { Contact } from "@/hooks/useContacts";
+import { t } from '@/lib/i18n-toast';
 
 interface InviteContactMenuProps {
   contact: Contact;
@@ -39,30 +40,30 @@ export default function InviteContactMenu({ contact, onInvite }: InviteContactMe
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <Send className="w-4 h-4 mr-2" />
-          Invite
+          {t('screens.contacts.invite')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Send Invite Via</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('screens.contacts.sendInviteVia')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         
         {contact.contact_phone && (
           <DropdownMenuItem onClick={() => onInvite(contact.id, 'sms')}>
             <MessageSquare className="w-4 h-4 mr-2" />
-            SMS Text Message
+            {t('screens.contacts.smsTextMessage')}
           </DropdownMenuItem>
         )}
         
         {contact.contact_email && (
           <DropdownMenuItem onClick={() => onInvite(contact.id, 'email')}>
             <Mail className="w-4 h-4 mr-2" />
-            Email Invitation
+            {t('screens.contacts.emailInvitation')}
           </DropdownMenuItem>
         )}
         
         <DropdownMenuItem onClick={handleShare}>
           <Share2 className="w-4 h-4 mr-2" />
-          Share Link
+          {t('screens.contacts.shareLink')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

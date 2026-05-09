@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Play, Pause, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
-import { toast } from 'sonner';
 import { useSoundscape } from '@/context/SoundscapeContext';
 
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
 import { useTranslation } from '@/hooks/useTranslation';
+// `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
+// using `lookup` (the same singleton, different name) avoids the conflict.
+import { lookup, notifyError } from '@/lib/i18n-toast';
 
 // Pre-recorded welcome audio paths
 const WELCOME_AUDIO_EN = '/sounds/intro/maxina-welcome-en.wav';
@@ -109,7 +111,13 @@ export default function IntroExperience() {
   }, [continueToMaxina]);
 
 
-  // Get current language for TTS and translations
+  // Get current language for TTS and translations.
+  // We need BOTH the catalog object `t` (for `t.intro?.preparing` etc dotted
+  // access in the play/pause button below) AND the function-call form
+  // (`lookup('screens.foo.bar')`) for newer i18n keys. The function form is
+  // imported as `lookup` (not `t`) so the local destructured `t` doesn't
+  // shadow it. Don't drop `t` from this destructure — 5 JSX sites below
+  // reference `t.intro?.X` and crash the whole screen if `t` is undefined.
   const { t, isGerman } = useTranslation();
 
   const handlePlayPauseAudio = useCallback(async () => {
@@ -146,7 +154,7 @@ export default function IntroExperience() {
 
       audio.onerror = () => {
         setIsPlayingAudio(false);
-        toast.error('Audio playback failed');
+        notifyError('toasts.introexperience.audioPlaybackFailed');
       };
 
       setIsPreparingAudio(false);
@@ -156,7 +164,7 @@ export default function IntroExperience() {
     } catch (error) {
       console.error('Welcome audio error:', error);
       setIsPreparingAudio(false);
-      toast.error('Audio unavailable now');
+      notifyError('toasts.introexperience.audioUnavailableNow');
     }
   }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying, isGerman]);
 
@@ -323,7 +331,7 @@ export default function IntroExperience() {
       {/* Keyboard Hints - Desktop only */}
       <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
         <p className="text-white/40 text-xs">
-          Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Space</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Esc</kbd> to skip
+          {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.space')}</kbd>{lookup('screens.introexperience.play')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
 

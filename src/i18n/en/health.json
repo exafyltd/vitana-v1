@@ -1,0 +1,67 @@
+{
+  "health": {
+    "title": "Health",
+    "description": "Your personal health dashboard",
+    "overview": "Overview",
+    "overviewDesc": "Your comprehensive health dashboard and wellness overview",
+    "servicesHub": "Services Hub",
+    "servicesHubDesc": "Book doctors, coaching, programs & screenings",
+    "biomarkers": "Biomarkers",
+    "biomarkersDesc": "View your latest test results and biomarkers",
+    "healthTracker": "My Health Tracker",
+    "healthTrackerDesc": "Track your daily nutrition, sleep, exercise",
+    "education": "Education & Science",
+    "educationDesc": "Learn about health topics and access wellness resources",
+    "priorityFocus": "Priority Focus",
+    "priorityFocusExplanation": "This area currently has the biggest impact on your long-term healthspan.",
+    "autopilotGuidance": "Autopilot Guidance",
+    "autopilotSuggests": "Autopilot Suggests",
+    "takeAction": "Take Action",
+    "uploadBloodTest": "Upload Blood Test",
+    "orderBloodTest": "Order Blood Test",
+    "viewPlans": "View Plans",
+    "vitanaIndex": "Vitana Index",
+    "healthSnapshot": "Your Health Snapshot",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Improving",
+      "declining": "Declining",
+      "stable": "Stable"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Upload blood test results",
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
+    },
+    "pillars": {
+      "sleep": "Sleep",
+      "exercise": "Exercise",
+      "nutrition": "Nutrition",
+      "hydration": "Hydration",
+      "mental": "Mental"
+    },
+    "emptyStates": {
+      "noSleepPlan": "No Sleep Plan Yet",
+      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.",
+      "noExercisePlan": "No Exercise Plan Yet",
+      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.",
+      "noNutritionPlan": "No Nutrition Plan Yet",
+      "noNutritionPlanDesc": "Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.",
+      "noHydrationPlan": "No Hydration Plan Yet",
+      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.",
+      "noMentalPlan": "No Mental Plan Yet",
+      "noMentalPlanDesc": "Generate your personalized mental wellness plan to track stress, focus, and emotional balance with AI guidance.",
+      "generatePlan": "Generate Plan",
+      "generating": "Generating..."
+    },
+    "noSupplements": "No Supplements Yet",
+    "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
+    "noReports": "No Health Reports Yet",
+    "noReportsDesc": "Upload your blood tests, lab results, and medical reports to unlock personalized health insights.",
+    "medical": "Medical",
+    "supplements": "Supplements",
+    "uploadDescription": "Blood tests, imaging, lab results",
+    "unknownProvider": "Unknown provider",
+    "addSupplement": "Add Supplement",
+    "uploadFirstReport": "Upload First Report"
+  }
+}

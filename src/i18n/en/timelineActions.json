@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Timeline Actions",
+    "items": {
+      "logHealthEvent": {
+        "title": "Log Health Event",
+        "description": "Record important health milestones"
+      },
+      "markAchievement": {
+        "title": "Mark Achievement",
+        "description": "Celebrate wellness goals reached"
+      },
+      "recordLifeMoment": {
+        "title": "Record Life Moment",
+        "description": "Capture meaningful experiences"
+      },
+      "addPhotoMemory": {
+        "title": "Add Photo Memory",
+        "description": "Visual timeline with health photos"
+      },
+      "voiceTimelineEntry": {
+        "title": "Voice Timeline Entry",
+        "description": "Quick audio health updates"
+      },
+      "trackProgress": {
+        "title": "Track Progress",
+        "description": "Log wellness metrics and trends"
+      },
+      "activityCheckIn": {
+        "title": "Activity Check-in",
+        "description": "Record workouts and activities"
+      },
+      "setTimelineGoal": {
+        "title": "Set Timeline Goal",
+        "description": "Create future health targets"
+      }
+    }
+  }
+}

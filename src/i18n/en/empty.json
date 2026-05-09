@@ -1,0 +1,18 @@
+{
+  "empty": {
+    "noAppsFound": "No apps found matching your search.",
+    "noEventsFound": "No events found",
+    "noContactsFound": "No contacts found",
+    "noContactsFoundMatching": "No contacts found matching \"{query}\"",
+    "noGroupsFound": "No groups found",
+    "noResultsFound": "No results found",
+    "noReportsFound": "No reports found",
+    "noUsersFound": "No users found",
+    "noTransactionsFound": "No transactions found",
+    "noEventsYet": "No events yet. Create an event first.",
+    "tryAdjustingFilters": "Try adjusting your filters or search query",
+    "noData": "No data available",
+    "noMessages": "No messages",
+    "noNotifications": "No notifications"
+  }
+}

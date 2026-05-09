@@ -19,6 +19,7 @@ import {
   useAutopilotRecommendations,
   useRecommendationsSummary,
 } from "@/hooks/useAdminAutopilot";
+import { t } from '@/lib/i18n-toast';
 
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   new: "info",
@@ -66,22 +67,22 @@ export default function AutopilotRecommendations() {
       <div className="p-6 space-y-4">
         <AdminHeader
           emoji="🤖"
-          title="Recommendations"
+          title={t('screens.admin.recommendations')}
           description={`${recsQuery.data?.total || 0} recommendations visible for your tenant`}
         />
 
         {summary && (
           <div className="flex flex-wrap gap-2">
-            <AdminStatusBadge variant="info">New: {summary.new}</AdminStatusBadge>
-            <AdminStatusBadge variant="active">Activated: {summary.activated}</AdminStatusBadge>
-            <AdminStatusBadge variant="warning">Snoozed: {summary.snoozed}</AdminStatusBadge>
-            <AdminStatusBadge variant="error">Rejected: {summary.rejected}</AdminStatusBadge>
+            <AdminStatusBadge variant="info">{t('screens.admin.newNew', { new: summary.new })}</AdminStatusBadge>
+            <AdminStatusBadge variant="active">{t('screens.admin.activatedActivated', { activated: summary.activated })}</AdminStatusBadge>
+            <AdminStatusBadge variant="warning">{t('screens.admin.snoozedSnoozed', { snoozed: summary.snoozed })}</AdminStatusBadge>
+            <AdminStatusBadge variant="error">{t('screens.admin.rejectedRejected', { rejected: summary.rejected })}</AdminStatusBadge>
           </div>
         )}
 
         {recsQuery.data && !recsQuery.data.autopilot_enabled && (
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-300">
-            Autopilot is currently disabled for this tenant. Enable it in the Guardrails tab to see recommendations.
+            {t('screens.admin.autopilotCurrentlyDisabledForThisTenant')}
           </div>
         )}
 
@@ -120,7 +121,7 @@ export default function AutopilotRecommendations() {
         />
 
         {recsQuery.isLoading && (
-          <p className="text-sm text-muted-foreground py-8 text-center">Loading recommendations...</p>
+          <p className="text-sm text-muted-foreground py-8 text-center">{t('screens.admin.loadingRecommendations')}</p>
         )}
 
         {recsQuery.isError && (
@@ -131,7 +132,7 @@ export default function AutopilotRecommendations() {
 
         {!recsQuery.isLoading && filtered.length === 0 && (
           <AdminEmptyState
-            title="No recommendations"
+            title={t('screens.admin.noRecommendations')}
             description={search || statusFilter !== "all" ? "Try different filters." : "Recommendations will appear as the autopilot analyzes your community."}
           />
         )}
@@ -141,13 +142,13 @@ export default function AutopilotRecommendations() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Domain</TableHead>
-                  <TableHead>Risk</TableHead>
-                  <TableHead className="text-center">Impact</TableHead>
-                  <TableHead className="text-center">Effort</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Created</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.domain')}</TableHead>
+                  <TableHead>{t('screens.admin.risk')}</TableHead>
+                  <TableHead className="text-center">{t('screens.admin.impact')}</TableHead>
+                  <TableHead className="text-center">{t('screens.admin.effort')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead className="text-right">{t('screens.admin.created')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

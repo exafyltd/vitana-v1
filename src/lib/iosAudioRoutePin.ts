@@ -68,6 +68,35 @@ export function pinIOSLoudspeakerRoute(): void {
   }
 }
 
+/**
+ * VTID-02715: Re-assert the loudspeaker pin after a transparent reconnect.
+ *
+ * iOS sometimes downgrades the audio session away from loudspeaker during a
+ * brief connection blip — the silent <audio> element is still in the DOM but
+ * WebKit has internally paused or moved it because the page was idle. Calling
+ * play() again from within the user-gesture-free reconnect handler is fine
+ * because the element was originally started inside a user gesture, which
+ * grants it persistent autoplay rights.
+ *
+ * Idempotent: no-op if the pin was never installed or has been released.
+ */
+export function kickIOSLoudspeakerRoute(): void {
+  if (!IS_IOS) return;
+  if (!pinElement) return;
+  try {
+    if (pinElement.paused || pinElement.ended) {
+      const playPromise = pinElement.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.catch((e) => {
+          console.warn('[iosAudioRoutePin] kick play() rejected:', e);
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('[iosAudioRoutePin] kick failed:', e);
+  }
+}
+
 export function releaseIOSLoudspeakerRoute(): void {
   if (!IS_IOS) return;
   pinRefCount = Math.max(0, pinRefCount - 1);

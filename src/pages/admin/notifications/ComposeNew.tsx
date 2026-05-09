@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
 import { adminNotificationsNavigation } from "@/config/navigation";
+import { t } from '@/lib/i18n-toast';
 
 export default function ComposeNew() {
   const { data, isLoading } = useSentNotifications({ days: 7, pageSize: 10 });
@@ -19,26 +20,25 @@ export default function ComposeNew() {
       <div className="p-6 space-y-6">
         <AdminHeader
           emoji="✏️"
-          title="Compose"
+          title={t('screens.admin.compose')}
           description="Send push and in-app notifications to your users"
           rightAction={
-            <Button size="sm" disabled>
-              Compose New
+            <Button size="sm" disabled>{t('screens.admin.composeNew')}
             </Button>
           }
         />
 
         {isLoading ? (
-          <p className="text-sm text-muted-foreground text-center py-8">Loading recent notifications...</p>
+          <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingRecentNotifications')}</p>
         ) : notifications.length > 0 ? (
           <Card>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Sent</TableHead>
+                  <TableHead>{t('screens.admin.title')}</TableHead>
+                  <TableHead>{t('screens.admin.type')}</TableHead>
+                  <TableHead>{t('screens.admin.status')}</TableHead>
+                  <TableHead>{t('screens.admin.sent')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -61,7 +61,7 @@ export default function ComposeNew() {
           </Card>
         ) : (
           <AdminEmptyState
-            title="Full Notification Composer"
+            title={t('screens.admin.fullNotificationComposer')}
             description="Full notification composer coming soon. No recent notifications found."
           />
         )}

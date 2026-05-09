@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { t } from '@/lib/i18n-toast';
 
 interface Track {
   id: string;
@@ -61,10 +62,10 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
         <CardContent className="flex flex-col items-center justify-center h-full py-12">
           <Music className="w-12 h-12 text-purple-400/40 mb-4" />
           <h3 className="text-lg font-semibold mb-2 text-muted-foreground">
-            No music available yet
+            {t('screens.home.noMusicAvailableYet')}
           </h3>
           <p className="text-sm text-muted-foreground mb-4 text-center max-w-xs">
-            Upload music to see personalized recommendations here
+            {t('screens.home.uploadMusicSeePersonalizedRecommendationsHere')}
           </p>
           <Button 
             variant="outline" 
@@ -72,7 +73,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             className="border-purple-400/50 hover:border-purple-400"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Upload Music
+            {t('screens.home.uploadMusic')}
           </Button>
         </CardContent>
       </Card>
@@ -101,8 +102,7 @@ export function MusicListCard({ tracks, title = "Recommended Music", className }
             size="sm"
             onClick={() => navigate('/comm/media-hub?tab=music')}
             className="text-xs hover:text-purple-600 px-4 py-2 min-h-[40px] cursor-pointer"
-          >
-            View All
+          >{t('screens.home.viewAll')}
           </Button>
         </div>
       </CardHeader>

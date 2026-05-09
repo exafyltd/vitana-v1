@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   children: ReactNode;
@@ -97,21 +98,21 @@ export class GlobalErrorBoundary extends Component<Props, State> {
               onClick={this.handleReload}
               className="w-full py-2.5 px-4 rounded-lg bg-primary text-primary-foreground font-medium text-sm"
             >
-              Reload Page
+              {t('screens.common.reloadPage')}
             </button>
             {!this.state.isChunkError && (
               <button
                 onClick={this.handleRetry}
                 className="w-full py-2.5 px-4 rounded-lg border border-border text-sm"
               >
-                Try Again
+                {t('screens.common.tryAgain')}
               </button>
             )}
             <button
               onClick={this.handleGoHome}
               className="w-full py-2 px-4 text-sm text-muted-foreground"
             >
-              Go to Home
+              {t('screens.common.goHome')}
             </button>
           </div>
         </div>

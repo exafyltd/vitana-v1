@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Gift, Clock, Users, Zap, Timer } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface RewardOpportunity {
   id: string;
@@ -124,10 +125,9 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Gift className="h-5 w-5 text-primary" />
-            Live Opportunities
+            {t('screens.wallet.liveOpportunities')}
           </CardTitle>
-          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">
-            {totalPotential} VTN Available
+          <Badge variant="secondary" className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">{t('screens.wallet.totalpotentialVtnAvailable', { totalPotential })}
           </Badge>
         </div>
       </CardHeader>
@@ -167,7 +167,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
               {opportunity.participants && opportunity.maxParticipants && (
                 <div className="mb-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium">Community Progress</span>
+                    <span className="text-xs font-medium">{t('screens.wallet.communityProgress')}</span>
                     <span className="text-xs text-muted-foreground">
                       {opportunity.participants}/{opportunity.maxParticipants}
                     </span>
@@ -178,7 +178,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
 
               {/* Requirements */}
               <div className="mb-3">
-                <span className="text-xs font-medium mb-1 block">Requirements:</span>
+                <span className="text-xs font-medium mb-1 block">{t('screens.wallet.requirements')}</span>
                 <div className="flex flex-wrap gap-1">
                   {opportunity.requirements.slice(0, 2).map((req, index) => (
                     <Badge key={index} variant="outline" className="text-xs h-5 px-2">
@@ -186,8 +186,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
                     </Badge>
                   ))}
                   {opportunity.requirements.length > 2 && (
-                    <Badge variant="outline" className="text-xs h-5 px-2">
-                      +{opportunity.requirements.length - 2} more
+                    <Badge variant="outline" className="text-xs h-5 px-2">{t('screens.wallet.value0More', { value0: opportunity.requirements.length - 2 })}
                     </Badge>
                   )}
                 </div>
@@ -195,8 +194,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs font-bold">
-                    {opportunity.baseReward * opportunity.multiplier} VTN
+                  <Badge variant="secondary" className="text-xs font-bold">{t('screens.wallet.value0Vtn', { value0: opportunity.baseReward * opportunity.multiplier })}
                   </Badge>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
@@ -204,7 +202,7 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
                   </div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                  Join Now
+                  {t('screens.wallet.joinNow')}
                 </Button>
               </div>
             </div>
@@ -215,18 +213,18 @@ export function DynamicRewardOpportunityCard({ className }: DynamicRewardOpportu
         <div className="grid grid-cols-2 gap-2">
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-primary">{activeOpportunities.length}</div>
-            <div className="text-xs text-muted-foreground">Active</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.active')}</div>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <div className="text-lg font-bold text-emerald-600">{totalPotential}</div>
-            <div className="text-xs text-muted-foreground">Total VTN</div>
+            <div className="text-xs text-muted-foreground">{t('screens.wallet.totalVtn')}</div>
           </div>
         </div>
 
         {/* Action Button */}
         <Button className="w-full" variant="default">
           <Gift className="h-4 w-4 mr-2" />
-          View All Opportunities
+          {t('screens.wallet.viewAllOpportunities')}
         </Button>
       </CardContent>
     </Card>

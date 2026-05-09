@@ -1,6 +1,7 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Brain } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { t } from '@/lib/i18n-toast';
 
 interface VitanaScoreTooltipProps {
   score: number;
@@ -33,21 +34,20 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-3">
               <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <h4 className="font-semibold text-foreground">Your Vitana Score Breakdown</h4>
+              <h4 className="font-semibold text-foreground">{t('screens.health.yourVitanaScoreBreakdown')}</h4>
             </div>
             
             <div>
               <div className="flex justify-between items-baseline mb-1">
-                <span className="text-sm text-muted-foreground">Overall Score</span>
+                <span className="text-sm text-muted-foreground">{t('screens.health.overallScore')}</span>
                 <span className="text-2xl font-bold text-foreground">{score} / 999</span>
               </div>
-              <div className="text-xs text-muted-foreground">
-                Tier: <span className="font-semibold" style={{ color: tier.color }}>{tier.label}</span> (Top 68%)
+              <div className="text-xs text-muted-foreground">{t('screens.health.tier')} <span className="font-semibold" style={{ color: tier.color }}>{tier.label}</span>{t('screens.health.top68')}
               </div>
             </div>
             
             <div>
-              <div className="text-sm font-medium text-foreground mb-2">Pillar Contributions</div>
+              <div className="text-sm font-medium text-foreground mb-2">{t('screens.health.pillarContributions')}</div>
               <div className="space-y-2">
                 {pillars.map((pillar) => (
                   <div key={pillar.name}>
@@ -69,14 +69,14 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
             </div>
             
             <div className="pt-2 border-t border-border">
-              <div className="text-xs text-muted-foreground mb-1">Highest Impact Today</div>
+              <div className="text-xs text-muted-foreground mb-1">{t('screens.health.highestImpactToday')}</div>
               <div className="text-sm font-medium text-foreground">
-                Sleep consistency + Exercise recovery
+                {t('screens.health.sleepConsistencyExerciseRecovery')}
               </div>
             </div>
             
             <div className="text-xs text-muted-foreground">
-              Next Score Update: 23h 12m
+              {t('screens.health.nextScoreUpdate23h12m')}
             </div>
           </div>
         </TooltipContent>

@@ -12,22 +12,28 @@
  * inline category pickers driven by /intent-categories.
  */
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogDescription,
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Mic } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { postIntent, type IntentKind } from "@/lib/intentApi";
+import type { CoverTheme } from "@/lib/intentCovers";
+import { CoverPhotoPicker } from "./CoverPhotoPicker";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { supabase } from "@/integrations/supabase/client";
 
 interface IntentComposerProps {
   open: boolean;
@@ -47,6 +53,7 @@ const KIND_OPTIONS: { value: IntentKind; label: string }[] = [
 
 export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: IntentComposerProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [mode, setMode] = useState<"form" | "voice">("form");
   const [kind, setKind] = useState<IntentKind>(defaultKind ?? "commercial_buy");
   const [title, setTitle] = useState("");
@@ -54,7 +61,71 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
   const [location, setLocation] = useState("");
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // VTID-02806 — universal cover photo from the requester's profile.
+  // When set, the gateway falls back to it whenever no library photo
+  // matches, so we can loosen the per-post upload requirement.
+  const [universalCoverUrl, setUniversalCoverUrl] = useState<string | null>(null);
+
+  // Read universal cover once when the composer opens.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      const uid = u.user?.id;
+      if (!uid) return;
+      // The auto-generated Database type predates VTID-02806's
+      // `universal_intent_cover_url` column on `profiles`. Re-running
+      // `supabase gen types typescript` will let us drop this cast.
+      type ProfileMaybe = {
+        from: (t: string) => {
+          select: (cols: string) => {
+            eq: (
+              col: string,
+              val: string,
+            ) => {
+              maybeSingle: () => Promise<{
+                data: { universal_intent_cover_url?: string | null } | null;
+              }>;
+            };
+          };
+        };
+      };
+      const { data: profile } = await (
+        supabase as unknown as ProfileMaybe
+      )
+        .from("profiles")
+        .select("universal_intent_cover_url")
+        .eq("user_id", uid)
+        .maybeSingle();
+      if (cancelled) return;
+      const raw =
+        (profile as { universal_intent_cover_url?: string | null } | null)
+          ?.universal_intent_cover_url ?? null;
+      setUniversalCoverUrl(raw);
+    })().catch(() => {
+      if (!cancelled) setUniversalCoverUrl(null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
+  // True when the user has either a per-post upload or a universal photo
+  // on their profile. In that case the gateway can always resolve a
+  // cover, so we drop the hard "you must upload" requirement.
+  const hasCoverFallback = !!coverUrl || !!universalCoverUrl;
+
+  // Drives the themed-cover picker. Today only dance/fitness have
+  // dedicated covers; other kinds fall back to the generic set.
+  // Once a real category picker lands in the composer this should
+  // read from the chosen category instead.
+  const coverTheme: CoverTheme = useMemo(() => {
+    if (kind === "activity_seek" || kind === "social_seek") return "dance";
+    return "generic";
+  }, [kind]);
 
   const reset = () => {
     setTitle("");
@@ -62,15 +133,25 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     setBudgetMin("");
     setBudgetMax("");
     setLocation("");
+    setCoverUrl(null);
   };
 
   const submit = async () => {
     if (!title.trim() || title.trim().length < 3) {
-      toast({ title: "Title required", description: "3-140 characters.", variant: "destructive" });
+      notifyError('toasts.intents.titleRequired', 'toasts.intents.message3140Characters');
       return;
     }
     if (!scope.trim() || scope.trim().length < 20) {
-      toast({ title: "Scope too short", description: "Minimum 20 characters.", variant: "destructive" });
+      notifyError('toasts.intents.scopeTooShort', 'toasts.intents.minimum20Characters');
+      return;
+    }
+    // The gateway will resolve a cover from the user's library /
+    // universal photo / AI / curated chain when none is supplied. We
+    // only block submit when the user has neither a per-post upload
+    // nor a universal photo set — otherwise every post would fail
+    // for new users who haven't set up their library yet.
+    if (!hasCoverFallback) {
+      notifyError('toasts.intents.coverPhotoRequired', 'toasts.intents.uploadOneTapGenerateForMe');
       return;
     }
 
@@ -83,6 +164,13 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
     } else if (location) {
       kindPayload.location_label = location;
     }
+    // Per-post upload still wins when the user supplied one. When
+    // unset, the gateway falls back through library → universal → AI
+    // → curated, so we deliberately do NOT echo the universal URL
+    // here — the gateway looks it up itself.
+    if (coverUrl) {
+      kindPayload.cover_url = coverUrl;
+    }
 
     setSubmitting(true);
     try {
@@ -92,146 +180,183 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
         scope: scope.trim(),
         kind_payload: kindPayload,
       });
-      toast({
-        title: "Posted to community",
-        description: result.match_count
-          ? `Found ${result.match_count} match${result.match_count === 1 ? "" : "es"} already.`
-          : "We'll notify you when matches arrive.",
-      });
+      notify('toasts.intents.postedCommunity');
       reset();
       onPosted?.(result.intent_id);
       onOpenChange(false);
     } catch (err: any) {
-      toast({ title: "Could not post", description: err?.message ?? "", variant: "destructive" });
+      // eslint-disable-next-line no-console
+      console.error('[IntentComposer] Post failed:', err);
+      const reason = err instanceof Error && err.message ? err.message : '';
+      if (reason) {
+        notifyError('toasts.intents.couldNotPost', 'toasts.intents.couldNotPostReason', { reason });
+      } else {
+        notifyError('toasts.intents.couldNotPost');
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Post to the community</DialogTitle>
-          <DialogDescription>
-            Tell the community what you need or what you're offering — the system will match you with the right people.
-          </DialogDescription>
-        </DialogHeader>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-lg">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle>{t('screens.intents.postCommunity')}</ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>{t('screens.intents.tellCommunityWhatYouNeedWhat')}
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <div className="flex gap-2 mb-3">
-          <Button
-            variant={mode === "form" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setMode("form")}
-          >
-            Form
-          </Button>
-          <Button
-            variant={mode === "voice" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setMode("voice")}
-          >
-            <Mic className="h-4 w-4 mr-1.5" /> Voice
-          </Button>
-        </div>
-
-        {mode === "voice" ? (
-          <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
-            <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
-            <p className="text-sm font-medium">Open ORB and just say it</p>
-            <p className="text-xs text-muted-foreground">
-              Examples:
-              <br />
-              <em>"I need a kitchen contractor in Vienna, budget 8 to 12 thousand."</em>
-              <br />
-              <em>"I'm looking for someone to play tennis Tuesday evenings."</em>
-              <br />
-              ORB will read it back to you and post on confirmation.
-            </p>
+        <ResponsiveDialogBody>
+          <div className="flex gap-2 mb-3">
+            <Button
+              variant={mode === "form" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setMode("form")}
+            >{t('screens.intents.form')}
+            </Button>
+            <Button
+              variant={mode === "voice" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setMode("voice")}
+            >
+              <Mic className="h-4 w-4 mr-1.5" />{t('screens.intents.voice')}
+            </Button>
           </div>
-        ) : (
-          <div className="space-y-3">
-            <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Kind
-              </Label>
-              <select
-                value={kind}
-                onChange={(e) => setKind(e.target.value as IntentKind)}
-                className="w-full mt-1 px-3 py-2 rounded-md border border-input bg-background text-sm"
-              >
-                {KIND_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            <div>
-              <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Title (3–140 chars)
-              </Label>
-              <Input
-                id="intent-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Short headline"
-                maxLength={140}
-              />
+          {mode === "voice" ? (
+            <div className="rounded-lg border border-dashed border-border p-6 text-center space-y-2">
+              <Mic className="h-8 w-8 mx-auto text-muted-foreground" />
+              <p className="text-sm font-medium">{t('screens.intents.openOrbJustSayIt')}</p>
+              <p className="text-xs text-muted-foreground">{t('screens.intents.examples')}
+                <br />
+                <em>{t('screens.intents.iNeedKitchenContractorViennaBudget')}</em>
+                <br />
+                <em>{t('screens.intents.iMLookingForSomeonePlay')}</em>
+                <br />{t('screens.intents.orbWillReadItBackYou')}
+              </p>
+              <p className="text-[11px] text-muted-foreground/80 pt-1">{t('screens.intents.donTWorryAboutCoverPhoto')}
+              </p>
             </div>
-
-            <div>
-              <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">
-                Description (≥ 20 chars)
-              </Label>
-              <Textarea
-                id="intent-scope"
-                value={scope}
-                onChange={(e) => setScope(e.target.value)}
-                placeholder="Describe what you need / what you're offering"
-                rows={3}
-                maxLength={1500}
-              />
-            </div>
-
-            {(kind === "commercial_buy" || kind === "commercial_sell") && (
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget min (€)
-                  </Label>
-                  <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
-                </div>
-                <div>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Budget max (€)
-                  </Label>
-                  <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
-                </div>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.kind')}
+                </Label>
+                <select
+                  value={kind}
+                  onChange={(e) => setKind(e.target.value as IntentKind)}
+                  className="w-full mt-1 px-3 py-2 rounded-md border border-input bg-background text-sm"
+                >
+                  {KIND_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-            )}
 
-            <div>
-              <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                Location (optional)
-              </Label>
-              <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Vienna" />
+              <div>
+                <Label htmlFor="intent-title" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.title3140Chars')}
+                </Label>
+                <Input
+                  id="intent-title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder={t('screens.intents.shortHeadline')}
+                  maxLength={140}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="intent-scope" className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.description20Chars')}
+                </Label>
+                <Textarea
+                  id="intent-scope"
+                  value={scope}
+                  onChange={(e) => setScope(e.target.value)}
+                  placeholder={t('screens.intents.describeWhatYouNeedWhat')}
+                  rows={3}
+                  maxLength={1500}
+                />
+              </div>
+
+              {(kind === "commercial_buy" || kind === "commercial_sell") && (
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMin')}
+                    </Label>
+                    <Input value={budgetMin} onChange={(e) => setBudgetMin(e.target.value)} placeholder="0" type="number" />
+                  </div>
+                  <div>
+                    <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.budgetMax')}
+                    </Label>
+                    <Input value={budgetMax} onChange={(e) => setBudgetMax(e.target.value)} placeholder="1000" type="number" />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">{t('screens.intents.locationOptional')}
+                </Label>
+                <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t('screens.intents.vienna')} />
+              </div>
+
+              <div>
+                <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+                  {hasCoverFallback
+                    ? t('screens.intents.coverPhotoOptional')
+                    : t('screens.intents.coverPhotoRequired')}
+                </Label>
+                <div className="mt-1">
+                  <CoverPhotoPicker
+                    value={coverUrl}
+                    onChange={setCoverUrl}
+                    theme={coverTheme}
+                  />
+                </div>
+                {!coverUrl && universalCoverUrl && (
+                  <p className="text-[11px] text-muted-foreground mt-1.5">
+                    {t('screens.intents.usingUniversalCoverHint')}
+                  </p>
+                )}
+                {!hasCoverFallback && (
+                  <div className="mt-2 rounded-lg border border-amber-300/60 bg-amber-50 dark:bg-amber-900/20 p-3 space-y-2">
+                    <p className="text-xs font-medium">
+                      {t('screens.intents.noCoverYetBannerTitle')}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {t('screens.intents.noCoverYetBannerBody')}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          navigate('/edit-profile?drawer=cover-library')
+                        }
+                      >
+                        {t('screens.intents.setUniversalCover')}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </ResponsiveDialogBody>
 
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+        <ResponsiveDialogFooter>
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={submitting}>{t('screens.intents.cancel')}
           </Button>
           {mode === "form" && (
-            <Button onClick={submit} disabled={submitting}>
-              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
+            <Button onClick={submit} disabled={submitting || !hasCoverFallback}>
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('screens.intents.post')}
             </Button>
           )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

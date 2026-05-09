@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sheet'
 import { supabase } from '@/integrations/supabase/client'
 import { useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface DiaryQuickEntryProps {
   open: boolean
@@ -52,7 +52,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        toast.error('Please sign in to save diary entries')
+        notifyError('toasts.diary.pleaseSignSaveDiaryEntries')
         return
       }
 
@@ -71,7 +71,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
 
       if (error) throw error
 
-      toast.success('Diary entry saved')
+      notifySuccess('toasts.diary.diaryEntrySaved')
 
       // Invalidate diary queries so lists update
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] })
@@ -92,7 +92,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
       onClose()
     } catch (error: any) {
       console.error('[DiaryQuickEntry] Save failed:', error)
-      toast.error('Failed to save diary entry')
+      notifyError('toasts.diary.failedSaveDiaryEntry')
     } finally {
       setIsSaving(false)
     }
@@ -109,7 +109,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
         <SheetHeader className="flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <SheetTitle>Quick Diary Entry</SheetTitle>
+              <SheetTitle>{t('screens.diary.quickDiaryEntry')}</SheetTitle>
               <SheetDescription>
                 {(text || initialContent) ? 'Voice transcript captured. Edit and save your entry.' : 'Write your thoughts...'}
               </SheetDescription>
@@ -118,7 +118,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
               variant="ghost"
               size="icon"
               onClick={handleCancel}
-              aria-label="Close diary"
+              aria-label={t('screens.diary.closeDiary')}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -130,7 +130,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
             ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="What's on your mind today?"
+            placeholder={t('screens.diary.whatSYourMindToday')}
             className="flex-1 resize-none text-base leading-relaxed"
             autoFocus={!autoFocusText}
           />
@@ -153,7 +153,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
               onClick={handleCancel}
               className="px-6"
             >
-              Cancel
+              {t('screens.diary.cancel')}
             </Button>
           </div>
         </div>

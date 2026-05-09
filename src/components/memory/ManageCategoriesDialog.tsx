@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { FolderOpen, Plus, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ManageCategoriesDialogProps {
   open: boolean;
@@ -38,11 +39,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) {
-      toast({
-        title: "Error",
-        description: "Category name is required",
-        variant: "destructive",
-      });
+      notifyError('toasts.memory.error', 'toasts.memory.categoryNameRequired');
       return;
     }
 
@@ -58,10 +55,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
     setNewCategoryName("");
     setNewCategoryEmoji("");
     
-    toast({
-      title: "Category Added",
-      description: `"${newCategoryName}" has been added successfully.`,
-    });
+    notify('toasts.memory.categoryAdded');
   };
 
   const handleDeleteCategory = (id: string, name: string) => {
@@ -70,10 +64,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
     }
 
     setCategories(categories.filter(cat => cat.id !== id));
-    toast({
-      title: "Category Deleted",
-      description: `"${name}" has been removed.`,
-    });
+    notify('toasts.memory.categoryDeleted');
   };
 
   return (
@@ -82,26 +73,26 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <FolderOpen className="w-6 h-6" />
-            Manage Categories
+            {t('screens.memory.manageCategories')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Add New Category */}
           <div className="p-4 border rounded-lg space-y-4">
-            <h3 className="font-semibold">Add New Category</h3>
+            <h3 className="font-semibold">{t('screens.memory.addNewCategory')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="category-name">Category Name</Label>
+                <Label htmlFor="category-name">{t('screens.memory.categoryName')}</Label>
                 <Input
                   id="category-name"
-                  placeholder="e.g., Work, Personal"
+                  placeholder={t('screens.memory.eGWorkPersonal')}
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category-emoji">Emoji (optional)</Label>
+                <Label htmlFor="category-emoji">{t('screens.memory.emojiOptional')}</Label>
                 <Input
                   id="category-emoji"
                   placeholder="📁"
@@ -113,13 +104,13 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
             </div>
             <Button onClick={handleAddCategory} className="w-full">
               <Plus className="w-4 h-4 mr-2" />
-              Add Category
+              {t('screens.memory.addCategory')}
             </Button>
           </div>
 
           {/* Existing Categories */}
           <div className="space-y-3">
-            <h3 className="font-semibold">Existing Categories</h3>
+            <h3 className="font-semibold">{t('screens.memory.existingCategories')}</h3>
             <div className="space-y-2">
               {categories.map((category) => (
                 <div
@@ -130,8 +121,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
                     <span className="text-2xl">{category.emoji}</span>
                     <div className="flex-1">
                       <div className="font-medium">{category.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {category.count} items
+                      <div className="text-sm text-muted-foreground">{t('screens.memory.countItems', { count: category.count })}
                       </div>
                     </div>
                     <Badge variant="outline">{category.color}</Badge>
@@ -141,10 +131,7 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        toast({
-                          title: "Coming Soon",
-                          description: "Edit functionality will be available soon.",
-                        });
+                        notify('toasts.memory.comingSoon', 'toasts.memory.editFunctionalityWillAvailableSoon');
                       }}
                     >
                       <Edit2 className="w-4 h-4" />
@@ -166,14 +153,14 @@ export function ManageCategoriesDialog({ open, onOpenChange }: ManageCategoriesD
           {/* Info */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> Categories with existing items cannot be deleted. You can edit them or merge them with other categories.
+              <strong>{t('screens.memory.note')}</strong>{t('screens.memory.categoriesWithExistingItemsCannotDeleted')}
             </p>
           </div>
 
           {/* Actions */}
           <div className="flex justify-end pt-4 border-t">
             <Button onClick={() => onOpenChange(false)}>
-              Done
+              {t('screens.memory.done')}
             </Button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { OnboardingSpeech } from '@/components/onboarding/OnboardingSpeech';
 import { OnboardingNameForm } from '@/components/onboarding/OnboardingNameForm';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { useAuth } from '@/context/AuthProvider';
+import { t } from '@/lib/i18n-toast';
 
 type Phase = 'speech' | 'form';
 
@@ -102,16 +103,14 @@ export default function OnboardingWelcome() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                   className="text-2xl font-bold text-white"
-                >
-                  Welcome to Maxina
+                >{t('screens.onboarding.welcomeMaxina')}
                 </motion.h1>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
                   className="text-white/60 text-sm mt-1"
-                >
-                  Your longevity journey begins now
+                >{t('screens.onboarding.yourLongevityJourneyBeginsNow')}
                 </motion.p>
               </div>
 

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { lookup } from '@/lib/i18n-toast';
 
 export interface UserPreferences {
   id: string;
@@ -100,7 +101,7 @@ export function useUserPreferences() {
       queryClient.invalidateQueries({ queryKey: ["user_preferences"] });
     },
     onError: (error) => {
-      toast.error("Error updating preferences", {
+      toast.error(lookup('toasts.hooks.errorUpdatingPreferences'), {
         description: error.message,
       });
     },

@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { listMyIntents, type UserIntent } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 export default function BusinessListings() {
   const { toast } = useToast();
@@ -29,7 +30,7 @@ export default function BusinessListings() {
       const result = await listMyIntents({ kind: "commercial_sell" });
       setListings(result);
     } catch (err: any) {
-      toast({ title: "Could not load listings", description: err?.message ?? "", variant: "destructive" });
+      notifyError('toasts.businesslistings.couldNotLoadListings');
     } finally {
       setLoading(false);
     }
@@ -41,10 +42,10 @@ export default function BusinessListings() {
     return (
       <div className="container mx-auto px-4 py-12 max-w-3xl space-y-4">
         <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+          <ArrowLeft className="h-4 w-4" /> {t('screens.businesslistings.backBusinessHub')}
         </Link>
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          Listings are available for Pro accounts.
+          {t('screens.businesslistings.listingsAvailableForProAccounts')}
         </div>
       </div>
     );
@@ -53,16 +54,16 @@ export default function BusinessListings() {
   return (
     <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
       <Link to="/business" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to Business Hub
+        <ArrowLeft className="h-4 w-4" /> {t('screens.businesslistings.backBusinessHub')}
       </Link>
 
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">My listings</h1>
-          <p className="text-sm text-muted-foreground">Services + products you're offering. Matches push to Opportunities.</p>
+          <h1 className="text-2xl font-semibold">{t('screens.businesslistings.myListings')}</h1>
+          <p className="text-sm text-muted-foreground">{t('screens.businesslistings.servicesProductsYouReOfferingMatches')}</p>
         </div>
         <Button size="sm" onClick={() => setComposerOpen(true)}>
-          <Plus className="h-4 w-4 mr-1" /> New listing
+          <Plus className="h-4 w-4 mr-1" /> {t('screens.businesslistings.newListing')}
         </Button>
       </div>
 
@@ -72,7 +73,7 @@ export default function BusinessListings() {
         </div>
       ) : listings.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
-          No listings yet. Click <span className="font-medium">New listing</span> to add one — or open ORB and just say <em>"I'm offering X"</em>.
+          {t('screens.businesslistings.noListingsYetClick')} <span className="font-medium">{t('screens.businesslistings.newListing')}</span>{t('screens.businesslistings.addOneOpenOrbJustSay')} <em>{t('screens.businesslistings.iMOfferingX')}</em>.
         </div>
       ) : (
         <div className="space-y-3">

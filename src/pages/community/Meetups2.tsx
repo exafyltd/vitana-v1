@@ -39,6 +39,7 @@ import {
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { t } from '@/lib/i18n-toast';
 
 // Featured dummy events for hybrid display
 const featuredTodayEvents = [
@@ -351,8 +352,8 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
     return (
       <div className="text-center py-12">
         <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-        <h3 className="text-lg font-semibold mb-2">No meetups scheduled</h3>
-        <p className="text-muted-foreground">Create your first meetup to bring the community together!</p>
+        <h3 className="text-lg font-semibold mb-2">{t('screens.community.noMeetupsScheduled')}</h3>
+        <p className="text-muted-foreground">{t('screens.community.createYourFirstMeetupBringCommunity')}</p>
       </div>
     );
   }
@@ -615,11 +616,11 @@ const {
 
   return (
     <AppLayout>
-      <SEO title="Meetups | Community" description="Discover and join local meetups and events" canonical={window.location.href} />
+      <SEO title={t('screens.community.meetupsCommunity')} description="Discover and join local meetups and events" canonical={window.location.href} />
       <SubNavigation items={communityNavigation} />
       <div className="p-6">
         <StandardHeader
-          title="Meetups"
+          title={t('screens.community.meetups')}
           description="Find and attend local wellness meetups and community events."
           emoji="🤝"
         />
@@ -627,26 +628,26 @@ const {
         {/* Utility Action Button */}
         <UtilityActionButton>
           <ExpandableSearchButton 
-            placeholder="Search Meetups…"
+            placeholder={t('screens.community.searchMeetups')}
             onSearch={searchEvents}
           />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setCreateMeetupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            MeetUp
+            {t('screens.community.meetup2')}
           </Button>
         </UtilityActionButton>
 
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading meetups...</p>
+            <p className="text-muted-foreground">{t('screens.community.loadingMeetups')}</p>
           </div>
         ) : (
           <SplitBar defaultValue="today" className="mt-6">
             <SplitBarList className="grid w-full grid-cols-2">
-              <SplitBarTrigger value="today">☀️ Today</SplitBarTrigger>
-              <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
+              <SplitBarTrigger value="today">{t('screens.community.today')}</SplitBarTrigger>
+              <SplitBarTrigger value="upcoming">{t('screens.community.upcoming')}</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
               {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick, handleDeleteEvent, handleShareEvent)}

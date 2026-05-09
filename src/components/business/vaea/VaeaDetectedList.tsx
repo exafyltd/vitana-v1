@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ChevronDown, ChevronRight } from "lucide-react";
 import { useVaeaDetectedQuestions } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: number; collapsible?: boolean }) {
   const { questions, loading, error, reload } = useVaeaDetectedQuestions(limit);
@@ -22,7 +23,7 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
       <Card className="bg-destructive/10 border-destructive/20">
         <CardContent className="py-4 flex items-center justify-between gap-3">
           <p className="text-sm text-destructive">{error}</p>
-          <Button variant="outline" size="sm" onClick={reload}>Retry</Button>
+          <Button variant="outline" size="sm" onClick={reload}>{t('screens.business.retry')}</Button>
         </CardContent>
       </Card>
     );
@@ -31,8 +32,8 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
   const header = (
     <div className="flex items-center justify-between gap-2">
       <div>
-        <h3 className="font-medium text-sm">What Autopilot saw</h3>
-        <p className="text-xs text-muted-foreground">Every message Autopilot scanned — including the ones it stayed quiet about.</p>
+        <h3 className="font-medium text-sm">{t('screens.business.whatAutopilotSaw')}</h3>
+        <p className="text-xs text-muted-foreground">{t('screens.business.everyMessageAutopilotScannedIncludingOnes')}</p>
       </div>
       {collapsible && (
         <Button variant="ghost" size="sm" onClick={() => setOpen((v) => !v)}>
@@ -49,7 +50,7 @@ export function VaeaDetectedList({ limit = 25, collapsible = true }: { limit?: n
     <div className="space-y-2">
       {header}
       {questions.length === 0 ? (
-        <p className="text-xs text-muted-foreground italic px-1">Nothing detected yet.</p>
+        <p className="text-xs text-muted-foreground italic px-1">{t('screens.business.nothingDetectedYet')}</p>
       ) : (
         questions.map((q) => (
           <div key={q.id} className="rounded-lg border border-white/30 bg-white/50 p-3">

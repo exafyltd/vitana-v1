@@ -27,8 +27,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
@@ -93,18 +94,11 @@ export default function DoctorsCoaches() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['provider-appointments', 'upcoming'] });
-      toast({
-        title: "Appointment Booked! 🎉",
-        description: "Your appointment has been confirmed"
-      });
+      notify('toasts.discover.appointmentBooked', 'toasts.discover.yourAppointmentHasConfirmed');
     },
     onError: (error) => {
       console.error('Error saving appointment:', error);
-      toast({
-        title: "Booking Failed",
-        description: "Please try again",
-        variant: "destructive"
-      });
+      notifyError('toasts.discover.bookingFailed', 'toasts.discover.pleaseTryAgain');
     }
   });
 
@@ -235,12 +229,12 @@ export default function DoctorsCoaches() {
 
   return (
     <AppLayout>
-      <SEO title="Doctors & Coaches | Discover" description="Find verified wellness providers and longevity specialists" canonical={window.location.href} />
+      <SEO title={t('screens.discover.doctorsCoachesDiscover')} description="Find verified wellness providers and longevity specialists" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
       <div className="p-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Doctors & Coaches"
+            title={t('screens.discover.doctorsCoaches')}
             description="Connect with verified longevity specialists, wellness coaches, and health practitioners"
             emoji="👨‍⚕️"
           />
@@ -252,14 +246,14 @@ export default function DoctorsCoaches() {
                 size="icon"
                 className="rounded-full"
                 onClick={() => window.location.reload()}
-                title="Refresh page"
+                title={t('screens.discover.refreshPage')}
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search doctors and coaches…"
+              placeholder={t('screens.discover.searchDoctorsCoaches')}
             />
             <UniversalCalendarButton />
             <Button 
@@ -267,17 +261,15 @@ export default function DoctorsCoaches() {
               onClick={() => setMasterActionOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Action
+              {t('screens.discover.action')}
             </Button>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="find">📂 Find Providers</SplitBarTrigger>
-              <SplitBarTrigger value="matches">🏆 Best Matches</SplitBarTrigger>
-              <SplitBarTrigger value="myproviders">
-                💛 My Providers {getBookmarksByType('provider').length > 0 && `(${getBookmarksByType('provider').length})`}
-              </SplitBarTrigger>
+              <SplitBarTrigger value="find">{t('screens.discover.findProviders')}</SplitBarTrigger>
+              <SplitBarTrigger value="matches">{t('screens.discover.bestMatches')}</SplitBarTrigger>
+              <SplitBarTrigger value="myproviders">{t('screens.discover.myProvidersValue0', { value0: getBookmarksByType('provider').length > 0 && `(${getBookmarksByType('provider').length})` })}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="find" className="space-y-6">
@@ -286,35 +278,35 @@ export default function DoctorsCoaches() {
             <div className="flex flex-wrap gap-3">
               <Select>
                 <SelectTrigger className="w-[160px] bg-background">
-                  <SelectValue placeholder="Specialty" />
+                  <SelectValue placeholder={t('screens.discover.specialty')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">All Specialties</SelectItem>
-                  <SelectItem value="longevity">Longevity Medicine</SelectItem>
-                  <SelectItem value="fitness">Fitness & Movement</SelectItem>
-                  <SelectItem value="mental">Mental Wellness</SelectItem>
-                  <SelectItem value="recovery">Recovery Therapy</SelectItem>
-                  <SelectItem value="nutrition">Nutrition</SelectItem>
-                  <SelectItem value="sleep">Sleep Medicine</SelectItem>
+                  <SelectItem value="all">{t('screens.discover.allSpecialties')}</SelectItem>
+                  <SelectItem value="longevity">{t('screens.discover.longevityMedicine')}</SelectItem>
+                  <SelectItem value="fitness">{t('screens.discover.fitnessMovement')}</SelectItem>
+                  <SelectItem value="mental">{t('screens.discover.mentalWellness')}</SelectItem>
+                  <SelectItem value="recovery">{t('screens.discover.recoveryTherapy')}</SelectItem>
+                  <SelectItem value="nutrition">{t('screens.discover.nutrition')}</SelectItem>
+                  <SelectItem value="sleep">{t('screens.discover.sleepMedicine')}</SelectItem>
                 </SelectContent>
               </Select>
               <Select>
                 <SelectTrigger className="w-[120px] bg-background">
-                  <SelectValue placeholder="Location" />
+                  <SelectValue placeholder={t('screens.discover.location')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">All Locations</SelectItem>
-                  <SelectItem value="online">Online</SelectItem>
-                  <SelectItem value="local">Near Me</SelectItem>
-                  <SelectItem value="travel">Travel Available</SelectItem>
+                  <SelectItem value="all">{t('screens.discover.allLocations')}</SelectItem>
+                  <SelectItem value="online">{t('screens.discover.online')}</SelectItem>
+                  <SelectItem value="local">{t('screens.discover.nearMe')}</SelectItem>
+                  <SelectItem value="travel">{t('screens.discover.travelAvailable')}</SelectItem>
                 </SelectContent>
               </Select>
               <Select>
                 <SelectTrigger className="w-[120px] bg-background">
-                  <SelectValue placeholder="Price Range" />
+                  <SelectValue placeholder={t('screens.discover.priceRange2')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">Any Price</SelectItem>
+                  <SelectItem value="all">{t('screens.discover.anyPrice')}</SelectItem>
                   <SelectItem value="0-100">$0 - $100</SelectItem>
                   <SelectItem value="100-200">$100 - $200</SelectItem>
                   <SelectItem value="200+">$200+</SelectItem>
@@ -322,23 +314,23 @@ export default function DoctorsCoaches() {
               </Select>
               <Select>
                 <SelectTrigger className="w-[120px] bg-background">
-                  <SelectValue placeholder="Availability" />
+                  <SelectValue placeholder={t('screens.discover.availability')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">Any Time</SelectItem>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
+                  <SelectItem value="all">{t('screens.discover.anyTime')}</SelectItem>
+                  <SelectItem value="today">{t('screens.discover.today')}</SelectItem>
+                  <SelectItem value="week">{t('screens.discover.thisWeek')}</SelectItem>
+                  <SelectItem value="month">{t('screens.discover.thisMonth')}</SelectItem>
                 </SelectContent>
               </Select>
               <Select>
                 <SelectTrigger className="w-[100px] bg-background">
-                  <SelectValue placeholder="Rating" />
+                  <SelectValue placeholder={t('screens.discover.rating')} />
                 </SelectTrigger>
                 <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="all">Any Rating</SelectItem>
-                  <SelectItem value="4.5">4.5+ Stars</SelectItem>
-                  <SelectItem value="4.0">4.0+ Stars</SelectItem>
+                  <SelectItem value="all">{t('screens.discover.anyRating')}</SelectItem>
+                  <SelectItem value="4.5">{t('screens.discover.text45Stars')}</SelectItem>
+                  <SelectItem value="4.0">{t('screens.discover.text40Stars')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -416,11 +408,11 @@ export default function DoctorsCoaches() {
 
                   <div className="space-y-1 md:space-y-2 mb-4">
                     <div className="flex items-center justify-between text-xs md:text-sm">
-                      <span className="text-muted-foreground">Experience:</span>
+                      <span className="text-muted-foreground">{t('screens.discover.experience')}</span>
                       <span className="font-medium">{provider.experience}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs md:text-sm">
-                      <span className="text-muted-foreground">Price Range:</span>
+                      <span className="text-muted-foreground">{t('screens.discover.priceRange')}</span>
                       <span className="font-medium">{provider.priceRange}</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -429,7 +421,7 @@ export default function DoctorsCoaches() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
-                      <span className="text-xs md:text-sm text-green-600">Available {provider.nextAvailable}</span>
+                      <span className="text-xs md:text-sm text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                     </div>
                   </div>
 
@@ -438,16 +430,14 @@ export default function DoctorsCoaches() {
                           size="sm" 
                           className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
                           onClick={() => navigate(`/discover/provider/${provider.id}`)}
-                        >
-                          View Profile
+                        >{t('screens.discover.viewProfile')}
                         </Button>
                         <Button 
                           size="sm" 
                           variant="default" 
                           className="flex-1 text-xs md:text-sm h-7 md:h-8 lg:h-9"
                           onClick={() => handleBookNow(provider)}
-                        >
-                          Book Now
+                        >{t('screens.discover.bookNow')}
                         </Button>
                   </div>
                 </CardContent>
@@ -461,9 +451,9 @@ export default function DoctorsCoaches() {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Brain className="h-6 w-6 text-purple-500" />
-                    <h2 className="text-2xl font-semibold">AI-Matched Providers</h2>
+                    <h2 className="text-2xl font-semibold">{t('screens.discover.aimatchedProviders')}</h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">Providers matched to your health needs and preferences</p>
+                  <p className="text-muted-foreground mb-6">{t('screens.discover.providersMatchedYourHealthNeedsPreferences')}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {providers.slice(0, 6).map((provider, index) => (
                       <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 border-purple-200">
@@ -494,7 +484,7 @@ export default function DoctorsCoaches() {
                           <div className="bg-purple-50 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
                               <Sparkles className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">Perfect for your health goals</span>
+                              <span className="text-xs text-purple-700">{t('screens.discover.perfectForYourHealthGoals')}</span>
                             </div>
                           </div>
                           <div className="space-y-1 mb-3">
@@ -504,7 +494,7 @@ export default function DoctorsCoaches() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="h-3 w-3 text-green-500" />
-                              <span className="text-xs text-green-600">Available {provider.nextAvailable}</span>
+                              <span className="text-xs text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                             </div>
                           </div>
                     <Button 
@@ -512,7 +502,7 @@ export default function DoctorsCoaches() {
                       className="w-full text-xs"
                       onClick={() => handleBookNow(provider)}
                     >
-                      Book Now
+                      {t('screens.discover.bookNow')}
                     </Button>
                         </CardContent>
                       </Card>
@@ -528,28 +518,28 @@ export default function DoctorsCoaches() {
                 <Card className="bg-blue-500/10 border-blue-500/20">
                   <CardContent className="p-4 text-center">
                     <div className="text-3xl font-bold text-blue-600">{upcomingAppointments.length}</div>
-                    <div className="text-sm text-muted-foreground">Upcoming</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.discover.upcoming')}</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-green-500/10 border-green-500/20">
                   <CardContent className="p-4 text-center">
                     <div className="text-3xl font-bold text-green-600">{visitHistory.length}</div>
-                    <div className="text-sm text-muted-foreground">Past Visits</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.discover.pastVisits')}</div>
                   </CardContent>
                 </Card>
                 <Card className="bg-purple-500/10 border-purple-500/20">
                   <CardContent className="p-4 text-center">
                     <div className="text-3xl font-bold text-purple-600">{getBookmarksByType('provider').length}</div>
-                    <div className="text-sm text-muted-foreground">Bookmarked</div>
+                    <div className="text-sm text-muted-foreground">{t('screens.discover.bookmarked')}</div>
                   </CardContent>
                 </Card>
               </div>
 
               <Tabs defaultValue="bookmarked" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="bookmarked">Bookmarked</TabsTrigger>
-                  <TabsTrigger value="upcoming">Upcoming ({upcomingAppointments.length})</TabsTrigger>
-                  <TabsTrigger value="history">History</TabsTrigger>
+                  <TabsTrigger value="bookmarked">{t('screens.discover.bookmarked')}</TabsTrigger>
+                  <TabsTrigger value="upcoming">{t('screens.discover.upcomingLength', { length: upcomingAppointments.length })}</TabsTrigger>
+                  <TabsTrigger value="history">{t('screens.discover.history')}</TabsTrigger>
                 </TabsList>
 
                 {/* Bookmarked Tab */}
@@ -562,9 +552,9 @@ export default function DoctorsCoaches() {
                         <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                           <CardContent className="p-12 text-center">
                             <div className="text-6xl mb-4">💛</div>
-                            <h3 className="text-xl font-semibold mb-2">No saved providers yet</h3>
+                            <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noSavedProvidersYet')}</h3>
                             <p className="text-muted-foreground">
-                              Save your favorite providers to access them quickly
+                              {t('screens.discover.saveYourFavoriteProvidersAccessThem')}
                             </p>
                           </CardContent>
                         </Card>
@@ -616,13 +606,13 @@ export default function DoctorsCoaches() {
                                   </div>
                                   <div className="flex items-center gap-2 text-sm">
                                     <Clock className="h-4 w-4 text-green-500" />
-                                    <span className="text-green-600">Available {provider.nextAvailable}</span>
+                                    <span className="text-green-600">{t('screens.discover.availableNextavailable', { nextAvailable: provider.nextAvailable })}</span>
                                   </div>
                                 </div>
                                 <div className="flex gap-2">
-                                  <Button size="sm" className="flex-1">Book Now</Button>
+                                  <Button size="sm" className="flex-1">{t('screens.discover.bookNow')}</Button>
                                   <Button size="sm" variant="outline" onClick={() => removeBookmark('provider', provider.id.toString())}>
-                                    Remove
+                                    {t('screens.discover.remove')}
                                   </Button>
                                 </div>
                               </CardContent>
@@ -640,9 +630,9 @@ export default function DoctorsCoaches() {
                     <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">📅</div>
-                        <h3 className="text-xl font-semibold mb-2">No upcoming appointments</h3>
+                        <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noUpcomingAppointments')}</h3>
                         <p className="text-muted-foreground">
-                          Book an appointment with a provider to see it here
+                          {t('screens.discover.bookAppointmentWithProviderSeeIt')}
                         </p>
                       </CardContent>
                     </Card>
@@ -658,11 +648,11 @@ export default function DoctorsCoaches() {
                         if (daysUntil > 7) {
                           countdownBadge = <Badge variant="outline">{format(appointmentDate, 'MMM dd, yyyy')}</Badge>;
                         } else if (daysUntil > 0) {
-                          countdownBadge = <Badge className="bg-blue-500">{daysUntil} days away</Badge>;
+                          countdownBadge = <Badge className="bg-blue-500">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
                         } else if (hoursUntil > 0) {
-                          countdownBadge = <Badge className="bg-orange-500">Today - {hoursUntil}h away</Badge>;
+                          countdownBadge = <Badge className="bg-orange-500">{t('screens.discover.todayHoursuntilHAway', { hoursUntil })}</Badge>;
                         } else {
-                          countdownBadge = <Badge className="bg-red-500">Starting soon!</Badge>;
+                          countdownBadge = <Badge className="bg-red-500">{t('screens.discover.startingSoon')}</Badge>;
                         }
 
                         return (
@@ -691,7 +681,7 @@ export default function DoctorsCoaches() {
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                   <Clock className="h-4 w-4" />
-                                  <span>{format(appointmentDate, 'HH:mm')} - {appointment.duration_minutes} min</span>
+                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: format(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
                                 </div>
                                 {appointment.location && (
                                   <div className="flex items-center gap-2 text-sm">
@@ -702,9 +692,9 @@ export default function DoctorsCoaches() {
                               </div>
 
                               <div className="flex gap-2">
-                                <Button size="sm" variant="outline">Reschedule</Button>
-                                <Button size="sm" variant="outline">Cancel</Button>
-                                <Button size="sm" variant="outline">Add Notes</Button>
+                                <Button size="sm" variant="outline">{t('screens.discover.reschedule')}</Button>
+                                <Button size="sm" variant="outline">{t('screens.discover.cancel')}</Button>
+                                <Button size="sm" variant="outline">{t('screens.discover.addNotes')}</Button>
                               </div>
                             </CardContent>
                           </Card>
@@ -720,9 +710,9 @@ export default function DoctorsCoaches() {
                     <Card className="bg-white/80 backdrop-blur-sm border-white/20">
                       <CardContent className="p-12 text-center">
                         <div className="text-6xl mb-4">📋</div>
-                        <h3 className="text-xl font-semibold mb-2">No visit history yet</h3>
+                        <h3 className="text-xl font-semibold mb-2">{t('screens.discover.noVisitHistoryYet')}</h3>
                         <p className="text-muted-foreground">
-                          Your completed appointments will appear here
+                          {t('screens.discover.yourCompletedAppointmentsWillAppearHere')}
                         </p>
                       </CardContent>
                     </Card>

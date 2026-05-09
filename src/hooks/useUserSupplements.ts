@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useHealthLogger } from './useHealthLogger';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export interface UserSupplement {
   id: string;
@@ -41,11 +42,7 @@ export function useUserSupplements() {
       setSupplements(data || []);
     } catch (error) {
       console.error('Error fetching supplements:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load supplements",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedLoadSupplements');
     } finally {
       setIsLoading(false);
     }
@@ -69,18 +66,11 @@ export function useUserSupplements() {
       // Log supplement addition
       await logSupplementAdd(data.name, data.category);
       
-      toast({
-        title: "Success",
-        description: "Supplement added successfully",
-      });
+      notify('toasts.hooks.success', 'toasts.hooks.supplementAddedSuccessfully');
       return data;
     } catch (error) {
       console.error('Error creating supplement:', error);
-      toast({
-        title: "Error",
-        description: "Failed to add supplement",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedAddSupplement');
       throw error;
     }
   };
@@ -101,18 +91,11 @@ export function useUserSupplements() {
       // Log supplement update
       await logSupplementUpdate(data.name);
       
-      toast({
-        title: "Success",
-        description: "Supplement updated successfully",
-      });
+      notify('toasts.hooks.success', 'toasts.hooks.supplementUpdatedSuccessfully');
       return data;
     } catch (error) {
       console.error('Error updating supplement:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update supplement",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedUpdateSupplement');
       throw error;
     }
   };
@@ -136,17 +119,10 @@ export function useUserSupplements() {
         await logSupplementDelete(supplement.name);
       }
       
-      toast({
-        title: "Success",
-        description: "Supplement deleted successfully",
-      });
+      notify('toasts.hooks.success', 'toasts.hooks.supplementDeletedSuccessfully');
     } catch (error) {
       console.error('Error deleting supplement:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete supplement",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedDeleteSupplement');
       throw error;
     }
   };

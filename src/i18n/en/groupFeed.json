@@ -1,0 +1,15 @@
+{
+  "groupFeed": {
+    "placeholder": "Share something with the group...",
+    "post": "Post",
+    "noMessages": "No messages yet",
+    "beFirst": "Be the first to post in this group!",
+    "joinToPost": "Join the group to start posting.",
+    "messageSent": "Message sent",
+    "deleteConfirm": "Delete this message?",
+    "messageDeleted": "Message deleted",
+    "error": "Error",
+    "errorSend": "Failed to send message",
+    "errorDelete": "Failed to delete message"
+  }
+}

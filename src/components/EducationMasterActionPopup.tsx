@@ -15,6 +15,7 @@ import {
   Star,
   Clock
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface EducationMasterActionPopupProps {
   open: boolean;
@@ -104,7 +105,7 @@ export function EducationMasterActionPopup({ open, onOpenChange }: EducationMast
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-6">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Education Actions
+            {t('screens.common.educationActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -133,7 +134,7 @@ export function EducationMasterActionPopup({ open, onOpenChange }: EducationMast
             onClick={() => onOpenChange(false)}
             className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Close
+            {t('screens.common.close')}
           </button>
         </div>
       </DialogContent>

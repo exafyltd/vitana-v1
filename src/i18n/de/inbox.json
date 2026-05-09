@@ -1,0 +1,108 @@
+{
+  "inbox": {
+    "title": "Postfach",
+    "subtitle": "Bleiben Sie mit Ihrer Community verbunden!",
+    "description": "Ihre Unterhaltungen, Updates und Benachrichtigungen",
+    "desktopTitle": "Nachrichten",
+    "desktopDescription": "Verbinden Sie sich mit Ihrer Community und Ihrem Netzwerk",
+    "tabs": {
+      "all": "Alle",
+      "groups": "Gruppen",
+      "direct": "Direkt",
+      "contacts": "Kontakte",
+      "notifications": "Benachrichtigungen",
+      "archived": "Archiviert"
+    },
+    "contextTabs": {
+      "community": "Community",
+      "network": "Netzwerk"
+    },
+    "actions": {
+      "new": "Neu",
+      "newMessage": "Neue Nachricht",
+      "createGroup": "Gruppe erstellen"
+    },
+    "composer": {
+      "placeholder": "Nachricht eingeben...",
+      "send": "Senden",
+      "attachments": "Anhänge",
+      "recipients": "An:",
+      "add": "Hinzufügen"
+    },
+    "states": {
+      "empty": "Noch keine Nachrichten",
+      "loading": "Nachrichten werden geladen...",
+      "error": "Nachrichten konnten nicht geladen werden"
+    },
+    "newConversation": {
+      "title": "Neue Unterhaltung starten",
+      "titleGroup": "Gruppenchat erstellen",
+      "groupName": "Gruppenname",
+      "groupNamePlaceholder": "Gruppenname eingeben...",
+      "members": "Mitglieder",
+      "recipient": "Empfänger",
+      "addMore": "Weitere Personen hinzufügen",
+      "searchPeople": "Personen suchen",
+      "searchPlaceholder": "Name oder E-Mail eingeben...",
+      "searchMinChars": "Mindestens 2 Zeichen zum Suchen eingeben",
+      "searchResults": "Suchergebnisse",
+      "noResults": "Keine Nutzer gefunden. Versuchen Sie einen anderen Suchbegriff.",
+      "add": "Hinzufügen",
+      "added": "Hinzugefügt",
+      "cancel": "Abbrechen",
+      "startChat": "Chat starten",
+      "createGroup": "Gruppe erstellen",
+      "creating": "Wird erstellt..."
+    },
+    "createGroup": {
+      "title": "Gruppe erstellen",
+      "avatarSoon": "Avatar-Upload bald verfügbar.",
+      "groupName": "Gruppenname",
+      "addMembers": "Mitglieder hinzufügen",
+      "searchPlaceholder": "Nutzer suchen...",
+      "groupNameRequired": "Gruppenname erforderlich",
+      "groupNameRequiredDesc": "Bitte geben Sie einen Namen für Ihre Gruppe ein.",
+      "addMembersRequired": "Mitglieder hinzufügen",
+      "addMembersRequiredDesc": "Bitte fügen Sie mindestens ein Mitglied hinzu.",
+      "groupExists": "Gruppe existiert bereits",
+      "groupExistsDesc": "Eine Gruppe mit diesen Mitgliedern wurde kürzlich erstellt.",
+      "created": "Gruppe erstellt",
+      "createdDesc": "\"{name}\" wurde erfolgreich erstellt.",
+      "failed": "Gruppe konnte nicht erstellt werden",
+      "failedDesc": "Bitte versuchen Sie es erneut."
+    },
+    "toast": {
+      "success": "Erfolg",
+      "error": "Fehler",
+      "conversationStarted": "Unterhaltung gestartet!",
+      "authRequired": "Anmeldung erforderlich",
+      "noTenantContext": "Kein Mandantenkontext verfügbar",
+      "searchFailed": "Suche fehlgeschlagen",
+      "accessDenied": "Zugriff verweigert",
+      "communityOnly": "Nur Community-Nutzer können globale Unterhaltungen erstellen",
+      "pleaseLogin": "Bitte melden Sie sich an",
+      "groupRecipientsRequired": "Gruppenname und Empfänger erforderlich",
+      "singleRecipientRequired": "Wählen Sie einen Empfänger für Direktnachrichten",
+      "groupCreated": "Gruppe \"{name}\" wurde erfolgreich erstellt!",
+      "groupFailed": "Gruppe konnte nicht erstellt werden"
+    },
+    "createGroupAction": "Neue Gruppe erstellen",
+    "newConversationAction": "Neue Unterhaltung",
+    "noGroups": "Noch keine Gruppen",
+    "noGroupsDesc": "Gruppen helfen Ihnen, mit mehreren Personen gleichzeitig zusammenzuarbeiten.",
+    "createFirstGroup": "Erste Gruppe erstellen",
+    "loading": "Nachrichten werden geladen...",
+    "searchConversations": "Unterhaltungen durchsuchen...",
+    "searchPlaceholder": "Suchen...",
+    "noMessages": "Noch keine Nachrichten",
+    "noMessagesDesc": "Starten Sie eine Unterhaltung, um loszulegen.",
+    "startConversation": "Unterhaltung starten",
+    "emptyState": {
+      "title": "Ihr Postfach ist noch leer",
+      "globalDescription": "Starten Sie eine Unterhaltung oder treten Sie einer Community bei, um sich mit anderen zu verbinden.",
+      "tenantDescription": "Verbinden Sie sich mit Kollegen und Teammitgliedern in Ihrem professionellen Netzwerk.",
+      "startConversation": "Unterhaltung starten",
+      "discoverPeople": "Personen entdecken"
+    }
+  }
+}

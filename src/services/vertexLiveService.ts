@@ -229,7 +229,7 @@ export class VertexLiveService {
           } else if (e?.code === 1006 && !this.isIntentionalDisconnect) {
             // Code 1006 after established connection
             console.warn('⚠️ WebSocket abnormal closure (1006) - connection lost unexpectedly');
-            this.callbacks.onError?.('Connection lost unexpectedly. Please check your network and try reconnecting.');
+            this.callbacks.onError?.('Connection lost — tap to reconnect.');
           }
           
           this.callbacks.onConnectionChange?.(false);

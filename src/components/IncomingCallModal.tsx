@@ -2,6 +2,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Phone, PhoneOff, Video, User } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 interface IncomingCallModalProps {
   isOpen: boolean;
@@ -33,8 +34,7 @@ export const IncomingCallModal = ({
 
           <div className="text-center">
             <h2 className="text-2xl font-semibold">{callerName}</h2>
-            <p className="text-muted-foreground mt-2">
-              Incoming {isVideoCall ? 'video' : 'audio'} call...
+            <p className="text-muted-foreground mt-2">{t('screens.common.incomingValue0Call', { value0: isVideoCall ? 'video' : 'audio' })}
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { GlassModeManager, ScreenContext, PrivacyMask } from '@/utils/glassMode';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 export const useGlassMode = () => {
   const [isActive, setIsActive] = useState(false);
@@ -59,21 +60,13 @@ export const useGlassMode = () => {
       
       setIsActive(true);
       
-      toast({
-        title: "Glass Mode Active",
-        description: "AI is watching your screen",
-        duration: 2000,
-      });
+      notify('toasts.hooks.glassModeActive', 'toasts.hooks.aiWatchingYourScreen');
       
       console.log('🪟 Glass Mode started successfully');
     } catch (error) {
       console.error('❌ Glass Mode start failed:', error);
       
-      toast({
-        title: "Glass Mode Failed",
-        description: error instanceof Error ? error.message : "Could not start screen capture",
-        variant: "destructive",
-      });
+      notifyError('toasts.hooks.glassModeFailed');
       
       throw error;
     }
@@ -91,11 +84,7 @@ export const useGlassMode = () => {
     setIsAudioMuted(false);
     setScreenContext(null);
     
-    toast({
-      title: "Glass Mode Stopped",
-      description: "Screen capture has been disabled",
-      duration: 2000,
-    });
+    notify('toasts.hooks.glassModeStopped', 'toasts.hooks.screenCaptureHasDisabled');
     
     console.log('🪟 Glass Mode stopped');
   }, [isActive, toast]);

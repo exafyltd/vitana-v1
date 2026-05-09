@@ -6,6 +6,8 @@ import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { getAutoAvatarUrl } from "@/lib/autoAvatar";
+import { t } from '@/lib/i18n-toast';
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -98,7 +100,11 @@ export function MobileIdentityCard({
               style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
             />
             <Avatar className="relative h-24 w-24 border-[3px] border-white/10 shadow-lg">
-              <AvatarImage src={avatarUrl || undefined} alt={displayName} style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)} />
+              <AvatarImage
+                src={avatarUrl && avatarUrl.length > 0 ? avatarUrl : getAutoAvatarUrl(handle ?? displayName ?? "vitana")}
+                alt={displayName}
+                style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)}
+              />
               <AvatarFallback className="text-xl font-semibold bg-white/5 text-white/80">
                 {initials}
               </AvatarFallback>
@@ -169,7 +175,7 @@ export function MobileIdentityCard({
                   }}
                 >
                   <MessageSquare className="h-3.5 w-3.5" />
-                  Message
+                  {t('screens.profile.message')}
                 </Button>
               )}
             </div>
@@ -214,8 +220,7 @@ export function MobileIdentityCard({
                 backgroundColor: `${tier.color}20`,
                 color: tier.color
               }}
-            >
-              {tier.label} · Top {vitanaPercentile}%
+            >{t('screens.profile.labelTopVitanapercentile', { label: tier.label, vitanaPercentile })}
             </div>
 
             {/* Explanation */}

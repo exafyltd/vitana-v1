@@ -1,4 +1,5 @@
 import { NewsCard } from "@/components/crossover/NewsCard";
+import { t } from '@/lib/i18n-toast';
 
 interface MyCurrentVibeCardProps {
   mood?: string;
@@ -37,7 +38,7 @@ export function MyCurrentVibeCard({
 
   return (
     <NewsCard
-      title="My Current Vibe 🌍"
+      title={t('screens.context.myCurrentVibe')}
       description={`${getMoodEmoji(mood)} ${mood} · ${energyLevel} Energy · ${stressLevel} · Sleep Score ${sleepScore}/100`}
       imageUrl={getLocationImage(location)}
       pillar="Mental"

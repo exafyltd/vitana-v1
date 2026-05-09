@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError } from '@/lib/i18n-toast';
 
 interface StripePaymentFormProps {
   onSuccess: () => void;
@@ -34,13 +35,9 @@ export function StripePaymentForm({ onSuccess }: StripePaymentFormProps) {
     });
 
     if (error) {
-      toast({
-        title: 'Payment failed',
-        description: error.message || 'Something went wrong',
-        variant: 'destructive',
-      });
+      notifyError('toasts.billing.paymentFailed');
     } else {
-      toast({ title: 'Payment successful!' });
+      notify('toasts.billing.paymentSuccessful');
       onSuccess();
     }
 

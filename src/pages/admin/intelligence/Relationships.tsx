@@ -9,6 +9,7 @@ import { AdminTable } from "@/components/admin/AdminTable";
 import { adminIntelligenceNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { t } from '@/lib/i18n-toast';
 
 const NODE_TYPE_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   person: "default",
@@ -117,27 +118,25 @@ export default function IntelligenceRelationships() {
     <AppLayout>
       <SubNavigation items={adminIntelligenceNavigation} />
       <div className="p-6 space-y-6">
-        <AdminHeader title="Relationship Graph" description="Nodes and edges in the relationship memory graph" />
+        <AdminHeader title={t('screens.admin.relationshipGraph')} description="Nodes and edges in the relationship memory graph" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <AdminStatsCard title="Total Nodes" value={nodesQuery.data?.total ?? "..."} icon={Network} loading={nodesQuery.isLoading} />
-          <AdminStatsCard title="Total Edges" value={edgesQuery.data?.total ?? "..."} icon={ArrowRightLeft} loading={edgesQuery.isLoading} />
-          <AdminStatsCard title="Person Nodes" value={tab === "nodes" ? records.filter((n: any) => n.node_type === "person").length : "..."} icon={Users} loading={activeQuery.isLoading} />
-          <AdminStatsCard title="Domains" value={tab === "nodes" ? new Set(records.map((n: any) => n.domain)).size : "..."} icon={Globe} loading={activeQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalNodes')} value={nodesQuery.data?.total ?? "..."} icon={Network} loading={nodesQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.totalEdges')} value={edgesQuery.data?.total ?? "..."} icon={ArrowRightLeft} loading={edgesQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.personNodes')} value={tab === "nodes" ? records.filter((n: any) => n.node_type === "person").length : "..."} icon={Users} loading={activeQuery.isLoading} />
+          <AdminStatsCard title={t('screens.admin.domains')} value={tab === "nodes" ? new Set(records.map((n: any) => n.domain)).size : "..."} icon={Globe} loading={activeQuery.isLoading} />
         </div>
 
         <div className="flex gap-2">
           <button
             onClick={() => { setTab("nodes"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "nodes" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Nodes ({nodesQuery.data?.total ?? "..."})
+          >{t('screens.admin.nodesValue0', { value0: nodesQuery.data?.total ?? "..." })}
           </button>
           <button
             onClick={() => { setTab("edges"); setPage(0); }}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "edges" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"}`}
-          >
-            Edges ({edgesQuery.data?.total ?? "..."})
+          >{t('screens.admin.edgesValue0', { value0: edgesQuery.data?.total ?? "..." })}
           </button>
         </div>
 

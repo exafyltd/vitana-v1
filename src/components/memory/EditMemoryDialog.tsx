@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { t } from '@/lib/i18n-toast';
 
 interface EditMemoryDialogProps {
   open: boolean;
@@ -78,25 +79,25 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit Memory</DialogTitle>
+          <DialogTitle>{t('screens.memory.editMemory')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Content Editor */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Content</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.memory.content')}</label>
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={6}
-              placeholder="Edit memory content..."
+              placeholder={t('screens.memory.editMemoryContent')}
               className="resize-none"
             />
           </div>
 
           {/* Category Selection */}
           <div>
-            <label className="text-sm font-medium mb-2 block">Category</label>
+            <label className="text-sm font-medium mb-2 block">{t('screens.memory.category')}</label>
             <div className="flex flex-wrap gap-2">
               {MEMORY_CATEGORIES.map((cat) => (
                 <Badge
@@ -114,7 +115,7 @@ export function EditMemoryDialog({ open, onOpenChange, memory }: EditMemoryDialo
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('screens.memory.cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isUpdating || !content.trim()}>
             {isUpdating ? "Saving..." : "Save Changes"}

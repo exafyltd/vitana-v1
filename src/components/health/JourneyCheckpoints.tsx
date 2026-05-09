@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Zap, ChevronRight, Sparkles } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/context/AuthProvider";
 import { communityFetch } from "@/lib/community-gateway";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
@@ -17,6 +16,7 @@ import { projectDays, trend7d } from "@/lib/vitana-projection";
 import { nextTier, pointsToNextTier } from "@/lib/vitanaIndex";
 import { bucketFromWaveId } from "@/lib/horizonBuckets";
 import type { ContributionVector } from "@/types/autopilot";
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
@@ -200,20 +200,20 @@ export function JourneyCheckpoints({
         { method: "POST" },
       );
       if (!res.ok) {
-        toast.error("Couldn't start that yet — open Autopilot to try again.");
+        notifyError('toasts.health.couldnTStartThatYetOpen');
         onOpenAutopilot();
         return;
       }
       const json = await res.json();
       if (json?.ok) {
-        toast.success("Activated — find it in Autopilot when you're ready.");
+        notifySuccess('toasts.health.activatedFindItAutopilotWhenYou');
         onActivated?.();
         onOpenAutopilot();
       } else {
         onOpenAutopilot();
       }
     } catch {
-      toast.error("Network hiccup — open Autopilot to try again.");
+      notifyError('toasts.health.networkHiccupOpenAutopilotTryAgain');
       onOpenAutopilot();
     } finally {
       setStartingId(null);
@@ -230,9 +230,9 @@ export function JourneyCheckpoints({
       <CheckpointCard pillar={todayPillar}>
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Today
+            {t('screens.health.today')}
           </span>
-          <span className="text-xs text-muted-foreground">Next step</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.nextStep')}</span>
         </div>
         {todayPick ? (
           <>
@@ -262,13 +262,12 @@ export function JourneyCheckpoints({
                 <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
               ) : (
                 <Zap className="w-4 h-4 mr-1.5" />
-              )}
-              Start
+              )}{t('screens.health.start')}
             </Button>
           </>
         ) : (
           <div className="py-2 text-sm text-muted-foreground">
-            Nothing waiting on you today — your Index keeps growing in the background ✨
+            {t('screens.health.nothingWaitingYouTodayYourIndex')}
           </div>
         )}
       </CheckpointCard>
@@ -277,19 +276,16 @@ export function JourneyCheckpoints({
       <CheckpointCard pillar={weekDominant}>
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            This week
+            {t('screens.health.thisWeek')}
           </span>
-          <span className="text-xs text-muted-foreground">Day {day7}</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.dayDay7', { day7 })}</span>
         </div>
         {weekPicks.length === 0 ? (
-          <div className="py-2 text-sm text-muted-foreground">
-            No suggestions land this week yet.
+          <div className="py-2 text-sm text-muted-foreground">{t('screens.health.noSuggestionsLandThisWeekYet')}
           </div>
         ) : (
           <>
-            <p className="text-sm leading-snug">
-              Complete the {weekPicks.length} action{weekPicks.length === 1 ? "" : "s"} Autopilot
-              suggests this week
+            <p className="text-sm leading-snug">{t('screens.health.completeLengthActionValue1AutopilotSuggests', { length: weekPicks.length, value1: weekPicks.length === 1 ? "" : "s" })}
               {weekVector.total > 0 ? (
                 <>
                   {" "}→ <strong className="text-green-600">+{weekVector.total}</strong>
@@ -297,8 +293,7 @@ export function JourneyCheckpoints({
               ) : null}
               .
               {projected7d !== null && total !== null && (
-                <>
-                  {" "}You'd land around <strong>{projected7d}</strong>.
+                <>{t('screens.health.value0YouDLandAround', { value0: " " })} <strong>{projected7d}</strong>.
                 </>
               )}
             </p>
@@ -319,7 +314,7 @@ export function JourneyCheckpoints({
               className="w-full justify-center text-xs"
               onClick={onOpenAutopilot}
             >
-              Open Autopilot
+              {t('screens.health.openAutopilot')}
               <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
             </Button>
           </>
@@ -331,17 +326,16 @@ export function JourneyCheckpoints({
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5">
             <Sparkles className="w-3 h-3" />
-            30-day horizon
+            {t('screens.health.text30dayHorizon')}
           </span>
-          <span className="text-xs text-muted-foreground">Day {day30}</span>
+          <span className="text-xs text-muted-foreground">{t('screens.health.dayDay30', { day30 })}</span>
         </div>
         {projected30d !== null && total !== null ? (
-          <p className="text-sm leading-snug">
-            At your current pace: <strong>{projected30d}</strong>. {tierGuidance}
+          <p className="text-sm leading-snug">{t('screens.health.atYourCurrentPace')} <strong>{projected30d}</strong>. {tierGuidance}
           </p>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Need a few more days of data to project the 30-day arc.
+            {t('screens.health.needFewMoreDaysDataProject')}
           </p>
         )}
         {weakest && pillars && (

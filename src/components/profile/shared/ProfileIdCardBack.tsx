@@ -13,6 +13,7 @@ import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { useState } from "react";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileIdCardBackProps {
   profile: UserProfile;
@@ -191,10 +192,10 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
         
         <div className="relative z-10 text-center mb-8">
           <h2 className={`text-2xl font-bold mb-2 transition-colors duration-500 ${themeConfig.backCard.textHeader || 'text-foreground'}`}>
-            Social Presence
+            {t('screens.profile.socialPresence')}
           </h2>
           <p className={`text-sm transition-colors duration-500 ${themeConfig.backCard.textInactive || 'text-muted-foreground'}`}>
-            Verified connections across your digital life
+            {t('screens.profile.verifiedConnectionsAcrossYourDigitalLife')}
           </p>
         </div>
 
@@ -327,7 +328,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                           border: `1px solid ${platform.brandColor}30`
                         }}
                       >
-                        <span>Connected</span>
+                        <span>{t('screens.profile.connected')}</span>
                       </div>
                       {isOwnProfile && (
                         <Button
@@ -347,8 +348,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                             e.stopPropagation();
                             handleConnect(platform);
                           }}
-                        >
-                          Manage
+                        >{t('screens.profile.manage')}
                         </Button>
                       )}
                     </>
@@ -361,11 +361,10 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                         e.stopPropagation();
                         handleConnect(platform);
                       }}
-                    >
-                      Connect
+                    >{t('screens.profile.connect')}
                     </Button>
                   ) : (
-                    <span className="text-xs text-muted-foreground/40 italic">Not linked</span>
+                    <span className="text-xs text-muted-foreground/40 italic">{t('screens.profile.notLinked')}</span>
                   )}
                 </div>
               </div>
@@ -378,7 +377,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
                     {cardContent}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Not connected yet</p>
+                    <p>{t('screens.profile.notConnectedYet')}</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
@@ -393,7 +392,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
           <div className="w-full max-w-md mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <div className="flex items-center gap-2 mb-2">
               <LinkedInIcon className="h-4 w-4" connected={true} />
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">LinkedIn Profile Data</span>
+              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">{t('screens.profile.linkedinProfileData')}</span>
             </div>
             {profile.linkedin_headline && (
               <p className="text-sm font-medium text-foreground mb-1">{profile.linkedin_headline}</p>
@@ -402,23 +401,18 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
               <p className="text-xs text-muted-foreground line-clamp-3">{profile.linkedin_summary}</p>
             )}
             {profile.linkedin_synced_at && (
-              <p className="text-xs text-muted-foreground/60 mt-2">
-                Synced {new Date(profile.linkedin_synced_at).toLocaleDateString()}
-              </p>
+              <p className="text-xs text-muted-foreground/60 mt-2">{t('screens.profile.syncedValue0', { value0: new Date(profile.linkedin_synced_at).toLocaleDateString() })}</p>
             )}
           </div>
         )}
 
         {isOwnProfile && (
-          <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">
-            Connect accounts to auto-import bio, photos, and professional info
+          <p className="text-xs text-muted-foreground/60 text-center mt-4 max-w-xs">{t('screens.profile.connectAccountsAutoimportBioPhotosProfessional')}
           </p>
         )}
 
         {/* ID Card decorative elements */}
-        <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">
-          ID #{profile.id.slice(0, 8)}
-        </div>
+        <div className="absolute top-4 right-4 text-xs text-muted-foreground/50">{t('screens.profile.idValue0', { value0: profile.id.slice(0, 8) })}</div>
         <div className="absolute bottom-4 left-4 text-xs text-muted-foreground/50">
           @{profile.handle}
         </div>

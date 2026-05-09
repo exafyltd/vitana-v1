@@ -22,6 +22,7 @@ import { useCart } from '@/hooks/useCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
+import { t } from '@/lib/i18n-toast';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -169,7 +170,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               <button
                 onClick={handleProfileClick}
                 className="flex items-center gap-3 flex-1 min-w-0 text-left rounded-xl -mx-1 px-1 py-1 hover:bg-white/10 transition-colors"
-                aria-label="Open my profile"
+                aria-label={t('screens.mobile.openMyProfile')}
               >
                 <Avatar className="h-9 w-9 ring-1 ring-white/40 shrink-0">
                   <AvatarImage
@@ -196,7 +197,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   onClose();
                 }}
                 className="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-white/10 transition-colors shrink-0"
-                aria-label="Close drawer"
+                aria-label={t('screens.mobile.closeDrawer')}
               >
                 <X className="h-[18px] w-[18px]" />
               </button>
@@ -207,24 +208,24 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               <div className="flex items-stretch gap-1 px-3 pt-3 pb-1.5 border-b border-border/50">
                 <button
                   onClick={() => setSearchActive(true)}
-                  aria-label="Open search"
+                  aria-label={t('screens.mobile.openSearch')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
                     <Search className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Search</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.search')}</span>
                 </button>
 
                 <button
                   onClick={() => openPopup(setCalendarOpen)}
-                  aria-label="Open calendar"
+                  aria-label={t('screens.mobile.openCalendar')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
                     <Calendar className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Calendar</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.calendar')}</span>
                 </button>
 
                 <button
@@ -240,18 +241,18 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       ariaLabel={`${notificationUnreadCount} unread notification${notificationUnreadCount !== 1 ? 's' : ''}`}
                     />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Alerts</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.alerts')}</span>
                 </button>
 
                 <button
                   onClick={() => openPopup(setAutopilotOpen)}
-                  aria-label="Open autopilot"
+                  aria-label={t('screens.mobile.openAutopilot')}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
                   <div className="relative">
                     <Plane className="h-[18px] w-[18px]" />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Autopilot</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.autopilot')}</span>
                 </button>
 
                 <button
@@ -267,7 +268,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       ariaLabel={`${cartCount} item${cartCount !== 1 ? 's' : ''} in cart`}
                     />
                   </div>
-                  <span className="text-[10px] leading-none text-muted-foreground">Cart</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{t('screens.mobile.cart')}</span>
                 </button>
               </div>
             ) : (
@@ -288,7 +289,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <Input
                     autoFocus
                     type="text"
-                    placeholder="Search members, groups, or..."
+                    placeholder={t('screens.mobile.searchMembersGroups')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
@@ -297,7 +298,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                     type="button"
                     onClick={closeSearch}
                     className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted"
-                    aria-label="Close search"
+                    aria-label={t('screens.mobile.closeSearch')}
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -308,11 +309,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                       {searching && (
                         <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Searching…</span>
+                          <span>{t('screens.mobile.searching')}</span>
                         </div>
                       )}
                       {!searching && results.length === 0 && (
-                        <div className="px-3 py-3 text-sm text-muted-foreground">No members found</div>
+                        <div className="px-3 py-3 text-sm text-muted-foreground">{t('screens.mobile.noMembersFound')}</div>
                       )}
                       {results.map((r) => {
                         const name = r.display_name || 'Unknown';
@@ -394,9 +395,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
 
     <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
-      <DialogContent className="max-w-md p-0 gap-0 rounded-2xl overflow-hidden">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 gap-0 rounded-2xl overflow-hidden top-[calc(env(safe-area-inset-top,0px)+1.5rem)] translate-y-0">
         <NotificationsPanel
           onNavigated={() => setNotificationsOpen(false)}
+          onClose={() => setNotificationsOpen(false)}
           maxHeightClassName="max-h-[85vh]"
         />
       </DialogContent>

@@ -14,11 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useProfile } from "@/context/ProfileProvider";
 import { AccountInfo } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { AvatarUploadField } from "@/components/profile/editor/AvatarUploadField";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface AccountEditDrawerProps {
   open: boolean;
@@ -131,17 +132,10 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
         city: form.city.trim() || undefined,
       };
       await updateAccount(patch);
-      toast({
-        title: "Account updated",
-        description: "Your personal details have been saved.",
-      });
+      notify('toasts.profile.accountUpdated', 'toasts.profile.yourPersonalDetailsHaveSaved');
       onOpenChange(false);
     } catch (error: any) {
-      toast({
-        title: "Could not save",
-        description: error?.message ?? "Please try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.profile.couldNotSave');
     } finally {
       setSaving(false);
     }
@@ -158,11 +152,11 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit account details</DialogTitle>
+          <DialogTitle>{t('screens.profile.editAccountDetails')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
-          <Section title="Public profile">
+          <Section title={t('screens.profile.publicProfile')}>
             <Field label="Profile picture">
               <AvatarUploadField
                 value={{
@@ -192,26 +186,24 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
                       e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""),
                     )
                   }
-                  placeholder="your_handle"
+                  placeholder={t('screens.profile.your_handle')}
                   className="flex-1"
                 />
               </div>
               {form.handle && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Public URL: /u/{form.handle}
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">{t('screens.profile.publicUrluHandle', { handle: form.handle })}</p>
               )}
             </Field>
             <Field label="Longevity archetype">
               <Input
                 value={form.longevityArchetype}
                 onChange={(e) => set("longevityArchetype", e.target.value)}
-                placeholder="e.g. The Mindful Mover"
+                placeholder={t('screens.profile.eGMindfulMover')}
               />
             </Field>
           </Section>
 
-          <Section title="Basic Personal Information">
+          <Section title={t('screens.profile.basicPersonalInformation')}>
             <Field label="First name">
               <Input value={form.firstName} onChange={(e) => set("firstName", e.target.value)} />
             </Field>
@@ -226,7 +218,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
             <Field label="Gender">
               <Select value={form.gender} onValueChange={(v) => set("gender", v)}>
-                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('screens.profile.select')} /></SelectTrigger>
                 <SelectContent>
                   {GENDER_OPTIONS.map((o) => (
                     <SelectItem key={o} value={o}>{o}</SelectItem>
@@ -236,7 +228,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
             <Field label="Marital status">
               <Select value={form.maritalStatus} onValueChange={(v) => set("maritalStatus", v)}>
-                <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('screens.profile.select')} /></SelectTrigger>
                 <SelectContent>
                   {MARITAL_OPTIONS.map((o) => (
                     <SelectItem key={o} value={o}>{o}</SelectItem>
@@ -246,7 +238,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
             </Field>
           </Section>
 
-          <Section title="Contact Information">
+          <Section title={t('screens.profile.contactInformation')}>
             <Field label="Email">
               <Input
                 type="email"
@@ -270,7 +262,7 @@ export function AccountEditDrawer({ open, onOpenChange }: AccountEditDrawerProps
 
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>
-              Cancel
+              {t('screens.profile.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? "Saving…" : "Save"}

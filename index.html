@@ -33,8 +33,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap">
 
+    <!-- Warm the gateway TCP+TLS handshake before the deferred orb-widget script
+         and the first /auth/me call. Saves ~150-300ms of cold-load time on mobile.
+         Cloudflare-fronted custom domain — bypasses the *.a.run.app GFE per-IP
+         throttle (BOOTSTRAP-CLOUDFLARE-GATEWAY-DOMAIN). -->
+    <link rel="preconnect" href="https://gateway.vitanaland.com" crossorigin>
+    <link rel="dns-prefetch" href="https://gateway.vitanaland.com">
+
     <!-- ORB Voice Widget -->
-    <script src="https://gateway-q74ibpv6ia-uc.a.run.app/command-hub/orb-widget.js?v=20260502-vtid-02036-revert-affinity" defer></script>
+    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260505-bootstrap-cloudflare-gateway-domain" defer></script>
   </head>
 
   <body>

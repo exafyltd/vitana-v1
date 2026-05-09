@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { SocialConnectionsFetchError } from "@/hooks/useGoogleConnect";
+import { t } from '@/lib/i18n-toast';
 
 interface Props {
   error: unknown;
@@ -29,12 +30,12 @@ export function SessionExpiredBanner({ error }: Props) {
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
-      <AlertTitle>Your session expired</AlertTitle>
+      <AlertTitle>{t('screens.settings.yourSessionExpired')}</AlertTitle>
       <AlertDescription className="flex flex-col gap-2">
-        <span>Sign in again to see your connected apps. Your existing connections are safe — they'll reappear once you're signed back in.</span>
+        <span>{t('screens.settings.signAgainSeeYourConnectedApps')}</span>
         <div>
           <Button size="sm" variant="secondary" onClick={handleRefresh}>
-            Refresh session
+            {t('screens.settings.refreshSession')}
           </Button>
         </div>
       </AlertDescription>

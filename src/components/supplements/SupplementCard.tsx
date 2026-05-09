@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { UserSupplement } from '@/hooks/useUserSupplements';
 import { format } from 'date-fns';
+import { t } from '@/lib/i18n-toast';
 
 interface SupplementCardProps {
   supplement: UserSupplement;
@@ -21,8 +22,7 @@ export function SupplementCard({ supplement, onEdit, onDelete }: SupplementCardP
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold truncate">{supplement.name}</h3>
               {!supplement.is_active && (
-                <Badge variant="secondary" className="text-xs">
-                  Inactive
+                <Badge variant="secondary" className="text-xs">{t('screens.supplements.inactive')}
                 </Badge>
               )}
             </div>
@@ -31,19 +31,19 @@ export function SupplementCard({ supplement, onEdit, onDelete }: SupplementCardP
             <div className="grid grid-cols-2 gap-2 text-sm">
               {supplement.dosage && (
                 <div>
-                  <span className="text-muted-foreground">Dosage: </span>
+                  <span className="text-muted-foreground">{t('screens.supplements.dosage')} </span>
                   <span className="font-medium">{supplement.dosage}</span>
                 </div>
               )}
               {supplement.frequency && (
                 <div>
-                  <span className="text-muted-foreground">Frequency: </span>
+                  <span className="text-muted-foreground">{t('screens.supplements.frequency')} </span>
                   <span className="font-medium">{supplement.frequency}</span>
                 </div>
               )}
               {supplement.start_date && (
                 <div className="col-span-2">
-                  <span className="text-muted-foreground">Started: </span>
+                  <span className="text-muted-foreground">{t('screens.supplements.started')} </span>
                   <span className="font-medium">
                     {format(new Date(supplement.start_date), 'MMM dd, yyyy')}
                   </span>

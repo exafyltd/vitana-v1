@@ -39,6 +39,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useRole } from "@/hooks/useRole";
 import { useTranslation } from "@/hooks/useTranslation";
+import { t } from '@/lib/i18n-toast';
 
 interface CalendarEvent {
   id: string;
@@ -236,7 +237,7 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
                         <div className="flex items-center gap-2">
                           <span className="font-medium text-sm">{event.title}</span>
                           {event.hasRewards && (
-                            <div className="w-2 h-2 rounded-full bg-purple-500" title="Rewards Available" />
+                            <div className="w-2 h-2 rounded-full bg-purple-500" title={t('screens.common.rewardsAvailable')} />
                           )}
                           {getStatusIcon(event.status)}
                         </div>

@@ -31,6 +31,7 @@ import { FeaturedContentCarousel } from "@/components/profile/insight/FeaturedCo
 import { ContextualCTAs } from "@/components/profile/engagement/ContextualCTAs";
 import { ViewModeIntelligence } from "@/components/profile/engagement/ViewModeIntelligence";
 import { AutopilotSuggestions } from "@/components/profile/AutopilotSuggestions";
+import { t } from '@/lib/i18n-toast';
 
 interface ProfileInsightTabProps {
   profile: UserProfile;
@@ -149,7 +150,7 @@ export function ProfileInsightTab({
                     {profile.professionalCredentials?.isLiveStreamingEnabled && (
                       <Badge className="bg-gradient-to-r from-blue-500 to-sky-500 text-white border-0 rounded-full px-3 py-1">
                         <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
-                        Pro
+                        {t('screens.profile.pro')}
                       </Badge>
                     )}
                   </div>
@@ -196,7 +197,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <FileText className="h-8 w-8 mx-auto mb-3 text-violet-600 dark:text-violet-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.posts || 0}</div>
-              <div className="text-xs text-muted-foreground">Posts</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.posts')}</div>
             </CardContent>
           </Card>
 
@@ -204,7 +205,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 mx-auto mb-3 text-sky-600 dark:text-sky-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.followers || 0}</div>
-              <div className="text-xs text-muted-foreground">Followers</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.followers')}</div>
             </CardContent>
           </Card>
 
@@ -212,7 +213,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Heart className="h-8 w-8 mx-auto mb-3 text-rose-600 dark:text-rose-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.following || 0}</div>
-              <div className="text-xs text-muted-foreground">Following</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.following')}</div>
             </CardContent>
           </Card>
 
@@ -220,7 +221,7 @@ export function ProfileInsightTab({
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 mx-auto mb-3 text-amber-600 dark:text-amber-400" />
               <div className="text-3xl font-bold text-foreground mb-1">{profile.stats?.groupsJoined || 0}</div>
-              <div className="text-xs text-muted-foreground">Groups</div>
+              <div className="text-xs text-muted-foreground">{t('screens.profile.groups')}</div>
             </CardContent>
           </Card>
         </div>
@@ -274,7 +275,7 @@ export function ProfileInsightTab({
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
                 <Activity className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                Health Snapshot
+                {t('screens.profile.healthSnapshot')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -282,12 +283,11 @@ export function ProfileInsightTab({
                 <div className="text-5xl font-bold bg-gradient-to-br from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent mb-2">
                   {profile.vitanaIndex}
                 </div>
-                <p className="text-xs text-muted-foreground">VITANA Index</p>
+                <p className="text-xs text-muted-foreground">{t('screens.profile.vitanaIndex2')}</p>
               </div>
               {profile.vitanaPercentile && (
                 <Badge className="w-full justify-center bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 rounded-full py-2">
-                  <TrendingUp className="h-3 w-3 mr-1.5" />
-                  Top {100 - profile.vitanaPercentile}% Wellness
+                  <TrendingUp className="h-3 w-3 mr-1.5" />{t('screens.profile.topValue0Wellness', { value0: 100 - profile.vitanaPercentile })}
                 </Badge>
               )}
             </CardContent>
@@ -298,7 +298,7 @@ export function ProfileInsightTab({
         {socialNetworks.length > 0 && (
           <Card className="rounded-2xl shadow-sm border-muted/40">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold">Connected Networks</CardTitle>
+              <CardTitle className="text-sm font-semibold">{t('screens.profile.connectedNetworks')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-3">
@@ -324,7 +324,7 @@ export function ProfileInsightTab({
         {/* Recent Activity Highlights */}
         <Card className="rounded-2xl shadow-sm border-muted/40">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Recent Activity</CardTitle>
+            <CardTitle className="text-sm font-semibold">{t('screens.profile.recentActivity')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {recentActivity.map((activity) => (
@@ -363,7 +363,7 @@ export function ProfileInsightTab({
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>{activity.timestamp}</span>
-                        <span>{activity.engagement.views} views</span>
+                        <span>{t('screens.profile.viewsViews', { views: activity.engagement.views })}</span>
                       </div>
                     </div>
                   </div>

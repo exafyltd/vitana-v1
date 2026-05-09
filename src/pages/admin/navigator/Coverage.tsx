@@ -19,6 +19,7 @@ import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavCoverage } from "@/hooks/useAdminNavigator";
+import { t } from '@/lib/i18n-toast';
 
 export default function NavigatorCoverage() {
   const { data, isLoading, error } = useNavCoverage(null);
@@ -28,12 +29,12 @@ export default function NavigatorCoverage() {
       <div className="space-y-6 p-6">
         <AdminHeader
           emoji="📋"
-          title="Navigator Coverage"
+          title={t('screens.admin.navigatorCoverage')}
           description="Every SPA route that isn't covered by the catalog, every catalog entry that points at a non-existent route, and every trigger that hasn't fired in the last 30 days."
         />
         <SubNavigation items={adminNavigatorNavigation} />
 
-        {isLoading && <p className="text-sm text-muted-foreground">Loading coverage report…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">{t('screens.admin.loadingCoverageReport')}</p>}
         {error && (
           <p className="text-sm text-destructive">{(error as Error)?.message || "Failed to load"}</p>
         )}
@@ -44,7 +45,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Plus className="h-4 w-4" /> Uncovered routes
+                  <Plus className="h-4 w-4" /> {t('screens.admin.uncoveredRoutes')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.missing_in_catalog}
                   </Badge>
@@ -52,8 +53,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.missing_in_catalog.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">
-                    Every SPA route has a catalog entry. Nice.
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.everySpaRouteHasCatalogEntry')}
                   </p>
                 ) : (
                   data.missing_in_catalog.map((r) => (
@@ -63,8 +63,7 @@ export default function NavigatorCoverage() {
                     >
                       <span className="truncate font-mono">{r.route}</span>
                       {r.requires_auth && (
-                        <Badge variant="secondary" className="text-[10px]">
-                          auth
+                        <Badge variant="secondary" className="text-[10px]">{t('screens.admin.auth')}
                         </Badge>
                       )}
                     </div>
@@ -74,7 +73,7 @@ export default function NavigatorCoverage() {
                   <div className="pt-3">
                     <Link to="/admin/navigator">
                       <Button variant="outline" size="sm" className="w-full">
-                        Go to Catalog to add entries
+                        {t('screens.admin.goCatalogAddEntries')}
                       </Button>
                     </Link>
                   </div>
@@ -86,7 +85,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <AlertTriangle className="h-4 w-4 text-destructive" /> Broken catalog routes
+                  <AlertTriangle className="h-4 w-4 text-destructive" /> {t('screens.admin.brokenCatalogRoutes')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.broken_catalog_routes}
                   </Badge>
@@ -94,7 +93,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.broken_catalog_routes.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">All catalog routes map to real SPA paths.</p>
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.allCatalogRoutesMapRealSpa')}</p>
                 ) : (
                   data.broken_catalog_routes.map((e) => (
                     <div key={e.screen_id} className="rounded border bg-destructive/5 px-2 py-1.5 text-sm">
@@ -112,7 +111,7 @@ export default function NavigatorCoverage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Ghost className="h-4 w-4 text-amber-600" /> Dead triggers (30d)
+                  <Ghost className="h-4 w-4 text-amber-600" /> {t('screens.admin.deadTriggers30d')}
                   <Badge variant="outline" className="ml-auto">
                     {data.summary.dead_triggers}
                   </Badge>
@@ -120,8 +119,7 @@ export default function NavigatorCoverage() {
               </CardHeader>
               <CardContent className="max-h-[60vh] space-y-1 overflow-y-auto">
                 {data.dead_triggers.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">
-                    Every catalog entry has fired at least once.
+                  <p className="text-sm text-muted-foreground italic">{t('screens.admin.everyCatalogEntryHasFiredAt')}
                   </p>
                 ) : (
                   data.dead_triggers.map((e) => (

@@ -2,6 +2,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Droplets, FlaskConical, Heart, AlertTriangle, ArrowRight, Stethoscope } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 const LAB_TESTS = [
   {
@@ -49,7 +50,7 @@ export function QuickLabOrderSheet({ open, onOpenChange }: QuickLabOrderSheetPro
         <SheetHeader className="pb-4">
           <SheetTitle className="flex items-center gap-2">
             <Stethoscope className="w-5 h-5 text-primary" />
-            Order a Lab Test
+            {t('screens.health.orderLabTest')}
           </SheetTitle>
         </SheetHeader>
 
@@ -69,7 +70,7 @@ export function QuickLabOrderSheet({ open, onOpenChange }: QuickLabOrderSheetPro
                   <p className="text-xs text-muted-foreground">{test.description}</p>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => handleOrder(test.name)}>
-                  Order
+                  {t('screens.health.order')}
                 </Button>
               </div>
             );
@@ -78,8 +79,7 @@ export function QuickLabOrderSheet({ open, onOpenChange }: QuickLabOrderSheetPro
           <button
             onClick={() => { onOpenChange(false); navigate('/health/services-hub'); }}
             className="w-full flex items-center justify-center gap-2 py-3 text-sm font-medium text-primary hover:underline"
-          >
-            Browse All Tests <ArrowRight className="w-4 h-4" />
+          >{t('screens.health.browseAllTests')} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </SheetContent>

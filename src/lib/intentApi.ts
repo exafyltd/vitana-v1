@@ -32,6 +32,12 @@ export interface UserIntent {
   match_count: number;
   created_at: string;
   updated_at: string;
+  // E6 follow-up — landscape cover photo, used as the banner on
+  // match preview cards and at the top of My Posts cards. Optional;
+  // until the backend ships a dedicated column, we transit it
+  // through `kind_payload.cover_url` and `getIntentCoverUrl()`
+  // resolves whichever is set.
+  cover_url?: string | null;
 }
 
 export interface IntentMatch {
@@ -49,6 +55,29 @@ export interface IntentMatch {
   state: string;
   created_at: string;
   redacted?: boolean; // server-side flag for partner_seek pre-reveal
+  // E6 — counterparty profile fields (populated by gateway intent-match-enrich).
+  // null when redacted, when the counterparty is hidden, or when the field is unset.
+  partner_display_name?: string | null;
+  partner_avatar_url?: string | null;
+  partner_gender?: 'male' | 'female' | null;
+  // E6 — Find a Match cover image. Distinct from the avatar: this is
+  // a landscape cover photo the user uploads (or an AI-generated
+  // themed dance/fitness image) sized for the match preview card.
+  // Optional — when absent, the card renders a themed gradient fallback.
+  partner_match_cover_url?: string | null;
+  // E6 follow-up — counterparty intent fields surfaced by
+  // intent-match-enrich so the match card body can read like the
+  // counterparty's own My Posts card (kind pill + title + scope).
+  // All optional: the card has graceful fallbacks while backend
+  // catches up.
+  partner_intent_title?: string | null;
+  partner_intent_scope?: string | null;
+  partner_intent_kind?: IntentKind | string | null;
+  partner_intent_status?: string | null;
+  // Last-seen timestamp for the partner. ISO string when present; the
+  // card renders a "Active today" / "Active recently" pill from it.
+  // Hidden on partner_seek redaction.
+  partner_last_active_at?: string | null;
 }
 
 export interface IntentCategory {
@@ -237,16 +266,30 @@ function verticalFromCategory(cat: string | null): 'dance' | 'fitness' | null {
   return null;
 }
 
+/**
+ * Cap on the number of source intents we fan-out match requests for.
+ * Without it, a power user (especially providers with many open
+ * listings) would trigger one /matches HTTP call per open intent —
+ * enough to swamp the gateway and leave this tab waiting on dozens of
+ * parallel responses. We rely on the gateway's default sort (most
+ * recently active first) so the cap drops the *least* relevant
+ * sources, and any per-intent matches the user is missing here are
+ * still reachable via that intent's detail page.
+ */
+const FIND_PARTNER_MAX_SOURCE_INTENTS = 20;
+
 export async function getFindPartnerMatches(perIntentLimit = 5): Promise<FindPartnerMatch[]> {
+  // Fetch matches across the user's open intents — not just
+  // dance.* / fitness.* — so posts created via the generic +New wish
+  // composer (which doesn't tag a category) still surface their
+  // matches here. The card falls back to the 'default' theme when
+  // `vertical` is null, so non-dance/fitness sources render fine.
   const mine = await listMyIntents({ status: 'open' });
-  const danceFitness = mine.filter((it) => {
-    const v = verticalFromCategory(it.category);
-    return v !== null;
-  });
-  if (danceFitness.length === 0) return [];
+  if (mine.length === 0) return [];
+  const sources = mine.slice(0, FIND_PARTNER_MAX_SOURCE_INTENTS);
 
   const matches = await Promise.all(
-    danceFitness.map(async (it) => {
+    sources.map(async (it) => {
       try {
         const rows = await getIntentMatches(it.intent_id, perIntentLimit);
         return rows.map((m): FindPartnerMatch => ({

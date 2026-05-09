@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { t } from '@/lib/i18n-toast';
 
 export function DidYouKnowCard() {
   const navigate = useNavigate();
@@ -59,19 +60,19 @@ export function DidYouKnowCard() {
         <DropdownMenu>
           <DropdownMenuTrigger
             className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-            aria-label="More options"
+            aria-label={t('screens.proactive.moreOptions')}
           >
             <MoreVertical className="w-4 h-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => decline('today')}>Not today</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => decline('stop')}>Stop the tour</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => decline('today')}>{t('screens.proactive.notToday')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => decline('stop')}>{t('screens.proactive.stopTour')}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <button
           onClick={() => decline('tip')}
           className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
-          aria-label="Dismiss tip"
+          aria-label={t('screens.proactive.dismissTip')}
         >
           <X className="w-4 h-4" />
         </button>
@@ -85,7 +86,7 @@ export function DidYouKnowCard() {
         </div>
         <div className="flex-1">
           <div className="inline-flex items-center gap-1.5 mb-1.5 rounded-full bg-violet-500/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
-            Did you know?
+            {t('screens.proactive.didYouKnow')}
           </div>
           <p className="text-sm text-foreground leading-relaxed">{tip.card_copy}</p>
           <button

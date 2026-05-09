@@ -11,11 +11,14 @@ import { PartnerPreferencesPublicSection } from "@/components/profile/sections/P
 import { ServiceOfferingsPublicSection } from "@/components/profile/sections/ServiceOfferingsPublicSection";
 import { MyPostsSection } from "@/components/profile/sections/MyPostsSection";
 import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
+// VTID-02754 — "How we searched" card when arriving via find_community_member voice tool
+import { WhyThisMatchCard } from "@/components/community/WhyThisMatchCard";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
+import { t } from '@/lib/i18n-toast';
 
 interface DatabaseProfile {
   user_id: string;
@@ -259,7 +262,7 @@ export default function PublicProfilePage() {
       <AppLayout>
         <div className="p-6 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading profile...</p>
+          <p className="mt-2 text-muted-foreground">{t('screens.publicprofilepage.loadingProfile')}</p>
         </div>
       </AppLayout>
     );
@@ -269,7 +272,7 @@ export default function PublicProfilePage() {
     return (
       <AppLayout>
         <div className="p-6 text-center">
-          <h1 className="text-2xl font-bold mb-4">User Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">{t('screens.publicprofilepage.userNotFound')}</h1>
           <p className="text-muted-foreground mb-4">
             {error || "The profile you're looking for doesn't exist."}
           </p>
@@ -277,7 +280,7 @@ export default function PublicProfilePage() {
             onClick={() => navigate('/')}
             className="text-primary hover:underline"
           >
-            Return to Home
+            {t('screens.publicprofilepage.returnHome')}
           </button>
         </div>
       </AppLayout>
@@ -327,6 +330,18 @@ export default function PublicProfilePage() {
         scope={scope}
         editMode={false}
       />
+
+      {/* VTID-02754 — Show "How we searched" card when the user arrived
+          here via the find_community_member voice tool. The query param
+          search_id keys the cached match_recipe in the gateway. */}
+      {searchParams.get('from') === 'who_search' && searchParams.get('search_id') ? (
+        <div className="container max-w-3xl mx-auto px-4 mt-3">
+          <WhyThisMatchCard
+            searchId={searchParams.get('search_id') as string}
+            currentVitanaId={profile.handle ?? null}
+          />
+        </div>
+      ) : null}
 
       {/* VTID-DANCE-D5/D9: dance preferences (visibility-honoring) */}
       <div className="container max-w-3xl mx-auto px-4 space-y-3">

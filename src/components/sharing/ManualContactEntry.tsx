@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import type { ExternalContact } from "@/types/audience";
+import { t } from '@/lib/i18n-toast';
 
 interface ManualContactEntryProps {
   contacts: ExternalContact[];
@@ -45,9 +46,8 @@ export function ManualContactEntry({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-semibold">Manual Entry</h3>
-          <p className="text-sm text-muted-foreground">
-            Add up to {maxContacts} contacts manually
+          <h3 className="font-semibold">{t('screens.sharing.manualEntry')}</h3>
+          <p className="text-sm text-muted-foreground">{t('screens.sharing.addUpMaxcontactsContactsManually', { maxContacts })}
           </p>
         </div>
         <Button 
@@ -57,14 +57,14 @@ export function ManualContactEntry({
           disabled={contacts.length >= maxContacts}
         >
           <Plus className="h-4 w-4 mr-1" />
-          Add Contact
+          {t('screens.sharing.addContact')}
         </Button>
       </div>
 
       {contacts.length === 0 ? (
         <Card className="p-6 text-center border-dashed">
           <p className="text-sm text-muted-foreground">
-            No contacts added yet. Click "Add Contact" to get started.
+            {t('screens.sharing.noContactsAddedYetClickAdd')}
           </p>
         </Card>
       ) : (
@@ -72,7 +72,7 @@ export function ManualContactEntry({
           {contacts.map((contact, idx) => (
             <Card key={idx} className="p-4">
               <div className="flex items-start justify-between mb-3">
-                <span className="text-sm font-medium">Contact {idx + 1}</span>
+                <span className="text-sm font-medium">{t('screens.sharing.contactValue0', { value0: idx + 1 })}</span>
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -86,11 +86,11 @@ export function ManualContactEntry({
               <div className="space-y-3">
                 <div>
                   <Label htmlFor={`name-${idx}`} className="text-xs">
-                    Name <span className="text-destructive">*</span>
+                    {t('screens.sharing.name')} <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id={`name-${idx}`}
-                    placeholder="John Doe"
+                    placeholder={t('screens.sharing.johnDoe')}
                     value={contact.name}
                     onChange={(e) => updateContact(idx, 'name', e.target.value)}
                     className="h-9"
@@ -100,12 +100,12 @@ export function ManualContactEntry({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div>
                     <Label htmlFor={`email-${idx}`} className="text-xs">
-                      Email
+                      {t('screens.sharing.email')}
                     </Label>
                     <Input
                       id={`email-${idx}`}
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder={t('screens.sharing.johnExampleCom')}
                       value={contact.email || ''}
                       onChange={(e) => updateContact(idx, 'email', e.target.value)}
                       className="h-9"
@@ -114,7 +114,7 @@ export function ManualContactEntry({
 
                   <div>
                     <Label htmlFor={`phone-${idx}`} className="text-xs">
-                      Phone
+                      {t('screens.sharing.phone')}
                     </Label>
                     <Input
                       id={`phone-${idx}`}
@@ -128,7 +128,7 @@ export function ManualContactEntry({
 
                   <div>
                     <Label htmlFor={`whatsapp-${idx}`} className="text-xs">
-                      WhatsApp
+                      {t('screens.sharing.whatsapp')}
                     </Label>
                     <Input
                       id={`whatsapp-${idx}`}
@@ -142,8 +142,7 @@ export function ManualContactEntry({
                 </div>
 
                 {!isContactValid(contact) && contact.name && (
-                  <p className="text-xs text-destructive">
-                    ⚠️ Please provide at least one contact method (email, phone, or WhatsApp)
+                  <p className="text-xs text-destructive">{t('screens.sharing.pleaseProvideAtLeastOneContact')}
                   </p>
                 )}
               </div>
@@ -152,10 +151,7 @@ export function ManualContactEntry({
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground">
-        {contacts.length} / {maxContacts} contacts added
-        {contacts.length > 0 && ` • ${contacts.filter(isContactValid).length} valid`}
-      </p>
+      <p className="text-xs text-muted-foreground">{t('screens.sharing.lengthMaxcontactsContactsAddedValue2', { length: contacts.length, maxContacts, value2: contacts.length > 0 && ` • ${contacts.filter(isContactValid).length} valid` })}</p>
     </div>
   );
 }

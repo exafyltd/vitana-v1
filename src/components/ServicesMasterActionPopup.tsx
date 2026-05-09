@@ -14,6 +14,7 @@ import {
   Microscope,
   Package
 } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface ServicesMasterActionPopupProps {
   open: boolean;
@@ -103,7 +104,7 @@ export function ServicesMasterActionPopup({ open, onOpenChange }: ServicesMaster
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-6">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Service Actions
+            {t('screens.common.serviceActions')}
           </DialogTitle>
         </DialogHeader>
         
@@ -132,7 +133,7 @@ export function ServicesMasterActionPopup({ open, onOpenChange }: ServicesMaster
             onClick={() => onOpenChange(false)}
             className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Close
+            {t('screens.common.close')}
           </button>
         </div>
       </DialogContent>

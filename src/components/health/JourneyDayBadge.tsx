@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useJourneyProgress } from "@/hooks/useJourneyProgress";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
+import { t } from '@/lib/i18n-toast';
 
 const JOURNEY_TOTAL_DAYS = 90;
 
@@ -49,7 +50,7 @@ export function JourneyDayBadge() {
           aria-label={`Day ${dayNumber} of ${JOURNEY_TOTAL_DAYS}`}
         />
         <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
-          <span>Day 0</span>
+          <span>{t('screens.health.day0')}</span>
           <span>30</span>
           <span>60</span>
           <span>90</span>
@@ -61,9 +62,7 @@ export function JourneyDayBadge() {
           variant="outline"
           className="shrink-0 bg-primary/10 text-primary border-primary/20 text-xs"
           title={stage.wave.description}
-        >
-          {stage.wave.name} · Day {stage.wave.timeline.start_day}–{stage.wave.timeline.end_day}
-        </Badge>
+        >{t('screens.health.nameDayStart_dayEnd_day', { name: stage.wave.name, start_day: stage.wave.timeline.start_day, end_day: stage.wave.timeline.end_day })}</Badge>
       )}
 
       <span className="text-sm text-muted-foreground md:hidden">{subLabel}</span>

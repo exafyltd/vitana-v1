@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, UserPlus, UserMinus, Crown, Shield, User, MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface Participant {
   id: string;
@@ -122,11 +124,7 @@ export default function GroupMembersModal({
       setParticipants(participantsWithProfiles);
     } catch (error) {
       console.error('Error fetching participants:', error);
-      toast({
-        title: "Failed to load members",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedLoadMembers', 'toasts.messages.pleaseTryAgain');
     } finally {
       setIsLoading(false);
     }
@@ -215,10 +213,7 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Member added",
-        description: `${newUser.display_name || newUser.full_name} has been added to the group.`
-      });
+      notify('toasts.messages.memberAdded');
 
       setSearchTerm("");
       setSearchResults([]);
@@ -226,11 +221,7 @@ export default function GroupMembersModal({
 
     } catch (error) {
       console.error('Error adding member:', error);
-      toast({
-        title: "Failed to add member",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedAddMember', 'toasts.messages.pleaseTryAgain');
     }
   };
 
@@ -280,20 +271,13 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Member removed",
-        description: `${userName} has been removed from the group.`
-      });
+      notify('toasts.messages.memberRemoved');
 
       fetchParticipants();
 
     } catch (error) {
       console.error('Error removing member:', error);
-      toast({
-        title: "Failed to remove member",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedRemoveMember', 'toasts.messages.pleaseTryAgain');
     }
   };
 
@@ -343,20 +327,13 @@ export default function GroupMembersModal({
         .from(context === 'global' ? 'global_messages' : 'messages')
         .insert(messageData);
 
-      toast({
-        title: "Left group",
-        description: "You have left the group. You can still view the message history."
-      });
+      notify('toasts.messages.leftGroup', 'toasts.messages.youHaveLeftGroupYouCan');
 
       onOpenChange(false);
 
     } catch (error) {
       console.error('Error leaving group:', error);
-      toast({
-        title: "Failed to leave group",
-        description: "Please try again.",
-        variant: "destructive"
-      });
+      notifyError('toasts.messages.failedLeaveGroup', 'toasts.messages.pleaseTryAgain');
     }
   };
 
@@ -390,7 +367,7 @@ export default function GroupMembersModal({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Group Members ({participants.length})</span>
+            <span>{t('screens.messages.groupMembersLength', { length: participants.length })}</span>
             {currentUserRole !== 'admin' && (
               <Button
                 variant="outline"
@@ -398,7 +375,7 @@ export default function GroupMembersModal({
                 onClick={leaveGroup}
                 className="text-destructive hover:text-destructive"
               >
-                Leave Group
+                {t('screens.messages.leaveGroup')}
               </Button>
             )}
           </DialogTitle>
@@ -416,7 +393,7 @@ export default function GroupMembersModal({
                     setSearchTerm(e.target.value);
                     searchUsers(e.target.value);
                   }}
-                  placeholder="Search users to add..."
+                  placeholder={t('screens.messages.searchUsersAdd')}
                   className="pl-10"
                 />
               </div>
@@ -431,7 +408,7 @@ export default function GroupMembersModal({
                         onClick={() => addMember(searchUser)}
                       >
                         <Avatar className="w-6 h-6">
-                          <AvatarImage src={searchUser.avatar_url || undefined} />
+                          <AvatarImage src={getDisplayAvatarUrl(searchUser)} />
                           <AvatarFallback className="text-xs">
                             {searchUser.display_name?.[0] || searchUser.full_name?.[0] || '?'}
                           </AvatarFallback>
@@ -454,8 +431,7 @@ export default function GroupMembersModal({
           <ScrollArea className="h-64">
             <div className="space-y-2">
               {isLoading ? (
-                <div className="text-center py-4 text-muted-foreground">
-                  Loading members...
+                <div className="text-center py-4 text-muted-foreground">{t('screens.messages.loadingMembers')}
                 </div>
               ) : (
                 participants.map((participant) => {
@@ -469,7 +445,7 @@ export default function GroupMembersModal({
                       className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
                     >
                       <Avatar className="w-10 h-10">
-                        <AvatarImage src={profile?.avatar_url || undefined} />
+                        <AvatarImage src={getDisplayAvatarUrl(profile)} />
                         <AvatarFallback>
                           {displayName[0]?.toUpperCase() || '?'}
                         </AvatarFallback>
@@ -480,7 +456,7 @@ export default function GroupMembersModal({
                           <p className="font-medium truncate">
                             {displayName}
                             {isCurrentUser && (
-                              <span className="text-muted-foreground text-sm ml-1">(You)</span>
+                              <span className="text-muted-foreground text-sm ml-1">{t('screens.messages.you')}</span>
                             )}
                           </p>
                           {getRoleIcon(participant.role)}
@@ -507,8 +483,7 @@ export default function GroupMembersModal({
                               onClick={() => removeMember(participant.id, participant.user_id, displayName)}
                               className="text-destructive focus:text-destructive"
                             >
-                              <UserMinus className="w-4 h-4 mr-2" />
-                              Remove from group
+                              <UserMinus className="w-4 h-4 mr-2" />{t('screens.messages.removeFromGroup')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

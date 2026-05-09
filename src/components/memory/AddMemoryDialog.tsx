@@ -7,8 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { VoiceRecorder } from "@/components/ui/voice-recorder";
 import { Mic, Type, Camera, X, Loader2 } from "lucide-react";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface AddMemoryDialogProps {
   open: boolean;
@@ -63,10 +64,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     // Auto-generate content placeholder
     setContent(`Voice recording (${Math.round(duration)}s) - Transcription pending...`);
     
-    toast({
-      title: "Voice Recorded",
-      description: `${Math.round(duration)} seconds captured. Add details or save now.`
-    });
+    notify('toasts.memory.voiceRecorded');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +72,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid File",
-        description: "Please select an image file",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.invalidFile', 'toasts.memory.pleaseSelectImageFile');
       return;
     }
 
@@ -93,11 +87,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
   const handleSubmit = async () => {
     if (!content.trim() && !audioFile && !imageFile) {
-      toast({
-        title: "Empty Memory",
-        description: "Please add some content to your memory",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.emptyMemory', 'toasts.memory.pleaseAddSomeContentYourMemory');
       return;
     }
 
@@ -153,17 +143,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
       setInputMode("text");
       onOpenChange(false);
 
-      toast({
-        title: "Memory Saved",
-        description: "Your memory has been added to your knowledge base"
-      });
+      notify('toasts.memory.memorySaved', 'toasts.memory.yourMemoryHasAddedYourKnowledge');
     } catch (error) {
       console.error("Error saving memory:", error);
-      toast({
-        title: "Save Failed",
-        description: error instanceof Error ? error.message : "Failed to save memory",
-        variant: "destructive"
-      });
+      notifyError('toasts.memory.saveFailed');
     }
   };
 
@@ -171,7 +154,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Add Memory</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('screens.memory.addMemory')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -185,7 +168,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Type className="w-4 h-4 mr-2" />
-              Text
+              {t('screens.memory.text')}
             </Button>
             <Button
               type="button"
@@ -195,7 +178,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Mic className="w-4 h-4 mr-2" />
-              Voice
+              {t('screens.memory.voice')}
             </Button>
             <Button
               type="button"
@@ -208,13 +191,13 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               className="flex-1"
             >
               <Camera className="w-4 h-4 mr-2" />
-              Photo
+              {t('screens.memory.photo')}
             </Button>
           </div>
 
           {/* Category Selection */}
           <div className="space-y-2">
-            <Label>Category (Optional)</Label>
+            <Label>{t('screens.memory.categoryOptional')}</Label>
             <div className="flex flex-wrap gap-2">
               {MEMORY_CATEGORIES.map((cat) => (
                 <Badge
@@ -236,11 +219,11 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                 <div className="text-center py-8 border-2 border-dashed rounded-lg">
                   <Mic className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-4">
-                    Click below to start recording your voice diary
+                    {t('screens.memory.clickBelowStartRecordingYourVoice')}
                   </p>
                   <Button onClick={() => setIsRecording(true)}>
                     <Mic className="w-4 h-4 mr-2" />
-                    Start Recording
+                    {t('screens.memory.startRecording')}
                   </Button>
                 </div>
               )}
@@ -259,8 +242,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                   <Mic className="w-5 h-5 text-primary" />
                   <div className="flex-1">
                     <p className="text-sm font-medium">{audioFile.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(audioFile.size / 1024).toFixed(0)} KB
+                    <p className="text-xs text-muted-foreground">{t('screens.memory.value0Kb', { value0: (audioFile.size / 1024).toFixed(0) })}
                     </p>
                   </div>
                   <Button
@@ -278,10 +260,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="voice-notes">Additional Notes (Optional)</Label>
+                <Label htmlFor="voice-notes">{t('screens.memory.additionalNotesOptional')}</Label>
                 <Textarea
                   id="voice-notes"
-                  placeholder="Add context or details about this recording..."
+                  placeholder={t('screens.memory.addContextDetailsAboutThisRecording')}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   rows={3}
@@ -303,12 +285,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               {!imagePreview ? (
                 <div className="text-center py-8 border-2 border-dashed rounded-lg">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Click below to upload a photo memory
+                  <p className="text-sm text-muted-foreground mb-4">{t('screens.memory.clickBelowUploadPhotoMemory')}
                   </p>
                   <Button onClick={() => document.getElementById('image-upload')?.click()}>
-                    <Camera className="w-4 h-4 mr-2" />
-                    Choose Photo
+                    <Camera className="w-4 h-4 mr-2" />{t('screens.memory.choosePhoto')}
                   </Button>
                 </div>
               ) : (
@@ -316,7 +296,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                   <div className="relative">
                     <img
                       src={imagePreview}
-                      alt="Memory preview"
+                      alt={t('screens.memory.memoryPreview')}
                       className="w-full h-64 object-cover rounded-lg"
                     />
                     <Button
@@ -333,10 +313,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
                     </Button>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="photo-caption">Caption</Label>
+                    <Label htmlFor="photo-caption">{t('screens.memory.caption')}</Label>
                     <Textarea
                       id="photo-caption"
-                      placeholder="Describe this memory..."
+                      placeholder={t('screens.memory.describeThisMemory')}
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       rows={3}
@@ -349,10 +329,10 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
 
           {inputMode === "text" && (
             <div className="space-y-2">
-              <Label htmlFor="text-content">Memory Content</Label>
+              <Label htmlFor="text-content">{t('screens.memory.memoryContent')}</Label>
               <Textarea
                 id="text-content"
-                placeholder="Write your memory, reflection, or insight here..."
+                placeholder={t('screens.memory.writeYourMemoryReflectionInsightHere')}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={8}
@@ -369,7 +349,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
               onClick={() => onOpenChange(false)}
               disabled={isCreating}
             >
-              Cancel
+              {t('screens.memory.cancel')}
             </Button>
             <Button
               type="button"
@@ -378,8 +358,7 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
             >
               {isCreating ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('screens.memory.saving')}
                 </>
               ) : (
                 "Save Memory"

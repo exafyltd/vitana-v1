@@ -6,6 +6,7 @@ import { Mic, MicOff, Video, VideoOff, PhoneOff, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { notifyError } from '@/lib/i18n-toast';
 
 interface MessengerCallProps {
   callId: string;
@@ -88,11 +89,7 @@ export const MessengerCall = ({
           if (peers.length === 0) {
             console.error('⏱️ Connection timeout - no peer found');
             setConnectionStatus('failed');
-            toast({
-              title: "Connection Failed",
-              description: "Could not establish connection. Please try again.",
-              variant: "destructive",
-            });
+            notifyError('toasts.common.connectionFailed', 'toasts.common.couldNotEstablishConnectionPleaseTry');
             setTimeout(() => onEndCall(), 2000);
           }
         }, 15000);
@@ -100,11 +97,7 @@ export const MessengerCall = ({
       } catch (error) {
         console.error('❌ Error setting up WebRTC:', error);
         setConnectionStatus('failed');
-        toast({
-          title: "Connection Error",
-          description: error instanceof Error ? error.message : "Failed to connect",
-          variant: "destructive",
-        });
+        notifyError('toasts.common.connectionError');
         setTimeout(() => onEndCall(), 2000);
       }
     };

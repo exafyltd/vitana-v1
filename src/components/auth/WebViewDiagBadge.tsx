@@ -12,6 +12,7 @@
 import { useEffect, useState } from "react";
 import { isAppilix } from "@/lib/appilix";
 import { isAppilixWebView } from "@/lib/webview";
+import { t } from '@/lib/i18n-toast';
 
 export function WebViewDiagBadge() {
   const [show, setShow] = useState(false);
@@ -56,13 +57,13 @@ export function WebViewDiagBadge() {
         wordBreak: "break-all",
       }}
     >
-      <div><b>BUNDLE:</b> {bundleHash}</div>
-      <div><b>UA:</b> {ua}</div>
-      <div><b>platform:</b> {platform}</div>
-      <div><b>isAppilix() bridge:</b> {String(bridge)}</div>
-      <div><b>isAppilixWebView():</b> {String(webView)}</div>
-      <div><b>identity cookie:</b> {String(cookieHasIdentity)}</div>
-      <div><b>origin:</b> {typeof location !== "undefined" ? location.origin : "?"}</div>
+      <div><b>{t('screens.auth.bundle')}</b> {bundleHash}</div>
+      <div><b>{t('screens.auth.ua')}</b> {ua}</div>
+      <div><b>{t('screens.auth.platform')}</b> {platform}</div>
+      <div><b>{t('screens.auth.isappilixBridge')}</b> {String(bridge)}</div>
+      <div><b>{t('screens.auth.isappilixwebview')}</b> {String(webView)}</div>
+      <div><b>{t('screens.auth.identityCookie')}</b> {String(cookieHasIdentity)}</div>
+      <div><b>{t('screens.auth.origin')}</b> {typeof location !== "undefined" ? location.origin : "?"}</div>
     </div>
   );
 }

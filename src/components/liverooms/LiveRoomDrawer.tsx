@@ -55,6 +55,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import type { LiveRoom } from "./LiveRoomCard";
+import { notify, t } from '@/lib/i18n-toast';
 
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
@@ -143,15 +144,9 @@ export function LiveRoomDrawer({
 
     if (platform === "copy") {
       navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied",
-        description: "Room link copied to clipboard",
-      });
+      notify('toasts.liverooms.linkCopied', 'toasts.liverooms.roomLinkCopiedClipboard');
     } else {
-      toast({
-        title: "Share",
-        description: `Sharing to ${platform}`,
-      });
+      notify('toasts.liverooms.share');
     }
   };
 
@@ -172,16 +167,10 @@ export function LiveRoomDrawer({
       const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(room.title)}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(room.description || "")}&location=Virtual`;
       window.open(url, "_blank");
     } else if (type === "apple" || type === "ics") {
-      toast({
-        title: "Calendar export",
-        description: "ICS file will be downloaded",
-      });
+      notify('toasts.liverooms.calendarExport', 'toasts.liverooms.icsFileWillDownloaded');
     }
 
-    toast({
-      title: "Opening calendar",
-      description: `Adding to ${type} calendar`,
-    });
+    notify('toasts.liverooms.openingCalendar');
   };
 
   const handleJoin = () => {
@@ -258,7 +247,7 @@ export function LiveRoomDrawer({
               )}
               onClick={onNavigatePrev}
               disabled={!hasPrev}
-              aria-label="Previous room"
+              aria-label={t('screens.liverooms.previousRoom')}
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
@@ -271,7 +260,7 @@ export function LiveRoomDrawer({
                     variant="outline"
                     size="icon"
                     className="rounded-full bg-background/70 backdrop-blur-md shadow-md pointer-events-auto opacity-75 hover:opacity-100"
-                    aria-label="Stream options"
+                    aria-label={t('screens.liverooms.streamOptions')}
                   >
                     <MoreVertical className="h-5 w-5" />
                   </Button>
@@ -279,7 +268,7 @@ export function LiveRoomDrawer({
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem onClick={onEdit}>
                     <Pencil className="h-4 w-4 mr-2" />
-                    Edit Stream
+                    {t('screens.liverooms.editStream')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem 
@@ -287,7 +276,7 @@ export function LiveRoomDrawer({
                     className="text-destructive focus:text-destructive"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Delete Stream
+                    {t('screens.liverooms.deleteStream')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -303,7 +292,7 @@ export function LiveRoomDrawer({
               )}
               onClick={onNavigateNext}
               disabled={!hasNext}
-              aria-label="Next room"
+              aria-label={t('screens.liverooms.nextRoom')}
             >
               <ChevronRight className="h-5 w-5" />
             </Button>
@@ -335,7 +324,7 @@ export function LiveRoomDrawer({
                     <span className="text-sm font-semibold">{room.host.name}</span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
-                      Host
+                      {t('screens.liverooms.host')}
                     </span>
                   </div>
                 </button>
@@ -357,7 +346,7 @@ export function LiveRoomDrawer({
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-semibold">{room.host.name}</span>
-                  <Badge variant="secondary" className="text-xs">Your Room</Badge>
+                  <Badge variant="secondary" className="text-xs">{t('screens.liverooms.yourRoom')}</Badge>
                 </div>
               </div>
             )}
@@ -381,7 +370,7 @@ export function LiveRoomDrawer({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5 text-muted-foreground" />
-              <span className="font-semibold">People listening</span>
+              <span className="font-semibold">{t('screens.liverooms.peopleListening')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
@@ -392,7 +381,7 @@ export function LiveRoomDrawer({
                 ))}
               </div>
               {room.participants > 5 && (
-                <span className="text-sm text-muted-foreground">+{room.participants - 5} more</span>
+                <span className="text-sm text-muted-foreground">{t('screens.liverooms.value0More', { value0: room.participants - 5 })}</span>
               )}
             </div>
           </div>
@@ -403,7 +392,7 @@ export function LiveRoomDrawer({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">When</span>
+                  <span className="font-semibold">{t('screens.liverooms.when')}</span>
                 </div>
                 {isScheduled && (
                   <Button
@@ -419,7 +408,7 @@ export function LiveRoomDrawer({
               {room.isLive ? (
                 <Badge className="bg-red-500 text-white border-0 gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  LIVE NOW
+                  {t('screens.liverooms.liveNow')}
                 </Badge>
               ) : isScheduled ? (
                 <div>
@@ -429,9 +418,7 @@ export function LiveRoomDrawer({
                       : format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
                   </p>
                   {showCountdown && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Starts in {formatDistanceToNow(new Date(room.scheduledTime!))}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</p>
                   )}
                 </div>
               ) : null}
@@ -441,18 +428,18 @@ export function LiveRoomDrawer({
           {/* Description */}
           {room.description && (
             <div className="space-y-2">
-              <h3 className="font-semibold">About this room</h3>
+              <h3 className="font-semibold">{t('screens.liverooms.aboutThisRoom')}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{room.description}</p>
             </div>
           )}
 
           {/* Room Rules */}
           <div className="space-y-2">
-            <h3 className="font-semibold">Room rules</h3>
+            <h3 className="font-semibold">{t('screens.liverooms.roomRules')}</h3>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Be respectful to all participants</li>
-              <li>• Raise your hand to speak</li>
-              <li>• Mute when not speaking</li>
+              <li>{t('screens.liverooms.respectfulAllParticipants')}</li>
+              <li>{t('screens.liverooms.raiseYourHandSpeak')}</li>
+              <li>{t('screens.liverooms.muteWhenNotSpeaking')}</li>
             </ul>
           </div>
         </div>
@@ -464,7 +451,7 @@ export function LiveRoomDrawer({
           isCreator ? (
             <div className="flex items-center gap-2">
               <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
-                End Room
+                {t('screens.liverooms.endRoom')}
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
@@ -473,7 +460,7 @@ export function LiveRoomDrawer({
           ) : (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1" onClick={handleJoin}>
-                Join Room
+                {t('screens.liverooms.joinRoom')}
               </Button>
               <Button size="lg" variant="outline" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
@@ -487,7 +474,7 @@ export function LiveRoomDrawer({
           isCreator ? (
             <div className="flex items-center gap-2">
               <Button size="lg" className="flex-1" onClick={handleJoin}>
-                Go Live Now
+                {t('screens.liverooms.goLiveNow')}
               </Button>
               <Button size="lg" variant="outline" onClick={onEdit}>
                 <Pencil className="w-4 h-4" />
@@ -511,17 +498,17 @@ export function LiveRoomDrawer({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => handleAddToCalendar("google")}>
-                      Google Calendar
+                      {t('screens.liverooms.googleCalendar')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("outlook")}>
-                      Outlook
+                      {t('screens.liverooms.outlook')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("apple")}>
-                      Apple Calendar
+                      {t('screens.liverooms.appleCalendar')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleAddToCalendar("ics")}>
                       <Download className="w-4 h-4 mr-2" />
-                      Download ICS
+                      {t('screens.liverooms.downloadIcs')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -547,21 +534,19 @@ export function LiveRoomDrawer({
         <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <ResponsiveConfirmDialogContent>
             <ResponsiveConfirmDialogHeader>
-              <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
-              <ResponsiveConfirmDialogDescription>
-                This will permanently delete "{room?.title}". This action cannot be undone.
+              <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
+              <ResponsiveConfirmDialogDescription>{t('screens.liverooms.thisWillPermanentlyDeleteTitleThis', { title: room?.title })}
               </ResponsiveConfirmDialogDescription>
             </ResponsiveConfirmDialogHeader>
             <ResponsiveConfirmDialogFooter>
-              <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+              <ResponsiveConfirmDialogCancel>{t('screens.liverooms.cancel')}</ResponsiveConfirmDialogCancel>
               <ResponsiveConfirmDialogAction
                 onClick={() => {
                   setShowDeleteDialog(false);
                   onDelete?.();
                 }}
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              >
-                Delete
+              >{t('screens.liverooms.delete')}
               </ResponsiveConfirmDialogAction>
             </ResponsiveConfirmDialogFooter>
           </ResponsiveConfirmDialogContent>
@@ -582,21 +567,19 @@ export function LiveRoomDrawer({
       <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
-            <ResponsiveConfirmDialogDescription>
-              This will permanently delete "{room?.title}". This action cannot be undone.
+            <ResponsiveConfirmDialogTitle>{t('screens.liverooms.deleteLiveStream')}</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>{t('screens.liverooms.thisWillPermanentlyDeleteTitleThis', { title: room?.title })}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{t('screens.liverooms.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => {
                 setShowDeleteDialog(false);
                 onDelete?.();
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
+            >{t('screens.liverooms.delete')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>

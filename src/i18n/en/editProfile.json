@@ -1,0 +1,17 @@
+{
+  "editProfile": {
+    "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
+    "notAuthenticated": "Not authenticated",
+    "notAuthenticatedDesc": "Please log in to save your profile.",
+    "profileUpdated": "Profile updated successfully!",
+    "profileUpdatedDesc": "Your changes are now live. Your VITANA profile looks amazing.",
+    "error": "Error",
+    "refreshFailed": "Failed to refresh profile data.",
+    "showcaseHint": "Select posts and content to highlight at the top of your profile",
+    "showcaseTitle": "Highlights",
+    "manage": "Manage",
+    "about": "About",
+    "addBio": "Add a bio...",
+    "tapToEdit": "Tap to edit"
+  }
+}

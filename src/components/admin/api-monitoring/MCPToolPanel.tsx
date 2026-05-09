@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Server, PlayCircle, Code, FileJson, AlertCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface MCPTool {
   name: string;
@@ -57,11 +58,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
         );
         
         if (missing.length > 0) {
-          toast({
-            title: "Missing required parameters",
-            description: `Please provide: ${missing.join(", ")}`,
-            variant: "destructive"
-          });
+          notifyError('toasts.admin.missingRequiredParameters');
           setExecuting(null);
           return;
         }
@@ -80,17 +77,10 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
         [tool.name]: result
       }));
 
-      toast({
-        title: "Tool executed successfully",
-        description: `${tool.name} completed`
-      });
+      notify('toasts.admin.toolExecutedSuccessfully');
 
     } catch (error: any) {
-      toast({
-        title: "Tool execution failed",
-        description: error.message,
-        variant: "destructive"
-      });
+      notifyError('toasts.admin.toolExecutionFailed');
       
       setToolResults(prev => ({
         ...prev,
@@ -129,14 +119,14 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Server className="w-5 h-5" />
-            MCP Tools
+            {t('screens.admin.mcpTools')}
           </CardTitle>
-          <CardDescription>No tools available for this MCP server</CardDescription>
+          <CardDescription>{t('screens.admin.noToolsAvailableForThisMcp')}</CardDescription>
         </CardHeader>
         <CardContent className="text-center py-12">
           <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">
-            Connect to an MCP server to discover available tools
+            {t('screens.admin.connectMcpServerDiscoverAvailableTools')}
           </p>
         </CardContent>
       </Card>
@@ -150,15 +140,13 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
           <div>
             <CardTitle className="flex items-center gap-2">
               <Server className="w-5 h-5" />
-              MCP Tools
+              {t('screens.admin.mcpTools')}
             </CardTitle>
-            <CardDescription>
-              {tools.length} tool{tools.length !== 1 ? 's' : ''} available on {serverUrl}
-            </CardDescription>
+            <CardDescription>{t('screens.admin.lengthToolValue1AvailableServerurl', { length: tools.length, value1: tools.length !== 1 ? 's' : '', serverUrl })}</CardDescription>
           </div>
           <Badge variant="outline" className="gap-1">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            Connected
+            {t('screens.admin.connected')}
           </Badge>
         </div>
       </CardHeader>
@@ -181,7 +169,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
                   <div className="space-y-3">
                     <h4 className="text-sm font-medium flex items-center gap-2">
                       <FileJson className="w-4 h-4" />
-                      Input Parameters
+                      {t('screens.admin.inputParameters')}
                     </h4>
                     {Object.entries(tool.inputSchema.properties).map(([paramName, paramSchema]: [string, any]) => 
                       renderInputField(
@@ -204,7 +192,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
                     ) : (
                       <>
                         <PlayCircle className="w-4 h-4 mr-2" />
-                        Execute Tool
+                        {t('screens.admin.executeTool')}
                       </>
                     )}
                   </Button>
@@ -212,7 +200,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
                   {/* Output Schema */}
                   {tool.outputSchema && (
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Expected Output</h4>
+                      <h4 className="text-sm font-medium">{t('screens.admin.expectedOutput')}</h4>
                       <div className="bg-muted rounded-lg p-3">
                         <pre className="text-xs font-mono overflow-x-auto">
                           {JSON.stringify(tool.outputSchema, null, 2)}
@@ -224,7 +212,7 @@ export default function MCPToolPanel({ serverUrl, tools, onExecuteTool }: MCPToo
                   {/* Results */}
                   {toolResults[tool.name] && (
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Result</h4>
+                      <h4 className="text-sm font-medium">{t('screens.admin.result')}</h4>
                       <div className={`rounded-lg p-3 ${toolResults[tool.name].error ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'}`}>
                         <pre className="text-xs font-mono overflow-x-auto">
                           {JSON.stringify(toolResults[tool.name], null, 2)}

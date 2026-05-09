@@ -5,7 +5,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Archive } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
+import { notify, t } from '@/lib/i18n-toast';
 
 interface ArchiveSettingsDialogProps {
   open: boolean;
@@ -19,10 +20,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
   const [showArchivedInViews, setShowArchivedInViews] = useState(true);
 
   const handleSave = () => {
-    toast({
-      title: "Settings Saved",
-      description: "Archive settings have been updated successfully.",
-    });
+    notify('toasts.memory.settingsSaved', 'toasts.memory.archiveSettingsHaveUpdatedSuccessfully');
     onOpenChange(false);
   };
 
@@ -32,7 +30,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Archive className="w-6 h-6" />
-            Archive Settings
+            {t('screens.memory.archiveSettings')}
           </DialogTitle>
         </DialogHeader>
 
@@ -41,10 +39,10 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           <div className="flex items-center justify-between space-x-4 p-4 border rounded-lg">
             <div className="flex-1">
               <Label htmlFor="auto-archive" className="text-base font-medium">
-                Enable Auto-Archive
+                {t('screens.memory.enableAutoarchive')}
               </Label>
               <p className="text-sm text-muted-foreground mt-1">
-                Automatically archive old activity items based on age
+                {t('screens.memory.automaticallyArchiveOldActivityItemsBased')}
               </p>
             </div>
             <Switch
@@ -56,7 +54,7 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
 
           {/* Archive Threshold */}
           <div className="space-y-2">
-            <Label htmlFor="threshold">Archive After</Label>
+            <Label htmlFor="threshold">{t('screens.memory.archiveAfter')}</Label>
             <Select 
               value={archiveThreshold} 
               onValueChange={setArchiveThreshold}
@@ -66,15 +64,15 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="30">30 days</SelectItem>
-                <SelectItem value="60">60 days</SelectItem>
-                <SelectItem value="90">90 days</SelectItem>
-                <SelectItem value="180">180 days</SelectItem>
-                <SelectItem value="365">1 year</SelectItem>
+                <SelectItem value="30">{t('screens.memory.text30Days')}</SelectItem>
+                <SelectItem value="60">{t('screens.memory.text60Days')}</SelectItem>
+                <SelectItem value="90">{t('screens.memory.text90Days')}</SelectItem>
+                <SelectItem value="180">{t('screens.memory.text180Days')}</SelectItem>
+                <SelectItem value="365">{t('screens.memory.text1Year')}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Items older than this will be automatically archived
+              {t('screens.memory.itemsOlderThanThisWillAutomatically')}
             </p>
           </div>
 
@@ -82,10 +80,10 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           <div className="flex items-center justify-between space-x-4 p-4 border rounded-lg">
             <div className="flex-1">
               <Label htmlFor="show-archived" className="text-base font-medium">
-                Show Archived Items
+                {t('screens.memory.showArchivedItems')}
               </Label>
               <p className="text-sm text-muted-foreground mt-1">
-                Include archived items in timeline views
+                {t('screens.memory.includeArchivedItemsTimelineViews')}
               </p>
             </div>
             <Switch
@@ -98,17 +96,17 @@ export function ArchiveSettingsDialog({ open, onOpenChange }: ArchiveSettingsDia
           {/* Info Box */}
           <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> Archived items are hidden from regular views but can be restored at any time. They are not deleted and remain searchable.
+              <strong>{t('screens.memory.note')}</strong>{t('screens.memory.archivedItemsHiddenFromRegularViews')}
             </p>
           </div>
 
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t('screens.memory.cancel')}
             </Button>
             <Button onClick={handleSave}>
-              Save Settings
+              {t('screens.memory.saveSettings')}
             </Button>
           </div>
         </div>

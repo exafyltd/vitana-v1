@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Loader2, Sparkles } from "lucide-react";
+import { t } from '@/lib/i18n-toast';
 
 interface SituationFormProps {
   onAnalyze: (situation: string) => Promise<void>;
@@ -30,27 +31,27 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
-          Describe Your Situation
+          {t('screens.admin.describeYourSituation')}
         </CardTitle>
         <CardDescription>
-          Tell us what you want to automate, and AI will suggest the best approach
+          {t('screens.admin.tellUsWhatYouWantAutomate')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="situation">What would you like to automate?</Label>
+          <Label htmlFor="situation">{t('screens.admin.whatWouldYouLikeAutomate')}</Label>
           <Textarea
             id="situation"
             value={situation}
             onChange={(e) => setSituation(e.target.value)}
-            placeholder="Describe the scenario you want to automate..."
+            placeholder={t('screens.admin.describeScenarioYouWantAutomate')}
             rows={4}
             disabled={isAnalyzing}
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Example scenarios:</Label>
+          <Label className="text-sm text-muted-foreground">{t('screens.admin.exampleScenarios')}</Label>
           <div className="grid gap-2">
             {exampleSituations.map((example, index) => (
               <button
@@ -72,13 +73,12 @@ export default function SituationForm({ onAnalyze, isAnalyzing }: SituationFormP
         >
           {isAnalyzing ? (
             <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Analyzing...
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.admin.analyzing')}
             </>
           ) : (
             <>
               <Sparkles className="h-4 w-4 mr-2" />
-              Analyze Situation
+              {t('screens.admin.analyzeSituation')}
             </>
           )}
         </Button>

@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "Delete Campaign?",
+      "description": "Deleting \"{name}\" will permanently remove all related drafts and analytics. This action can't be undone.",
+      "dontAskAgain": "Don't ask me again for draft campaigns",
+      "deletePermanently": "Delete Permanently"
+    },
+    "creation": {
+      "title": "Create Campaign",
+      "stepOf": "Step {current} of {total}",
+      "yourCampaigns": "Your Campaigns",
+      "drafts": "drafts",
+      "live": "live",
+      "proTip": "Pro Tip",
+      "tips": {
+        "1": "Clear names help you find campaigns later",
+        "2": "Connect channels now for instant scheduling",
+        "3": "Launch template works for most announcements",
+        "4": "Smart scheduling uses your past engagement data"
+      }
+    }
+  }
+}

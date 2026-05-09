@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
+import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
 interface IntakeMessage {
   agent?: string;
@@ -60,7 +61,19 @@ interface FullTicket {
   created_at: string;
   resolved_at: string | null;
   user_confirmed_at: string | null;
+  // VTID-02669: dev-autopilot ↔ ticket linkage for the rollback feature.
+  auto_resolved?: boolean | null;
+  linked_pr_url?: string | null;
+  // VTID-02702: rollback feature — tenant admin can revert an
+  // autopilot-resolved fix within ROLLBACK_WINDOW_HOURS (default 72h).
+  rolled_back_at?: string | null;
+  rollback_pr_url?: string | null;
 }
+
+// VTID-02702: 3-day rollback window, mirrored from the gateway env var
+// FEEDBACK_ROLLBACK_WINDOW_HOURS. Hardcoded here so the button's visibility
+// matches the backend's eligibility check without an extra round-trip.
+const ROLLBACK_WINDOW_MS = 72 * 60 * 60 * 1000;
 
 // VTID-02665: kinds the supervisor can pick from the reclassify dropdown.
 const KIND_OPTIONS: Array<{ value: string; label: string; description: string }> = [
@@ -199,9 +212,8 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
         <div className="flex items-center gap-3">
           <span className="text-2xl">⚙️</span>
           <div className="flex-1 min-w-0">
-            <div className="font-semibold">Dispatched to dev autopilot</div>
-            <div className="text-xs text-muted-foreground">
-              Recommendation <code className="text-[10px]">{findingId.slice(0, 8)}</code> — waiting for the executor tick to claim the run (≤30s).
+            <div className="font-semibold">{t('screens.admin.dispatchedDevAutopilot')}</div>
+            <div className="text-xs text-muted-foreground">{t('screens.admin.recommendation')} <code className="text-[10px]">{findingId.slice(0, 8)}</code>{t('screens.admin.waitingForExecutorTickClaimRun')}
             </div>
           </div>
         </div>
@@ -213,13 +225,35 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
   }
 
   const status = execution.status;
-  const isFailed = status === "failed";
+  // VTID-02678: 'failed' and 'failed_escalated' are both terminal-failure
+  // states. Treat them the same in the UI.
+  const isFailed = status === "failed" || status === "failed_escalated";
   const isCompleted = status === "completed";
   const failedAt = execution.failure_stage ?? null;
-  const idxNow = stageIndex(status);
+  // Don't index against PIPELINE_STAGES with a non-stage value like "failed"
+  // — fall back to the deepest stage we've seen evidence of.
+  const failedStageIdx = failedAt ? PIPELINE_STAGES.findIndex(s => s.key === failedAt) : -1;
+  const idxNow = isFailed
+    ? (failedStageIdx >= 0 ? failedStageIdx : 1) // assume at least past Queued
+    : stageIndex(status);
   const pctNow = isFailed
-    ? (PIPELINE_STAGES.find(s => s.key === failedAt)?.pct ?? PIPELINE_STAGES[idxNow].pct)
+    ? (failedStageIdx >= 0 ? PIPELINE_STAGES[failedStageIdx].pct : 30)
     : PIPELINE_STAGES[idxNow].pct;
+  // Human-readable label for where the run died.
+  const STAGE_FAIL_LABEL: Record<string, string> = {
+    cooling: 'before it could start',
+    running: 'while writing the code',
+    ci: 'in CI (tests / typecheck)',
+    merging: 'while merging',
+    deploying: 'during deploy',
+    verifying: 'during post-deploy verification',
+    plan_gen: 'while generating the plan',
+    approve_safety: 'at the safety gate',
+  };
+  const failureCopy = isFailed
+    ? (failedAt && STAGE_FAIL_LABEL[failedAt])
+      || (failedAt && failedAt !== 'failed' ? `at ${failedAt}` : '')
+    : '';
 
   const barClass = isFailed
     ? "bg-red-500"
@@ -248,24 +282,26 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
           <div className="font-semibold flex items-center gap-2 flex-wrap">
             <span>
               {isFailed
-                ? `Failed at ${failedAt ?? status}`
+                ? (failureCopy ? `Run failed ${failureCopy}` : 'Run failed')
                 : isCompleted
                   ? "Completed — deployed to production"
                   : `Running in dev autopilot — ${PIPELINE_STAGES[idxNow]?.label ?? status}`}
             </span>
+            {isFailed && (
+              <span className="rounded-full bg-red-500/10 text-red-700 dark:text-red-300 text-[10px] px-2 py-0.5 font-normal border border-red-500/30">{t('screens.admin.clickActivateRetry')}
+              </span>
+            )}
             {isCompleted && playwrightVerified && (
-              <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">
-                ✓ Visually verified
+              <span className="rounded-full bg-emerald-500 text-white text-[10px] px-2 py-0.5 font-normal">{t('screens.admin.visuallyVerified')}
               </span>
             )}
           </div>
-          <div className="text-xs text-muted-foreground">
-            Execution <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
+          <div className="text-xs text-muted-foreground">{t('screens.admin.execution')} <code className="text-[10px]">{execution.id.slice(0, 8)}</code>
             {execution.pr_url && (
-              <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">PR #{execution.pr_number ?? "?"}</a></>
+              <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">{t('screens.admin.prValue0', { value0: execution.pr_number ?? "?" })}</a></>
             )}
-            {isStalled && <> · <span className="text-amber-600 font-semibold">stalled {Math.round(stalledMs / 60000)} min</span></>}
-            {execution.completed_at && <> · finished {new Date(execution.completed_at).toLocaleTimeString()}</>}
+            {isStalled && <> · <span className="text-amber-600 font-semibold">{t('screens.admin.stalledValue0Min', { value0: Math.round(stalledMs / 60000) })}</span></>}
+            {execution.completed_at && <>{t('screens.admin.finishedValue0', { value0: new Date(execution.completed_at).toLocaleTimeString() })}</>}
           </div>
         </div>
       </div>
@@ -284,7 +320,14 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
         {PIPELINE_STAGES.map((stage, i) => {
           const passed = i < idxNow;
           const active = i === idxNow && !isFailed;
-          const failedHere = isFailed && stage.key === failedAt;
+          // VTID-02678: when failedAt isn't a known stage key (e.g. "failed"),
+          // mark the deepest known stage as the failure point so the chip
+          // row isn't all-empty-circles.
+          const failedHere = isFailed && (
+            (failedAt && stage.key === failedAt) ||
+            (!failedAt && i === idxNow) ||
+            (failedAt && failedStageIdx === -1 && i === idxNow)
+          );
           const tone = failedHere
             ? "bg-red-500 text-white border-transparent"
             : passed || (isCompleted && i <= idxNow)
@@ -307,8 +350,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
       </div>
 
       {isStalled && !isFailed && (
-        <p className="text-[11px] text-amber-700 dark:text-amber-300">
-          No update for {Math.round(stalledMs / 60000)} minutes — the executor reaper will reclaim stuck runs every few minutes. Come back later.
+        <p className="text-[11px] text-amber-700 dark:text-amber-300">{t('screens.admin.noUpdateForValue0MinutesExecutor', { value0: Math.round(stalledMs / 60000) })}
         </p>
       )}
     </Card>
@@ -390,7 +432,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       const friendly = raw === "ALREADY_DISPATCHED"
         ? "This ticket is already running in dev autopilot. Reclassify is locked once dispatched."
         : raw;
-      toast({ title: "Reclassify failed", description: friendly, variant: "destructive" });
+      notifyError('toasts.admin.reclassifyFailed');
     },
   });
 
@@ -426,11 +468,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
     },
     onError: (err: unknown) => {
-      toast({
-        title: "Generate spec failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.generateSpecFailed');
     },
   });
 
@@ -488,7 +526,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         : raw === "ALREADY_IN_PROGRESS"
           ? "This ticket is already running. The autopilot will close it when done."
           : raw;
-      toast({ title: "Activate failed", description: friendly, variant: "destructive" });
+      notifyError('toasts.admin.activateFailed');
     },
   });
 
@@ -503,16 +541,12 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       return body;
     },
     onSuccess: async () => {
-      toast({ title: `${ticketNumber} rejected`, description: "Removed from the active list." });
+      toast({ title: lookup('toasts.admin.ticketRejected', { ticketNumber }), description: lookup('toasts.admin.ticketRemovedActiveList') });
       await queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] });
       onClose();
     },
     onError: (err: unknown) => {
-      toast({
-        title: "Reject failed",
-        description: err instanceof Error ? err.message : "Try again.",
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.rejectFailed');
     },
   });
 
@@ -522,11 +556,39 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     reject.mutate(reason || null);
   };
 
+  // VTID-02702: rollback mutation. Posts to the new endpoint, refreshes
+  // detail + list. The endpoint stamps rolled_back_at + flips status to
+  // reopened so the normal action panel reappears for a fresh attempt.
+  const rollback = useMutation({
+    mutationFn: async () => {
+      const res = await communityFetch(
+        `/api/v1/admin/tenants/${tenantId}/tickets/${ticketId}/rollback`,
+        { method: "POST", body: JSON.stringify({}) },
+      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error((body as { error?: string; message?: string }).message ?? (body as { error?: string }).error ?? `HTTP ${res.status}`);
+      return body as { revert_pr_url: string; revert_pr_number: number };
+    },
+    onSuccess: async (data) => {
+      toast({
+        title: `${ticketNumber} rolled back`,
+        description: `Revert PR ${data.revert_pr_url ? `#${data.revert_pr_number}` : "created"}. The ticket has been reopened.`,
+      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["admin-feedback-tickets"] }),
+        queryClient.invalidateQueries({ queryKey: ["admin-feedback-ticket", tenantId, ticketId] }),
+      ]);
+    },
+    onError: (err: unknown) => {
+      notifyError('toasts.admin.rollbackFailed');
+    },
+  });
+
   // VTID-02659: block close while a mutation is in flight so the action
   // completes cleanly (LLM draft can take 10–30s — closing mid-flight
   // leaves the supervisor staring at a stale list while onSuccess fires
   // into thin air). Both backdrop click and the ✕ button respect this.
-  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending;
+  const isBusy = activate.isPending || reject.isPending || generateSpec.isPending || reclassify.isPending || rollback.isPending;
   const safeClose = () => {
     if (isBusy) return;
     onClose();
@@ -545,7 +607,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             onClick={safeClose}
             disabled={isBusy}
             className="text-2xl text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label="Close"
+            aria-label={t('screens.admin.close')}
             title={isBusy ? "Working — please wait" : "Close"}
           >
             ×
@@ -557,7 +619,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
   );
 
   if (detailQuery.isLoading) {
-    return renderShell(<p className="text-sm text-muted-foreground">Loading ticket…</p>);
+    return renderShell(<p className="text-sm text-muted-foreground">{t('screens.admin.loadingTicket')}</p>);
   }
   if (detailQuery.error || !detailQuery.data) {
     const err = detailQuery.error instanceof Error ? detailQuery.error.message : "Couldn't load this ticket.";
@@ -565,8 +627,8 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       <div>
         <p className="text-sm text-destructive">{err}</p>
         <div className="mt-3 flex gap-2">
-          <Button variant="outline" onClick={() => detailQuery.refetch()}>Retry</Button>
-          <Button variant="ghost" onClick={onClose}>Close</Button>
+          <Button variant="outline" onClick={() => detailQuery.refetch()}>{t('screens.admin.retry')}</Button>
+          <Button variant="ghost" onClick={onClose}>{t('screens.admin.close')}</Button>
         </div>
       </div>
     );
@@ -583,7 +645,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         <Badge variant={statusVariant(t.status)}>{STATUS_LABEL[t.status] ?? t.status}</Badge>
         <span className="text-muted-foreground">{t.kind} · {(t.priority || "p2").toUpperCase()}</span>
         {t.resolver_agent && (
-          <span className="text-muted-foreground">handled by {t.resolver_agent}</span>
+          <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent', { resolver_agent: t.resolver_agent })}</span>
         )}
         {t.vitana_id && (
           <span className="ml-auto font-mono text-xs text-muted-foreground">{t.vitana_id}</span>
@@ -604,6 +666,61 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         />
       )}
 
+      {/* VTID-02702: Rollback card. Shown only on autopilot-resolved
+          tickets within the 3-day rollback window. One click creates a
+          revert PR which the watcher auto-merges + deploys. The original
+          ticket flips back to `reopened` for re-attempt. After the
+          window expires the card disappears (the supervisor can't
+          undo via this surface — change is "kept"). */}
+      {t.status === "resolved"
+        && t.auto_resolved === true
+        && !t.rolled_back_at
+        && t.linked_pr_url
+        && t.resolved_at
+        && (Date.now() - new Date(t.resolved_at).getTime()) < ROLLBACK_WINDOW_MS
+        && (() => {
+          const elapsedHours = Math.floor((Date.now() - new Date(t.resolved_at!).getTime()) / 3_600_000);
+          const remainingHours = Math.max(0, 72 - elapsedHours);
+          return (
+            <Card className="border-amber-300 bg-amber-50 p-3 dark:border-amber-700 dark:bg-amber-950/30">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1 text-sm">
+                  <div className="font-semibold">{t('screens.admin.rollbackAvailable')}</div>
+                  <p className="text-muted-foreground">{t('screens.admin.autoresolvedByDevAutopilotYouCan', { value0: " " })}<a href={t.linked_pr_url ?? "#"} target="_blank" rel="noreferrer"
+                       className="underline underline-offset-2">{t('screens.admin.thisFix')}
+                    </a>{t('screens.admin.value0ForNextRemaininghoursH', { value0: " ", remainingHours })}
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-amber-500 text-amber-900 hover:bg-amber-100 dark:text-amber-100 dark:hover:bg-amber-900/40"
+                  disabled={isBusy || rollback.isPending}
+                  onClick={() => {
+                    if (!window.confirm(`Revert ${t.linked_pr_url} and reopen ${ticketNumber}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.`)) return;
+                    rollback.mutate();
+                  }}
+                >
+                  {rollback.isPending ? "Rolling back…" : "Rollback"}
+                </Button>
+              </div>
+            </Card>
+          );
+        })()}
+
+      {/* VTID-02702: post-rollback indicator. Once a rollback has fired,
+          surface the revert PR link so the supervisor can audit. The
+          ticket has flipped to `reopened` so the normal action panel
+          will reappear below. */}
+      {t.rolled_back_at && t.rollback_pr_url && (
+        <Card className="border-orange-300 bg-orange-50 p-3 text-sm dark:border-orange-700 dark:bg-orange-950/30">
+          <div className="font-semibold">{t('screens.admin.rolledBack')}</div>
+          <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: new Date(t.rolled_back_at).toLocaleString(), value1: " " })}<a href={t.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
+            </a>{t('screens.admin.ticketHasReopenedRefineInstructionsReactivate')}
+          </p>
+        </Card>
+      )}
+
       {/* VTID-02669: stranded-ticket recovery card REMOVED. Activate is
           now atomic — a ticket cannot land at in_progress without
           linked_finding_id. Recovery for any pre-Phase-7 stranded ticket
@@ -617,7 +734,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         <Card className="flex flex-col gap-2 p-3">
           <div className="flex items-center justify-between gap-2">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Kind</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.kind')}</div>
               <div className="text-sm">{KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind}</div>
             </div>
             <Select
@@ -628,7 +745,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
               }}
             >
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Reclassify…" />
+                <SelectValue placeholder={t('screens.admin.reclassify')} />
               </SelectTrigger>
               <SelectContent>
                 {KIND_OPTIONS.map(opt => (
@@ -643,7 +760,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
             </Select>
           </div>
           {reclassify.isPending && (
-            <p className="text-xs text-muted-foreground">Reclassifying — this clears any existing draft.</p>
+            <p className="text-xs text-muted-foreground">{t('screens.admin.reclassifyingThisClearsAnyExistingDraft')}</p>
           )}
         </Card>
       )}
@@ -658,20 +775,22 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         const existingDraft = cfg ? (t[cfg.draftField] ?? null) : null;
         const hasDraft = !!existingDraft;
         const draftReadyStatus = ["spec_ready", "answer_ready"].includes(t.status);
-        const canActivate = draftReadyStatus || !draftKindHasResolver;
+        // VTID-02678: enable Activate from needs_more_info / reopened too —
+        // the spec already exists from the prior failed run; this is a
+        // one-click retry path without forcing a re-generate.
+        const isRetryable = ["needs_more_info", "reopened"].includes(t.status) && hasDraft;
+        const canActivate = draftReadyStatus || isRetryable || !draftKindHasResolver;
         return (
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
             <div>
-              <div className="text-sm font-semibold">Process this ticket</div>
-              <p className="text-xs text-muted-foreground">
-                You're the domain expert. Add your instructions below — they take priority over the user's words when the AI drafts the {cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item"}. Then generate, review, and activate.
+              <div className="text-sm font-semibold">{t('screens.admin.processThisTicket')}</div>
+              <p className="text-xs text-muted-foreground">{t('screens.admin.youReDomainExpertAddYour', { value0: cfg ? cfg.draftLabel.toLowerCase().replace(/^[a-z]+'s /, "") : "work item" })}
               </p>
             </div>
 
             {/* Step 1 — supervisor instructions */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                1. Your instructions <span className="font-normal normal-case opacity-70">(takes priority over the user's report)</span>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.text1YourInstructions')} <span className="font-normal normal-case opacity-70">{t('screens.admin.takesPriorityOverUserSReport')}</span>
               </label>
               <Textarea
                 value={supervisorInstructions}
@@ -691,16 +810,14 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 disabled={isBusy}
                 className="text-sm"
               />
-              <p className="mt-1 text-[11px] text-muted-foreground">
-                Persisted as <code>supervisor_notes</code>. Saved with the next Generate.
+              <p className="mt-1 text-[11px] text-muted-foreground">{t('screens.admin.persistedAs')} <code>{t('screens.admin.supervisor_notes')}</code>{t('screens.admin.savedWithNextGenerate')}
               </p>
             </div>
 
             {/* Step 2 — generate via resolver */}
             {draftKindHasResolver && (
               <div>
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  2. {hasDraft ? "Re-generate" : "Generate"} the draft
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.text2Value0Draft', { value0: hasDraft ? "Re-generate" : "Generate" })}
                 </label>
                 <Button
                   size="sm"
@@ -717,14 +834,12 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                 {generateSpec.isPending && (
                   <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
                     <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                    <span>
-                      AI is drafting via {cfg!.resolver} — this can take up to 30 seconds. Safe to leave the drawer open.
+                    <span>{t('screens.admin.aiDraftingViaResolverThisCan', { resolver: cfg!.resolver })}
                     </span>
                   </div>
                 )}
                 {hasDraft && !generateSpec.isPending && (
-                  <p className="mt-1 text-[11px] text-muted-foreground">
-                    A draft already exists below. Edit your instructions and click Re-generate to replace it.
+                  <p className="mt-1 text-[11px] text-muted-foreground">{t('screens.admin.draftAlreadyExistsBelowEditYour')}
                   </p>
                 )}
               </div>
@@ -732,8 +847,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
 
             {/* Step 3 — activate (gated on draft existing for kinds with a resolver) */}
             <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {draftKindHasResolver ? "3. " : ""}Activate or reject
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.value0ActivateReject', { value0: draftKindHasResolver ? "3. " : "" })}
               </label>
               <div className="flex gap-2">
                 <Button
@@ -746,26 +860,28 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                       : "Advance the ticket to the next stage."
                   }
                 >
-                  {activate.isPending ? "Activating…" : "Activate"}
+                  {activate.isPending
+                    ? "Activating…"
+                    : isRetryable
+                      ? "Retry autopilot"
+                      : "Activate"}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleReject}
                   disabled={isBusy}
-                >
-                  Reject
+                >{t('screens.admin.reject')}
                 </Button>
               </div>
               {draftKindHasResolver && !canActivate && (
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Activate is disabled until the draft is generated.
+                <p className="mt-1 text-[11px] text-muted-foreground">{t('screens.admin.activateDisabledUntilDraftGenerated')}
                 </p>
               )}
               {activate.isPending && (
                 <div className="mt-2 flex items-center gap-2 rounded border border-primary/30 bg-background px-3 py-2 text-xs text-muted-foreground">
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  <span>Activating + dispatching to dev autopilot — atomic, takes a few seconds.</span>
+                  <span>{t('screens.admin.activatingDispatchingDevAutopilotAtomicTakes')}</span>
                 </div>
               )}
               {/* VTID-02669: violations from /activate 409. Surfaces pre-flight
@@ -773,8 +889,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   supervisor can revise + Re-generate without leaving Step 3. */}
               {activateViolations && activateViolations.length > 0 && (
                 <div className="mt-3 rounded border border-red-500/40 bg-red-500/5 p-3 text-xs">
-                  <div className="mb-1 font-semibold text-red-700 dark:text-red-300">
-                    Activate blocked. Revise the spec and Re-generate.
+                  <div className="mb-1 font-semibold text-red-700 dark:text-red-300">{t('screens.admin.activateBlockedReviseSpecRegenerate')}
                   </div>
                   <ul className="ml-4 list-disc space-y-1 text-foreground/80">
                     {activateViolations.map((v, i) => (
@@ -791,15 +906,14 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         );
       })()}
       {isTerminal && (
-        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">
-          This ticket is in a terminal state ({STATUS_LABEL[t.status] ?? t.status}). No further action available.
+        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: STATUS_LABEL[t.status] ?? t.status })}
         </Card>
       )}
 
       {/* Customer report — what they actually said */}
       {t.raw_transcript && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Customer report</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.customerReport')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.raw_transcript}</Card>
         </section>
       )}
@@ -807,8 +921,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Intake conversation — every turn */}
       {Array.isArray(t.intake_messages) && t.intake_messages.length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Intake conversation ({t.intake_messages.length} turns)
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.intakeConversationLengthTurns', { length: t.intake_messages.length })}
           </h3>
           <div className="flex flex-col gap-2">
             {t.intake_messages.map((m, i) => {
@@ -832,7 +945,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Handoff timeline — Vitana → specialist */}
       {handoffs.length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Handoff timeline</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.handoffTimeline')}</h3>
           <div className="flex flex-col gap-1 text-xs">
             {handoffs.map(h => (
               <div key={h.id} className="flex flex-wrap items-center gap-2">
@@ -848,19 +961,19 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Specialist drafts (when present — useful context for Activate decision) */}
       {t.spec_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Devon spec</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.devonSpec')}</h3>
           <Card className="whitespace-pre-wrap p-3 font-mono text-xs">{t.spec_md}</Card>
         </section>
       )}
       {t.draft_answer_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sage draft answer</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.sageDraftAnswer')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.draft_answer_md}</Card>
         </section>
       )}
       {t.resolution_md && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Resolution draft</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.resolutionDraft')}</h3>
           <Card className="whitespace-pre-wrap p-3 text-sm">{t.resolution_md}</Card>
         </section>
       )}
@@ -868,7 +981,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {/* Structured fields the specialist captured during intake */}
       {t.structured_fields && Object.keys(t.structured_fields).length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Structured fields</h3>
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.structuredFields')}</h3>
           <Card className="overflow-x-auto p-3">
             <pre className="text-xs">{JSON.stringify(t.structured_fields, null, 2)}</pre>
           </Card>
@@ -877,11 +990,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
 
       {/* Context */}
       <section className="text-xs text-muted-foreground space-y-0.5">
-        {t.screen_path && <div>Screen: {t.screen_path}</div>}
-        {t.app_version && <div>App version: {t.app_version}</div>}
-        <div>Created: {new Date(t.created_at).toLocaleString()}</div>
-        {t.resolved_at && <div>Resolved: {new Date(t.resolved_at).toLocaleString()}</div>}
-        {t.user_confirmed_at && <div>Confirmed: {new Date(t.user_confirmed_at).toLocaleString()}</div>}
+        {t.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: t.screen_path })}</div>}
+        {t.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: t.app_version })}</div>}
+        <div>{t('screens.admin.createdValue0', { value0: new Date(t.created_at).toLocaleString() })}</div>
+        {t.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: new Date(t.resolved_at).toLocaleString() })}</div>}
+        {t.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: new Date(t.user_confirmed_at).toLocaleString() })}</div>}
       </section>
     </div>
   );

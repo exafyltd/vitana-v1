@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
 import { eventTypeToPillar } from "@/lib/eventTransformers";
+import { t } from '@/lib/i18n-toast';
 
 interface HydrationReminderCardProps {
   timeLastIntake?: string;
@@ -14,7 +15,7 @@ export function HydrationReminderCard({
 }: HydrationReminderCardProps) {
   return (
     <NewsCard
-      title="Hydration Reminder 💧"
+      title={t('screens.context.hydrationReminder')}
       description={`Triggered · ${timeLastIntake}`}
       imageUrl="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop"
       pillar="Hydration"
@@ -39,7 +40,7 @@ export function MorningRoutineCard({
 }: MorningRoutineCardProps) {
   return (
     <NewsCard
-      title="Morning Routine 🌅"
+      title={t('screens.context.morningRoutine')}
       description={`Detected ${peakTime}`}
       imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
       pillar="Mental"
@@ -105,7 +106,7 @@ export function SleepCheckCard({
 }: SleepCheckCardProps) {
   return (
     <NewsCard
-      title="Sleep Check-in 🌙"
+      title={t('screens.context.sleepCheckin')}
       description={`Readiness score tonight: ${readinessScore}`}
       imageUrl="https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop"
       pillar="Sleep"
@@ -130,7 +131,7 @@ export function CommunitySpotlightCard({
 }: CommunitySpotlightCardProps) {
   return (
     <NewsCard
-      title="Community Spotlight"
+      title={t('screens.context.communitySpotlight')}
       description={`Trending: ${trendingEvent}`}
       imageUrl="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop"
       pillar="Mental"
@@ -155,7 +156,7 @@ export function EnergyPeakCard({
 }: EnergyPeakCardProps) {
   return (
     <NewsCard
-      title="Today's Energy Peak ⚡"
+      title={t('screens.context.todaySEnergyPeak')}
       description={`Best time for focus: ${peakTime}`}
       imageUrl="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop"
       pillar="Mental"
@@ -180,7 +181,7 @@ export function MeditationSuggestionCard({
 }: MeditationSuggestionCardProps) {
   return (
     <NewsCard
-      title="Meditation Suggestion 🧘"
+      title={t('screens.context.meditationSuggestion')}
       description={suggestion}
       imageUrl="https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&h=600&fit=crop"
       pillar="Mental"
@@ -205,7 +206,7 @@ export function SleepReadinessCard({
 }: SleepReadinessCardProps) {
   return (
     <NewsCard
-      title="Sleep Readiness 🌙"
+      title={t('screens.context.sleepReadiness')}
       description={`Check readiness at ${checkTime}`}
       imageUrl="https://images.unsplash.com/photo-1540331547168-8b63109225b7?w=800&h=600&fit=crop"
       pillar="Sleep"

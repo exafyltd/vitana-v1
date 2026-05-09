@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { ShareCampaignModal } from "./ShareCampaignModal";
 import { useState } from "react";
+import { t } from '@/lib/i18n-toast';
 
 interface CampaignSuccessModalProps {
   open: boolean;
@@ -47,7 +48,7 @@ export function CampaignSuccessModal({
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold mb-2">Campaign Created! 🎉</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('screens.sharing.campaignCreated')}</h2>
             <p className="text-sm text-muted-foreground">
               {smartSchedulingEnabled 
                 ? "Now share it with your community"
@@ -59,11 +60,11 @@ export function CampaignSuccessModal({
           <Card className="border-2 text-left">
             <CardContent className="p-4 space-y-3">
               <div>
-                <p className="text-xs text-muted-foreground">Campaign Name</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignName2')}</p>
                 <p className="font-semibold">{campaign.name}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Channels</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.channels')}</p>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {campaign.channels.map(ch => (
                     <Badge key={ch} variant="secondary" className="text-xs">
@@ -73,11 +74,11 @@ export function CampaignSuccessModal({
                 </div>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Template</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.template')}</p>
                 <p className="text-sm font-medium">{campaign.template}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">First Scheduled Post</p>
+                <p className="text-xs text-muted-foreground">{t('screens.sharing.firstScheduledPost')}</p>
                 <p className="text-sm font-medium">
                   {format(campaign.firstPostDate, "PPP 'at' p")}
                 </p>
@@ -89,7 +90,7 @@ export function CampaignSuccessModal({
           <div className="flex items-start gap-2 p-3 bg-[hsl(var(--pill-hydration-tint))] rounded-lg text-left border border-[hsl(var(--pill-hydration-accent))]/20">
             <Info className="w-4 h-4 text-[hsl(var(--pill-hydration-accent))] shrink-0 mt-0.5" />
             <p className="text-xs text-foreground">
-              Campaign created as draft. You can review all posts before publishing.
+              {t('screens.sharing.campaignCreatedAsDraftYouCan')}
             </p>
           </div>
 
@@ -105,7 +106,7 @@ export function CampaignSuccessModal({
                   size="lg"
                 >
                   <Share2 className="w-4 h-4 mr-2" />
-                  Share with my contacts
+                  {t('screens.sharing.shareWithMyContacts')}
                 </Button>
 
                 <Button
@@ -115,8 +116,7 @@ export function CampaignSuccessModal({
                     onOpenChange(false);
                   }}
                   className="w-full"
-                >
-                  Manage channels & scheduling
+                >{t('screens.sharing.manageChannelsScheduling')}
                 </Button>
               </>
             ) : (
@@ -130,7 +130,7 @@ export function CampaignSuccessModal({
                   size="lg"
                 >
                   <LayoutGrid className="w-4 h-4 mr-2" />
-                  Manage Posts
+                  {t('screens.sharing.managePosts')}
                 </Button>
 
                 <Button
@@ -141,7 +141,7 @@ export function CampaignSuccessModal({
                   className="w-full"
                 >
                   <Share2 className="w-4 h-4 mr-2" />
-                  Share with my contacts
+                  {t('screens.sharing.shareWithMyContacts')}
                 </Button>
               </>
             )}
@@ -155,7 +155,7 @@ export function CampaignSuccessModal({
               className="w-full text-sm"
             >
               <LayoutGrid className="w-4 h-4 mr-2" />
-              View Dashboard
+              {t('screens.sharing.viewDashboard')}
             </Button>
           </div>
         </div>

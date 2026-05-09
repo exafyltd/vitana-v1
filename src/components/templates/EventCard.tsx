@@ -7,6 +7,7 @@ import { RewardDot } from "@/components/ui/reward-dot";
 import { Clock, MapPin, Users, Calendar, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
+import { t } from '@/lib/i18n-toast';
 
 interface EventItem {
   id: string;
@@ -87,7 +88,7 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
               <CardTitle className="text-sm font-semibold tracking-wide">{title}</CardTitle>
               {showActions && (
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="text-muted-foreground">Send to Messages</span>
+                  <span className="text-muted-foreground">{t('screens.templates.sendMessages')}</span>
                   <Switch onCheckedChange={onSendPlan} />
                 </div>
               )}
@@ -155,7 +156,7 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
             <h3 className="text-sm font-semibold tracking-wide text-foreground">{title}</h3>
             {showActions && (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">Auto-send</span>
+                <span className="text-muted-foreground">{t('screens.templates.autosend')}</span>
                 <Switch onCheckedChange={onSendPlan} />
               </div>
             )}
@@ -199,7 +200,7 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
             <CardTitle className="text-sm font-semibold tracking-wide">{title}</CardTitle>
             {showActions && (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">Send plan</span>
+                <span className="text-muted-foreground">{t('screens.templates.sendPlan')}</span>
                 <Switch onCheckedChange={onSendPlan} />
               </div>
             )}
@@ -257,7 +258,7 @@ const EventCardBase = React.forwardRef<HTMLDivElement, EventCardProps>(
           {displayEvents.length === 0 && (
             <div className="text-center py-6 text-muted-foreground">
               <Calendar className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">No events scheduled.</p>
+              <p className="text-sm">{t('screens.templates.noEventsScheduled')}</p>
             </div>
           )}
         </CardContent>

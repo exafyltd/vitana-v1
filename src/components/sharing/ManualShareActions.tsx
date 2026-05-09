@@ -6,6 +6,7 @@ import { Link2, MessageCircle, Mail, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getShareUrl } from "@/lib/shareUrl";
 import { cn } from "@/lib/utils";
+import { lookup, notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
 interface ManualShareActionsProps {
   campaignId: string;
@@ -35,9 +36,9 @@ export function ManualShareActions({
     setCopying(true);
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast.success("Link copied!");
+      notifySuccess('toasts.sharing.linkCopied');
     } catch (error) {
-      toast.error("Failed to copy link");
+      notifyError('toasts.sharing.failedCopyLink');
     } finally {
       setTimeout(() => setCopying(false), 1000);
     }
@@ -46,7 +47,7 @@ export function ManualShareActions({
   const handleWhatsAppShare = () => {
     const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
-    toast.success("Opening WhatsApp...");
+    notifySuccess('toasts.sharing.openingWhatsapp');
   };
 
   const handleViberShare = async () => {
@@ -71,16 +72,16 @@ export function ManualShareActions({
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       
       if (viberOpened) {
-        toast.success("Opening Viber...");
+        notifySuccess('toasts.sharing.openingViber');
       } else {
         // Viber didn't open - copy link to clipboard as fallback
         try {
           await navigator.clipboard.writeText(shareUrl);
-          toast.info("Viber not detected. Link copied to clipboard!", {
+          toast.info(lookup('toasts.sharing.viberNotDetectedLinkCopiedClipboard'), {
             description: "Paste it manually in your Viber chat"
           });
         } catch {
-          toast.error("Viber not detected. Please copy the link manually.");
+          notifyError('toasts.sharing.viberNotDetectedPleaseCopyLink');
         }
       }
     }, 1500);
@@ -89,13 +90,13 @@ export function ManualShareActions({
   const handleEmailShare = () => {
     const emailUrl = `mailto:?subject=${encodeURIComponent(campaignTitle)}&body=${encodedMessage}`;
     window.location.href = emailUrl;
-    toast.success("Opening email client...");
+    notifySuccess('toasts.sharing.openingEmailClient');
   };
 
   const handleSmsShare = () => {
     const smsUrl = `sms:?body=${encodedMessage}`;
     window.location.href = smsUrl;
-    toast.success("Opening messaging app...");
+    notifySuccess('toasts.sharing.openingMessagingApp');
   };
 
   const shareOptions = [
@@ -172,7 +173,7 @@ export function ManualShareActions({
                       variant="secondary" 
                       className="text-[10px] px-1.5 py-0 bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
                     >
-                      Recommended
+                      {t('screens.sharing.recommended')}
                     </Badge>
                   )}
                 </div>
@@ -193,14 +194,13 @@ export function ManualShareActions({
                   e.stopPropagation();
                   option.onClick();
                 }}
-              >
-                Share →
+              >{t('screens.sharing.share')}
               </Button>
             </div>
 
             {copying && option.key === 'copy_link' && (
               <div className="absolute inset-0 bg-primary/10 flex items-center justify-center">
-                <span className="text-sm font-medium text-primary">Copied!</span>
+                <span className="text-sm font-medium text-primary">{t('screens.sharing.copied')}</span>
               </div>
             )}
           </Card>

@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface CommunityGroup {
   id: string;
@@ -71,7 +72,7 @@ const GroupsModeration = () => {
       setGroups((data || []) as CommunityGroup[]);
     } catch (error) {
       console.error('Error fetching groups:', error);
-      toast.error('Failed to load groups');
+      notifyError('toasts.admin.failedLoadGroups');
     } finally {
       setLoading(false);
     }
@@ -93,7 +94,7 @@ const GroupsModeration = () => {
       fetchGroups();
     } catch (error) {
       console.error('Error moderating group:', error);
-      toast.error('Failed to moderate group');
+      notifyError('toasts.admin.failedModerateGroup');
     }
   };
 
@@ -116,14 +117,14 @@ const GroupsModeration = () => {
   return (
     <AdminGuard>
       <AppLayout>
-        <SEO title="Groups Moderation - Admin" description="Review and moderate community groups" />
+        <SEO title={t('screens.admin.groupsModerationAdmin')} description="Review and moderate community groups" />
         
         <SubNavigation items={adminCommunityNavigation} />
         
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="max-w-7xl mx-auto space-y-6">
             <AdminHeader
-              title="Groups Moderation"
+              title={t('screens.admin.groupsModeration')}
               description="Review, approve, or reject community groups"
             />
 
@@ -197,7 +198,7 @@ const GroupsModeration = () => {
                                       onClick={() => moderateGroup(group.id, 'approved')}
                                     >
                                       <CheckCircle className="h-4 w-4 mr-1" />
-                                      Approve
+                                      {t('screens.admin.approve')}
                                     </Button>
                                     <Button
                                       size="sm"
@@ -205,7 +206,7 @@ const GroupsModeration = () => {
                                       onClick={() => moderateGroup(group.id, 'rejected', 'Does not meet guidelines')}
                                     >
                                       <XCircle className="h-4 w-4 mr-1" />
-                                      Reject
+                                      {t('screens.admin.reject')}
                                     </Button>
                                   </>
                                 )}
@@ -216,7 +217,7 @@ const GroupsModeration = () => {
                                     onClick={() => moderateGroup(group.id, 'flagged', 'Flagged for review')}
                                   >
                                     <Flag className="h-4 w-4 mr-1" />
-                                    Flag
+                                    {t('screens.admin.flag')}
                                   </Button>
                                 )}
                                 <Button size="sm" variant="ghost">

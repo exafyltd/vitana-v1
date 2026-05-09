@@ -18,7 +18,7 @@ import {
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { notifySuccess, t } from '@/lib/i18n-toast';
 
 interface WorkoutModalProps {
   workout: Workout | null;
@@ -43,11 +43,11 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
   const handleStartWorkout = () => {
     setTimerMode(true);
     setCurrentExercise(0);
-    toast.success('Workout started! 💪');
+    notifySuccess('toasts.health.workoutStarted');
   };
   
   const handleCompleteWorkout = () => {
-    toast.success('Workout completed! Great job! 🎉');
+    notifySuccess('toasts.health.workoutCompletedGreatJob');
     onOpenChange(false);
   };
   
@@ -113,21 +113,21 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 
                 dark:from-blue-950/30 dark:to-cyan-950/30 text-center">
                 <Clock className="w-5 h-5 mx-auto mb-1 text-blue-600 dark:text-blue-400" />
-                <p className="text-xs text-muted-foreground">Duration</p>
-                <p className="text-sm font-bold">{workout.duration} min</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.duration')}</p>
+                <p className="text-sm font-bold">{t('screens.health.durationMin', { duration: workout.duration })}</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 
                 dark:from-amber-950/30 dark:to-orange-950/30 text-center">
                 <Flame className="w-5 h-5 mx-auto mb-1 text-amber-600 dark:text-amber-400" />
-                <p className="text-xs text-muted-foreground">Calories</p>
-                <p className="text-sm font-bold">{workout.caloriesBurned} kcal</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.calories')}</p>
+                <p className="text-sm font-bold">{t('screens.health.caloriesburnedKcal', { caloriesBurned: workout.caloriesBurned })}</p>
               </div>
               
               <div className="p-3 rounded-xl bg-gradient-to-br from-violet-50 to-purple-50 
                 dark:from-violet-950/30 dark:to-purple-950/30 text-center">
                 <Dumbbell className="w-5 h-5 mx-auto mb-1 text-violet-600 dark:text-violet-400" />
-                <p className="text-xs text-muted-foreground">Exercises</p>
+                <p className="text-xs text-muted-foreground">{t('screens.health.exercises')}</p>
                 <p className="text-sm font-bold">{workout.exercises.length}</p>
               </div>
             </div>
@@ -135,7 +135,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           {workout.muscleGroups.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-2">Target Muscles</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('screens.health.targetMuscles')}</h3>
               <div className="flex flex-wrap gap-2">
                 {workout.muscleGroups.map(muscle => (
                   <Badge key={muscle} variant="outline">
@@ -148,7 +148,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           
           {workout.equipment.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold mb-2">Equipment Needed</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('screens.health.equipmentNeeded')}</h3>
               <div className="flex flex-wrap gap-2">
                 {workout.equipment.map(eq => (
                   <Badge key={eq} variant="secondary" className="capitalize">
@@ -164,7 +164,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               dark:from-blue-500/20 dark:to-cyan-500/20 border border-blue-200/30 dark:border-blue-700/30">
               <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium mb-1">Autopilot Adjustment</p>
+                <p className="text-sm font-medium mb-1">{t('screens.health.autopilotAdjustment')}</p>
                 <p className="text-sm text-muted-foreground italic">
                   {workout.aiNote}
                 </p>
@@ -175,7 +175,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
           <Separator />
           
           <div>
-            <h3 className="text-lg font-bold mb-4">Exercises</h3>
+            <h3 className="text-lg font-bold mb-4">{t('screens.health.exercises')}</h3>
             <div className="space-y-3">
               {workout.exercises.map((exercise, idx) => (
                 <div 
@@ -209,14 +209,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   
                   <div className="flex gap-4 text-xs text-muted-foreground ml-11">
                     <span>
-                      <strong>Sets:</strong> {exercise.sets}
+                      <strong>{t('screens.health.sets')}</strong> {exercise.sets}
                     </span>
                     <span>
-                      <strong>Reps:</strong> {exercise.reps}
+                      <strong>{t('screens.health.reps')}</strong> {exercise.reps}
                     </span>
                     {exercise.restSeconds > 0 && (
                       <span>
-                        <strong>Rest:</strong> {exercise.restSeconds}s
+                        <strong>{t('screens.health.rest')}</strong> {exercise.restSeconds}s
                       </span>
                     )}
                   </div>
@@ -236,7 +236,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
               disabled={isRestDay}
             >
               <Play className="w-5 h-5" />
-              Start Workout
+              {t('screens.health.startWorkout')}
             </Button>
           ) : (
             <div className="flex gap-2 w-full">
@@ -245,8 +245,7 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                 className="flex-1"
                 onClick={() => setCurrentExercise(Math.max(0, currentExercise - 1))}
                 disabled={currentExercise === 0}
-              >
-                Previous
+              >{t('screens.health.previous')}
               </Button>
               
               {currentExercise === workout.exercises.length - 1 ? (
@@ -255,14 +254,14 @@ export function WorkoutModal({ workout, open, onOpenChange }: WorkoutModalProps)
                   onClick={handleCompleteWorkout}
                 >
                   <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Complete
+                  {t('screens.health.complete')}
                 </Button>
               ) : (
                 <Button 
                   className="flex-1"
                   onClick={() => setCurrentExercise(currentExercise + 1)}
                 >
-                  Next Exercise
+                  {t('screens.health.nextExercise')}
                 </Button>
               )}
             </div>

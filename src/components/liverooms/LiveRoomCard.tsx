@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
+import { t } from '@/lib/i18n-toast';
 
 export interface LiveRoom {
   id: string;
@@ -151,7 +152,7 @@ export function LiveRoomCard({
             {room.isLive ? (
               <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
                 <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                LIVE
+                {t('screens.liverooms.live')}
               </Badge>
             ) : isScheduled ? (
               <Badge
@@ -167,7 +168,7 @@ export function LiveRoomCard({
                 variant="outline"
                 className="bg-yellow-500/20 border-yellow-500/50 text-yellow-100 backdrop-blur-sm shadow-lg"
               >
-                Premium
+                {t('screens.liverooms.premium')}
               </Badge>
             )}
           </div>
@@ -180,9 +181,7 @@ export function LiveRoomCard({
                 <span>{room.participants}</span>
               </div>
             ) : showCountdown ? (
-              <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
-                Starts in {formatDistanceToNow(new Date(room.scheduledTime!))}
-              </div>
+              <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</div>
             ) : null}
             
             {/* Kebab menu - only show for creator */}
@@ -196,7 +195,7 @@ export function LiveRoomCard({
                     }}
                   >
                     <Pencil className="w-4 h-4 mr-2" />
-                    Edit
+                    {t('screens.liverooms.edit')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -207,7 +206,7 @@ export function LiveRoomCard({
                     className="text-destructive focus:text-destructive"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
+                    {t('screens.liverooms.delete')}
                   </DropdownMenuItem>
                 </KebabMenu>
               </div>
@@ -272,7 +271,7 @@ export function LiveRoomCard({
               {room.location && (
                 <Badge variant="secondary" className="bg-white/20 backdrop-blur-sm text-white border-0">
                   <MapPin className="w-3 h-3 mr-1" />
-                  Virtual
+                  {t('screens.liverooms.virtual')}
                 </Badge>
               )}
             </div>
@@ -290,8 +289,8 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
-                      aria-label="Share room"
-                      title="Share"
+                      aria-label={t('screens.liverooms.shareRoom')}
+                      title={t('screens.liverooms.share')}
                     >
                       <Share2 className="w-[18px] h-[18px]" />
                     </Button>
@@ -319,8 +318,8 @@ export function LiveRoomCard({
                         e.stopPropagation();
                         onShareClick?.(e);
                       }}
-                      aria-label="Share room"
-                      title="Share"
+                      aria-label={t('screens.liverooms.shareRoom')}
+                      title={t('screens.liverooms.share')}
                     >
                       <Share2 className="w-[18px] h-[18px]" />
                     </Button>

@@ -20,8 +20,9 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { QuickSetupPopup } from "@/components/QuickSetupPopup";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useNotificationPreferences, NotificationPreferences } from "@/hooks/useNotifications";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from "@/hooks/useTranslation";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 function Settings() {
   const navigate = useNavigate();
@@ -39,16 +40,9 @@ function Settings() {
   const handleToggle = async (key: keyof NotificationPreferences, value: boolean) => {
     try {
       await updatePref(key, value);
-      toast({
-        title: "✅ Settings updated",
-        description: "Your notification preferences have been saved.",
-      });
+      notify('toasts.settings.settingsUpdated', 'toasts.settings.yourNotificationPreferencesHaveSaved');
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to update settings",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateSettings');
     }
   };
 
@@ -56,16 +50,9 @@ function Settings() {
   const handleTimeChange = async (key: 'dnd_start_time' | 'dnd_end_time', value: string) => {
     try {
       await updatePref(key, value);
-      toast({
-        title: "✅ Settings updated",
-        description: "Your quiet hours have been saved.",
-      });
+      notify('toasts.settings.settingsUpdated', 'toasts.settings.yourQuietHoursHaveSaved');
     } catch {
-      toast({
-        title: "Error",
-        description: "Failed to update quiet hours",
-        variant: "destructive",
-      });
+      notifyError('toasts.settings.error', 'toasts.settings.failedUpdateQuietHours');
     }
   };
   const categoryCards = [
@@ -129,12 +116,12 @@ function Settings() {
 
   return (
     <AppLayout>
-      <SEO title="Settings" description="Manage your account settings, privacy, and preferences" canonical={window.location.href} />
+      <SEO title={t('screens.settings.settings')} description="Manage your account settings, privacy, and preferences" canonical={window.location.href} />
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Settings Overview"
+            title={t('screens.settings.settingsOverview')}
             emoji="⚙️"
             description="Manage your account settings, privacy, and preferences to personalize your wellness journey"
           />
@@ -145,16 +132,16 @@ function Settings() {
               <UniversalCalendarButton />
               <Button size="sm" onClick={() => setActionPopupOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
-                Quick Setup
+                {t('screens.settings.quickSetup')}
               </Button>
             </div>
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
-              <SplitBarTrigger value="overview">⚙️ Overview</SplitBarTrigger>
-              <SplitBarTrigger value="categories">🔔 Notifications</SplitBarTrigger>
-              <SplitBarTrigger value="shortcuts">⚡ Quick Actions</SplitBarTrigger>
+              <SplitBarTrigger value="overview">{t('screens.settings.overview')}</SplitBarTrigger>
+              <SplitBarTrigger value="categories">{t('screens.settings.notifications')}</SplitBarTrigger>
+              <SplitBarTrigger value="shortcuts">{t('screens.settings.quickActions')}</SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="overview">
@@ -162,29 +149,29 @@ function Settings() {
                 {/* Row 1: Big + Small + Small (6+3+3) */}
                 <div className="col-span-12 md:col-span-6">
                   <StandardCard
-                    title="Settings Overview"
+                    title={t('screens.settings.settingsOverview')}
                     subtitle="Your Account Status"
                     icon={SettingsIcon}
                     content={
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4 text-center">
                           <div>
-                            <div className="text-2xl font-bold text-green-600">Protected</div>
-                            <div className="text-xs text-muted-foreground">Privacy Status</div>
+                            <div className="text-2xl font-bold text-green-600">{t('screens.settings.protected')}</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.settings.privacyStatus')}</div>
                           </div>
                           <div>
-                            <div className="text-2xl font-bold text-blue-600">Premium</div>
-                            <div className="text-xs text-muted-foreground">Subscription</div>
+                            <div className="text-2xl font-bold text-blue-600">{t('screens.settings.premium')}</div>
+                            <div className="text-xs text-muted-foreground">{t('screens.settings.subscription')}</div>
                           </div>
                         </div>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span>Notifications Active</span>
-                            <span className="text-blue-600">5 types</span>
+                            <span>{t('screens.settings.notificationsActive')}</span>
+                            <span className="text-blue-600">{t('screens.settings.text5Types')}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Connected Apps</span>
-                            <span className="text-green-600">3 apps</span>
+                            <span>{t('screens.settings.connectedApps')}</span>
+                            <span className="text-green-600">{t('screens.settings.text3Apps')}</span>
                           </div>
                         </div>
                       </div>
@@ -193,26 +180,26 @@ function Settings() {
                 </div>
                 <div className="col-span-12 md:col-span-3">
                   <StandardCard
-                    title="Privacy Score"
+                    title={t('screens.settings.privacyScore')}
                     subtitle="Protection Level"
                     icon={Shield}
                     content={
                       <div className="space-y-2">
                         <div className="text-2xl font-bold text-green-600">95%</div>
-                        <div className="text-xs text-muted-foreground">Excellent security</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.excellentSecurity')}</div>
                       </div>
                     }
                   />
                 </div>
                 <div className="col-span-12 md:col-span-3">
                   <StandardCard
-                    title="Active Settings"
+                    title={t('screens.settings.activeSettings')}
                     subtitle="Configured"
                     icon={Bell}
                     content={
                       <div className="space-y-2">
                         <div className="text-2xl font-bold text-blue-600">12</div>
-                        <div className="text-xs text-muted-foreground">Settings configured</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.settingsConfigured')}</div>
                       </div>
                     }
                   />
@@ -226,48 +213,48 @@ function Settings() {
                 {/* Row 3: Small + Small + Big (3+3+6) */}
                 <div className="col-span-12 md:col-span-3">
                   <StandardCard
-                    title="Connected Apps"
+                    title={t('screens.settings.connectedApps')}
                     subtitle="Integrations"
                     icon={Smartphone}
                     content={
                       <div className="space-y-2">
                         <div className="text-2xl font-bold text-purple-600">3</div>
-                        <div className="text-xs text-muted-foreground">Active connections</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.activeConnections')}</div>
                       </div>
                     }
                   />
                 </div>
                 <div className="col-span-12 md:col-span-3">
                   <StandardCard
-                    title="Billing Status"
+                    title={t('screens.settings.billingStatus')}
                     subtitle="Subscription"
                     icon={CreditCard}
                     content={
                       <div className="space-y-2">
-                        <div className="text-2xl font-bold text-orange-600">Active</div>
-                        <div className="text-xs text-muted-foreground">Until Dec 2024</div>
+                        <div className="text-2xl font-bold text-orange-600">{t('screens.settings.active')}</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.untilDec2024')}</div>
                       </div>
                     }
                   />
                 </div>
                 <div className="col-span-12 md:col-span-6">
                   <StandardCard
-                    title="Recent Settings Activity"
+                    title={t('screens.settings.recentSettingsActivity')}
                     subtitle="Latest Changes"
                     icon={SettingsIcon}
                     content={
                       <div className="space-y-3 text-sm">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span>Privacy settings updated 2 days ago</span>
+                          <span>{t('screens.settings.privacySettingsUpdated2DaysAgo')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Connected new fitness app 1 week ago</span>
+                          <span>{t('screens.settings.connectedNewFitnessApp1Week')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span>Notification preferences saved</span>
+                          <span>{t('screens.settings.notificationPreferencesSaved')}</span>
                         </div>
                       </div>
                     }
@@ -284,14 +271,14 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Smartphone className="w-5 h-5" />
-                        Push Notifications
+                        {t('screens.settings.pushNotifications')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Enable Push Notifications</h4>
-                          <p className="text-sm text-muted-foreground">Receive notifications on your device</p>
+                          <h4 className="font-medium">{t('screens.settings.enablePushNotifications')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.receiveNotificationsYourDevice')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.push_enabled}
@@ -309,14 +296,14 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Bell className="w-5 h-5" />
-                        Live Rooms
+                        {t('screens.settings.liveRooms')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Live Room Notifications</h4>
-                          <p className="text-sm text-muted-foreground">Room starting, invites, and summaries</p>
+                          <h4 className="font-medium">{t('screens.settings.liveRoomNotifications')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.roomStartingInvitesSummaries')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.live_room_notifications}
@@ -334,14 +321,14 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Users className="w-5 h-5" />
-                        Social & Community
+                        {t('screens.settings.socialCommunity')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Match Notifications</h4>
-                          <p className="text-sm text-muted-foreground">New matches, accepted matches, and suggestions</p>
+                          <h4 className="font-medium">{t('screens.settings.matchNotifications')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.newMatchesAcceptedMatchesSuggestions')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.match_notifications}
@@ -351,8 +338,8 @@ function Settings() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Community Notifications</h4>
-                          <p className="text-sm text-muted-foreground">Groups, meetups, and community activity</p>
+                          <h4 className="font-medium">{t('screens.settings.communityNotifications')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.groupsMeetupsCommunityActivity')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.community_notifications}
@@ -370,14 +357,14 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Bell className="w-5 h-5" />
-                        Intelligence
+                        {t('screens.settings.intelligence')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Recommendations</h4>
-                          <p className="text-sm text-muted-foreground">AI recommendations and suggestions</p>
+                          <h4 className="font-medium">{t('screens.settings.recommendations')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.aiRecommendationsSuggestions')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.recommendation_notifications}
@@ -387,8 +374,8 @@ function Settings() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Task Notifications</h4>
-                          <p className="text-sm text-muted-foreground">Task updates and reminders</p>
+                          <h4 className="font-medium">{t('screens.settings.taskNotifications')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.taskUpdatesReminders')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.task_notifications}
@@ -398,8 +385,8 @@ function Settings() {
                       </div>
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Memory & Diary</h4>
-                          <p className="text-sm text-muted-foreground">Diary reminders and memory updates</p>
+                          <h4 className="font-medium">{t('screens.settings.memoryDiary')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.diaryRemindersMemoryUpdates')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.memory_notifications}
@@ -417,14 +404,14 @@ function Settings() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Moon className="w-5 h-5" />
-                        Quiet Hours
+                        {t('screens.settings.quietHours')}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium">Enable Quiet Hours</h4>
-                          <p className="text-sm text-muted-foreground">Pause non-urgent notifications during specified times</p>
+                          <h4 className="font-medium">{t('screens.settings.enableQuietHours')}</h4>
+                          <p className="text-sm text-muted-foreground">{t('screens.settings.pauseNonurgentNotificationsDuringSpecifiedTimes')}</p>
                         </div>
                         <Switch
                           checked={notificationPrefs.dnd_enabled}
@@ -436,7 +423,7 @@ function Settings() {
                       {notificationPrefs.dnd_enabled && (
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="text-sm font-medium mb-2 block">Start Time</label>
+                            <label className="text-sm font-medium mb-2 block">{t('screens.settings.startTime')}</label>
                             <Select
                               value={notificationPrefs.dnd_start_time || undefined}
                               onValueChange={(value) => handleTimeChange('dnd_start_time', value)}
@@ -446,15 +433,15 @@ function Settings() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="20:00">8:00 PM</SelectItem>
-                                <SelectItem value="21:00">9:00 PM</SelectItem>
-                                <SelectItem value="22:00">10:00 PM</SelectItem>
-                                <SelectItem value="23:00">11:00 PM</SelectItem>
+                                <SelectItem value="20:00">{t('screens.settings.text800Pm')}</SelectItem>
+                                <SelectItem value="21:00">{t('screens.settings.text900Pm')}</SelectItem>
+                                <SelectItem value="22:00">{t('screens.settings.text1000Pm')}</SelectItem>
+                                <SelectItem value="23:00">{t('screens.settings.text1100Pm')}</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
                           <div>
-                            <label className="text-sm font-medium mb-2 block">End Time</label>
+                            <label className="text-sm font-medium mb-2 block">{t('screens.settings.endTime')}</label>
                             <Select
                               value={notificationPrefs.dnd_end_time || undefined}
                               onValueChange={(value) => handleTimeChange('dnd_end_time', value)}
@@ -464,10 +451,10 @@ function Settings() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="06:00">6:00 AM</SelectItem>
-                                <SelectItem value="07:00">7:00 AM</SelectItem>
-                                <SelectItem value="08:00">8:00 AM</SelectItem>
-                                <SelectItem value="09:00">9:00 AM</SelectItem>
+                                <SelectItem value="06:00">{t('screens.settings.text600Am')}</SelectItem>
+                                <SelectItem value="07:00">{t('screens.settings.text700Am')}</SelectItem>
+                                <SelectItem value="08:00">{t('screens.settings.text800Am')}</SelectItem>
+                                <SelectItem value="09:00">{t('screens.settings.text900Am')}</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>

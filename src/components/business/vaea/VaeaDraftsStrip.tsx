@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ExternalLink, X, ChevronDown, ChevronRight } from "lucide-react";
 import { useVaeaDrafts, type VaeaDraft } from "@/hooks/useVaea";
+import { t } from '@/lib/i18n-toast';
 
 const TIER_BADGE: Record<string, string> = {
   own: "bg-emerald-100 text-emerald-800",
@@ -33,8 +34,8 @@ export function VaeaDraftsStrip() {
           className="w-full flex items-center justify-between gap-2"
         >
           <div className="text-left">
-            <div className="font-medium text-sm">Autopilot has {drafts.length} referral draft{drafts.length === 1 ? "" : "s"} for you</div>
-            <p className="text-xs text-muted-foreground">Shadow drafts — review and dismiss. Posting arrives in a later phase.</p>
+            <div className="font-medium text-sm">{t('screens.business.autopilotHasLengthReferralDraftValue1', { length: drafts.length, value1: drafts.length === 1 ? "" : "s" })}</div>
+            <p className="text-xs text-muted-foreground">{t('screens.business.shadowDraftsReviewDismissPostingArrives')}</p>
           </div>
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -53,7 +54,7 @@ export function VaeaDraftsStrip() {
               />
             ))}
             <div className="flex justify-end">
-              <Button variant="ghost" size="sm" onClick={reload}>Refresh</Button>
+              <Button variant="ghost" size="sm" onClick={reload}>{t('screens.business.refresh')}</Button>
             </div>
           </div>
         )}
@@ -79,7 +80,7 @@ function DraftRow({ draft, dismissing, onDismiss }: {
             </Badge>
           )}
           {draft.match_score != null && (
-            <Badge variant="secondary">score {draft.match_score.toFixed(2)}</Badge>
+            <Badge variant="secondary">{t('screens.business.scoreValue0', { value0: draft.match_score.toFixed(2) })}</Badge>
           )}
         </div>
         <Button variant="ghost" size="sm" onClick={() => void onDismiss()} disabled={dismissing}>
@@ -99,20 +100,19 @@ function DraftRow({ draft, dismissing, onDismiss }: {
               target="_blank"
               rel="noreferrer"
               className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              View source <ExternalLink className="h-3 w-3" />
+            >{t('screens.business.viewSource')} <ExternalLink className="h-3 w-3" />
             </a>
           )}
         </div>
       )}
 
       <div className="rounded border border-primary/20 bg-primary/5 p-2">
-        <div className="text-xs font-medium mb-0.5 text-muted-foreground">Autopilot draft</div>
+        <div className="text-xs font-medium mb-0.5 text-muted-foreground">{t('screens.business.autopilotDraft')}</div>
         <p className="text-sm whitespace-pre-wrap">{draft.reply_body}</p>
       </div>
 
       {draft.match_reason && (
-        <p className="text-xs text-muted-foreground">Why: {draft.match_reason}</p>
+        <p className="text-xs text-muted-foreground">{t('screens.business.whyMatch_reason', { match_reason: draft.match_reason })}</p>
       )}
     </div>
   );

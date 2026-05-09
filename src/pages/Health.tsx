@@ -85,6 +85,7 @@ const overviewCards = [
 ];
 
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Health() {
   const navigate = useNavigate();
@@ -121,8 +122,8 @@ export default withScreenId(function Health() {
     sleep: 0,
     mental: 0,
   };
-  // Render as 0–100 percentages because the legacy CompactVitanaIndex /
-  // MobileHealthSnapshot props expect that scale; pillars are 0–200 internally.
+  // Render as 0–100 percentages because the legacy CompactVitanaIndex and
+  // MobilePriorityFocus props expect that scale; pillars are 0–200 internally.
   const pillars = {
     nutrition: Math.round((livePillars.nutrition / 200) * 100),
     hydration: Math.round((livePillars.hydration / 200) * 100),
@@ -217,7 +218,7 @@ export default withScreenId(function Health() {
   if (isMobile) {
     return (
       <AppLayout>
-        <SEO title="Health" description="Your personal health dashboard" canonical={window.location.href} />
+        <SEO title={t('screens.health.health')} description="Your personal health dashboard" canonical={window.location.href} />
         <VitanaBaselineSurveyModal />
 
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
@@ -256,7 +257,7 @@ export default withScreenId(function Health() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  className="h-9 px-3 rounded-full bg-gradient-to-r from-green-400/80 to-blue-500/80 text-white hover:from-green-500 hover:to-blue-500 gap-1.5 shrink-0"
                   onClick={() => setUploadSheetOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
@@ -279,14 +280,14 @@ export default withScreenId(function Health() {
                     handleOpenIndexSheet();
                   }
                 }}
-                aria-label="Open Vitana Index forecast"
+                aria-label={t('screens.health.openVitanaIndexForecast')}
                 className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl"
               >
                 <MobileHealthSnapshot
                   vitanaIndex={vitanaScore}
                   vitanaPercentile={15}
                   trend={liveVitanaIndex?.trend ?? "stable"}
-                  pillars={pillars}
+                  pillars={livePillars}
                 />
               </div>
 
@@ -318,8 +319,7 @@ export default withScreenId(function Health() {
                   size="sm"
                   onClick={() => navigate('/autopilot')}
                   className="text-sm w-full justify-center"
-                >
-                  View My Journey
+                >{t('screens.health.viewMyJourney')}
                   <ChevronRight className="w-4 h-4 ml-0.5" />
                 </Button>
               </div>
@@ -367,27 +367,26 @@ export default withScreenId(function Health() {
   // Desktop layout (unchanged)
   return (
     <AppLayout>
-      <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
+      <SEO title={t('screens.health.health')} description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <VitanaBaselineSurveyModal />
       <SubNavigation items={healthNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
-            title="Let's improve quality of life!"
+            title={t('screens.health.letSImproveQualityLife')}
             description="Discover health services, programs, and educational resources to enhance your wellness journey."
             emoji="🌱"
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search health services, articles, or community..." />
+            <ExpandableSearchButton placeholder={t('screens.health.searchHealthServicesArticlesCommunity')} />
             <UniversalCalendarButton />
             <Button
               variant="default"
               size="sm"
               onClick={() => setHealthActionsOpen(true)}
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Health Actions
+              <Plus className="w-4 h-4 mr-2" />{t('screens.health.healthActions')}
             </Button>
           </UtilityActionButton>
 
@@ -402,7 +401,7 @@ export default withScreenId(function Health() {
                 handleOpenIndexSheet();
               }
             }}
-            aria-label="Open Vitana Index forecast"
+            aria-label={t('screens.health.openVitanaIndexForecast')}
             className="mb-4 cursor-pointer rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <CompactVitanaIndex
@@ -418,8 +417,7 @@ export default withScreenId(function Health() {
               size="sm"
               onClick={() => navigate('/autopilot')}
               className="text-sm"
-            >
-              View My Journey
+            >{t('screens.health.viewMyJourney')}
               <ChevronRight className="w-4 h-4 ml-0.5" />
             </Button>
           </div>
@@ -427,7 +425,7 @@ export default withScreenId(function Health() {
           {/* Pillar agents — what each pillar is doing right now */}
           <Card className="mb-6 rounded-2xl border ring-1 ring-border/60 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg">Your pillars right now</CardTitle>
+              <CardTitle className="text-lg">{t('screens.health.yourPillarsRightNow')}</CardTitle>
             </CardHeader>
             <CardContent>
               <VitanaPillarAgentsPanel />
@@ -448,8 +446,7 @@ export default withScreenId(function Health() {
             {/* Today's Actions */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  📋 Today's Actions
+                <CardTitle className="flex items-center gap-2">{t('screens.health.todaySActions')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -472,8 +469,7 @@ export default withScreenId(function Health() {
             {/* Upcoming Health */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  📅 Upcoming Schedule
+                <CardTitle className="flex items-center gap-2">{t('screens.health.upcomingSchedule')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -499,7 +495,7 @@ export default withScreenId(function Health() {
           {/* AI Health Insights */}
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>AI Health Insights</CardTitle>
+              <CardTitle>{t('screens.health.aiHealthInsights')}</CardTitle>
             </CardHeader>
             <CardContent>
               <StackedCardList items={smartSuggestions.slice(3, 6).map((suggestion, index) => ({
@@ -521,8 +517,7 @@ export default withScreenId(function Health() {
           {/* Community Activity */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                👥 Community Activity
+              <CardTitle className="flex items-center gap-2">{t('screens.health.communityActivity')}
               </CardTitle>
             </CardHeader>
             <CardContent>

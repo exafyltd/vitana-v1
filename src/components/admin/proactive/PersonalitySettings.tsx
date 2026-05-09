@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 export function PersonalitySettings() {
   const { toast } = useToast();
@@ -57,17 +58,10 @@ export function PersonalitySettings() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-proactive-settings'] });
-      toast({
-        title: "Settings Updated",
-        description: "System personality settings have been saved successfully.",
-      });
+      notify('toasts.admin.settingsUpdated', 'toasts.admin.systemPersonalitySettingsHaveSavedSuccessfully');
     },
     onError: (error) => {
-      toast({
-        title: "Update Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      notifyError('toasts.admin.updateFailed');
     }
   });
 
@@ -96,16 +90,16 @@ export function PersonalitySettings() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>System Personality</CardTitle>
+        <CardTitle>{t('screens.admin.systemPersonality')}</CardTitle>
         <CardDescription>
-          Configure the overall personality and communication style of the proactive assistant
+          {t('screens.admin.configureOverallPersonalityCommunicationStyleProac')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-8">
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Tone</Label>
+              <Label>{t('screens.admin.tone')}</Label>
               <span className="text-sm text-muted-foreground">
                 {tone <= 12 ? 'Formal' : tone <= 37 ? 'Professional' : tone <= 62 ? 'Friendly' : tone <= 87 ? 'Casual' : 'Playful'}
               </span>
@@ -119,14 +113,14 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Formal</span>
-              <span>Playful</span>
+              <span>{t('screens.admin.formal')}</span>
+              <span>{t('screens.admin.playful')}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Verbosity</Label>
+              <Label>{t('screens.admin.verbosity')}</Label>
               <span className="text-sm text-muted-foreground">
                 {verbosity <= 16 ? 'Minimal' : verbosity <= 50 ? 'Concise' : verbosity <= 83 ? 'Moderate' : 'Detailed'}
               </span>
@@ -140,14 +134,14 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Minimal</span>
-              <span>Detailed</span>
+              <span>{t('screens.admin.minimal')}</span>
+              <span>{t('screens.admin.detailed')}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Empathy Level</Label>
+              <Label>{t('screens.admin.empathyLevel')}</Label>
               <span className="text-sm text-muted-foreground">
                 {empathy <= 25 ? 'Low' : empathy <= 62 ? 'Medium' : empathy <= 87 ? 'High' : 'Very High'}
               </span>
@@ -161,8 +155,8 @@ export function PersonalitySettings() {
               className="w-full"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Low</span>
-              <span>Very High</span>
+              <span>{t('screens.admin.low')}</span>
+              <span>{t('screens.admin.veryHigh')}</span>
             </div>
           </div>
         </div>
@@ -172,8 +166,7 @@ export function PersonalitySettings() {
           disabled={updateMutation.isPending}
           className="w-full"
         >
-          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Personality Settings
+          {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t('screens.admin.savePersonalitySettings')}
         </Button>
       </CardContent>
     </Card>

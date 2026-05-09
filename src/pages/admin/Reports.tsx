@@ -8,17 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Users, DollarSign, Download, Filter } from "lucide-react";
 import { adminMonitoringNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { t } from '@/lib/i18n-toast';
 
 function Reports() {
   return (
     <AppLayout>
-      <SEO title="Reports & KPIs | Admin" description="View system reports and key performance indicators" canonical={window.location.href} />
+      <SEO title={t('screens.admin.reportsKpisAdmin')} description="View system reports and key performance indicators" canonical={window.location.href} />
       <SubNavigation items={adminMonitoringNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
-            title="Reports & Key Performance Indicators"
+            title={t('screens.admin.reportsKeyPerformanceIndicators')}
             description="Monitor system performance, user engagement, and business metrics"
             emoji="📊"
           />
@@ -31,8 +32,8 @@ function Reports() {
                   <Users className="w-8 h-8 text-blue-500" />
                   <div>
                     <p className="text-2xl font-bold">12,547</p>
-                    <p className="text-sm text-muted-foreground">Active Users</p>
-                    <p className="text-xs text-green-600">↑ +5.2% this month</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.activeUsers')}</p>
+                    <p className="text-xs text-green-600">{t('screens.admin.text52ThisMonth')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -44,8 +45,8 @@ function Reports() {
                   <DollarSign className="w-8 h-8 text-green-500" />
                   <div>
                     <p className="text-2xl font-bold">$248K</p>
-                    <p className="text-sm text-muted-foreground">Monthly Revenue</p>
-                    <p className="text-xs text-green-600">↑ +12.8% this month</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.monthlyRevenue')}</p>
+                    <p className="text-xs text-green-600">{t('screens.admin.text128ThisMonth')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -57,8 +58,8 @@ function Reports() {
                   <TrendingUp className="w-8 h-8 text-purple-500" />
                   <div>
                     <p className="text-2xl font-bold">847</p>
-                    <p className="text-sm text-muted-foreground">Avg Session Time</p>
-                    <p className="text-xs text-green-600">↑ +3.1% this month</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.avgSessionTime')}</p>
+                    <p className="text-xs text-green-600">{t('screens.admin.text31ThisMonth')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -70,8 +71,8 @@ function Reports() {
                   <BarChart3 className="w-8 h-8 text-orange-500" />
                   <div>
                     <p className="text-2xl font-bold">94.2%</p>
-                    <p className="text-sm text-muted-foreground">System Uptime</p>
-                    <p className="text-xs text-green-600">↑ +0.3% this month</p>
+                    <p className="text-sm text-muted-foreground">{t('screens.admin.systemUptime')}</p>
+                    <p className="text-xs text-green-600">{t('screens.admin.text03ThisMonth')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -80,11 +81,11 @@ function Reports() {
 
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="users">User Analytics</TabsTrigger>
-              <TabsTrigger value="revenue">Revenue</TabsTrigger>
-              <TabsTrigger value="health">System Health</TabsTrigger>
-              <TabsTrigger value="custom">Custom Reports</TabsTrigger>
+              <TabsTrigger value="overview">{t('screens.admin.overview')}</TabsTrigger>
+              <TabsTrigger value="users">{t('screens.admin.userAnalytics')}</TabsTrigger>
+              <TabsTrigger value="revenue">{t('screens.admin.revenue')}</TabsTrigger>
+              <TabsTrigger value="health">{t('screens.admin.systemHealth')}</TabsTrigger>
+              <TabsTrigger value="custom">{t('screens.admin.customReports')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
@@ -92,27 +93,27 @@ function Reports() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                      User Growth Trends
+                      {t('screens.admin.userGrowthTrends')}
                       <Button size="sm" variant="outline">
                         <Download className="w-4 h-4 mr-2" />
-                        Export
+                        {t('screens.admin.export')}
                       </Button>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="h-64 flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 rounded">
-                      <p className="text-muted-foreground">Interactive chart placeholder</p>
+                      <p className="text-muted-foreground">{t('screens.admin.interactiveChartPlaceholder')}</p>
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Revenue Analytics</CardTitle>
+                    <CardTitle>{t('screens.admin.revenueAnalytics')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="h-64 flex items-center justify-center bg-gradient-to-br from-green-50 to-teal-50 rounded">
-                      <p className="text-muted-foreground">Revenue chart placeholder</p>
+                      <p className="text-muted-foreground">{t('screens.admin.revenueChartPlaceholder')}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -121,19 +122,19 @@ function Reports() {
 
             <TabsContent value="users" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">User Analytics Dashboard</h3>
+                <h3 className="text-lg font-semibold">{t('screens.admin.userAnalyticsDashboard')}</h3>
                 <Button variant="outline">
                   <Filter className="w-4 h-4 mr-2" />
-                  Filter
+                  {t('screens.admin.filter')}
                 </Button>
               </div>
               
               <Card>
                 <CardHeader>
-                  <CardTitle>User Engagement Metrics</CardTitle>
+                  <CardTitle>{t('screens.admin.userEngagementMetrics')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Detailed user behavior and engagement analytics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.detailedUserBehaviorEngagementAnalytics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -141,10 +142,10 @@ function Reports() {
             <TabsContent value="revenue" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Revenue Breakdown</CardTitle>
+                  <CardTitle>{t('screens.admin.revenueBreakdown')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Detailed revenue analysis and financial metrics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.detailedRevenueAnalysisFinancialMetrics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -152,10 +153,10 @@ function Reports() {
             <TabsContent value="health" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>System Performance</CardTitle>
+                  <CardTitle>{t('screens.admin.systemPerformance')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">System health monitoring and performance metrics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.systemHealthMonitoringPerformanceMetrics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -163,10 +164,10 @@ function Reports() {
             <TabsContent value="custom" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Custom Report Builder</CardTitle>
+                  <CardTitle>{t('screens.admin.customReportBuilder')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Create custom reports and scheduled analytics.</p>
+                  <p className="text-muted-foreground">{t('screens.admin.createCustomReportsScheduledAnalytics')}</p>
                 </CardContent>
               </Card>
             </TabsContent>

@@ -10,10 +10,10 @@ import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal
 import { horizontalCardsSLO } from "@/lib/horizontal-cards-slo";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { SCREEN_IDS } from "@/lib/screen-id";
-import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
 import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
+import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
@@ -44,12 +44,12 @@ export function MemoryTimelineTab() {
   // Action Handlers
   const handlePromoteToKnowledge = (itemId: string) => {
     console.log('[Memory] Promoting to knowledge:', itemId);
-    toast.success('Saved to knowledge base');
+    notifySuccess('toasts.memory.savedKnowledgeBase');
   };
 
   const handleDeleteActivity = (itemId: string) => {
     console.log('[Memory] Deleting activity:', itemId);
-    toast.success('Activity deleted');
+    notifySuccess('toasts.memory.activityDeleted');
   };
 
   const getAccentForSource = (source: string): string => {
@@ -120,16 +120,14 @@ export function MemoryTimelineTab() {
     expandedContent: item.source === 'ai' ? (
       <div className="space-y-2 transition-opacity duration-150">
         <div className="text-sm text-muted-foreground/80">
-          <span className="font-medium">Type:</span> {item.memoryType || "insight"}
+          <span className="font-medium">{t('screens.memory.type')}</span> {item.memoryType || "insight"}
         </div>
         {item.confidenceScore && (
-          <div className="text-sm text-amber-600 dark:text-amber-500">
-            Confidence: {Math.round(item.confidenceScore * 100)}%
+          <div className="text-sm text-amber-600 dark:text-amber-500">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
           </div>
         )}
         {item.metadata && (
-          <div className="text-xs text-muted-foreground/70">
-            Additional metadata available
+          <div className="text-xs text-muted-foreground/70">{t('screens.memory.additionalMetadataAvailable')}
           </div>
         )}
       </div>
@@ -165,15 +163,15 @@ export function MemoryTimelineTab() {
   return (
     <div className="mt-6 space-y-4">
       <div className="text-sm text-muted-foreground mb-4">
-        Chronological view of your knowledge base updates
+        {t('screens.memory.chronologicalViewYourKnowledgeBaseUpdates')}
       </div>
 
       {knowledgeItems.length === 0 ? (
         <Card>
           <CardContent className="pt-6 text-center text-muted-foreground">
             <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No knowledge base entries yet</p>
-            <p className="text-sm mt-1">Start adding memories to see them here</p>
+            <p>{t('screens.memory.noKnowledgeBaseEntriesYet')}</p>
+            <p className="text-sm mt-1">{t('screens.memory.startAddingMemoriesSeeThemHere')}</p>
           </CardContent>
         </Card>
       ) : useNewCards ? (
@@ -194,10 +192,10 @@ export function MemoryTimelineTab() {
               <CardContent className="p-12 text-center">
                 <Calendar className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
                 <p className="text-muted-foreground mb-3">
-                  No activity history yet. Start using the system to see your activity!
+                  {t('screens.memory.noActivityHistoryYetStartUsing')}
                 </p>
                 <Button variant="outline" size="sm">
-                  Add Memory
+                  {t('screens.memory.addMemory')}
                 </Button>
               </CardContent>
             </Card>
@@ -250,8 +248,7 @@ export function MemoryTimelineTab() {
                     )}
 
                     {item.confidenceScore && (
-                      <div className="mt-2 text-xs text-muted-foreground">
-                        Confidence: {Math.round(item.confidenceScore * 100)}%
+                      <div className="mt-2 text-xs text-muted-foreground">{t('screens.memory.confidenceValue0', { value0: Math.round(item.confidenceScore * 100) })}
                       </div>
                     )}
                   </div>
@@ -290,19 +287,19 @@ export function MemoryTimelineTab() {
           prev ? { ...prev, mode: 'lightbox' } : null
         )}
         onAddToFavorites={() => {
-          toast.success('Added to favorites');
+          notifySuccess('toasts.memory.addedFavorites');
         }}
         onCopyLink={() => {
           if (photoViewState?.images[photoViewState.currentIndex]) {
             navigator.clipboard.writeText(photoViewState.images[photoViewState.currentIndex]);
-            toast.success('Link copied to clipboard');
+            notifySuccess('toasts.memory.linkCopiedClipboard');
           }
         }}
         onEdit={() => {
-          toast.info('Edit functionality coming soon');
+          notifyInfo('toasts.memory.editFunctionalityComingSoon');
         }}
         onDelete={() => {
-          toast.success('Photo deleted');
+          notifySuccess('toasts.memory.photoDeleted');
           setPhotoViewState(null);
         }}
       />

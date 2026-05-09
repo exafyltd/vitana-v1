@@ -15,6 +15,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface BuyTokensPopupProps {
   open: boolean;
@@ -46,11 +47,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
   const handleBuyTokens = async (tokens: number, cost: number, bonus: number) => {
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd2');
       return;
     }
 
@@ -61,18 +58,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('VTNA', tokens + bonus, 'add');
       
-      toast({
-        title: '✅ VTNA Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTNA${bonus > 0 ? ` + ${bonus} bonus tokens` : ''} for $${cost}`,
-      });
+      notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
       
       onOpenChange(false);
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -80,11 +70,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
   const handleCustomPurchase = async () => {
     if (!tokenAmount || parseFloat(tokenAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid number of tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidNumberTokens');
       return;
     }
 
@@ -92,11 +78,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     const cost = Math.round(tokens * vtnPriceInUSD * 100) / 100; // Use actual exchange rate
     
     if (cost > usdBalance) {
-      toast({
-        title: '❌ Insufficient USD Balance',
-        description: 'You don\'t have enough USD to purchase these tokens',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd2');
       return;
     }
 
@@ -106,19 +88,12 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
       await updateBalance('USD', cost, 'subtract');
       await updateBalance('VTNA', tokens, 'add');
       
-      toast({
-        title: '✅ VTNA Tokens Purchased Successfully!',
-        description: `Purchased ${tokens} VTNA for $${cost}`,
-      });
+      notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
       
       onOpenChange(false);
       setTokenAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Purchase Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.purchaseFailed');
     } finally {
       setLoading(false);
     }
@@ -130,7 +105,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
-            Buy VTNA Tokens
+            {t('screens.wallet.buyVtnaTokens')}
           </DialogTitle>
         </DialogHeader>
         
@@ -138,18 +113,18 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg border border-purple-100">
-              <div className="text-xs text-muted-foreground">Current VTNA</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.currentVtna')}</div>
               <div className="font-semibold text-purple-700">{currentTokens.toLocaleString()}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
-              <div className="text-xs text-muted-foreground">USD Balance</div>
+              <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
               <div className="font-semibold text-green-700">${usdBalance.toLocaleString()}</div>
             </div>
           </div>
 
           {/* Token Packages */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">VTNA Token Packages</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.vtnaTokenPackages')}</h4>
             {tokenPackages.map((pkg, index) => (
               <Button
                 key={index}
@@ -165,10 +140,9 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                     <Coins className="h-4 w-4 text-purple-600" />
                   )}
               <div className="text-left">
-                <div className="font-medium">
-                  {pkg.tokens.toLocaleString()} VTNA
+                <div className="font-medium">{t('screens.wallet.value0Vtna', { value0: pkg.tokens.toLocaleString() })}
                   {pkg.bonus > 0 && (
-                    <span className="text-green-600 ml-1">+ {pkg.bonus} Bonus</span>
+                    <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground">${pkg.cost}</div>
@@ -184,7 +158,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                   {pkg.popular && (
                     <Badge className="bg-purple-600 text-white flex items-center gap-1">
                       <Star className="h-3 w-3" />
-                      Popular
+                      {t('screens.wallet.popular')}
                     </Badge>
                   )}
                 </div>
@@ -196,20 +170,20 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
           {/* Custom Amount */}
           <div className="space-y-2">
-            <Label htmlFor="tokenAmount">Custom Amount</Label>
+            <Label htmlFor="tokenAmount">{t('screens.wallet.customAmount')}</Label>
             <Input
               id="tokenAmount"
               type="number"
-              placeholder="Enter number of VTNA tokens"
+              placeholder={t('screens.wallet.enterNumberVtnaTokens')}
               value={tokenAmount}
               onChange={(e) => setTokenAmount(e.target.value)}
               min="1"
               step="0.1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Rate: ${vtnPriceInUSD.toFixed(2)} per VTNA</span>
+              <span>{t('screens.wallet.rateValue0PerVtna', { value0: vtnPriceInUSD.toFixed(2) })}</span>
               {tokenAmount && (
-                <span>Cost: ${(parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2)}</span>
+                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(tokenAmount) * vtnPriceInUSD).toFixed(2) })}</span>
               )}
             </div>
             <Button
@@ -222,8 +196,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : (
                 <Zap className="h-4 w-4 mr-2" />
-              )}
-              Buy Custom Amount
+              )}{t('screens.wallet.buyCustomAmount')}
             </Button>
           </div>
 
@@ -231,13 +204,13 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
             <div className="flex items-center gap-2 mb-2">
               <Coins className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-medium text-purple-700">VTNA Token Benefits</span>
+              <span className="text-sm font-medium text-purple-700">{t('screens.wallet.vtnaTokenBenefits')}</span>
             </div>
             <ul className="text-xs text-purple-600 space-y-1">
-              <li>• Stake for passive income rewards</li>
-              <li>• Governance voting rights on platform decisions</li>
-              <li>• Access to exclusive VTNA holder features</li>
-              <li>• Potential value appreciation over time</li>
+              <li>{t('screens.wallet.stakeForPassiveIncomeRewards')}</li>
+              <li>{t('screens.wallet.governanceVotingRightsPlatformDecisions')}</li>
+              <li>{t('screens.wallet.accessExclusiveVtnaHolderFeatures')}</li>
+              <li>{t('screens.wallet.potentialValueAppreciationOverTime')}</li>
             </ul>
           </div>
         </div>

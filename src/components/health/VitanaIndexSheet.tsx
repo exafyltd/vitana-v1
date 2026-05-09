@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Zap, Sparkles } from "lucide-react";
+import { Zap, Sparkles, PartyPopper } from "lucide-react";
 import { useVitanaIndexCache } from "./VitanaIndexProvider";
 import { pillarKeys, pillarLabel, type VitanaPillarKey } from "@/hooks/useVitanaIndex";
 import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
@@ -12,10 +12,50 @@ import { useVitanaStreaks } from "@/hooks/useVitanaStreaks";
 import { useLifeCompass } from "@/hooks/useLifeCompass";
 import { PillarDeltaBadges } from "./PillarDeltaBadges";
 import { EMPTY_COPY } from "@/lib/celebrate";
+import { confettiManager } from "@/lib/confetti";
 import { buildHorizonPoints, type ProjectedPoint } from "@/lib/vitana-projection";
 import type { ContributionVector } from "@/types/autopilot";
+import { t } from '@/lib/i18n-toast';
 
 export const VITANA_INDEX_OPEN_EVENT = "vitana:open-index";
+
+const GROWTH_CONFETTI_DAY_KEY = "vitana:index-drawer:celebrated";
+
+function todayKey(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function pickKeepGoingMessage(delta: number, streak: number): string {
+  if (delta >= 20) return `Huge week — your Index is up ${delta}. Keep going!`;
+  if (delta >= 10) return `You're on a roll — Index up ${delta} this week.`;
+  if (delta > 0 && streak >= 7) return `${streak}-day streak and Index +${delta}. Momentum is real.`;
+  if (delta > 0 && streak >= 3) return `${streak} days in a row, Index +${delta}. Beautiful — keep stacking wins.`;
+  if (delta > 0) return `Index +${delta} this week. Every action counts — keep going!`;
+  if (streak >= 7) return `${streak}-day streak. Habits are forming — keep going!`;
+  return `${streak} days in a row. The streak is real — keep going!`;
+}
+
+const DAILY_ENCOURAGEMENT_MESSAGES = [
+  "Fresh day, fresh chance — let's grow your Index together.",
+  "You're here, that's the first move. Let's nudge your Index up today.",
+  "One small action and your Index starts climbing. Let's go.",
+  "Today is a great day to improve. I've got your back — let's grow it.",
+  "Let's make today count. Pick one thing and watch your Index lift.",
+];
+
+function pickDailyEncouragement(): string {
+  const idx = Math.floor(Math.random() * DAILY_ENCOURAGEMENT_MESSAGES.length);
+  return DAILY_ENCOURAGEMENT_MESSAGES[idx];
+}
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
   nutrition: "🥗",
@@ -125,8 +165,7 @@ function HorizonChart({ points }: { points: ProjectedPoint[] }) {
           />
         )}
       </svg>
-      <p className="text-xs text-muted-foreground">
-        At this pace you land around <strong>{projectedScore}</strong> in 30 days.
+      <p className="text-xs text-muted-foreground">{t('screens.health.atThisPaceYouLandAround')} <strong>{projectedScore}</strong>{t('screens.health.text30Days')}
       </p>
     </div>
   );
@@ -161,6 +200,89 @@ export function VitanaIndexSheet() {
   const pillars = index?.pillars ?? null;
   const sevenDayDelta = index?.history ? pillarSevenDayDelta(index.history) : null;
 
+  const hasGrowth =
+    (sevenDayDelta !== null && sevenDayDelta > 0) || streakDays >= 3;
+
+  // Track whether the user has already triggered today's burst so subsequent
+  // opens in the same day still render the banner but don't re-fire confetti.
+  // Reads localStorage once per drawer-open via state — `useEffect` below is
+  // the only place that writes the day-key.
+  const [alreadyCelebratedToday, setAlreadyCelebratedToday] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem(GROWTH_CONFETTI_DAY_KEY) === todayKey();
+    } catch {
+      return false;
+    }
+  });
+
+  // First open of the day always gets a small encouragement burst, even with
+  // no growth signal — showing up is the win we're rewarding here.
+  const isFirstOpenToday = !alreadyCelebratedToday;
+  const shouldShowBanner = hasGrowth || isFirstOpenToday;
+  const bannerMessage = useMemo(() => {
+    if (!shouldShowBanner) return null;
+    if (hasGrowth) return pickKeepGoingMessage(sevenDayDelta ?? 0, streakDays);
+    return pickDailyEncouragement();
+  }, [shouldShowBanner, hasGrowth, sevenDayDelta, streakDays]);
+
+  // Reset on close so reopening tomorrow can celebrate again. Confetti itself
+  // is throttled to once per local day via localStorage so reopening the
+  // drawer multiple times in one day shows the banner without re-firing the
+  // burst.
+  const celebratedRef = useRef(false);
+  useEffect(() => {
+    if (!open) {
+      celebratedRef.current = false;
+      return;
+    }
+    if (celebratedRef.current) return;
+    if (typeof window === "undefined") return;
+    if (alreadyCelebratedToday) {
+      celebratedRef.current = true;
+      return;
+    }
+    if (prefersReducedMotion()) {
+      // Mark the day so banner-only days stay consistent — but don't fire
+      // confetti.
+      try {
+        localStorage.setItem(GROWTH_CONFETTI_DAY_KEY, todayKey());
+      } catch {
+        /* ignore */
+      }
+      setAlreadyCelebratedToday(true);
+      celebratedRef.current = true;
+      return;
+    }
+
+    // Defer a tick so the sheet's own enter animation isn't competing for
+    // paint with the confetti canvas creation. Both growth and first-open
+    // celebrations get a full burst — the banner copy carries the nuance,
+    // the confetti just says "today matters".
+    const timer = window.setTimeout(() => {
+      confettiManager.fire({
+        particleCount: 130,
+        spread: 100,
+        startVelocity: 40,
+        colors: hasGrowth
+          ? ["#10B981", "#22D3EE", "#3B82F6", "#A78BFA", "#F59E0B"]
+          : ["#3B82F6", "#A78BFA", "#22D3EE", "#F472B6", "#F59E0B"],
+        shapes: ["circle", "square"],
+        scalar: 1.1,
+      });
+    }, 180);
+
+    try {
+      localStorage.setItem(GROWTH_CONFETTI_DAY_KEY, todayKey());
+    } catch {
+      /* ignore */
+    }
+    setAlreadyCelebratedToday(true);
+    celebratedRef.current = true;
+
+    return () => window.clearTimeout(timer);
+  }, [open, hasGrowth, alreadyCelebratedToday]);
+
   const { vector: nextDaysVector, total: nextDaysTotal } = useMemo(
     () => sumVectors(pendingActions),
     [pendingActions],
@@ -183,7 +305,7 @@ export function VitanaIndexSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="right" className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-xl font-semibold">Your Index</SheetTitle>
+          <SheetTitle className="text-xl font-semibold">{t('screens.health.yourIndex')}</SheetTitle>
           {tierLabel && (
             <SheetDescription className="text-sm text-muted-foreground">
               {tierFraming ?? tierLabel}
@@ -192,13 +314,37 @@ export function VitanaIndexSheet() {
         </SheetHeader>
 
         <div className="mt-6 space-y-6">
+          {bannerMessage && (
+            <div
+              role="status"
+              aria-live="polite"
+              className={`rounded-xl border p-3 shadow-sm animate-in fade-in slide-in-from-top-2 duration-500 ${
+                hasGrowth
+                  ? "border-green-500/30 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-teal-500/10"
+                  : "border-blue-500/30 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`rounded-full bg-background/60 p-2 motion-safe:animate-bounce ${
+                    hasGrowth ? "text-green-600" : "text-blue-600"
+                  }`}
+                >
+                  <PartyPopper className="w-5 h-5" />
+                </div>
+                <p className="text-sm font-medium text-foreground leading-snug">
+                  {bannerMessage}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Section 1: Today */}
           <section aria-labelledby="vitana-index-today" className="space-y-4">
             <h3
               id="vitana-index-today"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-            >
-              Today
+            >{t('screens.health.today')}
             </h3>
 
             <div className="flex items-center justify-center">
@@ -215,7 +361,7 @@ export function VitanaIndexSheet() {
                   <div className="text-4xl font-bold text-green-600">
                     {isLoading || total === null ? "…" : total}
                   </div>
-                  <div className="text-xs text-muted-foreground">of 999</div>
+                  <div className="text-xs text-muted-foreground">{t('screens.health.text999')}</div>
                 </div>
               </div>
             </div>
@@ -227,19 +373,15 @@ export function VitanaIndexSheet() {
                 </Badge>
               )}
               {sevenDayDelta !== null && sevenDayDelta !== 0 && (
-                <Badge variant="outline" className="text-xs">
-                  {sevenDayDelta > 0 ? "+" : ""}
-                  {sevenDayDelta} this week
+                <Badge variant="outline" className="text-xs">{t('screens.health.value0SevendaydeltaThisWeek', { value0: sevenDayDelta > 0 ? "+" : "", sevenDayDelta })}
                 </Badge>
               )}
               {balanceFactor !== null && (
-                <Badge variant="outline" className="text-xs">
-                  Balance {Math.round(balanceFactor * 100)}%
+                <Badge variant="outline" className="text-xs">{t('screens.health.balanceValue0', { value0: Math.round(balanceFactor * 100) })}
                 </Badge>
               )}
               {streakDays > 0 && (
-                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">
-                  🔥 {streakDays}-day streak
+                <Badge variant="outline" className="text-xs gap-1 border-orange-300 text-orange-700 bg-orange-50">{t('screens.health.streakdaysdayStreak', { streakDays })}
                 </Badge>
               )}
             </div>
@@ -268,16 +410,14 @@ export function VitanaIndexSheet() {
             <h3
               id="vitana-index-next-days"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-            >
-              Next few days
+            >{t('screens.health.nextFewDays')}
             </h3>
 
             {pendingActions.length === 0 ? (
               <p className="text-sm text-muted-foreground">{EMPTY_COPY.indexSheetNextDays}</p>
             ) : (
               <div className="space-y-3">
-                <p className="text-sm">
-                  Complete the {pendingActions.length} action{pendingActions.length === 1 ? "" : "s"} Autopilot suggests
+                <p className="text-sm">{t('screens.health.completeLengthActionValue1AutopilotSuggests', { length: pendingActions.length, value1: pendingActions.length === 1 ? "" : "s" })}
                   {nextDaysTotal > 0 ? (
                     <>
                       {" "}→ <strong className="text-green-600">+{nextDaysTotal}</strong>
@@ -292,8 +432,7 @@ export function VitanaIndexSheet() {
                   onClick={handleOpenAutopilot}
                   className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                 >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Open Autopilot
+                  <Zap className="w-4 h-4 mr-2" />{t('screens.health.openAutopilot')}
                 </Button>
               </div>
             )}
@@ -307,8 +446,7 @@ export function VitanaIndexSheet() {
               id="vitana-index-horizon"
               className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1.5"
             >
-              <Sparkles className="w-3 h-3" />
-              30-day horizon
+              <Sparkles className="w-3 h-3" />{t('screens.health.text30dayHorizon')}
             </h3>
 
             {horizonPoints.length === 0 ? (

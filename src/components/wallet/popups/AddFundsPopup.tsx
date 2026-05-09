@@ -14,6 +14,7 @@ import { DollarSign, CreditCard, Banknote, Loader2, Shield } from "lucide-react"
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface AddFundsPopupProps {
   open: boolean;
@@ -38,11 +39,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
 
   const handleAddFunds = async (paymentMethod: string) => {
     if (!fundAmount || parseFloat(fundAmount) <= 0) {
-      toast({
-        title: '❌ Invalid Amount',
-        description: 'Please enter a valid amount to add',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidAmountAdd');
       return;
     }
 
@@ -51,19 +48,12 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
     try {
       await updateBalance('USD', parseFloat(fundAmount), 'add');
       
-      toast({
-        title: '✅ Funds Added Successfully!',
-        description: `Added $${fundAmount} to your USD balance`,
-      });
+      notify('toasts.wallet.fundsAddedSuccessfully');
       
       onOpenChange(false);
       setFundAmount('');
     } catch (error) {
-      toast({
-        title: '❌ Transaction Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: 'destructive'
-      });
+      notifyError('toasts.wallet.transactionFailed');
     } finally {
       setLoading(false);
     }
@@ -75,7 +65,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <DollarSign className="h-5 w-5 text-green-600" />
-            Add Funds to USD Balance
+            {t('screens.wallet.addFundsUsdBalance')}
           </DialogTitle>
         </DialogHeader>
         
@@ -83,18 +73,18 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Current USD Balance</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.currentUsdBalance')}</span>
               <span className="font-semibold text-green-700">${currentBalance.toLocaleString()}</span>
             </div>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="fundAmount">Amount to Add (USD)</Label>
+            <Label htmlFor="fundAmount">{t('screens.wallet.amountAddUsd')}</Label>
             <Input
               id="fundAmount"
               type="number"
-              placeholder="Enter amount"
+              placeholder={t('screens.wallet.enterAmount')}
               value={fundAmount}
               onChange={(e) => setFundAmount(e.target.value)}
               min="1"
@@ -117,7 +107,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
 
           {/* Payment Methods */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">Choose Payment Method</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.choosePaymentMethod')}</h4>
             {paymentMethods.map((method) => (
               <Button
                 key={method.id}
@@ -134,12 +124,11 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
                   )}
                   <div className="text-left">
                     <div className="font-medium">{method.name}</div>
-                    <div className="text-xs text-muted-foreground">Processing fee: {method.fee}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.wallet.processingFeeFee', { fee: method.fee })}</div>
                   </div>
                 </div>
                 {method.fee === 'Free' && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-700">
-                    Recommended
+                  <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.recommended')}
                   </Badge>
                 )}
               </Button>
@@ -150,12 +139,12 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
             <div className="flex items-center gap-2 mb-2">
               <Shield className="h-4 w-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">Secure Transaction</span>
+              <span className="text-sm font-medium text-blue-700">{t('screens.wallet.secureTransaction')}</span>
             </div>
             <ul className="text-xs text-blue-600 space-y-1">
-              <li>• 256-bit SSL encryption</li>
-              <li>• PCI DSS compliant processing</li>
-              <li>• Instant availability after confirmation</li>
+              <li>{t('screens.wallet.text256bitSslEncryption')}</li>
+              <li>{t('screens.wallet.pciDssCompliantProcessing')}</li>
+              <li>{t('screens.wallet.instantAvailabilityAfterConfirmation')}</li>
             </ul>
           </div>
         </div>

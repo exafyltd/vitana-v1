@@ -8,12 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
 import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
 import { calculateExchange, formatCurrency, getCurrencySymbol } from "@/lib/exchangeRates";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { isIAPRestricted } from "@/lib/appilix";
+import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface ExchangeAndSendPopupProps {
   isOpen: boolean;
@@ -85,29 +86,17 @@ export default function ExchangeAndSendPopup({
 
   const handleExchangeAndSend = async () => {
     if (!amount || !description) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in amount and description",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.missingInformation', 'toasts.payment.pleaseFillAmountDescription');
       return;
     }
 
     if (!canAfford()) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You don't have enough ${fromCurrency}`,
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.insufficientBalance');
       return;
     }
 
     if (!calculation) {
-      toast({
-        title: "Exchange Error", 
-        description: "Unable to calculate exchange rate",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.exchangeError', 'toasts.payment.unableCalculateExchangeRate');
       return;
     }
 
@@ -151,22 +140,14 @@ export default function ExchangeAndSendPopup({
         exchangeData
       );
 
-      toast({
-        title: "Exchange & Send Completed! ✨",
-        description: `Converted ${formatCurrency(calculation.fromAmount, fromCurrency)} to ${formatCurrency(calculation.total, toCurrency)} and sent to ${recipient?.name || 'recipient'}`,
-        duration: 6000
-      });
+      notify('toasts.payment.exchangeSendCompleted');
 
       onClose();
       setAmount('');
       setDescription('');
     } catch (error) {
       console.error('Exchange and send error:', error);
-      toast({
-        title: "Transaction Failed",
-        description: "Please try again or contact support",
-        variant: "destructive"
-      });
+      notifyError('toasts.payment.transactionFailed', 'toasts.payment.pleaseTryAgainContactSupport');
     } finally {
       setIsProcessing(false);
     }
@@ -178,7 +159,7 @@ export default function ExchangeAndSendPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-purple-600" />
-            Exchange & Send
+            {t('screens.payment.exchangeSend')}
           </DialogTitle>
         </DialogHeader>
 
@@ -192,7 +173,7 @@ export default function ExchangeAndSendPopup({
               </Avatar>
               <div className="flex-1">
                 <p className="font-medium">{recipient.name}</p>
-                <p className="text-sm text-muted-foreground">Recipient</p>
+                <p className="text-sm text-muted-foreground">{t('screens.payment.recipient')}</p>
               </div>
             </div>
           )}
@@ -201,7 +182,7 @@ export default function ExchangeAndSendPopup({
           <Card>
             <CardContent className="p-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Your Balance:</span>
+                <span className="text-muted-foreground">{t('screens.payment.yourBalance2')}</span>
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <DollarSign className="w-3 h-3" />
@@ -222,7 +203,7 @@ export default function ExchangeAndSendPopup({
 
           {/* Amount Input */}
           <div>
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount">{t('screens.payment.amount')}</Label>
             <Input
               id="amount"
               type="number"
@@ -235,7 +216,7 @@ export default function ExchangeAndSendPopup({
           {/* Currency Selection */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>You Send</Label>
+              <Label>{t('screens.payment.youSend2')}</Label>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
                 <SelectTrigger>
                   <SelectValue />
@@ -254,7 +235,7 @@ export default function ExchangeAndSendPopup({
             </div>
 
             <div>
-              <Label>They Receive</Label>
+              <Label>{t('screens.payment.theyReceive')}</Label>
               <div className="flex gap-1">
                 <Select value={toCurrency} onValueChange={setToCurrency}>
                   <SelectTrigger className="flex-1">
@@ -290,27 +271,25 @@ export default function ExchangeAndSendPopup({
               <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-3 text-sm mb-3">
                   <div className="text-center">
-                    <p className="text-muted-foreground">You send</p>
+                    <p className="text-muted-foreground">{t('screens.payment.youSend')}</p>
                     <p className="font-bold text-purple-600">
                       {formatCurrency(calculation.fromAmount, fromCurrency)}
                     </p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-purple-500" />
                   <div className="text-center">
-                    <p className="text-muted-foreground">They receive</p>
+                    <p className="text-muted-foreground">{t('screens.payment.theyReceive2')}</p>
                     <p className="font-bold text-green-600">
                       {formatCurrency(calculation.total, toCurrency)}
                     </p>
                   </div>
                 </div>
                 
-                <div className="text-xs text-center text-muted-foreground">
-                  Rate: 1 {fromCurrency} = {calculation.rate.toFixed(3)} {toCurrency} • Fee: {formatCurrency(calculation.fees, fromCurrency)}
-                </div>
+                <div className="text-xs text-center text-muted-foreground">{t('screens.payment.rate1FromcurrencyValue1TocurrencyFee', { fromCurrency, value1: calculation.rate.toFixed(3), toCurrency, value3: formatCurrency(calculation.fees, fromCurrency) })}</div>
                 
                 {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
                   <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
-                    🎉 +5% Bonus Applied
+                    {t('screens.payment.text5BonusApplied')}
                   </Badge>
                 )}
               </CardContent>
@@ -319,10 +298,10 @@ export default function ExchangeAndSendPopup({
 
           {/* Description */}
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('screens.payment.description')}</Label>
             <Textarea
               id="description"
-              placeholder="What is this payment for?"
+              placeholder={t('screens.payment.whatThisPaymentFor')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
@@ -332,7 +311,7 @@ export default function ExchangeAndSendPopup({
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1" disabled={isProcessing}>
-              Cancel
+              {t('screens.payment.cancel')}
             </Button>
             <Button 
               onClick={handleExchangeAndSend} 
@@ -341,13 +320,12 @@ export default function ExchangeAndSendPopup({
             >
               {isProcessing ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>{t('screens.payment.processing')}
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Exchange & Send
+                  {t('screens.payment.exchangeSend')}
                 </>
               )}
             </Button>

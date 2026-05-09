@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { MoreVertical } from 'lucide-react';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
+import { t } from '@/lib/i18n-toast';
 
 export interface StandardHorizontalCardProps {
   id: string;
@@ -198,7 +199,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             "w-9 h-9 text-lg shadow-sm",
             accentColor ? `bg-${accentColor}/10` : 'bg-muted/50'
           )}>
-            <span role="img" aria-label="icon">{icon}</span>
+            <span role="img" aria-label={t('screens.ui.icon')}>{icon}</span>
           </div>
         );
       }
@@ -392,7 +393,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                     className={cn(
                       "h-8 w-8 p-0"
                     )}
-                    aria-label="More actions"
+                    aria-label={t('screens.ui.moreActions')}
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
