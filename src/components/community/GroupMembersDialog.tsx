@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -110,7 +111,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
                     }}
                   >
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={m.avatar_url || undefined} />
+                      <AvatarImage src={getDisplayAvatarUrl(m)} />
                       <AvatarFallback className="text-xs bg-muted">
                         {getInitials(m.display_name)}
                       </AvatarFallback>

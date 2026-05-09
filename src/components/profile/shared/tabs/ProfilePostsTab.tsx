@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Heart, MessageSquare, Share, Edit3, MapPin, ExternalLink, Trash2, PenSquare, Send, X } from "lucide-react";
@@ -269,7 +270,7 @@ function PostCardWithInteractions({
                 {comments.map((comment) => (
                   <div key={comment.id} className="flex items-start gap-2 px-1">
                     <Avatar className="h-7 w-7">
-                      <AvatarImage src={comment.avatar_url || undefined} />
+                      <AvatarImage src={getDisplayAvatarUrl(comment)} />
                       <AvatarFallback className="text-[10px]">
                         {(comment.display_name || '?')[0]}
                       </AvatarFallback>

@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { UserPlus, MessageSquare, ExternalLink, Star, Edit3, Share2, QrCode } from "lucide-react";
@@ -179,7 +180,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
             role="img"
             aria-label={`${profile.name}'s profile picture`}
           >
-            <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+            {/* VTID-02806i: fall back to a deterministic playful
+                auto-avatar when the user hasn't uploaded one yet. */}
+            <AvatarImage src={getDisplayAvatarUrl(profile)} alt={profile.name} className="object-cover" style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
             <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
               {profile.name.split(' ').map(n => n[0]).join('')}
             </AvatarFallback>

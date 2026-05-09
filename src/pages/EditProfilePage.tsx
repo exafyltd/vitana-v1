@@ -15,6 +15,9 @@ import { AccountEditDrawer } from "@/components/profile/drawers/AccountEditDrawe
 import { DancePreferencesDrawer } from "@/components/profile/drawers/DancePreferencesDrawer";
 import { PartnerPreferencesDrawer } from "@/components/profile/drawers/PartnerPreferencesDrawer";
 import { ServiceOfferingsDrawer } from "@/components/profile/drawers/ServiceOfferingsDrawer";
+// VTID-02806 — per-user cover photo library (universal + activity-specific)
+import { CoverLibraryDrawer } from "@/components/profile/drawers/CoverLibraryDrawer";
+import { ImagePlus } from "lucide-react";
 import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +71,8 @@ export default function EditProfilePage() {
   const [partnerPrefsDrawerOpen, setPartnerPrefsDrawerOpen] = useState(false);
   // E2 — service offerings (public-by-default profile section)
   const [serviceOfferingsDrawerOpen, setServiceOfferingsDrawerOpen] = useState(false);
+  // VTID-02806 — cover library (universal photo + activity-tagged grid)
+  const [coverLibraryDrawerOpen, setCoverLibraryDrawerOpen] = useState(false);
   // Open the right drawer when ?drawer=<name> is present in URL (deep-link).
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -75,6 +80,7 @@ export default function EditProfilePage() {
     if (which === "dance") setDanceDrawerOpen(true);
     if (which === "partner") setPartnerPrefsDrawerOpen(true);
     if (which === "offerings") setServiceOfferingsDrawerOpen(true);
+    if (which === "cover-library") setCoverLibraryDrawerOpen(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
   const [complianceDrawerOpen, setComplianceDrawerOpen] = useState(false);
@@ -446,6 +452,28 @@ export default function EditProfilePage() {
                 {/* Autopilot Banner */}
                 <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
 
+                {/* VTID-02806: cover photos for posts (universal + library) */}
+                <button
+                  type="button"
+                  onClick={() => setCoverLibraryDrawerOpen(true)}
+                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+                >
+                  <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                    <ImagePlus className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold">
+                      {translate('profileEditor.coverLibrary.tileTitle')}
+                    </h3>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {translate('profileEditor.coverLibrary.tileSubtitle')}
+                    </p>
+                  </div>
+                  <p className="text-xs text-primary shrink-0">
+                    {translate('editProfile.tapToEdit')}
+                  </p>
+                </button>
+
                 {/* Real Posts */}
                 <ProfilePostsTab
                   profile={profile}
@@ -550,6 +578,13 @@ export default function EditProfilePage() {
           }}
         />
 
+        {/* VTID-02806c: cover library drawer must be mounted on mobile too,
+            otherwise the new tile sets state but no dialog renders. */}
+        <CoverLibraryDrawer
+          open={coverLibraryDrawerOpen}
+          onOpenChange={setCoverLibraryDrawerOpen}
+        />
+
         {/* Autopilot Popup */}
         <AutopilotProfilePopup
           open={showAutopilotPopup}
@@ -609,6 +644,30 @@ export default function EditProfilePage() {
         onEditAccount={handleEditAccount}
       />
 
+      {/* VTID-02806: discoverable entry to the Cover Library drawer */}
+      <div className="container mx-auto px-4 mt-4">
+        <button
+          type="button"
+          onClick={() => setCoverLibraryDrawerOpen(true)}
+          className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors flex items-center gap-3"
+        >
+          <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+            <ImagePlus className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold">
+              {translate('profileEditor.coverLibrary.tileTitle')}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {translate('profileEditor.coverLibrary.tileSubtitle')}
+            </p>
+          </div>
+          <p className="text-xs text-primary shrink-0">
+            {translate('editProfile.tapToEdit')}
+          </p>
+        </button>
+      </div>
+
       <IdentityDrawer
         open={identityDrawerOpen}
         onOpenChange={setIdentityDrawerOpen}
@@ -660,6 +719,12 @@ export default function EditProfilePage() {
       <ServiceOfferingsDrawer
         open={serviceOfferingsDrawerOpen}
         onOpenChange={setServiceOfferingsDrawerOpen}
+      />
+
+      {/* VTID-02806: cover library drawer (deep-linkable via ?drawer=cover-library) */}
+      <CoverLibraryDrawer
+        open={coverLibraryDrawerOpen}
+        onOpenChange={setCoverLibraryDrawerOpen}
       />
 
       {/* VTID-DANCE-D5: dance preferences drawer (also available via settings entry below) */}

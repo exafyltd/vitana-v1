@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -148,7 +149,11 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         <DrawerHeader className="text-center">
           <div className="flex flex-col items-center gap-3 mb-2">
             <Avatar className="h-16 w-16 ring-2 ring-border">
-              <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
+              <AvatarImage
+                src={profile.avatar && profile.avatar.length > 0 ? profile.avatar : getAutoAvatarUrl(profile.displayName ?? profile.initials ?? "vitana")}
+                alt={profile.displayName}
+                style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)}
+              />
               <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-lg">
                 {profile.initials}
               </AvatarFallback>

@@ -17,6 +17,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { useOverviewSummary, useAtRiskMembers, useOverviewAlerts } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
@@ -184,7 +185,7 @@ export default function OverviewDashboard() {
                       {atRisk.slice(0, 10).map((m) => (
                         <div key={m.user_id} className="flex items-center gap-2 text-sm">
                           <Avatar className="h-6 w-6">
-                            <AvatarImage src={m.avatar_url || undefined} />
+                            <AvatarImage src={getDisplayAvatarUrl(m)} />
                             <AvatarFallback className="text-[10px]">
                               {(m.display_name || m.email || "?").slice(0, 2).toUpperCase()}
                             </AvatarFallback>

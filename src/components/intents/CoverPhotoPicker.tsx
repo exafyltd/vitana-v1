@@ -3,45 +3,46 @@
  * for the New Wish composer (and, later, the My Posts "Replace
  * cover" affordance).
  *
- * Two paths to a cover URL, both visible at once so the user picks
- * whichever feels easiest:
+ * Single path: Upload a photo → file input → Supabase Storage
+ * `avatars` bucket under a `{user_id}/intent-covers/{ts}.{ext}`
+ * prefix (legacy path; the gateway-side AI generator writes to the
+ * dedicated `intent-covers` bucket — migrating the per-post upload
+ * path is a follow-up cleanup). The user_id must be the first path
+ * segment to satisfy the avatars-bucket RLS policy
+ * `auth.uid()::text = (storage.foldername(name))[1]`. Validation
+ * lifted from the proven AvatarUploadField pattern.
  *
- *   • Upload a photo  → file input → Supabase Storage `avatars`
- *     bucket under a `{user_id}/intent-covers/{ts}.{ext}` prefix
- *     (re-uses the existing public bucket so this PR doesn't
- *     require new Supabase admin setup). The user_id must be the
- *     first path segment to satisfy the avatars-bucket RLS policy
- *     `auth.uid()::text = (storage.foldername(name))[1]`. Validation
- *     lifted from the proven AvatarUploadField pattern.
- *
- *   • ✨ Generate for me → deterministic themed picker from
- *     `pickThemedCover(theme, seed)` — V1 fallback so users always
- *     have a presentable cover even before any AI image-gen
- *     backend exists. When the gateway exposes
- *     `POST /intents/cover/generate` later, this branch can call
- *     it transparently with no API change to the consumer.
+ * VTID-02806: the "✨ Generate for me" deterministic stock picker
+ * was removed. Cover generation now happens server-side: the
+ * gateway falls through library → universal → AI → curated when
+ * `kind_payload.cover_url` is unset.
  *
  * Returns the chosen URL via `onChange`. Parent decides what to do
  * with it (post creation, intent patch, etc.).
  */
 
 import { useRef, useState } from 'react';
-import { Loader2, Sparkles, Upload } from 'lucide-react';
+import { Loader2, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { pickThemedCover, type CoverTheme } from '@/lib/intentCovers';
+import type { CoverTheme } from '@/lib/intentCovers';
+import { processCoverImageTo16x9 } from '@/lib/coverImageTo16x9';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface CoverPhotoPickerProps {
   value: string | null;
   onChange: (url: string | null) => void;
-  /** Drives the "✨ Generate for me" themed picker. */
+  /**
+   * Theme bucket — kept on the props for backward compatibility,
+   * but no longer drives any client-side image selection. The
+   * gateway derives its own theme from the intent's category when
+   * it generates a cover server-side.
+   */
   theme?: CoverTheme;
   /**
-   * Stable string for the themed picker so the same intent gets the
-   * same generated cover across renders. Pass intent_id once known;
-   * before that a per-session uuid is fine.
+   * Stable seed kept on the props for backward compatibility.
+   * No longer used now that the deterministic stock picker is gone.
    */
   seed?: string;
 }
@@ -51,11 +52,12 @@ const ALLOWED_EXTS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 export function CoverPhotoPicker({
   value,
   onChange,
-  theme = 'generic',
-  seed,
+  // theme + seed are kept on the prop shape so callers don't break;
+  // VTID-02806 made them no-ops since the gateway resolves the cover.
+  theme: _theme = 'generic',
+  seed: _seed,
 }: CoverPhotoPickerProps) {
   const [uploading, setUploading] = useState(false);
-  const [generating, setGenerating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -89,13 +91,28 @@ export function CoverPhotoPicker({
       const uid = data.user?.id;
       if (!uid) throw new Error('Not authenticated');
 
-      const fileName = `${uid}/intent-covers/${Date.now()}.${fileExt}`;
-      const arrayBuffer = await file.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: file.type });
+      // VTID-02806h: normalise the upload to a 16:9 JPEG so the
+      // resulting cover always fills the Find-a-Match tile cleanly.
+      // Falls back to the raw bytes if conversion fails.
+      let body: Blob;
+      let contentType: string;
+      let outExt: string;
+      try {
+        const processed = await processCoverImageTo16x9(file);
+        body = processed.blob;
+        contentType = processed.mime;
+        outExt = processed.ext;
+      } catch {
+        const arrayBuffer = await file.arrayBuffer();
+        body = new Blob([arrayBuffer], { type: file.type });
+        contentType = file.type;
+        outExt = fileExt;
+      }
+      const fileName = `${uid}/intent-covers/${Date.now()}.${outExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(fileName, blob, { upsert: true, contentType: file.type });
+        .upload(fileName, body, { upsert: true, contentType });
       if (uploadError) throw uploadError;
 
       const {
@@ -110,18 +127,6 @@ export function CoverPhotoPicker({
     } finally {
       setUploading(false);
     }
-  };
-
-  const onGenerateClick = () => {
-    setGenerating(true);
-    // Tiny artificial delay so the spinner registers and the
-    // interaction feels intentional. The picker itself is sync.
-    window.setTimeout(() => {
-      const url = pickThemedCover(theme, seed ?? `${theme}:${Date.now()}`);
-      onChange(url);
-      setGenerating(false);
-      notify('toasts.intents.themedCoverReady', 'toasts.intents.youCanReplaceItAnyTime');
-    }, 350);
   };
 
   return (
@@ -145,25 +150,16 @@ export function CoverPhotoPicker({
         )}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <Button
           type="button"
           variant="outline"
           onClick={onUploadClick}
-          disabled={uploading || generating}
+          disabled={uploading}
           className="flex-1"
         >
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4 mr-1.5" />}
           {value ? 'Replace photo' : 'Upload a photo'}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onGenerateClick}
-          disabled={uploading || generating}
-          className="flex-1"
-        >
-          {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 mr-1.5" />}{t('screens.intents.generateForMe')}
         </Button>
       </div>
     </div>

@@ -91,9 +91,10 @@ export default function Messages() {
   // Parse query params to auto-select thread from notifications
   const [searchParams, setSearchParams] = useSearchParams();
   const urlThreadId = searchParams.get('thread');
+  const urlRecipientId = searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
 
-  // Apply URL params on mount
+  // Legacy ?thread= param (thread UUID — used by old notifications)
   useEffect(() => {
     if (urlThreadId) {
       console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
@@ -104,13 +105,47 @@ export default function Messages() {
         setMessageContext(urlContext);
       }
 
-      // Clear URL params after applying
       const newParams = new URLSearchParams(searchParams);
       newParams.delete('thread');
       newParams.delete('context');
       setSearchParams(newParams, { replace: true });
     }
   }, [urlThreadId, urlContext, setSearchParams]);
+
+  // BOOTSTRAP-NOTIF-DEEP-LINK: ?recipient=<user_id> from notification deep-links.
+  // Store the recipient, set context, clear URL params immediately.
+  // Thread resolution happens in the next effect once conversations load.
+  const [pendingRecipient, setPendingRecipient] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (urlRecipientId) {
+      console.log('[Messages] Notification deep-link recipient:', urlRecipientId);
+      setPendingRecipient(urlRecipientId);
+
+      if (urlContext && (urlContext === 'global' || urlContext === 'tenant')) {
+        setMessageContext(urlContext);
+      }
+
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('recipient');
+      newParams.delete('context');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [urlRecipientId, urlContext, setSearchParams]);
+
+  // Once threads load, resolve pendingRecipient → real thread UUID
+  useEffect(() => {
+    if (!pendingRecipient || threads.length === 0) return;
+    const match = threads.find(t =>
+      t.type === 'direct' && t.participants?.some((p: any) => p.user_id === pendingRecipient)
+    );
+    if (match) {
+      console.log('[Messages] Resolved recipient', pendingRecipient, '→ thread', match.id);
+      setSelectedThreadId(match.id);
+      setSelectedRecipientId(pendingRecipient);
+      setPendingRecipient(null);
+    }
+  }, [threads, pendingRecipient]);
 
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});

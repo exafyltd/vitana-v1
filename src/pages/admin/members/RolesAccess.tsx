@@ -14,6 +14,7 @@ import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import AdminStatusBadge from "@/components/admin/AdminStatusBadge";
 import AdminEmptyState from "@/components/admin/AdminEmptyState";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -135,7 +136,7 @@ export default function MembersRolesAccess() {
                     <TableRow key={m.user_id}>
                       <TableCell>
                         <Avatar className="h-7 w-7">
-                          <AvatarImage src={m.avatar_url || undefined} />
+                          <AvatarImage src={getDisplayAvatarUrl(m)} />
                           <AvatarFallback className="text-xs">
                             {(m.display_name || m.email || "?").slice(0, 2).toUpperCase()}
                           </AvatarFallback>
