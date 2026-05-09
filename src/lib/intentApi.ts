@@ -266,16 +266,30 @@ function verticalFromCategory(cat: string | null): 'dance' | 'fitness' | null {
   return null;
 }
 
+/**
+ * Cap on the number of source intents we fan-out match requests for.
+ * Without it, a power user (especially providers with many open
+ * listings) would trigger one /matches HTTP call per open intent —
+ * enough to swamp the gateway and leave this tab waiting on dozens of
+ * parallel responses. We rely on the gateway's default sort (most
+ * recently active first) so the cap drops the *least* relevant
+ * sources, and any per-intent matches the user is missing here are
+ * still reachable via that intent's detail page.
+ */
+const FIND_PARTNER_MAX_SOURCE_INTENTS = 20;
+
 export async function getFindPartnerMatches(perIntentLimit = 5): Promise<FindPartnerMatch[]> {
+  // Fetch matches across the user's open intents — not just
+  // dance.* / fitness.* — so posts created via the generic +New wish
+  // composer (which doesn't tag a category) still surface their
+  // matches here. The card falls back to the 'default' theme when
+  // `vertical` is null, so non-dance/fitness sources render fine.
   const mine = await listMyIntents({ status: 'open' });
-  const danceFitness = mine.filter((it) => {
-    const v = verticalFromCategory(it.category);
-    return v !== null;
-  });
-  if (danceFitness.length === 0) return [];
+  if (mine.length === 0) return [];
+  const sources = mine.slice(0, FIND_PARTNER_MAX_SOURCE_INTENTS);
 
   const matches = await Promise.all(
-    danceFitness.map(async (it) => {
+    sources.map(async (it) => {
       try {
         const rows = await getIntentMatches(it.intent_id, perIntentLimit);
         return rows.map((m): FindPartnerMatch => ({

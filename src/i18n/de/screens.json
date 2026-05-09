@@ -4744,7 +4744,7 @@
       "raiseDisputeThisMatchVitanaSupport": "Lege einen Einspruch zu diesem Match ein. Vitana Support prüft und kümmert sich darum. Die Identitäten beider Parteien werden für das Prüfprotokoll aufgezeichnet.",
       "whatHappened102000Chars": "Was ist passiert? (10–2000 Zeichen)",
       "describeIssueClearlyIncludeDatesAmounts": "Beschreibe das Problem klar. Füge Daten, Beträge und Kontext hinzu, damit der Support nachforschen kann.",
-      "match_countMatchValue1": "{match_count}Match{value1}",
+      "match_countMatchValue1": "{match_count} Match{value1}",
       "examples": "Beispiele:",
       "shortHeadline": "Kurze Überschrift",
       "describeWhatYouNeedWhat": "Beschreibe, was du brauchst / was du anbietest",
@@ -4760,7 +4760,16 @@
       "generateForMe": "✨ Für mich generieren",
       "donTWorryAboutCoverPhoto": "Mach dir keine Sorgen um ein Cover-Foto – Vitana wählt ein thematisch passendes für dich aus,\n              und du kannst es in „Meine Beiträge“ austauschen.",
       "coverPhotoRequired": "Cover-Foto (erforderlich)",
-      "post": "Posten"
+      "coverPhotoOptional": "Cover-Foto (optional)",
+      "usingUniversalCoverHint": "Ohne eigenes Foto verwendet Vitana dein universelles Cover-Foto aus deinem Profil.",
+      "noCoverYetBannerTitle": "Noch kein Cover-Foto",
+      "noCoverYetBannerBody": "Du hast keine eigenen Fotos hinterlegt. Lade jetzt ein passendes Foto hoch, hinterlege ein universelles Cover-Foto in deinem Profil, oder lass Vitana eines mit KI erzeugen.",
+      "uploadCoverNow": "Foto hochladen",
+      "setUniversalCover": "Universelles Cover wählen",
+      "continueWithAi": "Mit KI fortfahren",
+      "post": "Posten",
+      "interest": "Interesse",
+      "mutual": "Gegenseitig"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",

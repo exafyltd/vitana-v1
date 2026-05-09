@@ -583,6 +583,7 @@
       "minimum20Characters": "Minimum 20 characters.",
       "postedCommunity": "Posted to community",
       "couldNotPost": "Could not post",
+      "couldNotPostReason": "Server: {reason}",
       "interestRecorded": "Interest recorded",
       "ifTheyReInterestedTooWe": "If they're interested too, we'll connect you.",
       "couldNotRecordInterest": "Could not record interest",
@@ -825,7 +826,12 @@
       "dancePreferencesSaved": "Dance preferences saved",
       "displayNameRequired": "Display name is required.",
       "mp3WavFlacAacOggM4a": "MP3, WAV, FLAC, AAC, OGG, M4A",
-      "mp4WebmMov": "MP4, WebM, MOV"
+      "mp4WebmMov": "MP4, WebM, MOV",
+      "universalCoverUploaded": "Universal cover photo saved",
+      "universalCoverRemoved": "Universal cover photo removed",
+      "libraryPhotoUploaded": "Photo added to library",
+      "libraryPhotoRemoved": "Photo removed",
+      "categoryRequired": "Please pick a category first."
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Notifications aren't supported in this browser.",

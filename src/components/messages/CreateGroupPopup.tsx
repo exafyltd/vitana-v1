@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, X, Users, Camera } from "lucide-react";
@@ -336,7 +337,7 @@ export default function CreateGroupPopup({
                     className="flex items-center gap-1 pr-1"
                   >
                     <Avatar className="w-4 h-4">
-                      <AvatarImage src={member.avatar_url || undefined} />
+                      <AvatarImage src={getDisplayAvatarUrl(member)} />
                       <AvatarFallback className="text-xs">
                         {member.display_name?.[0] || member.full_name?.[0] || '?'}
                       </AvatarFallback>
@@ -382,7 +383,7 @@ export default function CreateGroupPopup({
                       onClick={() => addMember(user)}
                     >
                       <Avatar className="w-8 h-8">
-                        <AvatarImage src={user.avatar_url || undefined} />
+                        <AvatarImage src={getDisplayAvatarUrl(user)} />
                         <AvatarFallback>
                           {user.display_name?.[0] || user.full_name?.[0] || '?'}
                         </AvatarFallback>

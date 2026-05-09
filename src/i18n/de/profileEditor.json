@@ -70,6 +70,33 @@
       "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
       "identityUpdated": "Identität aktualisiert",
       "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
+    },
+    "coverLibrary": {
+      "title": "Cover-Bibliothek",
+      "tileTitle": "Cover-Bibliothek",
+      "tileSubtitle": "Lege deine eigenen Fotos für „Find a Match“-Posts an",
+      "drawerTitle": "Cover-Fotos für deine Posts",
+      "universalSection": "Universelles Cover-Foto",
+      "universalDescription": "Wird verwendet, wenn keines deiner aktivitätsspezifischen Fotos zur Kategorie eines Posts passt — und anstelle eines KI-generierten Bildes. Typischerweise ein Porträt von dir.",
+      "universalAdd": "Universelles Foto hinzufügen",
+      "universalReplace": "Foto ersetzen",
+      "universalRemove": "Entfernen",
+      "universalEmptyHint": "Noch kein universelles Foto hinterlegt.",
+      "librarySection": "Aktivitätsspezifische Fotos",
+      "libraryDescription": "Lade Fotos hoch und tagge sie mit der passenden Aktivität (Tennis, Tanzen, Joggen, …). Bei einem Post in dieser Kategorie wählt Vitana automatisch das passende Foto.",
+      "libraryAddPhoto": "Foto hinzufügen",
+      "libraryEmpty": "Noch keine aktivitätsspezifischen Fotos.",
+      "libraryCategoryLabel": "Aktivität / Kategorie",
+      "libraryCategoryPlaceholder": "Kategorie wählen…",
+      "libraryUploadButton": "Hochladen",
+      "libraryRemoveButton": "Entfernen",
+      "libraryPhotoUploaded": "Foto zur Bibliothek hinzugefügt",
+      "libraryPhotoRemoved": "Foto entfernt",
+      "universalUploaded": "Universelles Cover-Foto gespeichert",
+      "universalRemoved": "Universelles Cover-Foto entfernt",
+      "uploadFailed": "Hochladen fehlgeschlagen",
+      "categoryRequired": "Bitte wähle zuerst eine Kategorie für dieses Foto.",
+      "saveError": "Konnte nicht gespeichert werden, bitte erneut versuchen."
     }
   }
 }

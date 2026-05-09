@@ -323,6 +323,70 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
+  // Appilix native push targeting. The iOS/Android wrapper records its
+  // user_identity at page-load time (reading the cookie via the inline
+  // bootstrap in index.html) and does NOT update on SPA route changes or
+  // React state updates. So when a user signs in (or a different user
+  // signs in on the same device), the wrapper keeps its previously-baked
+  // identity until the page hard-reloads.
+  //
+  // Mechanism:
+  //   1. Always sync window.appilix_push_notification_user_identity and the
+  //      appilix_push_notification_user_identity cookie with the active
+  //      Supabase user.id (cleared on sign-out).
+  //   2. Track the last user.id we forced a reload for in localStorage.
+  //      When the active user.id differs from that marker, force one
+  //      window.location.reload() so the inline bootstrap in index.html
+  //      re-runs and the Appilix wrapper picks up the new identity at the
+  //      next page-load read.
+  //
+  // Without this, the backend's targeted pushes route to whichever
+  // identity the wrapper baked in first (e.g. a previous sign-in's user)
+  // and never reach the currently-signed-in user. Verified by observing
+  // identical FCM tokens in user_device_tokens for two different users:
+  // the iPhone was registered with Appilix under the first signed-in
+  // user's id and stayed there.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Wait for the initial auth bootstrap to complete before deciding
+    // whether the user is signed out vs. just hydrating. Otherwise the
+    // initial null user (loading state) would clear the registration
+    // marker and trap logged-in users in a reload loop on every refresh.
+    if (loading) return;
+
+    const userId = user?.id ?? '';
+    const REGISTERED_KEY = 'appilix_registered_identity_v1';
+
+    (window as any).appilix_push_notification_user_identity = userId;
+
+    if (userId) {
+      document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    } else {
+      document.cookie = 'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+      localStorage.removeItem(REGISTERED_KEY);
+      return;
+    }
+
+    const appilix = (window as any).appilix;
+    if (appilix?.postMessage) {
+      try {
+        appilix.postMessage(JSON.stringify({
+          type: 'firebase_record_user_identity',
+          props: { user_identity: userId },
+        }));
+      } catch (err) {
+        console.warn('[AuthProvider] Appilix postMessage failed:', err);
+      }
+    }
+
+    const lastRegistered = localStorage.getItem(REGISTERED_KEY);
+    if (lastRegistered !== userId) {
+      localStorage.setItem(REGISTERED_KEY, userId);
+      console.log('[AuthProvider] Appilix identity changed, reloading to re-register with native shell');
+      window.location.reload();
+    }
+  }, [user?.id, loading]);
+
   return (
     <AuthContext.Provider value={value}>
       {children}
