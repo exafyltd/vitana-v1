@@ -287,12 +287,18 @@ export default function FindPartner() {
                 body="Be the first to post a dance or fitness wish — others will see it here."
                 cta={{ label: 'Post yours', onClick: () => setComposerOpen(true) }}
               />
-            ) : (
-              <div className="space-y-3">
+            ) : isMobile ? (
+              <div className="space-y-3 max-w-md mx-auto">
                 {boardIntents.map((it) => (
                   <IntentCard key={it.intent_id} intent={it} themedFallback />
                 ))}
               </div>
+            ) : (
+              // Desktop: same uniform 3-column grid as My Matches / My Posts
+              // so the page reads consistently across views.
+              renderDesktopGrid(boardIntents, (it) => (
+                <IntentCard key={it.intent_id} intent={it} themedFallback />
+              ))
             )
           )}
 
