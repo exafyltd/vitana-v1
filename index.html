@@ -68,15 +68,16 @@
           // 3. Early push identity from cookie (before React hydration)
           var m = document.cookie.match(/appilix_push_notification_user_identity=([^;]+)/);
           if (m && m[1]) {
-            window.appilix_push_notification_user_identity = m[1];
-            console.log('[Appilix-Early] Push identity set from cookie:', m[1]);
+            var appilixIdentity = decodeURIComponent(m[1]);
+            window.appilix_push_notification_user_identity = appilixIdentity;
+            console.log('[Appilix-Early] Push identity set from cookie:', appilixIdentity);
             // Register identity with native shell using documented format
             if (window.appilix && window.appilix.postMessage) {
               window.appilix.postMessage(JSON.stringify({
                 type: "firebase_record_user_identity",
-                props: { user_identity: m[1] }
+                props: { user_identity: appilixIdentity }
               }));
-              console.log('[Appilix-Early] Identity registered with native shell:', m[1]);
+              console.log('[Appilix-Early] Identity registered with native shell:', appilixIdentity);
             }
           } else {
             console.log('[Appilix-Early] No push identity cookie found');

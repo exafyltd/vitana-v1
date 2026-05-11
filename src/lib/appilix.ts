@@ -13,8 +13,12 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
+    /** Identity Appilix uses to target this native device. */
+    appilix_push_notification_user_identity?: string;
   }
 }
+
+const APPILIX_IDENTITY_COOKIE = 'appilix_push_notification_user_identity';
 
 // ── Detection ──────────────────────────────────────────────
 
@@ -116,23 +120,50 @@ export function showNativeNotification(title: string, body: string, data?: Recor
   return post({ action: 'show_notification', title, body, data });
 }
 
+function readCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match?.[1] ? decodeURIComponent(match[1]) : null;
+}
+
+export function getAppilixIdentity(): string | null {
+  if (typeof window === 'undefined') return null;
+  return window.appilix_push_notification_user_identity || readCookie(APPILIX_IDENTITY_COOKIE);
+}
+
+/**
+ * Keep the documented Appilix JS variable and cookie in sync.
+ */
+export function syncAppilixIdentity(userIdentity: string | null): void {
+  if (typeof window === 'undefined') return;
+
+  if (!userIdentity) {
+    delete window.appilix_push_notification_user_identity;
+    document.cookie = `${APPILIX_IDENTITY_COOKIE}=; path=/; max-age=0; SameSite=Lax; Secure`;
+    return;
+  }
+
+  window.appilix_push_notification_user_identity = userIdentity;
+  document.cookie =
+    `${APPILIX_IDENTITY_COOKIE}=${encodeURIComponent(userIdentity)}; path=/; max-age=31536000; SameSite=Lax; Secure`;
+}
+
 // ── Identity Registration ─────────────────────────────────
 
 /**
  * Register the authenticated user's identity with the Appilix native shell.
- * This is the critical step that maps a Supabase user UUID to a physical device
- * so that push notifications via the Appilix Push API can find this user.
+ * The identity must match the value our backend sends to the Appilix Push API.
  */
-export function registerAppilixIdentity(userId: string): boolean {
+export function registerAppilixIdentity(userIdentity: string): boolean {
   if (!isAppilix()) {
     console.debug('[Appilix] Not in Appilix shell, skipping identity registration');
     return false;
   }
-  console.log(`[Appilix] Registering user_identity: ${userId}`);
+  console.log(`[Appilix] Registering user_identity: ${userIdentity}`);
   try {
     window.appilix!.postMessage(JSON.stringify({
       type: "firebase_record_user_identity",
-      props: { user_identity: userId }
+      props: { user_identity: userIdentity }
     }));
     return true;
   } catch (e) {
@@ -163,7 +194,7 @@ export function waitForAppilixBridge(timeoutMs = 5000, intervalMs = 100): Promis
  * This is critical for old users whose identity was never registered before this
  * code was deployed — when they next open the app, this ensures registration succeeds.
  */
-export async function ensureAppilixIdentity(userId: string, maxRetries = 3): Promise<boolean> {
+export async function ensureAppilixIdentity(userIdentity: string, maxRetries = 3): Promise<boolean> {
   const bridgeReady = await waitForAppilixBridge();
   if (!bridgeReady) {
     console.debug('[Appilix] Bridge not available after timeout, skipping identity registration');
@@ -171,7 +202,7 @@ export async function ensureAppilixIdentity(userId: string, maxRetries = 3): Pro
   }
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const success = registerAppilixIdentity(userId);
+    const success = registerAppilixIdentity(userIdentity);
     if (success) {
       console.log(`[Appilix] Identity registered successfully (attempt ${attempt + 1})`);
       return true;

@@ -30,7 +30,7 @@ import { VitanaIdOnboardingCard } from "@/components/onboarding/VitanaIdOnboardi
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
-import { registerAppilixIdentity, ensureAppilixIdentity } from "@/lib/appilix";
+import { getAppilixIdentity, registerAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { initializePushNotifications } from "@/lib/pushNotifications";
@@ -385,29 +385,6 @@ const AppHooksInitializer = () => {
   const { user, session } = useAuth();
   const navigate = useNavigate();
 
-  // Set Appilix push notification user identity for mobile device mapping
-  useEffect(() => {
-    if (user?.id && typeof window !== 'undefined') {
-      (window as any).appilix_push_notification_user_identity = user.id;
-      document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
-      // Use robust async version that waits for native bridge + retries on failure.
-      // Critical for old users whose identity was never registered before this code shipped.
-      ensureAppilixIdentity(user.id);
-    }
-  }, [user?.id]);
-
-  // Re-register identity when app comes back to foreground (Appilix may lose mapping)
-  useEffect(() => {
-    if (!user?.id) return;
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        registerAppilixIdentity(user.id);
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [user?.id]);
-
   // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
   // Two complementary strategies so the user ALWAYS lands in the conversation
   // when they tap a chat push notification:
@@ -519,7 +496,8 @@ const AppHooksInitializer = () => {
     if (!user?.id) return;
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
-        registerAppilixIdentity(session.user.id);
+        const identity = getAppilixIdentity() || session.user.id;
+        registerAppilixIdentity(identity);
       }
     });
     return () => subscription.unsubscribe();

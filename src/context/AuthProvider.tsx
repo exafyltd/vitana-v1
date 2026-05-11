@@ -7,6 +7,7 @@ import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
+import { ensureAppilixIdentity, syncAppilixIdentity } from "@/lib/appilix";
 
 /**
  * Clear all ORB-related localStorage keys to prevent cross-account leakage.
@@ -323,29 +324,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
-  // Appilix native push targeting. The iOS/Android wrapper records its
-  // user_identity at page-load time (reading the cookie via the inline
-  // bootstrap in index.html) and does NOT update on SPA route changes or
-  // React state updates. So when a user signs in (or a different user
-  // signs in on the same device), the wrapper keeps its previously-baked
-  // identity until the page hard-reloads.
-  //
-  // Mechanism:
-  //   1. Always sync window.appilix_push_notification_user_identity and the
-  //      appilix_push_notification_user_identity cookie with the active
-  //      Supabase user.id (cleared on sign-out).
-  //   2. Track the last user.id we forced a reload for in localStorage.
-  //      When the active user.id differs from that marker, force one
-  //      window.location.reload() so the inline bootstrap in index.html
-  //      re-runs and the Appilix wrapper picks up the new identity at the
-  //      next page-load read.
-  //
-  // Without this, the backend's targeted pushes route to whichever
-  // identity the wrapper baked in first (e.g. a previous sign-in's user)
-  // and never reach the currently-signed-in user. Verified by observing
-  // identical FCM tokens in user_device_tokens for two different users:
-  // the iPhone was registered with Appilix under the first signed-in
-  // user's id and stayed there.
+  // Appilix native push targeting. The wrapper records user_identity at
+  // page-load time from window.appilix_push_notification_user_identity or
+  // the same-named cookie. Use profiles.vitana_id as the canonical identity
+  // because it is stable, human-readable, and mirrored onto notification rows.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     // Wait for the initial auth bootstrap to complete before deciding
@@ -354,37 +336,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // marker and trap logged-in users in a reload loop on every refresh.
     if (loading) return;
 
-    const userId = user?.id ?? '';
-    const REGISTERED_KEY = 'appilix_registered_identity_v1';
+    const userId = user?.id;
+    const REGISTERED_KEY = 'appilix_registered_identity_v2';
+    let cancelled = false;
 
-    (window as any).appilix_push_notification_user_identity = userId;
-
-    if (userId) {
-      document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=31536000; SameSite=Lax; Secure`;
-    } else {
-      document.cookie = 'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+    if (!userId) {
+      syncAppilixIdentity(null);
       localStorage.removeItem(REGISTERED_KEY);
       return;
     }
 
-    const appilix = (window as any).appilix;
-    if (appilix?.postMessage) {
+    (async () => {
+      let identity = userId;
       try {
-        appilix.postMessage(JSON.stringify({
-          type: 'firebase_record_user_identity',
-          props: { user_identity: userId },
-        }));
-      } catch (err) {
-        console.warn('[AuthProvider] Appilix postMessage failed:', err);
-      }
-    }
+        const { data, error } = await (supabase as any)
+          .from('profiles')
+          .select('vitana_id')
+          .eq('user_id', userId)
+          .maybeSingle();
 
-    const lastRegistered = localStorage.getItem(REGISTERED_KEY);
-    if (lastRegistered !== userId) {
-      localStorage.setItem(REGISTERED_KEY, userId);
-      console.log('[AuthProvider] Appilix identity changed, reloading to re-register with native shell');
-      window.location.reload();
-    }
+        if (!error && data?.vitana_id) {
+          identity = data.vitana_id;
+        } else if (error) {
+          console.warn('[AuthProvider] Appilix vitana_id lookup failed, falling back to user UUID:', error.message);
+        }
+      } catch (err) {
+        console.warn('[AuthProvider] Appilix vitana_id lookup threw, falling back to user UUID:', err);
+      }
+
+      if (cancelled) return;
+
+      syncAppilixIdentity(identity);
+      void ensureAppilixIdentity(identity);
+
+      const lastRegistered = localStorage.getItem(REGISTERED_KEY);
+      if (lastRegistered !== identity) {
+        localStorage.setItem(REGISTERED_KEY, identity);
+        console.log('[AuthProvider] Appilix identity changed, reloading to re-register with native shell');
+        window.location.reload();
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user?.id, loading]);
 
   return (

@@ -5,7 +5,7 @@
  */
 import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
-import { isAppilix, getNativeFcmToken, showNativeNotification, registerAppilixIdentity } from '@/lib/appilix';
+import { isAppilix, getNativeFcmToken, showNativeNotification, registerAppilixIdentity, getAppilixIdentity } from '@/lib/appilix';
 
 export interface PushNotificationPayload {
   title: string;
@@ -312,7 +312,7 @@ class PushNotificationManager {
         if (isAppilix()) {
           const { data: { user } } = await supabase.auth.getUser();
           if (user?.id) {
-            registerAppilixIdentity(user.id);
+            registerAppilixIdentity(getAppilixIdentity() || user.id);
           }
         }
 
