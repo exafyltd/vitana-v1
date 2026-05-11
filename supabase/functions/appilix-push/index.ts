@@ -59,20 +59,29 @@ Deno.serve(async (req) => {
     const responseText = await response.text();
     console.log(`📥 Appilix response: ${response.status} — ${responseText}`);
 
-    // Detect identity-not-found and log diagnostic
-    const identityNotFound = responseText.toLowerCase().includes('identity') &&
-                              responseText.toLowerCase().includes('not found');
-    if (identityNotFound) {
-      console.warn(`⚠️ Appilix: user_identity "${user_identity}" is not registered. ` +
-        `The user needs to open the app so the early identity script can register their device. ` +
-        `No broadcast fallback — failing safely for this user only.`);
+    // Appilix returns HTTP 200 with { status: false, message: "..." } when
+    // delivery fails (e.g. no device registered for that user_identity).
+    // Parse the JSON body and only report success when status is truly true.
+    let parsed: { status?: boolean | string; message?: string } | null = null;
+    try { parsed = JSON.parse(responseText); } catch { /* not JSON */ }
+    const appilixStatus = parsed?.status;
+    const appilixMessage = parsed?.message || '';
+    const deliverySucceeded =
+      response.ok && (appilixStatus === true || appilixStatus === 'true');
+
+    if (!deliverySucceeded) {
+      console.warn(
+        `⚠️ Appilix push DROPPED for user_identity="${user_identity}": ` +
+        `${appilixMessage || responseText}`
+      );
     }
 
     return new Response(
       JSON.stringify({
-        success: response.ok && !identityNotFound,
+        success: deliverySucceeded,
         status: response.status,
-        identity_registered: !identityNotFound,
+        appilix_status: appilixStatus,
+        appilix_message: appilixMessage,
         appilix_response: responseText,
       }),
       { status: response.ok ? 200 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
