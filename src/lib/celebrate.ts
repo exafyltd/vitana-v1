@@ -465,16 +465,14 @@ export function celebrate(input: CelebrateInput): { fired: boolean; throttled: b
 
 /**
  * Encouraging copy for empty states across surfaces (Health, My Journey,
- * Autopilot popup, Index Sheet). Single source of truth so voice stays
- * consistent.
+ * Autopilot popup, Index Sheet). Strings come from the i18n catalog so the
+ * voice stays consistent across locales — keys live in `empty.*`.
  */
 export const EMPTY_COPY = {
-  indexSheetNextDays:
-    "No active Autopilot suggestions. When something lands here, completing it will move your Index.",
-  indexSheetHorizon: "Need a few more days of data to project your 30-day arc.",
-  myJourneyPath:
-    "Your path is just beginning. When Autopilot has suggestions, they'll appear here as a path you can walk.",
-  myJourneyOnePillar: "Pick one small thing — watch your Index move.",
-  autopilotPopupZero: "Select actions to see Index lift.",
-  healthEmpty: "Log your first entry to start your Index.",
+  get indexSheetNextDays() { return lookup('empty.indexSheetNextDays'); },
+  get indexSheetHorizon() { return lookup('empty.indexSheetHorizon'); },
+  get myJourneyPath() { return lookup('empty.myJourneyPath'); },
+  get myJourneyOnePillar() { return lookup('empty.myJourneyOnePillar'); },
+  get autopilotPopupZero() { return lookup('empty.autopilotPopupZero'); },
+  get healthEmpty() { return lookup('empty.healthEmpty'); },
 } as const;

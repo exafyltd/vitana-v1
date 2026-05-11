@@ -220,7 +220,7 @@ export function MobileIdentityCard({
                 backgroundColor: `${tier.color}20`,
                 color: tier.color
               }}
-            >{t('screens.profile.labelTopVitanapercentile', { label: tier.label, vitanaPercentile })}
+            >{t('screens.profile.labelTopVitanapercentile', { label: t(tier.labelKey), vitanaPercentile })}
             </div>
 
             {/* Explanation */}

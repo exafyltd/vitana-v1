@@ -13,6 +13,15 @@
     "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen",
     "noData": "Keine Daten verfügbar",
     "noMessages": "Keine Nachrichten",
-    "noNotifications": "Keine Benachrichtigungen"
+    "noNotifications": "Keine Benachrichtigungen",
+    "indexSheetNextDays": "Keine aktiven Autopilot-Vorschläge. Sobald hier etwas erscheint, hebt das Erledigen deinen Index.",
+    "indexSheetHorizon": "Wir brauchen noch ein paar Tage Daten, um deinen 30-Tage-Verlauf zu projizieren.",
+    "myJourneyPath": "Dein Weg fängt gerade erst an. Sobald Autopilot Vorschläge hat, erscheinen sie hier als Pfad, den du gehen kannst.",
+    "myJourneyOnePillar": "Wähle eine kleine Sache – beobachte, wie sich dein Index bewegt.",
+    "autopilotPopupZero": "Wähle Aktionen aus, um den Index-Anstieg zu sehen.",
+    "healthEmpty": "Erfasse deinen ersten Eintrag, um deinen Index zu starten.",
+    "noActionsMatchedYet": "Noch keine Aktionen zugeordnet – Autopilot formt Vorschläge.",
+    "actionsPendingOne": "{count} Aktion ausstehend",
+    "actionsPendingOther": "{count} Aktionen ausstehend"
   }
 }

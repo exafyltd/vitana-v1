@@ -185,7 +185,7 @@ export default function VitanaIndexDetail() {
               {index && (
                 <>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant={tierBadgeVariant(index.tier.label)}>{index.tier.label}</Badge>
+                    <Badge variant={tierBadgeVariant(index.tier.label)}>{t(index.tier.labelKey)}</Badge>
                     <Badge variant="outline" className="gap-1">
                       <Scale className="w-3 h-3" />
                       {balanceChipLabel(index.balanceFactor)}
