@@ -13,6 +13,8 @@
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
 import { pinIOSLoudspeakerRoute, kickIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
+// VTID-02919 (B0d.4-frontend): ORB wake reliability timeline.
+import { postWakeTimelineEvent, takePendingWakeClickedAt } from './wakeTimelineClient';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -53,6 +55,20 @@ export class OrbVoiceClient {
   private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
   private turnCompleteTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  // VTID-02919 (B0d.4-frontend): first-audio-out emits exactly once per
+  // session. The wake-clicked timestamp is captured in module state by
+  // captureWakeClickedAt() inside the user-gesture handler and replayed
+  // here via takePendingWakeClickedAt() after session-start returns.
+  private firstAudioEmitted: boolean = false;
+  // meta.wake_brief from /live/session/start. Stored for downstream
+  // consumers (e.g. a future slice that speaks the backend-provided line).
+  private wakeBrief: {
+    decision_id: string;
+    selected_kind: string;
+    user_facing_line: string;
+    suppression_reason: string | null;
+  } | null = null;
 
   // Silence detection for auto end-turn
   private silenceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -127,6 +143,15 @@ export class OrbVoiceClient {
   private config: OrbVoiceClientConfig;
   private callbacks: OrbVoiceClientCallbacks;
 
+  /**
+   * VTID-02919 (B0d.4-frontend): expose the wake-brief decision the
+   * gateway returned at session-start. Future slices consume this to
+   * speak the backend-owned greeting line; B0d.4 only stores it.
+   */
+  public getWakeBrief() {
+    return this.wakeBrief;
+  }
+
   constructor(
     config: OrbVoiceClientConfig,
     callbacks: OrbVoiceClientCallbacks = {}
@@ -193,7 +218,29 @@ export class OrbVoiceClient {
       if (!data.ok) throw new Error(data.error || 'Failed to start session');
 
       this.sessionId = data.session_id;
-      
+
+      // VTID-02919 (B0d.4-frontend): capture the wake-brief decision the
+      // gateway returned. Stored for downstream consumers; B0d.4 does not
+      // yet speak it (measure-before-optimize discipline).
+      if (data.meta && data.meta.wake_brief && typeof data.meta.wake_brief === 'object') {
+        this.wakeBrief = data.meta.wake_brief;
+      }
+
+      // VTID-02919: flush the pending wake_clicked event captured at
+      // the user-gesture moment. The POST happens after session-start
+      // returns (which is when we have a sessionId), but the `at`
+      // timestamp is the original tap moment — time_to_first_audio_ms
+      // stays accurate.
+      const pendingAt = takePendingWakeClickedAt();
+      if (pendingAt && this.sessionId) {
+        postWakeTimelineEvent({
+          gatewayUrl: this.GATEWAY_URL,
+          sessionId: this.sessionId,
+          name: 'wake_clicked',
+          at: pendingAt,
+        });
+      }
+
       // Initialize diagnostics
       this.diagnostics = {
         sessionId: this.sessionId!,
@@ -703,6 +750,19 @@ export class OrbVoiceClient {
       }
       source.start(this.nextStartTime);
       this.nextStartTime += buffer.duration;
+
+      // VTID-02919 (B0d.4-frontend): first audio frame of this session
+      // reached the speakers. Emit exactly once per session — the
+      // aggregator uses this together with wake_clicked to compute
+      // time_to_first_audio_ms.
+      if (!this.firstAudioEmitted && this.sessionId) {
+        this.firstAudioEmitted = true;
+        postWakeTimelineEvent({
+          gatewayUrl: this.GATEWAY_URL,
+          sessionId: this.sessionId,
+          name: 'first_audio_output',
+        });
+      }
 
       this.callbacks.onSpeakingChange?.(true);
       source.onended = () => {
