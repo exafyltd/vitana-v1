@@ -37,11 +37,7 @@ export function MobileHealthSnapshot({
   const { translate } = useTranslation();
   const tier = getVitanaIndexTier(vitanaIndex);
   
-  // Translate tier label based on tier.label value
-  const getTierLabel = () => {
-    const labelKey = tier.label.toLowerCase().replace(' ', '');
-    return translate(`vitanaIndex.${labelKey}`, tier.label);
-  };
+  const getTierLabel = () => translate(tier.labelKey, tier.label);
   
   // Tile order matches the Index drawer.
   const PILLAR_CONFIG = [

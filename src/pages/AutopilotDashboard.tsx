@@ -118,9 +118,9 @@ function NowCard() {
 
   const trendLabel = (() => {
     if (trend === null) return null;
-    if (trend > 0) return { icon: TrendingUp, text: `+${trend} this week`, cls: "text-green-600" };
-    if (trend < 0) return { icon: TrendingDown, text: `${trend} this week`, cls: "text-red-600" };
-    return { icon: TrendingUp, text: "Steady this week", cls: "text-muted-foreground" };
+    if (trend > 0) return { icon: TrendingUp, text: t('screens.autopilotdashboard.trendUpThisWeek', { delta: trend }), cls: "text-green-600" };
+    if (trend < 0) return { icon: TrendingDown, text: t('screens.autopilotdashboard.trendDownThisWeek', { delta: trend }), cls: "text-red-600" };
+    return { icon: TrendingUp, text: t('screens.autopilotdashboard.trendSteadyThisWeek'), cls: "text-muted-foreground" };
   })();
 
   return (
@@ -134,7 +134,7 @@ function NowCard() {
         </div>
         <div className="space-y-1 min-w-0">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('screens.autopilotdashboard.yourIndex')}</p>
-          {tier && <p className="text-base font-semibold">{tier.label}</p>}
+          {tier && <p className="text-base font-semibold">{t(tier.labelKey)}</p>}
           {trendLabel && (
             <p className={`text-xs flex items-center gap-1 ${trendLabel.cls}`}>
               <trendLabel.icon className="w-3 h-3" />
@@ -145,6 +145,27 @@ function NowCard() {
       </CardContent>
     </Card>
   );
+}
+
+// Maps the canonical English primary_goal string saved by LifeCompassPopup
+// (the SUGGESTED_GOALS canonicalTitle list) onto the corresponding i18n key
+// in lifeCompass.goals.<category>.title. Custom user-typed goals fall through
+// untranslated — there's nothing to look up.
+const COMPASS_GOAL_KEYS: Record<string, string> = {
+  "Build Financial Freedom": "lifeCompass.goals.wealth.title",
+  "Find Life Partner": "lifeCompass.goals.relationship.title",
+  "Transform Health": "lifeCompass.goals.health.title",
+  "Advance Career": "lifeCompass.goals.career.title",
+  "Master New Skills": "lifeCompass.goals.learning.title",
+  "Spiritual Life": "lifeCompass.goals.spiritual.title",
+  "Improve quality of life and extend lifespan": "lifeCompass.goals.longevity.title",
+};
+
+function localizePrimaryGoal(primaryGoal: string): string {
+  const key = COMPASS_GOAL_KEYS[primaryGoal];
+  if (!key) return primaryGoal;
+  const translated = t(key);
+  return translated || primaryGoal;
 }
 
 function CompassCard({ alignedCount }: { alignedCount: number }) {
@@ -172,11 +193,11 @@ function CompassCard({ alignedCount }: { alignedCount: number }) {
         </div>
         {compass?.primary_goal ? (
           <>
-            <p className="text-base font-semibold leading-snug line-clamp-2">{t('screens.autopilotdashboard.headingTowardPrimary_goal', { primary_goal: compass.primary_goal })}</p>
+            <p className="text-base font-semibold leading-snug line-clamp-2">{t('screens.autopilotdashboard.headingTowardPrimary_goal', { primary_goal: localizePrimaryGoal(compass.primary_goal) })}</p>
             <p className="text-xs text-muted-foreground">
               {alignedCount > 0
-                ? `${alignedCount} action${alignedCount === 1 ? "" : "s"} pending`
-                : "No actions matched yet — Autopilot is shaping suggestions."}
+                ? t(alignedCount === 1 ? 'empty.actionsPendingOne' : 'empty.actionsPendingOther', { count: alignedCount })
+                : t('empty.noActionsMatchedYet')}
             </p>
           </>
         ) : (

@@ -72,7 +72,7 @@ export function VitanaIndexTrajectoryCard() {
   }, [history, user?.created_at]);
 
   const projectedEnd = points.length > 0 ? points[points.length - 1] : null;
-  const projectedTier = projectedEnd ? getVitanaIndexTier(projectedEnd.score).label : null;
+  const projectedTier = projectedEnd ? t(getVitanaIndexTier(projectedEnd.score).labelKey) : null;
 
   const isLoading = indexLoading || historyLoading;
 
@@ -130,7 +130,7 @@ export function VitanaIndexTrajectoryCard() {
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">{t('screens.health.todayTotal', { total: index.total })}</Badge>
-            <Badge variant="outline" className="text-xs">{index.tier.label}</Badge>
+            <Badge variant="outline" className="text-xs">{t(index.tier.labelKey)}</Badge>
           </div>
         </div>
 

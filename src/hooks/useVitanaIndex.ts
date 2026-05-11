@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getVitanaIndexTier, type VitanaIndexTier } from "@/lib/vitanaIndex";
+import { lookup } from "@/lib/i18n-toast";
 
 /**
  * The five canonical Vitana pillars. These are the only pillars the Vitana
@@ -175,14 +176,7 @@ export function useVitanaIndex(): UseVitanaIndexResult {
 }
 
 export function pillarLabel(key: VitanaPillarKey): string {
-  const labels: Record<VitanaPillarKey, string> = {
-    nutrition: "Nutrition",
-    hydration: "Hydration",
-    exercise:  "Exercise",
-    sleep:     "Sleep",
-    mental:    "Mental",
-  };
-  return labels[key];
+  return lookup(`vitanaIndex.${key}`);
 }
 
 export function pillarKeys(): VitanaPillarKey[] {

@@ -4192,6 +4192,15 @@
       "howCanIHelpWithYour": "Wie kann ich dir heute bei deiner Gesundheit helfen?",
       "askAboutYourHealthSymptomsGoals": "Frage nach deiner Gesundheit, Symptomen oder Zielen...",
       "nextStep": "Nächster Schritt",
+      "dayN": "Tag {day}",
+      "day90Plus": "Tag 90+",
+      "ofYourFirst90Days": "Von deinen ersten 90 Tagen.",
+      "sustainedPracticePast90DayArc": "Anhaltende Praxis – du bist über den 90-Tage-Bogen hinaus.",
+      "sustainingEliteKeepAllPillars": "Elite gehalten. Halte alle fünf Säulen stabil.",
+      "onTrackReachTier": "Auf Kurs, {tier} ({min}+) zu erreichen.",
+      "onTrackReachTierKeepLifting": "Auf Kurs, {tier} ({min}+) zu erreichen – steigere weiterhin {pillar}.",
+      "reachTierByLiftingPillar": "Erreiche {tier} ({min}+), indem du vor allem {pillar} steigerst – aktuell {current}/200.",
+      "reachTierBySteadyPace": "Erreiche {tier} ({min}+) durch ein stetiges Tempo.",
       "day0": "Tag 0",
       "text90dayJourneyWaves": "90-Tage-Reisewellen",
       "healthProfile": "Gesundheitsprofil",
@@ -8109,7 +8118,10 @@
       "newStopsAppearAsAutopilotLearns": "Neue Stopps erscheinen, während Autopilot mehr über dich erfährt.",
       "openAutopilot": "Autopilot öffnen",
       "headingTowardPrimary_goal": "Unterwegs zu: {primary_goal}",
-      "actionValue0": "Aktion {value0}"
+      "actionValue0": "Aktion {value0}",
+      "trendUpThisWeek": "+{delta} diese Woche",
+      "trendDownThisWeek": "{delta} diese Woche",
+      "trendSteadyThisWeek": "Diese Woche stabil"
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",

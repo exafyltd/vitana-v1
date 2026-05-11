@@ -57,11 +57,11 @@ function VitanaIndexMiniBase({
 
   const getScoreLabel = (score: number) => {
     if (config?.scoring_tiers) {
-      const tier = config.scoring_tiers.find(t => score >= t.min && score <= t.max);
+      const tier = config.scoring_tiers.find(tt => score >= tt.min && score <= tt.max);
       if (tier) return tier.label;
     }
     // Fallback to default logic
-    return getVitanaIndexTier(score).label;
+    return t(getVitanaIndexTier(score).labelKey);
   };
 
   if (variant === "badge") {
