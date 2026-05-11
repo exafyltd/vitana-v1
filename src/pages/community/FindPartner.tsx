@@ -263,10 +263,10 @@ export default function FindPartner() {
                 ))}
               </div>
             ) : (
-              // Desktop: keep the same card design as mobile, but lay it
-              // out in the News surface's alternating big+small+small /
-              // small+small+big grid so the page reads like News.
-              renderNewsGrid(matches, (m) => (
+              // Desktop: keep the same card design as mobile, laid out in
+              // a uniform 3-column grid (responsive down to 1 column on
+              // narrow desktops) so every row stays tidy.
+              renderDesktopGrid(matches, (m) => (
                 <FindPartnerMatchCard
                   key={m.match_id}
                   match={m}
@@ -311,7 +311,7 @@ export default function FindPartner() {
                 ))}
               </div>
             ) : (
-              renderNewsGrid(myPosts, (it) => (
+              renderDesktopGrid(myPosts, (it) => (
                 <IntentCard
                   key={it.intent_id}
                   intent={it}
@@ -419,34 +419,22 @@ export default function FindPartner() {
 }
 
 /**
- * Render a list of items in the same alternating big+small+small /
- * small+small+big news-style grid used by the Community News surface
- * (Community.tsx). Even rows are col-span-6 + col-span-3 + col-span-3;
- * odd rows mirror the layout. Items themselves are unchanged — only
- * the desktop arrangement is news-styled.
+ * Render a list of items in a uniform 3-column desktop grid. All cards
+ * have the same width so image aspect ratios + body content render
+ * consistently — no alternating big/small that leaves rows uneven when
+ * cards have a fixed-aspect image + variable-height body.
  */
-function renderNewsGrid<T>(
+function renderDesktopGrid<T>(
   items: T[],
   renderItem: (item: T) => React.ReactNode,
 ): React.ReactNode {
-  const rows: React.ReactNode[] = [];
-  for (let i = 0; i < items.length; i += 3) {
-    const rowItems = items.slice(i, i + 3);
-    const isEvenRow = (i / 3) % 2 === 0;
-    const sizes: Array<'col-span-6' | 'col-span-3'> = isEvenRow
-      ? ['col-span-6', 'col-span-3', 'col-span-3']
-      : ['col-span-3', 'col-span-3', 'col-span-6'];
-    rows.push(
-      <div key={i} className="grid grid-cols-12 gap-6 mb-6">
-        {rowItems.map((it, idx) => (
-          <div key={idx} className={sizes[idx]}>
-            {renderItem(it)}
-          </div>
-        ))}
-      </div>,
-    );
-  }
-  return <>{rows}</>;
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((it, idx) => (
+        <div key={idx}>{renderItem(it)}</div>
+      ))}
+    </div>
+  );
 }
 
 interface EmptyStateProps {
