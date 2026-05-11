@@ -4192,6 +4192,15 @@
       "howCanIHelpWithYour": "How can I help with your health today?",
       "askAboutYourHealthSymptomsGoals": "Ask about your health, symptoms, or goals...",
       "nextStep": "Next step",
+      "dayN": "Day {day}",
+      "day90Plus": "Day 90+",
+      "ofYourFirst90Days": "Of your first 90 days.",
+      "sustainedPracticePast90DayArc": "Sustained practice — you're past the 90-day arc.",
+      "sustainingEliteKeepAllPillars": "Sustaining Elite. Keep all five pillars steady.",
+      "onTrackReachTier": "On track to reach {tier} ({min}+).",
+      "onTrackReachTierKeepLifting": "On track to reach {tier} ({min}+) — keep lifting {pillar}.",
+      "reachTierByLiftingPillar": "Reach {tier} ({min}+) by lifting {pillar} most — currently {current}/200.",
+      "reachTierBySteadyPace": "Reach {tier} ({min}+) by keeping a steady pace.",
       "day0": "Day 0",
       "text90dayJourneyWaves": "90-day journey waves",
       "healthProfile": "Health Profile",
@@ -8111,7 +8120,10 @@
       "newStopsAppearAsAutopilotLearns": "New stops appear as Autopilot learns more about you.",
       "openAutopilot": "Open Autopilot",
       "headingTowardPrimary_goal": "Heading toward: {primary_goal}",
-      "actionValue0": "action{value0}"
+      "actionValue0": "action{value0}",
+      "trendUpThisWeek": "+{delta} this week",
+      "trendDownThisWeek": "{delta} this week",
+      "trendSteadyThisWeek": "Steady this week"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",

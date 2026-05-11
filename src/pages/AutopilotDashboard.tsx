@@ -118,9 +118,9 @@ function NowCard() {
 
   const trendLabel = (() => {
     if (trend === null) return null;
-    if (trend > 0) return { icon: TrendingUp, text: `+${trend} this week`, cls: "text-green-600" };
-    if (trend < 0) return { icon: TrendingDown, text: `${trend} this week`, cls: "text-red-600" };
-    return { icon: TrendingUp, text: "Steady this week", cls: "text-muted-foreground" };
+    if (trend > 0) return { icon: TrendingUp, text: t('screens.autopilotdashboard.trendUpThisWeek', { delta: trend }), cls: "text-green-600" };
+    if (trend < 0) return { icon: TrendingDown, text: t('screens.autopilotdashboard.trendDownThisWeek', { delta: trend }), cls: "text-red-600" };
+    return { icon: TrendingUp, text: t('screens.autopilotdashboard.trendSteadyThisWeek'), cls: "text-muted-foreground" };
   })();
 
   return (
