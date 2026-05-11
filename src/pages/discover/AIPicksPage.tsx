@@ -89,7 +89,7 @@ function AIPicksInner() {
         reason: p.match_reasons?.[0]?.text ?? p.rank_reasons?.[0] ?? '',
         provider: p.brand ?? 'Vitana Shop',
         image: p.images?.[0] ?? null,
-        badge: match >= 80 ? 'Perfect Match' : match >= 60 ? 'Great Match' : 'Good Match',
+        badge: match >= 80 ? t('discover.matchPerfect') : match >= 60 ? t('discover.matchGreat') : t('discover.matchGood'),
         type: hasDiscount ? 'deal' : 'supplement',
         category: p.category,
         subcategory: p.subcategory,

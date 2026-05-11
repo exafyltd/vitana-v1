@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from '@/hooks/use-toast';
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { notifyError } from '@/lib/i18n-toast';
+import { notifyError, t } from '@/lib/i18n-toast';
 
 interface AddToCartButtonProps {
   item: {
@@ -60,7 +60,7 @@ export function AddToCartButton({
       onClick={handleClick}
       variant={isInCart ? "outline" : variant}
       size={size}
-      aria-label={isInCart ? "In Cart" : "Add to Cart"}
+      aria-label={isInCart ? t('screens.cart.inCart') : t('screens.cart.addToCart')}
       className={cn(
         "transition-all duration-300",
         isInCart && "border-primary text-primary",
@@ -74,7 +74,7 @@ export function AddToCartButton({
       )}
       {showLabel && size !== "icon" && (
         <span className="ml-2">
-          {isInCart ? "In Cart" : "Add to Cart"}
+          {isInCart ? t('screens.cart.inCart') : t('screens.cart.addToCart')}
         </span>
       )}
     </Button>
