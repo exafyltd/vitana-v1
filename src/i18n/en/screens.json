@@ -2818,6 +2818,8 @@
     "cart": {
       "yourCart": "Your Cart",
       "yourCartEmpty": "Your cart is empty",
+      "addToCart": "Add to Cart",
+      "inCart": "In Cart",
       "orderSummary": "Order Summary",
       "calculatedAtCheckout": "Calculated at checkout",
       "shoppingCartVitana": "Shopping Cart | VITANA",
