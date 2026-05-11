@@ -108,8 +108,13 @@ interface IntentCardProps {
    * user's own card reads at a glance — title + scope + photo, with
    * the meta chips sitting on the photo. Falls back to the default
    * layout when there's no cover photo to overlay on.
+   *
+   * `board`: same overlay treatment, but pinned to the bottom-right of
+   * the photo. Used on the desktop Community Board so each card's
+   * location + match count read at-a-glance on the photo while the
+   * body below stays focused on title + scope.
    */
-  variant?: 'default' | 'my-posts';
+  variant?: 'default' | 'my-posts' | 'board';
   /**
    * When true, render a deterministic themed cover from the brand
    * library if the intent doesn't carry an explicit `cover_url`. Used
@@ -145,7 +150,11 @@ export function IntentCard({
     explicitCoverUrl ??
     (themedFallback ? pickThemedCover(coverTheme, intent.intent_id) : null);
 
-  const showOverlay = variant === 'my-posts' && !!coverUrl;
+  const showOverlay = (variant === 'my-posts' || variant === 'board') && !!coverUrl;
+  const overlayClass =
+    variant === 'board'
+      ? 'absolute bottom-2 right-2 flex flex-wrap items-center justify-end gap-1.5'
+      : 'absolute bottom-2 left-2 flex flex-wrap items-center gap-1.5';
   const isLocationChip = (c: string) => c.startsWith('📍');
   const overlayLocationChips = showOverlay ? chips.filter(isLocationChip) : [];
   const stripChips = showOverlay ? chips.filter((c) => !isLocationChip(c)) : chips;
@@ -178,7 +187,7 @@ export function IntentCard({
             }}
           />
           {showOverlay && overlayHasContent && (
-            <div className="absolute bottom-2 left-2 flex flex-wrap items-center gap-1.5">
+            <div className={overlayClass}>
               {overlayLocationChips.map((c, i) => (
                 <span
                   key={i}
