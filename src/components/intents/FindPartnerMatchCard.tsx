@@ -55,7 +55,6 @@ import {
 } from '@/lib/intentKind';
 import { pickThemedCover, coverFallbackForTheme, type CoverTheme } from '@/lib/intentCovers';
 import { DisputeModal } from './DisputeModal';
-import { NewsCard } from '@/components/crossover/NewsCard';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface FindPartnerMatchCardProps {
@@ -66,15 +65,6 @@ interface FindPartnerMatchCardProps {
   sourceCategory: string | null;
   perspective: 'outgoing' | 'incoming';
   onAction?: () => void;
-  /**
-   * Desktop News-style layout — full-bleed cover photo with overlay
-   * content, identical visual language to the News screen cards. Used
-   * on the Find a Match → My Matches grid at >= lg viewports so cards
-   * read consistently with the rest of the surface.
-   */
-  desktop?: boolean;
-  /** Forwarded to the outer card (desktop only) so the parent grid can size it. */
-  className?: string;
 }
 
 const VERTICAL_THEME: Record<
@@ -112,8 +102,6 @@ export function FindPartnerMatchCard({
   sourceCategory,
   perspective,
   onAction,
-  desktop = false,
-  className,
 }: FindPartnerMatchCardProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -217,102 +205,6 @@ export function FindPartnerMatchCard({
       setBusy(null);
     }
   };
-
-  // Desktop News-style layout: reuse the NewsCard component so My
-  // Matches reads identically to the News surface — full cover with
-  // pillar badge, score badge, identity strip, and an Interest/Pass
-  // action button overlaid in the bottom-right.
-  if (desktop) {
-    const desktopTitle = isRedacted
-      ? t('screens.intents.anonymousMatch')
-      : displayName ?? (handle ? `@${handle}` : 'Member');
-    const desktopImage = coverUrl ?? coverFallbackForTheme(coverTheme);
-    const showActions = !isMutual && !isClosed;
-
-    return (
-      <>
-        <NewsCard
-          title={desktopTitle}
-          description={bodyDescription}
-          imageUrl={desktopImage}
-          fallbackImageUrl={coverFallbackForTheme(coverTheme)}
-          pillar={theme.label}
-          timestamp={activeLabel ?? undefined}
-          author={
-            !isRedacted && displayName
-              ? { name: displayName, avatar: match.partner_avatar_url ?? undefined }
-              : undefined
-          }
-          authorId={counterpartyVid ?? undefined}
-          authorHandle={counterpartyVid ?? undefined}
-          location={coverTags[0]}
-          onClick={canOpenProfile ? openProfile : undefined}
-          utilityTopRight={
-            <div className="flex flex-col items-end gap-1.5">
-              <div className="rounded-2xl bg-black/65 text-white backdrop-blur-sm px-3 py-1.5 shadow-sm flex flex-col items-end gap-0.5">
-                <span className="text-xs font-semibold leading-tight">
-                  {t('screens.intents.scorepctMatch', { scorePct })}
-                </span>
-              </div>
-              {match.compass_aligned && (
-                <span className="px-2.5 py-0.5 text-[11px] font-medium rounded-full bg-amber-300/95 text-amber-950 shadow-sm">
-                  {t('screens.intents.compassaligned')}
-                </span>
-              )}
-            </div>
-          }
-          actionButton={
-            isMutual ? (
-              <span className="rounded-full bg-emerald-500/90 text-white text-xs font-semibold px-3 py-1.5 shadow-lg backdrop-blur-sm">
-                {t('screens.intents.mutual')}
-              </span>
-            ) : isClosed ? (
-              <span className="rounded-full bg-black/60 text-white/90 text-xs font-medium px-3 py-1.5 shadow-lg backdrop-blur-sm">
-                {match.state}
-              </span>
-            ) : showActions ? (
-              <div
-                className="flex items-center gap-1.5 pointer-events-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Button
-                  onClick={expressInterest}
-                  disabled={busy !== null}
-                  size="sm"
-                  className="h-8 px-3.5 rounded-full text-xs font-semibold gap-1 shadow-lg bg-white text-foreground hover:bg-white/90"
-                >
-                  {busy === 'interest' ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <>
-                      <Heart className="h-3.5 w-3.5" />
-                      {t('screens.intents.interest')}
-                    </>
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={decline}
-                  disabled={busy !== null}
-                  size="sm"
-                  className="h-8 px-3.5 rounded-full text-xs font-medium bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm"
-                >
-                  {busy === 'decline' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Pass'}
-                </Button>
-              </div>
-            ) : null
-          }
-          className={className}
-        />
-        <DisputeModal
-          open={disputeOpen}
-          onOpenChange={setDisputeOpen}
-          matchId={match.match_id}
-          onRaised={() => onAction?.()}
-        />
-      </>
-    );
-  }
 
   return (
     <article className="rounded-3xl bg-card overflow-hidden border border-black/5 shadow-[0_10px_30px_-12px_rgba(15,23,42,0.18)]">
