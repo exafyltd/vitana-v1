@@ -7,6 +7,7 @@ import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import { isAllDayEvent, getSmartBadge, getEventAction, EventActionType } from "./calendarSmartUtils";
+import { EventPillarDot } from "./EventPillarDot";
 
 interface SmartEventCardProps {
   event: CalendarEvent;
@@ -52,7 +53,10 @@ export function SmartEventCard({ event, onEventClick, onAction, showDate = false
           {allDay ? null : <Clock className="w-3 h-3 text-muted-foreground shrink-0" />}
           <span className="text-xs text-muted-foreground">{formatTime()}</span>
         </div>
-        <h4 className="text-sm font-medium truncate">{event.title}</h4>
+        <h4 className="text-sm font-medium truncate flex items-center gap-1.5">
+          <EventPillarDot event={event} />
+          <span className="truncate">{event.title}</span>
+        </h4>
         {event.location && (
           <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
             <MapPin className="w-3 h-3 shrink-0" />
