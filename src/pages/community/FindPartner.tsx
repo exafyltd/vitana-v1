@@ -296,7 +296,7 @@ export default function FindPartner() {
             ) : (
               // Desktop: same uniform 3-column grid as My Matches / My Posts
               // so the page reads consistently across views. Location + match
-              // chips are overlaid on the photo (bottom-right) so the body
+              // chips are overlaid on the photo (bottom-left) so the body
               // stays focused on title + scope.
               renderDesktopGrid(boardIntents, (it) => (
                 <IntentCard key={it.intent_id} intent={it} themedFallback variant="board" />
