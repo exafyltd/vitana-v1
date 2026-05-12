@@ -63,6 +63,18 @@ interface FormState {
   consent_terms: boolean;
 }
 
+// Optional hero portrait (e.g. Mariia Maksina). Drop a file at
+// `src/assets/maxina-apply-hero.jpg` (portrait orientation, ≥1600×2000,
+// JPEG/WebP), then:
+//
+//   import heroImg from "@/assets/maxina-apply-hero.jpg";
+//   const HERO_BACKGROUND_URL: string | null = heroImg;
+//
+// The overlay below fades the photo into the page gradient so the dark
+// headline copy stays legible. Tweak the overlay stops in the JSX if the
+// portrait you pick is very dark or very bright.
+const HERO_BACKGROUND_URL: string | null = null;
+
 const EMPTY_FORM: FormState = {
   full_name: "",
   email: "",
@@ -261,12 +273,27 @@ export default function Apply() {
         </div>
 
         {/* HERO */}
-        <section className="relative px-5 pb-12 pt-16 md:px-10 md:pt-24">
+        <section className="relative overflow-hidden px-5 pb-12 pt-20 md:px-10 md:pt-28">
+          {HERO_BACKGROUND_URL && (
+            <>
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-full bg-cover bg-center"
+                style={{ backgroundImage: `url(${HERO_BACKGROUND_URL})` }}
+              />
+              {/* Overlay: faint at the top so the photo reads, opaque at the
+                  bottom so the gradient continues seamlessly under value cards. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-full bg-gradient-to-b from-white/25 via-[#FFD7B5]/55 to-[#F8A48A]/95"
+              />
+            </>
+          )}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mx-auto max-w-3xl text-center"
+            className="relative z-10 mx-auto max-w-3xl text-center"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">
               {t("apply.overline")}
