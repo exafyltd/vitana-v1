@@ -164,6 +164,7 @@ const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities")
 const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
@@ -626,6 +627,7 @@ const App = () => {
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
+          <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
