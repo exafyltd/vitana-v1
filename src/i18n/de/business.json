@@ -107,6 +107,20 @@
       "badgeActive": "Aktiv",
       "alreadyReseller": "Sie sind bereits Wiederverkäufer! Schauen Sie im Tab \"Verkaufen & Verdienen\" nach.",
       "cancel": "Abbrechen"
+    },
+    "missionOpportunities": {
+      "title": "Mission-Chancen",
+      "subtitle": "Vom Autopilot vorgeschlagene Wege, die die Langlebigkeitswirtschaft voranbringen",
+      "loading": "Chancen werden geladen…",
+      "error": "Chancen konnten nicht geladen werden",
+      "empty": "Noch keine wirtschaftsbezogenen Empfehlungen. Schau später wieder vorbei.",
+      "viewAll": "Alle Empfehlungen anzeigen",
+      "axisBadge": {
+        "find_match": "Find a Match",
+        "marketplace": "Marktplatz",
+        "income_generation": "Einkommen",
+        "business_formation": "Geschäftsgründung"
+      }
     }
   }
 }
