@@ -164,7 +164,7 @@ export function MissionOpportunitiesCard() {
         </ul>
         <div className="mt-3 flex justify-end">
           <Link
-            to="/community/autopilot"
+            to="/autopilot"
             className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
           >
             {t("screens.business.missionOpportunities.viewAll")}
