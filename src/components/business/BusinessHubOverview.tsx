@@ -9,6 +9,7 @@ import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
 import { BusinessAcceleratorCenterCTA } from "./BusinessAcceleratorCenterCTA";
 import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
+import { MissionOpportunitiesCard } from "./MissionOpportunitiesCard";
 import {
   SplitBar,
   SplitBarList,
@@ -131,6 +132,12 @@ export function BusinessHubOverview({
             onCreateService={handleCreateService}
             onCreatePromotion={handleCreatePromotion}
           />
+
+          {/* Mission Opportunities — Phase 6 surface 3 of Ultimate Goal hardening.
+              Surfaces autopilot recs with economic_axis != 'none' so the user
+              sees concrete economy-aligned actions on their business surface.
+              docs/GOVERNANCE/ULTIMATE-GOAL.md */}
+          <MissionOpportunitiesCard />
         </SplitBarContent>
 
         <SplitBarContent value="history" className="pt-4">
