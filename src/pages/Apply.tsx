@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -12,16 +12,26 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import SEO from "@/components/SEO";
-import { en as enCatalog } from "@/i18n";
+import { de as deCatalog, en as enCatalog } from "@/i18n";
 import { toast } from "sonner";
 
-// Route-scoped English resolver. Mariia's IG audience is international, so
-// /apply renders in English regardless of the user's app-wide locale. We
-// resolve keys against the EN catalog directly (no global locale mutation,
-// no flicker — Vite bakes catalogs at build time).
-function t(key: string, params?: Record<string, string | number>): string {
+// Route-scoped locale toggle. /apply renders in German by default (the IG
+// post is German-Austrian) with an EN toggle for the international portion
+// of Mariia's audience. We resolve keys against the requested catalog
+// directly — no global locale mutation, no provider race, no flicker.
+type Locale = "de" | "en";
+const CATALOG: Record<Locale, Record<string, unknown>> = {
+  de: deCatalog as Record<string, unknown>,
+  en: enCatalog as Record<string, unknown>,
+};
+
+function resolveKey(
+  catalog: Record<string, unknown>,
+  key: string,
+  params?: Record<string, string | number>,
+): string {
   const parts = key.split(".");
-  let v: unknown = enCatalog;
+  let v: unknown = catalog;
   for (const p of parts) {
     if (v && typeof v === "object" && p in (v as Record<string, unknown>)) {
       v = (v as Record<string, unknown>)[p];
@@ -74,7 +84,14 @@ export default function Apply() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+  const [locale, setLocale] = useState<Locale>("de");
   const formRef = useRef<HTMLFormElement | null>(null);
+
+  const t = useCallback(
+    (key: string, params?: Record<string, string | number>) =>
+      resolveKey(CATALOG[locale], key, params),
+    [locale],
+  );
 
   const utm = useMemo(
     () => ({
@@ -209,6 +226,40 @@ export default function Apply() {
       />
 
       <div className="min-h-screen w-full bg-[radial-gradient(120%_120%_at_50%_0%,#FFF1D6_0%,#FFD7B5_35%,#F8A48A_65%,#C77BB8_100%)] text-neutral-900">
+        {/* LOCALE TOGGLE */}
+        <div
+          className="absolute right-4 top-4 z-10 flex items-center gap-0.5 rounded-full border border-white/60 bg-white/60 p-0.5 text-xs shadow-sm backdrop-blur md:right-8 md:top-6"
+          role="group"
+          aria-label="Language"
+        >
+          <button
+            type="button"
+            onClick={() => setLocale("de")}
+            aria-pressed={locale === "de"}
+            className={cn(
+              "rounded-full px-2.5 py-1 font-semibold tracking-wide transition",
+              locale === "de"
+                ? "bg-neutral-900 text-white"
+                : "text-neutral-700 hover:text-neutral-900",
+            )}
+          >
+            DE
+          </button>
+          <button
+            type="button"
+            onClick={() => setLocale("en")}
+            aria-pressed={locale === "en"}
+            className={cn(
+              "rounded-full px-2.5 py-1 font-semibold tracking-wide transition",
+              locale === "en"
+                ? "bg-neutral-900 text-white"
+                : "text-neutral-700 hover:text-neutral-900",
+            )}
+          >
+            EN
+          </button>
+        </div>
+
         {/* HERO */}
         <section className="relative px-5 pb-12 pt-16 md:px-10 md:pt-24">
           <motion.div
@@ -287,7 +338,7 @@ export default function Apply() {
         <section id="apply" className="px-5 pb-16 md:px-10">
           <div className="mx-auto max-w-xl">
             {success ? (
-              <SuccessPanel email={success} />
+              <SuccessPanel email={success} t={t} />
             ) : (
               <motion.form
                 ref={formRef}
@@ -596,7 +647,13 @@ function ConsentRow({
   );
 }
 
-function SuccessPanel({ email }: { email: string }) {
+function SuccessPanel({
+  email,
+  t,
+}: {
+  email: string;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
