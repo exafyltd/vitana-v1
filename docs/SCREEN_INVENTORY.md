@@ -6,8 +6,8 @@
 ## Summary
 
 - **Pages scanned:** 326
-- **Distinct i18n keys consumed:** 5307
-- **Namespaces in use:** 43
+- **Distinct i18n keys consumed:** 5306
+- **Namespaces in use:** 42
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -26,11 +26,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Apply.tsx
 
-**Status:** ✅ clean — keys consumed: 1, namespaces: 1
-
-**i18n namespaces:**
-
-- `apply` — used: 1, total in shard: 53
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/AuthPages.tsx
 
@@ -2876,7 +2872,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `settings` | 2 |
 | `event` | 2 |
 | `eventCta` | 2 |
-| `apply` | 1 |
 | `businessHub` | 1 |
 | `profile` | 1 |
 | `editProfile` | 1 |

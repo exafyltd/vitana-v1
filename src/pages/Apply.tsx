@@ -12,8 +12,31 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import SEO from "@/components/SEO";
-import { t, lookup } from "@/lib/i18n-toast";
+import { en as enCatalog } from "@/i18n";
 import { toast } from "sonner";
+
+// Route-scoped English resolver. Mariia's IG audience is international, so
+// /apply renders in English regardless of the user's app-wide locale. We
+// resolve keys against the EN catalog directly (no global locale mutation,
+// no flicker — Vite bakes catalogs at build time).
+function t(key: string, params?: Record<string, string | number>): string {
+  const parts = key.split(".");
+  let v: unknown = enCatalog;
+  for (const p of parts) {
+    if (v && typeof v === "object" && p in (v as Record<string, unknown>)) {
+      v = (v as Record<string, unknown>)[p];
+    } else {
+      return key;
+    }
+  }
+  if (typeof v !== "string") return key;
+  if (!params) return v;
+  return Object.entries(params).reduce(
+    (acc, [k, val]) =>
+      acc.replace(new RegExp(`\\{${k}\\}`, "g"), String(val)),
+    v,
+  );
+}
 
 type Device = "ios" | "android";
 
@@ -202,6 +225,10 @@ export default function Apply() {
               <span className="block">{headlineLine1}</span>
               <span className="block italic text-rose-700">{headlineLine2}</span>
             </h1>
+
+            <p className="mx-auto mt-4 font-editorial text-lg italic text-rose-700/90 md:text-2xl">
+              {t("apply.tagline")}
+            </p>
 
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
               {subheadline}
@@ -584,7 +611,7 @@ function SuccessPanel({ email }: { email: string }) {
         {t("apply.successTitle")}
       </h2>
       <p className="mt-3 text-base text-neutral-700">
-        {lookup("apply.successBody", { email })}
+        {t("apply.successBody", { email })}
       </p>
       <p className="mt-2 text-sm text-neutral-500">{t("apply.successHint")}</p>
     </motion.div>
