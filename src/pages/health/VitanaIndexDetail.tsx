@@ -15,6 +15,7 @@ import {
 } from "@/hooks/useVitanaIndex";
 import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
 import VitanaLogDataDialog from "@/components/health/VitanaLogDataDialog";
+import MissionAlignmentCard from "@/components/health/MissionAlignmentCard";
 import { t } from '@/lib/i18n-toast';
 
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
@@ -248,6 +249,11 @@ export default function VitanaIndexDetail() {
 
           {/* Active agents — the 5 pillar agents' health + today's output */}
           <VitanaPillarAgentsPanel />
+
+          {/* Mission Alignment — Phase 6 of Ultimate Goal hardening.
+              Shows how the user's autopilot queue serves the 5 pillars +
+              longevity economy axis. Contract: docs/GOVERNANCE/ULTIMATE-GOAL.md */}
+          <MissionAlignmentCard />
 
           {/* Pillar breakdown — stacked segments */}
           <Card>
