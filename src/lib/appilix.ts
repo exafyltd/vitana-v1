@@ -10,6 +10,13 @@ declare global {
   interface Window {
     appilix?: {
       postMessage: (message: string) => void;
+      /**
+       * Native -> Web reply channel. Set this once to receive responses to
+       * `appilix.postMessage(...)` requests (e.g. `firebase_token`).
+       * The callback should null itself out after handling so it doesn't
+       * intercept unrelated messages.
+       */
+      onmessage?: ((event: { data: string }) => void) | null;
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
@@ -225,4 +232,65 @@ export function getNativeFcmToken(): string | null {
     }
   } catch {}
   return null;
+}
+
+/**
+ * Actively ask Appilix's native shell for the device's FCM token. Per Appilix
+ * support, the shell exposes a JS bridge:
+ *
+ *   appilix.postMessage(JSON.stringify({ type: "firebase_token" }))
+ *   appilix.onmessage = (event) => JSON.parse(event.data).token
+ *
+ * This avoids the user_identity targeting layer (which has wrapper-side
+ * stickiness bugs) by letting our backend dispatch FCM directly via Firebase
+ * Admin SDK using the token we receive.
+ *
+ * Resolves with the token, or null if the bridge is unavailable or doesn't
+ * respond within timeoutMs.
+ */
+export async function requestNativeFcmTokenFromBridge(timeoutMs = 5000): Promise<string | null> {
+  if (typeof window === 'undefined') return null;
+  if (!isAppilix()) return null;
+
+  const existing = getNativeFcmToken();
+  if (existing) return existing;
+
+  return new Promise<string | null>((resolve) => {
+    let settled = false;
+    const finish = (value: string | null) => {
+      if (settled) return;
+      settled = true;
+      if (window.appilix) window.appilix.onmessage = null;
+      resolve(value);
+    };
+
+    try {
+      if (!window.appilix) {
+        finish(null);
+        return;
+      }
+      window.appilix.onmessage = (event) => {
+        try {
+          const data = typeof event?.data === 'string' ? JSON.parse(event.data) : event?.data;
+          const token = (data && (data.token || data.firebase_token)) || null;
+          if (typeof token === 'string' && token) {
+            window.appilix_fcm_token = token;
+            try {
+              document.dispatchEvent(new CustomEvent('appilix:fcm_token', { detail: token }));
+            } catch {}
+            finish(token);
+          }
+        } catch (err) {
+          console.warn('[Appilix] Failed to parse firebase_token reply:', err);
+        }
+      };
+      window.appilix.postMessage(JSON.stringify({ type: 'firebase_token' }));
+    } catch (err) {
+      console.warn('[Appilix] firebase_token request failed:', err);
+      finish(null);
+      return;
+    }
+
+    window.setTimeout(() => finish(null), timeoutMs);
+  });
 }
