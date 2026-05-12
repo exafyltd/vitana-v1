@@ -290,7 +290,7 @@ export default function FindPartner() {
             ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
                 {boardIntents.map((it) => (
-                  <IntentCard key={it.intent_id} intent={it} themedFallback />
+                  <IntentCard key={it.intent_id} intent={it} themedFallback variant="board" />
                 ))}
               </div>
             ) : (
