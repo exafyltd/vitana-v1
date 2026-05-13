@@ -143,7 +143,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `health` — used: 11, total in shard: 55, **MISSING:** health.tabs.overview, health.tabs.medical, health.tabs.supplements, health.pillars.${key}, health.subtitle…
+- `health` — used: 11, total in shard: 76, **MISSING:** health.tabs.overview, health.tabs.medical, health.tabs.supplements, health.pillars.${key}, health.subtitle…
 - `screens` — used: 11, total in shard: 8859
 
 ### src/pages/HealthTracker.tsx

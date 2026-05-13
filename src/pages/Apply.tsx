@@ -361,6 +361,57 @@ export default function Apply() {
           </motion.div>
         </section>
 
+        {/* ABOUT / EXPLAINER — what you're joining + what you receive */}
+        <section className="px-5 pb-12 md:px-10">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto max-w-3xl rounded-3xl border border-white/60 bg-white/75 p-6 shadow-sm backdrop-blur md:p-9"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
+              {t("apply.aboutEyebrow")}
+            </p>
+            <h2 className="mt-2 font-editorial text-2xl text-neutral-900 md:text-3xl">
+              {t("apply.aboutTitle")}
+            </h2>
+
+            <div className="mt-6 divide-y divide-neutral-200/70">
+              <EntityRow
+                label={t("apply.aboutVitanalandLabel")}
+                tag={t("apply.aboutVitanalandTag")}
+                description={t("apply.aboutVitanalandDescription")}
+              />
+              <EntityRow
+                label={t("apply.aboutVitanaLabel")}
+                tag={t("apply.aboutVitanaTag")}
+                description={t("apply.aboutVitanaDescription")}
+              />
+              <EntityRow
+                label={t("apply.aboutMaxinaLabel")}
+                tag={t("apply.aboutMaxinaTag")}
+                description={t("apply.aboutMaxinaDescription")}
+              />
+            </div>
+
+            <div className="mt-8 border-t border-neutral-200/70 pt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-rose-700">
+                {t("apply.benefitsEyebrow")}
+              </p>
+              <h3 className="mt-2 font-editorial text-xl text-neutral-900 md:text-2xl">
+                {t("apply.benefitsTitle")}
+              </h3>
+              <ul className="mt-4 space-y-2.5 text-sm text-neutral-700 md:text-base">
+                <BenefitItem>{t("apply.benefitTicket")}</BenefitItem>
+                <BenefitItem>{t("apply.benefitEvents")}</BenefitItem>
+                <BenefitItem>{t("apply.benefitVitana")}</BenefitItem>
+                <BenefitItem>{t("apply.benefitSeat")}</BenefitItem>
+              </ul>
+            </div>
+          </motion.div>
+        </section>
+
         {/* FORM / SUCCESS */}
         <section id="apply" className="px-5 pb-16 md:px-10">
           <div className="mx-auto max-w-xl">
@@ -569,6 +620,41 @@ function Chip({
       {icon}
       {children}
     </span>
+  );
+}
+
+function EntityRow({
+  label,
+  tag,
+  description,
+}: {
+  label: string;
+  tag: string;
+  description: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5 py-4 md:flex-row md:items-start md:gap-6">
+      <div className="flex items-baseline gap-2 md:w-44 md:shrink-0">
+        <span className="font-editorial text-xl text-neutral-900 md:text-2xl">
+          {label}
+        </span>
+        <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-rose-700">
+          {tag}
+        </span>
+      </div>
+      <p className="text-sm leading-relaxed text-neutral-700 md:text-base">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function BenefitItem({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2.5">
+      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" />
+      <span>{children}</span>
+    </li>
   );
 }
 
