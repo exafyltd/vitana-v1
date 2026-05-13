@@ -336,6 +336,21 @@ class PushNotificationManager {
           if (user?.id) {
             registerAppilixIdentity(user.id);
           }
+
+          // If we still don't have a native FCM token, retry the bridge.
+          // Some Appilix wrapper builds don't respond to the firebase_token
+          // request on the very first attempt after install — a later retry
+          // (e.g. after the native Firebase SDK has finished initializing)
+          // typically succeeds.
+          if (!this.fcmToken) {
+            const nativeToken = await requestNativeFcmTokenFromBridge();
+            if (nativeToken) {
+              console.log('[Push] ✅ Native Appilix FCM token captured on retry');
+              this.fcmToken = nativeToken;
+              await this.registerTokenWithBackend(nativeToken);
+              return;
+            }
+          }
         }
 
         const newToken = await requestFCMToken(this.registration || undefined);
