@@ -274,7 +274,7 @@ export default function Apply() {
         </div>
 
         {/* HERO */}
-        <section className="relative overflow-hidden px-5 pb-12 pt-20 md:px-10 md:pt-28">
+        <section className="relative overflow-hidden px-5 pb-10 pt-12 md:px-10 md:pb-12 md:pt-28">
           {HERO_VIDEO_URL && (
             <>
               <video
@@ -305,22 +305,22 @@ export default function Apply() {
               {t("apply.overline")}
             </p>
 
-            <h1 className="mt-5 font-editorial text-[44px] leading-[1.05] text-neutral-900 md:text-[68px]">
+            <h1 className="mt-3 font-editorial text-[38px] leading-[1.05] text-neutral-900 md:mt-5 md:text-[68px]">
               <span className="block">{headlineLine1}</span>
               <span className="block italic text-rose-700">{headlineLine2}</span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
+            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-6 md:text-lg md:leading-relaxed">
               {subheadline}
             </p>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
+            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-4 md:text-lg md:leading-relaxed">
               {t("apply.subheadlineTicket")}
             </p>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
+            <p className="mx-auto mt-2.5 max-w-xl text-[15px] leading-snug text-neutral-800 md:mt-4 md:text-lg md:leading-relaxed">
               {t("apply.subheadlineCommunity")}
             </p>
 
-            <div className="mx-auto mt-7 flex max-w-xl flex-wrap items-center justify-center gap-2.5">
+            <div className="mx-auto mt-4 flex max-w-xl flex-wrap items-center justify-center gap-2 md:mt-7 md:gap-2.5">
               <Chip icon={<Sparkles className="h-3.5 w-3.5" />}>
                 {t("apply.chipEvents")}
               </Chip>
@@ -334,7 +334,7 @@ export default function Apply() {
 
             <Button
               onClick={scrollToForm}
-              className="mt-9 h-12 rounded-full bg-neutral-900 px-8 text-sm font-semibold tracking-wide text-white hover:bg-neutral-800"
+              className="mt-5 h-11 rounded-full bg-neutral-900 px-8 text-sm font-semibold tracking-wide text-white hover:bg-neutral-800 md:mt-9 md:h-12"
             >
               {t("apply.ctaScroll")}
               <ArrowDown className="ml-2 h-4 w-4" />
