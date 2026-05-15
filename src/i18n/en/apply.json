@@ -53,6 +53,26 @@
     "footerCopy": "MAXINA Experience",
     "footerPrivacy": "Privacy",
     "footerTerms": "Terms",
-    "ariaApplyForm": "Application form"
+    "ariaApplyForm": "Application form",
+    "aboutEyebrow": "What you're joining",
+    "aboutTitle": "More than an app",
+    "aboutVitanalandLabel": "Vitanaland",
+    "aboutVitanalandTag": "Destination",
+    "aboutVitanalandDescription": "The system that holds it all together. Built to lift your health, your quality of life, and your economic independence.",
+    "aboutVitanaLabel": "Vitana",
+    "aboutVitanaTag": "AI Assistant",
+    "aboutVitanaDescription": "Daily guidance across the five longevity pillars — nutrition, hydration, exercise, sleep, mental health. Find a Match brings the right people; the Marketplace — including autopilot tools — turns what you build with them into income.",
+    "aboutMaxinaLabel": "Maxina",
+    "aboutMaxinaTag": "Community",
+    "aboutMaxinaDescription": "Like-minded people walking the longevity path together — where the journey turns into friendships, partnerships, and momentum.",
+    "aboutMaxinaExperienceLabel": "MAXINA Experience",
+    "aboutMaxinaExperienceTag": "Events",
+    "aboutMaxinaExperienceDescription": "Where the community comes to life — 12 summer events in Mallorca, the first wave of MAXINA Experience.",
+    "benefitsEyebrow": "Early access",
+    "benefitsTitle": "What you receive",
+    "benefitTicket": "1 free ticket worth 99 EUR to a MAXINA Experience event",
+    "benefitEvents": "First-wave access to all 12 Mallorca summer events",
+    "benefitVitana": "Personal Vitana AI guidance from day one",
+    "benefitSeat": "A founding seat at the table as Vitanaland evolves"
   }
 }

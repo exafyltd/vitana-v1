@@ -62,6 +62,33 @@
     "uploadDescription": "Bluttests, Bildgebung, Laborergebnisse",
     "unknownProvider": "Unbekannter Anbieter",
     "addSupplement": "Supplement hinzufügen",
-    "uploadFirstReport": "Ersten Bericht hochladen"
+    "uploadFirstReport": "Ersten Bericht hochladen",
+    "missionAlignment": {
+      "title": "Mission-Ausrichtung",
+      "subtitle": "Wie deine Empfehlungen die fünf Säulen und die Langlebigkeitswirtschaft unterstützen",
+      "loading": "Mission-Daten werden geladen…",
+      "error": "Mission-Daten konnten nicht geladen werden",
+      "noRecs": "Noch keine Empfehlungen in deiner Warteschlange.",
+      "summaryServed": "{pct}% deiner Empfehlungen unterstützen die Mission",
+      "summaryServedCount": "{served} von {total} Empfehlungen ausgerichtet",
+      "pillarHeading": "Säulen unterstützt",
+      "economyHeading": "Langlebigkeitswirtschaft",
+      "noPillar": "Nicht säulenbezogen",
+      "noEconomy": "Nicht wirtschaftsbezogen",
+      "pillars": {
+        "nutrition": "Ernährung",
+        "hydration": "Hydration",
+        "exercise": "Bewegung",
+        "sleep": "Schlaf",
+        "mental": "Mentale Gesundheit"
+      },
+      "economyAxes": {
+        "find_match": "Find a Match",
+        "marketplace": "Marktplatz",
+        "income_generation": "Einkommen",
+        "business_formation": "Geschäftsgründung"
+      },
+      "contractLink": "Ultimate Goal-Vertrag anzeigen"
+    }
   }
 }
