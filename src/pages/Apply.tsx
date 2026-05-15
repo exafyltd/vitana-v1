@@ -310,12 +310,14 @@ export default function Apply() {
               <span className="block italic text-rose-700">{headlineLine2}</span>
             </h1>
 
-            <p className="mx-auto mt-4 font-editorial text-lg italic text-rose-700/90 md:text-2xl">
-              {t("apply.tagline")}
-            </p>
-
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
               {subheadline}
+            </p>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
+              {t("apply.subheadlineTicket")}
+            </p>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-800 md:text-lg">
+              {t("apply.subheadlineCommunity")}
             </p>
 
             <div className="mx-auto mt-7 flex max-w-xl flex-wrap items-center justify-center gap-2.5">
@@ -403,6 +405,7 @@ export default function Apply() {
                 label={t("apply.aboutMaxinaExperienceLabel")}
                 tag={t("apply.aboutMaxinaExperienceTag")}
                 description={t("apply.aboutMaxinaExperienceDescription")}
+                tagline={t("apply.tagline")}
               />
             </div>
 
@@ -638,10 +641,12 @@ function EntityRow({
   label,
   tag,
   description,
+  tagline,
 }: {
   label: string;
   tag: string;
   description: string;
+  tagline?: string;
 }) {
   return (
     <div className="flex flex-col gap-1.5 py-4 md:flex-row md:items-start md:gap-6">
@@ -653,9 +658,16 @@ function EntityRow({
           {tag}
         </span>
       </div>
-      <p className="text-sm leading-relaxed text-neutral-700 md:text-base">
-        {description}
-      </p>
+      <div className="flex-1">
+        <p className="text-sm leading-relaxed text-neutral-700 md:text-base">
+          {description}
+        </p>
+        {tagline ? (
+          <p className="mt-1.5 font-editorial text-base italic text-rose-700/90 md:text-lg">
+            {tagline}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }
