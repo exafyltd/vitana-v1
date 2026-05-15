@@ -63,17 +63,18 @@ interface FormState {
   consent_terms: boolean;
 }
 
-// Optional hero portrait (e.g. Mariia Maksina). Drop a file at
-// `src/assets/maxina-apply-hero.jpg` (portrait orientation, ≥1600×2000,
-// JPEG/WebP), then:
+// Optional hero background video (e.g. Mariia Maksina in a wildflower
+// field, short silent loop). Either drop an .mp4 at
+// `src/assets/maxina-apply-hero.mp4` and import it:
 //
-//   import heroImg from "@/assets/maxina-apply-hero.jpg";
-//   const HERO_BACKGROUND_URL: string | null = heroImg;
+//   import heroVideo from "@/assets/maxina-apply-hero.mp4";
+//   const HERO_VIDEO_URL: string | null = heroVideo;
 //
-// The overlay below fades the photo into the page gradient so the dark
-// headline copy stays legible. Tweak the overlay stops in the JSX if the
-// portrait you pick is very dark or very bright.
-const HERO_BACKGROUND_URL: string | null = null;
+// …or point this at a CDN URL. The clip must have no audio track and
+// stay short — autoplay only works muted, and every device downloads
+// the whole file. The warm overlay below fades the footage into the
+// page gradient so the dark headline copy stays legible on any frame.
+const HERO_VIDEO_URL: string | null = null;
 
 const EMPTY_FORM: FormState = {
   full_name: "",
@@ -274,14 +275,19 @@ export default function Apply() {
 
         {/* HERO */}
         <section className="relative overflow-hidden px-5 pb-12 pt-20 md:px-10 md:pt-28">
-          {HERO_BACKGROUND_URL && (
+          {HERO_VIDEO_URL && (
             <>
-              <div
+              <video
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${HERO_BACKGROUND_URL})` }}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="pointer-events-none absolute inset-x-0 top-0 h-full w-full object-cover"
+                src={HERO_VIDEO_URL}
               />
-              {/* Overlay: faint at the top so the photo reads, opaque at the
+              {/* Overlay: faint at the top so the footage reads, opaque at the
                   bottom so the gradient continues seamlessly under value cards. */}
               <div
                 aria-hidden
@@ -392,6 +398,11 @@ export default function Apply() {
                 label={t("apply.aboutMaxinaLabel")}
                 tag={t("apply.aboutMaxinaTag")}
                 description={t("apply.aboutMaxinaDescription")}
+              />
+              <EntityRow
+                label={t("apply.aboutMaxinaExperienceLabel")}
+                tag={t("apply.aboutMaxinaExperienceTag")}
+                description={t("apply.aboutMaxinaExperienceDescription")}
               />
             </div>
 
