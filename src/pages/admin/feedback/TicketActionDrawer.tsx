@@ -634,21 +634,21 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
     );
   }
 
-  const t = detailQuery.data.ticket;
+  const ticket = detailQuery.data.ticket;
   const handoffs = detailQuery.data.handoffs;
-  const isTerminal = TERMINAL_STATUSES.has(t.status);
+  const isTerminal = TERMINAL_STATUSES.has(ticket.status);
 
   return renderShell(
     <div className="space-y-4">
       {/* Status row */}
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <Badge variant={statusVariant(t.status)}>{STATUS_LABEL[t.status] ?? t.status}</Badge>
-        <span className="text-muted-foreground">{t.kind} · {(t.priority || "p2").toUpperCase()}</span>
-        {t.resolver_agent && (
-          <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent', { resolver_agent: t.resolver_agent })}</span>
+        <Badge variant={statusVariant(ticket.status)}>{STATUS_LABEL[ticket.status] ?? ticket.status}</Badge>
+        <span className="text-muted-foreground">{ticket.kind} · {(ticket.priority || "p2").toUpperCase()}</span>
+        {ticket.resolver_agent && (
+          <span className="text-muted-foreground">{t('screens.admin.handledByResolver_agent', { resolver_agent: ticket.resolver_agent })}</span>
         )}
-        {t.vitana_id && (
-          <span className="ml-auto font-mono text-xs text-muted-foreground">{t.vitana_id}</span>
+        {ticket.vitana_id && (
+          <span className="ml-auto font-mono text-xs text-muted-foreground">{ticket.vitana_id}</span>
         )}
       </div>
 
@@ -658,11 +658,11 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           a glance whether the run is healthy or stuck without clicking
           into anything. Polls every 5s while in flight (refetchInterval
           on detailQuery). */}
-      {t.linked_finding_id && (
+      {ticket.linked_finding_id && (
         <PipelineProgress
           execution={detailQuery.data?.execution ?? null}
-          findingId={t.linked_finding_id}
-          playwrightVerified={!!t.playwright_verified}
+          findingId={ticket.linked_finding_id}
+          playwrightVerified={!!ticket.playwright_verified}
         />
       )}
 
@@ -672,21 +672,21 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           ticket flips back to `reopened` for re-attempt. After the
           window expires the card disappears (the supervisor can't
           undo via this surface — change is "kept"). */}
-      {t.status === "resolved"
-        && t.auto_resolved === true
-        && !t.rolled_back_at
-        && t.linked_pr_url
-        && t.resolved_at
-        && (Date.now() - new Date(t.resolved_at).getTime()) < ROLLBACK_WINDOW_MS
+      {ticket.status === "resolved"
+        && ticket.auto_resolved === true
+        && !ticket.rolled_back_at
+        && ticket.linked_pr_url
+        && ticket.resolved_at
+        && (Date.now() - new Date(ticket.resolved_at).getTime()) < ROLLBACK_WINDOW_MS
         && (() => {
-          const elapsedHours = Math.floor((Date.now() - new Date(t.resolved_at!).getTime()) / 3_600_000);
+          const elapsedHours = Math.floor((Date.now() - new Date(ticket.resolved_at!).getTime()) / 3_600_000);
           const remainingHours = Math.max(0, 72 - elapsedHours);
           return (
             <Card className="border-amber-300 bg-amber-50 p-3 dark:border-amber-700 dark:bg-amber-950/30">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1 text-sm">
                   <div className="font-semibold">{t('screens.admin.rollbackAvailable')}</div>
-                  <p className="text-muted-foreground">{t('screens.admin.autoresolvedByDevAutopilotYouCan', { value0: " " })}<a href={t.linked_pr_url ?? "#"} target="_blank" rel="noreferrer"
+                  <p className="text-muted-foreground">{t('screens.admin.autoresolvedByDevAutopilotYouCan', { value0: " " })}<a href={ticket.linked_pr_url ?? "#"} target="_blank" rel="noreferrer"
                        className="underline underline-offset-2">{t('screens.admin.thisFix')}
                     </a>{t('screens.admin.value0ForNextRemaininghoursH', { value0: " ", remainingHours })}
                   </p>
@@ -697,7 +697,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
                   className="border-amber-500 text-amber-900 hover:bg-amber-100 dark:text-amber-100 dark:hover:bg-amber-900/40"
                   disabled={isBusy || rollback.isPending}
                   onClick={() => {
-                    if (!window.confirm(`Revert ${t.linked_pr_url} and reopen ${ticketNumber}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.`)) return;
+                    if (!window.confirm(`Revert ${ticket.linked_pr_url} and reopen ${ticketNumber}?\n\nA revert PR will be created and auto-merged. This deploys a rollback to production.`)) return;
                     rollback.mutate();
                   }}
                 >
@@ -712,10 +712,10 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           surface the revert PR link so the supervisor can audit. The
           ticket has flipped to `reopened` so the normal action panel
           will reappear below. */}
-      {t.rolled_back_at && t.rollback_pr_url && (
+      {ticket.rolled_back_at && ticket.rollback_pr_url && (
         <Card className="border-orange-300 bg-orange-50 p-3 text-sm dark:border-orange-700 dark:bg-orange-950/30">
           <div className="font-semibold">{t('screens.admin.rolledBack')}</div>
-          <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: new Date(t.rolled_back_at).toLocaleString(), value1: " " })}<a href={t.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
+          <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: new Date(ticket.rolled_back_at).toLocaleString(), value1: " " })}<a href={ticket.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
             </a>{t('screens.admin.ticketHasReopenedRefineInstructionsReactivate')}
           </p>
         </Card>
@@ -730,18 +730,18 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           when the supervisor still has a meaningful choice — i.e. before
           the ticket has been activated. Hidden on in_progress (activate
           is the last touch) and on dispatched (linked_finding_id set). */}
-      {!isTerminal && !t.linked_finding_id && t.status !== "in_progress" && (
+      {!isTerminal && !ticket.linked_finding_id && ticket.status !== "in_progress" && (
         <Card className="flex flex-col gap-2 p-3">
           <div className="flex items-center justify-between gap-2">
             <div>
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.kind')}</div>
-              <div className="text-sm">{KIND_OPTIONS.find(k => k.value === t.kind)?.label ?? t.kind}</div>
+              <div className="text-sm">{KIND_OPTIONS.find(k => k.value === ticket.kind)?.label ?? ticket.kind}</div>
             </div>
             <Select
               disabled={isBusy}
-              value={t.kind}
+              value={ticket.kind}
               onValueChange={(value) => {
-                if (value !== t.kind) reclassify.mutate(value);
+                if (value !== ticket.kind) reclassify.mutate(value);
               }}
             >
               <SelectTrigger className="w-48">
@@ -769,16 +769,16 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           instructions, step 2 Generate, step 3 Activate. Hidden once the
           ticket is in_progress or terminal — Activate is the last human
           touch, the rest is autonomous. */}
-      {!isTerminal && t.status !== "in_progress" && (() => {
-        const cfg = RESOLVER_BY_KIND[t.kind];
+      {!isTerminal && ticket.status !== "in_progress" && (() => {
+        const cfg = RESOLVER_BY_KIND[ticket.kind];
         const draftKindHasResolver = !!cfg;
         const existingDraft = cfg ? (t[cfg.draftField] ?? null) : null;
         const hasDraft = !!existingDraft;
-        const draftReadyStatus = ["spec_ready", "answer_ready"].includes(t.status);
+        const draftReadyStatus = ["spec_ready", "answer_ready"].includes(ticket.status);
         // VTID-02678: enable Activate from needs_more_info / reopened too —
         // the spec already exists from the prior failed run; this is a
         // one-click retry path without forcing a re-generate.
-        const isRetryable = ["needs_more_info", "reopened"].includes(t.status) && hasDraft;
+        const isRetryable = ["needs_more_info", "reopened"].includes(ticket.status) && hasDraft;
         const canActivate = draftReadyStatus || isRetryable || !draftKindHasResolver;
         return (
           <Card className="flex flex-col gap-3 border-primary/40 bg-primary/5 p-3">
@@ -906,25 +906,25 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
         );
       })()}
       {isTerminal && (
-        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: STATUS_LABEL[t.status] ?? t.status })}
+        <Card className="bg-muted/30 p-3 text-xs text-muted-foreground">{t('screens.admin.thisTicketTerminalStateValue0No', { value0: STATUS_LABEL[ticket.status] ?? ticket.status })}
         </Card>
       )}
 
       {/* Customer report — what they actually said */}
-      {t.raw_transcript && (
+      {ticket.raw_transcript && (
         <section>
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.customerReport')}</h3>
-          <Card className="whitespace-pre-wrap p-3 text-sm">{t.raw_transcript}</Card>
+          <Card className="whitespace-pre-wrap p-3 text-sm">{ticket.raw_transcript}</Card>
         </section>
       )}
 
       {/* Intake conversation — every turn */}
-      {Array.isArray(t.intake_messages) && t.intake_messages.length > 0 && (
+      {Array.isArray(ticket.intake_messages) && ticket.intake_messages.length > 0 && (
         <section>
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.intakeConversationLengthTurns', { length: t.intake_messages.length })}
+          <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.intakeConversationLengthTurns', { length: ticket.intake_messages.length })}
           </h3>
           <div className="flex flex-col gap-2">
-            {t.intake_messages.map((m, i) => {
+            {ticket.intake_messages.map((m, i) => {
               const isUser = m.role === "user";
               return (
                 <div
@@ -959,42 +959,42 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       )}
 
       {/* Specialist drafts (when present — useful context for Activate decision) */}
-      {t.spec_md && (
+      {ticket.spec_md && (
         <section>
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.devonSpec')}</h3>
-          <Card className="whitespace-pre-wrap p-3 font-mono text-xs">{t.spec_md}</Card>
+          <Card className="whitespace-pre-wrap p-3 font-mono text-xs">{ticket.spec_md}</Card>
         </section>
       )}
-      {t.draft_answer_md && (
+      {ticket.draft_answer_md && (
         <section>
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.sageDraftAnswer')}</h3>
-          <Card className="whitespace-pre-wrap p-3 text-sm">{t.draft_answer_md}</Card>
+          <Card className="whitespace-pre-wrap p-3 text-sm">{ticket.draft_answer_md}</Card>
         </section>
       )}
-      {t.resolution_md && (
+      {ticket.resolution_md && (
         <section>
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.resolutionDraft')}</h3>
-          <Card className="whitespace-pre-wrap p-3 text-sm">{t.resolution_md}</Card>
+          <Card className="whitespace-pre-wrap p-3 text-sm">{ticket.resolution_md}</Card>
         </section>
       )}
 
       {/* Structured fields the specialist captured during intake */}
-      {t.structured_fields && Object.keys(t.structured_fields).length > 0 && (
+      {ticket.structured_fields && Object.keys(ticket.structured_fields).length > 0 && (
         <section>
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('screens.admin.structuredFields')}</h3>
           <Card className="overflow-x-auto p-3">
-            <pre className="text-xs">{JSON.stringify(t.structured_fields, null, 2)}</pre>
+            <pre className="text-xs">{JSON.stringify(ticket.structured_fields, null, 2)}</pre>
           </Card>
         </section>
       )}
 
       {/* Context */}
       <section className="text-xs text-muted-foreground space-y-0.5">
-        {t.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: t.screen_path })}</div>}
-        {t.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: t.app_version })}</div>}
-        <div>{t('screens.admin.createdValue0', { value0: new Date(t.created_at).toLocaleString() })}</div>
-        {t.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: new Date(t.resolved_at).toLocaleString() })}</div>}
-        {t.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: new Date(t.user_confirmed_at).toLocaleString() })}</div>}
+        {ticket.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: ticket.screen_path })}</div>}
+        {ticket.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: ticket.app_version })}</div>}
+        <div>{t('screens.admin.createdValue0', { value0: new Date(ticket.created_at).toLocaleString() })}</div>
+        {ticket.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: new Date(ticket.resolved_at).toLocaleString() })}</div>}
+        {ticket.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: new Date(ticket.user_confirmed_at).toLocaleString() })}</div>}
       </section>
     </div>
   );
