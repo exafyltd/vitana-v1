@@ -218,6 +218,7 @@ const Companion = lazy(() => import("./pages/ai/Companion"));
 // Messages sub-pages
 const Archived = lazy(() => import("./pages/messages/Archived"));
 const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
+const GroupChat = lazy(() => import("./pages/messages/GroupChat"));
 
 // Settings sub-pages
 const Privacy = lazy(() => import("./pages/settings/Privacy"));
@@ -1031,6 +1032,14 @@ const App = () => {
           <Route path="/inbox/t/:threadId" element={
             <AuthGuard>
               <Messages />
+            </AuthGuard>
+          } />
+          {/* VTID-03089: group chat — deep-link from push notifications
+              (gateway notification url is /inbox/g/<groupId>). Standalone
+              page; main /inbox list integration is a separate follow-up. */}
+          <Route path="/inbox/g/:groupId" element={
+            <AuthGuard>
+              <GroupChat />
             </AuthGuard>
           } />
           <Route path="/inbox/archived" element={
