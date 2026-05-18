@@ -8,6 +8,12 @@
 --   * Run-once safety: any existing row whose status value isn't in the new
 --     enum is normalised to 'pending' before the type swap, so the cast
 --     can't fail on legacy values like 'verified' or 'invited'.
+--   * The trigger is dropped BEFORE the ALTER COLUMN TYPE step because
+--     Postgres refuses `ALTER COLUMN ... TYPE` on a column referenced by
+--     a trigger definition (error 0A000). Recreated at the end.
+
+DROP TRIGGER IF EXISTS trg_send_test_user_confirmation
+  ON public.test_user_applications;
 
 DO $$
 BEGIN
@@ -29,9 +35,6 @@ ALTER TABLE public.test_user_applications
 
 ALTER TABLE public.test_user_applications
   ALTER COLUMN status SET DEFAULT 'pending'::public.test_user_application_status;
-
-DROP TRIGGER IF EXISTS trg_send_test_user_confirmation
-  ON public.test_user_applications;
 
 CREATE TRIGGER trg_send_test_user_confirmation
   AFTER UPDATE OF status ON public.test_user_applications
