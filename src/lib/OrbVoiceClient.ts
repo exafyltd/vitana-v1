@@ -52,6 +52,7 @@ export class OrbVoiceClient {
   private eventSource: EventSource | null = null;
   private audioContext: AudioContext | null = null;
   private nextStartTime: number = 0;
+  private activePlaybackSources: Set<AudioBufferSourceNode> = new Set();
   private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
   private turnCompleteTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -742,6 +743,15 @@ export class OrbVoiceClient {
       const source = this.audioContext.createBufferSource();
       source.buffer = buffer;
       source.connect(this.audioContext.destination);
+      source.onended = () => {
+        this.activePlaybackSources.delete(source);
+        if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
+          this.callbacks.onSpeakingChange?.(false);
+          this.clearSpeakingResetGuard();
+          // Schedule turn-complete fallback in case no SSE turn_complete event arrives
+          this.scheduleTurnCompleteFallback();
+        }
+      };
 
       // Schedule to start exactly when previous ends
       const now = this.audioContext.currentTime;
@@ -749,6 +759,7 @@ export class OrbVoiceClient {
         this.nextStartTime = now;
       }
       source.start(this.nextStartTime);
+      this.activePlaybackSources.add(source);
       this.nextStartTime += buffer.duration;
 
       // VTID-02919 (B0d.4-frontend): first audio frame of this session
@@ -765,14 +776,6 @@ export class OrbVoiceClient {
       }
 
       this.callbacks.onSpeakingChange?.(true);
-      source.onended = () => {
-        if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
-          this.callbacks.onSpeakingChange?.(false);
-          this.clearSpeakingResetGuard();
-          // Schedule turn-complete fallback in case no SSE turn_complete event arrives
-          this.scheduleTurnCompleteFallback();
-        }
-      };
 
       // Watchdog: if onended never fires (iOS edge case where the BufferSource
       // is queued against a context that suspends mid-playback or rejects
@@ -1193,13 +1196,52 @@ export class OrbVoiceClient {
     });
   }
 
+  private closeEventSource(): void {
+    if (!this.eventSource) return;
+
+    const source = this.eventSource;
+    this.eventSource = null;
+
+    try { source.onopen = null; } catch { /* noop */ }
+    try { source.onmessage = null; } catch { /* noop */ }
+    try { source.onerror = null; } catch { /* noop */ }
+    try { source.close(); } catch { /* noop */ }
+  }
+
+  private stopActivePlayback(): void {
+    if (this.activePlaybackSources.size === 0) return;
+
+    for (const source of Array.from(this.activePlaybackSources)) {
+      try { source.onended = null; } catch { /* noop */ }
+      try { source.stop(); } catch { /* already stopped or not started */ }
+      try { source.disconnect(); } catch { /* noop */ }
+    }
+
+    this.activePlaybackSources.clear();
+  }
+
+  private notifyGatewayStop(sessionId: string): void {
+    void fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ session_id: sessionId }),
+      keepalive: true,
+    }).catch((e) => {
+      console.warn('[OrbVoiceClient] Error stopping session', e);
+    });
+  }
+
   async stop(): Promise<void> {
     console.log('[OrbVoiceClient] Stopping...');
     
     // Log final diagnostics
     this.logDiagnostics('session_stop');
 
+    const stoppedSessionId = this.sessionId;
+    this.sessionId = null;
     this._isListening = false;
+    this.closeEventSource();
+    this.stopActivePlayback();
 
     // Reset reconnect bookkeeping and stop the stream watchdog.
     this.stopStreamWatchdog();
@@ -1245,23 +1287,11 @@ export class OrbVoiceClient {
       this.recorder = null;
     }
 
-    // Stop session with auth
-    if (this.sessionId) {
-      try {
-        await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
-          method: 'POST',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({ session_id: this.sessionId })
-        });
-      } catch (e) {
-        console.warn('[OrbVoiceClient] Error stopping session', e);
-      }
-    }
-
-    // Close SSE
-    if (this.eventSource) {
-      this.eventSource.close();
-      this.eventSource = null;
+    // Tell the gateway to tear down its side, but do not block local
+    // shutdown on network latency. The X button means the browser stops
+    // listening and speaking immediately.
+    if (stoppedSessionId) {
+      this.notifyGatewayStop(stoppedSessionId);
     }
 
     // Drop our reference to the shared output AudioContext but DO NOT close
@@ -1275,7 +1305,6 @@ export class OrbVoiceClient {
     }
 
     // Reset audio state
-    this.sessionId = null;
     this.nextStartTime = 0;
     this.diagnostics = null;
 
