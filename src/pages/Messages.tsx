@@ -26,7 +26,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
@@ -88,13 +88,19 @@ export default function Messages() {
     { value: 'tenant', label: translate('inbox.contextTabs.network', 'Network'), icon: '🏢' },
   ];
 
-  // Parse query params to auto-select thread from notifications
+  // Parse query params + path segments to auto-select thread from notifications.
+  // Path-based forms (/inbox/u/:recipientId, /inbox/t/:threadId) were added as
+  // a follow-up to BOOTSTRAP-NOTIF-MESSENGER-DIAG because Appilix's Android
+  // in-app browser silently fails on URLs with query strings. The query-param
+  // form is kept for backward compatibility with legacy notifications and
+  // bookmarks.
   const [searchParams, setSearchParams] = useSearchParams();
-  const urlThreadId = searchParams.get('thread');
-  const urlRecipientId = searchParams.get('recipient');
+  const pathParams = useParams<{ recipientId?: string; threadId?: string }>();
+  const urlThreadId = pathParams.threadId || searchParams.get('thread');
+  const urlRecipientId = pathParams.recipientId || searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
 
-  // Legacy ?thread= param (thread UUID — used by old notifications)
+  // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
     if (urlThreadId) {
       console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
@@ -105,16 +111,24 @@ export default function Messages() {
         setMessageContext(urlContext);
       }
 
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('thread');
-      newParams.delete('context');
-      setSearchParams(newParams, { replace: true });
+      // Strip the deep-link from the URL so refreshes don't keep re-applying it.
+      // For path-based deep-links we also navigate back to bare /inbox.
+      if (pathParams.threadId) {
+        navigate('/inbox', { replace: true });
+      } else {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('thread');
+        newParams.delete('context');
+        setSearchParams(newParams, { replace: true });
+      }
     }
-  }, [urlThreadId, urlContext, setSearchParams]);
+  // pathParams.threadId is a primitive; including it triggers the strip exactly once.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlThreadId, urlContext]);
 
-  // BOOTSTRAP-NOTIF-DEEP-LINK: ?recipient=<user_id> from notification deep-links.
-  // Store the recipient, set context, clear URL params immediately.
-  // Thread resolution happens in the next effect once conversations load.
+  // BOOTSTRAP-NOTIF-DEEP-LINK: ?recipient= OR /inbox/u/:recipientId — user_id
+  // from a chat notification. Store the recipient, set context, clear URL,
+  // then resolve to a real thread once conversations load.
   const [pendingRecipient, setPendingRecipient] = useState<string | null>(null);
 
   useEffect(() => {
@@ -126,12 +140,17 @@ export default function Messages() {
         setMessageContext(urlContext);
       }
 
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('recipient');
-      newParams.delete('context');
-      setSearchParams(newParams, { replace: true });
+      if (pathParams.recipientId) {
+        navigate('/inbox', { replace: true });
+      } else {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('recipient');
+        newParams.delete('context');
+        setSearchParams(newParams, { replace: true });
+      }
     }
-  }, [urlRecipientId, urlContext, setSearchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlRecipientId, urlContext]);
 
   // Once threads load, resolve pendingRecipient → real thread UUID
   useEffect(() => {

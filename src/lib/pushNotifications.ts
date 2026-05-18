@@ -488,6 +488,6 @@ export async function notifyNewMessage(
     title,
     body,
     tag: `message-${threadId}`,
-    data: { threadId, type: 'new_message', url: `/inbox?thread=${threadId}` },
+    data: { threadId, type: 'new_message', url: `/inbox/t/${threadId}` },
   });
 }

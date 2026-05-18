@@ -1015,6 +1015,24 @@ const App = () => {
               <Messages />
             </AuthGuard>
           } />
+          {/* BOOTSTRAP-NOTIF-MESSENGER-DIAG (follow-up):
+              Path-based chat deep-links. Query-string URLs like
+              /inbox?recipient=<uuid>&context=global fail to launch in
+              Appilix's Android in-app browser (silent failure pre-network,
+              no [NotifDiag] beacon ever fires), so the gateway now sends
+              /inbox/u/<userId> instead. /u/ and /t/ prefixes avoid
+              collisions with existing static subroutes (archived,
+              inspiration, reminder). Messages.tsx accepts both forms. */}
+          <Route path="/inbox/u/:recipientId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/t/:threadId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
           <Route path="/inbox/archived" element={
             <AuthGuard>
               <Archived />
