@@ -19,6 +19,15 @@ export function subjectFor(locale: Locale): string {
   return SUBJECTS[locale] ?? SUBJECTS.de;
 }
 
+const WAITLIST_SUBJECTS: Record<Locale, string> = {
+  en: "MAXINA Test User Group — all places filled",
+  de: "MAXINA Test User Group — alle Plätze belegt",
+};
+
+export function subjectForWaitlist(locale: Locale): string {
+  return WAITLIST_SUBJECTS[locale] ?? WAITLIST_SUBJECTS.de;
+}
+
 interface RenderArgs {
   device: Device;
   locale: Locale;
@@ -243,6 +252,110 @@ export function renderEmail({ device, locale, fullName }: RenderArgs): string {
     <div style="background:#fff;margin:0 auto;padding:0 0 48px;max-width:600px">
       <div style="background:linear-gradient(135deg,#c026d3 0%,#f97316 100%);padding:28px 40px;text-align:center">
         <h1 style="color:#fff;font-size:26px;font-weight:700;margin:0">
+          ${escapeHtml(copy.headline)}
+        </h1>
+      </div>
+      ${body}
+    </div>
+  </body>
+</html>`;
+}
+
+interface WaitlistArgs {
+  locale: Locale;
+  fullName: string;
+}
+
+interface WaitlistCopy {
+  greeting: (name: string) => string;
+  headline: string;
+  thanksOpening: string;
+  capacity: string;
+  launchInvite: string;
+  closing: string;
+  signoff1: string;
+  signoff2: string;
+  previewText: string;
+}
+
+const WAITLIST_COPY: Record<Locale, WaitlistCopy> = {
+  en: {
+    greeting: (name) => `Hi ${name},`,
+    headline: "Thank you for your interest 💫",
+    thanksOpening:
+      "Thank you for your interest in joining the MAXINA Test User Group.",
+    capacity:
+      "At the moment, this group is limited to a maximum of 100 participants, and all available places have now been filled.",
+    launchInvite:
+      "If you would like to join the community from day one, the official launch of the MAXINA app is expected on 18 June. You'll receive an invitation link and become one of the first members to secure your place for future events and meetups.",
+    closing: "Thank you again and have a great day!",
+    signoff1: "MAXINA EXPERIENCE",
+    signoff2: "…and Everybody is Dancing!!",
+    previewText: "Test User Group is full — but you're on the launch list.",
+  },
+  de: {
+    greeting: (name) => `Hi ${name},`,
+    headline: "Vielen Dank für dein Interesse 💫",
+    thanksOpening:
+      "Vielen Dank für dein Interesse, der MAXINA Test User Group beizutreten.",
+    capacity:
+      "Diese Gruppe ist aktuell auf maximal 100 Teilnehmer:innen begrenzt, und alle verfügbaren Plätze sind nun belegt.",
+    launchInvite:
+      "Wenn du ab Tag eins Teil der Community sein möchtest: Der offizielle Launch der MAXINA App ist für den 18. Juni geplant. Du erhältst einen Einladungslink und wirst eines der ersten Mitglieder, das sich seinen Platz für zukünftige Events und Meetups sichert.",
+    closing: "Nochmals vielen Dank und einen schönen Tag!",
+    signoff1: "MAXINA EXPERIENCE",
+    signoff2: "…and Everybody is Dancing!!",
+    previewText:
+      "Die Test User Group ist voll — aber du bist auf der Launch-Liste.",
+  },
+};
+
+export function renderWaitlistEmail({ locale, fullName }: WaitlistArgs): string {
+  const copy = WAITLIST_COPY[locale] ?? WAITLIST_COPY.de;
+  const name = escapeHtml(firstName(fullName));
+
+  const body = `
+    <p style="color:#4a5568;font-size:16px;line-height:26px;padding:0 40px;margin:24px 0 8px">
+      ${escapeHtml(copy.greeting(name))}
+    </p>
+    <p style="color:#4a5568;font-size:16px;line-height:26px;padding:0 40px;margin:8px 0 16px">
+      ${escapeHtml(copy.thanksOpening)}
+    </p>
+    <p style="color:#4a5568;font-size:16px;line-height:26px;padding:0 40px;margin:8px 0 16px">
+      ${escapeHtml(copy.capacity)}
+    </p>
+
+    <div style="background:#fdf4ff;border:2px solid #c026d3;border-radius:12px;margin:24px 40px;padding:24px">
+      <p style="color:#2d3748;font-size:15px;line-height:24px;margin:0">
+        ${escapeHtml(copy.launchInvite)}
+      </p>
+    </div>
+
+    <p style="color:#4a5568;font-size:15px;line-height:24px;padding:0 40px;margin:24px 0">
+      ${escapeHtml(copy.closing)}
+    </p>
+
+    <hr style="border:none;border-top:1px solid #e2e8f0;margin:32px 40px">
+    <p style="color:#9333ea;font-size:14px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:0 40px;margin:8px 0 4px">
+      ${escapeHtml(copy.signoff1)}
+    </p>
+    <p style="color:#a855f7;font-size:15px;font-style:italic;padding:0 40px;margin:0 0 24px">
+      ${escapeHtml(copy.signoff2)}
+    </p>
+  `;
+
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>${escapeHtml(WAITLIST_SUBJECTS[locale])}</title>
+  </head>
+  <body style="background:#f6f9fc;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0">
+    <span style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(copy.previewText)}</span>
+    <div style="background:#fff;margin:0 auto;padding:0 0 48px;max-width:600px">
+      <div style="background:linear-gradient(135deg,#c026d3 0%,#f97316 100%);padding:28px 40px;text-align:center">
+        <h1 style="color:#fff;font-size:24px;font-weight:700;margin:0">
           ${escapeHtml(copy.headline)}
         </h1>
       </div>

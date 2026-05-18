@@ -1,6 +1,7 @@
-// Sends a device + locale specific confirmation email to a newly accepted
-// MAXINA App Test User. Invoked from a Postgres trigger on
-// public.test_user_applications when status flips into invited/active.
+// Sends an email to a MAXINA App Test User applicant when an admin flips
+// their row's status. 'active' → device+locale specific confirmation
+// email; 'rejected' → locale-specific waitlist email. Invoked from a
+// Postgres trigger on public.test_user_applications.
 //
 // Auth: shared secret in X-Trigger-Secret header. The trigger reads the
 // secret from app.settings.email_trigger_secret; this function reads the
@@ -14,7 +15,14 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "https://esm.sh/resend@4.0.0";
-import { type Device, type Locale, renderEmail, subjectFor } from "./templates.ts";
+import {
+  type Device,
+  type Locale,
+  renderEmail,
+  renderWaitlistEmail,
+  subjectFor,
+  subjectForWaitlist,
+} from "./templates.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -83,23 +91,28 @@ serve(async (req) => {
     return json({ ok: true, skipped: "already_sent" });
   }
 
-  if (!["invited", "active"].includes(app.status)) {
+  if (!["active", "rejected"].includes(app.status)) {
     return json({ ok: true, skipped: "status_not_eligible", status: app.status });
   }
 
   const device = (app.device === "ios" ? "ios" : "android") as Device;
   const locale = (app.locale === "en" ? "en" : "de") as Locale;
+  const fullName = app.full_name ?? "";
 
-  const html = renderEmail({
-    device,
-    locale,
-    fullName: app.full_name ?? "",
-  });
+  const { subject, html } = app.status === "rejected"
+    ? {
+      subject: subjectForWaitlist(locale),
+      html: renderWaitlistEmail({ locale, fullName }),
+    }
+    : {
+      subject: subjectFor(locale),
+      html: renderEmail({ device, locale, fullName }),
+    };
 
   const { error: sendError } = await resend.emails.send({
     from: "MAXINA <noreply@vitanaland.com>",
     to: [app.email],
-    subject: subjectFor(locale),
+    subject,
     html,
   });
 
@@ -118,7 +131,7 @@ serve(async (req) => {
   }
 
   console.log(
-    `confirmation email sent application=${applicationId} device=${device} locale=${locale}`,
+    `email sent application=${applicationId} status=${app.status} device=${device} locale=${locale}`,
   );
 
   return json({ ok: true });
