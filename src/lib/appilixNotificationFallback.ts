@@ -127,7 +127,7 @@ export async function showAppilixFallbackNotification(
       await reg.showNotification(title, {
         body,
         tag,
-        data: { url: `/inbox?thread=${threadParam}` },
+        data: { url: `/inbox/t/${threadParam}` },
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
       });
@@ -139,7 +139,7 @@ export async function showAppilixFallbackNotification(
     const n = new Notification(title, { body, tag, icon: '/icons/icon-192x192.png' });
     n.onclick = () => {
       window.focus();
-      window.location.href = `/inbox?thread=${threadParam}`;
+      window.location.href = `/inbox/t/${threadParam}`;
       n.close();
     };
     console.log('[NotifFallback] Shown via Notification constructor');
