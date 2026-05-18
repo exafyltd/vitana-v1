@@ -195,6 +195,7 @@ export default function Apply() {
       available_for_events: form.available_for_events,
       consent_age: form.consent_age,
       consent_terms: form.consent_terms,
+      locale,
       utm_source: utm.utm_source,
       utm_medium: utm.utm_medium,
       utm_campaign: utm.utm_campaign,
