@@ -115,3 +115,91 @@ export async function fetchUnreadCount(): Promise<number> {
   const json = await gatewayFetch("/unread-count");
   return json.count || 0;
 }
+
+// ── Group chat (VTID-03089) ────────────────────────────────────────────
+
+export interface ChatGroup {
+  id: string;
+  tenant_id: string;
+  name: string;
+  description: string | null;
+  is_system: boolean;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  role?: string;
+  joined_at?: string;
+  last_read_at?: string | null;
+  last_message?: ChatGroupMessage | null;
+  unread_count?: number;
+}
+
+export interface ChatGroupMember {
+  user_id: string;
+  role: string;
+  joined_at: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  is_bot: boolean;
+}
+
+export interface ChatGroupMessage {
+  id: string;
+  tenant_id: string;
+  sender_id: string;
+  group_id: string;
+  content: string;
+  created_at: string;
+  message_type?: string;
+  metadata?: Record<string, unknown>;
+}
+
+async function gatewayGroupFetch(path: string, init?: RequestInit) {
+  const authHeaders = await getAuthHeaders();
+  const res = await fetch(`${GATEWAY_BASE}/chat/groups${path}`, {
+    ...init,
+    headers: { ...authHeaders, ...(init?.headers || {}) },
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Gateway ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchGroups(): Promise<ChatGroup[]> {
+  const json = await gatewayGroupFetch("/");
+  return json.data || [];
+}
+
+export async function fetchGroup(
+  groupId: string,
+): Promise<ChatGroup & { members: ChatGroupMember[]; member_count: number }> {
+  const json = await gatewayGroupFetch(`/${groupId}`);
+  return json.data;
+}
+
+export async function fetchGroupMessages(
+  groupId: string,
+  limit = 50,
+  before?: string,
+): Promise<ChatGroupMessage[]> {
+  const params = new URLSearchParams({ limit: String(limit) });
+  if (before) params.set("before", before);
+  const json = await gatewayGroupFetch(`/${groupId}/messages?${params}`);
+  return json.data || [];
+}
+
+export async function sendGroupMessage(
+  groupId: string,
+  content: string,
+): Promise<ChatGroupMessage> {
+  const json = await gatewayGroupFetch(`/${groupId}/send`, {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
+  return json.data;
+}
+
+export async function markGroupRead(groupId: string): Promise<void> {
+  await gatewayGroupFetch(`/${groupId}/read`, { method: "POST" });
+}
