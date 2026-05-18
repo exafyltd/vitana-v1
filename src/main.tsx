@@ -1,6 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+// BOOTSTRAP-NOTIF-MESSENGER-DIAG: fire a beacon before React mounts so we
+// can see (in gateway logs) whether the Android Appilix WebView even
+// reached the page after tapping a chat notification.
+import { bootstrapNotifDiag } from './lib/notifDiag'
+bootstrapNotifDiag()
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
