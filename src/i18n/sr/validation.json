@@ -1,0 +1,29 @@
+{
+  "validation": {
+    "required": "Ovo polje je obavezno",
+    "invalidEmail": "Neispravna email adresa",
+    "invalidUrl": "Neispravan URL",
+    "invalidPhone": "Neispravan broj telefona",
+    "tooShort": "Minimum {min} karaktera je potrebno",
+    "tooLong": "Maksimum {max} karaktera je dozvoljeno",
+    "passwordMismatch": "Lozinke se ne poklapaju",
+    "passwordTooWeak": "Lozinka je preslaba",
+    "invalidDate": "Neispravan datum",
+    "invalidNumber": "Neispravan broj",
+    "mustBePositive": "Mora biti pozitivan broj",
+    "mustBeNegative": "Mora biti negativan broj",
+    "mustBeInteger": "Mora biti ceo broj",
+    "minValue": "Minimalna vrednost je {min}",
+    "maxValue": "Maksimalna vrednost je {max}",
+    "invalidFormat": "Neispravan format",
+    "alreadyExists": "Već postoji",
+    "notFound": "Nije pronađeno",
+    "invalidSelection": "Neispravan izbor",
+    "pleaseSelect": "Molimo izaberite opciju",
+    "pleaseEnter": "Molimo unesite vrednost",
+    "charactersRemaining": "Preostalo {count} karaktera",
+    "fileTooBig": "Fajl je prevelik (maksimum {max})",
+    "invalidFileType": "Neispravan tip fajla",
+    "uploadLimit": "Maksimum {max} fajlova je dozvoljeno"
+  }
+}

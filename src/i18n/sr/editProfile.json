@@ -1,0 +1,17 @@
+{
+  "editProfile": {
+    "unsavedChanges": "Imate nesačuvane izmene. Da li ste sigurni da želite da odete?",
+    "notAuthenticated": "Niste autentifikovani",
+    "notAuthenticatedDesc": "Molimo prijavite se da biste sačuvali svoj profil.",
+    "profileUpdated": "Profil uspešno ažuriran!",
+    "profileUpdatedDesc": "Vaše izmene su sada aktivne. Vaš VITANA profil izgleda sjajno.",
+    "error": "Greška",
+    "refreshFailed": "Osvežavanje podataka profila nije uspelo.",
+    "showcaseHint": "Izaberite objave i sadržaj koji će biti istaknuti na vrhu vašeg profila",
+    "showcaseTitle": "Istaknuto",
+    "manage": "Upravljaj",
+    "about": "O meni",
+    "addBio": "Dodaj biografiju...",
+    "tapToEdit": "Dodirni za uređivanje"
+  }
+}

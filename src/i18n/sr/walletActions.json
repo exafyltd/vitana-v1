@@ -1,0 +1,11 @@
+{
+  "walletActions": {
+    "title": "Brze radnje",
+    "addFunds": "Dodaj sredstva",
+    "send": "Pošalji",
+    "exchange": "Razmeni",
+    "withdraw": "Povuci",
+    "buyCredits": "Kupi kredite",
+    "stakeTokens": "Uloži tokene"
+  }
+}

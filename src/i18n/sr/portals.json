@@ -1,0 +1,42 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "Maxina Health Platform",
+      "welcomeBack": "Dobrodošao/la nazad u Maxinu.",
+      "continueJourney": "Prijavi se da nastaviš svoje putovanje.",
+      "joinMaxina": "Pridruži se Maxini",
+      "joinCommunity": "Pridruži se Maxina zajednici.",
+      "createAccount": "Napravi nalog i započni svoje putovanje.",
+      "signingIn": "Prijavljivanje…",
+      "creatingAccount": "Pravljenje naloga…",
+      "joiningAs": "Pridružujem se kao:",
+      "yourFullName": "Tvoje puno ime",
+      "forgotPassword": "Zaboravio/la si lozinku?",
+      "partOfVitana": "Maxina je deo VITANA ekosistema.",
+      "allPortals": "Svi portali",
+      "emailConfirmed": "Email potvrđen! Dobrodošao/la u Maxinu.",
+      "checkEmail": "Molimo proveri svoj email da potvrdiš nalog.",
+      "roles": {
+        "community": "Zajednica",
+        "patient": "Pacijent",
+        "professional": "Profesionalac",
+        "admin": "Administrator"
+      }
+    },
+    "alkalma": {
+      "joinAlkalma": "Pridruži se AlKalmi",
+      "welcomeBack": "Dobrodošao/la nazad u AlKalmu.",
+      "continueJourney": "Prijavi se da nastaviš."
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Pridruži se Earthlinksu",
+      "welcomeBack": "Dobrodošao/la nazad u Earthlinks.",
+      "continueJourney": "Prijavi se da nastaviš."
+    },
+    "community": {
+      "joinCommunity": "Pridruži se zajednici",
+      "welcomeBack": "Dobrodošao/la nazad.",
+      "continueJourney": "Prijavi se da nastaviš."
+    }
+  }
+}

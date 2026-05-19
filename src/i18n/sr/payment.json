@@ -1,0 +1,23 @@
+{
+  "payment": {
+    "completed": "Plaćanje završeno! ✅",
+    "sentSuccess": "{amount} uspešno poslato",
+    "alreadyProcessed": "Već obrađeno",
+    "requestIs": "Ovaj zahtev je {status}.",
+    "alreadyAccepted": "Ovaj zahtev za plaćanje je već prihvaćen.",
+    "declined": "Plaćanje odbijeno",
+    "declinedDesc": "Zahtev za plaćanje je odbijen",
+    "exchangeSuccess": "Razmena i slanje uspešni! ✨",
+    "exchangeSuccessDesc": "Konvertovano i poslato {amount}",
+    "insufficientBalance": "Nedovoljno sredstava",
+    "insufficientBalanceDesc": "Nemate dovoljno {currency} za ovu razmenu",
+    "transactionFailed": "Transakcija neuspešna",
+    "paymentFailed": "Plaćanje neuspešno",
+    "paymentFailedDesc": "Obrada plaćanja nije uspela. Pokušajte ponovo.",
+    "balanceRefreshed": "Stanje osveženo",
+    "balanceRefreshedDesc": "Stanje novčanika je ažurirano",
+    "refreshFailed": "Osvežavanje neuspešno",
+    "refreshFailedDesc": "Osvežavanje stanja nije uspelo. Pokušajte ponovo.",
+    "error": "Greška"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "groupMembership": {
+    "joined": "Pridružio/la si se! 🎉",
+    "joinedDesc": "Sada si član/ica ove grupe.",
+    "left": "Napustio/la si grupu",
+    "leftDesc": "Napustio/la si ovu grupu.",
+    "errorJoin": "Nije moguće pridružiti se grupi. Pokušaj ponovo.",
+    "errorLeave": "Nije moguće napustiti grupu. Pokušaj ponovo."
+  }
+}

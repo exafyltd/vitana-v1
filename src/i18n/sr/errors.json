@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Nešto je pošlo naopako",
+    "tryAgain": "Molimo pokušaj ponovo",
+    "pageNotFound": "Stranica nije pronađena",
+    "pageNotFoundDesc": "Tražena stranica ne postoji.",
+    "serverError": "Greška servera",
+    "serverErrorDesc": "Došlo je do neočekivane greške.",
+    "networkError": "Mrežna greška",
+    "networkErrorDesc": "Molimo proveri internet konekciju.",
+    "unauthorized": "Neautorizovano",
+    "unauthorizedDesc": "Molimo prijavi se da nastaviš.",
+    "forbidden": "Pristup odbijen",
+    "forbiddenDesc": "Nemaš dozvolu za ovu radnju.",
+    "notFound": "Nije pronađeno",
+    "notFoundDesc": "Tražena stavka nije pronađena."
+  }
+}

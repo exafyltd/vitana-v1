@@ -1,0 +1,17 @@
+{
+  "gallery": {
+    "title": "Galerija fotografija",
+    "upload": "Otpremi fotografiju",
+    "caption": "Opis",
+    "captionPlaceholder": "Dodaj opis...",
+    "empty": "Još nema fotografija",
+    "uploadFirst": "Dodaj svoju prvu fotografiju",
+    "photo": "Fotografija",
+    "dropzone": "Prevucite ili kliknite da odaberete",
+    "publicLabel": "Vidljivo svima",
+    "videos": "Galerija videa",
+    "uploadVideo": "Otpremi video",
+    "noVideos": "Još nema videa",
+    "addFirstVideo": "Dodaj svoj prvi video"
+  }
+}

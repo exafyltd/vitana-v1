@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "defaultBio": "Entuzijasta za wellness, strastven u holističkom zdravlju i izgradnji zajednice. 🌱",
+    "autopilot": {
+      "polishBio": "Sredite svoju biografiju, arhetip i istaknute sadržaje",
+      "editHighlights": "Uredi istaknute",
+      "saveHighlights": "Sačuvaj istaknute",
+      "highlightsDesc": "Izaberite svoje najbolje objave i medije da se istaknu na vrhu profila. Istaknuti sadržaj se pojavljuje u sekciji istaknutih i privlači više pratilaca.",
+      "try": "Probaj"
+    },
+    "identity": {
+      "vitanaIndex": "Vitana indeks",
+      "basedOnActivity": "Na osnovu aktivnosti, angažovanja u zdravlju i doprinosa",
+      "viewLongevityId": "Pogledaj moj Longevity ID"
+    }
+  }
+}

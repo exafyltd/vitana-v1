@@ -1,0 +1,24 @@
+{
+  "eventCta": {
+    "buyTicket": "Kupi kartu",
+    "buyTicketWithPrice": "Kupi kartu · {price}",
+    "getFreeTicket": "Dobij besplatnu kartu",
+    "reserveSpot": "Rezerviši mesto",
+    "reserveMySpot": "Rezerviši moje mesto",
+    "viewTicket": "Pogledaj kartu",
+    "soldOut": "Rasprodato",
+    "joinMeetup": "Pridruži se MeetUp-u",
+    "leaveMeetup": "Napusti MeetUp",
+    "cancelReservation": "Otkaži rezervaciju",
+    "viewEvent": "Pogledaj događaj",
+    "yourTicket": "Tvoja karta",
+    "getYourTicket": "Uzmi svoju kartu",
+    "joinThisEvent": "Pridruži se ovom događaju",
+    "selectTickets": "Izaberi karte",
+    "buyTicketsTotal": "Kupi karte – {total}",
+    "processing": "Obrađujem...",
+    "joining": "Pridružujem se...",
+    "getTickets": "Uzmi karte",
+    "promoteEvent": "Promoviši događaj"
+  }
+}

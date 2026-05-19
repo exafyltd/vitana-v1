@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "Radnje privatnosti i dozvola",
+    "items": {
+      "privacySettings": {
+        "title": "Podešavanja privatnosti",
+        "description": "Konfigurišite privatnost podataka i podešavanja deljenja"
+      },
+      "manageAccess": {
+        "title": "Upravljaj pristupom",
+        "description": "Kontroliši ko može da vidi tvoje zdravstvene uspomene"
+      },
+      "securitySettings": {
+        "title": "Sigurnosna podešavanja",
+        "description": "Ažuriraj autentifikaciju i sigurnosna podešavanja"
+      },
+      "apiKeysAccess": {
+        "title": "API ključevi i pristup",
+        "description": "Upravljaj integracijama trećih aplikacija i API pristupom"
+      },
+      "dataRights": {
+        "title": "Prava na podatke",
+        "description": "Ostvari svoja prava na prenosivost i brisanje podataka"
+      },
+      "auditLogs": {
+        "title": "Revizijski dnevnici",
+        "description": "Pregledaj istoriju pristupa i sigurnosni revizijski trag"
+      },
+      "permissionSettings": {
+        "title": "Podešavanja dozvola",
+        "description": "Fino podesi dozvole za različite funkcije"
+      },
+      "exportData": {
+        "title": "Izvezi podatke",
+        "description": "Bezbedno preuzmi svoje uspomene i zdravstvene podatke"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "events": {
+    "title": "Događaji i okupljanja",
+    "description": "Otkrij lokalna wellness okupljanja",
+    "searchPlaceholder": "Pretraži događaje i okupljanja...",
+    "tabs": {
+      "today": "Danas",
+      "upcoming": "Predstojeći",
+      "following": "Pratiš",
+      "recommended": "Preporučeno"
+    },
+    "noEvents": "Nema zakazanih događaja",
+    "checkBack": "Vrati se uskoro za nove događaje u zajednici!",
+    "emptyStates": {
+      "noEventsToday": "Nema događaja danas",
+      "noEventsTodayDesc": "Nema zakazanih događaja za danas. Pogledaj predstojeće događaje ili kreiraj svoj!",
+      "createEvent": "Kreiraj događaj",
+      "viewUpcoming": "Pogledaj predstojeće događaje",
+      "followingTitle": "Objave ljudi koje pratiš",
+      "followingDesc": "Sadržaj ljudi i grupa koje pratiš pojaviće se ovde",
+      "findPeople": "Pronađi ljude da pratiš",
+      "noPostsFromFollowing": "Još nema objava",
+      "noPostsFromFollowingDesc": "Ljudi koje pratiš još nisu kreirali događaje ili okupljanja.",
+      "youFollow": "Pratiš",
+      "loadingFollowing": "Učitavanje objava..."
+    }
+  }
+}

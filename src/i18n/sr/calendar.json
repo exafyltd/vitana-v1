@@ -1,0 +1,147 @@
+{
+  "calendar": {
+    "smartCalendar": "Pametni kalendar",
+    "myCalendar": "Moj kalendar",
+    "bookedActivities": "Vaše rezervisane aktivnosti u VITANA",
+    "addEvent": "Dodaj događaj",
+    "synced": "Sinhronizovano",
+    "syncing": "Sinhronizacija",
+    "today": "Danas",
+    "week": "Nedelja",
+    "month": "Mesec",
+    "agenda": "Agenda",
+    "nothingScheduled": "Ništa nije zakazano",
+    "tryQuickAdd": "Probaj Brzi dodaj ili pusti Autopilot da isplanira tvoj dan",
+    "clickSlotHint": "Klikni na bilo koji termin da kreiraš događaj • Prevlači da promeniš raspored",
+    "noEventsOnDate": "Nema događaja na ovaj datum",
+    "lastSynced": "Poslednja sinhronizacija",
+    "justNow": "upravo sada",
+    "now": "Sada",
+    "untitledEvent": "Događaj bez naziva",
+    "newEvent": "Novi događaj",
+    "close": "Zatvori",
+    "noBookingsToday": "Nema rezervacija danas",
+    "noBookingsYet": "Još uvek nema rezervacija",
+    "nextUpcoming": "Sledeće",
+    "exploreActivities": "Istraži aktivnosti da dodaš u svoj kalendar",
+    "browseActivities": "Pregledaj aktivnosti",
+    "bookedEvents": {
+      "title": "Tvoji rezervisani događaji",
+      "todayLabel": "Danas",
+      "nextUp": "Sledeće",
+      "noEventsToday": "Nema događaja danas"
+    },
+    "filters": {
+      "personal": "Lično",
+      "community": "Zajednica",
+      "work": "Posao",
+      "health": "Zdravlje",
+      "workout": "Trening"
+    },
+    "categories": {
+      "community": "Zajednica",
+      "fitness": "Fitnes",
+      "health": "Zdravlje",
+      "nutrition": "Ishrana",
+      "professional": "Posao",
+      "personal": "Lično",
+      "training": "Trening"
+    },
+    "bookingStatus": {
+      "booked": "Rezervisano",
+      "rsvp": "RSVP",
+      "ticket": "Karta",
+      "reserved": "Rezervisano"
+    },
+    "timeGroups": {
+      "today": "Danas",
+      "tomorrow": "Sutra",
+      "thisWeek": "Ove nedelje",
+      "later": "Kasnije"
+    },
+    "autopilot": {
+      "suggestions": "Autopilot predlozi",
+      "badge": "Autopilot",
+      "accept": "Prihvati",
+      "snooze": "Odloži",
+      "dismiss": "Odbaci",
+      "undo": "Poništi",
+      "laterToday": "Danas kasnije",
+      "tomorrow": "Sutra",
+      "conflictsWith": "Sukobljava se sa:",
+      "suggestionAccepted": "Predlog prihvaćen",
+      "calendarUpdated": "Autopilot je ažurirao tvoj kalendar",
+      "suggestionUndone": "Predlog poništen",
+      "changesReverted": "Promene su vraćene",
+      "suggestionSnoozed": "Predlog odložen",
+      "reminderLaterToday": "Podsetnik postavljen za danas kasnije",
+      "reminderTomorrow": "Podsetnik postavljen za sutra",
+      "recommendFocus": "Preporuči blok fokusa",
+      "focusBlockDesc": "Imaš slobodan prozor od 90 minuta. Savršeno za duboki rad."
+    },
+    "toasts": {
+      "eventCreated": "Događaj kreiran",
+      "eventCreatedDesc": "Tvoj događaj je dodat u kalendar",
+      "eventDeleted": "Događaj obrisan",
+      "eventDeletedDesc": "Događaj je uklonjen iz tvog kalendara",
+      "syncingTitle": "Sinhronizacija...",
+      "syncingDesc": "Sinhronizacija sa spoljnim kalendarima",
+      "syncedTitle": "Sinhronizovano",
+      "syncedDesc": "Kalendar je ažuran",
+      "joiningEvent": "Pridruživanje događaju",
+      "openingVideoCall": "Otvaranje video poziva...",
+      "messageAttendees": "Pošalji poruku učesnicima",
+      "featureComingSoon": "Funkcija uskoro stiže",
+      "inviteFollowers": "Pozovi pratioce",
+      "rescheduleEvent": "Promeni termin događaja",
+      "shareToGroup": "Podeli sa grupom"
+    },
+    "error": {
+      "failedToCreate": "Neuspešno kreiranje događaja"
+    },
+    "allDay": "Ceo dan",
+    "milestoneToday": "Prekretnica",
+    "focus": {
+      "todaysFocus": "Današnji fokus",
+      "lightDay": "Lagan dan — istraži aktivnosti ili dopuni dnevnik",
+      "moreSteps": "još koraka"
+    },
+    "badge": {
+      "guidedStep": "Vođeni korak",
+      "milestone": "Prekretnica",
+      "wellness": "Dobrobit"
+    },
+    "action": {
+      "start": "Započni",
+      "continue": "Nastavi",
+      "join": "Pridruži se",
+      "details": "Detalji",
+      "viewPlan": "Pogledaj plan",
+      "open": "Otvori",
+      "done": "Gotovo"
+    },
+    "group": {
+      "stepsRemaining": "preostalih koraka",
+      "min": "min"
+    },
+    "journey": {
+      "dayOf": "Dan {day} od {total}",
+      "yourJourney": "Tvoje putovanje",
+      "nextMilestone": "Sledeća prekretnica",
+      "showFullAgenda": "Prikaži ceo raspored",
+      "moreEvents": "još događaja",
+      "onboardingPlan": "Današnji plan uvođenja",
+      "estimatedTime": "~{minutes} min",
+      "startPlan": "Započni plan",
+      "tasksCompleted": "{completed}/{total} gotovo",
+      "waveNames": {
+        "wave-1": "Prvi koraci",
+        "wave-2": "Dnevna sidra",
+        "wave-3": "Produbljivanje veza",
+        "wave-4": "Zdravstvena inteligencija",
+        "wave-5": "Trenuci uvida",
+        "wave-6": "Preporuke i otkrića"
+      }
+    }
+  }
+}

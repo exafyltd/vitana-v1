@@ -1,0 +1,31 @@
+{
+  "discount": {
+    "welcomeTitle": "Vaš dobrodošli poklon",
+    "welcomeMessage": "Iskoristite ovaj kod za 10% popusta na prvi događaj",
+    "validFor": "Važi 90 dana",
+    "applyCode": "Primeni kod za popust",
+    "applied": "Popust primenjen!",
+    "expired": "Ovaj kod je istekao",
+    "invalid": "Nevažeći kod za popust",
+    "bannerAvailable": "Popust dobrodošlice je dostupan",
+    "tapToApply": "Primeni",
+    "discountAppliedAmount": "{percent}% popusta primenjeno",
+    "remove": "Ukloni",
+    "ticketsComing": "Ulaznice uskoro stižu",
+    "contactOrganizer": "Kontaktirajte organizatora događaja za informacije o ulaznicama.",
+    "contactOrganizerPrice": "Ovaj događaj košta ${price}. Kontaktirajte organizatora za dostupnost ulaznica.",
+    "soldOut": "Rasprodato",
+    "salesEnded": "Prodaja završena",
+    "salesStart": "Prodaja počinje {date}",
+    "free": "Besplatno",
+    "ticketsSelected": "{count} karta(e) izabrano",
+    "useAccountEmail": "Koristi moj email sa naloga",
+    "buyAsGuest": "Kupi kao gost (bez naloga)",
+    "guestDetails": "Unesite svoje podatke da biste dobili kartu. Nije potreban nalog.",
+    "fullName": "Ime i prezime",
+    "email": "Email",
+    "ticketEmailNote": "Vaša karta i potvrda će biti poslati na ovu email adresu.",
+    "left": "{count} preostalo",
+    "loadFailed": "Nije uspelo učitavanje ulaznica"
+  }
+}

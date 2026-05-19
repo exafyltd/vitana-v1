@@ -1,0 +1,18 @@
+{
+  "whyThisMatch": {
+    "title": "Zašto ovaj član?",
+    "interpretedAs": "Vitana je razumela:",
+    "consideredSignals": "Signali uzeti u obzir:",
+    "showSomeoneElse": "Pokaži mi nekog drugog",
+    "dismiss": "Odbaci",
+    "ethicsNote": "Vitana ne rangira članove po izgledu ili bogatstvu — ali evo nekoga čije putovanje sija upravo sada.",
+    "loadingRecipe": "Učitavanje detalja pretrage…",
+    "recipeUnavailable": "Ti detalji pretrage više nisu dostupni.",
+    "tierLabel": {
+      "1": "Tačno podudaranje",
+      "2": "Vitana indeks",
+      "3": "Najbliže podudaranje",
+      "4": "Preusmeravanje radi pravičnosti"
+    }
+  }
+}

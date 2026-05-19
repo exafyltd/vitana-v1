@@ -1,0 +1,94 @@
+{
+  "health": {
+    "title": "Zdravlje",
+    "description": "Tvoja lična zdravstvena tabla",
+    "overview": "Pregled",
+    "overviewDesc": "Tvoj sveobuhvatni zdravstveni pregled i wellness pregled",
+    "servicesHub": "Centar usluga",
+    "servicesHubDesc": "Zakaži doktore, coaching, programe i skrininge",
+    "biomarkers": "Biomarkeri",
+    "biomarkersDesc": "Pogledaj svoje najnovije rezultate testova i biomarkere",
+    "healthTracker": "Moj zdravstveni tracker",
+    "healthTrackerDesc": "Prati svoju dnevnu ishranu, san, vežbanje",
+    "education": "Edukacija i nauka",
+    "educationDesc": "Uči o zdravstvenim temama i pristupi wellness resursima",
+    "priorityFocus": "Prioritetni fokus",
+    "priorityFocusExplanation": "Ovo područje trenutno ima najveći uticaj na tvoj dugoročni zdravstveni vek.",
+    "autopilotGuidance": "Autopilot smernice",
+    "autopilotSuggests": "Autopilot predlaže",
+    "takeAction": "Preduzmi akciju",
+    "uploadBloodTest": "Otpremi krvni test",
+    "orderBloodTest": "Poruči krvni test",
+    "viewPlans": "Pogledaj planove",
+    "vitanaIndex": "Vitana indeks",
+    "healthSnapshot": "Tvoj zdravstveni snimak",
+    "topPercentile": "Najboljih {percent}%",
+    "trend": {
+      "improving": "Poboljšanje",
+      "declining": "Opadanje",
+      "stable": "Stabilno"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Otpremi rezultate krvnih testova",
+      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov"
+    },
+    "pillars": {
+      "sleep": "San",
+      "exercise": "Vežbanje",
+      "nutrition": "Ishrana",
+      "hydration": "Hidratacija",
+      "mental": "Mentalno"
+    },
+    "emptyStates": {
+      "noSleepPlan": "Još uvek nema plana spavanja",
+      "noSleepPlanDesc": "Kreiraj svoj personalizovani plan spavanja sa AI-optimizovanim ciljevima prilagođenim tvom cirkadijalnom ritmu, potrebama za oporavkom i svakodnevnim performansama.",
+      "noExercisePlan": "Još uvek nema plana vežbanja",
+      "noExercisePlanDesc": "Kreiraj svoj personalizovani plan vežbanja sa AI-optimizovanim vežbama prilagođenim tvom nivou fitnesa, ciljevima i potrebama za oporavkom.",
+      "noNutritionPlan": "Još uvek nema plana ishrane",
+      "noNutritionPlanDesc": "Kreiraj svoj personalizovani plan ishrane sa ukusnim, uravnoteženim receptima prilagođenim tvojim ciljevima i dijetetskim preferencijama.",
+      "noHydrationPlan": "Još uvek nema plana hidratacije",
+      "noHydrationPlanDesc": "Kreiraj svoj personalizovani plan hidratacije sa AI-optimizovanim dnevnim ciljevima prilagođenim tvom nivou aktivnosti, okruženju i potrebama za oporavkom.",
+      "noMentalPlan": "Još uvek nema mentalnog plana",
+      "noMentalPlanDesc": "Kreiraj svoj personalizovani plan mentalnog blagostanja za praćenje stresa, fokusa i emocionalne ravnoteže uz AI vodič.",
+      "generatePlan": "Kreiraj plan",
+      "generating": "Kreiram..."
+    },
+    "noSupplements": "Još nema suplemenata",
+    "noSupplementsDesc": "Prati svoje dnevne vitamine, minerale i suplemente. Dodaj svoj prvi suplement da počneš.",
+    "noReports": "Još nema zdravstvenih izveštaja",
+    "noReportsDesc": "Otpremi svoje krvne testove, laboratorijske rezultate i medicinske izveštaje da otključaš personalizovane zdravstvene uvide.",
+    "medical": "Medicina",
+    "supplements": "Suplementi",
+    "uploadDescription": "Krvni testovi, snimanja, laboratorijski rezultati",
+    "unknownProvider": "Nepoznat pružalac usluga",
+    "addSupplement": "Dodaj suplement",
+    "uploadFirstReport": "Otpremi prvi izveštaj",
+    "missionAlignment": {
+      "title": "Usaglašenost sa misijom",
+      "subtitle": "Kako tvoje preporuke unapređuju pet stubova i ekonomiju dugovečnosti",
+      "loading": "Učitavanje podataka misije...",
+      "error": "Nije moguće učitati podatke misije",
+      "noRecs": "Još uvek nema preporuka u tvom redu.",
+      "summaryServed": "{pct}% tvojih preporuka unapređuje misiju",
+      "summaryServedCount": "{served} od {total} preporuka usaglašeno",
+      "pillarHeading": "Usluženi stubovi",
+      "economyHeading": "Ekonomija dugovečnosti",
+      "noPillar": "Nije usaglašeno sa stubovima",
+      "noEconomy": "Nije usaglašeno sa ekonomijom",
+      "pillars": {
+        "nutrition": "Ishrana",
+        "hydration": "Hidratacija",
+        "exercise": "Vežbanje",
+        "sleep": "Spavanje",
+        "mental": "Mentalno zdravlje"
+      },
+      "economyAxes": {
+        "find_match": "Pronađi partnera",
+        "marketplace": "Marketplace",
+        "income_generation": "Generisanje prihoda",
+        "business_formation": "Osnivanje biznisa"
+      },
+      "contractLink": "Pogledaj ugovor o krajnjem cilju"
+    }
+  }
+}

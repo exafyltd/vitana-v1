@@ -1,0 +1,29 @@
+{
+  "onboarding": {
+    "welcome": "Dobrodošli u VITANA",
+    "subtitle": "Tvoja personalizovana platforma za dugovečnost",
+    "connectApps": "Poveži svoje aplikacije",
+    "connectAppsDesc": "Poveži svoje zdravstvene i wellness aplikacije za bolje uvide",
+    "setGoals": "Postavi svoje ciljeve",
+    "setGoalsDesc": "Definiši svoje zdravstvene ciljeve i ciljeve dugovečnosti",
+    "joinCommunity": "Pridruži se zajednici",
+    "joinCommunityDesc": "Poveži se sa istomišljenicima na sličnim putovanjima",
+    "getStarted": "Započni",
+    "skip": "Preskoči za sada",
+    "skipIntro": "Preskoči uvod",
+    "nameForm": {
+      "title": "Hajde da te upoznamo",
+      "subtitle": "Ovako će te drugi videti u zajednici",
+      "displayNameLabel": "Kako da te oslovljavam?",
+      "displayNamePlaceholder": "Tvoje ime",
+      "handleLabel": "Izaberi svoje Vitanaland korisničko ime",
+      "handlePlaceholder": "tvoje_korisničko_ime",
+      "handleTaken": "Ovo korisničko ime je već zauzeto",
+      "handleInvalid": "Dozvoljena su samo slova, brojevi i donje crte",
+      "handleAvailable": "Korisničko ime je dostupno!",
+      "handleMinLength": "Najmanje 3 karaktera",
+      "saving": "Podešavanje...",
+      "submit": "Hajde da počnemo!"
+    }
+  }
+}

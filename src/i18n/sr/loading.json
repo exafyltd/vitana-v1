@@ -1,0 +1,11 @@
+{
+  "loading": {
+    "default": "Učitavanje...",
+    "groups": "Učitavanje grupa...",
+    "messages": "Učitavanje poruka...",
+    "uploading": "Otpremanje...",
+    "uploadingProgress": "Otpremanje... {progress}%",
+    "processing": "Obrada...",
+    "saving": "Čuvanje..."
+  }
+}

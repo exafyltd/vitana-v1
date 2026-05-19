@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "Jesi li siguran/na da želiš da obrišeš ovo?",
+    "deleteDesc": "Ova radnja se ne može poništiti.",
+    "cancel": "Jesi li siguran/na da želiš da otkažeš?",
+    "cancelDesc": "Tvoje izmene će biti izgubljene.",
+    "unsavedChanges": "Imaš nesačuvanih izmena",
+    "unsavedChangesDesc": "Stvarno želiš da odeš? Tvoje izmene će biti izgubljene.",
+    "leave": "Stvarno želiš da napustiš ovu stranicu?",
+    "leaveDesc": "Nesačuvane izmene će biti izgubljene.",
+    "logout": "Jesi li siguran/na da želiš da se odjaviš?",
+    "logoutDesc": "Moraćeš ponovo da se prijaviš.",
+    "remove": "Stvarno želiš da ukloniš ovu stavku?",
+    "removeDesc": "Stavka će biti uklonjena sa liste.",
+    "disconnect": "Stvarno želiš da se prekine veza?",
+    "disconnectDesc": "Možeš se ponovo povezati kasnije.",
+    "proceed": "Želiš li da nastaviš?",
+    "proceedDesc": "Ova radnja će biti izvršena."
+  }
+}

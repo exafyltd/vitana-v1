@@ -1,0 +1,23 @@
+{
+  "businessHub": {
+    "title": "Poslovni centar",
+    "description": "Razvijajte svoj wellness biznis",
+    "tabs": {
+      "snapshot": "Pregled",
+      "services": "Usluge",
+      "sales": "Prodaja",
+      "insights": "Uvidi"
+    },
+    "recentActivity": "Nedavna aktivnost",
+    "clients": "Klijenti",
+    "analytics": "Analitika",
+    "searchBusiness": "Pretraži biznis...",
+    "noServices": "Još uvek nema usluga",
+    "noServicesDesc": "Kreirajte prvu uslugu da biste počeli da privlačite klijente.",
+    "createService": "Kreiraj uslugu",
+    "noClients": "Još uvek nema klijenata",
+    "noClientsDesc": "Vaši klijenti će se pojaviti ovde.",
+    "noSales": "Još uvek nema prodaja",
+    "noSalesDesc": "Vaša istorija prodaja će se pojaviti ovde."
+  }
+}

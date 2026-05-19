@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Radnje na vremenskoj liniji",
+    "items": {
+      "logHealthEvent": {
+        "title": "Zabeleži zdravstveni događaj",
+        "description": "Zabeleži važne zdravstvene prekretnice"
+      },
+      "markAchievement": {
+        "title": "Označi dostignuće",
+        "description": "Proslavi ostvarene wellness ciljeve"
+      },
+      "recordLifeMoment": {
+        "title": "Zabeleži životni trenutak",
+        "description": "Uhvati značajna iskustva"
+      },
+      "addPhotoMemory": {
+        "title": "Dodaj fotografiju uspomene",
+        "description": "Vizuelna vremenska linija sa zdravstvenim fotografijama"
+      },
+      "voiceTimelineEntry": {
+        "title": "Glasovni unos na vremenskoj liniji",
+        "description": "Brze audio zdravstvene novosti"
+      },
+      "trackProgress": {
+        "title": "Prati napredak",
+        "description": "Zabeleži wellness metrike i trendove"
+      },
+      "activityCheckIn": {
+        "title": "Prijava aktivnosti",
+        "description": "Zabeleži treninge i aktivnosti"
+      },
+      "setTimelineGoal": {
+        "title": "Postavi cilj na vremenskoj liniji",
+        "description": "Kreiraj buduće zdravstvene ciljeve"
+      }
+    }
+  }
+}

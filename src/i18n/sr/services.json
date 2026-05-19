@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Servisni HUB",
+    "subtitle": "Pristupite sveobuhvatnim zdravstvenim i wellness uslugama",
+    "categories": {
+      "preventive": "Preventivni skriningi",
+      "labTests": "Laboratorijske analize",
+      "coaching": "Coaching i lični trening",
+      "groupPrograms": "Grupni programi i izazovi"
+    },
+    "actions": {
+      "book": "Rezerviši",
+      "addToPlan": "Dodaj u plan",
+      "askAI": "Pitaj AI",
+      "joinRoom": "Uđi u sobu",
+      "setReminder": "Postavi podsetnik"
+    },
+    "details": {
+      "duration": "Trajanje",
+      "price": "Cena",
+      "location": "Lokacija",
+      "nextAvailable": "Sledeći slobodan termin",
+      "whatsIncluded": "Šta je uključeno",
+      "healthBenefits": "Zdravstvene prednosti",
+      "availableProviders": "Dostupni pružaoci",
+      "requirements": "Zahtevi i priprema",
+      "tags": "Oznake"
+    }
+  }
+}

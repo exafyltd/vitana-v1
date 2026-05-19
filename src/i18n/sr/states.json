@@ -1,0 +1,24 @@
+{
+  "states": {
+    "loading": "Učitavanje...",
+    "saving": "Čuvanje...",
+    "sending": "Slanje...",
+    "uploading": "Otpremanje...",
+    "downloading": "Preuzimanje...",
+    "processing": "Obrada...",
+    "signingIn": "Prijavljivanje...",
+    "signingOut": "Odjavljivanje...",
+    "signingUp": "Registracija...",
+    "importing": "Uvoz...",
+    "exporting": "Izvoz...",
+    "syncing": "Sinhronizacija...",
+    "generating": "Generisanje...",
+    "connecting": "Povezivanje...",
+    "disconnecting": "Prekidanje veze...",
+    "refreshing": "Osvežavanje...",
+    "searching": "Pretraga...",
+    "deleting": "Brisanje...",
+    "creating": "Kreiranje...",
+    "updating": "Ažuriranje..."
+  }
+}

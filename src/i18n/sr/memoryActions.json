@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Radnje pamćenja",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Snimi glasovni dnevnik",
+        "description": "Zabeleži misli i refleksije glasom"
+      },
+      "addMemoryNote": {
+        "title": "Dodaj belešku pamćenja",
+        "description": "Zapiši važne zdravstvene trenutke"
+      },
+      "viewTimeline": {
+        "title": "Pregledaj vremensku liniju",
+        "description": "Pogledaj svoje celokupno wellness putovanje"
+      },
+      "searchMemories": {
+        "title": "Pretraži uspomene",
+        "description": "Pronađi specifične trenutke i uvide"
+      },
+      "photoMemory": {
+        "title": "Fotografija uspomene",
+        "description": "Dodaj vizuelne uspomene na svoje putovanje"
+      },
+      "aiMemoryAnalysis": {
+        "title": "AI analiza pamćenja",
+        "description": "Dobij uvide iz svojih obrazaca pamćenja"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "drawerNav": {
+    "journey": "Moj put",
+    "news": "Vesti",
+    "events": "Događaji i sastanci",
+    "findPartner": "Pronađi partnera",
+    "live": "Uživo sobe",
+    "media": "Medija HUB",
+    "business": "Poslovni HUB",
+    "discover": "Otkrij",
+    "orders": "Porudžbine",
+    "wallet": "Novčanik",
+    "health": "Zdravlje",
+    "diary": "Dnevni dnevnik",
+    "connectors": "Povezivači",
+    "inbox": "Primljene poruke",
+    "settings": "Podešavanja",
+    "logout": "Odjavi se"
+  }
+}

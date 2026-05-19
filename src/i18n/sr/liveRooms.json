@@ -1,0 +1,134 @@
+{
+  "liveRooms": {
+    "title": "Žive sobe",
+    "description": "Pridruži se audio i video diskusijama uživo",
+    "tabs": {
+      "live": "Uživo sada",
+      "scheduled": "Zakazano",
+      "all": "Sve sobe",
+      "past": "Prošlo"
+    },
+    "goLive": "Kreni uživo",
+    "joinRoom": "Pridruži se sobi",
+    "noRooms": "Trenutno nema živih soba",
+    "beFirst": "Budi prvi koji kreće uživo",
+    "demoRoom": "Demo soba",
+    "demoRoomDesc": "Ovo je primer sobe. Napravi svoju da bi krenuo/la uživo!",
+    "search": {
+      "placeholder": "Pretraži sobe, teme ili voditelje...",
+      "category": "Kategorija",
+      "allCategories": "Sve kategorije"
+    },
+    "room": {
+      "join": "Pridruži se sobi",
+      "participants": "Učesnici",
+      "duration": "Trajanje",
+      "host": "Voditelj",
+      "premium": "Premium",
+      "live": "UŽIVO"
+    },
+    "viewer": {
+      "leave": "Napusti",
+      "mute": "Isključi zvuk",
+      "video": "Video",
+      "raiseHand": "Podigni ruku",
+      "chat": "Ćaskanje",
+      "reactions": "Reakcije"
+    },
+    "goLivePopup": {
+      "titleCreate": "Kreni uživo",
+      "titleEdit": "Uredi strim uživo",
+      "streamTitleLabel": "Naslov strima",
+      "streamTitlePlaceholder": "Uživo sa {name}",
+      "descriptionLabel": "Opis / Biografija (opciono)",
+      "descriptionPlaceholder": "Reci publici o čemu je ovaj strim...",
+      "charactersCount": "{count}/500 karaktera",
+      "streamTypeLabel": "Tip strima",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Naslovna slika / Minijatura",
+      "coverAlt": "Naslovna strima",
+      "coverUploadCta": "Klikni da otpremiš prilagođenu sliku",
+      "coverUploadHint": "PNG, JPG do 2MB",
+      "aiAutoGenerateLabel": "Automatski generiši pomoću AI",
+      "aiAutoGenerateHint": "Generiši sliku ako nijedna nije otpremljena",
+      "generatingAiImage": "Generišem AI sliku…",
+      "tagsLabel": "Oznake / Kategorija (Izaberi 1-3)",
+      "tagsSelected": "{count}/3 izabrano",
+      "tags": {
+        "wellness": "Dobrobit",
+        "nutrition": "Ishrana",
+        "fitness": "Fitnes",
+        "mentalHealth": "Mentalno zdravlje",
+        "longevity": "Dugovečnost",
+        "meditation": "Meditacija",
+        "sleep": "San",
+        "motivation": "Motivacija",
+        "education": "Obrazovanje",
+        "lifestyle": "Životni stil"
+      },
+      "advancedTitle": "Napredne opcije",
+      "cohostLabel": "Poziv ko- hosta / gosta",
+      "cohostPlaceholder": "Pretraži i dodaj ko-hosta",
+      "accessLevelLabel": "Nivo pristupa",
+      "access": {
+        "public": {
+          "label": "Javno",
+          "desc": "Svako može da se pridruži"
+        },
+        "followers": {
+          "label": "Samo pratioci",
+          "desc": "Samo tvoji pratioci"
+        },
+        "group": {
+          "label": "Grupa/VIP",
+          "desc": "Samo pozvani članovi"
+        }
+      },
+      "scheduleLabel": "Zakaži za kasnije",
+      "goLiveNow": "Kreni uživo sada",
+      "selectTime": "Izaberi vreme",
+      "clearSchedule": "Otkaži zakazivanje (Kreni uživo sada)",
+      "scheduledAt": "{date} u {time}",
+      "dateNeedsTime": "{date} – izaberi vreme",
+      "time": "Vreme",
+      "engagementLabel": "Ćaskanje i angažovanje",
+      "enableChatTitle": "Omogući ćaskanje",
+      "enableChatDesc": "Dozvoli gledaocima da ćaskaju",
+      "enablePollsTitle": "Omogući ankete",
+      "enablePollsDesc": "Kreiraj ankete uživo tokom strima",
+      "recordReplayTitle": "Snimi za reprizu",
+      "recordReplayDesc": "Sačuvaj strim za kasnije gledanje",
+      "cancel": "Otkaži",
+      "starting": "Pokrećem…",
+      "updating": "Ažuriram…",
+      "updateStream": "Ažuriraj strim",
+      "scheduleSession": "Zakaži sesiju uživo",
+      "goLiveNowAction": "Kreni uživo sada",
+      "errors": {
+        "selectStreamTypeTitle": "Izaberi tip strima",
+        "selectStreamTypeDesc": "Molimo izaberi Audio ili Video",
+        "notLoggedInTitle": "Greška",
+        "notLoggedInDesc": "Moraš biti prijavljen da bi krenuo uživo",
+        "invalidFileTypeTitle": "Neispravan tip fajla",
+        "invalidFileTypeDesc": "Molimo izaberi slikovni fajl (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Fajl je prevelik",
+        "fileTooLargeDesc": "Slika mora biti manja od 2MB",
+        "imageUploadFailedTitle": "Otpremanje slike nije uspelo",
+        "imageUploadFailedDesc": "Zadržaćemo postojeću sliku.",
+        "genericTitle": "Greška",
+        "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo."
+      },
+      "success": {
+        "streamUpdatedTitle": "Strim ažuriran! ✨",
+        "streamUpdatedDesc": "Tvoj strim je uspešno ažuriran",
+        "streamScheduledTitle": "Strim zakazan! 📅",
+        "streamScheduledDesc": "Tvoj strim je zakazan za {date} u {time}",
+        "youAreLiveTitle": "Uživo si! 🎙️",
+        "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
+        "aiImageHintTitle": "AI generisanje slike",
+        "aiImageHintDesc": "Slika će biti generisana kada strim počne."
+      }
+    }
+  }
+}

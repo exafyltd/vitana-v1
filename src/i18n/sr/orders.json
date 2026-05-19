@@ -1,0 +1,81 @@
+{
+  "orders": {
+    "myOrders": "Moje porudžbine",
+    "title": "Porudžbine",
+    "description": "Vaša istorija porudžbina i aktivne pretplate",
+    "trackDescription": "Pratite svoje porudžbine proizvoda i karte za događaje",
+    "searchPlaceholder": "Pretraži porudžbine...",
+    "tabs": {
+      "active": "Aktivno",
+      "history": "Istorija",
+      "all": "Sve",
+      "completed": "Završeno",
+      "cancelled": "Otkazano"
+    },
+    "filters": {
+      "all": "Sve",
+      "events": "Događaji",
+      "products": "Proizvodi",
+      "vouchers": "Vaučeri",
+      "services": "Usluge",
+      "refunds": "Povraćaji"
+    },
+    "previewNotice": "Ovo su probne porudžbine. Vaše stvarne porudžbine će se pojaviti ovde.",
+    "sampleData": "Probni podaci",
+    "emptyActive": {
+      "title": "Nema aktivnih porudžbina",
+      "description": "Nemate aktivnih porudžbina ili predstojećih događaja."
+    },
+    "emptyHistory": {
+      "title": "Nema istorije porudžbina",
+      "description": "Vaše završene porudžbine i prošli događaji će se pojaviti ovde."
+    },
+    "noOrders": "Još uvek nema porudžbina",
+    "noOrdersDesc": "Vaše porudžbine će se pojaviti ovde nakon što obavite kupovinu.",
+    "browseProducts": "Pregledaj proizvode",
+    "findEvents": "Pronađi događaje",
+    "startShopping": "Započni kupovinu",
+    "noFilter": "Nema {filter}",
+    "noFilterDesc": "Nema {filter} u vašoj istoriji.",
+    "orderDate": "Datum porudžbine",
+    "orderNumber": "Broj porudžbine",
+    "viewDetails": "Prikaži detalje",
+    "trackOrder": "Prati porudžbinu",
+    "reorder": "Ponovo poruči",
+    "detailSheet": {
+      "title": "Detalji porudžbine",
+      "orderInfo": "Informacije o porudžbini",
+      "orderReference": "Referentni broj porudžbine",
+      "purchaseDate": "Datum kupovine",
+      "eventDate": "Datum događaja",
+      "location": "Lokacija",
+      "quantity": "Količina",
+      "tickets": "karte",
+      "yourTicket": "Tvoja karta",
+      "giftVoucher": "Poklon vaučer",
+      "code": "Kod",
+      "sendToRecipient": "Pošalji primaocu",
+      "recipientEmail": "Email primaoca *",
+      "recipientName": "Ime primaoca",
+      "personalMessage": "Lična poruka",
+      "cancel": "Otkaži",
+      "send": "Pošalji",
+      "downloadPdf": "Preuzmi PDF"
+    },
+    "status": {
+      "upcoming": "Predstojeće",
+      "attended": "Prisustvovano",
+      "expired": "Isteklo",
+      "completed": "Završeno",
+      "delivered": "Dostavljeno",
+      "cancelled": "Otkazano",
+      "refunded": "Refundirano",
+      "shipped": "U tranzitu",
+      "confirmed": "Potvrđeno",
+      "pending": "Na čekanju",
+      "processing": "Obrađuje se",
+      "paid": "Aktivno",
+      "active": "Aktivno"
+    }
+  }
+}

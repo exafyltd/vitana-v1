@@ -1,0 +1,39 @@
+{
+  "recallActions": {
+    "title": "Radnje pretrage i prisećanja memorije",
+    "items": {
+      "askAiQuestion": {
+        "title": "Postavi pitanje AI-ju",
+        "description": "Pretražuj svoja sećanja pomoću AI pretrage prirodnim jezikom"
+      },
+      "advancedSearch": {
+        "title": "Napredna pretraga",
+        "description": "Koristi filtere, oznake i opsege datuma da pronađeš sećanja"
+      },
+      "patternAnalysis": {
+        "title": "Analiza obrazaca",
+        "description": "Otkrij trendove i obrasce u svojim wellness podacima"
+      },
+      "memoryInsights": {
+        "title": "Uvidi iz sećanja",
+        "description": "Dobij AI uvide iz svog zdravstvenog putovanja"
+      },
+      "searchByDate": {
+        "title": "Pretraga po datumu",
+        "description": "Pregledaj sećanja iz određenih vremenskih perioda"
+      },
+      "locationMemories": {
+        "title": "Sećanja na lokacije",
+        "description": "Pronađi unose po mestima i lokacijama koje si posetio/la"
+      },
+      "filterByCategory": {
+        "title": "Filtriraj po kategoriji",
+        "description": "Pregledaj sećanja po wellness stubovima i kategorijama"
+      },
+      "quickRecalls": {
+        "title": "Brza prisećanja",
+        "description": "Pristupi često pretraživanim sećanjima i upitima"
+      }
+    }
+  }
+}

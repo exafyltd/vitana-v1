@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Da li ste sigurni da želite da obrišete ovaj paket?",
+    "types": {
+      "bundle": "Paket",
+      "subscription": "Pretplata",
+      "program": "Program"
+    },
+    "status": {
+      "draft": "Nacrt",
+      "published": "Aktivno",
+      "archived": "Arhivirano"
+    },
+    "item": "stavka",
+    "items": "stavke",
+    "total": "ukupno",
+    "validDays": "Važi {days} dana",
+    "save": "Uštedite {percent}%",
+    "unpublish": "Objavi",
+    "publish": "Objavi"
+  }
+}
