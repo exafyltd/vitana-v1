@@ -1,0 +1,154 @@
+{
+  "verdicts": {
+    "discount.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "discount.welcomeTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vaš' instead of informal 'Tvoj'); 'dobrodošli poklon' is less idiomatic than 'poklon dobrodošlice'.",
+      "suggested": "Tvoj poklon dobrodošlice",
+      "phase": "llm"
+    },
+    "discount.welcomeMessage": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Iskoristite' instead of informal 'Iskoristi').",
+      "suggested": "Iskoristi ovaj kod za 10% popusta na prvi događaj",
+      "phase": "llm"
+    },
+    "discount.validFor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.applyCode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.applied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.expired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.invalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.bannerAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.tapToApply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.discountAppliedAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.ticketsComing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.contactOrganizer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Kontaktirajte' instead of informal 'Kontaktiraj').",
+      "suggested": "Kontaktiraj organizatora događaja za informacije o ulaznicama.",
+      "phase": "llm"
+    },
+    "discount.contactOrganizerPrice": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Kontaktirajte' instead of informal 'Kontaktiraj').",
+      "suggested": "Ovaj događaj košta ${price}. Kontaktiraj organizatora za dostupnost ulaznica.",
+      "phase": "llm"
+    },
+    "discount.soldOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.salesEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.salesStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.free": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.ticketsSelected": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically awkward and potentially incorrect gender agreement with 'karta(e) izabrano'. 'Izabrano' is neuter singular, while 'karta' is feminine. A more common and robust UI phrasing is needed.",
+      "suggested": "Odabrano: {count} karta(e)",
+      "phase": "llm"
+    },
+    "discount.useAccountEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.buyAsGuest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.guestDetails": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Unesite' instead of informal 'Unesi', and 'da biste dobili' instead of 'da dobiješ').",
+      "suggested": "Unesi svoje podatke da dobiješ kartu. Nije potreban nalog.",
+      "phase": "llm"
+    },
+    "discount.fullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.ticketEmailNote": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vaša' instead of informal 'Tvoja'); incorrect gender agreement for 'poslati' (masculine plural) which should be 'poslate' (feminine plural) for 'karta' and 'potvrda'.",
+      "suggested": "Tvoja karta i potvrda će biti poslate na ovu email adresu.",
+      "phase": "llm"
+    },
+    "discount.left": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discount.loadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:48:35.453Z"
+}

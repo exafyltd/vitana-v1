@@ -1,0 +1,31 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistency: uses formal 'Vi' form instead of informal 'ti' form.",
+      "suggested": "Nisi autorizovan/a",
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses formal 'Vi' form instead of informal 'ti' form.",
+      "suggested": "Nemaš dozvolu da pristupiš ovoj stranici",
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses formal 'Vi' imperative instead of informal 'ti' imperative.",
+      "suggested": "Kontaktiraj svog administratora za pristup",
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:41:50.053Z"
+}

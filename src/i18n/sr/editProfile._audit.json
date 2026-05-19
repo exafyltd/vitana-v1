@@ -1,0 +1,80 @@
+{
+  "verdicts": {
+    "editProfile.unsavedChanges": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vi' used instead of informal 'ti').",
+      "suggested": "Imaš nesačuvane izmene. Da li si siguran da želiš da odeš?",
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticated": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vi' used instead of informal 'ti').",
+      "suggested": "Nisi autentifikovan.",
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vi' used instead of informal 'ti').",
+      "suggested": "Molimo te, prijavi se da bi sačuvao svoj profil.",
+      "phase": "llm"
+    },
+    "editProfile.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.profileUpdatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vi' used instead of informal 'ti') and slight nuance difference for 'live' and 'amazing'.",
+      "suggested": "Tvoje izmene su sada objavljene. Tvoj VITANA profil izgleda neverovatno.",
+      "phase": "llm"
+    },
+    "editProfile.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.refreshFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.showcaseHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Vi' used instead of informal 'ti').",
+      "suggested": "Izaberi objave i sadržaj koji će biti istaknuti na vrhu tvog profila.",
+      "phase": "llm"
+    },
+    "editProfile.showcaseTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.addBio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.tapToEdit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:49:32.742Z"
+}

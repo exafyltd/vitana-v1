@@ -1,0 +1,89 @@
+{
+  "verdicts": {
+    "drawerNav.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.events": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "drawerNav.findPartner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.live": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing, not idiomatic.",
+      "suggested": "Sobe uživo",
+      "phase": "llm"
+    },
+    "drawerNav.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.business": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.discover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.diary": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Redundant phrasing; 'dnevnik' already implies daily.",
+      "suggested": "Dnevnik",
+      "phase": "llm"
+    },
+    "drawerNav.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.logout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:49:17.892Z"
+}

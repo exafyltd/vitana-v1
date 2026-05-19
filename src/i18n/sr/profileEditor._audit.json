@@ -1,0 +1,455 @@
+{
+  "verdicts": {
+    "profileEditor.editAbout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.aboutTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.aboutDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.bio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.bioPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'strastven u svesnom životu' is slightly awkward. 'Posvećen' (dedicated/devoted) fits 'passionate about' better in this context and is more natural.",
+      "suggested": "Podeli svoje wellness putovanje, strasti i ono što te čini jedinstvenim...\n\nPrimeri:\n• 'Wellness entuzijasta posvećen svesnom životu i izgradnji zajednice 🌱'\n• 'Sertifikovani nutricionista koji pomaže drugima da otkriju svoje najzdravije ja'\n• 'Maratonac, učitelj meditacije i zagovornik uravnoteženog života'",
+      "phase": "llm"
+    },
+    "profileEditor.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.locationPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.links": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.addLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.linkLabelPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.linkUrlPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.addLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.characters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.words": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.almostFull": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.goodLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.public": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.private": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.english": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.german": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.spanish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.french": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.italian": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.portuguese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.russian": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.arabic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.chinese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.japanese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.profileUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.saveFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.quickSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.makeShorter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.moreProfessional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.moreInspirational": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.suggestion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.editIdentity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.profilePicture": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.displayName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.displayNamePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.handle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.handlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.handleDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptorPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptorDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'stil vežbanja' (exercise style) is too narrow for 'wellness style'. 'Wellness' is a broader concept.",
+      "suggested": "Kratka fraza koja opisuje tvoj velnes stil",
+      "phase": "llm"
+    },
+    "profileEditor.identity.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.avatarUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.avatarUploadedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.identityUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.identityUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.tileTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.tileSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.drawerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Literal translation 'portret tebe' is slightly awkward; 'tvoj portret' is more natural.",
+      "suggested": "Koristi se kada nijedna od tvojih fotografija specifičnih za aktivnost ne odgovara kategoriji objave — umesto AI-generisane slike. Obično tvoj portret.",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalReplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalRemove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalEmptyHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.librarySection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryAddPhoto": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryCategoryLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryCategoryPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryUploadButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryRemoveButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryPhotoUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryPhotoRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.categoryRequired": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'vas' and 'izaberite' instead of informal 'te' and 'izaberi'.",
+      "suggested": "Molim te, prvo izaberi kategoriju za ovu fotografiju.",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.saveError": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'pokušajte' instead of informal 'pokušaj'.",
+      "suggested": "Nije moguće sačuvati — pokušaj ponovo.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:59:30.996Z"
+}

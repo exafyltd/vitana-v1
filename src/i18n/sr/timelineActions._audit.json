@@ -1,0 +1,92 @@
+{
+  "verdicts": {
+    "timelineActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; literal translation of compound noun. 'Fotografija uspomene' sounds like 'photo of a memory' rather than 'photo memory'.",
+      "suggested": "Dodaj foto uspomenu",
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.title": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T21:28:11.260Z"
+}

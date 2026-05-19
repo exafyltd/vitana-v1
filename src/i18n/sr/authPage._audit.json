@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "authPage.welcomeTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Dobrodošli') instead of informal ('Dobrodošao/la').",
+      "suggested": "Dobrodošao/la u VITANA",
+      "phase": "llm"
+    },
+    "authPage.subtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Vaša') instead of informal ('Tvoja').",
+      "suggested": "Tvoja personalizovana platforma za zdravstvenu inteligenciju",
+      "phase": "llm"
+    },
+    "authPage.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.signUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.password": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.fullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterEmail": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Unesite') instead of informal ('Unesi').",
+      "suggested": "Unesi svoju e-poštu",
+      "phase": "llm"
+    },
+    "authPage.enterPassword": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Unesite') instead of informal ('Unesi').",
+      "suggested": "Unesi svoju lozinku",
+      "phase": "llm"
+    },
+    "authPage.enterFullName": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Unesite') instead of informal ('Unesi').",
+      "suggested": "Unesi svoje ime i prezime",
+      "phase": "llm"
+    },
+    "authPage.createPassword": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Kreirajte') instead of informal ('Kreiraj').",
+      "suggested": "Kreiraj lozinku",
+      "phase": "llm"
+    },
+    "authPage.createAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.orContinueWith": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('nastavite') instead of informal ('nastavi').",
+      "suggested": "Ili nastavi sa",
+      "phase": "llm"
+    },
+    "authPage.backToPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.keepLoggedIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:42:00.424Z"
+}

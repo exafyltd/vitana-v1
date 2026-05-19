@@ -1,0 +1,81 @@
+{
+  "verdicts": {
+    "errors.somethingWentWrong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.tryAgain": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent register for 'please'. 'Molimo' is formal, while 'pokušaj' is informal. Should be 'Molim te' for consistency.",
+      "suggested": "Molim te pokušaj ponovo",
+      "phase": "llm"
+    },
+    "errors.pageNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.pageNotFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkErrorDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent register for 'please'. 'Molimo' is formal, while 'proveri' is informal. Should be 'Molim te' for consistency.",
+      "suggested": "Molim te proveri internet konekciju.",
+      "phase": "llm"
+    },
+    "errors.unauthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.unauthorizedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent register for 'please'. 'Molimo' is formal, while 'prijavi se' and 'nastaviš' are informal. Should be 'Molim te' for consistency.",
+      "suggested": "Molim te prijavi se da nastaviš.",
+      "phase": "llm"
+    },
+    "errors.forbidden": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.forbiddenDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.notFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:49:59.864Z"
+}

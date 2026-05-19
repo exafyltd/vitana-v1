@@ -1,0 +1,35 @@
+{
+  "verdicts": {
+    "createSelection.meetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "createSelection.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.event": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.eventDescription": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "createSelection.meetupDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:47:58.848Z"
+}

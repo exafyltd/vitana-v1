@@ -1,0 +1,138 @@
+{
+  "verdicts": {
+    "empty.noAppsFound": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'vašoj' (formal) should be 'tvojoj' (informal).",
+      "suggested": "Nema pronađenih aplikacija koje odgovaraju tvojoj pretrazi.",
+      "phase": "llm"
+    },
+    "empty.noEventsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noContactsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noContactsFoundMatching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noGroupsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noResultsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noReportsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noUsersFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noTransactionsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noEventsYet": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'kreirajte' (formal imperative) should be 'kreiraj' (informal imperative).",
+      "suggested": "Još uvek nema događaja. Prvo kreiraj događaj.",
+      "phase": "llm"
+    },
+    "empty.tryAdjustingFilters": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'Pokušajte' and 'prilagodite' (formal) should be 'Pokušaj' and 'prilagodiš' (informal).",
+      "suggested": "Pokušaj da prilagodiš filtere ili upit za pretragu.",
+      "phase": "llm"
+    },
+    "empty.noData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noNotifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.indexSheetNextDays": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for 'completing it' and register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
+      "suggested": "Nema aktivnih Autopilot predloga. Kada se nešto pojavi ovde, završavanje toga će pomeriti tvoj Indeks.",
+      "phase": "llm"
+    },
+    "empty.indexSheetHorizon": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
+      "suggested": "Potrebno je još nekoliko dana podataka da bi se projektovao tvoj 30-dnevni luk.",
+      "phase": "llm"
+    },
+    "empty.myJourneyPath": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'Vaš' and 'možete' (formal) should be 'Tvoj' and 'možeš' (informal).",
+      "suggested": "Tvoj put tek počinje. Kada Autopilot bude imao predloge, pojaviće se ovde kao put kojim možeš hodati.",
+      "phase": "llm"
+    },
+    "empty.myJourneyOnePillar": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'Izaberite', 'gledajte', 'vaš' (formal) should be 'Izaberi', 'gledaj', 'tvoj' (informal).",
+      "suggested": "Izaberi jednu malu stvar — gledaj kako se tvoj Indeks pomera.",
+      "phase": "llm"
+    },
+    "empty.autopilotPopupZero": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'Izaberite' and 'vidite' (formal) should be 'Izaberi' and 'vidiš' (informal).",
+      "suggested": "Izaberi akcije da vidiš podizanje Indeksa.",
+      "phase": "llm"
+    },
+    "empty.healthEmpty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: 'Zabeležite' and 'da biste pokrenuli' (formal) should be 'Zabeleži' and 'da pokreneš' (informal).",
+      "suggested": "Zabeleži svoj prvi unos da pokreneš Indeks.",
+      "phase": "llm"
+    },
+    "empty.noActionsMatchedYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.actionsPendingOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.actionsPendingOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:49:51.817Z"
+}

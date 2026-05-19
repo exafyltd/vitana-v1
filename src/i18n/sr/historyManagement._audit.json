@@ -1,0 +1,226 @@
+{
+  "verdicts": {
+    "historyManagement.beta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "historyManagement.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.viewAnalyze": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.organizeManage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportHistoryDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Missing 'data' in translation; 'aktivnosti' means 'activities', not 'activity data'.",
+      "suggested": "Preuzmi podatke o svojim aktivnostima (CSV/JSON)",
+      "phase": "llm"
+    },
+    "historyManagement.viewStatistics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.viewStatisticsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.advancedSearch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.advancedSearchDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'date range' translated as 'date' (datumu), losing the 'range' aspect.",
+      "suggested": "Filtriraj po opsegu datuma, kategoriji, ključnim rečima",
+      "phase": "llm"
+    },
+    "historyManagement.bulkActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.bulkActionsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.archiveSettings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.archiveSettingsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.manageCategories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.manageCategoriesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyControls": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyControlsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearOldHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearOldHistoryDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteAllHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteAllHistoryDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Missing 'data' in translation; 'aktivnosti' means 'activities', not 'activity data'.",
+      "suggested": "Trajno ukloni sve sačuvane podatke o aktivnostima",
+      "phase": "llm"
+    },
+    "historyManagement.exporting": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "First-person singular verb ('I am exporting') is inappropriate for a UI status message.",
+      "suggested": "Izvoz u toku...",
+      "phase": "llm"
+    },
+    "historyManagement.clearing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "First-person singular verb ('I am clearing') is inappropriate for a UI status message.",
+      "suggested": "Brisanje u toku...",
+      "phase": "llm"
+    },
+    "historyManagement.deleting": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "First-person singular verb ('I am deleting') is inappropriate for a UI status message.",
+      "suggested": "Brisanje u toku...",
+      "phase": "llm"
+    },
+    "historyManagement.exportComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportCompleteDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.historyCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.historyClearedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.allHistoryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.allHistoryDeletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing 'your' for direct address, less personal for a friendly app.",
+      "suggested": "Došlo je do greške prilikom brisanja tvoje istorije.",
+      "phase": "llm"
+    },
+    "historyManagement.confirmClearOld": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.confirmDeleteAll": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'History' translated as 'data' instead of 'history'.",
+      "suggested": "⚠️ UPOZORENJE: Ovo će trajno obrisati SVU tvoju istoriju. Ova radnja se ne može poništiti. Jesi li apsolutno siguran/na?",
+      "phase": "llm"
+    },
+    "historyManagement.danger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:52:40.989Z"
+}

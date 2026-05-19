@@ -1,0 +1,395 @@
+{
+  "verdicts": {
+    "health.missionAlignment.economyAxes.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'tabla' can mean board, 'kontrolna tabla' is the standard and more precise term for a digital dashboard in Serbian.",
+      "suggested": "Tvoja lična zdravstvena kontrolna tabla",
+      "phase": "llm"
+    },
+    "health.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overviewDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translating both 'dashboard' and 'overview' as 'pregled' is confusing. 'Kontrolna tabla' is more appropriate for 'dashboard' to distinguish it from 'overview'.",
+      "suggested": "Tvoja sveobuhvatna zdravstvena kontrolna tabla i wellness pregled",
+      "phase": "llm"
+    },
+    "health.servicesHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHubDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTrackerDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.educationDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocusExplanation": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "The term 'healthspan' is relatively new, and 'zdravstveni vek' is a reasonable and understandable translation in Serbian.",
+      "phase": "llm"
+    },
+    "health.autopilotGuidance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.autopilotSuggests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.takeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.orderBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.viewPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthSnapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.topPercentile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.improving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "issue": "Translating a gerund/present participle label as a noun is common and acceptable in Serbian UI.",
+      "phase": "llm"
+    },
+    "health.trend.declining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "issue": "Translating a gerund/present participle label as a noun is common and acceptable in Serbian UI.",
+      "phase": "llm"
+    },
+    "health.trend.stable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.uploadBloodTestResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.startFitnessChallenge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generatePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplementsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReportsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.medical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.unknownProvider": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.addSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadFirstReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noRecs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServedCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillarHeading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too literal translation; 'usluženi' implies pillars received a service, not that they were addressed or covered. Awkward phrasing.",
+      "suggested": "Obuhvaćeni stubovi",
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noPillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noEconomy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.find_match": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English term 'match' without further context. 'Pronađi partnera' specifically implies finding a person, which might not be the only or primary meaning in a wellness app (e.g., could be finding a match for preferences, or a matching item/service).",
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.contractLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:52:13.837Z"
+}
