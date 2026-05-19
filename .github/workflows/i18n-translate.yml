@@ -64,7 +64,9 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          ARGS="--provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
+          # --init bootstraps a new locale dir from en/ if missing; idempotent
+          # for existing locales (only flags untranslated leaves).
+          ARGS="--init --provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
           if [ -n "${{ inputs.shard }}" ]; then
             ARGS="$ARGS --shard=${{ inputs.shard }}"
           fi
