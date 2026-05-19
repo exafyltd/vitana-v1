@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import {
@@ -10,10 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { t } from '@/lib/i18n-toast';
+import { LegalLocaleToggle } from "@/components/LegalLocaleToggle";
+import { useScopedT, type LegalLang } from "@/lib/use-scoped-t";
 
 const TermsOfUse = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlLang = searchParams.get("lang");
+  const lang: LegalLang | null =
+    urlLang === "de" || urlLang === "en" ? urlLang : null;
+  const t = useScopedT(lang);
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,6 +41,9 @@ const TermsOfUse = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.termsUse')}</h1>
+          <div className="ml-auto">
+            <LegalLocaleToggle />
+          </div>
         </div>
       </header>
 

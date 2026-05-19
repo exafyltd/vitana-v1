@@ -1,25 +1,31 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
-import { t } from '@/lib/i18n-toast';
+import { LegalLocaleToggle } from "@/components/LegalLocaleToggle";
+import { useScopedT, type LegalLang } from "@/lib/use-scoped-t";
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlLang = searchParams.get("lang");
+  const lang: LegalLang | null =
+    urlLang === "de" || urlLang === "en" ? urlLang : null;
+  const t = useScopedT(lang);
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO 
+      <SEO
         title={t('screens.legal.privacyPolicyMaxinaMobileApplication')}
         description="Privacy Policy for the Maxina Mobile Application by Exafy LTD. Learn how we collect, use, and protect your personal data."
         canonical="https://vitanaland.com/privacy"
       />
-      
+
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
             aria-label={t('screens.legal.goBack')}
@@ -27,6 +33,9 @@ const PrivacyPolicy = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.privacyPolicy')}</h1>
+          <div className="ml-auto">
+            <LegalLocaleToggle />
+          </div>
         </div>
       </header>
 
