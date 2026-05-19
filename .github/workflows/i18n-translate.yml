@@ -82,11 +82,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/i18n/
-          git commit -m "chore(i18n): drain _pending_review via ${{ inputs.provider }} (${{ inputs.locale }})
-
-Auto-translation run.
-Provider: ${{ inputs.provider }}
-Locale: ${{ inputs.locale }}
-Triggered by: ${{ github.actor }}
-"
+          git commit -m "chore(i18n): drain _pending_review via ${{ inputs.provider }} for ${{ inputs.locale }} (actor=${{ github.actor }})"
           git push origin HEAD:${{ github.ref_name }}
