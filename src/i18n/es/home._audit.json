@@ -1,0 +1,48 @@
+{
+  "verdicts": {
+    "home.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender agreement. 'Bienvenido' assumes a male user. For a general UI string, it should be gender-neutral or inclusive.",
+      "suggested": "¡Bienvenido/a de vuelta!",
+      "phase": "llm"
+    },
+    "home.todaysSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.mediaContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.eventsAndMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.communityNews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.dailyMatches": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "The meaning of 'Matches' is ambiguous in a wellness/longevity app context. 'Coincidencias' is a literal translation but might not be the most idiomatic or clear for a feature like user matching, content recommendations, or activity pairing without further context.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T17:45:11.610Z"
+}

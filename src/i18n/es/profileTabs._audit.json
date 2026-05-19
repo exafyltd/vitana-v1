@@ -1,0 +1,52 @@
+{
+  "verdicts": {
+    "profileTabs.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.insight": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Información is too general; 'Insight' implies deeper understanding or valuable takeaway.",
+      "suggested": "Perspectivas",
+      "phase": "llm"
+    },
+    "profileTabs.milestones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T17:51:36.833Z"
+}

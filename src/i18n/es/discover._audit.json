@@ -1,0 +1,313 @@
+{
+  "verdicts": {
+    "discover.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.mobileTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Infinitive form used as a UI action/heading; should be imperative for du-form.",
+      "suggested": "Descubre",
+      "phase": "llm"
+    },
+    "discover.mobileDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.doctorsCoaches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.doctorsCoachesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.wellnessServices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.wellnessServicesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.communityGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.communityGroupsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.explore": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Infinitive form used as a UI action/heading; should be imperative for du-form.",
+      "suggested": "Explora",
+      "phase": "llm"
+    },
+    "discover.aiPicksForYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendedForYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.moreToExplore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.seeAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.suggestedForYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.browseCategories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.shareAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.shareAndEarnDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.start": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Infinitive form used as a UI action/heading; should be imperative for du-form.",
+      "suggested": "Comienza",
+      "phase": "llm"
+    },
+    "discover.view": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchPerfect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchGreat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.noResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.noResultsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.movement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.mind": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.experts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.viewCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.bookAppointment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.quickCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.trackOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.reorderPrevious": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Phrasing is a bit abrupt and less idiomatic for a button. 'Anterior' is an adjective without a clear noun.",
+      "suggested": "Volver a pedir",
+      "phase": "llm"
+    },
+    "discover.quickActions.managePayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.findServicesNearMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.viewSavedItems": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.backToDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.unavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.unavailableDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.recommendationsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.noRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.noRecommendationsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.viewAllPicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.experts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.deals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.toast.actionSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.toast.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T17:42:05.469Z"
+}

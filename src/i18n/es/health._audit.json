@@ -1,0 +1,391 @@
+{
+  "verdicts": {
+    "health.topPercentile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.missionAlignment.economyAxes.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overviewDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHubDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTrackerDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.educationDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocusExplanation": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "health.autopilotGuidance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.autopilotSuggests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.takeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.orderBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.viewPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthSnapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.improving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.declining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.stable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.uploadBloodTestResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.startFitnessChallenge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlan": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'plan mental' is less natural than 'plan de bienestar mental' in a wellness context, especially given the next entry.",
+      "suggested": "Aún no hay plan de bienestar mental",
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generatePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplements": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'Sin X Aún' is less natural than 'Aún no hay X' or 'Todavía no hay X'.",
+      "suggested": "Aún no hay suplementos",
+      "phase": "llm"
+    },
+    "health.noSupplementsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReports": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'Sin X Aún' is less natural than 'Aún no hay X' or 'Todavía no hay X'.",
+      "suggested": "Aún no hay informes de salud",
+      "phase": "llm"
+    },
+    "health.noReportsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.medical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.unknownProvider": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.addSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadFirstReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noRecs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServedCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillarHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noPillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noEconomy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.find_match": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.contractLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T17:44:41.350Z"
+}

@@ -1,0 +1,42 @@
+{
+  "verdicts": {
+    "walletActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.addFunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.buyCredits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.stakeTokens": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "While 'apostar' can mean 'to stake', in the context of 'tokens' (implying digital assets/crypto), 'staking' is a specific technical term. 'Apostar' can carry a strong connotation of gambling, which might not be intended. The loanword 'staking' is commonly used in Spanish for this concept.",
+      "suggested": "Hacer staking de tokens",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-19T19:12:04.675Z"
+}
