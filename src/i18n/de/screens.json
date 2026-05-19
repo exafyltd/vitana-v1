@@ -1,6 +1,7 @@
 {
   "screens": {
     "common": {
+      "languageToggleAriaLabel": "Sprache",
       "testResults": "Testergebnisse",
       "patientTestResultsLabReports": "Patiententestergebnisse und Laborberichte",
       "careTeam": "Pflegeteam",

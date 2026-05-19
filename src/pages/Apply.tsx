@@ -609,10 +609,10 @@ export default function Apply() {
           <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 border-t border-white/40 pt-6 text-xs text-neutral-700 md:flex-row">
             <p>© 2026 {t("apply.footerCopy")}</p>
             <div className="flex items-center gap-4">
-              <a href="/privacy" className="hover:text-neutral-900">
+              <a href={`/privacy?lang=${locale}`} className="hover:text-neutral-900">
                 {t("apply.footerPrivacy")}
               </a>
-              <a href="/terms" className="hover:text-neutral-900">
+              <a href={`/terms?lang=${locale}`} className="hover:text-neutral-900">
                 {t("apply.footerTerms")}
               </a>
             </div>
