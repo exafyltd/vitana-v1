@@ -23,8 +23,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
+// VTID-03089: chat_groups appear in the unified /inbox list when in the
+// global community context. Selecting one routes to /inbox/g/<id>.
+import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } from "@/hooks/useChatGroupsAsThreads";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -68,12 +71,32 @@ export default function Messages() {
   // on full refresh the role loads async and the switch was accidentally
   // skipped via roleLoadedRef — making it look like refresh "fixed" it.
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
-  const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
+  const { threads: apiThreads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
+
+  // VTID-03089: merge chat_groups (new system) into the inbox list when in
+  // the community/global context. Selecting one is intercepted below and
+  // routed to /inbox/g/<id> instead of inline thread load.
+  const { threads: chatGroupThreads } = useChatGroupsAsThreads(isGlobalContext);
+  const threads = useMemo(() => {
+    if (!isGlobalContext) return apiThreads;
+    return [...chatGroupThreads, ...apiThreads];
+  }, [apiThreads, chatGroupThreads, isGlobalContext]);
 
   const userSelectedContextRef = React.useRef(false);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
+
+  // VTID-03089: if any thread-selection code path picks a chat_group entry,
+  // intercept and route to the standalone /inbox/g/<id> view. Reset the
+  // selection so the inline ConversationView doesn't try to load it.
+  useEffect(() => {
+    if (selectedThreadId && isChatGroupThreadId(selectedThreadId)) {
+      const gid = chatGroupIdFromThreadId(selectedThreadId);
+      setSelectedThreadId(null);
+      navigate(`/inbox/g/${gid}`);
+    }
+  }, [selectedThreadId, navigate]);
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
