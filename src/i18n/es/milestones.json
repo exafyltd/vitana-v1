@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Hitos de la vida",
+    "add": "Añadir hito",
+    "edit": "Editar hito",
+    "empty": "Aún no hay hitos",
+    "addFirst": "Añade tu primer hito",
+    "date": "Fecha",
+    "description": "¿Qué pasó?",
+    "titleLabel": "Título",
+    "titlePlaceholder": "p. ej., Graduado de la universidad",
+    "descPlaceholder": "Describe este momento...",
+    "icon": "Icono",
+    "publicLabel": "Visible para todos",
+    "private": "Privado"
+  }
+}

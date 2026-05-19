@@ -1,0 +1,13 @@
+{
+  "profilePosts": {
+    "createPost": "Crear publicación",
+    "placeholder": "¿Qué tienes en mente?",
+    "post": "Publicar",
+    "posted": "¡Publicado!",
+    "deleted": "Publicación eliminada",
+    "emptyTitle": "Aún no hay publicaciones",
+    "emptyDescription": "Comparte tu primera actualización con la comunidad",
+    "deleteConfirm": "¿Eliminar esta publicación?",
+    "error": "Algo salió mal"
+  }
+}

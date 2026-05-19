@@ -1,0 +1,7 @@
+{
+  "audio": {
+    "listening": "Estoy escuchando...",
+    "processing": "Un momento...",
+    "connectionError": "Problema de conexión. Intenta de nuevo."
+  }
+}

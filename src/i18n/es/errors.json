@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Algo salió mal",
+    "tryAgain": "Inténtalo de nuevo",
+    "pageNotFound": "Página no encontrada",
+    "pageNotFoundDesc": "La página solicitada no existe.",
+    "serverError": "Error del servidor",
+    "serverErrorDesc": "Ocurrió un error inesperado.",
+    "networkError": "Error de red",
+    "networkErrorDesc": "Revisa tu conexión a internet.",
+    "unauthorized": "No autorizado",
+    "unauthorizedDesc": "Inicia sesión para continuar.",
+    "forbidden": "Acceso denegado",
+    "forbiddenDesc": "No tienes permiso para esta acción.",
+    "notFound": "No encontrado",
+    "notFoundDesc": "El elemento solicitado no se encontró."
+  }
+}

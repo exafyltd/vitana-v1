@@ -1,0 +1,70 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Regala un Vale de Maxina",
+      "subtitle": "Regala bienestar y conexión comunitaria",
+      "buyVoucher": "Comprar Vale",
+      "openingCheckout": "Abriendo pago seguro..."
+    },
+    "tiers": {
+      "test": {
+        "name": "Prueba"
+      },
+      "experience": {
+        "name": "Experiencia"
+      },
+      "exclusive": {
+        "name": "Exclusivo"
+      }
+    },
+    "success": {
+      "title": "¡Vale Comprado!",
+      "ready": "Tu vale {tier} está listo",
+      "download": "Descargar Vale",
+      "sendEmail": "Enviar al Destinatario por Correo",
+      "viewOrders": "Ver en Pedidos",
+      "done": "Listo"
+    },
+    "email": {
+      "title": "Enviar Vale por Correo",
+      "subtitle": "Enviaremos un correo con el vale diseñado hermosamente",
+      "recipientEmail": "Correo del Destinatario *",
+      "recipientName": "Nombre del Destinatario (opcional)",
+      "personalMessage": "Mensaje Personal (opcional)",
+      "messagePlaceholder": "¡Feliz Cumpleaños! Disfruta este capricho de bienestar...",
+      "back": "Atrás",
+      "send": "Enviar Vale"
+    },
+    "preview": {
+      "title": "Tu Vale",
+      "giftVoucher": "Vale de Regalo",
+      "validUntil": "Válido hasta {date}",
+      "voucherCode": "Código del Vale",
+      "whatsIncluded": "Qué Incluye",
+      "downloadPdf": "Descargar PDF",
+      "downloadDirect": "Descarga Directa",
+      "openInBrowser": "Abrir en el Navegador",
+      "copyLink": "Copiar Enlace",
+      "share": "Guardar / Compartir",
+      "shareHint": "Guardar en Archivos, Drive o enviar a alguien",
+      "downloadHint": "Si la descarga se abre en blanco, toca Abrir en el Navegador"
+    },
+    "toast": {
+      "downloadStarted": "¡Descarga iniciada!",
+      "downloadFailed": "Descarga fallida",
+      "linkCopied": "¡Enlace copiado!",
+      "linkCopiedDesc": "Pégalo en el navegador para descargar.",
+      "voucherSent": "¡Vale enviado a {email}!",
+      "voucherShared": "¡Vale compartido exitosamente!",
+      "checkoutFailed": "Error al iniciar el pago. Inténtalo de nuevo.",
+      "generatingVoucher": "Generando vale...",
+      "failedToLoadVoucher": "Error al cargar los datos del vale",
+      "downloadFailedCopyLink": "Descarga fallida. Intenta copiar el enlace.",
+      "useTicketView": "Usa la vista de ticket para imprimir o guardar tu ticket",
+      "pdfNotAvailable": "Descarga de PDF no disponible para este tipo de pedido",
+      "enterRecipientEmail": "Por favor, ingresa el correo del destinatario",
+      "emailOnlyForVouchers": "Envío por correo solo disponible para vales",
+      "sendingVoucherEmail": "Enviando correo del vale..."
+    }
+  }
+}

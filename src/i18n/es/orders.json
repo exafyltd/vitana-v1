@@ -1,0 +1,81 @@
+{
+  "orders": {
+    "myOrders": "Mis Pedidos",
+    "title": "Pedidos",
+    "description": "Tu historial de pedidos y suscripciones activas",
+    "trackDescription": "Sigue tus pedidos de productos y entradas para eventos",
+    "searchPlaceholder": "Buscar pedidos...",
+    "tabs": {
+      "active": "Activo",
+      "history": "Historial",
+      "all": "Todo",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "filters": {
+      "all": "Todo",
+      "events": "Eventos",
+      "products": "Productos",
+      "vouchers": "Vales",
+      "services": "Servicios",
+      "refunds": "Reembolsos"
+    },
+    "previewNotice": "Estos son pedidos de vista previa. Tus pedidos reales aparecerán aquí.",
+    "sampleData": "Datos de muestra",
+    "emptyActive": {
+      "title": "Sin pedidos activos",
+      "description": "No tienes pedidos activos ni eventos próximos."
+    },
+    "emptyHistory": {
+      "title": "Sin historial de pedidos",
+      "description": "Tus pedidos completados y eventos pasados aparecerán aquí."
+    },
+    "noOrders": "Aún no hay pedidos",
+    "noOrdersDesc": "Tus pedidos aparecerán aquí una vez que hagas una compra.",
+    "browseProducts": "Explorar productos",
+    "findEvents": "Encontrar eventos",
+    "startShopping": "Empezar a comprar",
+    "noFilter": "Sin {filter}",
+    "noFilterDesc": "No se encontraron {filter} en tu historial.",
+    "orderDate": "Fecha del pedido",
+    "orderNumber": "Número de pedido",
+    "viewDetails": "Ver detalles",
+    "trackOrder": "Seguir pedido",
+    "reorder": "Reordenar",
+    "detailSheet": {
+      "title": "Detalles del pedido",
+      "orderInfo": "Información del pedido",
+      "orderReference": "Referencia del pedido",
+      "purchaseDate": "Fecha de compra",
+      "eventDate": "Fecha del evento",
+      "location": "Ubicación",
+      "quantity": "Cantidad",
+      "tickets": "boletos",
+      "yourTicket": "Tu Boleto",
+      "giftVoucher": "Vale de Regalo",
+      "code": "Código",
+      "sendToRecipient": "Enviar al Destinatario",
+      "recipientEmail": "Correo del Destinatario *",
+      "recipientName": "Nombre del Destinatario",
+      "personalMessage": "Mensaje Personal",
+      "cancel": "Cancelar",
+      "send": "Enviar",
+      "downloadPdf": "Descargar PDF"
+    },
+    "status": {
+      "upcoming": "Próximos",
+      "attended": "Asistido",
+      "expired": "Vencido",
+      "completed": "Completado",
+      "delivered": "Entregado",
+      "cancelled": "Cancelado",
+      "refunded": "Reembolsado",
+      "shipped": "En Tránsito",
+      "confirmed": "Confirmado",
+      "pending": "Pendiente",
+      "processing": "Procesando",
+      "paid": "Activo",
+      "active": "Activo"
+    }
+  }
+}

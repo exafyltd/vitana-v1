@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "¿Eliminar campaña?",
+      "description": "Eliminar \"{name}\" eliminará permanentemente todos los borradores y análisis relacionados. Esta acción no se puede deshacer.",
+      "dontAskAgain": "No preguntar de nuevo para campañas en borrador",
+      "deletePermanently": "Eliminar permanentemente"
+    },
+    "creation": {
+      "title": "Crear campaña",
+      "stepOf": "Paso {current} de {total}",
+      "yourCampaigns": "Tus campañas",
+      "drafts": "borradores",
+      "live": "activas",
+      "proTip": "Pro Tip",
+      "tips": {
+        "1": "Los nombres claros te ayudan a encontrar campañas después",
+        "2": "Conecta canales ahora para programar al instante",
+        "3": "La plantilla de lanzamiento funciona para la mayoría de anuncios",
+        "4": "La programación inteligente usa tus datos de engagement pasados"
+      }
+    }
+  }
+}

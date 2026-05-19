@@ -1,0 +1,42 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "Plataforma de Salud Maxina",
+      "welcomeBack": "Bienvenido de vuelta a Maxina.",
+      "continueJourney": "Inicia sesión para continuar tu viaje.",
+      "joinMaxina": "Únete a Maxina",
+      "joinCommunity": "Únete a la comunidad de Maxina.",
+      "createAccount": "Crea tu cuenta y comienza tu viaje.",
+      "signingIn": "Iniciando sesión…",
+      "creatingAccount": "Creando cuenta…",
+      "joiningAs": "Me uno como:",
+      "yourFullName": "Tu nombre completo",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "partOfVitana": "Maxina es parte del ecosistema VITANA.",
+      "allPortals": "Todos los Portales",
+      "emailConfirmed": "¡Correo confirmado! Bienvenido a Maxina.",
+      "checkEmail": "Por favor revisa tu correo para confirmar tu cuenta.",
+      "roles": {
+        "community": "Comunidad",
+        "patient": "Paciente",
+        "professional": "Pro",
+        "admin": "Admin"
+      }
+    },
+    "alkalma": {
+      "joinAlkalma": "Únete a AlKalma",
+      "welcomeBack": "Bienvenido de vuelta a AlKalma.",
+      "continueJourney": "Inicia sesión para continuar."
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Únete a Earthlinks",
+      "welcomeBack": "Bienvenido de vuelta a Earthlinks.",
+      "continueJourney": "Inicia sesión para continuar."
+    },
+    "community": {
+      "joinCommunity": "Únete a la Comunidad",
+      "welcomeBack": "Bienvenido de vuelta.",
+      "continueJourney": "Inicia sesión para continuar."
+    }
+  }
+}

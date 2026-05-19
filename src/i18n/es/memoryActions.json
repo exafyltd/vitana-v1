@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Acciones de Memoria",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Grabar Diario de Voz",
+        "description": "Captura pensamientos y reflexiones con la voz"
+      },
+      "addMemoryNote": {
+        "title": "Agregar Nota de Memoria",
+        "description": "Escribe momentos importantes de salud"
+      },
+      "viewTimeline": {
+        "title": "Ver Línea de Tiempo",
+        "description": "Ve tu viaje completo de bienestar"
+      },
+      "searchMemories": {
+        "title": "Buscar Memorias",
+        "description": "Encuentra momentos e ideas específicas"
+      },
+      "photoMemory": {
+        "title": "Foto Memoria",
+        "description": "Agrega recuerdos visuales a tu viaje"
+      },
+      "aiMemoryAnalysis": {
+        "title": "Análisis de Memoria IA",
+        "description": "Obtén información de tus patrones de memoria"
+      }
+    }
+  }
+}

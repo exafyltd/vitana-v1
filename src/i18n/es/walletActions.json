@@ -1,0 +1,11 @@
+{
+  "walletActions": {
+    "title": "Acciones rápidas",
+    "addFunds": "Agregar fondos",
+    "send": "Enviar",
+    "exchange": "Intercambiar",
+    "withdraw": "Retirar",
+    "buyCredits": "Comprar créditos",
+    "stakeTokens": "Apostar tokens"
+  }
+}
