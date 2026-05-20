@@ -8,7 +8,7 @@
     "services.subtitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: 'Pristupite' is formal (Vi-form), should be informal (du-form).",
+      "issue": "Incorrect register: formal 'Vi' form used instead of informal 'du' form for the imperative verb.",
       "suggested": "Pristupi sveobuhvatnim zdravstvenim i wellness uslugama",
       "phase": "llm"
     },
@@ -103,5 +103,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:26:04.136Z"
+  "generatedAt": "2026-05-20T07:29:31.268Z"
 }

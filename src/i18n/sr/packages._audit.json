@@ -8,8 +8,8 @@
     "packages.confirmDelete": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('vi') used instead of informal ('ti').",
-      "suggested": "Jesi li siguran/sigurna da želiš da obrišeš ovaj paket?",
+      "issue": "Register mismatch: uses formal 'vi' instead of informal 'ti'.",
+      "suggested": "Jesi li siguran da želiš da obrišeš ovaj paket?",
       "phase": "llm"
     },
     "packages.types.bundle": {
@@ -28,9 +28,10 @@
       "phase": "llm"
     },
     "packages.status.published": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous meaning of 'Live' without further context. 'Aktivno' means 'Active'. If 'Live' refers to a live broadcast/session, 'Uživo' would be more appropriate. If it refers to content being currently published/active, 'Aktivno' is acceptable.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Meaning mismatch: 'Aktivno' means 'Active', but 'Live' (as in real-time/broadcast) is usually 'Uživo'.",
+      "suggested": "Uživo",
       "phase": "llm"
     },
     "packages.status.archived": {
@@ -61,15 +62,15 @@
     "packages.save": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('vi' imperative) used instead of informal ('ti' imperative).",
+      "issue": "Register mismatch: uses formal 'vi' instead of informal 'ti'.",
       "suggested": "Uštedi {percent}%",
       "phase": "llm"
     },
     "packages.unpublish": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect meaning. 'Objavi' means 'Publish', not 'Unpublish'.",
-      "suggested": "Povući objavu",
+      "issue": "Opposite meaning: 'Objavi' means 'Publish', not 'Unpublish'.",
+      "suggested": "Poništi objavu",
       "phase": "llm"
     },
     "packages.publish": {
@@ -78,5 +79,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:57:52.899Z"
+  "generatedAt": "2026-05-20T07:05:36.727Z"
 }

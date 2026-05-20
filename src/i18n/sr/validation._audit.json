@@ -97,16 +97,16 @@
     },
     "validation.pleaseSelect": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: 'Molimo izaberite' is formal/plural imperative. Should be informal 'du-form'.",
-      "suggested": "Molim te, izaberi opciju",
+      "confidence": 0.9,
+      "issue": "Imperative verb is in 'vi' (plural/formal singular) form, not 'ti' (informal singular) form, which is required for 'du-form' register. 'Molimo' is also slightly more formal than 'Molim te'.",
+      "suggested": "Molim te izaberi opciju",
       "phase": "llm"
     },
     "validation.pleaseEnter": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: 'Molimo unesite' is formal/plural imperative. Should be informal 'du-form'.",
-      "suggested": "Molim te, unesi vrednost",
+      "confidence": 0.9,
+      "issue": "Imperative verb is in 'vi' (plural/formal singular) form, not 'ti' (informal singular) form, which is required for 'du-form' register. 'Molimo' is also slightly more formal than 'Molim te'.",
+      "suggested": "Molim te unesi vrednost",
       "phase": "llm"
     },
     "validation.charactersRemaining": {
@@ -130,5 +130,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:40:07.718Z"
+  "generatedAt": "2026-05-20T07:33:39.793Z"
 }

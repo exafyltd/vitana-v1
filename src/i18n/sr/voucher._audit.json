@@ -13,7 +13,7 @@
     "voucher.modal.subtitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: 'Poklonite' is formal (vi-form), should be informal (du-form).",
+      "issue": "Register mismatch: formal imperative 'Poklonite' used instead of informal 'Pokloni'.",
       "suggested": "Pokloni dobrobit i povezanost sa zajednicom",
       "phase": "llm"
     },
@@ -45,7 +45,7 @@
     "voucher.success.ready": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: 'Vaš' is formal/polite, should be informal (du-form).",
+      "issue": "Register mismatch: formal possessive 'Vaš' used instead of informal 'Tvoj'.",
       "suggested": "Tvoj {tier} vaučer je spreman",
       "phase": "llm"
     },
@@ -112,7 +112,7 @@
     "voucher.preview.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: 'Vaš' is formal/polite, should be informal (du-form).",
+      "issue": "Register mismatch: formal possessive 'Vaš' used instead of informal 'Tvoj'.",
       "suggested": "Tvoj vaučer",
       "phase": "llm"
     },
@@ -207,10 +207,8 @@
       "phase": "llm"
     },
     "voucher.toast.generatingVoucher": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "First-person singular 'Generišem' (I am generating) is less common for system status messages. A noun phrase or passive construction is more idiomatic for UI.",
-      "suggested": "Generisanje vaučera...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "voucher.toast.failedToLoadVoucher": {
@@ -244,12 +242,10 @@
       "phase": "llm"
     },
     "voucher.toast.sendingVoucherEmail": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "First-person singular 'Šaljem' (I am sending) is less common for system status messages. A noun phrase or passive construction is more idiomatic for UI.",
-      "suggested": "Slanje e-maila sa vaučerom...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:40:53.697Z"
+  "generatedAt": "2026-05-20T07:33:48.474Z"
 }

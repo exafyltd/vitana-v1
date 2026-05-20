@@ -13,8 +13,8 @@
     "health.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "While 'tabla' can mean board, 'kontrolna tabla' is the standard and more precise term for a digital dashboard in Serbian.",
-      "suggested": "Tvoja lična zdravstvena kontrolna tabla",
+      "issue": "\"tabla\" is too literal and not idiomatic for \"dashboard\" in this context. \"Pregled\" (overview) is more natural.",
+      "suggested": "Tvoj lični zdravstveni pregled",
       "phase": "llm"
     },
     "health.overview": {
@@ -25,8 +25,8 @@
     "health.overviewDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translating both 'dashboard' and 'overview' as 'pregled' is confusing. 'Kontrolna tabla' is more appropriate for 'dashboard' to distinguish it from 'overview'.",
-      "suggested": "Tvoja sveobuhvatna zdravstvena kontrolna tabla i wellness pregled",
+      "issue": "Repetitive use of \"pregled\". Can be combined for better flow.",
+      "suggested": "Tvoj sveobuhvatni zdravstveni i wellness pregled",
       "phase": "llm"
     },
     "health.servicesHub": {
@@ -325,8 +325,8 @@
     "health.missionAlignment.pillarHeading": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Too literal translation; 'usluženi' implies pillars received a service, not that they were addressed or covered. Awkward phrasing.",
-      "suggested": "Obuhvaćeni stubovi",
+      "issue": "\"Usluženi\" is too literal and not idiomatic for \"pillars served\" in this context. It implies the pillars themselves are being served, rather than the app addressing or supporting them.",
+      "suggested": "Podržani stubovi",
       "phase": "llm"
     },
     "health.missionAlignment.economyHeading": {
@@ -370,9 +370,8 @@
       "phase": "llm"
     },
     "health.missionAlignment.economyAxes.find_match": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous English term 'match' without further context. 'Pronađi partnera' specifically implies finding a person, which might not be the only or primary meaning in a wellness app (e.g., could be finding a match for preferences, or a matching item/service).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.missionAlignment.economyAxes.income_generation": {
@@ -391,5 +390,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:52:13.837Z"
+  "generatedAt": "2026-05-20T07:03:52.912Z"
 }

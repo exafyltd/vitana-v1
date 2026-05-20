@@ -23,7 +23,7 @@
     "liveRooms.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Žive' means 'living' (as in alive), not 'live' in the streaming context. 'Uživo' is the correct term.",
+      "issue": "Literal translation of 'live' (žive) is incorrect for the technical meaning of 'live' (as in broadcast/stream). 'Žive sobe' sounds like rooms that are literally alive.",
       "suggested": "Sobe uživo",
       "phase": "llm"
     },
@@ -65,7 +65,7 @@
     "liveRooms.noRooms": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Živih' means 'living' (as in alive), not 'live' in the streaming context. 'Uživo' is the correct term.",
+      "issue": "Same issue as entry 0. 'Živih soba' incorrectly implies rooms that are literally alive, not rooms for live broadcasts/sessions.",
       "suggested": "Trenutno nema soba uživo",
       "phase": "llm"
     },
@@ -80,10 +80,8 @@
       "phase": "llm"
     },
     "liveRooms.demoRoomDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The gender-neutral 'krenuo/la' is clunky for a UI string. A more natural and direct du-form phrasing is preferred.",
-      "suggested": "Ovo je primer sobe. Napravi svoju i kreni uživo!",
       "phase": "llm"
     },
     "liveRooms.search.placeholder": {
@@ -537,5 +535,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:54:49.007Z"
+  "generatedAt": "2026-05-20T07:04:33.689Z"
 }

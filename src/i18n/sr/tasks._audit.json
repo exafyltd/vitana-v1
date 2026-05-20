@@ -8,7 +8,7 @@
     "tasks.confirmCancelTask": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent; uses formal 'vi' instead of informal 'ti'.",
+      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
       "suggested": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
       "phase": "llm"
     },
@@ -20,7 +20,7 @@
     "tasks.addNotePrompt": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent; uses formal 'vi' instead of informal 'ti'.",
+      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
       "suggested": "Dodaj belešku ovom zadatku:",
       "phase": "llm"
     },
@@ -80,5 +80,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:27:57.548Z"
+  "generatedAt": "2026-05-20T07:29:45.662Z"
 }
