@@ -1,214 +1,113 @@
-import SEO from "@/components/SEO";
-import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
-import { UtilityActionButton } from "@/components/ui/utility-action-button";
-import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
-import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
-import { WalletSubscriptionCard } from "@/components/wallet/WalletSubscriptionCard";
-import { walletNavigation } from "@/config/navigation";
-import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { SubscriptionROIAnalyticsCard } from "@/components/wallet/intelligence/SubscriptionROIAnalyticsCard";
-import { PersonalizedSubscriptionRecommendationCard } from "@/components/wallet/intelligence/PersonalizedSubscriptionRecommendationCard";
-import { SmartRecommendationsSplitScreen } from "@/components/wallet/intelligence/SmartRecommendationsSplitScreen";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { t } from '@/lib/i18n-toast';
+/**
+ * VTID-03107 · /wallet/subscriptions — real billing-backed Subscriptions screen.
+ *
+ * Rewritten from 217 lines of mock USD data → live `useBilling()` rendering
+ * with the privacy promises, redeem code card, current plan state, plan
+ * comparison (Free + Premium headline; Host + Community disclosure), feature
+ * usage table, credit-pack tile, and FAQ.
+ *
+ * Mobile-first; responsive grid. Preserves the existing AppLayout +
+ * SubNavigation + StandardHeader shell.
+ */
 
-const subscriptionData = {
-  active: [
-    {
-      id: "1",
-      name: "Vitana Premium",
-      description: "Complete health coaching and analytics platform",
-      price: "$299",
-      billing: "month",
-      status: "active" as const,
-      features: ["Personal Health Coach", "Advanced Analytics", "Lab Test Discounts", "Priority Support"],
-      tier: "premium" as const
-    },
-    {
-      id: "2", 
-      name: "Community Plus",
-      description: "Enhanced community features and exclusive content",
-      price: "$49",
-      billing: "month",
-      status: "active" as const,
-      features: ["All Group Access", "Live Room Hosting", "Premium Content", "Expert Q&A Sessions"],
-      tier: "basic" as const
-    }
-  ],
-  paused: [
-    {
-      id: "3",
-      name: "Wellness Tracker Pro", 
-      description: "Advanced health tracking and insights",
-      price: "$19",
-      billing: "month",
-      status: "paused" as const,
-      features: ["Health Metrics", "Goal Tracking", "Progress Reports"],
-      tier: "basic" as const
-    }
-  ],
-  available: [
-    {
-      id: "4",
-      name: "AI Health Assistant",
-      description: "24/7 AI-powered health guidance and recommendations", 
-      price: "$99",
-      billing: "month",
-      status: "available" as const,
-      features: ["24/7 AI Support", "Personalized Recommendations", "Health Risk Assessment", "Medication Reminders"],
-      tier: "premium" as const,
-      discount: "50% OFF"
-    },
-    {
-      id: "5",
-      name: "Family Plan",
-      description: "Extend your health journey to family members",
-      price: "$399", 
-      billing: "month",
-      status: "available" as const,
-      features: ["Up to 4 Family Members", "Shared Health Goals", "Family Health Dashboard", "Group Coaching Sessions"],
-      tier: "enterprise" as const
-    }
-  ]
-};
+import { Suspense } from 'react';
+import SEO from '@/components/SEO';
+import AppLayout from '@/components/AppLayout';
+import SubNavigation from '@/components/SubNavigation';
+import StandardHeader from '@/components/StandardHeader';
+import { walletNavigation } from '@/config/navigation';
+import { SCREEN_IDS, withScreenId } from '@/lib/screen-id';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { t } from '@/lib/i18n-toast';
+import { useBilling } from '@/hooks/useBilling';
+import { PrivacyFirstPromises } from '@/components/subscription/PrivacyFirstPromises';
+import { SubscriptionStateCard } from '@/components/subscription/SubscriptionStateCard';
+import { PlansGridHeadline } from '@/components/subscription/PlansGridHeadline';
+import { PlansGridExpanded } from '@/components/subscription/PlansGridExpanded';
+import { FeatureComparisonTable } from '@/components/subscription/FeatureComparisonTable';
+import { AddExtraMinutesTile } from '@/components/subscription/AddExtraMinutesTile';
+import { RedeemCodeCard } from '@/components/subscription/RedeemCodeCard';
+import { YourEarningsWidget } from '@/components/subscription/YourEarningsWidget';
+import { WhySubscribeFAQ } from '@/components/subscription/WhySubscribeFAQ';
+
+function SubscriptionsLoading() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-32 w-full" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
+      </div>
+      <Skeleton className="h-64 w-full" />
+    </div>
+  );
+}
+
+function SubscriptionsError({ message }: { message: string }) {
+  return (
+    <Card>
+      <CardContent className="p-6 text-center space-y-2">
+        <p className="text-sm text-destructive">{message}</p>
+      </CardContent>
+    </Card>
+  );
+}
 
 function Subscriptions() {
-  const [activeTab, setActiveTab] = useState("active");
-  const [addSubscriptionOpen, setAddSubscriptionOpen] = useState(false);
-
-  const splitBarOptions = [
-    { value: "active", label: "Active" },
-    { value: "paused", label: "Paused" }, 
-    { value: "available", label: "Available" },
-    { value: "recommendations", label: "Smart Recommendations" }
-  ];
+  const { data, isLoading, isError, error } = useBilling();
 
   return (
     <AppLayout>
-      <SEO 
-        title={t('screens.wallet.subscriptionsVitanaWallet')} 
-        description="Manage your active subscriptions, view paused plans, and explore new subscription options."
+      <SEO
+        title={t('billing.subscriptionsPage.title')}
+        description={t('billing.subscriptionsPage.subtitle')}
       />
       <SubNavigation items={walletNavigation} />
-      
-      <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto p-6 space-y-8">
-        <StandardHeader 
-          title={t('screens.wallet.subscriptions')}
-          description="Manage your health and wellness subscription plans"
-        />
 
-        <UtilityActionButton>
-          <ExpandableSearchButton placeholder={t('screens.wallet.searchSubscriptionsPlans')} />
-          <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setAddSubscriptionOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            {t('screens.wallet.addSubscription')}
-          </Button>
-        </UtilityActionButton>
+      <div className="bg-gradient-to-br from-purple-50/40 via-blue-50/30 to-pink-50/30 min-h-screen">
+        <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6">
+          <StandardHeader
+            title={t('billing.subscriptionsPage.title')}
+            description={t('billing.subscriptionsPage.subtitle')}
+          />
 
-        <SplitBar value={activeTab} onValueChange={setActiveTab}>
-          <SplitBarList>
-            <SplitBarTrigger value="active">{t('screens.wallet.active')}</SplitBarTrigger>
-            <SplitBarTrigger value="paused">{t('screens.wallet.paused')}</SplitBarTrigger>
-            <SplitBarTrigger value="available">{t('screens.wallet.available')}</SplitBarTrigger>
-            <SplitBarTrigger value="recommendations">{t('screens.wallet.smartRecommendations2')}</SplitBarTrigger>
-          </SplitBarList>
+          {isLoading && <SubscriptionsLoading />}
 
-          <WalletMotivationalBanner variant="subscriptions" />
+          {isError && (
+            <SubscriptionsError message={error instanceof Error ? error.message : t('billing.checkoutErrors.checkoutFailed')} />
+          )}
 
-          <SplitBarContent value="active">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <SubscriptionROIAnalyticsCard />
-                <WalletMotivationalBanner variant="subscriptions" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {subscriptionData.active.map((subscription) => (
-                  <WalletSubscriptionCard
-                    key={subscription.id}
-                    {...subscription}
-                    onAction={() => console.log('Manage subscription:', subscription.id)}
-                    onClick={() => console.log('Subscription clicked:', subscription.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </SplitBarContent>
+          {data && (
+            <>
+              {/* Privacy + trust promises (anchor at top) */}
+              <PrivacyFirstPromises />
 
-          <SplitBarContent value="paused">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {subscriptionData.paused.map((subscription) => (
-                  <WalletSubscriptionCard
-                    key={subscription.id}
-                    {...subscription}
-                    onAction={() => console.log('Resume subscription:', subscription.id)}
-                    onClick={() => console.log('Paused subscription clicked:', subscription.id)}
-                  />
-                ))}
-              </div>
-              
-              <WalletMotivationalBanner variant="subscriptions" />
-            </div>
-          </SplitBarContent>
+              {/* Redeem code (above the plan grid for free users) */}
+              {data.plan.plan_key === 'free' && <RedeemCodeCard />}
 
-          <SplitBarContent value="available">
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <PersonalizedSubscriptionRecommendationCard />
-                <WalletMotivationalBanner variant="subscriptions" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {subscriptionData.available.map((subscription) => (
-                  <WalletSubscriptionCard
-                    key={subscription.id}
-                    {...subscription}
-                    onAction={() => console.log('Subscribe to:', subscription.id)}
-                    onClick={() => console.log('Available subscription clicked:', subscription.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </SplitBarContent>
+              {/* Current subscription state hero */}
+              <SubscriptionStateCard data={data} />
 
-          <SplitBarContent value="recommendations">
-            <SmartRecommendationsSplitScreen />
-          </SplitBarContent>
-        </SplitBar>
+              {/* Earnings widget — renders only with non-zero history */}
+              <YourEarningsWidget data={data} />
 
-        {/* Add Subscription Dialog */}
-        <Dialog open={addSubscriptionOpen} onOpenChange={setAddSubscriptionOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t('screens.wallet.addNewSubscription')}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <p className="text-muted-foreground">{t('screens.wallet.browseAvailableSubscriptionPlansAddThem')}</p>
-              <div className="grid grid-cols-1 gap-4">
-                {subscriptionData.available.map((sub) => (
-                  <div key={sub.id} className="p-4 border rounded-lg">
-                    <h4 className="font-semibold">{sub.name}</h4>
-                    <p className="text-sm text-muted-foreground">{sub.description}</p>
-                    <p className="text-sm font-medium mt-2">{sub.price}/{sub.billing}</p>
-                    <Button size="sm" className="mt-2" onClick={() => console.log('Subscribe to:', sub.id)}>
-                      {t('screens.wallet.subscribe')}
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+              {/* Headline plan grid (Free + Premium) */}
+              <PlansGridHeadline currentPlanKey={data.plan.plan_key} />
+
+              {/* Disclosure: Host + Community */}
+              <PlansGridExpanded currentPlanKey={data.plan.plan_key} />
+
+              {/* Feature comparison table with progress bars */}
+              <FeatureComparisonTable data={data} />
+
+              {/* Credit packs ("Add extra minutes" — outside the plan grid) */}
+              <AddExtraMinutesTile />
+
+              {/* Why Premium FAQ */}
+              <WhySubscribeFAQ />
+            </>
+          )}
         </div>
       </div>
     </AppLayout>

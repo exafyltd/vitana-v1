@@ -1,0 +1,225 @@
+{
+  "billing": {
+    "promises": {
+      "anchorHeading": "Private by design.",
+      "subheading": "Four promises, on every plan — free or paid.",
+      "owned": {
+        "title": "You own what you share.",
+        "body": "Memory, profile, recommendations — all visible, exportable, deletable at any time."
+      },
+      "noSell": {
+        "title": "We never sell your data.",
+        "body": "Not to ad networks, not to data brokers, not to partners. Enforced in code."
+      },
+      "earn": {
+        "title": "Your recommendations can earn for you.",
+        "body": "When your recommendation closes a sale through Sell and Earn, or when you host a paid Live Room, the income is yours — transparently disclosed."
+      },
+      "control": {
+        "title": "You decide what Sell and Earn does for you.",
+        "body": "Three switches in your Connect settings give you full control."
+      }
+    },
+    "plans": {
+      "needMoreTitle": "Need more live time or hosting?",
+      "needMoreBody": "Premium covers most members. If you host community rooms or use voice every day, see our larger plans.",
+      "showAll": "Show all plans",
+      "hideAll": "Hide larger plans",
+      "headlineSection": "Get started with Premium",
+      "expandedSection": "For hosts and communities",
+      "currentPlan": "Current plan",
+      "selectPlan": "Choose",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "saveAnnual": "Save with annual",
+      "trial14": "Try free for 14 days. Cancel anytime.",
+      "free": {
+        "name": "Free",
+        "tagline": "Try it out — no risk, no expiry",
+        "price": "Free"
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "Daily use — more live time, more hosting, more storage"
+      },
+      "premium_5x": {
+        "name": "Host",
+        "tagline": "Power users · families · regular hosts",
+        "ribbon": "5× Premium"
+      },
+      "premium_20x": {
+        "name": "Community",
+        "tagline": "Coaches · practitioners · community leads",
+        "ribbon": "20× Premium"
+      }
+    },
+    "features": {
+      "voiceLive": "Live conversations with ORB",
+      "voiceLiveUnit": "min/month",
+      "voiceStandard": "Standard voice conversations",
+      "voiceStandardUnit": "Fair use",
+      "liveRooms": "Live Room hosting",
+      "liveRoomsUnit": "hrs/month",
+      "matchPosts": "Find-a-Match posts",
+      "matchPostsUnit": "/month",
+      "matchReveals": "Find-a-Match reveals",
+      "matchRevealsUnit": "/week",
+      "labAnalyses": "Lab analysis",
+      "labAnalysesUnit": "/month",
+      "photoUploads": "Photo uploads",
+      "photoUploadsUnit": "/month",
+      "storage": "Secure storage",
+      "storageUnit": "GB",
+      "aiDigest": "AI digests",
+      "aiDigestWeekly": "Weekly",
+      "aiDigestDaily": "Daily",
+      "aiDigestOnDemand": "Daily + on-demand",
+      "sellAndEarnCatalog": "Sell and Earn catalog",
+      "sellAndEarnCatalogUnit": "items",
+      "priorityPractitioner": "Priority practitioner access",
+      "yes": "Yes",
+      "no": "–",
+      "fairUse": "Fair use",
+      "used": "{used} / {limit} {unit}",
+      "resetIn": "Resets in {duration}",
+      "comparisonTitle": "What's included at each plan"
+    },
+    "creditPacks": {
+      "title": "Add extra minutes",
+      "subtitle": "Top up once, spend whenever",
+      "starter": "10 hours of standard voice OR 100 live minutes",
+      "boost": "Most popular — 7 hours of live voice",
+      "power": "Heavy use — 40 hours of live voice",
+      "credits": "{credits} credits",
+      "creditsWithBonus": "{credits} credits +{bonus} bonus",
+      "buy": "Buy",
+      "yourBalance": "Your balance: {amount} credits",
+      "starterShort": "Starter",
+      "boostShort": "Boost",
+      "powerShort": "Power"
+    },
+    "redeemCard": {
+      "title": "Got a code?",
+      "placeholder": "VITANA-XXXX-XXXX",
+      "button": "Redeem",
+      "redeeming": "Redeeming…",
+      "successTitle": "Premium activated",
+      "successBody": "Premium is active until {date}. Enjoy.",
+      "founding": "🏆 Welcome, Founding Member — you're #{position} of {max}. Premium is free for 90 days.",
+      "error": {
+        "invalid": "Code not found",
+        "expired": "Code expired",
+        "maxUsed": "Code has been used too many times",
+        "alreadyRedeemed": "You've already redeemed this code",
+        "stripeActive": "You already have Premium — save this code for later",
+        "budgetExhausted": "Campaign paused — please try again later",
+        "generic": "Couldn't redeem the code"
+      }
+    },
+    "earnings": {
+      "title": "Your earnings (this year)",
+      "youPaid": "You paid Vitana",
+      "youEarned": "Vitana helped you earn (Sell and Earn)",
+      "net": "Net",
+      "withdraw": "Withdraw",
+      "empty": ""
+    },
+    "founding": {
+      "bannerTitle": "🏆 Be among the first {max}",
+      "bannerBody": "3 months Premium free with code {code}.",
+      "spotsRemaining": "{remaining} of {max} spots remaining"
+    },
+    "state": {
+      "freeStatus": "You're on Vitana Free",
+      "freeBody": "Try Premium free for 14 days.",
+      "premiumActive": "Vitana Premium",
+      "renewsAt": "Renews on {date}",
+      "cancelAtPeriodEnd": "Will cancel at end of period",
+      "pastDue": "Payment failed",
+      "pastDueBody": "Update your payment method to keep Premium.",
+      "manage": "Manage",
+      "viewPlans": "See Premium",
+      "upgrade": "Upgrade",
+      "trialEndsAt": "Trial ends on {date}",
+      "trialingBadge": "On trial",
+      "activeBadge": "Active"
+    },
+    "subscriptionsPage": {
+      "title": "Subscriptions",
+      "subtitle": "Manage your Vitana Premium and credits",
+      "tabs": {
+        "yourPlan": "Your plan",
+        "billing": "Billing"
+      }
+    },
+    "faq": {
+      "title": "Why Premium?",
+      "q1": "What do I get with Premium?",
+      "a1": "More live voice time with ORB, more hosting in Live Rooms, more storage, and faster personal digests.",
+      "q2": "What's the difference vs. credits?",
+      "a2": "Credits are for occasional use. Premium gives you more of everything continuously — designed for daily use.",
+      "q3": "Can I cancel anytime?",
+      "a3": "Yes, no contract. You keep Premium until the end of the current period.",
+      "q4": "Do you sell my data?",
+      "a4": "Never. We never sell your data to ad networks, data brokers, or partners."
+    },
+    "checkoutErrors": {
+      "stripeNotConfigured": "Payments aren't fully set up yet. Please try again later.",
+      "alreadySubscribed": "You already have an active subscription. Manage it in the billing portal.",
+      "noStripeCustomer": "Subscribe first before using the portal.",
+      "checkoutFailed": "Checkout failed",
+      "portalFailed": "Couldn't open billing portal"
+    }
+  },
+  "paywall": {
+    "title": "Unlock Premium",
+    "softExtension": "I extended your free time for today.",
+    "creditsUsed": "Credit used — enjoy",
+    "voice_live_minutes": {
+      "title": "Live voice time used up",
+      "body": "Your included live voice time is used. ORB will continue in Standard mode. Add live minutes or upgrade anytime.",
+      "stayInStandard": "Continue in Standard mode",
+      "addMinutes": "Add live minutes"
+    },
+    "live_room_minutes": {
+      "title": "Hosting time running low",
+      "body": "This room has 5 minutes of included hosting time left. Add hosting time or upgrade to keep it running.",
+      "wrapUp": "Wrap up",
+      "addTime": "Add hosting time"
+    },
+    "match_posts": {
+      "title": "All free posts used",
+      "body": "You've used your free posts this month. Premium gives you more."
+    },
+    "match_reveals": {
+      "title": "Reveal match",
+      "body": "You've used your free reveals. Use {credits} credits or upgrade to Premium."
+    },
+    "lab_analyses": {
+      "title": "Lab analyses used",
+      "body": "You've used your lab analyses this month."
+    },
+    "photo_uploads": {
+      "title": "Photo uploads used",
+      "body": "You've used your photo uploads this month."
+    },
+    "memory_garden": {
+      "title": "Memory garden full",
+      "body": "Premium gives you more space."
+    },
+    "autopilot": {
+      "title": "More Autopilot recommendations",
+      "body": "Premium raises your active recommendation count."
+    },
+    "default": {
+      "title": "Unlock Premium",
+      "body": "You've used your free quota for this period."
+    },
+    "ctaUpgrade": "Unlock Premium",
+    "ctaCredits": "Use {credits} credits",
+    "ctaLater": "Maybe later",
+    "remainingCounter": "{remaining} / {limit}",
+    "resetsIn": "Resets {date}",
+    "creditsInsufficient": "Not enough credits. Top up first."
+  }
+}
