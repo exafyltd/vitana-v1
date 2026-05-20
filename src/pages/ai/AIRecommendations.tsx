@@ -84,7 +84,7 @@ export default function AIRecommendations() {
       description: "Post-workout nutrition window analysis shows 20% improvement potential",
       priority: "medium" as const,
       category: "insight", 
-      action: "Learn More"
+      action: t('screens.ai.actionLabel_learnMore')
     }
   ];
 

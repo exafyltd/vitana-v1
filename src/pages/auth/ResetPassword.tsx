@@ -120,7 +120,7 @@ function RequestResetView() {
                 <Loader2 className="h-4 w-4 animate-spin" />{t('screens.auth.sending')}
               </>
             ) : (
-              "Send reset link"
+              t('screens.auth.sendResetLink')
             )}
           </Button>
         </form>

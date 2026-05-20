@@ -10,36 +10,11 @@ import { t } from '@/lib/i18n-toast';
 
 
 const pillars = [
-  {
-    title: "Hydration",
-    description: "Tips, articles, and service links for optimal hydration",
-    icon: Droplets,
-    color: "from-blue-500/20 to-cyan-500/20",
-  },
-  {
-    title: "Nutrition",
-    description: "Meal plans and dietitian booking services",
-    icon: Apple,
-    color: "from-green-500/20 to-emerald-500/20",
-  },
-  {
-    title: "Exercise & Movement",
-    description: "Workouts and physiotherapy booking",
-    icon: Dumbbell,
-    color: "from-orange-500/20 to-amber-500/20",
-  },
-  {
-    title: "Sleep",
-    description: "Sleep hygiene programs and sleep clinic bookings",
-    icon: Moon,
-    color: "from-purple-500/20 to-violet-500/20",
-  },
-  {
-    title: "Mental & Emotional Wellbeing",
-    description: "Coaching and meditation programs",
-    icon: Brain,
-    color: "from-pink-500/20 to-rose-500/20",
-  },
+  { titleKey: "screens.health.pillar_hydration_title", descriptionKey: "screens.health.pillar_hydration_desc", icon: Droplets, color: "from-blue-500/20 to-cyan-500/20" },
+  { titleKey: "screens.health.pillar_nutrition_title", descriptionKey: "screens.health.pillar_nutrition_desc", icon: Apple, color: "from-green-500/20 to-emerald-500/20" },
+  { titleKey: "screens.health.pillar_exercise_title", descriptionKey: "screens.health.pillar_exercise_desc", icon: Dumbbell, color: "from-orange-500/20 to-amber-500/20" },
+  { titleKey: "screens.health.pillar_sleep_title", descriptionKey: "screens.health.pillar_sleep_desc", icon: Moon, color: "from-purple-500/20 to-violet-500/20" },
+  { titleKey: "screens.health.pillar_mental_title", descriptionKey: "screens.health.pillar_mental_desc", icon: Brain, color: "from-pink-500/20 to-rose-500/20" },
 ];
 
 export default function PillarsOfHealth() {
@@ -76,16 +51,16 @@ export default function PillarsOfHealth() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pillars.map((pillar) => (
-              <Card key={pillar.title} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105">
+              <Card key={pillar.titleKey} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20 hover:scale-105">
                 <CardHeader className="pb-4">
                   <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${pillar.color} flex items-center justify-center mb-4`}>
                     <pillar.icon className="w-6 h-6 text-foreground" />
                   </div>
-                  <CardTitle className="text-lg">{pillar.title}</CardTitle>
+                  <CardTitle className="text-lg">{t(pillar.titleKey)}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-sm">
-                    {pillar.description}
+                    {t(pillar.descriptionKey)}
                   </CardDescription>
                 </CardContent>
               </Card>

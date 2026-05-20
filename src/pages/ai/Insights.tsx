@@ -76,7 +76,7 @@ export default function Insights() {
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-006">
               <StandardCard
                 title={t('screens.ai.patternRecognition')}
-                subtitle="AI identifies patterns in your wellness data"
+                subtitle={t('screens.ai.subtitle_aiInsights')}
                 content="Your energy levels peak at 10 AM and 3 PM consistently. Consider scheduling important tasks during these windows for optimal performance."
                 variant="default"
                 onClick={() => handleInsightClick("C-006")}
@@ -87,7 +87,7 @@ export default function Insights() {
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-007">
               <StandardCard
                 title={t('screens.ai.behavioralTrends')}
-                subtitle="Weekly trends in your wellness habits"
+                subtitle={t('screens.ai.subtitle_weeklyTrends')}
                 content="Your hydration improves 40% on weekdays vs weekends. Weekend reminder system could help maintain consistency."
                 variant="default"
                 onClick={() => handleInsightClick("C-007")}
@@ -98,7 +98,7 @@ export default function Insights() {
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-008">
               <StandardCard
                 title={t('screens.ai.correlationAnalysis')}
-                subtitle="How different factors affect your wellbeing"
+                subtitle={t('screens.ai.subtitle_correlations')}
                 content="Sleep quality directly correlates with next-day mood (85% accuracy). Earlier bedtime might improve overall wellness."
                 variant="default"
                 onClick={() => handleInsightClick("C-008")}
@@ -109,7 +109,7 @@ export default function Insights() {
             <div className="break-inside-avoid mb-4" data-template-id="CT-CX-010" data-system-card-id="C-009">
               <StandardCard
                 title={t('screens.ai.predictionModels')}
-                subtitle="AI forecasts based on your patterns"
+                subtitle={t('screens.ai.subtitle_aiForecasts')}
                 content="Based on current trends, you're 78% likely to reach your monthly fitness goal. Increase by 2 sessions to guarantee success."
                 variant="default"
                 onClick={() => handleInsightClick("C-009")}
@@ -129,7 +129,7 @@ export default function Insights() {
                   description: "Detected improvement pattern",
                   type: "insight" as const,
                   priority: "medium" as const,
-                  action: "See Details"
+                  action: t('screens.ai.actionLabel_seeDetails')
                 }))}
                 variant="card"
                 maxItems={3}
@@ -145,7 +145,7 @@ export default function Insights() {
                     description: "Significant improvement this week",
                     type: "insight" as const,
                     priority: "high" as const,
-                    action: "View Breakdown"
+                    action: t('screens.ai.actionLabel_viewBreakdown')
                   },
                   {
                     title: `Sleep Quality: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
@@ -192,7 +192,7 @@ export default function Insights() {
                   description: "AI-discovered behavioral pattern",
                   type: "insight" as const,
                   priority: "high" as const,
-                  action: "Learn More"
+                  action: t('screens.ai.actionLabel_learnMore')
                 }))}
                 variant="card"
                 maxItems={3}

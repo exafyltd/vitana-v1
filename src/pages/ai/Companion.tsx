@@ -181,8 +181,8 @@ export default function Companion() {
                 icon={Zap}
                 category="autopilot"
                 title={t('screens.ai.autopilotActivityLog')}
-                subtitle="Recent AI actions on your behalf"
-                buttonText="View Full Log"
+                subtitle={t('screens.ai.subtitle_recentAiActions')}
+                buttonText={t('screens.ai.button_viewFullLog')}
                 onButtonClick={() => handleAutopilotClick('view-all')}
                 content={
                   <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -232,7 +232,7 @@ export default function Companion() {
                     description: "You've made remarkable progress in hydration and sleep quality. Your dedication to the morning meditation routine has created a positive cascade effect across all wellness pillars.",
                     type: "insight" as const,
                     priority: "high" as const,
-                    action: "Read Full Story",
+                    action: t('screens.ai.actionLabel_readFullStory'),
                     onAction: () => handleMemoryClick('weekly_story')
                   },
                   {

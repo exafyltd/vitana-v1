@@ -18,12 +18,19 @@ import VitanaLogDataDialog from "@/components/health/VitanaLogDataDialog";
 import MissionAlignmentCard from "@/components/health/MissionAlignmentCard";
 import { t } from '@/lib/i18n-toast';
 
+const PILLAR_DESCRIPTION_KEYS: Record<VitanaPillarKey, string> = {
+  nutrition: 'screens.health.vitanaIndexPillar_food',
+  hydration: 'screens.health.vitanaIndexPillar_water',
+  exercise:  'screens.health.vitanaIndexPillar_exercise',
+  sleep:     'screens.health.vitanaIndexPillar_recovery',
+  mental:    'screens.health.vitanaIndexPillar_mental',
+};
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
-  nutrition: "What and how you eat — meals, macro balance, biomarkers",
-  hydration: "Water and fluids through the day, adjusted for activity and climate",
-  exercise:  "Movement, workouts, heart-rate zones, recovery",
-  sleep:     "Duration, regularity, stages, HRV — where the body rebuilds",
-  mental:    "Stress, mood, mindfulness, cognitive load",
+  nutrition: t(PILLAR_DESCRIPTION_KEYS.nutrition),
+  hydration: t(PILLAR_DESCRIPTION_KEYS.hydration),
+  exercise:  t(PILLAR_DESCRIPTION_KEYS.exercise),
+  sleep:     t(PILLAR_DESCRIPTION_KEYS.sleep),
+  mental:    t(PILLAR_DESCRIPTION_KEYS.mental),
 };
 
 const SUBSCORE_MAX: VitanaPillarSubscores = {
