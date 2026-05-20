@@ -111,10 +111,8 @@
       "phase": "llm"
     },
     "socialImport.platformHelp.youtube": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'expertise' as a direct loanword is less idiomatic than a common Spanish equivalent.",
-      "suggested": "Identificaremos tus categorías de contenido y áreas de especialización a partir de tu descripción.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "socialImport.platformHelp.facebook": {
@@ -128,5 +126,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:00:28.076Z"
+  "generatedAt": "2026-05-20T07:08:33.079Z"
 }

@@ -91,24 +91,18 @@
       "phase": "llm"
     },
     "mediaHub.actions.watchShorts": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent translation of 'shorts'. Previous entries use 'shorts' as a loanword. For consistency, it should remain 'shorts'.",
-      "suggested": "Ver shorts",
       "phase": "llm"
     },
     "mediaHub.actions.viewAllShorts": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent translation of 'shorts'. Previous entries use 'shorts' as a loanword. For consistency, it should remain 'shorts'.",
-      "suggested": "Ver todos los {count} shorts",
       "phase": "llm"
     },
     "mediaHub.actions.playPlaylist": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Lista' is too short for 'Playlist'. 'Lista de reproducción' is the full and more precise term, consistent with entry 6.",
-      "suggested": "Reproducir lista de reproducción",
       "phase": "llm"
     },
     "mediaHub.actions.clearFilters": {
@@ -207,10 +201,8 @@
       "phase": "llm"
     },
     "mediaHub.menu.addToPlaylist": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing precision for 'Playlist'.",
-      "suggested": "Agregar a lista de reproducción",
       "phase": "llm"
     },
     "mediaHub.menu.viewArtist": {
@@ -231,7 +223,7 @@
     "mediaHub.toast.filtersCleared": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Limpiados' is too literal; 'borrados' or 'restablecidos' are more idiomatic for filters.",
+      "issue": "Awkward phrasing; 'limpiados' is too literal. 'Borrados' or 'restablecidos' are more idiomatic for filters.",
       "suggested": "Filtros borrados",
       "phase": "llm"
     },
@@ -483,7 +475,7 @@
     "mediaHub.upload.languagePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Example changed from source. 'English' should be translated directly, not localized to 'Español'.",
+      "issue": "The example language was translated instead of the word itself, changing the meaning.",
       "suggested": "Ej., Inglés",
       "phase": "llm"
     },
@@ -593,5 +585,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:47:58.579Z"
+  "generatedAt": "2026-05-20T07:02:20.814Z"
 }

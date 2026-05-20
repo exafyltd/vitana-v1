@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "business.earning.readyToEarn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement. 'Listo' is masculine. For a general user in a friendly app, it should be gender-neutral or explicitly inclusive.",
-      "suggested": "¿Listo/a para ganar con VITANA?",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.earning.choosePathGuide": {
@@ -164,8 +162,8 @@
     },
     "business.history.allTime": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Todo el tiempo' means 'all the time' (continuously). For 'all time' as a historical period, 'Histórico' or 'Desde el inicio' is more appropriate.",
+      "confidence": 0.9,
+      "issue": "Meaning incorrect for UI context. 'Todo el tiempo' means 'always' or 'continuously,' not 'cumulative' or 'historical.'",
       "suggested": "Histórico",
       "phase": "llm"
     },
@@ -236,9 +234,9 @@
     },
     "business.kpi.topPerformer": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Mejor rendimiento' often refers to the performance of a machine or process. For a person or entity, 'Mejor desempeño' or 'El/La más destacado/a' is more natural.",
-      "suggested": "Mejor desempeño",
+      "confidence": 0.9,
+      "issue": "'Mejor rendimiento' means 'best performance,' not 'top performer' (the person/entity).",
+      "suggested": "El mejor",
       "phase": "llm"
     },
     "business.kpi.noDataYet": {
@@ -537,5 +535,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:37:16.455Z"
+  "generatedAt": "2026-05-20T07:00:42.192Z"
 }

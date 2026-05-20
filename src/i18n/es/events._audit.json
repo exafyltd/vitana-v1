@@ -91,10 +91,8 @@
       "phase": "llm"
     },
     "events.emptyStates.youFollow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The personal 'a' makes the phrase incomplete or awkward as a standalone UI string. If it's a status indicating 'You follow this person', 'Sigues' is more natural. If it's a button state, 'Siguiendo' is common.",
-      "suggested": "Sigues",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "events.emptyStates.loadingFollowing": {
@@ -103,5 +101,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:43:29.488Z"
+  "generatedAt": "2026-05-20T07:01:33.425Z"
 }

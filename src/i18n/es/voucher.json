@@ -27,7 +27,7 @@
     },
     "email": {
       "title": "Enviar Vale por Correo",
-      "subtitle": "Enviaremos un correo con el vale diseñado hermosamente",
+      "subtitle": "Enviaremos un correo bellamente diseñado con el vale.",
       "recipientEmail": "Correo del Destinatario *",
       "recipientName": "Nombre del Destinatario (opcional)",
       "personalMessage": "Mensaje Personal (opcional)",

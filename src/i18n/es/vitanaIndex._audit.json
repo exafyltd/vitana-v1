@@ -81,10 +81,8 @@
       "phase": "llm"
     },
     "vitanaIndex.tiers.early": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Temprano' is primarily temporal; 'Inicial' or 'Principiante' is better for a stage/level.",
-      "suggested": "Inicial",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.tiers.building": {
@@ -108,5 +106,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:11:25.773Z"
+  "generatedAt": "2026-05-20T07:09:04.216Z"
 }
