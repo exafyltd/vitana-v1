@@ -30,6 +30,7 @@ import { AddExtraMinutesTile } from '@/components/subscription/AddExtraMinutesTi
 import { RedeemCodeCard } from '@/components/subscription/RedeemCodeCard';
 import { YourEarningsWidget } from '@/components/subscription/YourEarningsWidget';
 import { WhySubscribeFAQ } from '@/components/subscription/WhySubscribeFAQ';
+import { FoundingBanner } from '@/components/subscription/FoundingBanner';
 
 function SubscriptionsLoading() {
   return (
@@ -82,6 +83,9 @@ function Subscriptions() {
             <>
               {/* Privacy + trust promises (anchor at top) */}
               <PrivacyFirstPromises />
+
+              {/* Founding Member launch banner — auto-hides once campaign exhausted or user is paid */}
+              <FoundingBanner />
 
               {/* Redeem code (above the plan grid for free users) */}
               {data.plan.plan_key === 'free' && <RedeemCodeCard />}
