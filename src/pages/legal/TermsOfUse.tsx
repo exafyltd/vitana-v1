@@ -55,7 +55,7 @@ const TermsOfUse = () => {
             {t('screens.legal.maxinaAppAmpWebsiteTermsUse')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text17May2025ReplacesAllPrior')}
+            <strong>{t('screens.legal.effectiveDate')}</strong>{' '}{t('screens.legal.text17May2025ReplacesAllPrior')}
           </p>
 
           {/* Section 1 */}
