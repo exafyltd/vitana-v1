@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase 'Ich folge' is a first-person statement, not a typical UI label for 'Following' (e.g., a list of people you follow or a count). It sounds like a sentence fragment rather than a concise label.",
+      "suggested": "Folge ich",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:19:25.503Z"
+}

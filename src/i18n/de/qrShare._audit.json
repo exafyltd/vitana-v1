@@ -1,0 +1,37 @@
+{
+  "verdicts": {
+    "qrShare.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.scanToView": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing, missing possessive pronoun for 'profile'. An imperative is more direct for an instruction.",
+      "suggested": "Scanne, um dein Profil anzusehen.",
+      "phase": "llm"
+    },
+    "qrShare.shareProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.copyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.download": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:19:51.690Z"
+}

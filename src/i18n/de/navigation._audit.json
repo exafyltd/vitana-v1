@@ -1,0 +1,102 @@
+{
+  "verdicts": {
+    "navigation.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "navigation.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "navigation.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "navigation.navigatingTo": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Imperative form 'Navigiere zu' doesn't match the gerund 'Navigating to' if it's a general label or status. It implies a command rather than a concept or process.",
+      "suggested": "Navigation zu",
+      "phase": "llm"
+    },
+    "navigation.hydrationTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.sleepTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.nutritionTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.workoutTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.biomarkers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.calendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.messages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.discover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.supplements": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "navigation.profile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.diary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.home": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "navigation.myJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:16:33.889Z"
+}
