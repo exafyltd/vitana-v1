@@ -178,14 +178,15 @@ export const adminNavigatorNavigation = [
 ];
 
 export const settingsNavigation = [
-  { id: "overview", name: "Overview", path: "/settings" },
-  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
-  { id: "limitations", name: "Limitations", path: "/settings/limitations" },
-  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
-  { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
-  { id: "social", name: "Social Accounts", path: "/settings/social" },
-  { id: "billing", name: "Billing", path: "/settings/billing" },
-  { id: "support", name: "Support", path: "/settings/support" },
+  { id: "overview", name: "Overview", i18nKey: "screens.settings.settingsSubnav_overview", path: "/settings" },
+  { id: "notifications", name: "Notifications", i18nKey: "screens.settings.settingsSubnav_notifications", path: "/settings/notifications" },
+  { id: "preferences", name: "Preferences", i18nKey: "screens.settings.settingsSubnav_preferences", path: "/settings/preferences" },
+  { id: "limitations", name: "Limitations", i18nKey: "screens.settings.settingsSubnav_limitations", path: "/settings/limitations" },
+  { id: "privacy", name: "Privacy", i18nKey: "screens.settings.settingsSubnav_privacy", path: "/settings/privacy" },
+  { id: "connected-apps", name: "Connected Apps & Integrations", i18nKey: "screens.settings.settingsSubnav_connectedAppsAndIntegrations", path: "/settings/connected-apps" },
+  { id: "social", name: "Social Accounts", i18nKey: "screens.settings.settingsSubnav_socialAccounts", path: "/settings/social" },
+  { id: "billing", name: "Billing", i18nKey: "screens.settings.settingsSubnav_billing", path: "/settings/billing" },
+  { id: "support", name: "Support", i18nKey: "screens.settings.settingsSubnav_support", path: "/settings/support" },
 ];
 
 // ── Legacy aliases (backward compatibility for old pages) ────

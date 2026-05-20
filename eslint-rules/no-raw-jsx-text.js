@@ -38,6 +38,9 @@ const I18N_FUNCTION_CALLS = new Set([
 const I18N_ATTRIBUTES = new Set([
   'placeholder', 'title', 'aria-label', 'aria-description', 'alt',
 ]);
+// TODO(i18n): expand to catch `description`/`label`/`subtitle`/`heading` props on
+// shared component primitives (StandardHeader/SEO/card subtitles). Current sweep
+// shows ~578 sites — needs a dedicated codemod PR before promoting to error.
 
 // 2+ consecutive ASCII letters anywhere → text we'd want to translate.
 const HAS_LETTERS = /[A-Za-z]{2,}/;
