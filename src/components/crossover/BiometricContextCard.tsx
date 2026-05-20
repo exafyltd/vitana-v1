@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface BiometricContextCardProps {
   heartRate?: number;
   steps?: number;
@@ -35,7 +36,7 @@ function BiometricContextCardBase({
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-blue-600" />
           <div>
-            <div className="font-medium">{steps.toLocaleString()}</div>
+            <div className="font-medium">{fmtDateTime(steps)}</div>
             <div className="text-xs text-muted-foreground">{t('screens.crossover.stepsToday')}</div>
           </div>
         </div>

@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface SpendCreditsPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -124,7 +125,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
               <ResponsiveDialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {t('screens.wallet.spendCredits')}
               </ResponsiveDialogTitle>
-              <p className="text-sm text-muted-foreground mt-1">{t('screens.wallet.availableValue0Credits', { value0: creditsBalance.toLocaleString() })}
+              <p className="text-sm text-muted-foreground mt-1">{t('screens.wallet.availableValue0Credits', { value0: fmtNumber(creditsBalance) })}
               </p>
             </div>
           </div>

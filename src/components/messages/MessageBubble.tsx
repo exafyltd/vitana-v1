@@ -10,7 +10,6 @@ import {
   DrawerContent,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
 import { CalendarInviteStatus } from './CalendarInviteStatus';
 import { 
   Clock, 
@@ -45,6 +44,7 @@ import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MessageBubbleProps {
   message: any; // Can be Message or GlobalMessage or TenantMessage
   isOwnMessage: boolean;
@@ -273,7 +273,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     hasAttachments ||
     hasLegacyFiles;
   const isTextMessageType = !hasStructuredContent;
-  const formattedTime = format(new Date(message.created_at), 'HH:mm');
+  const formattedTime = formatDate(new Date(message.created_at), 'HH:mm');
   const timestampColorClass = isOwnMessage
     ? 'text-domain-messages-bubble-foreground/60'
     : 'text-muted-foreground';
@@ -718,7 +718,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="w-4 h-4" />
                     <span>
-                      {format(new Date(message.content_data.date), 'PPP')}
+                      {formatDate(new Date(message.content_data.date), 'PPP')}
                       {message.content_data?.time && ` at ${message.content_data.time}`}
                     </span>
                   </div>

@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdminTable } from "@/components/admin/AdminTable";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDistanceToNow } from "date-fns";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 const PAGE_SIZE = 20;
 
 const statusVariants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {

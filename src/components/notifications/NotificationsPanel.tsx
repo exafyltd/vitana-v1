@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Bell, Check, Settings, Trash2, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -25,6 +24,7 @@ import {
 } from '@/lib/notification-types';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterValue = 'all' | 'unread' | NotificationCategory;
 
 interface NotificationsPanelProps {

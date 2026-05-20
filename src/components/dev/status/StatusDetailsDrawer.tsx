@@ -11,6 +11,7 @@ import { Copy, ExternalLink, RefreshCw, CheckCircle, XCircle } from "lucide-reac
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 interface ServiceStatus {
   name: string;
   status: "UP" | "DOWN";
@@ -130,7 +131,7 @@ ${connectionEvents.slice(0, 10).map(e => `[${e.timestamp}] ${e.type}: ${e.messag
                     </Badge>
                     <div className="flex-1">
                       <div className="text-muted-foreground">
-                        {new Date(event.timestamp).toLocaleTimeString()}
+                        {fmtTime(new Date(event.timestamp))}
                       </div>
                       <div className="text-foreground">{event.message}</div>
                     </div>

@@ -30,12 +30,12 @@ import {
   Plus
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
 import { useHealthLogger } from '@/hooks/useHealthLogger';
 import { t } from '@/lib/i18n-toast';
 
 
+import { formatDate } from '@/lib/locale-format';
 interface TestResult {
   id: string;
   order_id: string;
@@ -342,7 +342,7 @@ export default function BiomarkerResults() {
                           {/* Date */}
                           <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
                             <Calendar className="h-4 w-4" />
-                            <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
+                            <span>{formatDate(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
                           </div>
 
                           {/* Provider */}
@@ -431,7 +431,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: formatDate(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>
@@ -469,7 +469,7 @@ export default function BiomarkerResults() {
                           {/* Date */}
                           <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-[120px]">
                             <Calendar className="h-4 w-4" />
-                            <span>{format(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
+                            <span>{formatDate(new Date(result.completed_at), 'MMM dd, yyyy')}</span>
                           </div>
 
                           {/* Provider */}
@@ -550,7 +550,7 @@ export default function BiomarkerResults() {
                                 </Button>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">
                                   <Clock className="h-4 w-4" />
-                                  <span>{t('screens.health.processedValue0', { value0: format(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
+                                  <span>{t('screens.health.processedValue0', { value0: formatDate(new Date(result.completed_at), 'MMM dd, HH:mm') })}</span>
                                 </div>
                               </div>
                             </div>

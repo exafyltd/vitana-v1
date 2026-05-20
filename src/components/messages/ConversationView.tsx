@@ -36,12 +36,13 @@ import GroupMembersModal from './GroupMembersModal';
 import GroupAvatarStack from './GroupAvatarStack';
 import CreateGroupPopup from '@/components/messages/CreateGroupPopup';
 
-import { format, isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
+import { isSameDay, isToday, isYesterday, isThisYear } from 'date-fns';
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ConversationViewProps {
   threadId?: string | null;
   recipientId?: string | null;
@@ -1036,8 +1037,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   : isYesterday(messageDate)
                     ? 'Yesterday'
                     : isThisYear(messageDate)
-                      ? format(messageDate, 'd MMMM')
-                      : format(messageDate, 'd MMMM yyyy');
+                      ? formatDate(messageDate, 'd MMMM')
+                      : formatDate(messageDate, 'd MMMM yyyy');
 
                 // Resolve parent message for reply quotes (check both field names)
                 const parentId = message.parent_message_id || message.reply_to_message_id;

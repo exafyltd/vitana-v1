@@ -14,6 +14,7 @@ import { Send } from "lucide-react";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface WalletIntegratedPaymentRequestProps {
   isOpen: boolean;
   onClose: () => void;
@@ -127,7 +128,7 @@ export default function WalletIntegratedPaymentRequest({
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
                       {getCurrencyIcon(balance.currency_type, "w-3 h-3")}
-                      {balance.balance.toLocaleString()}
+                      {fmtNumber(balance.balance)}
                     </span>
                   ))}
                 </div>

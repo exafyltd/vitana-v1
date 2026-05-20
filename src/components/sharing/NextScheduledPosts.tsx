@@ -7,6 +7,7 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 export function NextScheduledPosts() {
   const { scheduledPosts, isLoading, pauseScheduled, resumeScheduled, cancelScheduled } = useScheduledPosts();
   
@@ -43,7 +44,7 @@ export function NextScheduledPosts() {
       metadata: [
         {
           icon: <Calendar className="w-3.5 h-3.5" />,
-          text: `${scheduledDate.toLocaleDateString()} at ${scheduledDate.toLocaleTimeString('en-GB', {
+          text: `${fmtDate(scheduledDate)} at ${fmtTime(scheduledDate, {
             hour: "2-digit",
             minute: "2-digit",
             hour12: false

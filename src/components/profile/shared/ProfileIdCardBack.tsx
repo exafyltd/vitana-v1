@@ -15,6 +15,7 @@ import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMedi
 import { useProfileTheme, ThemeConfig } from "@/hooks/useProfileTheme";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface ProfileIdCardBackProps {
   profile: UserProfile;
   themeConfig: ThemeConfig;
@@ -401,7 +402,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
               <p className="text-xs text-muted-foreground line-clamp-3">{profile.linkedin_summary}</p>
             )}
             {profile.linkedin_synced_at && (
-              <p className="text-xs text-muted-foreground/60 mt-2">{t('screens.profile.syncedValue0', { value0: new Date(profile.linkedin_synced_at).toLocaleDateString() })}</p>
+              <p className="text-xs text-muted-foreground/60 mt-2">{t('screens.profile.syncedValue0', { value0: fmtDate(new Date(profile.linkedin_synced_at)) })}</p>
             )}
           </div>
         )}

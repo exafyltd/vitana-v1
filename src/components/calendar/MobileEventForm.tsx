@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { format } from "date-fns";
 import { de as deLocale } from "date-fns/locale/de";
 import { Calendar as CalendarIcon, MapPin, Clock, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 
+import { formatDate } from '@/lib/locale-format';
 interface MobileEventFormProps {
   onSubmit: (event: Partial<CalendarEvent>) => void;
   onCancel: () => void;
@@ -52,7 +52,7 @@ function roundToNext15(d: Date): string {
   const rounded = new Date(d);
   rounded.setHours(h, m, 0, 0);
   if (m >= 60) rounded.setHours(h + 1, 0, 0, 0);
-  return format(rounded, 'HH:mm');
+  return formatDate(rounded, 'HH:mm');
 }
 
 function addOneHour(time: string): string {
@@ -150,7 +150,7 @@ export function MobileEventForm({ onSubmit, onCancel, initialDate }: MobileEvent
               >
                 <CalendarIcon className="w-3.5 h-3.5" />
                 {!isToday && !isTomorrow
-                  ? format(date, 'EEE, d MMM', { locale: isGerman ? deLocale : undefined })
+                  ? formatDate(date, 'EEE, d MMM', { locale: isGerman ? deLocale : undefined })
                   : translate('calendar.form.pickDate', 'Pick date')
                 }
                 <ChevronDown className="w-3 h-3 opacity-50" />

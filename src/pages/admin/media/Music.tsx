@@ -12,10 +12,10 @@ import { Play, CheckCircle, XCircle, Flag, Trash2, Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
-import { format } from "date-fns";
 import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 export default function Music() {
   const { toast } = useToast();
   const [statusFilter, setStatusFilter] = useState('all');
@@ -175,7 +175,7 @@ export default function Music() {
                         {track.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{format(new Date(track.created_at), 'MMM d, yyyy')}</TableCell>
+                    <TableCell>{formatDate(new Date(track.created_at), 'MMM d, yyyy')}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
                         {track.status !== 'approved' && (

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/responsive-confirm-dialog";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface ContactListItemProps {
   contact: Contact;
   onMessage?: (userId: string) => void;
@@ -76,7 +77,7 @@ export default function ContactListItem({
             <p className="text-sm text-muted-foreground truncate">{contactInfo}</p>
           )}
           {contact.invite_sent_at && !contact.is_on_platform && (
-            <p className="text-xs text-muted-foreground mt-1">{t('screens.contacts.invitedValue0', { value0: new Date(contact.invite_sent_at).toLocaleDateString() })}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t('screens.contacts.invitedValue0', { value0: fmtDate(new Date(contact.invite_sent_at)) })}</p>
           )}
         </div>
 

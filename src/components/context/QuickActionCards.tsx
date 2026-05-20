@@ -1,9 +1,9 @@
-import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
 import { eventTypeToPillar } from "@/lib/eventTransformers";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface HydrationReminderCardProps {
   timeLastIntake?: string;
   className?: string;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isToday, addDays } from "date-fns";
+import { startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isToday, addDays } from 'date-fns';
 import {
   Dialog,
   DialogContent,
@@ -41,6 +41,7 @@ import { useRole } from "@/hooks/useRole";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CalendarEvent {
   id: string;
   title: string;

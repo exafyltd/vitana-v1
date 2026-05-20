@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface StakeTokensPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -80,7 +81,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
           <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t('screens.wallet.availableVtnaBalance')}</span>
-              <span className="font-semibold text-purple-700">{t('screens.wallet.value0Vtna', { value0: vtnaBalance.toLocaleString() })}</span>
+              <span className="font-semibold text-purple-700">{t('screens.wallet.value0Vtna', { value0: fmtNumber(vtnaBalance) })}</span>
             </div>
           </div>
 

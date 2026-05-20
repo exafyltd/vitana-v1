@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useTranslation';
-import { format, isPast } from 'date-fns';
+import { isPast } from 'date-fns';
 import {
   Package,
   Clock,
@@ -23,6 +23,7 @@ import { VitanaIndexChip, AutopilotChip } from '@/components/mobile/MobileAction
 import { useAutopilot } from '@/hooks/use-autopilot';
 import { AutopilotPopup } from '@/components/AutopilotPopup';
 
+import { formatDate } from '@/lib/locale-format';
 // Unified order type
 export interface UnifiedMobileOrder {
   id: string;
@@ -167,7 +168,7 @@ export function MobileOrdersView({
           <div className="flex items-center gap-3 pt-1">
             <span className="text-xs text-muted-foreground flex items-center gap-1">
               <Calendar className="h-3 w-3" />
-              {order.eventDate ? format(order.eventDate, 'MMM d') : order.orderDate}
+              {order.eventDate ? formatDate(order.eventDate, 'MMM d') : order.orderDate}
             </span>
             
             {order.eventLocation && (

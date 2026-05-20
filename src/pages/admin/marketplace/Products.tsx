@@ -23,6 +23,7 @@ import { adminMarketplaceCatalogNavigation } from "@/config/navigation";
 import { Search, Loader2, EyeOff, CheckCircle, Flag, RefreshCw } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
 interface Product {
@@ -196,7 +197,7 @@ export default function MarketplaceProducts() {
               <Button size="sm" variant="outline" onClick={load}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
-              <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.value0Total', { value0: total.toLocaleString() })}</span>
+              <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.value0Total', { value0: fmtNumber(total) })}</span>
             </CardContent>
           </Card>
 

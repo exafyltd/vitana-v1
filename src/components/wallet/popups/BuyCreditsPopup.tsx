@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
 interface BuyCreditsPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -108,11 +109,11 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.currentCredits')}</div>
-              <div className="font-semibold text-blue-700">{currentCredits.toLocaleString()}</div>
+              <div className="font-semibold text-blue-700">{fmtDateTime(currentCredits)}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
-              <div className="font-semibold text-green-700">${usdBalance.toLocaleString()}</div>
+              <div className="font-semibold text-green-700">${fmtNumber(usdBalance)}</div>
             </div>
           </div>
 
@@ -134,7 +135,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
                   <div className="text-left">
-                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: pkg.credits.toLocaleString() })}
+                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtDateTime(pkg.credits) })}
                       {pkg.bonus > 0 && (
                         <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                       )}

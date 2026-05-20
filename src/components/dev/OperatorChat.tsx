@@ -7,6 +7,7 @@ import { useBackendStatus } from "@/hooks/useBackendStatus";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 export default function OperatorChat() {
   const { activeVTID, threads, upsertThread, appendChat, setActiveVTID } = useCommandHub();
   const [input, setInput] = useState("");
@@ -128,7 +129,7 @@ export default function OperatorChat() {
               }`}>
                 <div className="text-sm whitespace-pre-wrap">{m.text}</div>
                 <div className="text-[10px] mt-1 opacity-70">
-                  {new Date(m.ts).toLocaleTimeString()}
+                  {fmtTime(new Date(m.ts))}
                 </div>
               </div>
             </div>

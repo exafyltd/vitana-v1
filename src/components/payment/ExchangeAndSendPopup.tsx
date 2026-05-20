@@ -16,6 +16,7 @@ import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { isIAPRestricted } from "@/lib/appilix";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface ExchangeAndSendPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -186,7 +187,7 @@ export default function ExchangeAndSendPopup({
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <DollarSign className="w-3 h-3" />
-                    {userBalance.USD.toLocaleString()}
+                    {fmtNumber(userBalance.USD)}
                   </span>
                   <span className="flex items-center gap-1">
                     <CreditCard className="w-3 h-3" />

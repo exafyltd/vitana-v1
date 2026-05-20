@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import type { AudienceData } from "@/types/audience";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface ChannelEligibilityBadgesProps {
   audienceData: AudienceData;
   selectedChannels: string[];
@@ -66,7 +67,7 @@ export function ChannelEligibilityBadges({
                 <Icon className="h-4 w-4" />
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-medium">{channel.label}</div>
-                  <div className="text-xs text-muted-foreground">{t('screens.sharing.value0Eligible', { value0: channel.count.toLocaleString() })}
+                  <div className="text-xs text-muted-foreground">{t('screens.sharing.value0Eligible', { value0: fmtNumber(channel.count) })}
                   </div>
                 </div>
                 {hasZeroEligible && (
@@ -94,7 +95,7 @@ export function ChannelEligibilityBadges({
       {eligibility.total > 0 && (
         <div className="text-sm">
           <span className="font-medium">{t('screens.sharing.totalUniqueRecipients')}</span>{' '}
-          <span className="text-muted-foreground">{eligibility.total.toLocaleString()}</span>
+          <span className="text-muted-foreground">{fmtNumber(eligibility.total)}</span>
         </div>
       )}
     </div>

@@ -6,6 +6,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+import { fmtDate } from '@/lib/locale-format';
 export interface OrbContextSnapshot {
   contextString: string;
   itemCount: number;
@@ -77,7 +78,7 @@ export async function buildOrbContext(userId: string): Promise<OrbContextSnapsho
     lines.push('');
     lines.push('Recent diary entries:');
     for (const d of diaries) {
-      const date = new Date(d.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const date = fmtDate(new Date(d.created_at), { month: 'short', day: 'numeric' });
       const preview = (d.text || '').slice(0, 200);
       const tags = (d.tags || []).filter((t: string) => !['diary'].includes(t));
       const tagStr = tags.length > 0 ? ` [${tags.join(', ')}]` : '';

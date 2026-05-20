@@ -25,6 +25,7 @@ import { VitanaConfigDrawer } from "./VitanaConfigDrawer";
 import { Switch } from "@/components/ui/switch";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const TABS = [
   { key: "tickets", label: "Tickets", path: "/admin/feedback/tickets" },
   { key: "specialists", label: "Specialists", path: "/admin/feedback/specialists" },
@@ -295,7 +296,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                     {g.latest.resolver_agent && (
                       <span>{t('screens.admin.handledByResolver_agent', { resolver_agent: g.latest.resolver_agent })}</span>
                     )}
-                    <span className="ml-auto">{new Date(g.latest.created_at).toLocaleString()}</span>
+                    <span className="ml-auto">{fmtDateTime(new Date(g.latest.created_at))}</span>
                   </div>
                 </div>
                 <span className="ml-2 text-xs text-muted-foreground">{isOpen ? "▾" : "▸"}</span>
@@ -349,7 +350,7 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                           <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
                         )}
                         <span className="ml-auto text-xs text-muted-foreground">
-                          {new Date(t.created_at).toLocaleString()}
+                          {fmtDateTime(new Date(t.created_at))}
                         </span>
                       </div>
                       {t.raw_transcript_excerpt && (

@@ -6,9 +6,9 @@ import { Task, TaskStatus } from "@/types/task";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { formatDistanceToNow } from "date-fns";
 import { Sparkles } from "lucide-react";
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface TaskCardProps {
   task: Task;
   onClick?: () => void;

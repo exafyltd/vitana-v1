@@ -15,6 +15,7 @@ import { EditMemoryDialog } from "./EditMemoryDialog";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const QUICK_CATEGORY_OPTIONS = [
   { id: "personal-identity", label: "Personal Identity" },
   { id: "health-wellness", label: "Health & Wellness" },
@@ -182,7 +183,7 @@ export function CategoryDetailDialog({
                           </div>
                         )}
                         <p className="text-xs text-muted-foreground mt-2">
-                          {new Date(memory.createdAt).toLocaleDateString()} •{" "}
+                          {fmtDate(new Date(memory.createdAt))} •{" "}
                           {memory.source === "ai" ? "Insight" : "Diary"}
                         </p>
                       </div>

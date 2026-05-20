@@ -6,6 +6,7 @@ import { Droplets, Clock, Brain, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface DailyHydrationCardProps {
   data: DailyHydrationData;
   onClick: () => void;
@@ -43,7 +44,7 @@ export function DailyHydrationCard({ data, onClick }: DailyHydrationCardProps) {
               {data.day}
             </span>
             <span className="text-[13px] text-slate-500 dark:text-slate-400 font-normal">
-              {new Date(data.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+              {fmtDate(new Date(data.date), { weekday: 'short', month: 'short', day: 'numeric' })}
             </span>
           </div>
           <div className="flex items-center gap-2">

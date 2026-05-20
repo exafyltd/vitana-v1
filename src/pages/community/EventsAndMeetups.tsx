@@ -46,11 +46,12 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 // Helper functions
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
-  const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-  const day = date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
+  const time = fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
+  const day = fmtDate(date, { weekday: 'short', month: 'short', day: 'numeric' });
   return `${day} · ${time}`;
 };
 
@@ -693,7 +694,7 @@ const EventsAndMeetups = () => {
   // Dynamic OG meta tags for selected event
   const eventSEO = selectedEventData ? {
     title: selectedEventData.title,
-    description: selectedEventData.description || `Join us ${selectedEventData.start_time ? `on ${new Date(selectedEventData.start_time).toLocaleDateString()}` : ''} ${selectedEventData.location ? `at ${selectedEventData.location}` : ''}`,
+    description: selectedEventData.description || `Join us ${selectedEventData.start_time ? `on ${fmtDate(new Date(selectedEventData.start_time))}` : ''} ${selectedEventData.location ? `at ${selectedEventData.location}` : ''}`,
     image: selectedEventData.image_url || generateImageUrl(selectedEventData.title, selectedEventData.description),
     url: `${window.location.origin}/comm/events-meetups?event=${selectedEventData.id}`,
     type: 'event' as const,

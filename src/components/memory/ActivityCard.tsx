@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Sparkles, Trash2 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import type { ActivityHistoryItem } from "@/hooks/useActivityHistory";
 import {
   ResponsiveConfirmDialog,
@@ -17,6 +16,7 @@ import {
 } from "@/components/ui/responsive-confirm-dialog";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface ActivityCardProps {
   activity: ActivityHistoryItem;
   onPromote?: (activityId: string) => void;

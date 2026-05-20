@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { communityFetch } from "@/lib/community-gateway";
 import { lookup, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, fmtTime } from '@/lib/locale-format';
 interface IntakeMessage {
   agent?: string;
   role: "user" | "assistant";
@@ -301,7 +302,7 @@ function PipelineProgress({ execution, findingId, playwrightVerified }: Pipeline
               <> · <a className="text-primary underline" href={execution.pr_url} target="_blank" rel="noreferrer">{t('screens.admin.prValue0', { value0: execution.pr_number ?? "?" })}</a></>
             )}
             {isStalled && <> · <span className="text-amber-600 font-semibold">{t('screens.admin.stalledValue0Min', { value0: Math.round(stalledMs / 60000) })}</span></>}
-            {execution.completed_at && <>{t('screens.admin.finishedValue0', { value0: new Date(execution.completed_at).toLocaleTimeString() })}</>}
+            {execution.completed_at && <>{t('screens.admin.finishedValue0', { value0: fmtTime(new Date(execution.completed_at)) })}</>}
           </div>
         </div>
       </div>
@@ -715,7 +716,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       {ticket.rolled_back_at && ticket.rollback_pr_url && (
         <Card className="border-orange-300 bg-orange-50 p-3 text-sm dark:border-orange-700 dark:bg-orange-950/30">
           <div className="font-semibold">{t('screens.admin.rolledBack')}</div>
-          <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: new Date(ticket.rolled_back_at).toLocaleString(), value1: " " })}<a href={ticket.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
+          <p className="mt-1 text-muted-foreground">{t('screens.admin.autopilotFixRolledBackValue0Value1', { value0: fmtDateTime(new Date(ticket.rolled_back_at)), value1: " " })}<a href={ticket.rollback_pr_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{t('screens.admin.revertPr')}
             </a>{t('screens.admin.ticketHasReopenedRefineInstructionsReactivate')}
           </p>
         </Card>
@@ -949,7 +950,7 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
           <div className="flex flex-col gap-1 text-xs">
             {handoffs.map(h => (
               <div key={h.id} className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-muted-foreground">{new Date(h.ts).toLocaleTimeString()}</span>
+                <span className="font-mono text-muted-foreground">{fmtTime(new Date(h.ts))}</span>
                 <strong>{h.from_agent}</strong> → <strong>{h.to_agent}</strong>
                 <span className="text-muted-foreground">({h.reason}{h.matched_keyword ? ` · "${h.matched_keyword}"` : ""})</span>
               </div>
@@ -992,9 +993,9 @@ export function TicketActionDrawer({ tenantId, ticketId, ticketNumber, onClose }
       <section className="text-xs text-muted-foreground space-y-0.5">
         {ticket.screen_path && <div>{t('screens.admin.screenScreen_path', { screen_path: ticket.screen_path })}</div>}
         {ticket.app_version && <div>{t('screens.admin.appVersionApp_version', { app_version: ticket.app_version })}</div>}
-        <div>{t('screens.admin.createdValue0', { value0: new Date(ticket.created_at).toLocaleString() })}</div>
-        {ticket.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: new Date(ticket.resolved_at).toLocaleString() })}</div>}
-        {ticket.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: new Date(ticket.user_confirmed_at).toLocaleString() })}</div>}
+        <div>{t('screens.admin.createdValue0', { value0: fmtDateTime(new Date(ticket.created_at)) })}</div>
+        {ticket.resolved_at && <div>{t('screens.admin.resolvedValue0', { value0: fmtDateTime(new Date(ticket.resolved_at)) })}</div>}
+        {ticket.user_confirmed_at && <div>{t('screens.admin.confirmedValue0', { value0: fmtDateTime(new Date(ticket.user_confirmed_at)) })}</div>}
       </section>
     </div>
   );

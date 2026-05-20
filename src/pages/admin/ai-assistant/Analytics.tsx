@@ -11,6 +11,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function AIAssistantAnalytics() {
   const { metrics, timeSeriesData, loading, error } = useAIAssistantAnalytics();
 
@@ -106,11 +107,11 @@ export default function AIAssistantAnalytics() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="date" 
-                      tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      tickFormatter={(value) => fmtDate(new Date(value), { month: 'short', day: 'numeric' })}
                     />
                     <YAxis />
                     <Tooltip 
-                      labelFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      labelFormatter={(value) => fmtDate(new Date(value), { month: 'short', day: 'numeric', year: 'numeric' })}
                     />
                     <Legend />
                     <Line 

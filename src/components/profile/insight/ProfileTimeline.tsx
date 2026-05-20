@@ -7,9 +7,9 @@ import {
   Trophy,
   Video
 } from "lucide-react";
-import { format } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface TimelineItem {
   date: string;
   type: 'joined' | 'post' | 'group' | 'event' | 'achievement' | 'live';
@@ -100,7 +100,7 @@ export function ProfileTimeline({ milestones, className }: ProfileTimelineProps)
                     {milestone.description}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {format(new Date(milestone.date), 'MMM d, yyyy')}
+                    {formatDate(new Date(milestone.date), 'MMM d, yyyy')}
                   </p>
                 </div>
               </div>

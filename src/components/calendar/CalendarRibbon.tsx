@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { format, addDays } from "date-fns";
+import { addDays } from 'date-fns';
 import { Calendar, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { EnhancedCalendarPopup } from "./EnhancedCalendarPopup";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 const getTypeColor = (type: string) => {
   switch (type) {
     case 'personal': return 'bg-blue-500';
@@ -45,8 +46,8 @@ export function CalendarRibbon() {
         {/* Today's Date */}
         <div className="flex items-center gap-2 text-sm font-medium">
           <Calendar className="h-4 w-4 text-primary" />
-          <span className="hidden sm:inline">{format(today, 'MMM d, yyyy')}</span>
-          <span className="sm:hidden">{format(today, 'MMM d')}</span>
+          <span className="hidden sm:inline">{formatDate(today, 'MMM d, yyyy')}</span>
+          <span className="sm:hidden">{formatDate(today, 'MMM d')}</span>
         </div>
 
         {/* Upcoming Events */}
@@ -63,7 +64,7 @@ export function CalendarRibbon() {
                       <div className={cn("w-1.5 h-1.5 rounded-full", getTypeColor(event.event_type))} />
                       <span className="truncate max-w-[100px]">{event.title}</span>
                       <span className="text-muted-foreground">
-                        {format(new Date(event.start_time), 'HH:mm')}
+                        {formatDate(new Date(event.start_time), 'HH:mm')}
                       </span>
                     </button>
                   </TooltipTrigger>
@@ -71,7 +72,7 @@ export function CalendarRibbon() {
                     <div className="text-xs space-y-1">
                       <p className="font-medium">{event.title}</p>
                       <p className="text-muted-foreground">
-                        {format(new Date(event.start_time), 'MMM d, HH:mm')}
+                        {formatDate(new Date(event.start_time), 'MMM d, HH:mm')}
                       </p>
                       {event.location && <p>{event.location}</p>}
                     </div>

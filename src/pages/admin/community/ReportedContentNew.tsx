@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useModerationReports } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function ReportedContentNew() {
   const { data: reports = [], isLoading } = useModerationReports();
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -80,7 +81,7 @@ export default function ReportedContentNew() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(r.created_at).toLocaleDateString()}
+                      {fmtDate(new Date(r.created_at))}
                     </TableCell>
                   </TableRow>
                 ))}

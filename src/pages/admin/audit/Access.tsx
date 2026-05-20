@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAccessLog } from "@/hooks/useAdminAudit";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function AuditAccess() {
   const query = useAccessLog(100);
   const entries = query.data || [];
@@ -48,7 +49,7 @@ export default function AuditAccess() {
                 {entries.map((e) => (
                   <TableRow key={e.id}>
                     <TableCell className="text-xs text-muted-foreground font-mono whitespace-nowrap">
-                      {new Date(e.created_at).toLocaleString()}
+                      {fmtDateTime(new Date(e.created_at))}
                     </TableCell>
                     <TableCell className="text-sm">{e.topic}</TableCell>
                     <TableCell>

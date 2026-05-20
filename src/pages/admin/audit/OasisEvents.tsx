@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useOverviewActivity } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function AuditOasisEvents() {
   const activityQuery = useOverviewActivity(100);
   const events = activityQuery.data || [];
@@ -56,7 +57,7 @@ export default function AuditOasisEvents() {
                 {events.map((e) => (
                   <TableRow key={e.id}>
                     <TableCell className="text-xs text-muted-foreground font-mono whitespace-nowrap">
-                      {new Date(e.created_at).toLocaleString()}
+                      {fmtDateTime(new Date(e.created_at))}
                     </TableCell>
                     <TableCell className="text-sm">{e.topic}</TableCell>
                     <TableCell className="text-xs font-mono text-muted-foreground">{e.vtid || "—"}</TableCell>

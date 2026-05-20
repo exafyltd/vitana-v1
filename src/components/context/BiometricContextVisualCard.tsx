@@ -1,6 +1,7 @@
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface BiometricContextVisualCardProps {
   heartRate?: number;
   steps?: number;
@@ -19,7 +20,7 @@ export function BiometricContextVisualCard({
   return (
     <NewsCard
       title={t('screens.context.biometricContext')}
-      description={`HR ${heartRate} BPM · ${steps.toLocaleString()} Steps · Hydration ${hydration}% · Energy ${energy}%`}
+      description={`HR ${heartRate} BPM · ${fmtDateTime(steps)} Steps · Hydration ${hydration}% · Energy ${energy}%`}
       imageUrl="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop"
       pillar="Exercise"
       author={{ name: "Health Metrics", avatar: "/lovable-uploads/design-team-avatar.jpg" }}

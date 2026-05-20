@@ -10,7 +10,6 @@
  */
 
 import { useMemo, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import AppLayout from "@/components/AppLayout";
 import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
@@ -28,6 +27,7 @@ import {
 } from "@/hooks/useAdminAssistantSpeeches";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 const STAGE_ORDER: SpeechJourneyStage[] = ["pre_login", "onboarding", "proactive"];
 
 const STAGE_LABELS: Record<SpeechJourneyStage, string> = {

@@ -21,6 +21,7 @@ import {
 } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   new: "info",
   activated: "active",
@@ -176,7 +177,7 @@ export default function AutopilotRecommendations() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
-                      {new Date(r.created_at).toLocaleDateString()}
+                      {fmtDate(new Date(r.created_at))}
                     </TableCell>
                   </TableRow>
                 ))}

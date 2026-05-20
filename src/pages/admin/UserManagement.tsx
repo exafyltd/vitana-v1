@@ -38,6 +38,7 @@ import {
 import { Users, UserPlus, Shield, Trash2, Search, Filter } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface User {
   id: string;
   email: string;
@@ -470,7 +471,7 @@ export default function UserManagement() {
                           {user.full_name && (
                             <p className="text-sm text-muted-foreground">{user.full_name}</p>
                           )}
-                          <p className="text-xs text-muted-foreground">{t('screens.admin.joinedValue0', { value0: new Date(user.created_at).toLocaleDateString() })}</p>
+                          <p className="text-xs text-muted-foreground">{t('screens.admin.joinedValue0', { value0: fmtDate(new Date(user.created_at)) })}</p>
                         </div>
                       </div>
                       

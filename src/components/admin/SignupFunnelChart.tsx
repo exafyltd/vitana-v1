@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { fmtNumber } from '@/lib/locale-format';
 interface FunnelData {
   started: number;
   email_sent: number;
@@ -71,7 +72,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
     <div className="rounded-md border bg-popover px-3 py-2 text-sm shadow-md">
       <p className="font-medium text-foreground">{item.label}</p>
       <p className="text-muted-foreground">
-        {item.count.toLocaleString()} ({item.percentage})
+        {fmtNumber(item.count)} ({item.percentage})
       </p>
     </div>
   );
@@ -134,7 +135,7 @@ export function SignupFunnelChart({ data, loading = false }: SignupFunnelChartPr
               className="inline-block h-2.5 w-2.5 rounded-sm"
               style={{ backgroundColor: entry.color }}
             />
-            {entry.label}: {entry.count.toLocaleString()} ({entry.percentage})
+            {entry.label}: {fmtNumber(entry.count)} ({entry.percentage})
           </div>
         ))}
       </div>

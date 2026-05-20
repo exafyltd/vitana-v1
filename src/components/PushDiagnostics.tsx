@@ -10,6 +10,7 @@ import { initializePushNotifications } from '@/lib/pushNotifications';
 import { toast } from 'sonner';
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface DiagnosticItem {
   label: string;
   value: string;
@@ -113,7 +114,7 @@ export default function PushDiagnostics() {
             const latest = tokens[0];
             results.push({
               label: 'Latest Token Updated',
-              value: latest.updated_at ? new Date(latest.updated_at).toLocaleString() : 'Unknown',
+              value: latest.updated_at ? fmtDateTime(new Date(latest.updated_at)) : 'Unknown',
               status: 'info',
             });
           }

@@ -13,11 +13,11 @@ import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { ScheduleDialog } from "@/components/sharing/ScheduleDialog";
 import { CreatePostDialog } from "@/components/sharing/CreatePostDialog";
 import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive, Clock, Plus } from "lucide-react";
-import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { toast } from "sonner";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function CampaignDetail() {
         status: "scheduled",
         start_date: scheduledFor.toISOString(),
       });
-      toast.success(`Campaign scheduled for ${format(scheduledFor, "PPP 'at' p")}`);
+      toast.success(`Campaign scheduled for ${formatDate(scheduledFor, "PPP 'at' p")}`);
       setShowActivateDialog(false);
     }
   };
@@ -171,9 +171,9 @@ function CampaignDetail() {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
                   <Calendar className="w-4 h-4" />
                   <span>
-                    {campaign.start_date && format(new Date(campaign.start_date), 'MMM d, yyyy')}
+                    {campaign.start_date && formatDate(new Date(campaign.start_date), 'MMM d, yyyy')}
                     {campaign.start_date && campaign.end_date && ' - '}
-                    {campaign.end_date && format(new Date(campaign.end_date), 'MMM d, yyyy')}
+                    {campaign.end_date && formatDate(new Date(campaign.end_date), 'MMM d, yyyy')}
                   </span>
                 </div>
               )}
@@ -304,7 +304,7 @@ function CampaignDetail() {
                           </Badge>
                           {post.published_at && (
                             <span className="text-xs text-muted-foreground">
-                              {format(new Date(post.published_at), 'MMM d, yyyy')}
+                              {formatDate(new Date(post.published_at), 'MMM d, yyyy')}
                             </span>
                           )}
                         </div>

@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { GroupListDialog } from "@/components/profile/GroupListDialog";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
 
+import { fmtNumber } from '@/lib/locale-format';
 interface ProfileStatsProps {
   profile: UserProfile;
   profileUserId?: string;
@@ -33,7 +34,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
-              {postsCount.toLocaleString()}
+              {fmtNumber(postsCount)}
             </div>
           )}
           <div className="text-sm text-muted-foreground">{translate('profileStats.posts', 'Posts')}</div>
@@ -43,7 +44,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           onClick={() => setFollowListType("followers")}
         >
           <div className="text-2xl md:text-3xl font-bold text-foreground">
-            {followersCount.toLocaleString()}
+            {fmtNumber(followersCount)}
           </div>
           <div className="text-sm text-muted-foreground">{translate('profileStats.followers', 'Followers')}</div>
         </div>
@@ -52,7 +53,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           onClick={() => setFollowListType("following")}
         >
           <div className="text-2xl md:text-3xl font-bold text-foreground">
-            {followingCount.toLocaleString()}
+            {fmtNumber(followingCount)}
           </div>
           <div className="text-sm text-muted-foreground">{translate('profileStats.following', 'Following')}</div>
         </div>
@@ -61,7 +62,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
-              {mediaCount.toLocaleString()}
+              {fmtNumber(mediaCount)}
             </div>
           )}
           <div className="text-sm text-muted-foreground">{translate('profileStats.media', 'Media')}</div>
@@ -74,7 +75,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
-              {groupsCount.toLocaleString()}
+              {fmtNumber(groupsCount)}
             </div>
           )}
           <div className="text-sm text-muted-foreground">{translate('profileStats.groups', 'Groups')}</div>

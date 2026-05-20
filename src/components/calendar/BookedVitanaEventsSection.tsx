@@ -1,11 +1,11 @@
 import React from "react";
-import { format } from "date-fns";
 import { Users, MapPin, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 
+import { formatDate } from '@/lib/locale-format';
 interface BookedVitanaEventsSectionProps {
   events: CalendarEvent[];
   onEventClick: (event: CalendarEvent) => void;
@@ -47,14 +47,14 @@ export function BookedVitanaEventsSection({ events, onEventClick }: BookedVitana
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : null;
     if (end) {
-      return `${format(start, 'HH:mm')}–${format(end, 'HH:mm')}`;
+      return `${formatDate(start, 'HH:mm')}–${formatDate(end, 'HH:mm')}`;
     }
-    return format(start, 'HH:mm');
+    return formatDate(start, 'HH:mm');
   };
   
   const formatEventDate = (startTime: string) => {
     const date = new Date(startTime);
-    return format(date, 'EEE, MMM d');
+    return formatDate(date, 'EEE, MMM d');
   };
   
   return (

@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Plus, Loader2, Megaphone, Edit, Eye, BarChart3, Ticket } from "lucide-react";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ResellerCampaignsTabProps {
   searchQuery: string;
 }
@@ -38,12 +38,12 @@ const formatDateRange = (start?: string | null, end?: string | null): string => 
     const endDate = new Date(end);
     const sameYear = startDate.getFullYear() === endDate.getFullYear();
     if (sameYear) {
-      return `${format(startDate, "MMM d")} – ${format(endDate, "MMM d, yyyy")}`;
+      return `${formatDate(startDate, "MMM d")} – ${formatDate(endDate, "MMM d, yyyy")}`;
     }
-    return `${format(startDate, "MMM d, yyyy")} – ${format(endDate, "MMM d, yyyy")}`;
+    return `${formatDate(startDate, "MMM d, yyyy")} – ${formatDate(endDate, "MMM d, yyyy")}`;
   }
   if (start) {
-    return `Starts ${format(new Date(start), "MMM d, yyyy")}`;
+    return `Starts ${formatDate(new Date(start), "MMM d, yyyy")}`;
   }
   return "No date set";
 };

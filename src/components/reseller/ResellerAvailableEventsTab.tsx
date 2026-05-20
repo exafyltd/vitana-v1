@@ -19,7 +19,7 @@ import { useActivateReseller } from "@/hooks/useActivateReseller";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { format, differenceInDays } from "date-fns";
+import { differenceInDays } from 'date-fns';
 import { useState } from "react";
 import { Ticket, Coins, Clock, TrendingUp, Loader2, Plus, ArrowRight, MapPin, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import { MobileInventoryCard } from "./MobileInventoryCard";
 import { SellEventModal } from "./SellEventModal";
 import { notifyInfo, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 // Format currency for earnings display
 const formatEarning = (amount: number): string => {
   if (amount <= 0) return "";
@@ -304,7 +305,7 @@ export function ResellerAvailableEventsTab() {
                   )
                 }
                 title={event.title}
-                description={`${format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}${event.location ? ` • ${event.location}` : ""}`}
+                description={`${formatDate(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}${event.location ? ` • ${event.location}` : ""}`}
                 badges={[
                   // Event type + commission badge
                   ...(commissionRate > 0 ? [{
