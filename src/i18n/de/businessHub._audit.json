@@ -1,0 +1,100 @@
+{
+  "verdicts": {
+    "businessHub.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "businessHub.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
+      "suggested": "Baue dein Wellness-Geschäft aus",
+      "phase": "llm"
+    },
+    "businessHub.tabs.snapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.sales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.insights": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.recentActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.clients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.analytics": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Analytik' refers more to the field of study; 'Analysen' is more common for data/reports in a UI context.",
+      "suggested": "Analysen",
+      "phase": "llm"
+    },
+    "businessHub.searchBusiness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noServices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noServicesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
+      "suggested": "Erstelle deinen ersten Dienst, um Kunden zu gewinnen.",
+      "phase": "llm"
+    },
+    "businessHub.createService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noClients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noClientsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
+      "suggested": "Deine Kunden werden hier erscheinen.",
+      "phase": "llm"
+    },
+    "businessHub.noSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noSalesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
+      "suggested": "Deine Verkaufshistorie wird hier erscheinen.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:04:30.811Z"
+}

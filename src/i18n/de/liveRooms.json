@@ -3,17 +3,17 @@
     "title": "Live Rooms",
     "description": "Nimm an Live-Audio- und Videodiskussionen teil",
     "tabs": {
-      "live": "Jetzt Live",
+      "live": "Jetzt live",
       "scheduled": "Geplant",
       "all": "Alle Räume",
       "past": "Rückblick"
     },
     "goLive": "Live gehen",
     "joinRoom": "Raum beitreten",
-    "noRooms": "Derzeit keiner live",
+    "noRooms": "Derzeit keine Live-Räume",
     "beFirst": "Sei der Erste, der live geht",
     "demoRoom": "Demo-Raum",
-    "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen!",
+    "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen, um live zu gehen!",
     "search": {
       "placeholder": "Räume, Themen oder Moderatoren suchen...",
       "category": "Kategorie",
@@ -29,7 +29,7 @@
     },
     "viewer": {
       "leave": "Verlassen",
-      "mute": "Stumm",
+      "mute": "Stummschalten",
       "video": "Video",
       "raiseHand": "Hand heben",
       "chat": "Chat",
@@ -41,7 +41,7 @@
       "streamTitleLabel": "Stream-Titel",
       "streamTitlePlaceholder": "Live mit {name}",
       "descriptionLabel": "Beschreibung / Bio (optional)",
-      "descriptionPlaceholder": "Beschreiben Sie kurz, worum es in diesem Stream geht…",
+      "descriptionPlaceholder": "Beschreibe kurz, worum es in diesem Stream geht…",
       "charactersCount": "{count}/500 Zeichen",
       "streamTypeLabel": "Stream-Typ",
       "streamTypeAudio": "Audio",
@@ -78,7 +78,7 @@
         },
         "followers": {
           "label": "Nur Follower",
-          "desc": "Nur Ihre Follower"
+          "desc": "Nur deine Follower"
         },
         "group": {
           "label": "Gruppe/VIP",
@@ -109,7 +109,7 @@
         "selectStreamTypeTitle": "Stream-Typ auswählen",
         "selectStreamTypeDesc": "Bitte Audio oder Video auswählen",
         "notLoggedInTitle": "Fehler",
-        "notLoggedInDesc": "Sie müssen angemeldet sein, um live zu gehen",
+        "notLoggedInDesc": "Du musst angemeldet sein, um live zu gehen",
         "invalidFileTypeTitle": "Ungültiger Dateityp",
         "invalidFileTypeDesc": "Bitte eine Bilddatei auswählen (JPEG, PNG, WebP)",
         "fileTooLargeTitle": "Datei zu groß",
@@ -121,11 +121,11 @@
       },
       "success": {
         "streamUpdatedTitle": "Stream aktualisiert! ✨",
-        "streamUpdatedDesc": "Ihr Stream wurde erfolgreich aktualisiert",
+        "streamUpdatedDesc": "Dein Stream wurde erfolgreich aktualisiert",
         "streamScheduledTitle": "Stream geplant! 📅",
-        "streamScheduledDesc": "Ihr Stream ist geplant für {date} um {time}",
-        "youAreLiveTitle": "Sie sind live! 🎙️",
-        "youAreLiveDesc": "Sie treten Ihrem Stream-Raum bei…",
+        "streamScheduledDesc": "Dein Stream ist geplant für {date} um {time}",
+        "youAreLiveTitle": "Du bist live! 🎙️",
+        "youAreLiveDesc": "Du trittst deinem Stream-Raum bei…",
         "aiImageHintTitle": "KI-Bildgenerierung",
         "aiImageHintDesc": "Bild wird erstellt, wenn der Stream startet."
       }

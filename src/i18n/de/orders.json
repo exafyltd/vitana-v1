@@ -2,8 +2,8 @@
   "orders": {
     "myOrders": "Meine Bestellungen",
     "title": "Bestellungen",
-    "description": "Ihre Bestellhistorie und aktive Abonnements",
-    "trackDescription": "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets",
+    "description": "Deine Bestellhistorie und aktive Abonnements",
+    "trackDescription": "Verfolge deine Produktbestellungen und Event-Tickets",
     "searchPlaceholder": "Bestellungen suchen...",
     "tabs": {
       "active": "Aktiv",
@@ -20,23 +20,23 @@
       "services": "Services",
       "refunds": "Erstattungen"
     },
-    "previewNotice": "Dies sind Vorschau-Bestellungen. Ihre tatsächlichen Bestellungen erscheinen hier.",
+    "previewNotice": "Dies sind Vorschau-Bestellungen. Deine tatsächlichen Bestellungen erscheinen hier.",
     "sampleData": "Beispieldaten",
     "emptyActive": {
       "title": "Keine aktiven Bestellungen",
-      "description": "Sie haben keine aktiven Bestellungen oder anstehenden Events."
+      "description": "Du hast keine aktiven Bestellungen oder anstehenden Events."
     },
     "emptyHistory": {
       "title": "Kein Bestellverlauf",
-      "description": "Ihre abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
+      "description": "Deine abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
     },
     "noOrders": "Noch keine Bestellungen",
-    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
+    "noOrdersDesc": "Deine Bestellungen erscheinen hier, sobald du etwas kaufst.",
     "browseProducts": "Produkte durchsuchen",
     "findEvents": "Events entdecken",
     "startShopping": "Einkaufen starten",
     "noFilter": "Keine {filter} gefunden",
-    "noFilterDesc": "Keine {filter} in Ihrem Verlauf gefunden.",
+    "noFilterDesc": "Keine {filter} in deinem Verlauf gefunden.",
     "orderDate": "Bestelldatum",
     "orderNumber": "Bestellnummer",
     "viewDetails": "Details anzeigen",
@@ -51,7 +51,7 @@
       "location": "Ort",
       "quantity": "Menge",
       "tickets": "Tickets",
-      "yourTicket": "Ihr Ticket",
+      "yourTicket": "Dein Ticket",
       "giftVoucher": "Geschenkgutschein",
       "code": "Code",
       "sendToRecipient": "An Empfänger senden",

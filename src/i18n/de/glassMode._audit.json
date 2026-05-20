@@ -1,0 +1,84 @@
+{
+  "verdicts": {
+    "glassMode.shareWithAI": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.screenSharingComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.screenSharingDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal Sie-form instead of informal du-form).",
+      "suggested": "Teile deinen Bildschirm mit VITANA für kontextuelle Unterstützung.",
+      "phase": "llm"
+    },
+    "glassMode.screenSharingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.glassModeDisabled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.cameraModeComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.cameraModeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.diaryReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.openingDiary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.autopilotActivated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.runningAutopilot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.textInputReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.typeMessage": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal Sie-form instead of informal du-form).",
+      "suggested": "Du kannst jetzt deine Nachricht eingeben.",
+      "phase": "llm"
+    },
+    "glassMode.actionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "glassMode.couldNotExecute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:11:48.777Z"
+}

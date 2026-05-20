@@ -1,0 +1,52 @@
+{
+  "verdicts": {
+    "adminTabs.rooms.moderation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "adminTabs.groups.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.approved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.flagged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.rejected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.analytics": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slightly formal/less common for app context; English loanword 'Analytics' or 'Analysen' is more common.",
+      "suggested": "Analytics",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:00:39.316Z"
+}

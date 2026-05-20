@@ -1,0 +1,574 @@
+{
+  "verdicts": {
+    "business.history.details": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "business.transfer.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "business.missionOpportunities.axisBadge.find_match": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "business.earning.readyToEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.choosePathGuide": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Wähle einen Weg und wir führen dich zu deinem ersten Einkommensstrom.",
+      "phase": "llm"
+    },
+    "business.earning.startEarning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.howToEarn": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Wie möchtest du verdienen?",
+      "phase": "llm"
+    },
+    "business.earning.pickOne": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Wähle eine Option — du kannst die anderen später erkunden.",
+      "phase": "llm"
+    },
+    "business.earning.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createEventDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Veranstalte dein eigenes Event und verkaufe Tickets.",
+      "phase": "llm"
+    },
+    "business.earning.addToInventory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.addToInventoryDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createServiceDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Biete buchbare Sitzungen an.",
+      "phase": "llm"
+    },
+    "business.earning.createPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createPromotionDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.hostAndSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.resellAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.offerBookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.boostVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.directSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.reseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsYet": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing nuance of 'history'. 'Noch keine Einnahmen' means 'No earnings yet', not 'No earnings history yet'.",
+      "suggested": "Noch keine Verdiensthistorie",
+      "phase": "llm"
+    },
+    "business.history.startSellingToSee": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Beginne mit dem Verkauf, um deine Transaktionen hier zu sehen.",
+      "phase": "llm"
+    },
+    "business.history.ticketsSold": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.grossAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.youEarned": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Du hast verdient",
+      "phase": "llm"
+    },
+    "business.history.paidToWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.transactionId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.viewInWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last7Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last90Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.allTime": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "More idiomatic phrasing for 'All time'.",
+      "suggested": "Gesamtzeit",
+      "phase": "llm"
+    },
+    "business.history.earningsActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsStartSelling": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
+      "suggested": "Noch keine Einnahmen. Beginne mit dem Verkauf, um hier Aktivitäten zu sehen.",
+      "phase": "llm"
+    },
+    "business.kpi.totalEarnings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.revenue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisMonth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.activeClients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.upcomingSessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.topPerformer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.noDataYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.createServiceToStart": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
+      "suggested": "Erstelle einen Service, um loszulegen.",
+      "phase": "llm"
+    },
+    "business.kpi.bookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.myEventSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.viewMyEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalGrossSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.resellerCommissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.goToSellEarn": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for a UI element/instruction. More natural as a button label or with 'Gehe zu'.",
+      "suggested": "Verkaufen & Verdienen",
+      "phase": "llm"
+    },
+    "business.kpi.totalEarned": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Slightly awkward phrasing. 'Insgesamt verdient' is more natural.",
+      "suggested": "Insgesamt verdient",
+      "phase": "llm"
+    },
+    "business.kpi.earningsBySource": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.upcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.next": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "Ambiguous without context. 'Nächste' implies a feminine noun. 'Weiter' is more common for a general 'Next' button.",
+      "phase": "llm"
+    },
+    "business.reseller.resellerCode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.codeCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkToStart": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Teile einen Link, um zu verdienen.",
+      "phase": "llm"
+    },
+    "business.reseller.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareResellerLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.createPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkOrPromotion": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Teile deine Wiederverkäufer-Links oder erstelle eine Promotion, um Provisionen zu verdienen.",
+      "phase": "llm"
+    },
+    "business.reseller.selectEventToShare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.pickEventForLink": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Wähle ein Event, um deinen Wiederverkäufer-Link zu generieren.",
+      "phase": "llm"
+    },
+    "business.reseller.noEventsToSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.commission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.commissionEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.lastPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noPayoutsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.attributedSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesMatchFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.mockDataActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Übertrage deine ausstehenden Wiederverkäufer-Provisionen auf dein VITANA Wallet.",
+      "phase": "llm"
+    },
+    "business.transfer.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.instantCredit": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Dies wird deine Einnahmen sofort auf dein Wallet-Guthaben gutschreiben.",
+      "phase": "llm"
+    },
+    "business.transfer.transferring": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.transfer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.createEventDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.offerService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.offerServiceDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTicketsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.alreadyReseller": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
+      "suggested": "Du bist bereits Wiederverkäufer! Schau im Tab \"Verkaufen & Verdienen\" nach.",
+      "phase": "llm"
+    },
+    "business.typeSelector.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.viewAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:04:20.627Z"
+}
