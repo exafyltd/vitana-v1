@@ -1,9 +1,9 @@
 {
   "health": {
     "title": "Zdravlje",
-    "description": "Tvoja lična zdravstvena tabla",
+    "description": "Tvoj lični zdravstveni pregled",
     "overview": "Pregled",
-    "overviewDesc": "Tvoj sveobuhvatni zdravstveni pregled i wellness pregled",
+    "overviewDesc": "Tvoj sveobuhvatni zdravstveni i wellness pregled",
     "servicesHub": "Centar usluga",
     "servicesHubDesc": "Zakaži doktore, coaching, programe i skrininge",
     "biomarkers": "Biomarkeri",
@@ -71,7 +71,7 @@
       "noRecs": "Još uvek nema preporuka u tvom redu.",
       "summaryServed": "{pct}% tvojih preporuka unapređuje misiju",
       "summaryServedCount": "{served} od {total} preporuka usaglašeno",
-      "pillarHeading": "Usluženi stubovi",
+      "pillarHeading": "Podržani stubovi",
       "economyHeading": "Ekonomija dugovečnosti",
       "noPillar": "Nije usaglašeno sa stubovima",
       "noEconomy": "Nije usaglašeno sa ekonomijom",

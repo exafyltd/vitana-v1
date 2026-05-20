@@ -87,16 +87,16 @@
     },
     "settings.categories.tenantRole": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "\"Inquilino\" is incorrect for a software/IT \"tenant\"; it means a renter.",
-      "suggested": "Organización y rol",
+      "confidence": 0.9,
+      "issue": "The term 'inquilino' (tenant, as in renter) is inaccurate for a software context. 'Tenant' in software usually refers to an account, organization, or client instance.",
+      "suggested": "Cuenta y Rol",
       "phase": "llm"
     },
     "settings.categories.tenantRoleDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "\"Inquilinos\" is incorrect for a software/IT \"tenants\"; it means renters.",
-      "suggested": "Cambia entre roles y organizaciones",
+      "confidence": 0.9,
+      "issue": "The term 'inquilinos' (tenants, as in renters) is inaccurate for a software context and should align with the corrected term for 'Tenant'.",
+      "suggested": "Cambia entre roles y cuentas",
       "phase": "llm"
     },
     "settings.categories.billing": {
@@ -150,5 +150,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T18:59:47.337Z"
+  "generatedAt": "2026-05-20T07:08:26.397Z"
 }

@@ -1,11 +1,11 @@
 {
   "connectedApps": {
     "title": "Verbundene Apps",
-    "description": "Verwalten Sie Ihre verbundenen Geräte und Dienste",
+    "description": "Verwalte deine verbundenen Geräte und Dienste",
     "searchPlaceholder": "Apps suchen...",
     "addApp": "App hinzufügen",
     "connected": "verbunden",
-    "syncing": "synchronisiert",
+    "syncing": "Synchronisierung läuft",
     "sections": {
       "social": "Social & Teilen",
       "fitness": "Fitness & Wearables",
@@ -24,8 +24,8 @@
       "configure": "Sync konfigurieren",
       "manage": "Verwalten"
     },
-    "lastSync": "Letzte Sync",
-    "dataSync": "Daten-Synchronisation",
+    "lastSync": "Letzter Sync",
+    "dataSync": "Daten-Synchronisierung läuft",
     "comingSoonMessage": "{appName}-Integration kommt bald",
     "popup": {
       "title": "Apps & Services verbinden",

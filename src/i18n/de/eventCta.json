@@ -2,7 +2,7 @@
   "eventCta": {
     "buyTicket": "Ticket kaufen",
     "buyTicketWithPrice": "Ticket kaufen · {price}",
-    "getFreeTicket": "Gratis-Ticket",
+    "getFreeTicket": "Gratis-Ticket holen",
     "reserveSpot": "Platz reservieren",
     "reserveMySpot": "Meinen Platz reservieren",
     "viewTicket": "Ticket anzeigen",
@@ -16,8 +16,8 @@
     "joinThisEvent": "Diesem Event beitreten",
     "selectTickets": "Tickets auswählen",
     "buyTicketsTotal": "Tickets kaufen – {total}",
-    "processing": "Verarbeitung...",
-    "joining": "Beitreten...",
+    "processing": "Wird verarbeitet...",
+    "joining": "Beitritt läuft...",
     "getTickets": "Tickets holen",
     "promoteEvent": "Event bewerben"
   }

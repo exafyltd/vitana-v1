@@ -8,14 +8,14 @@
     "inbox.subtitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: formal/plural imperative used instead of informal singular (du-form).",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
       "suggested": "Ostani povezan/a sa svojom zajednicom!",
       "phase": "llm"
     },
     "inbox.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: formal/plural possessive used instead of informal singular (du-form).",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
       "suggested": "Tvoji razgovori, ažuriranja i obaveštenja",
       "phase": "llm"
     },
@@ -27,7 +27,7 @@
     "inbox.desktopDescription": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: formal/plural imperative used instead of informal singular (du-form).",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
       "suggested": "Poveži se sa svojom zajednicom i mrežom",
       "phase": "llm"
     },
@@ -134,7 +134,7 @@
     "inbox.newConversation.titleGroup": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatical error: adjective 'grupni' (masculine) does not match noun 'ćaskanje' (neuter).",
+      "issue": "Grammatical agreement (adjective gender). 'Grupni' (masculine) should be 'grupno' (neuter) to match 'ćaskanje' (neuter).",
       "suggested": "Kreiraj grupno ćaskanje",
       "phase": "llm"
     },
@@ -251,8 +251,8 @@
     "inbox.createGroup.groupNameRequiredDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'Molimo unesite' uses formal/plural imperative, while app should use informal/singular 'du-form'.",
-      "suggested": "Molimo unesi ime za svoju grupu.",
+      "issue": "Register inconsistent (formal 'Vi' form and possessive instead of informal 'du' form).",
+      "suggested": "Molimo unesi ime za tvoju grupu.",
       "phase": "llm"
     },
     "inbox.createGroup.addMembersRequired": {
@@ -263,7 +263,7 @@
     "inbox.createGroup.addMembersRequiredDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'Molimo dodajte' uses formal/plural imperative, while app should use informal/singular 'du-form'.",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
       "suggested": "Molimo dodaj bar jednog člana u grupu.",
       "phase": "llm"
     },
@@ -295,7 +295,7 @@
     "inbox.createGroup.failedDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'Molimo pokušajte' uses formal/plural imperative, while app should use informal/singular 'du-form'.",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
       "suggested": "Molimo pokušaj ponovo.",
       "phase": "llm"
     },
@@ -342,8 +342,8 @@
     "inbox.toast.pleaseLogin": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'du').",
-      "suggested": "Prijavi se da bi započeo/la razgovore.",
+      "issue": "Register inconsistent (formal 'Vi' form and verb conjugation instead of informal 'du' form).",
+      "suggested": "Molimo prijavi se da započneš razgovore.",
       "phase": "llm"
     },
     "inbox.toast.groupRecipientsRequired": {
@@ -354,8 +354,8 @@
     "inbox.toast.singleRecipientRequired": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'du').",
-      "suggested": "Izaberi tačno jednog primaoca za direktnu poruku.",
+      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
+      "suggested": "Izaberi tačno jednog primaoca za direktnu poruku",
       "phase": "llm"
     },
     "inbox.toast.groupCreated": {
@@ -386,7 +386,7 @@
     "inbox.noGroupsDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'du').",
+      "issue": "Register inconsistent (formal 'Vi' form pronoun and verb conjugation instead of informal 'du' form).",
       "suggested": "Grupe ti pomažu da sarađuješ sa više ljudi odjednom.",
       "phase": "llm"
     },
@@ -428,7 +428,7 @@
     "inbox.emptyState.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatical error/awkward phrasing ('prijemi sanduče' instead of 'prijemno sanduče').",
+      "issue": "Awkward phrasing/incorrect term for 'inbox'. 'Prijemno sanduče' is the standard term.",
       "suggested": "Tvoje prijemno sanduče je za sada tiho.",
       "phase": "llm"
     },
@@ -453,5 +453,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:53:37.857Z"
+  "generatedAt": "2026-05-20T07:04:20.095Z"
 }

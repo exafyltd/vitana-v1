@@ -2,7 +2,7 @@
   "voucher": {
     "modal": {
       "title": "Maxina Gutschein verschenken",
-      "subtitle": "Verschenken Sie Wellness und Community-Verbindung",
+      "subtitle": "Verschenke Wellness und Community-Verbindung",
       "buyVoucher": "Gutschein kaufen",
       "openingCheckout": "Sicheren Checkout öffnen..."
     },
@@ -36,7 +36,7 @@
     },
     "success": {
       "title": "Gutschein gekauft!",
-      "ready": "Ihr {tier} Gutschein ist bereit",
+      "ready": "Dein {tier} Gutschein ist fertig",
       "download": "Gutschein herunterladen",
       "sendEmail": "Per E-Mail an Empfänger senden",
       "viewOrders": "In Bestellungen anzeigen",
@@ -53,7 +53,7 @@
       "send": "Gutschein senden"
     },
     "preview": {
-      "title": "Ihr Gutschein",
+      "title": "Dein Gutschein",
       "giftVoucher": "Geschenkgutschein",
       "validUntil": "Gültig bis {date}",
       "voucherCode": "Gutschein-Code",
@@ -64,22 +64,22 @@
       "copyLink": "Link kopieren",
       "share": "Speichern / Teilen",
       "shareHint": "In Dateien, Drive speichern oder versenden",
-      "downloadHint": "Wenn Download leer öffnet, tippen Sie auf Im Browser öffnen"
+      "downloadHint": "Wenn der Download leer öffnet, tippe auf Im Browser öffnen"
     },
     "toast": {
       "downloadStarted": "Download gestartet!",
       "downloadFailed": "Download fehlgeschlagen",
       "linkCopied": "Link kopiert!",
-      "linkCopiedDesc": "Im Browser einfügen zum Herunterladen.",
+      "linkCopiedDesc": "Füge im Browser ein, um herunterzuladen.",
       "voucherSent": "Gutschein an {email} gesendet!",
       "voucherShared": "Gutschein erfolgreich geteilt!",
-      "checkoutFailed": "Checkout konnte nicht gestartet werden. Bitte erneut versuchen.",
+      "checkoutFailed": "Checkout konnte nicht gestartet werden. Bitte versuche es erneut.",
       "generatingVoucher": "Gutschein wird erstellt...",
       "failedToLoadVoucher": "Gutscheindaten konnten nicht geladen werden",
-      "downloadFailedCopyLink": "Download fehlgeschlagen. Versuchen Sie, den Link zu kopieren.",
-      "useTicketView": "Nutzen Sie die Ticketansicht zum Drucken oder Speichern",
+      "downloadFailedCopyLink": "Download fehlgeschlagen. Versuche, den Link zu kopieren.",
+      "useTicketView": "Nutze die Ticketansicht zum Drucken oder Speichern.",
       "pdfNotAvailable": "PDF-Download für diesen Bestelltyp nicht verfügbar",
-      "enterRecipientEmail": "Bitte Empfänger-E-Mail eingeben",
+      "enterRecipientEmail": "Bitte gib die Empfänger-E-Mail ein.",
       "emailOnlyForVouchers": "E-Mail-Versand nur für Gutscheine verfügbar",
       "sendingVoucherEmail": "Gutschein-E-Mail wird gesendet..."
     }

@@ -31,10 +31,8 @@
       "phase": "llm"
     },
     "publicProfile.following": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "In social media UI, 'Following' (as a count or list of people you follow) is typically translated as 'Seguidos' or 'A quién sigues', not the gerund 'Siguiendo'. 'Siguiendo' implies an ongoing action.",
-      "suggested": "Seguidos",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "publicProfile.groups": {
@@ -43,5 +41,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:51:44.619Z"
+  "generatedAt": "2026-05-20T07:03:30.756Z"
 }

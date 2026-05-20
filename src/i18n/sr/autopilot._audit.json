@@ -138,8 +138,8 @@
     "autopilot.popup.readyToExecute": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect gender/number agreement for 'Ready'. 'Spremni' is plural, but the phrase likely refers to the system being ready (neuter singular) or implicitly to the user (singular). 'Spremno' is more appropriate for a gender-neutral system message.",
-      "suggested": "Spremno za izvršenje {count} akcija koje je pripremio tvoj AI asistent.",
+      "issue": "The verb 'Spremni' is plural, but the du-form (informal singular) context requires a singular form. 'Spreman si' (masculine) or 'Spremna si' (feminine) would be appropriate.",
+      "suggested": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
       "phase": "llm"
     },
     "autopilot.popup.executingTitle": {
@@ -190,7 +190,7 @@
     "autopilot.popup.toastExecutedDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatical agreement: 'završeno' (neuter singular) should be 'završene' (feminine plural) to agree with 'akcija'.",
+      "issue": "The past participle 'završeno' is neuter singular, but it should agree with 'akcija' (feminine plural).",
       "suggested": "{success}/{total} akcija uspešno završene",
       "phase": "llm"
     },
@@ -245,10 +245,8 @@
       "phase": "llm"
     },
     "autopilot.widget.completeForRewards": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Završi predloge' can imply finishing the list of suggestions, not completing the tasks suggested. 'Ispuni' is more idiomatic for completing tasks/suggestions.",
-      "suggested": "Ispuni predloge Autopilota za nagrade",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "autopilot.widget.enableForCredits": {
@@ -398,9 +396,9 @@
     },
     "autopilot.actions.action1Reason": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Adjective 'društveni' (masculine singular) does not agree with noun 'vibracije' (feminine plural).",
-      "suggested": "Savršen spoj za tvoje ciljeve kretanja + društvene wellness vibracije",
+      "confidence": 1,
+      "issue": "Adjective 'društveni' (masculine singular) does not agree with 'vibracije' (feminine plural). A more idiomatic phrasing for 'social wellness vibes' would be 'vibracije društvenog wellnessa'.",
+      "suggested": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
       "phase": "llm"
     },
     "autopilot.actions.action2Title": {
@@ -464,5 +462,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:42:55.270Z"
+  "generatedAt": "2026-05-20T07:01:19.915Z"
 }

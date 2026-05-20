@@ -1668,7 +1668,7 @@
     "screens.common.careTeam": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "While 'cuidado' is understandable, 'atención' is more standard and idiomatic for a 'Care Team' in a healthcare context.",
+      "issue": "More natural phrasing for 'Care Team' in a wellness context.",
       "suggested": "Equipo de atención",
       "phase": "llm"
     },
@@ -1970,7 +1970,7 @@
     "screens.common.upgradePlan": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "While 'mejorar' means 'improve', 'actualizar' or 'subir de plan' is more common and precise for a subscription 'upgrade'.",
+      "issue": "'Mejorar plan' sounds like 'improve a plan' rather than 'upgrade a plan'.",
       "suggested": "Actualizar plan",
       "phase": "llm"
     },
@@ -2005,10 +2005,8 @@
       "phase": "llm"
     },
     "screens.common.availableUpgrades": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejoras' is a bit generic. 'Actualizaciones' is more common for available subscription upgrades.",
-      "suggested": "Actualizaciones disponibles",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.premiumPlan": {
@@ -2057,10 +2055,8 @@
       "phase": "llm"
     },
     "screens.common.aiInsights": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Información' is too generic for 'insights'. 'Perspectivas' or 'Análisis' better conveys the meaning of valuable observations or understanding.",
-      "suggested": "Perspectivas de IA",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.storageUsed": {
@@ -2421,8 +2417,8 @@
     "screens.common.consentPackageCreatedSuccessfully": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Exitosamente' is grammatically correct but sounds a bit formal/clunky for a friendly UI. 'Con éxito' or 'correctamente' are more natural.",
-      "suggested": "¡Paquete de Consentimiento Creado con Éxito!",
+      "issue": "'Exitosamente' is a bit formal and clunky for a friendly app.",
+      "suggested": "¡Paquete de Consentimiento Creado con éxito!",
       "phase": "llm"
     },
     "screens.common.yourBiomarkerConsentPackageHasCreated": {
@@ -2566,10 +2562,8 @@
       "phase": "llm"
     },
     "screens.common.socialCommunity": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Social' as a standalone category title is a bit awkward in Spanish; 'Social y Comunidad' sounds like two different types of things, one an adjective and one a noun. 'Vida Social' is more natural for this context.",
-      "suggested": "Vida Social y Comunidad",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.locationSettings": {
@@ -2643,10 +2637,8 @@
       "phase": "llm"
     },
     "screens.common.socialNetworking": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Social' as a standalone category title is a bit awkward in Spanish. 'Vida Social' is more natural for this context.",
-      "suggested": "Vida Social y Networking",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.learningWorkshops": {
@@ -3016,8 +3008,8 @@
     },
     "screens.common.tenantOnly": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "The English phrase 'Tenant only' is highly unusual for a wellness app context, making it difficult to judge the appropriateness of 'Solo inquilino' for the specified app type, even if 'inquilino' is a direct translation for 'tenant' in a general sense.",
+      "confidence": 0.6,
+      "issue": "'Inquilino' refers to a property renter, which is likely incorrect for 'tenant' in a software/system context. More context is needed.",
       "phase": "llm"
     },
     "screens.common.defaultCommissionRate": {
@@ -3462,8 +3454,8 @@
     },
     "screens.common.overallPrivacyHealth": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; literal translation of word order. 'Salud de Privacidad General' sounds like 'Health of General Privacy'.",
+      "confidence": 0.8,
+      "issue": "Phrasing 'Salud de Privacidad General' is a bit awkward.",
       "suggested": "Salud general de la privacidad",
       "phase": "llm"
     },
@@ -4399,8 +4391,8 @@
     },
     "screens.common.eachShareTrackedSoWhenFriend": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The noun 'compartir' is awkward here. 'Cada vez que compartes' or 'Cada compartición' would be more natural.",
+      "confidence": 0.8,
+      "issue": "'Cada compartir' is grammatically acceptable but 'Cada vez que compartes' is more natural.",
       "suggested": "Cada vez que compartes se rastrea, así que cuando un amigo se registra, tu crédito de recompensa llega automáticamente.",
       "phase": "llm"
     },
@@ -4560,10 +4552,8 @@
       "phase": "llm"
     },
     "screens.common.matchFiltersSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'de coincidencias' primarily modifies 'configuración', making it less clear that 'Match' applies to 'Filters' as well. 'Ajustes' is also a more common UI term for 'Settings'.",
-      "suggested": "Filtros y ajustes de coincidencias",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.interestsActivities": {
@@ -4777,10 +4767,8 @@
       "phase": "llm"
     },
     "screens.common.protected": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender/number agreement. 'Protected' likely refers to 'Sharing Permissions' (Permisos), which is masculine plural, requiring 'Protegidos'.",
-      "suggested": "Protegidos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.dataCollection": {
@@ -5255,9 +5243,9 @@
     },
     "screens.common.addCaptionYourMedia": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'pie' alone for 'caption' can be ambiguous; 'multimedia' as 'tu multimedia' is slightly awkward. 'Descripción' is more general and clear.",
-      "suggested": "Añade una descripción a tu contenido multimedia...",
+      "confidence": 1,
+      "issue": "'Pie' is a literal translation of 'foot'; 'caption' for media is 'leyenda' or 'descripción'.",
+      "suggested": "Añade una leyenda a tu multimedia...",
       "phase": "llm"
     },
     "screens.common.eGMorningRunnersHealthyCooking": {
@@ -5331,10 +5319,8 @@
       "phase": "llm"
     },
     "screens.common.anyEquipmentPreparationPrerequisitesNeeded": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing as a direct question rather than a prompt/label for input.",
-      "suggested": "Equipo, preparación o requisitos previos necesarios",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.eGComprehensiveHealthProfile": {
@@ -6285,8 +6271,8 @@
     "screens.admin.hipaaCompliant": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Adjective 'Compliant' translated as noun 'Compliance'.",
-      "suggested": "Conforme a HIPAA",
+      "issue": "'Cumplimiento HIPAA' is the noun 'compliance', not the adjective 'compliant'.",
+      "suggested": "Compatible con HIPAA",
       "phase": "llm"
     },
     "screens.admin.auditEvents": {
@@ -6791,8 +6777,8 @@
     },
     "screens.admin.liveStreamManagement": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing; 'Gestión de en vivo y en directo' is too literal. More natural to refer to the 'streams' or 'content'.",
+      "confidence": 0.9,
+      "issue": "'En vivo y en directo' is redundant. 'Stream' is often kept as a loanword or translated as 'transmisión'.",
       "suggested": "Gestión de transmisiones en vivo",
       "phase": "llm"
     },
@@ -6938,9 +6924,9 @@
     },
     "screens.admin.hipaacompliantAccessLogsAuditTrail": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Pista de auditoría is a literal translation, but 'ruta de auditoría' or 'registro de auditoría' is more common and idiomatic in a technical context for 'audit trail'.",
-      "suggested": "Registros de acceso y ruta de auditoría compatibles con HIPAA.",
+      "confidence": 0.8,
+      "issue": "'Pista de auditoría' is a literal translation; 'historial de auditoría' or 'ruta de auditoría' are more common.",
+      "suggested": "Registros de acceso e historial de auditoría compatibles con HIPAA.",
       "phase": "llm"
     },
     "screens.admin.patientRecordsAdmin": {
@@ -7379,10 +7365,8 @@
       "phase": "llm"
     },
     "screens.admin.streamSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent terminology with other entries using 'Streaming'. 'Streaming' is more common for the general feature.",
-      "suggested": "Configuración de Streaming",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.youHelpfulAiAssistant": {
@@ -7558,8 +7542,8 @@
     "screens.admin.sessionTimeout": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Slightly ambiguous, 'Tiempo de Sesión' can mean session duration, not necessarily timeout.",
-      "suggested": "Tiempo límite de sesión",
+      "issue": "'Tiempo de Sesión' means 'Session Time', not 'Session Timeout'.",
+      "suggested": "Tiempo de espera de la sesión",
       "phase": "llm"
     },
     "screens.admin.autologoutAfter30MinutesInactivity": {
@@ -8123,24 +8107,21 @@
       "phase": "llm"
     },
     "screens.admin.loadingSpeeches": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Discursos' is too formal for AI assistant utterances in a friendly app context. 'Frases' or 'mensajes' would be more appropriate.",
-      "suggested": "Cargando frases...",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
       "phase": "llm"
     },
     "screens.admin.noSpeechesConfigured": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Discursos' is too formal for AI assistant utterances in a friendly app context. 'Frases' or 'mensajes' would be more appropriate.",
-      "suggested": "No hay frases configuradas.",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
       "phase": "llm"
     },
     "screens.admin.assistantSpeeches": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Discursos' is too formal for AI assistant utterances in a friendly app context. 'Frases' or 'mensajes' would be more appropriate.",
-      "suggested": "Frases del Asistente",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
       "phase": "llm"
     },
     "screens.admin.noToolsConfigured": {
@@ -8431,8 +8412,8 @@
     "screens.admin.guardrails": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Too literal; 'guardarraíles' refers to physical road barriers, not abstract protective measures in software.",
-      "suggested": "Medidas de seguridad",
+      "issue": "'Guardarraíles' is too literal for 'guardrails' in a software/AI context.",
+      "suggested": "Límites de seguridad",
       "phase": "llm"
     },
     "screens.admin.journeyTimeline": {
@@ -8582,8 +8563,8 @@
     },
     "screens.admin.allReports": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent terminology. 'Informes' is used for 'reports' in entries 27 and 28, so 'reportes' here creates inconsistency.",
+      "confidence": 0.9,
+      "issue": "'Reportes' is a common Spanglish loanword; 'informes' is the standard Spanish term.",
       "suggested": "Todos los Informes",
       "phase": "llm"
     },
@@ -8963,10 +8944,8 @@
       "phase": "llm"
     },
     "screens.admin.loadedFromMemberList": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect gender/number agreement for the past participle. 'Cargado' should agree with the implied subject, likely 'miembros' (members) or 'datos' (data), both masculine plural.",
-      "suggested": "cargados desde la lista de miembros",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.newSignups7d": {
@@ -9305,10 +9284,8 @@
       "phase": "llm"
     },
     "screens.admin.totalLikes": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for 'Total Likes'. 'Me gusta' is often treated as an invariable noun phrase or requires a different construction for 'total'.",
-      "suggested": "Total de Me gusta",
       "phase": "llm"
     },
     "screens.admin.totalPlays": {
@@ -9472,10 +9449,8 @@
       "phase": "llm"
     },
     "screens.admin.uncoveredRoutes": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "In a technical context, 'uncovered' often means 'not covered' or 'not handled', not 'discovered'. 'Descubiertas' means 'discovered'.",
-      "suggested": "Rutas no cubiertas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.brokenCatalogRoutes": {
@@ -9539,10 +9514,8 @@
       "phase": "llm"
     },
     "screens.admin.navigatorHistory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "If 'Navigator' is a brand/product name (capitalized in EN), it should remain untranslated.",
-      "suggested": "Historial del Navigator",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.last7Days": {
@@ -9596,10 +9569,8 @@
       "phase": "llm"
     },
     "screens.admin.navigatorTelemetry": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "If 'Navigator' is a brand/product name (capitalized in EN), it should remain untranslated.",
-      "suggested": "Telemetría del Navigator",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.currentRoute": {
@@ -10409,8 +10380,8 @@
     },
     "screens.admin.failed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Spanish 'Falló' is a verb (it failed), while 'Failed' as a UI status is typically an adjective or noun. 'Fallido' (adjective) or 'Fallo' (noun) would be more appropriate and consistent with other status labels like 'Healthy' and 'Degraded'.",
+      "confidence": 0.8,
+      "issue": "'Falló' is a past tense verb ('it failed'); 'Fallido' (adjective) or 'Error' are more common for a status.",
       "suggested": "Fallido",
       "phase": "llm"
     },
@@ -11455,10 +11426,8 @@
       "phase": "llm"
     },
     "screens.admin.saveEnabledIntakeNotes": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "The term 'ingesta' for 'intake' is often specific to food/drink or medical intake. If 'intake' refers to general data entry or submissions in a UI context, 'entrada' or 'recepción' would be more appropriate and general.",
-      "suggested": "Guardar habilitado / entrada / notas",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.admin.platformDefaults": {
@@ -11518,16 +11487,14 @@
     },
     "screens.admin.saveForwardTriggers": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'forward triggers'.",
+      "confidence": 0.7,
+      "issue": "Literal translation of 'forward' makes it sound clunky; 'de avance' is more idiomatic for progress in this context.",
       "suggested": "Guardar disparadores de avance",
       "phase": "llm"
     },
     "screens.admin.saveStayinlineOverrides": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Missing nuance of 'stay' in 'stay-inline'.",
-      "suggested": "Guardar anulaciones de permanencia en línea",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.matchedPhrase": {
@@ -11672,8 +11639,8 @@
     },
     "screens.admin.inviteMember": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing personal 'a' and article for natural phrasing in a command/action.",
+      "confidence": 0.8,
+      "issue": "Missing article, sounds too terse for a friendly app. 'Invitar a un miembro' is more natural.",
       "suggested": "Invitar a un miembro",
       "phase": "llm"
     },
@@ -11703,9 +11670,8 @@
       "phase": "llm"
     },
     "screens.admin.runnerup": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Subcampeón' is specific to sports/competitions. If 'runner-up' is used in a broader sense (e.g., second best option), it might be too narrow.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.liveSimulator": {
@@ -11804,10 +11770,8 @@
       "phase": "llm"
     },
     "screens.admin.accent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Ambiguous in UI context; 'Acento' usually refers to pronunciation or a written mark, not an accent color.",
-      "suggested": "Color de acento",
       "phase": "llm"
     },
     "screens.admin.foreground": {
@@ -11831,10 +11795,8 @@
       "phase": "llm"
     },
     "screens.admin.activeActive": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'activo' is singular, but {active} can be plural.",
-      "suggested": "{active} activos",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.emailsProcessLength": {
@@ -11858,10 +11820,8 @@
       "phase": "llm"
     },
     "screens.admin.enabledEnabledcount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Habilitado' is singular, but {enabledCount} can be plural.",
-      "suggested": "Habilitados: {enabledCount}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.executableImplementedcount": {
@@ -11870,45 +11830,33 @@
       "phase": "llm"
     },
     "screens.admin.newNew": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Nuevo' is singular, but {new} can be plural.",
-      "suggested": "Nuevos: {new}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.activatedActivated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Activado' is singular, but {activated} can be plural.",
-      "suggested": "Activados: {activated}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.snoozedSnoozed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Pospuesto' is singular, but {snoozed} can be plural.",
-      "suggested": "Pospuestos: {snoozed}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.rejectedRejected": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Rechazado' is singular, but {rejected} can be plural.",
-      "suggested": "Rechazados: {rejected}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.openOpen": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'abierto' is singular, but {open} can be plural.",
-      "suggested": "{open} abiertos",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.actionableReady": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'listo' is singular, but {actionable} can be plural.",
-      "suggested": "{actionable} listos",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.handledByResolver_agent": {
@@ -11917,17 +11865,13 @@
       "phase": "llm"
     },
     "screens.admin.openOpen2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Abierto' is singular, but {open} can be plural.",
-      "suggested": "Abiertos: {open}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.resolvedResolved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Potential number mismatch. 'Resuelto' is singular, but {resolved} can be plural.",
-      "suggested": "Resueltos: {resolved}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.versionVVersion": {
@@ -11966,17 +11910,13 @@
       "phase": "llm"
     },
     "screens.admin.ErrorsErr": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The abbreviation 'err' is not standard in Spanish for 'errores'.",
-      "suggested": "/ {errors} errores",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.admin.sizeSelected": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The adjective 'seleccionado' is singular masculine. It should be plural ('seleccionados') to agree with a count '{size}' greater than one, and potentially feminine if the items are feminine.",
-      "suggested": "{size} seleccionados",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.byActor": {
@@ -12000,9 +11940,8 @@
       "phase": "llm"
     },
     "screens.admin.companionFieldsPhaseB": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Campos de Compañero' is a very literal translation. Depending on the exact meaning of 'Companion Fields' (e.g., if 'Companion' is a specific feature name or a descriptive adjective), it might be awkward. Alternatives like 'Campos complementarios' or 'Campos asociados' could be more natural if it's descriptive.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.overrideJsonObjectKeysListedAbove": {
@@ -12062,9 +12001,9 @@
     },
     "screens.admin.lengthToolValue1AvailableServerurl": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The noun 'herramienta' and adjective 'disponible' are singular. If '{length}' represents a number greater than one, they should be plural ('herramientas' and 'disponibles').",
-      "suggested": "{length} herramientas {value1} disponibles en {serverUrl}",
+      "confidence": 0.8,
+      "issue": "'herramienta' should be plural if '{length}' represents a count greater than one.",
+      "suggested": "{length} herramientas {value1} disponible en {serverUrl}",
       "phase": "llm"
     },
     "screens.admin.activeconnectionsActiveConnections": {
@@ -12973,10 +12912,8 @@
       "phase": "llm"
     },
     "screens.admin.noProductsValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic for expressing absence; 'No hay productos' is more common than 'Sin productos' when stating there are no items.",
-      "suggested": "No hay productos {value0}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.product": {
@@ -13170,9 +13107,8 @@
       "phase": "llm"
     },
     "screens.admin.flags": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous meaning of 'Flags' in UI context. 'Banderas' is literal but could be 'Marcadores' or 'Señales' depending on specific usage (e.g., 'flagged items' vs. 'flags' as a category).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.failedLoadSettingsValue0": {
@@ -14136,10 +14072,8 @@
       "phase": "llm"
     },
     "screens.billing.paid": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender agreement: 'Factura' is feminine, so 'Pagada' is more appropriate than 'Pagado'.",
-      "suggested": "Pagada",
       "phase": "llm"
     },
     "screens.billing.description": {
@@ -14380,8 +14314,8 @@
     "screens.business.noTopPerformerYet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'mejor vendedor' (best seller) is too specific; 'performer' is broader and could refer to a coach, user, or other top-ranking entity in a wellness app.",
-      "suggested": "Aún no hay el mejor",
+      "issue": "Inconsistent with 'Top Performer' translation (entry 29) and likely refers to performance, not a person.",
+      "suggested": "Aún no hay mejor rendimiento",
       "phase": "llm"
     },
     "screens.business.yourReferralCatalog": {
@@ -14710,10 +14644,8 @@
       "phase": "llm"
     },
     "screens.business.viewDetails": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization: 'Detalles' should be lowercase in Spanish for a UI element.",
-      "suggested": "Ver detalles",
       "phase": "llm"
     },
     "screens.business.sales": {
@@ -14752,10 +14684,8 @@
       "phase": "llm"
     },
     "screens.business.createService": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization: 'Servicio' should be lowercase in Spanish for a UI element.",
-      "suggested": "Crear servicio",
       "phase": "llm"
     },
     "screens.business.bundleMultipleSessionsEventsPerksInto": {
@@ -14764,31 +14694,23 @@
       "phase": "llm"
     },
     "screens.business.createPackage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization: 'Paquete' should be lowercase in Spanish for a UI element.",
-      "suggested": "Crear paquete",
       "phase": "llm"
     },
     "screens.business.newPackage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization: 'Paquete' should be lowercase in Spanish for a UI element.",
-      "suggested": "Nuevo paquete",
       "phase": "llm"
     },
     "screens.business.startSellingSeeYourBestPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'tu mejor rendimiento' translates to 'your best performance' (abstract concept), but 'best performer' likely refers to the best-performing *item* or *entity*. Context suggests a need for a more specific translation.",
-      "suggested": "Empieza a vender para ver lo que mejor funciona",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.topPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejor Rendimiento' translates to 'Best Performance' (abstract concept), but 'Top Performer' likely refers to the best-performing *item* or *entity*.",
-      "suggested": "El que mejor funciona",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.retry": {
@@ -14864,14 +14786,13 @@
     "screens.business.leadsFromSharingCampaignsResellerLinks": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for 'sharing campaigns'. 'Campañas de compartir' is a bit literal.",
+      "issue": "The phrase 'campañas de compartir' is a bit awkward; 'de compartir' sounds like 'of sharing'.",
       "suggested": "Los leads de campañas para compartir y enlaces de revendedores aparecerán aquí.",
       "phase": "llm"
     },
     "screens.business.lengthTransactionValue1": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity regarding pluralization. Assuming '{value1}' handles plural forms, 'transacción' is the correct singular base. If not, the string is incomplete for plural forms.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.attendeesLength": {
@@ -14890,9 +14811,8 @@
       "phase": "llm"
     },
     "screens.business.showingLengthOrderValue1": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity regarding pluralization. Assuming '{value1}' handles plural forms, 'pedido' is the correct singular base. If not, the string is incomplete for plural forms.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.clientValue0": {
@@ -14956,10 +14876,8 @@
       "phase": "llm"
     },
     "screens.business.autopilotHasLengthReferralDraftValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing for 'referral draft'. 'Borrador de referencia' is a bit literal. Also, potential pluralization issue if '{value1}' is just a suffix.",
-      "suggested": "Autopilot tiene {length} borrador de referido {value1} para ti",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.scoreValue0": {
@@ -15010,7 +14928,7 @@
     "screens.calendar.eGLunchWithAnaTomorrow": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'recordar 30m' is awkward; should be a noun or a more complete verb phrase for an instruction/tag.",
+      "issue": "'recordar 30m' is an awkward fragment; 'recordatorio' or 'recordar en' would be more natural for an example.",
       "suggested": "ej., Almuerzo con Ana mañana 1–2pm @ HQ, recordatorio 30m, etiqueta: Trabajo",
       "phase": "llm"
     },
@@ -15037,8 +14955,8 @@
     "screens.calendar.yourGoalAchievementsThisWeek": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.8,
-      "issue": "Phrasing 'Tus logros de objetivos' is a bit clunky; 'Los logros de tus objetivos' or 'Tus logros de metas' flows more naturally.",
-      "suggested": "Los logros de tus objetivos esta semana",
+      "issue": "'logros de objetivos' is slightly redundant and less idiomatic than 'logros de la semana' or 'metas alcanzadas'.",
+      "suggested": "Tus logros de la semana",
       "phase": "llm"
     },
     "screens.calendar.quickAccess": {
@@ -15173,9 +15091,9 @@
     },
     "screens.calendar.jumpNow": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Translation is too literal and sounds awkward; not idiomatic for a UI.",
-      "suggested": "Ir al momento actual",
+      "confidence": 0.9,
+      "issue": "'Ir a ahora' is a literal translation and not idiomatic; 'Saltar a ahora' or 'Ir a hoy' are more common.",
+      "suggested": "Saltar a ahora",
       "phase": "llm"
     },
     "screens.calendar.averageAcrossAllGoals": {
@@ -15239,10 +15157,9 @@
       "phase": "llm"
     },
     "screens.calendar.todaySIndexPulseCompletingYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The phrase '{totalCount}pillar-tagged event' is mistranslated. 'etiquetado como pilar {totalCount}' implies {totalCount} is the pillar tag itself, not the count of pillars.",
-      "suggested": "El pulso del Índice de hoy: completar tu evento etiquetado con {totalCount} pilares\n                              {value1} moverá tu Índice.",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguity in English source regarding '{totalCount}' and 'event' singular/plural. If '{totalCount}' is a quantity, Spanish needs pluralization of 'evento' and 'tu'.",
       "phase": "llm"
     },
     "screens.calendar.urgent": {
@@ -15762,8 +15679,8 @@
     },
     "screens.community.alltime": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation 'Todo el tiempo' is less idiomatic for 'all-time' in a ranking/historical context. 'De todos los tiempos' is more common and natural.",
+      "confidence": 1,
+      "issue": "'Todo el tiempo' means 'all the time' or 'always', not 'all-time' (as in historical record).",
       "suggested": "De todos los tiempos",
       "phase": "llm"
     },
@@ -15834,9 +15751,9 @@
     },
     "screens.community.aiRecommendedForYou": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'IA Recomendó para Ti' is grammatically correct but sounds like a past action statement. For a UI label, a more natural and common phrasing would be 'Recomendaciones de IA para ti' (AI Recommendations for you) or 'Recomendado por IA para ti' (Recommended by AI for you).",
-      "suggested": "Recomendaciones de IA para ti",
+      "confidence": 1,
+      "issue": "'Recomendó' is a past tense verb; 'Recommended' here is an adjective.",
+      "suggested": "Recomendado por IA para Ti",
       "phase": "llm"
     },
     "screens.community.featuredContent": {
@@ -16442,7 +16359,7 @@
     "screens.community.openAsksCommunity": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Meaning changed from noun phrase ('Open asks') to imperative verb ('Open requests!').",
+      "issue": "'Abre' is an imperative verb; 'Open asks' is a noun phrase.",
       "suggested": "Solicitudes abiertas en la comunidad",
       "phase": "llm"
     },
@@ -16947,10 +16864,8 @@
       "phase": "llm"
     },
     "screens.community.business": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural form used for what is likely a singular concept/menu item. 'Business' as a menu item usually refers to 'My Business' or 'Your Business' (singular).",
-      "suggested": "Negocio",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.services": {
@@ -16999,15 +16914,14 @@
       "phase": "llm"
     },
     "screens.community.kind": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous meaning of 'Kind'. If it refers to 'Type' or 'Category' (common in UI), 'Amable' (kind/friendly) is incorrect. If it refers to 'being kind', it's correct.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.whatSYourMind": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too literal and not idiomatic for the common social media prompt 'What's on your mind?'.",
+      "confidence": 0.8,
+      "issue": "'¿Qué estás pensando?' means 'What are you thinking?', which is less idiomatic for 'What's on your mind?'.",
       "suggested": "¿Qué tienes en mente?",
       "phase": "llm"
     },
@@ -17028,15 +16942,15 @@
     },
     "screens.community.donecountDone": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'listo' is singular and masculine, which might not agree with the count or implied gender of the items. 'Done' implies completion.",
-      "suggested": "{doneCount} completados",
+      "confidence": 0.9,
+      "issue": "'listo' is singular; needs to be pluralized for '{doneCount}' > 1.",
+      "suggested": "{doneCount} listos",
       "phase": "llm"
     },
     "screens.community.failedcountFailed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'falló' is a verb conjugation (he/she/it failed), not an adjective or noun phrase to describe the count of failed items.",
+      "confidence": 1,
+      "issue": "'falló' is a singular past tense verb; should be an adjective or noun phrase.",
       "suggested": "{failedCount} fallidos",
       "phase": "llm"
     },
@@ -17171,10 +17085,8 @@
       "phase": "llm"
     },
     "screens.community.activeuploadsActiveUploadValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Pluralization mismatch. 'subida activa' is singular, but '{activeUploads}' can be plural. The English source string is also ambiguous regarding pluralization.",
-      "suggested": "{activeUploads} subidas activas{value1}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.community.publishing": {
@@ -17618,10 +17530,9 @@
       "phase": "llm"
     },
     "screens.contacts.invitedValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender and number agreement. 'Invitado' is masculine singular, which may not match {value0} if it's a female name or multiple names. A more robust translation is needed.",
-      "suggested": "Invitación enviada a {value0}",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguity of '{value0}' (name vs. count) and gender agreement for 'Invitado'.",
       "phase": "llm"
     },
     "screens.contacts.youSureYouWantDeleteDisplayname": {
@@ -18081,9 +17992,9 @@
     },
     "screens.crossover.readyForMeaningfulConnections": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The adjective 'Listo' is masculine. For a general user-facing string in a wellness app, a gender-neutral phrasing is preferable to avoid misgendering or defaulting to masculine.",
-      "suggested": "Conexiones significativas te esperan",
+      "confidence": 0.8,
+      "issue": "'Listo' is masculine singular; needs to be gender-neutral or adaptable for the user. 'Preparado/a' is a good alternative.",
+      "suggested": "Preparado/a para conexiones significativas",
       "phase": "llm"
     },
     "screens.crossover.topPeople": {
@@ -18349,7 +18260,7 @@
     "screens.debug.value0SAgo": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The 's' for seconds is not translated/expanded.",
+      "issue": "'s' is not a valid time unit in Spanish in this context; 'segundos' is needed.",
       "suggested": "hace {value0} segundos",
       "phase": "llm"
     },
@@ -18979,10 +18890,8 @@
       "phase": "llm"
     },
     "screens.dev.selectStatus": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent verb form. Other 'Select' commands use infinitive.",
-      "suggested": "Seleccionar estado",
       "phase": "llm"
     },
     "screens.dev.importScreenList": {
@@ -19041,10 +18950,8 @@
       "phase": "llm"
     },
     "screens.dev.selectCatalog": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent verb form. Other 'Select' commands use infinitive.",
-      "suggested": "Seleccionar catálogo",
       "phase": "llm"
     },
     "screens.dev.noSavedSessionsFound": {
@@ -19345,8 +19252,8 @@
     "screens.dev.assignee": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for a UI label; 'Asignado a' means 'assigned to' rather than 'assignee'.",
-      "suggested": "Asignado",
+      "issue": "'Asignado a' means 'Assigned to', not the noun 'Assignee'.",
+      "suggested": "Asignado/a",
       "phase": "llm"
     },
     "screens.dev.reopen": {
@@ -19417,8 +19324,8 @@
     "screens.dev.phase1ViewonlyAccessWriteOperations": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Solo vista' is a bit too concise for 'View-only access' and could be clearer in a technical context.",
-      "suggested": "Fase 1: Acceso de solo lectura. Operaciones de escritura disponibles en Fase 2.",
+      "issue": "'Solo vista' is not idiomatic for 'View-only access'.",
+      "suggested": "Fase 1: Solo lectura. Operaciones de escritura disponibles en Fase 2.",
       "phase": "llm"
     },
     "screens.dev.autopilot": {
@@ -20482,31 +20389,23 @@
       "phase": "llm"
     },
     "screens.discover.thisMonth": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Mes'.",
-      "suggested": "Este mes",
       "phase": "llm"
     },
     "screens.discover.anyRating": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Calificación'.",
-      "suggested": "Cualquier calificación",
       "phase": "llm"
     },
     "screens.discover.text45Stars": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Estrellas'.",
-      "suggested": "4.5+ estrellas",
       "phase": "llm"
     },
     "screens.discover.text40Stars": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Estrellas'.",
-      "suggested": "4.0+ estrellas",
       "phase": "llm"
     },
     "screens.discover.experience": {
@@ -20515,17 +20414,13 @@
       "phase": "llm"
     },
     "screens.discover.priceRange": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Precio'.",
-      "suggested": "Rango de precio:",
       "phase": "llm"
     },
     "screens.discover.aimatchedProviders": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Recomendados'.",
-      "suggested": "Proveedores recomendados por IA",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.discover.providersMatchedYourHealthNeedsPreferences": {
@@ -20539,10 +20434,8 @@
       "phase": "llm"
     },
     "screens.discover.pastVisits": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Pasadas'.",
-      "suggested": "Visitas pasadas",
       "phase": "llm"
     },
     "screens.discover.noSavedProvidersYet": {
@@ -20551,10 +20444,8 @@
       "phase": "llm"
     },
     "screens.discover.bookNow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Ahora'.",
-      "suggested": "Reservar ahora",
       "phase": "llm"
     },
     "screens.discover.noUpcomingAppointments": {
@@ -20568,10 +20459,8 @@
       "phase": "llm"
     },
     "screens.discover.addNotes": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Notas'.",
-      "suggested": "Agregar notas",
       "phase": "llm"
     },
     "screens.discover.noVisitHistoryYet": {
@@ -20580,17 +20469,13 @@
       "phase": "llm"
     },
     "screens.discover.doctorsCoachesDiscover": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Doctores', 'Coaches', and 'Descubrir' (unless 'Coaches' is a proper noun/category, but generally not).",
-      "suggested": "Doctores y coaches | Descubrir",
       "phase": "llm"
     },
     "screens.discover.doctorsCoaches": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of 'Coaches'.",
-      "suggested": "Doctores y coaches",
       "phase": "llm"
     },
     "screens.discover.searchDoctorsCoaches": {
@@ -20654,10 +20539,8 @@
       "phase": "llm"
     },
     "screens.discover.marketplaceQuiet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "While 'tranquilo' means quiet, for a marketplace, it implies a lack of activity rather than peacefulness. 'Inactivo' or 'sin actividad' would be more precise.",
-      "suggested": "El marketplace está inactivo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.noListingsYet": {
@@ -20763,8 +20646,8 @@
     "screens.discover.myStack": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Too literal translation, 'pila' sounds like a physical pile. 'Stack' in this context likely refers to a curated selection or combination.",
-      "suggested": "💛 Mi selección",
+      "issue": "'Pila' is too literal and doesn't convey the meaning of a wellness 'stack' (e.g., supplement regimen).",
+      "suggested": "💛 Mi Régimen",
       "phase": "llm"
     },
     "screens.discover.filterSearch": {
@@ -21068,10 +20951,8 @@
       "phase": "llm"
     },
     "screens.discover.bookAppointmentWithProviderSeeIt": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender agreement error: 'cita' is feminine, so it should be 'verla' instead of 'verlo'.",
-      "suggested": "Reserva una cita con un proveedor para verla aquí",
       "phase": "llm"
     },
     "screens.discover.reschedule": {
@@ -21462,7 +21343,7 @@
     "screens.discovery.value0NewTodayViewedcountTotalcount": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Adjective 'nuevo' should be plural 'nuevos' to agree with an implied plural count from {value0}.",
+      "issue": "Gender/number agreement for 'nuevo'. It should likely be plural 'nuevos' to match implied items.",
       "suggested": "{value0}nuevos hoy · {viewedCount}/{totalCount}vistos",
       "phase": "llm"
     },
@@ -21807,10 +21688,8 @@
       "phase": "llm"
     },
     "screens.health.text90dayJourneyWaves": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Too literal translation of 'waves'; likely refers to phases or cycles.",
-      "suggested": "Fases del viaje de 90 días",
       "phase": "llm"
     },
     "screens.health.healthProfile": {
@@ -21865,8 +21744,8 @@
     },
     "screens.health.allCaughtUpCheckBackLater": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Consejos' (advice/tips) is too weak for 'insights' (deeper understanding/data-driven observations).",
+      "confidence": 0.9,
+      "issue": "'Consejos' (advice/tips) is a slightly weaker translation for 'insights' (perspectives/understandings).",
       "suggested": "¡Todo al día! Vuelve más tarde para nuevas perspectivas.",
       "phase": "llm"
     },
@@ -22941,10 +22820,8 @@
       "phase": "llm"
     },
     "screens.health.doneCooking": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing, not idiomatic for UI button/status. 'Cocina terminada' sounds like the kitchen is finished, not the act of cooking.",
-      "suggested": "Listo",
       "phase": "llm"
     },
     "screens.health.balancedForRecoveryFocus": {
@@ -23160,8 +23037,8 @@
     "screens.health.myMedical": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The Spanish 'Mi Médico' translates to 'My Doctor', referring to a person. The English 'My Medical' in this context likely refers to medical data, records, or a section about health.",
-      "suggested": "Mi Salud",
+      "issue": "'Mi Médico' means 'My Doctor', not 'My Medical (information/records)'.",
+      "suggested": "🧪 Mi Historial Médico",
       "phase": "llm"
     },
     "screens.health.myOmics": {
@@ -23406,9 +23283,9 @@
     },
     "screens.health.completeLengthActionValue1AutopilotSuggests": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The English string is ambiguous, but the Spanish 'la acción de {length}{value1}' is awkward. If {length} is a number, 'acción' should likely be plural, and 'de' is probably unnecessary. Assuming {length} is a number and {value1} is a modifier.",
-      "suggested": "Completa las {length} acciones {value1} que Autopilot sugiere esta semana",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing 'la acción de {length}{value1}'. The 'de' is unnecessary.",
+      "suggested": "Completa la acción {length}{value1} que Autopilot sugiere esta semana",
       "phase": "llm"
     },
     "screens.health.value0YouDLandAround": {
@@ -23479,7 +23356,7 @@
     "screens.health.completeLengthActionValue1AutopilotSuggests2": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing. 'Acción de X' implies 'action of doing X' rather than 'action named X'.",
+      "issue": "Awkward phrasing 'la acción de {length}{value1}'. The 'de' is unnecessary.",
       "suggested": "Completa la acción {length}{value1} que Autopilot sugiere",
       "phase": "llm"
     },
@@ -23684,10 +23561,8 @@
       "phase": "llm"
     },
     "screens.health.bedtimeBedtimeWakeWaketime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing is a bit abrupt; using infinitives as nouns for 'Bedtime' and 'Wake' is less natural than using 'Hora de...'",
-      "suggested": "Hora de acostarse {bedtime} • Hora de despertar {wakeTime}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.daySleep": {
@@ -23711,10 +23586,9 @@
       "phase": "llm"
     },
     "screens.health.lengthTestValue1Available": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Number agreement for 'test' and 'available' with placeholder {length}. If {length} is greater than 1, 'prueba' and 'disponible' should be plural.",
-      "suggested": "{length} pruebas {value1} disponibles",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguity regarding number agreement for 'prueba' and 'disponible' depending on what {length} represents (quantity vs. adjective). If {length} is a quantity, 'pruebas disponibles' would be needed.",
       "phase": "llm"
     },
     "screens.health.hide": {
@@ -23800,7 +23674,7 @@
     "screens.health.pointsAwayFromThrivingZoneEvery": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The Spanish translation changes the meaning of 'points away from the thriving zone' to 'points to get out of the stagnation zone', introducing a new concept ('stagnation zone') not present in the English and implying a different starting state. The English likely means points needed to reach the thriving zone.",
+      "issue": "'Thriving zone' is mistranslated as 'zona de estancamiento' (stagnation zone), which is the opposite meaning.",
       "suggested": "puntos para alcanzar la zona de prosperidad. Cada finalización en el pilar {value0} te mueve más rápido hacia adelante.",
       "phase": "llm"
     },
@@ -24270,10 +24144,8 @@
       "phase": "llm"
     },
     "screens.home.noValue0ActionsAvailable": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Placeholder '{value0}' is concatenated with 'disponibles', making it grammatically incorrect and awkward. It should modify 'acciones'.",
-      "suggested": "No hay acciones {value0} disponibles",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.icons.xFormerlyTwitter": {
@@ -24467,10 +24339,8 @@
       "phase": "llm"
     },
     "screens.intents.describeIssueClearlyIncludeDatesAmounts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Spanish translation omits 'support' as the agent of investigation, making it less precise. 'ayude a la investigación' implies the investigation itself is helped, not the support team.",
-      "suggested": "Describe el problema claramente. Incluye fechas, montos y cualquier contexto que ayude al soporte a investigar.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.intents.examples": {
@@ -24501,7 +24371,7 @@
     "screens.intents.lengthValidValue1": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0.6,
-      "issue": "The English string '{length}valid {value1}' is ambiguous. If '{value1}' is a noun, 'válido' must agree in gender and number. Without knowing what '{value1}' represents, 'válido' (singular masculine) might be incorrect. For example, '3 valid entries' would be '3 entradas válidas'.",
+      "issue": "Ambiguity regarding gender and number agreement for 'válido' due to placeholders {length} and {value1}. It should agree with the implied noun/quantity.",
       "phase": "llm"
     },
     "screens.intents.send": {
@@ -24511,8 +24381,8 @@
     },
     "screens.intents.tracksWhoClickedFromYourShare": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'desde tu compartido' is not the most idiomatic way to say 'from your share'. 'Lo que compartiste' or 'tu enlace compartido' would be more natural.",
+      "confidence": 0.8,
+      "issue": "'Tu compartido' for 'your share' is grammatically possible but sounds a bit awkward/less natural.",
       "suggested": "Rastrea quién hizo clic desde lo que compartiste. Las publicaciones públicas están abiertas a todos; las privadas piden a los espectadores iniciar sesión.",
       "phase": "llm"
     },
@@ -24637,10 +24507,8 @@
       "phase": "llm"
     },
     "screens.liverooms.paidGroup": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Pago' alone sounds like 'payment' (noun) rather than 'paid' as an access type. 'De pago' is more idiomatic for this context.",
-      "suggested": "De pago (Grupo)",
       "phase": "llm"
     },
     "screens.liverooms.priceUsd": {
@@ -24926,7 +24794,7 @@
     "screens.memory.dateOldestFirst": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gender agreement error. 'Fecha' is feminine, so 'antiguo' should be 'antigua'.",
+      "issue": "Gender agreement. 'Antiguo' should be 'antigua' to match 'Fecha' (feminine noun).",
       "suggested": "Fecha (más antigua primero)",
       "phase": "llm"
     },
@@ -25151,10 +25019,8 @@
       "phase": "llm"
     },
     "screens.memory.totalItems": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "''Artículos'' is too specific; ''elementos'' is more general for ''items'' in this context.",
-      "suggested": "Total de elementos",
       "phase": "llm"
     },
     "screens.memory.last7Days": {
@@ -25278,10 +25144,8 @@
       "phase": "llm"
     },
     "screens.memory.communitySharing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "''Uso compartido en comunidad'' is a bit clunky for a feature name. ''Compartir en comunidad'' is more natural and active.",
-      "suggested": "Compartir en comunidad",
       "phase": "llm"
     },
     "screens.memory.shareAnonymously": {
@@ -25360,17 +25224,13 @@
       "phase": "llm"
     },
     "screens.memory.aiMemoryRecallVitanaMemory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'AI' as an adjective is usually expressed with 'de IA' or 'con IA' for natural flow.",
-      "suggested": "Recuerdo de Memoria con IA | Memoria VITANA",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.memory.aiMemoryRecall": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'AI' as an adjective is usually expressed with 'de IA' or 'con IA' for natural flow.",
-      "suggested": "Recuerdo de Memoria con IA",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.memory.askAiAboutYourWellnessJourney": {
@@ -25539,10 +25399,8 @@
       "phase": "llm"
     },
     "screens.memory.done": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Hecho' can be ambiguous or slightly less natural than 'Listo' for a UI button meaning 'finished interacting with this screen/task'.",
-      "suggested": "Listo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.refreshProgress": {
@@ -25571,10 +25429,8 @@
       "phase": "llm"
     },
     "screens.memory.insight": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Perspectiva' means 'perspective' and might not fully capture the 'deep understanding' or 'revelation' aspect of 'insight' in a wellness context.",
-      "suggested": "Hallazgo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.relatedFactors": {
@@ -25623,10 +25479,8 @@
       "phase": "llm"
     },
     "screens.memory.insights": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Perspectivas\" often means 'perspectives' or 'views' and may not fully capture the nuance of 'insights' (deep understanding, key findings) in a data-driven wellness context.",
-      "suggested": "Conocimientos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.recording": {
@@ -25757,7 +25611,7 @@
     "screens.memory.clickBelowUploadPhotoMemory": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "\"recuerdo en foto\" is a bit awkward; \"recuerdo fotográfico\" is more natural.",
+      "issue": "Awkward phrasing for 'photo memory'.",
       "suggested": "Haz clic abajo para subir un recuerdo fotográfico",
       "phase": "llm"
     },
@@ -25778,9 +25632,9 @@
     },
     "screens.memory.archivedItemsHiddenFromRegularViews": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "\"buscables\" is technically correct but less common; \"se pueden buscar\" is more natural and idiomatic.",
-      "suggested": "Los elementos archivados están ocultos de las vistas normales, pero se pueden restaurar en cualquier momento. No se eliminan y se pueden buscar.",
+      "confidence": 0.9,
+      "issue": "'Buscables' is a literal but less natural translation for 'searchable' in this context.",
+      "suggested": "Los elementos archivados están ocultos de las vistas normales, pero se pueden restaurar en cualquier momento. No se eliminan y se pueden seguir buscando.",
       "phase": "llm"
     },
     "screens.memory.allLength": {
@@ -26391,7 +26245,7 @@
     "screens.messages.tryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Infinitive used where imperative is more natural for a command in a UI button.",
+      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
       "suggested": "Inténtalo de nuevo",
       "phase": "llm"
     },
@@ -26607,9 +26461,9 @@
     },
     "screens.messages.recentlyUsed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement. Assuming 'Recently Used' refers to 'Templates' (Plantillas), the participle should be feminine plural.",
-      "suggested": "Usadas Recientemente",
+      "confidence": 0.8,
+      "issue": "Grammatical agreement and natural phrasing for a category title. 'Usado' is singular, but 'Recently Used' often implies multiple items or a general concept.",
+      "suggested": "⏰ Uso reciente",
       "phase": "llm"
     },
     "screens.messages.customMessages": {
@@ -26719,8 +26573,8 @@
     },
     "screens.messages.totalresponsesResponseValue1Received": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The adjective 'recibida' does not agree in number with 'respuesta{value1}' when plural. Assuming '{value1}' handles pluralization (e.g., 's' or empty), 'recibida' should also be pluralized.",
+      "confidence": 0.8,
+      "issue": "Pluralization of 'recibida' is missing if '{totalResponses}' is greater than one and '{value1}' is intended as a plural marker.",
       "suggested": "{totalResponses} respuesta{value1} recibida{value1}",
       "phase": "llm"
     },
@@ -26742,8 +26596,8 @@
     "screens.messages.messageComposer": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Redactor de mensajes' sounds like a job title or is too formal for a UI element referring to a message input area. 'Componer mensaje' is more idiomatic for a friendly app.",
-      "suggested": "Componer mensaje",
+      "issue": "'Redactor de mensajes' sounds like a job title, not a UI component.",
+      "suggested": "Editor de mensajes",
       "phase": "llm"
     },
     "screens.messages.recordVoiceMessage": {
@@ -26833,9 +26687,9 @@
     },
     "screens.mobile.closeDrawer": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation; 'menú' or 'panel' is more common for a UI drawer.",
-      "suggested": "Cerrar menú",
+      "confidence": 1,
+      "issue": "'Cajón' refers to a physical drawer, not a UI navigation drawer.",
+      "suggested": "Cerrar panel",
       "phase": "llm"
     },
     "screens.mobile.openSearch": {
@@ -27185,8 +27039,8 @@
     },
     "screens.payment.requestRecipient": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect part of speech. 'Solicitar' is a verb, but 'Request recipient' is a noun phrase (label).",
+      "confidence": 0.9,
+      "issue": "Misinterpretation of noun phrase vs. verb phrase. 'Solicitar destinatario' means 'to request a recipient'.",
       "suggested": "Destinatario de la solicitud",
       "phase": "llm"
     },
@@ -27208,14 +27062,14 @@
     "screens.payment.fromCurrency": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Literal translation, not idiomatic for a UI label. 'De Moneda' means 'Of Currency'.",
+      "issue": "Too literal, awkward phrasing. 'De Moneda' means 'Of Currency'.",
       "suggested": "Moneda de origen",
       "phase": "llm"
     },
     "screens.payment.currency": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Literal translation, not idiomatic for a UI label. 'A Moneda' means 'To Currency'.",
+      "issue": "Too literal, awkward phrasing. 'A Moneda' means 'To Currency'.",
       "suggested": "Moneda de destino",
       "phase": "llm"
     },
@@ -27537,8 +27391,8 @@
     "screens.proactive.grow8xFasterWithAutosharing": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "While 'compartición automática' is technically correct, 'uso compartido automático' or 'compartir automáticamente' are more common and natural for 'auto-sharing' as a feature/concept in Spanish UI.",
-      "suggested": "Crece 8x Más Rápido con Uso Compartido Automático",
+      "issue": "'Compartición' is less common/natural than 'uso compartido' for 'sharing' in a tech context.",
+      "suggested": "Crece 8x más rápido con el uso compartido automático",
       "phase": "llm"
     },
     "screens.proactive.noPlatformsConnected": {
@@ -28329,8 +28183,8 @@
     "screens.profile.nowPlayingDock": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The term 'Dock' is not translated, which refers to a specific UI element. 'Reproduciendo ahora' only translates 'Now Playing'.",
-      "suggested": "Barra de Reproducción Actual",
+      "issue": "'Dock' (UI element) is omitted from the translation.",
+      "suggested": "Barra de reproducción actual",
       "phase": "llm"
     },
     "screens.profile.comingSoon": {
@@ -28854,10 +28708,8 @@
       "phase": "llm"
     },
     "screens.profile.dealbreakers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation 'Rompeacuerdos' is clunky and less idiomatic than common alternatives for 'deal-breakers' in a personal context.",
-      "suggested": "Líneas rojas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.servicesIOffer": {
@@ -28921,10 +28773,8 @@
       "phase": "llm"
     },
     "screens.profile.press": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect meaning for UI context. 'Prensa' refers to media or a printing press, not the action of pressing a button.",
-      "suggested": "Pulsa",
       "phase": "llm"
     },
     "screens.profile.goLive": {
@@ -29188,10 +29038,9 @@
       "phase": "llm"
     },
     "screens.profile.tenantValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect translation for 'Tenant' in a software/app context. 'Inquilino' means a renter/lodger, not a client or organization in a multi-tenant system.",
-      "suggested": "Cliente: {value0}...",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Ambiguous meaning of 'Tenant' without context (tech/multi-tenant system vs. housing renter). 'Inquilino' implies a renter.",
       "phase": "llm"
     },
     "screens.profile.switchRole": {
@@ -29345,10 +29194,8 @@
       "phase": "llm"
     },
     "screens.profile.somePersonalInformationUsedPersonalizeYour2": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Changed from passive voice in English to active voice in Spanish, altering the nuance of who is performing the action. The English 'is used' implies the system, while 'Usamos' implies 'We (the company) use'.",
-      "suggested": "Parte de tu información personal se usa para personalizar tu experiencia, mejorar la confianza y respaldar servicios relevantes. Tú controlas lo que se comparte públicamente.",
       "phase": "llm"
     },
     "screens.profile.value0Value1Years": {
@@ -29409,8 +29256,8 @@
     "screens.profile.joinedLength": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Singular past tense verb 'Se unió' is grammatically incorrect for a general count or plural state. 'Unidos' (past participle, plural) is more appropriate.",
-      "suggested": "Unidos ({length})",
+      "issue": "'Se unió' is a verb in the past tense, not a descriptive label for a status or count.",
+      "suggested": "Unido/a ({length})",
       "phase": "llm"
     },
     "screens.profile.joinEvent": {
@@ -30290,10 +30137,8 @@
       "phase": "llm"
     },
     "screens.settings.frequencyTiming": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Horario' is too specific; 'timing' implies the choice of moment, not just a schedule.",
-      "suggested": "Frecuencia y momento",
       "phase": "llm"
     },
     "screens.settings.maximumActionsPerDay": {
@@ -30337,10 +30182,8 @@
       "phase": "llm"
     },
     "screens.settings.autoshareEnabled": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Compartir automático' is grammatically awkward; an adverbial form is more natural for 'auto-share enabled'.",
-      "suggested": "Compartir automáticamente activado",
       "phase": "llm"
     },
     "screens.settings.shareMilestones": {
@@ -30479,10 +30322,8 @@
       "phase": "llm"
     },
     "screens.settings.nextCredit": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Literal translation, 'Hacia' (towards) is more natural for progress.",
-      "suggested": "Hacia el Próximo Crédito",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.settings.progressNext5Credit": {
@@ -30513,8 +30354,8 @@
     "screens.settings.doNow": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "More natural imperative form includes the object pronoun.",
-      "suggested": "Hazlo Ahora",
+      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
+      "suggested": "Hazlo ahora",
       "phase": "llm"
     },
     "screens.settings.communityEngagement": {
@@ -30550,8 +30391,8 @@
     "screens.settings.redeemNow": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "More natural imperative form includes the object pronoun.",
-      "suggested": "Canjéalo Ahora",
+      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
+      "suggested": "Canjéalo ahora",
       "phase": "llm"
     },
     "screens.settings.text10SubscriptionCredit": {
@@ -31069,8 +30910,8 @@
     "screens.settings.searchPreferencesThemesLanguageSettings": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'idioma' is singular and less precise than 'language settings'. 'Configuración de idioma' or 'ajustes de idioma' would be more accurate.",
-      "suggested": "Buscar preferencias, temas, configuración de idioma...",
+      "issue": "'Idioma' is singular, but 'language settings' implies plural or a specific configuration term.",
+      "suggested": "Buscar preferencias, temas, ajustes de idioma...",
       "phase": "llm"
     },
     "screens.settings.themeSettings": {
@@ -31259,10 +31100,8 @@
       "phase": "llm"
     },
     "screens.settings.anonymizedSharing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "\"Uso anónimo de datos\" means \"anonymous data usage,\" not \"anonymized sharing.\"",
-      "suggested": "Compartir datos anónimos",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.controlledAccess": {
@@ -31346,10 +31185,8 @@
       "phase": "llm"
     },
     "screens.settings.viewAllDataSharingActivities": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'uso compartido de datos' is technically correct but less natural and common in UI/UX than 'intercambio de datos'.",
-      "suggested": "Ver todas las actividades de intercambio de datos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.requestDataExport": {
@@ -31398,10 +31235,8 @@
       "phase": "llm"
     },
     "screens.settings.sessionTimeout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Tiempo de sesión agotado' describes the state of a session having expired, not the setting itself. 'Tiempo de espera de sesión' is the standard term for the setting 'Session Timeout'.",
-      "suggested": "Tiempo de espera de sesión",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.autoLogoutAfterInactivity": {
@@ -31985,10 +31820,8 @@
       "phase": "llm"
     },
     "screens.settings.proactiveSpeaking": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Ambiguous and slightly awkward as a noun phrase for a setting. 'Habla' as a noun ('speech') is masculine ('el habla'), so 'proactiva' would be incorrect. If it's an imperative ('Speak proactively'), it's less common for a setting title.",
-      "suggested": "Comunicación Proactiva",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.controlWhenHowVitanaSpeaksYou": {
@@ -32152,9 +31985,8 @@
       "phase": "llm"
     },
     "screens.settings.protected": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'cuenta' -> protegida, 'datos' -> protegidos).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.subscription": {
@@ -32163,9 +31995,8 @@
       "phase": "llm"
     },
     "screens.settings.active": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'suscripción' -> activa, 'plan' -> activo).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.pushNotifications": {
@@ -32224,15 +32055,13 @@
       "phase": "llm"
     },
     "screens.settings.public": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'visibilidad' -> pública, 'perfil' -> público).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.private": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'visibilidad' -> privada, 'perfil' -> privado).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.billingActions": {
@@ -32246,15 +32075,13 @@
       "phase": "llm"
     },
     "screens.settings.started": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'suscripción' -> iniciada, 'plan' -> iniciado).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.enabled": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender might need to match the implied noun (e.g., 'notificaciones' -> habilitadas, 'modo' -> habilitado).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.basic": {
@@ -32278,17 +32105,13 @@
       "phase": "llm"
     },
     "screens.settings.limitedAiInsights": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Información AI' is less idiomatic than 'Perspectivas de IA' for 'AI insights'.",
-      "suggested": "Perspectivas de IA limitadas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.advancedAiInsights": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Información AI' is less idiomatic than 'Perspectivas de IA' for 'AI insights'.",
-      "suggested": "Perspectivas de IA avanzadas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.unlimitedStorage": {
@@ -32332,10 +32155,8 @@
       "phase": "llm"
     },
     "screens.settings.upgrade": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejorar' means 'to improve'. For a plan/subscription upgrade, 'Actualizar' is more common and accurate.",
-      "suggested": "Actualizar",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.paymentMethods": {
@@ -32410,9 +32231,9 @@
     },
     "screens.settings.connectApp": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Conectar App' is a bit too literal and less natural than including the article.",
-      "suggested": "Conectar la aplicación",
+      "confidence": 0.9,
+      "issue": "Slightly awkward phrasing for a UI label; adding the article makes it more natural.",
+      "suggested": "Conectar la app",
       "phase": "llm"
     },
     "screens.settings.availableIntegrations": {
@@ -33041,10 +32862,8 @@
       "phase": "llm"
     },
     "screens.settings.weWillNeverRecommendProductsContaining": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'punto' is a bit too literal for 'period.' used for emphasis. 'y punto' is more idiomatic.",
-      "suggested": "Nunca recomendaremos productos que contengan estos, y punto. Última confirmación: {value0}{value1}.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.eGPeanutsShellfishLatex": {
@@ -33064,8 +32883,8 @@
     },
     "screens.settings.saveBudget": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "If 'Save budget' means to save money, 'Guardar presupuesto' is too literal and means to save the budget settings. 'Ahorrar presupuesto' is more appropriate for saving money.",
+      "confidence": 1,
+      "issue": "Misinterpretation of 'save' (economize vs. store). 'Guardar' means to store, 'Ahorrar' means to economize.",
       "suggested": "Ahorrar presupuesto",
       "phase": "llm"
     },
@@ -33075,10 +32894,8 @@
       "phase": "llm"
     },
     "screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'las dichas' is a bit formal/literary. 'las que dice' is more natural and informal.",
-      "suggested": "Los campos críticos de seguridad (alergias, medicamentos, embarazo) se reconfirman cada 90 días. Estas reglas aplican a cada recomendación de producto que veas, incluyendo las que dice el Asistente Vitana.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.consentGrantedYouCanRevokeAt": {
@@ -33387,10 +33204,8 @@
       "phase": "llm"
     },
     "screens.sharing.awareness": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "In a campaign context, 'Awareness' refers to brand recognition or visibility, not 'consciousness'.",
-      "suggested": "🎯 Reconocimiento",
       "phase": "llm"
     },
     "screens.sharing.engagement": {
@@ -33444,10 +33259,8 @@
       "phase": "llm"
     },
     "screens.sharing.directMessagingPersonalShare": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Compartir personal' is grammatically awkward; 'compartir' is a verb. A noun phrase is needed.",
-      "suggested": "Uso compartido personal",
       "phase": "llm"
     },
     "screens.sharing.availableAfterYouCreateCampaignVia": {
@@ -34046,10 +33859,8 @@
       "phase": "llm"
     },
     "screens.sharing.addCustomMessageYourShare": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'A tu compartir' is awkward; 'compartir' as a noun is less natural in this context.",
-      "suggested": "Añade un mensaje personalizado a tu publicación...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.performanceAnalytics": {
@@ -34068,10 +33879,8 @@
       "phase": "llm"
     },
     "screens.sharing.searchSharingActivities": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Actividades de compartir' is a bit clunky; 'compartidas' or 'uso compartido' would be more natural.",
-      "suggested": "Buscar actividades compartidas...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.loadingCampaign": {
@@ -34325,10 +34134,8 @@
       "phase": "llm"
     },
     "screens.sharing.t14DaysSaveDateAnnouncement": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'Save the date announcement'. 'de reserva la fecha' is not idiomatic.",
-      "suggested": "Anuncio para reservar la fecha",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.t7DaysSpeakeragendaReveal": {
@@ -34379,8 +34186,8 @@
     "screens.sharing.week3LimitedtimeOfferPush": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Empuje' is too literal and not idiomatic for 'offer push' in a marketing context.",
-      "suggested": "Promoción de oferta por tiempo limitado",
+      "issue": "'Empuje' is too literal for 'push' in a marketing/promotional context. 'Promoción' or 'campaña' would be more idiomatic.",
+      "suggested": "Semana 3: Promoción de oferta por tiempo limitado",
       "phase": "llm"
     },
     "screens.sharing.urgencyTactics": {
@@ -34394,10 +34201,8 @@
       "phase": "llm"
     },
     "screens.sharing.hour350ClaimedUrgencyUpdate": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "While 'reclamado' is technically correct, 'ocupado' or 'agotado' is more idiomatic and common in an urgency context for 'claimed' spots/items.",
-      "suggested": "Hora 3: Actualización de urgencia \"50% ocupado\"",
       "phase": "llm"
     },
     "screens.sharing.hour6Last3HoursCountdown": {
@@ -34498,7 +34303,7 @@
     "screens.sharing.criteria": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Criteria' is plural in English, so the Spanish translation should also be plural ('Criterios').",
+      "issue": "Plural/singular mismatch. 'Criteria' is plural in English, 'Criterio' is singular in Spanish.",
       "suggested": "Criterios:",
       "phase": "llm"
     },
@@ -35053,10 +34858,8 @@
       "phase": "llm"
     },
     "screens.sharing.dataSharingAnalytics": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Compartición' is less common than 'uso compartido' for 'sharing' as a noun in this context, making it sound slightly clunky.",
-      "suggested": "Análisis de uso compartido de datos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.packagesShared": {
@@ -35230,10 +35033,8 @@
       "phase": "llm"
     },
     "screens.sharing.connected3MonthsAgoRealtime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch for 'Conectado'. If referring to an app or connection (both feminine), it should be 'Conectada'.",
-      "suggested": "Conectada hace 3 meses - Sincronización en tiempo real activa",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.stanfordDiabetesStudy": {
@@ -35297,10 +35098,8 @@
       "phase": "llm"
     },
     "screens.sharing.integrationMarketplaceSharing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The noun 'Compartición' is grammatically correct but sounds more formal/technical than 'Compartir' (infinitive used as a noun), which is more common and natural in friendly UI contexts.",
-      "suggested": "Marketplace de Integraciones | Compartir",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.integrationMarketplace": {
@@ -35489,10 +35288,8 @@
       "phase": "llm"
     },
     "screens.sharing.researchStudyEligibilityMatched": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The adjective 'coincidente' doesn't clearly convey the completed action of 'matched' (as in 'eligibility has been matched'). It sounds more like 'matching eligibility'. 'Confirmada' or 'verificada' would be more natural for a status.",
-      "suggested": "Elegibilidad para estudio de investigación confirmada",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.purposerecipient": {
@@ -35831,10 +35628,8 @@
       "phase": "llm"
     },
     "screens.sharing.smartreschedule": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Hyphen in 'Re-programación' is not standard; 're-' prefix is usually joined directly.",
-      "suggested": "Reprogramación Inteligente",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.sharing.exportCsv": {
@@ -36059,9 +35854,9 @@
     },
     "screens.sharing.makeAvailableForPurchaseRightAway": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The English implies an action ('Make available'), but the Spanish is a descriptive state ('Available'). If it's an action or button, it should be an imperative or infinitive.",
-      "suggested": "Poner a la venta de inmediato",
+      "confidence": 1,
+      "issue": "English implies an action ('Make available'), while the Spanish is a status ('Available').",
+      "suggested": "Hacer disponible para compra de inmediato",
       "phase": "llm"
     },
     "screens.sharing.next": {
@@ -36735,10 +36530,8 @@
       "phase": "llm"
     },
     "screens.sharing.value0Eligible": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Adjective 'elegible' is singular; should be plural 'elegibles' if {value0} is greater than 1.",
-      "suggested": "{value0} elegibles",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.value0Savings": {
@@ -36777,10 +36570,8 @@
       "phase": "llm"
     },
     "screens.sharing.eGYouReInvitedEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement for 'invitado'. Should be gender-neutral or account for feminine users.",
-      "suggested": "Ej: Estás invitado/a: Nombre del Evento",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.emailContent": {
@@ -37379,10 +37170,8 @@
       "phase": "llm"
     },
     "screens.tickets.seqValue0": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The abbreviation 'SEC' does not accurately translate 'SEQ' (Sequence). 'SEC' in Spanish typically means 'section' or 'second'.",
-      "suggested": "Secuencia {value0}",
       "phase": "llm"
     },
     "screens.tickets.ticketValue0": {
@@ -37666,10 +37455,8 @@
       "phase": "llm"
     },
     "screens.vertex.transcriptWillAppearHere": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses English loanword 'transcript' instead of Spanish 'transcripción'.",
-      "suggested": "La transcripción aparecerá aquí...",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.vitanaland.enterVitanalandK": {
@@ -37878,10 +37665,8 @@
       "phase": "llm"
     },
     "screens.wallet.feeBurnsHelpMaintainTokenValue": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "''Quemas de tarifas'' is a bit clunky; ''quemas de comisiones'' is more idiomatic for 'fee burns' in a financial context.",
-      "suggested": "Las quemas de comisiones ayudan a mantener el valor del token al reducir el suministro con el tiempo.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.liveExchangeRates": {
@@ -38630,17 +38415,13 @@
       "phase": "llm"
     },
     "screens.wallet.amountStake": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Apostar' is an inaccurate translation for 'staking' in a financial/crypto context, which implies betting or gambling.",
-      "suggested": "Monto para Staking",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.chooseStakingPeriod": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Apuesta' is an inaccurate translation for 'staking' in a financial/crypto context, which implies betting or gambling.",
-      "suggested": "Elige el Período de Staking",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.lockPeriod": {
@@ -38649,24 +38430,18 @@
       "phase": "llm"
     },
     "screens.wallet.stakingBenefits": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Apostar' is an inaccurate translation for 'staking' in a financial/crypto context, which implies betting or gambling.",
-      "suggested": "Beneficios del Staking",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.earnPassiveRewardsThroughStaking": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Apostando' is an inaccurate translation for 'staking' in a financial/crypto context, which implies betting or gambling.",
-      "suggested": "• Gana recompensas pasivas haciendo staking",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.participateGovernanceVoting": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Votaciones de gobierno' is not the most idiomatic or accurate term for 'governance voting' in a decentralized/crypto context.",
-      "suggested": "• Participa en votaciones de gobernanza",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.accessExclusiveCommunityFeatures": {
@@ -39080,9 +38855,8 @@
       "phase": "llm"
     },
     "screens.wallet.economyHealth": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "The English term 'Economy Health' is ambiguous. 'Salud económica' directly translates it, but the intended meaning (e.g., financial health vs. affordable health) is unclear without more context.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.healthy": {
@@ -39356,10 +39130,8 @@
       "phase": "llm"
     },
     "screens.wallet.combineAllThreeInsightsForPotential": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "While 'informaciones' is grammatically possible, 'insights' is better conveyed by 'perspectivas' or 'conocimientos' in this context for more natural phrasing.",
-      "suggested": "Combina las tres perspectivas para un multiplicador de ganancias potencial del 725%",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.wallet.activateAll": {
@@ -39529,8 +39301,8 @@
     },
     "screens.wallet.actTopRecommendation": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a call to action; an imperative is more natural.",
+      "confidence": 1,
+      "issue": "Incorrect verb form (infinitive instead of du-form imperative).",
       "suggested": "Actúa según la mejor recomendación",
       "phase": "llm"
     },
@@ -39551,9 +39323,9 @@
     },
     "screens.wallet.timingIntelligence": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation, not idiomatic for 'timing' in this context. 'Inteligencia de tiempo' sounds clunky.",
-      "suggested": "Inteligencia de optimización de tiempos",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'tiempo' is too literal for 'timing'.",
+      "suggested": "Inteligencia de sincronización",
       "phase": "llm"
     },
     "screens.wallet.byTimingYourSubscriptionsOptimally": {
@@ -39979,7 +39751,7 @@
     "screens.wallet.activestreaksActiveStreaks": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Plural/singular mismatch. 'Streaks' is plural, 'Racha activa' is singular.",
+      "issue": "Number agreement: 'Streaks' is plural, but 'Racha activa' is singular.",
       "suggested": "{activeStreaks} Rachas activas",
       "phase": "llm"
     },
@@ -40010,9 +39782,9 @@
     },
     "screens.wallet.dayRecord": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing, not idiomatic. 'X-day record' should be 'récord de X días'.",
-      "suggested": "récord de - días",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing and word order. More natural to say 'Récord de X días'.",
+      "suggested": "Récord de - días",
       "phase": "llm"
     },
     "screens.wallet.totalsavingsVtnaSavingsAvailable": {
@@ -40256,10 +40028,8 @@
       "phase": "llm"
     },
     "screens.wallet.lengthTransactionValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Pluralization not handled for '{length}'. 'transacción' is singular.",
-      "suggested": "{length} transacciones{value1}",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.ai.rescheduledMeeting": {
@@ -40373,10 +40143,8 @@
       "phase": "llm"
     },
     "screens.ai.agentPromptCenter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent translation of 'Prompt'. Other entries (14, 16, 17) use 'Prompts' as a loanword, which is common in tech contexts and aligns with the rule that tech loanwords are fine.",
-      "suggested": "Centro de Prompts del Agente",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.myWellnessAssistant": {
@@ -40931,9 +40699,9 @@
     },
     "screens.creatoronboarded.earn90EveryPaidLiveRoom": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'ticket sale' and missing 'platform' for fee.",
-      "suggested": "Gana el 90% de cada entrada pagada para Live Room, con solo una tarifa de plataforma del 10%",
+      "confidence": 1,
+      "issue": "Awkward phrasing and missing 'platform' for 'platform fee'.",
+      "suggested": "Gana el 90% de cada venta de entrada pagada para Live Room, con solo una tarifa de plataforma del 10%.",
       "phase": "llm"
     },
     "screens.creatoronboarded.startCreatingPaidRoomsImmediately": {
@@ -40988,8 +40756,8 @@
     },
     "screens.healthtracker.letSTrackYourProgressTogether": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect verb conjugation for 'Let's track together'. 'Sigue' is singular imperative, not 'let's'.",
+      "confidence": 1,
+      "issue": "Grammatical error: 'Sigue' (singular imperative) does not agree with 'juntos' (plural). 'Let's' implies a collective action.",
       "suggested": "¡Sigamos tu progreso juntos! 📊",
       "phase": "llm"
     },
@@ -41814,10 +41582,8 @@
       "phase": "llm"
     },
     "screens.myintents.myIntents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Intenciones\" can sound formal or ambiguous; \"objetivos\" is more common and natural for user goals/aspirations in a friendly wellness app context.",
-      "suggested": "Mis objetivos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.myintents.yourOpenRequestsListingsPartnerSearches": {
@@ -41836,10 +41602,8 @@
       "phase": "llm"
     },
     "screens.myintents.noIntentsThisView": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Consistency with the suggested translation for \"intents\"; \"objetivos\" is more natural for goals/objectives in this context.",
-      "suggested": "No hay objetivos en esta vista.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.myintents.browseWhatOthersLookingFor": {
@@ -41888,10 +41652,8 @@
       "phase": "llm"
     },
     "screens.mytickets.lengthTicketValue1Purchased": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation is singular (\"entrada\", \"comprada\") but the placeholder {length} implies it can be plural. A robust solution requires conditional logic for singular/plural.",
-      "suggested": "{length} entradas compradas",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.mytickets.upcomingLength": {
@@ -42122,8 +41884,8 @@
     "screens.publiccampaignlanding.getTicketsForValue0": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The infinitive 'Obtener' is less direct than the imperative 'Obtén' for a call to action, which would better fit the friendly, du-form register.",
-      "suggested": "Obtén entradas para {value0}",
+      "issue": "Incorrect verb form (infinitive instead of du-form imperative).",
+      "suggested": "Consigue entradas para {value0}",
       "phase": "llm"
     },
     "screens.publiceventlanding.eventNotFound": {
@@ -43289,8 +43051,8 @@
     "screens.legal.text5DiscoverShop": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for a section title; 'Descubrir' is a verb, not a noun or adjective in this context. A noun phrase is expected for a title.",
-      "suggested": "Tienda de Descubrimiento",
+      "issue": "Awkward phrasing for a section title or call to action (infinitive).",
+      "suggested": "5. Descubre la Tienda",
       "phase": "llm"
     },
     "screens.legal.text6CommunityAmpUsergeneratedContentUgc": {
@@ -43509,10 +43271,8 @@
       "phase": "llm"
     },
     "screens.legal.serviceProvidedAsisAsavailableWithoutWarranties": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: 'usted' (formal) used instead of 'tú' (informal) for 'you'.",
-      "suggested": "El Servicio se proporciona \"tal cual\" y \"según disponibilidad\", sin garantías de ningún tipo, expresas o implícitas. En la máxima medida permitida por las leyes de ADGM y de protección al consumidor, Exafy renuncia a la responsabilidad por daños indirectos, consecuentes o especiales y limita la responsabilidad total al mayor de (a) las tarifas totales pagadas por ti en los últimos 12 meses o (b) €100.",
       "phase": "llm"
     },
     "screens.legal.nothingTheseTermsExcludesLiabilityFor": {
@@ -43521,10 +43281,8 @@
       "phase": "llm"
     },
     "screens.legal.weMaySuspendTerminateYourAccess": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: 'su' (formal 'your') used instead of 'tu' (informal 'your').",
-      "suggested": "Podemos suspender o terminar tu acceso por violación de estos Términos, requisitos legales o políticas de la plataforma. Al terminar, los derechos otorgados cesan inmediatamente, pero las secciones que por naturaleza deben sobrevivir (por ejemplo, licencias, exenciones, ley aplicable) permanecerán vigentes.",
       "phase": "llm"
     },
     "screens.legal.weMayUpdateTheseTermsFrom": {
@@ -43703,10 +43461,8 @@
       "phase": "llm"
     },
     "screens.patient.healthTimeline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Línea de tiempo' is a literal translation; 'Cronología' or 'Historial' is more idiomatic for a health context.",
-      "suggested": "Cronología de salud",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.patient.recentHealthEventsMilestones": {
@@ -43755,10 +43511,9 @@
       "phase": "llm"
     },
     "screens.patient.upcoming": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement. 'Próximas' is feminine plural. For a general section header like 'Upcoming', 'Próximos' (masculine plural) is more neutral.",
-      "suggested": "Próximos",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "Gender and number ambiguity without context. 'Próximas' is feminine plural, but 'Upcoming' could refer to masculine or singular items.",
       "phase": "llm"
     },
     "screens.patient.reschedule": {
@@ -43792,10 +43547,9 @@
       "phase": "llm"
     },
     "screens.patient.completed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement. 'Completada' is feminine singular. For a general section header like 'Completed', 'Completados' (masculine plural) is more neutral.",
-      "suggested": "Completados",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "Gender and number ambiguity without context. 'Completada' is singular feminine, but 'Completed' could refer to masculine or plural items.",
       "phase": "llm"
     },
     "screens.patient.yourPersonalizedHealthManagementCenter": {
@@ -43845,8 +43599,8 @@
     },
     "screens.patient.trackManageYourHealthMetricsWellness": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Wellness journey' is not fully conveyed by 'bienestar' alone. It implies a path or process.",
+      "confidence": 1,
+      "issue": "Missing 'journey' from 'wellness journey'.",
       "suggested": "Sigue y gestiona tus métricas de salud y tu camino de bienestar",
       "phase": "llm"
     },
@@ -43898,7 +43652,7 @@
     "screens.portals.welcomeBack": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Bienvenido' is masculine. For a general greeting in a friendly app, a gender-neutral option is preferred.",
+      "issue": "Gender specificity: 'Bienvenido' is masculine. Should be gender-neutral or adaptable.",
       "suggested": "¡Qué bueno verte de nuevo!",
       "phase": "llm"
     },
@@ -44095,8 +43849,8 @@
     "screens.portals.youLlRedirectedYourDashboardFew": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The participle 'redirigido' is masculine. For a general user, it should be gender-neutral or explicitly inclusive (e.g., 'redirigido/a') unless the user's gender is known.",
-      "suggested": "Serás redirigido/a a tu panel en unos segundos...",
+      "issue": "Gender specificity: 'redirigido' is masculine. Should be gender-neutral or adaptable.",
+      "suggested": "Te redirigiremos a tu panel en unos segundos...",
       "phase": "llm"
     },
     "screens.portals.connectingHealthWithEnvironmentalSustainability": {
@@ -44715,5 +44469,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T18:59:24.076Z"
+  "generatedAt": "2026-05-20T07:08:21.409Z"
 }

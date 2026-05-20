@@ -48,8 +48,8 @@
     "memoryActions.items.photoMemory.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Memoria' is less common for individual recollections than 'Recuerdo'.",
-      "suggested": "Recuerdo fotográfico",
+      "issue": "Literal translation, 'Recuerdo Fotográfico' is more idiomatic and natural for 'Photo Memory' in Spanish.",
+      "suggested": "Recuerdo Fotográfico",
       "phase": "llm"
     },
     "memoryActions.items.photoMemory.description": {
@@ -68,5 +68,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:48:09.039Z"
+  "generatedAt": "2026-05-20T07:02:28.891Z"
 }

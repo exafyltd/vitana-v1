@@ -1,0 +1,83 @@
+{
+  "verdicts": {
+    "errors.somethingWentWrong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.tryAgain": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Bitte versuch es erneut",
+      "phase": "llm"
+    },
+    "errors.pageNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.pageNotFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkErrorDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Bitte überprüfe deine Internetverbindung.",
+      "phase": "llm"
+    },
+    "errors.unauthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.unauthorizedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Bitte melde dich an, um fortzufahren.",
+      "phase": "llm"
+    },
+    "errors.forbidden": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.forbiddenDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Du hast keine Berechtigung für diese Aktion.",
+      "phase": "llm"
+    },
+    "errors.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.notFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:10:26.491Z"
+}

@@ -237,8 +237,8 @@
     },
     "business.kpi.topPerformer": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "''Izvođač'' implies an artist/actor, not a top performer in a business/sales context.",
+      "confidence": 0.9,
+      "issue": "The term 'izvođač' (performer/executor) is a bit generic and can sound formal for a person excelling in a wellness app. 'Najuspešniji' (most successful) or 'Najbolji učesnik' (best participant) would be more natural.",
       "suggested": "Najuspešniji",
       "phase": "llm"
     },
@@ -404,8 +404,8 @@
     },
     "business.transfer.description": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent use of 'pending' (loanword) when a standard Serbian translation ('na čekanju') exists and is used elsewhere.",
+      "confidence": 0.95,
+      "issue": "While 'pending' is sometimes used as a loanword, 'na čekanju' is the native and more natural Serbian equivalent, fitting better with a friendly app's tone.",
       "suggested": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
       "phase": "llm"
     },
@@ -492,7 +492,7 @@
     "business.missionOpportunities.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The term 'Misione prilike' sounds overly formal or specific (e.g., religious/military mission) for a general 'Mission Opportunities' in a wellness/longevity app context. 'Prilike za misije' is more natural and less ambiguous.",
+      "issue": "'Misione prilike' is grammatically correct but sounds somewhat formal or specific (e.g., religious missions). 'Prilike za misije' (opportunities for missions) is a more common and natural phrasing for tasks/challenges in an app context.",
       "suggested": "Prilike za misije",
       "phase": "llm"
     },
@@ -522,10 +522,9 @@
       "phase": "llm"
     },
     "business.missionOpportunities.axisBadge.find_match": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Pronađi spoj' often implies finding a romantic date or social connection. In the context of a longevity economy app, 'Find a Match' likely refers to finding a suitable opportunity, resource, or compatible skill set, for which 'podudarnost' is more appropriate.",
-      "suggested": "Pronađi podudarnost",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "'Pronađi spoj' strongly implies finding a romantic date. In a wellness/longevity app, 'Find a Match' could refer to a compatible workout partner, a matching challenge, or other non-romantic contexts. Without further context, it's ambiguous and potentially misleading.",
       "phase": "llm"
     },
     "business.missionOpportunities.axisBadge.income_generation": {
@@ -539,5 +538,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:43:59.600Z"
+  "generatedAt": "2026-05-20T07:01:34.788Z"
 }

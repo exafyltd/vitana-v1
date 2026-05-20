@@ -2,7 +2,7 @@
   "portals": {
     "maxina": {
       "title": "Plataforma de Salud Maxina",
-      "welcomeBack": "Bienvenido de vuelta a Maxina.",
+      "welcomeBack": "¡Qué bueno verte de nuevo en Maxina!",
       "continueJourney": "Inicia sesión para continuar tu viaje.",
       "joinMaxina": "Únete a Maxina",
       "joinCommunity": "Únete a la comunidad de Maxina.",
@@ -14,7 +14,7 @@
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "partOfVitana": "Maxina es parte del ecosistema VITANA.",
       "allPortals": "Todos los Portales",
-      "emailConfirmed": "¡Correo confirmado! Bienvenido a Maxina.",
+      "emailConfirmed": "¡Correo confirmado! ¡Te damos la bienvenida a Maxina!",
       "checkEmail": "Por favor revisa tu correo para confirmar tu cuenta.",
       "roles": {
         "community": "Comunidad",
@@ -25,17 +25,17 @@
     },
     "alkalma": {
       "joinAlkalma": "Únete a AlKalma",
-      "welcomeBack": "Bienvenido de vuelta a AlKalma.",
+      "welcomeBack": "¡Qué bueno verte de nuevo en AlKalma!",
       "continueJourney": "Inicia sesión para continuar."
     },
     "earthlinks": {
       "joinEarthlinks": "Únete a Earthlinks",
-      "welcomeBack": "Bienvenido de vuelta a Earthlinks.",
+      "welcomeBack": "¡Qué bueno verte de nuevo en Earthlinks!",
       "continueJourney": "Inicia sesión para continuar."
     },
     "community": {
       "joinCommunity": "Únete a la Comunidad",
-      "welcomeBack": "Bienvenido de vuelta.",
+      "welcomeBack": "¡Qué bueno verte de nuevo!",
       "continueJourney": "Inicia sesión para continuar."
     }
   }

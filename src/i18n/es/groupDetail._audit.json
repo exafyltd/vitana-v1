@@ -56,12 +56,10 @@
       "phase": "llm"
     },
     "groupDetail.support": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "While 'apoyo' means support, it's not the most common or appropriate term for a 'Support' section in a UI. 'Ayuda' (Help) or 'Soporte' are more standard.",
-      "suggested": "Ayuda",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:43:54.057Z"
+  "generatedAt": "2026-05-20T07:01:35.070Z"
 }

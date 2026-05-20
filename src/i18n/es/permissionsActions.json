@@ -24,7 +24,7 @@
       },
       "auditLogs": {
         "title": "Registros de Auditoría",
-        "description": "Revisa el historial de acceso y el rastro de auditoría de seguridad"
+        "description": "Revisa el historial de acceso y el registro de auditoría de seguridad"
       },
       "permissionSettings": {
         "title": "Configuración de Permisos",

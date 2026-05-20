@@ -11,7 +11,7 @@
     "month": "Mes",
     "agenda": "Agenda",
     "nothingScheduled": "Nada programado",
-    "tryQuickAdd": "Prueba Agregado Rápido o deja que Autopilot planifique tu día",
+    "tryQuickAdd": "Prueba Añadir Rápido o deja que Autopilot planifique tu día",
     "clickSlotHint": "Haz clic en cualquier espacio para crear un evento • Arrastra para reprogramar",
     "noEventsOnDate": "Sin eventos en esta fecha",
     "lastSynced": "Última sincronización",
@@ -133,7 +133,7 @@
       "onboardingPlan": "Plan de incorporación de hoy",
       "estimatedTime": "~{minutes} min",
       "startPlan": "Iniciar plan",
-      "tasksCompleted": "{completed}/{total} listo",
+      "tasksCompleted": "{completed}/{total} completados",
       "waveNames": {
         "wave-1": "Primeros pasos",
         "wave-2": "Anclas diarias",

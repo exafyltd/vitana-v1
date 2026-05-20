@@ -266,45 +266,33 @@
       "phase": "llm"
     },
     "orders.status.attended": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Asistidos' is more natural and common than the singular 'Asistido'.",
-      "suggested": "Asistidos",
       "phase": "llm"
     },
     "orders.status.expired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Vencidos' is more natural and common than the singular 'Vencido'.",
-      "suggested": "Vencidos",
       "phase": "llm"
     },
     "orders.status.completed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Completados' is more natural and common than the singular 'Completado'.",
-      "suggested": "Completados",
       "phase": "llm"
     },
     "orders.status.delivered": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Entregados' is more natural and common than the singular 'Entregado'.",
-      "suggested": "Entregados",
       "phase": "llm"
     },
     "orders.status.cancelled": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Cancelados' is more natural and common than the singular 'Cancelado'.",
-      "suggested": "Cancelados",
       "phase": "llm"
     },
     "orders.status.refunded": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "As a category label for multiple items, the plural masculine form 'Reembolsados' is more natural and common than the singular 'Reembolsado'.",
-      "suggested": "Reembolsados",
       "phase": "llm"
     },
     "orders.status.shipped": {
@@ -338,5 +326,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:49:36.172Z"
+  "generatedAt": "2026-05-20T07:02:43.191Z"
 }

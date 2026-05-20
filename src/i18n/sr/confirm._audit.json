@@ -62,8 +62,8 @@
     },
     "confirm.disconnect": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Passive construction for a user action; 'da prekineš vezu' is more direct and idiomatic for 'to disconnect'.",
+      "confidence": 0.9,
+      "issue": "Passive construction; should be more active and direct, implying the user performs the action.",
       "suggested": "Stvarno želiš da prekineš vezu?",
       "phase": "llm"
     },
@@ -83,5 +83,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:46:25.661Z"
+  "generatedAt": "2026-05-20T07:02:05.256Z"
 }

@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "sidebar.inbox": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More precise term for 'Inbox' is 'Bandeja de entrada'",
-      "suggested": "Bandeja de entrada",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "sidebar.health": {
@@ -84,8 +82,8 @@
     },
     "sidebar.testResults": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "More specific term for 'Test Results' in a health context",
+      "confidence": 0.9,
+      "issue": "Translation is too general; 'Resultados' means 'Results', but 'Test Results' implies a specific type of result. 'Resultados de pruebas' or 'Resultados de análisis' would be more precise.",
       "suggested": "Resultados de pruebas",
       "phase": "llm"
     },
@@ -225,5 +223,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:00:11.701Z"
+  "generatedAt": "2026-05-20T07:08:30.134Z"
 }

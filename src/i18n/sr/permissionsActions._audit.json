@@ -3,8 +3,8 @@
     "permissionsActions.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Radnje' is a bit stiff for 'Actions' in a UI context. 'Akcije' is more common and natural.",
-      "suggested": "Akcije privatnosti i dozvola",
+      "issue": "The phrase 'Radnje privatnosti' is not idiomatic for a UI label; 'Postavke privatnosti' or 'Upravljanje privatnošću' would be more natural.",
+      "suggested": "Postavke privatnosti i dozvola",
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.title": {
@@ -15,7 +15,7 @@
     "permissionsActions.items.privacySettings.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency; 'Konfigurišite' is formal (vi-form), should be informal (du-form).",
+      "issue": "The verb 'Konfigurišite' is in the formal 'Vi' form; it should be in the informal 'ti' form for consistency with the app's register.",
       "suggested": "Konfiguriši privatnost podataka i podešavanja deljenja",
       "phase": "llm"
     },
@@ -90,5 +90,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:58:17.264Z"
+  "generatedAt": "2026-05-20T07:05:50.169Z"
 }

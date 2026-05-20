@@ -3,7 +3,7 @@
     "onboarding.welcome": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Missing closing exclamation mark and gender-specific phrasing. A more inclusive and common app phrasing is preferred.",
+      "issue": "Gender-specific translation for a gender-neutral English phrase; not inclusive for a friendly app.",
       "suggested": "¡Te damos la bienvenida a VITANA!",
       "phase": "llm"
     },
@@ -118,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:49:05.035Z"
+  "generatedAt": "2026-05-20T07:02:38.924Z"
 }
