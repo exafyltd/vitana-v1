@@ -1,6 +1,6 @@
 {
   "empty": {
-    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
+    "noAppsFound": "Keine Apps gefunden, die deiner Suche entsprechen.",
     "noEventsFound": "Keine Veranstaltungen gefunden",
     "noContactsFound": "Keine Kontakte gefunden",
     "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
@@ -9,8 +9,8 @@
     "noReportsFound": "Keine Berichte gefunden",
     "noUsersFound": "Keine Benutzer gefunden",
     "noTransactionsFound": "Keine Transaktionen gefunden",
-    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
-    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen",
+    "noEventsYet": "Noch keine Veranstaltungen. Erstelle zuerst eine Veranstaltung.",
+    "tryAdjustingFilters": "Versuche, deine Filter oder Suchanfrage anzupassen.",
     "noData": "Keine Daten verfügbar",
     "noMessages": "Keine Nachrichten",
     "noNotifications": "Keine Benachrichtigungen",

@@ -1,7 +1,7 @@
 {
   "createSelection": {
     "title": "Neu erstellen",
-    "description": "Wählen Sie die Art der Veranstaltung, die Sie erstellen möchten",
+    "description": "Wähle die Art der Veranstaltung, die du erstellen möchtest",
     "event": "Event",
     "eventDescription": "Formelle Veranstaltungen mit festen Zeiten und strukturierten Programmen",
     "meetup": "MeetUp",

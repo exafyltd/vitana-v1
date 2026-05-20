@@ -1,11 +1,11 @@
 {
   "vitanaIndex": {
     "title": "Vitana Gesundheitsindex",
-    "subtitle": "Allgemeine Wellness-Balance über alle Gesundheitssäulen",
+    "subtitle": "Allgemeine Wellness-Balance in allen Gesundheitssäulen",
     "veryPoor": "Sehr schlecht",
     "poor": "Schlecht",
     "fair": "Ausreichend",
-    "improving": "Verbessernd",
+    "improving": "Verbessert sich",
     "good": "Gut",
     "excellent": "Ausgezeichnet",
     "sleep": "Schlaf",
@@ -16,9 +16,9 @@
     "viewFullReport": "Vollständigen Bericht anzeigen",
     "trackToday": "Heute verfolgen",
     "tiers": {
-      "starting": "Anfang",
+      "starting": "Anfänger",
       "early": "Früh",
-      "building": "Aufbau",
+      "building": "Im Aufbau",
       "strong": "Stark",
       "reallyGood": "Sehr gut",
       "elite": "Elite"
