@@ -455,6 +455,25 @@ export class OrbVoiceClient {
               console.warn('[VTID-01954] Failed to dispatch identity redirect:', err);
             }
             break;
+          case 'orb.tier.downgraded':
+            // VTID-03107: Backend hit the user's Live AI voice quota mid-session
+            // and is now routing subsequent turns through the standard fallback
+            // path (Cartesia TTS + Gemini Flash). Surface a single banner to
+            // the user — DO NOT confuse this with a connection error.
+            // This is a dedicated SSE event, NEVER a flag inside a tool-response
+            // payload (Gemini reads `degraded:true` as failure).
+            try {
+              const detail = {
+                new_tier: typeof msg.new_tier === 'string' ? msg.new_tier : 'standard',
+                reason: typeof msg.reason === 'string' ? msg.reason : 'daily_quota',
+                feature: typeof msg.feature === 'string' ? msg.feature : 'voice_live_minutes',
+              };
+              window.dispatchEvent(new CustomEvent('vitana:orb-tier-downgraded', { detail }));
+              console.log('[VTID-03107] Voice tier downgraded:', detail);
+            } catch (err) {
+              console.warn('[VTID-03107] Failed to dispatch tier-downgrade event:', err);
+            }
+            break;
           default:
             console.log('[OrbVoiceClient] SSE event type:', msg.type);
             break;
