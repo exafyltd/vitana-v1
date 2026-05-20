@@ -44,6 +44,7 @@ import {
 import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 export default function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -150,7 +151,7 @@ export default function ProductDetail() {
                         <span className="flex items-center gap-1">
                           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                           <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
-                          {p.review_count ? <span>{t('screens.discover.value0Reviews', { value0: p.review_count.toLocaleString() })}</span> : null}
+                          {p.review_count ? <span>{t('screens.discover.value0Reviews', { value0: fmtNumber(p.review_count) })}</span> : null}
                         </span>
                       )}
                       {p.origin_country && (

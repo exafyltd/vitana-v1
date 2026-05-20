@@ -3,10 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Brain, Edit2, Trash2, Clock, Star } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import type { KnowledgeItem } from "@/hooks/useKnowledgeBase";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface KnowledgeCardProps {
   item: KnowledgeItem;
   onEdit: (id: string) => void;

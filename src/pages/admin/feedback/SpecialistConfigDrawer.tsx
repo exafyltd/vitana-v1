@@ -22,6 +22,7 @@ import { communityFetch } from "@/lib/community-gateway";
 import { X } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface Persona {
   id: string;
   key: string;
@@ -377,7 +378,7 @@ export function SpecialistConfigDrawer({ tenantId, personaKey, onClose }: Props)
               <div key={c.id} className="flex items-center gap-2 text-xs">
                 <Badge variant="outline">{c.provider}</Badge>
                 <Badge variant={c.status === "active" ? "default" : "secondary"}>{c.status}</Badge>
-                <span className="text-muted-foreground">{t('screens.admin.addedValue0', { value0: new Date(c.created_at).toLocaleDateString() })}</span>
+                <span className="text-muted-foreground">{t('screens.admin.addedValue0', { value0: fmtDate(new Date(c.created_at)) })}</span>
               </div>
             ))}
           </div>

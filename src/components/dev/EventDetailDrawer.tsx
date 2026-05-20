@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface EventDetailDrawerProps {
   event: Event;
   open: boolean;
@@ -28,7 +29,7 @@ export function EventDetailDrawer({ event, open, onClose }: EventDetailDrawerPro
             </Badge>
           </SheetTitle>
           <SheetDescription>
-            {new Date(event.ts).toLocaleString()}
+            {fmtDateTime(new Date(event.ts))}
           </SheetDescription>
         </SheetHeader>
 

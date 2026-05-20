@@ -9,9 +9,9 @@ import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { Pause, Play, ChevronDown, ChevronRight } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { formatDistanceToNow } from "date-fns";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
 interface FeedEvent {
   ts: string;
   vtid: string;
@@ -399,7 +399,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                                   </span>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                  <p>{new Date(event.ts).toLocaleString()}</p>
+                                  <p>{fmtDateTime(new Date(event.ts))}</p>
                                 </TooltipContent>
                               </Tooltip>
                               <button
@@ -493,7 +493,7 @@ export function DevHubFeed({ onVTIDClick, isFocused = true, hasUnread = false }:
                                 <span className="font-mono">{formatRelativeTime(event.ts)}</span>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>{new Date(event.ts).toLocaleString()}</p>
+                                <p>{fmtDateTime(new Date(event.ts))}</p>
                               </TooltipContent>
                             </Tooltip>
                           </div>

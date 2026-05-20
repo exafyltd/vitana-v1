@@ -21,6 +21,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface BulkVideoUploadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -497,7 +498,7 @@ export function BulkVideoUploadModal({ open, onOpenChange, onUploadComplete }: B
 
   const applyTitlePattern = (baseTitle: string, index: number): string => {
     const today = new Date();
-    const dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const dateStr = fmtDate(today, { month: 'short', day: 'numeric', year: 'numeric' });
     
     return titlePattern
       .replace(/\{base\}/g, baseTitle)

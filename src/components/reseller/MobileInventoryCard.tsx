@@ -1,8 +1,8 @@
-import { format } from "date-fns";
 import { MapPin, Monitor, ArrowRight, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MobileInventoryCardProps {
   id: string;
   imageUrl: string | null;
@@ -29,7 +29,7 @@ export function MobileInventoryCard({
   quantity = 10,
   onSell,
 }: MobileInventoryCardProps) {
-  const formattedDate = format(startTime, "MMM d · HH:mm");
+  const formattedDate = formatDate(startTime, "MMM d · HH:mm");
   const earningFormatted = earningPerTicket > 0 
     ? `€${earningPerTicket % 1 === 0 ? earningPerTicket : earningPerTicket.toFixed(2)}`
     : null;

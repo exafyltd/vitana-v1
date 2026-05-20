@@ -48,6 +48,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtNumber } from '@/lib/locale-format';
 // Mock data has been removed - quickActionsData is defined later in the file
 
 const quickActionsData = [
@@ -374,7 +375,7 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="cash"
                       title={translate('wallet.usdBalance')}
-                      balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
+                      balance={getBalance('USD') !== null ? `$${fmtNumber(getBalance('USD')!)}` : "Loading..."}
                       subBalance="Available: 100%"
                       change="+2.3%"
                       changeType="increase"
@@ -385,7 +386,7 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="credits"
                       title={translate('wallet.creditsBalance')}
-                      balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : translate('common.loading')}
+                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : translate('common.loading')}
                       subBalance={`${translate('wallet.available')}: 100%`}
                       change="+12.1%"
                       changeType="increase"
@@ -396,7 +397,7 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="tokens"
                       title={translate('wallet.vtnaTokens')}
-                      balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : translate('common.loading')}
+                      balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : translate('common.loading')}
                       subBalance={`${translate('wallet.staked')}: 25%`}
                       change="+5.7%"
                       changeType="increase"
@@ -502,7 +503,7 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="tokens"
                     title={t('screens.wallet.vtnaTokens')}
-                    balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
+                    balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : "Loading..."}
                     subBalance="Staked: 25%"
                     change="+5.7%"
                     changeType="increase"
@@ -544,7 +545,7 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="cash"
                     title={t('screens.wallet.usdBalance')}
-                    balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
+                    balance={getBalance('USD') !== null ? `$${fmtNumber(getBalance('USD')!)}` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+2.3%"
                     changeType="increase"
@@ -586,7 +587,7 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="credits"
                     title={t('screens.wallet.creditsBalance')}
-                    balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
+                    balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"
                     changeType="increase"
@@ -678,7 +679,7 @@ export default function Wallet() {
                         : `${filteredTransactions[0].from_currency || ''} ${filteredTransactions[0].to_currency ? `→ ${filteredTransactions[0].to_currency}` : ''}`}
                       amount={`${filteredTransactions[0].amount > 0 ? '+' : ''}${filteredTransactions[0].amount}`}
                       status={filteredTransactions[0].status as any}
-                      timestamp={new Date(filteredTransactions[0].created_at).toLocaleDateString()}
+                      timestamp={fmtDate(new Date(filteredTransactions[0].created_at))}
                       transaction={filteredTransactions[0]}
                       currentUserId={user?.id}
                       className="h-full"
@@ -705,7 +706,7 @@ export default function Wallet() {
                         : `${filteredTransactions[1].from_currency || ''} ${filteredTransactions[1].to_currency ? `→ ${filteredTransactions[1].to_currency}` : ''}`}
                       amount={`${filteredTransactions[1].amount > 0 ? '+' : ''}${filteredTransactions[1].amount}`}
                       status={filteredTransactions[1].status as any}
-                      timestamp={new Date(filteredTransactions[1].created_at).toLocaleDateString()}
+                      timestamp={fmtDate(new Date(filteredTransactions[1].created_at))}
                       transaction={filteredTransactions[1]}
                       currentUserId={user?.id}
                       className="h-full"
@@ -735,7 +736,7 @@ export default function Wallet() {
                         : `${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
                       amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                       status={transaction.status as any}
-                      timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                      timestamp={fmtDate(new Date(transaction.created_at))}
                       transaction={transaction}
                       currentUserId={user?.id}
                       className="h-full"

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -20,6 +19,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 // Mock data for Memory Overview - Recent Memories
 const recentMemories = [
   {

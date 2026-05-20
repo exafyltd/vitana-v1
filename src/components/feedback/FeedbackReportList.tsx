@@ -3,7 +3,6 @@ import { Bug, Lightbulb, Clock, CheckCircle2, XCircle, Loader2, Trash2 } from "l
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDistanceToNow } from "date-fns";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/responsive-confirm-dialog";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface FeedbackReport {
   id: string;
   transcript: string;

@@ -25,12 +25,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
+import { differenceInDays, differenceInHours, addDays, subDays } from 'date-fns';
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -646,7 +647,7 @@ export default function DoctorsCoaches() {
 
                         let countdownBadge;
                         if (daysUntil > 7) {
-                          countdownBadge = <Badge variant="outline">{format(appointmentDate, 'MMM dd, yyyy')}</Badge>;
+                          countdownBadge = <Badge variant="outline">{formatDate(appointmentDate, 'MMM dd, yyyy')}</Badge>;
                         } else if (daysUntil > 0) {
                           countdownBadge = <Badge className="bg-blue-500">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
                         } else if (hoursUntil > 0) {
@@ -677,11 +678,11 @@ export default function DoctorsCoaches() {
                               <div className="space-y-2 mb-4">
                                 <div className="flex items-center gap-2 text-sm">
                                   <Calendar className="h-4 w-4" />
-                                  <span>{format(appointmentDate, 'EEEE, MMMM dd, yyyy')}</span>
+                                  <span>{formatDate(appointmentDate, 'EEEE, MMMM dd, yyyy')}</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                   <Clock className="h-4 w-4" />
-                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: format(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
+                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: formatDate(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
                                 </div>
                                 {appointment.location && (
                                   <div className="flex items-center gap-2 text-sm">

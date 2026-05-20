@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface PhotoCarouselModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;

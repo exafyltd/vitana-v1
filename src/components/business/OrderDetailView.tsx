@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import { TicketOrder } from "@/hooks/useOrderManagement";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface OrderDetailViewProps {
   order: TicketOrder;
   event: OrganizerEvent;
@@ -86,7 +86,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                 )}
                 <p className="text-sm text-muted-foreground flex items-center gap-1">
                   <Calendar className="w-3 h-3" />
-                  {format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}
+                  {formatDate(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
             </div>
@@ -124,7 +124,7 @@ export function OrderDetailView({ order, event, onBack }: OrderDetailViewProps) 
                 {t('screens.business.purchaseDate')}
               </span>
               <span className="text-sm">
-                {format(new Date(order.created_at), "MMM d, yyyy 'at' h:mm a")}
+                {formatDate(new Date(order.created_at), "MMM d, yyyy 'at' h:mm a")}
               </span>
             </div>
             {order.stripe_payment_intent_id && (

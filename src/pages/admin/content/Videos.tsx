@@ -12,6 +12,7 @@ import { useContentItems, useModerateContent } from "@/hooks/useAdminContent";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
 
@@ -72,7 +73,7 @@ export default function Videos() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(v.created_at).toLocaleDateString()}
+                      {fmtDate(new Date(v.created_at))}
                     </TableCell>
                     <TableCell>
                       {v.external_url ? (

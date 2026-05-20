@@ -4,9 +4,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Activity, Mail, Smartphone, Bell, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface NotificationLog {
   id: string;
   user_id: string;

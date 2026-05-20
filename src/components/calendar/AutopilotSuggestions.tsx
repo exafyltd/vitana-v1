@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface AutopilotSuggestion {
   id: string;
   type: 'fit' | 'conflict' | 'focus';
@@ -68,7 +69,7 @@ export function AutopilotSuggestions({ suggestions, onAccept, onDismiss }: Autop
             <p className="text-sm text-muted-foreground">{suggestion.description}</p>
             
             {suggestion.suggestedTime && (
-              <p className="text-xs font-medium">{t('screens.calendar.suggestedValue0', { value0: suggestion.suggestedTime.toLocaleString() })}</p>
+              <p className="text-xs font-medium">{t('screens.calendar.suggestedValue0', { value0: fmtDateTime(suggestion.suggestedTime) })}</p>
             )}
 
             <div className="flex gap-2">

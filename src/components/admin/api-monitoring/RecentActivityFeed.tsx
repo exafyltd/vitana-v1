@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,6 +14,7 @@ import {
 import { ConnectionStatus } from "@/components/ui/ConnectionStatus";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface TestLog {
   id: string;
   timestamp: string;

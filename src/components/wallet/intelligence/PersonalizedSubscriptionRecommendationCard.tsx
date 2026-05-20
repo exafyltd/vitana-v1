@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Sparkles, Users, Target, Clock, Star, TrendingUp } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface SubscriptionRecommendation {
   id: string;
   name: string;
@@ -146,7 +147,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1 text-xs">
                 <Users className="h-3 w-3" />
-                {topRecommendation.users.toLocaleString()}
+                {fmtDateTime(topRecommendation.users)}
               </div>
               <div className="flex items-center gap-1 text-xs">
                 <Star className="h-3 w-3 text-amber-500" />
@@ -201,7 +202,7 @@ export function PersonalizedSubscriptionRecommendationCard({ className }: Person
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Users className="h-3 w-3" />
-                      {recommendation.users.toLocaleString()}
+                      {fmtDateTime(recommendation.users)}
                     </div>
                     <Badge variant="outline" className={`text-xs ${timingConfig.color}`}>
                       {timingConfig.label}

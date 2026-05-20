@@ -4,11 +4,12 @@ import { LanguageFlag } from "@/components/ui/language-flag";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePodcastFavorite } from "@/hooks/usePodcastFavorite";
 import { useToast } from '@/hooks/use-toast';
-import { format, isToday, isThisWeek, isThisYear } from "date-fns";
+import { isToday, isThisWeek, isThisYear } from 'date-fns';
 import { useAuth } from "@/context/AuthProvider";
 import { KebabMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu-kebab";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface PodcastCardProps {
   id: string;
   title: string;
@@ -99,15 +100,15 @@ export function PodcastCard({
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     if (isToday(date)) {
-      return `Today at ${format(date, "HH:mm")}`;
+      return `Today at ${formatDate(date, "HH:mm")}`;
     }
     if (isThisWeek(date)) {
-      return format(date, "EEEE 'at' HH:mm");
+      return formatDate(date, "EEEE 'at' HH:mm");
     }
     if (isThisYear(date)) {
-      return format(date, "MMM dd");
+      return formatDate(date, "MMM dd");
     }
-    return format(date, "MMM dd, yyyy");
+    return formatDate(date, "MMM dd, yyyy");
   };
 
   const formatDuration = (seconds?: number) => {

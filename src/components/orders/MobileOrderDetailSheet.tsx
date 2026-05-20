@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { format } from 'date-fns';
 import { 
   Download, 
   Mail, 
@@ -30,6 +29,7 @@ import { UnifiedMobileOrder } from './MobileOrdersView';
 import { useTranslation } from '@/hooks/useTranslation';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MobileOrderDetailSheetProps {
   order: UnifiedMobileOrder | null;
   open: boolean;
@@ -263,7 +263,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <div>
                     <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.eventDate')}</p>
-                    <p className="text-sm font-medium">{format(order.eventDate, 'EEEE, MMMM d, yyyy • h:mm a')}</p>
+                    <p className="text-sm font-medium">{formatDate(order.eventDate, 'EEEE, MMMM d, yyyy • h:mm a')}</p>
                   </div>
                 </div>
               )}

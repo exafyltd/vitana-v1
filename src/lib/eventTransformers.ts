@@ -1,5 +1,4 @@
-import { format } from "date-fns";
-
+import { formatDate } from '@/lib/locale-format';
 export interface CommunityEvent {
   id: string;
   title: string;
@@ -54,8 +53,8 @@ export const transformCommunityEvent = (event: CommunityEvent): UIEvent => {
   return {
     id: event.id,
     title: event.title,
-    time: format(new Date(event.start_time), 'HH:mm'),
-    date: format(new Date(event.start_time), 'MMM dd'),
+    time: formatDate(new Date(event.start_time), 'HH:mm'),
+    date: formatDate(new Date(event.start_time), 'MMM dd'),
     location: event.location || 'Virtual',
     attendees: event.participant_count,
     type: event.event_type,

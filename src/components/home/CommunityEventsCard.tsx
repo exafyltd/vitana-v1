@@ -9,6 +9,7 @@ import { withCardId } from "@/lib/withCardId";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 interface CommunityEventsCardProps {
   maxEvents?: number;
   className?: string;
@@ -77,17 +78,17 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
     const isToday = date.toDateString() === now.toDateString();
     
     if (isToday) {
-      return `Today ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+      return `Today ${fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false })}`;
     }
     
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     if (date.toDateString() === tomorrow.toDateString()) {
-      return `Tomorrow ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+      return `Tomorrow ${fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false })}`;
     }
     
-    const day = date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
-    const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const day = fmtDate(date, { weekday: 'short', month: 'short', day: 'numeric' });
+    const time = fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
     return `${day} · ${time}`;
   };
 

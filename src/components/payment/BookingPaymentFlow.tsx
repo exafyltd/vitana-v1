@@ -13,7 +13,6 @@ import { useMessages } from "@/hooks/useMessages";
 import { supabase } from "@/integrations/supabase/client";
 import { useWallet } from "@/hooks/useWallet";
 import { getExchangeRate, calculateExchange, formatCurrency } from "@/lib/exchangeRates";
-import { format } from "date-fns";
 import { 
   CreditCard, 
   Coins, 
@@ -28,6 +27,7 @@ import {
 } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface BookingPaymentFlowProps {
   isOpen: boolean;
   onClose: () => void;
@@ -137,7 +137,7 @@ export default function BookingPaymentFlow({
       const bookingDateTime = new Date(selectedDate);
       const [hours, minutes] = selectedTime.split(':');
       bookingDateTime.setHours(parseInt(hours), parseInt(minutes));
-      const formattedDate = format(selectedDate, 'PPP');
+      const formattedDate = formatDate(selectedDate, 'PPP');
       
       if (paymentMethod === 'cash') {
         // Create Stripe Checkout session for card payment
@@ -305,7 +305,7 @@ export default function BookingPaymentFlow({
                         className="w-full justify-start text-left font-normal"
                       >
                         <Calendar className="mr-2 h-4 w-4" />
-                        {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                        {selectedDate ? formatDate(selectedDate, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">

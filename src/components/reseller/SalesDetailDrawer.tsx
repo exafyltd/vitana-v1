@@ -1,5 +1,4 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { format, formatDistanceToNow } from "date-fns";
 import { Calendar, Info, Receipt, Loader2, Wallet, Clock, CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 interface SalesDetailDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -157,7 +157,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
             {event.eventDate && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="h-4 w-4" />
-                <span>{format(new Date(event.eventDate), "MMMM d, yyyy")}</span>
+                <span>{formatDate(new Date(event.eventDate), "MMMM d, yyyy")}</span>
               </div>
             )}
           </div>
@@ -187,7 +187,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
                 </Badge>
                 {payoutInfo.paidAt && (
                   <span className="text-xs text-muted-foreground">
-                    {format(new Date(payoutInfo.paidAt), "MMM d, yyyy")}
+                    {formatDate(new Date(payoutInfo.paidAt), "MMM d, yyyy")}
                   </span>
                 )}
               </div>

@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { Search, Check, X, MoreHorizontal, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +20,7 @@ import { useOrderManagement, TicketOrder } from "@/hooks/useOrderManagement";
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface OrderManagementTableProps {
   eventId: string;
   onSelectOrder: (order: TicketOrder) => void;
@@ -136,7 +136,7 @@ export function OrderManagementTable({
                     )}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {format(new Date(order.created_at), "MMM d, h:mm a")}
+                    {formatDate(new Date(order.created_at), "MMM d, h:mm a")}
                   </TableCell>
                   <TableCell className="text-right font-semibold">
                     ${order.total_amount.toFixed(2)}

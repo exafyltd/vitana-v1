@@ -94,3 +94,30 @@ ESLint rules `i18n/no-raw-jsx-text` and `i18n/no-raw-toast-arg` are at
   reviewed via `/dev/i18n-review`.
 - Run `npm run i18n:inventory` before opening a PR; commit the regenerated
   `docs/SCREEN_INVENTORY.md`.
+
+### Dates & numbers — never `toLocaleX` / `date-fns format` directly
+
+Hardcoded `'en-US'` or omitted locale args render English month/weekday names
+in the German UI even when the surrounding string is translated. Use the
+helpers from `@/lib/locale-format`:
+
+- `fmtDate(d, opts?)` instead of `d.toLocaleDateString(...)`
+- `fmtTime(d, opts?)` instead of `d.toLocaleTimeString(...)`
+- `fmtDateTime(d, opts?)` instead of `d.toLocaleString(...)` for Dates
+- `fmtNumber(n, opts?)` instead of `n.toLocaleString(...)` for numbers
+- `formatDate(d, fmt)` — re-export of date-fns `format` with `{ locale }` injected
+- `formatDistance`, `formatDistanceToNow`, `formatRelative` — same pattern
+
+The ESLint rule `i18n/no-raw-locale-call` is **ERROR** level and blocks any
+new call site that omits/hardcodes the locale. To bypass for a specific
+line (e.g. a fixed timestamp shown to the user *in their own data*), use:
+`// i18n-allow-next-line: <reason>`.
+
+### Catalog quality — register matters
+
+DE is the source of truth. Brand voice is **du-form** (informal) throughout.
+Never write `Sie/Ihr/Ihnen` — even when translators emit it, the LLM audit
+will flag it. After bulk translation, always run the audit workflow:
+`gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=gemini`.
+Apply the auto-confidence suggestions via:
+`node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).

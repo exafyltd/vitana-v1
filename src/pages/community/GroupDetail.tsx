@@ -19,6 +19,7 @@ import { useState } from "react";
 import { GroupFeed } from "@/components/community/GroupFeed";
 import { GroupMembersDialog } from "@/components/community/GroupMembersDialog";
 
+import { fmtNumber } from '@/lib/locale-format';
 export default function GroupDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ export default function GroupDetail() {
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  {group.member_count.toLocaleString()} {translate('groupDetail.members', 'Members')}
+                  {fmtNumber(group.member_count)} {translate('groupDetail.members', 'Members')}
                 </span>
                 <Badge variant="outline" className="gap-1">
                   {group.is_public ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}

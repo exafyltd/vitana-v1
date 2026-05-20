@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface GroupImageCardProps {
   group: UnifiedGroupCard;
   variant?: "full" | "compact";
@@ -82,7 +83,7 @@ export const GroupImageCard = ({
         {/* Member Count */}
         <div className="flex items-center gap-1 text-[12px] text-white/90">
           <Users className="w-3.5 h-3.5" />
-          <span>{group.member_count.toLocaleString()} {translate('groupDetail.members', 'Members')}</span>
+          <span>{fmtNumber(group.member_count)} {translate('groupDetail.members', 'Members')}</span>
         </div>
       </div>
 

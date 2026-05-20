@@ -9,12 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Award, Ticket, ChevronRight, Receipt } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterType = "all" | "direct" | "reseller";
 
 interface EarningsActivityFeedProps {

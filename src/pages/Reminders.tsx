@@ -45,10 +45,11 @@ import { Bell, Check, Plus, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 function formatTime(iso: string): string {
   try {
     const d = new Date(iso);
-    return d.toLocaleString(undefined, {
+    return fmtDateTime(d, {
       weekday: "short",
       month: "short",
       day: "numeric",

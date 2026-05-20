@@ -2,9 +2,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { Activity, TrendingUp, TrendingDown, Zap, AlertTriangle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
 interface PerformanceMetrics {
   avgResponseTime: number;
   successRate: number;
@@ -145,7 +145,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
                 <YAxis fontSize={12} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  labelFormatter={(value) => new Date(value).toLocaleString()}
+                  labelFormatter={(value) => fmtDateTime(new Date(value))}
                 />
                 <Line 
                   type="monotone" 
@@ -178,7 +178,7 @@ export default function PerformancePanel({ metrics, timeSeriesData, integrationN
                 <YAxis fontSize={12} />
                 <Tooltip 
                   contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}
-                  labelFormatter={(value) => new Date(value).toLocaleString()}
+                  labelFormatter={(value) => fmtDateTime(new Date(value))}
                 />
                 <Legend />
                 <Bar dataKey="requests" fill="hsl(var(--primary))" name="Requests" />

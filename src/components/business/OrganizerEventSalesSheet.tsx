@@ -9,7 +9,6 @@
  */
 
 import { useState } from "react";
-import { format } from "date-fns";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +21,7 @@ import { OperationsPanel } from "./OperationsPanel";
 import { TicketOrder } from "@/hooks/useOrderManagement";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDate } from '@/lib/locale-format';
 interface OrganizerEventSalesSheetProps {
   event: OrganizerEvent | null;
   open: boolean;
@@ -97,7 +97,7 @@ export function OrganizerEventSalesSheet({
                   )}
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5" />
-                    {format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}
+                    {formatDate(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}
                   </span>
                 </div>
                 {hasClientInfo && (
@@ -129,7 +129,7 @@ export function OrganizerEventSalesSheet({
                       <span className="text-xs font-medium">{t('screens.business.revenue')}</span>
                     </div>
                     <p className="text-2xl font-bold text-green-700 dark:text-green-300">
-                      ${(event.totalRevenue ?? 0).toLocaleString()}
+                      ${fmtDateTime((event.totalRevenue ?? 0))}
                     </p>
                   </div>
 

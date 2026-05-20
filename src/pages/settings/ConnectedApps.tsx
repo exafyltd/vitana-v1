@@ -80,6 +80,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 function ConnectedApps() {
   const isMobile = useIsMobile();
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
@@ -267,7 +268,7 @@ function ConnectedApps() {
               <strong>{t('screens.settings.status')}</strong> {p.last_verify_status || "unverified"}
             </div>
             {p.last_verified_at && (
-              <div className="text-sm text-muted-foreground">{t('screens.settings.lastVerifiedValue0', { value0: new Date(p.last_verified_at).toLocaleString() })}</div>
+              <div className="text-sm text-muted-foreground">{t('screens.settings.lastVerifiedValue0', { value0: fmtDateTime(new Date(p.last_verified_at)) })}</div>
             )}
             <div className="flex gap-2">
               <Button

@@ -1,5 +1,4 @@
 import React from "react";
-import { format } from "date-fns";
 import { Clock, MapPin, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { isAllDayEvent, getSmartBadge, getEventAction, EventActionType } from "./calendarSmartUtils";
 import { EventPillarDot } from "./EventPillarDot";
 
+import { formatDate } from '@/lib/locale-format';
 interface SmartEventCardProps {
   event: CalendarEvent;
   onEventClick: (event: CalendarEvent) => void;
@@ -32,10 +32,10 @@ export function SmartEventCard({ event, onEventClick, onAction, showDate = false
     const start = new Date(event.start_time);
     const end = event.end_time ? new Date(event.end_time) : null;
     const timeStr = end
-      ? `${format(start, 'HH:mm')}–${format(end, 'HH:mm')}`
-      : format(start, 'HH:mm');
+      ? `${formatDate(start, 'HH:mm')}–${formatDate(end, 'HH:mm')}`
+      : formatDate(start, 'HH:mm');
     if (showDate) {
-      return `${format(start, 'EEE, MMM d')} ${timeStr}`;
+      return `${formatDate(start, 'EEE, MMM d')} ${timeStr}`;
     }
     return timeStr;
   };

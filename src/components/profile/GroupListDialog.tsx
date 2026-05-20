@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Users, Crown, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import { fmtNumber } from '@/lib/locale-format';
 interface GroupListDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -102,7 +103,7 @@ export function GroupListDialog({
                       </p>
                       <p className="text-xs text-muted-foreground flex items-center gap-1">
                         <Users className="h-3 w-3" />
-                        {group.member_count.toLocaleString()}{" "}
+                        {fmtNumber(group.member_count)}{" "}
                         {translate("profileGroups.membersLabel", "members")}
                       </p>
                     </div>

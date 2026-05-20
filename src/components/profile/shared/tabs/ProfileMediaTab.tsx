@@ -9,6 +9,7 @@ import { Scope } from "@/lib/profileScope";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface ProfileMediaTabProps {
   profile: UserProfile;
   scope: Scope;
@@ -321,7 +322,7 @@ export function ProfileMediaTab({ profile, scope, editMode }: ProfileMediaTabPro
                     <div className="flex items-center gap-3 mt-1 text-xs text-white/80">
                       <div className="flex items-center gap-1">
                         {getMetricIcon(item.type)}
-                        <span className="drop-shadow">{getMetricCount(item).toLocaleString()}</span>
+                        <span className="drop-shadow">{fmtDateTime(getMetricCount(item))}</span>
                       </div>
                       <span className="drop-shadow opacity-80">{item.date}</span>
                     </div>

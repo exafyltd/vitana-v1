@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { format, isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from "date-fns";
+import { isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from 'date-fns';
 import { de as deLocale } from "date-fns/locale/de";
 import { Calendar, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import { JourneyProgressStrip } from "./JourneyProgressStrip";
 import { OnboardingPlanCard } from "./OnboardingPlanCard";
 import { useJourneyProgress, bundleOnboardingPlan } from "@/hooks/useJourneyProgress";
 
+import { formatDate } from '@/lib/locale-format';
 interface CalendarHookData {
   events: CalendarEvent[];
   loading: boolean;
@@ -98,7 +99,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
     bookedEvents.forEach(event => {
       const date = new Date(event.start_time);
       if (isSameMonth(date, currentMonth)) {
-        days.add(format(date, 'yyyy-MM-dd'));
+        days.add(formatDate(date, 'yyyy-MM-dd'));
       }
     });
     return days;
@@ -241,7 +242,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
             <div className={showQuickAdd ? 'hidden' : ''}>
             {/* Date + Today's Focus */}
             <div className="mb-2">
-              <p className="text-sm font-semibold">{format(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
+              <p className="text-sm font-semibold">{formatDate(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
               <p className="text-xs text-muted-foreground mb-3">{translate('calendar.timeGroups.today', 'Today')}</p>
             </div>
 
@@ -319,7 +320,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))}>
                     <ChevronLeft className="w-5 h-5" />
                   </Button>
-                  <h3 className="text-sm font-semibold">{format(currentMonth, 'MMMM yyyy')}</h3>
+                  <h3 className="text-sm font-semibold">{formatDate(currentMonth, 'MMMM yyyy')}</h3>
                   <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))}>
                     <ChevronRight className="w-5 h-5" />
                   </Button>
@@ -336,7 +337,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   ))}
 
                   {monthDays.map(day => {
-                    const dateKey = format(day, 'yyyy-MM-dd');
+                    const dateKey = formatDate(day, 'yyyy-MM-dd');
                     const hasEvents = daysWithEvents.has(dateKey);
                     const isSelected = selectedDay && isSameDay(day, selectedDay);
                     const isToday = isSameDay(day, new Date());
@@ -352,7 +353,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                           !isSelected && !isToday && "hover:bg-muted"
                         )}
                       >
-                        {format(day, 'd')}
+                        {formatDate(day, 'd')}
                         {hasEvents && !isSelected && (
                           <div className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-util-calendar-accent" />
                         )}
@@ -366,7 +367,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">
-                        {format(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
+                        {formatDate(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
                       </p>
                       <Button
                         size="sm"

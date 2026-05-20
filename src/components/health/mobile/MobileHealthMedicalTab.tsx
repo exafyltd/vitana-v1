@@ -4,8 +4,7 @@ import { FileText, Upload, Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-
+import { formatDate } from '@/lib/locale-format';
 interface MobileHealthMedicalTabProps {
   onUpload: () => void;
 }
@@ -126,7 +125,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
                   </p>
                   {report.report_date && (
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {format(new Date(report.report_date), 'MMM dd, yyyy')}
+                      {formatDate(new Date(report.report_date), 'MMM dd, yyyy')}
                     </p>
                   )}
                 </div>

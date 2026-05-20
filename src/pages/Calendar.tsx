@@ -9,6 +9,7 @@ import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useEffect } from "react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function Calendar() {
   const navigate = useNavigate();
   const { logActivity } = useActivityLogger();
@@ -23,7 +24,7 @@ export default function Calendar() {
   }, []);
 
   const currentDate = new Date();
-  const todayFormatted = currentDate.toLocaleDateString('en-US', { 
+  const todayFormatted = fmtDate(currentDate, { 
     weekday: 'long', 
     year: 'numeric', 
     month: 'long', 

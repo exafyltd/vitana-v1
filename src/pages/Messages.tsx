@@ -57,6 +57,7 @@ import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileAction
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function Messages() {
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -553,7 +554,7 @@ export default function Messages() {
                               <span className={`text-muted-foreground whitespace-nowrap ${
                                 densityMode === 'compact' ? 'text-xs' : 'text-xs'
                               }`}>
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}
@@ -686,7 +687,7 @@ export default function Messages() {
                             
                             <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}
@@ -800,7 +801,7 @@ export default function Messages() {
                             
                             <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}

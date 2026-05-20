@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface CommunityEvent {
   id: string;
   title: string;
@@ -167,7 +168,7 @@ const EventsModeration = () => {
                               <Badge variant="outline">{event.event_type}</Badge>
                             </TableCell>
                             <TableCell>
-                              {new Date(event.start_time).toLocaleDateString()}
+                              {fmtDate(new Date(event.start_time))}
                             </TableCell>
                             <TableCell>
                               <div className="flex items-center gap-1">

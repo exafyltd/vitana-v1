@@ -9,6 +9,7 @@ import { useSentNotifications } from "@/hooks/useAdminNotifications";
 import { adminNotificationsNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function SentNew() {
   const { data, isLoading } = useSentNotifications({ days: 30 });
   const notifications = data?.notifications || data?.data || [];
@@ -61,7 +62,7 @@ export default function SentNew() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {n.sent_at ? new Date(n.sent_at).toLocaleDateString() : n.created_at ? new Date(n.created_at).toLocaleDateString() : "—"}
+                      {n.sent_at ? fmtDate(new Date(n.sent_at)) : n.created_at ? fmtDate(new Date(n.created_at)) : "—"}
                     </TableCell>
                   </TableRow>
                 ))}

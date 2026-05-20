@@ -6,6 +6,7 @@ import { Moon, Clock, Brain, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface DailySleepCardProps {
   data: DailySleepData;
   onClick: () => void;
@@ -56,7 +57,7 @@ export function DailySleepCard({ data, onClick }: DailySleepCardProps) {
         <div className="flex items-start justify-between mb-3">
           <div>
             <h4 className="text-base font-semibold text-indigo-700 dark:text-indigo-300">{data.day}</h4>
-            <p className="text-xs text-slate-600 dark:text-slate-400">{new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">{fmtDate(new Date(data.date), { weekday: 'long', month: 'short', day: 'numeric' })}</p>
           </div>
           <Moon 
             className={cn(

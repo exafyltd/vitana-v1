@@ -17,6 +17,7 @@ import { getCurrencyIcon } from "@/lib/currencies";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface MakePaymentPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -140,7 +141,7 @@ export default function MakePaymentPopup({
   };
 
   const formatBalance = (bal: number) => {
-    return bal.toLocaleString();
+    return fmtDateTime(bal);
   };
 
   return (

@@ -53,10 +53,11 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
+import { differenceInMinutes } from 'date-fns';
 import type { LiveRoom } from "./LiveRoomCard";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
   open: boolean;
@@ -414,8 +415,8 @@ export function LiveRoomDrawer({
                 <div>
                   <p className="text-sm">
                     {showLocalTime
-                      ? format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm")
-                      : format(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
+                      ? formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm")
+                      : formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
                   </p>
                   {showCountdown && (
                     <p className="text-sm text-muted-foreground mt-1">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</p>

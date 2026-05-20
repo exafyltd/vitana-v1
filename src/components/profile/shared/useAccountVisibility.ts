@@ -11,6 +11,7 @@ import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from '@/hooks/use-toast';
 import { notifyError } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export interface AccountFieldDef {
   key: AccountFieldKey;
   label: string;
@@ -43,7 +44,7 @@ export function formatAccountDate(iso?: string): string | undefined {
   if (!iso) return undefined;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  return fmtDate(d, { year: "numeric", month: "short", day: "numeric" });
 }
 
 function buildSections(account: AccountInfo): AccountSectionDef[] {

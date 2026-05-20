@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import { Calendar, MapPin, Clock } from "lucide-react";
-import { format } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ShareableEventCardProps {
   event: {
     title: string;
@@ -27,16 +27,16 @@ export const ShareableEventCard = forwardRef<HTMLDivElement, ShareableEventCardP
     const formatEventDate = () => {
       if (!event.start_time) return "Date TBA";
       const date = new Date(event.start_time);
-      return format(date, "EEEE, MMMM d, yyyy");
+      return formatDate(date, "EEEE, MMMM d, yyyy");
     };
 
     const formatEventTime = () => {
       if (!event.start_time) return "";
       const start = new Date(event.start_time);
-      const timeStr = format(start, "h:mm a");
+      const timeStr = formatDate(start, "h:mm a");
       if (event.end_time) {
         const end = new Date(event.end_time);
-        return `${timeStr} - ${format(end, "h:mm a")}`;
+        return `${timeStr} - ${formatDate(end, "h:mm a")}`;
       }
       return timeStr;
     };

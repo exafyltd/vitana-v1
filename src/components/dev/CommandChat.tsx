@@ -8,9 +8,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ExternalLink, Clock, Activity, ChevronDown } from "lucide-react";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
 interface CommandChatProps {
   isFocused?: boolean;
   hasUnread?: boolean;
@@ -85,7 +85,7 @@ export function CommandChat({ isFocused = true, hasUnread = false }: CommandChat
 
   const formatTime = (iso: string) => {
     try {
-      return new Date(iso).toLocaleString();
+      return fmtDateTime(new Date(iso));
     } catch {
       return iso;
     }

@@ -13,6 +13,7 @@ import { Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface Column<T> {
   key: string;
   label: string;
@@ -201,7 +202,7 @@ export function AdminTable<T extends Record<string, any>>({
               : `Showing ${currentPage * pageSize + 1}-${Math.min(
                   (currentPage + 1) * pageSize,
                   totalItems
-                )} of ${totalItems.toLocaleString()}`}
+                )} of ${fmtDateTime(totalItems)}`}
           </p>
           <div className="flex items-center gap-2">
             <Button

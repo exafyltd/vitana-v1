@@ -7,6 +7,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useUserGroups } from "@/hooks/useUserGroups";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { fmtNumber } from '@/lib/locale-format';
 interface MobileGroupsTabContentProps {
   userId?: string;
   className?: string;
@@ -111,7 +112,7 @@ export function MobileGroupsTabContent({
               </h4>
               <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                 <Users className="h-3 w-3" />
-                {group.member_count.toLocaleString()} {translate('profileGroups.membersLabel', 'members')}
+                {fmtNumber(group.member_count)} {translate('profileGroups.membersLabel', 'members')}
               </p>
             </div>
             <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />

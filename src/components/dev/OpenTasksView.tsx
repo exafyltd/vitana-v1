@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, AlertCircle, CheckCircle2 } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface Task {
   id: string;
   title: string;
@@ -75,7 +76,7 @@ export function OpenTasksView({ onTaskClick }: OpenTasksViewProps) {
   };
 
   const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleString(undefined, {
+    return fmtDateTime(new Date(timestamp), {
       month: "short",
       day: "numeric",
       hour: "2-digit",
