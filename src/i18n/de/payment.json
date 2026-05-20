@@ -10,14 +10,14 @@
     "exchangeSuccess": "Umtausch & Senden erfolgreich! ✨",
     "exchangeSuccessDesc": "Konvertiert und {amount} gesendet",
     "insufficientBalance": "Unzureichendes Guthaben",
-    "insufficientBalanceDesc": "Sie haben nicht genug {currency} für diesen Umtausch",
+    "insufficientBalanceDesc": "Du hast nicht genug {currency} für diesen Umtausch",
     "transactionFailed": "Transaktion fehlgeschlagen",
     "paymentFailed": "Zahlung fehlgeschlagen",
-    "paymentFailedDesc": "Zahlung konnte nicht verarbeitet werden. Bitte erneut versuchen.",
+    "paymentFailedDesc": "Zahlung konnte nicht verarbeitet werden. Bitte versuche es erneut.",
     "balanceRefreshed": "Guthaben aktualisiert",
     "balanceRefreshedDesc": "Wallet-Guthaben wurde aktualisiert",
     "refreshFailed": "Aktualisierung fehlgeschlagen",
-    "refreshFailedDesc": "Guthaben konnte nicht aktualisiert werden. Bitte erneut versuchen.",
+    "refreshFailedDesc": "Guthaben konnte nicht aktualisiert werden. Bitte versuche es erneut.",
     "error": "Fehler"
   }
 }

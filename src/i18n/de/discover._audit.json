@@ -1,0 +1,341 @@
+{
+  "verdicts": {
+    "discover.filters.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "discover.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form), slightly awkward phrasing.",
+      "suggested": "Entdecke deinen Marktplatz für Langlebigkeit",
+      "phase": "llm"
+    },
+    "discover.mobileTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
+      "suggested": "Entdecke",
+      "phase": "llm"
+    },
+    "discover.mobileDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
+      "suggested": "Erkunde Erlebnisse, Menschen und Wellness",
+      "phase": "llm"
+    },
+    "discover.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form), 'Altersreise' is awkward.",
+      "suggested": "Finde Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu deiner Reise zu einem gesunden Altern passen.",
+      "phase": "llm"
+    },
+    "discover.searchPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Wonach suchst du? (z.B. Yoga-Kurse, Langlebigkeitsarzt, Meetups)",
+      "phase": "llm"
+    },
+    "discover.doctorsCoaches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.doctorsCoachesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Finde Langlebigkeitsspezialisten, Gesundheitscoaches und medizinische Experten",
+      "phase": "llm"
+    },
+    "discover.wellnessServices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.wellnessServicesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Entdecke Yoga, Massage, Tanz, Therapie und Erholungsservices",
+      "phase": "llm"
+    },
+    "discover.communityGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.communityGroupsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Tritt Meetups und Gruppen bei und vernetze dich mit Gleichgesinnten",
+      "phase": "llm"
+    },
+    "discover.explore": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
+      "suggested": "Erkunde",
+      "phase": "llm"
+    },
+    "discover.aiPicksForYou": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "KI-Empfehlungen für dich",
+      "phase": "llm"
+    },
+    "discover.recommendedForYou": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Für dich empfohlen",
+      "phase": "llm"
+    },
+    "discover.moreToExplore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.seeAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.suggestedForYou": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Für dich empfohlen",
+      "phase": "llm"
+    },
+    "discover.browseCategories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.shareAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.shareAndEarnDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.start": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.view": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchPerfect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchGreat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.matchGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.noResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.noResultsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Versuche andere Suchbegriffe oder durchsuche die Kategorien.",
+      "phase": "llm"
+    },
+    "discover.categories.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.movement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.mind": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.categories.experts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.viewCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.bookAppointment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.quickCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.trackOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.reorderPrevious": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.managePayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.findServicesNearMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.quickActions.viewSavedItems": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "KI-Empfehlungen für dich",
+      "phase": "llm"
+    },
+    "discover.aiPicks.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Ihrem' instead of informal 'deinem'.",
+      "suggested": "Personalisierte Empfehlungen basierend auf deinem Vitana Index, Biomarkern und Gesundheitszielen",
+      "phase": "llm"
+    },
+    "discover.aiPicks.backToDiscover": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Entdecken' is a verb here, making the phrase awkward. Should be a noun.",
+      "suggested": "Zurück zur Entdeckung",
+      "phase": "llm"
+    },
+    "discover.aiPicks.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.unavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.unavailableDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Ihre' instead of informal 'deine'. Omits 'right now'.",
+      "suggested": "Wir konnten deine personalisierten Empfehlungen im Moment nicht laden",
+      "phase": "llm"
+    },
+    "discover.aiPicks.recommendationsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.noRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.aiPicks.noRecommendationsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Wählen Sie' instead of informal 'Wähle'.",
+      "suggested": "Wähle einen anderen Filter, um mehr Empfehlungen zu sehen",
+      "phase": "llm"
+    },
+    "discover.aiPicks.viewAllPicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.experts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.filters.deals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.toast.actionSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.toast.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:09:49.163Z"
+}

@@ -1,0 +1,193 @@
+{
+  "verdicts": {
+    "connectedApps.sections.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "connectedApps.popup.categories.social": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "connectedApps.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal Sie-form instead of informal du-form).",
+      "suggested": "Verwalte deine verbundenen Geräte und Dienste",
+      "phase": "llm"
+    },
+    "connectedApps.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.addApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.syncing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Meaning slightly off; 'synchronisiert' means 'synced' (past participle/state), not 'syncing' (present participle/ongoing action).",
+      "suggested": "Synchronisierung läuft",
+      "phase": "llm"
+    },
+    "connectedApps.sections.social": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.notConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.soon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.configure": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.lastSync": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender agreement for 'Sync' (usually masculine in German tech slang).",
+      "suggested": "Letzter Sync",
+      "phase": "llm"
+    },
+    "connectedApps.dataSync": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Synchronisation' is the noun, not the ongoing action implied by 'syncing'.",
+      "suggested": "Daten-Synchronisierung läuft",
+      "phase": "llm"
+    },
+    "connectedApps.comingSoonMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.categories.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.categories.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.availableApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.verified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.noResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connectionSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connectionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:07:27.260Z"
+}

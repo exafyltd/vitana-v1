@@ -1,0 +1,78 @@
+{
+  "verdicts": {
+    "editProfile.showcaseTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "editProfile.unsavedChanges": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form); 'verlassen möchten' is a bit formal for 'leave' in this context.",
+      "suggested": "Du hast ungespeicherte Änderungen. Bist du sicher, dass du gehen möchtest?",
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Bitte melde dich an, um dein Profil zu speichern.",
+      "phase": "llm"
+    },
+    "editProfile.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.profileUpdatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form).",
+      "suggested": "Deine Änderungen sind jetzt live. Dein VITANA-Profil sieht großartig aus.",
+      "phase": "llm"
+    },
+    "editProfile.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.refreshFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.showcaseHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (Sie-form instead of du-form); 'angezeigt werden sollen' is not the best translation for 'to highlight'.",
+      "suggested": "Wähle Posts und Inhalte aus, die oben in deinem Profil hervorgehoben werden sollen.",
+      "phase": "llm"
+    },
+    "editProfile.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.addBio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.tapToEdit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:10:06.423Z"
+}
