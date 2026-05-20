@@ -53,8 +53,8 @@
       "generatePlan": "Plan generieren",
       "generating": "Wird generiert..."
     },
-    "noSupplements": "Noch keine Nahrungsergänzungsmittel",
-    "noSupplementsDesc": "Verfolge deine täglichen Vitamine, Mineralien und Nahrungsergänzungsmittel. Füge dein erstes Supplement hinzu, um zu starten.",
+    "noSupplements": "Noch keine Nahrungsergänzungs-Mittel",
+    "noSupplementsDesc": "Verfolge deine täglichen Vitamine, Mineralien und Nahrungsergänzungs-Mittel. Füge dein erstes Supplement hinzu, um zu starten.",
     "noReports": "Noch keine Gesundheitsberichte",
     "noReportsDesc": "Lade deine Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
     "medical": "Medizin",
@@ -65,14 +65,14 @@
     "uploadFirstReport": "Ersten Bericht hochladen",
     "missionAlignment": {
       "title": "Mission-Ausrichtung",
-      "subtitle": "Wie deine Empfehlungen die fünf Säulen und die Langlebigkeitswirtschaft unterstützen",
+      "subtitle": "Wie deine Empfehlungen die fünf Säulen und die Langlebigkeits-Wirtschaft unterstützen",
       "loading": "Mission-Daten werden geladen…",
       "error": "Mission-Daten konnten nicht geladen werden",
       "noRecs": "Noch keine Empfehlungen in deiner Warteschlange.",
       "summaryServed": "{pct}% deiner Empfehlungen unterstützen die Mission",
       "summaryServedCount": "{served} von {total} Empfehlungen ausgerichtet",
       "pillarHeading": "Säulen unterstützt",
-      "economyHeading": "Langlebigkeitswirtschaft",
+      "economyHeading": "Langlebigkeits-Wirtschaft",
       "noPillar": "Nicht auf die Säulen ausgerichtet",
       "noEconomy": "Nicht auf die Wirtschaft ausgerichtet",
       "pillars": {

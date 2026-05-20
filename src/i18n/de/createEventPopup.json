@@ -101,7 +101,7 @@
       "imageGenerated": "Bild generiert!",
       "imageGeneratedDesc": "KI-generiertes Bild wurde deinem Event hinzugefügt.",
       "rateLimitReached": "Limit erreicht",
-      "rateLimitDesc": "Zu viele Bildgenerierungsanfragen. Bitte versuche es gleich noch einmal.",
+      "rateLimitDesc": "Zu viele Bildgenerierungs-Anfragen. Bitte versuche es gleich noch einmal.",
       "creditsRequired": "Credits erforderlich",
       "creditsDesc": "KI-Bildgenerierungs-Credits aufgebraucht. Bitte lade Credits auf.",
       "permissionDenied": "Zugriff verweigert",

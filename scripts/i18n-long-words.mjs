@@ -45,6 +45,14 @@ if (!fs.existsSync(dir)) {
 // Words = unicode-letter runs of length >= MAX.
 const wordRx = new RegExp(`[A-Za-zÄÖÜäöüßéàèùâêîôûïëçñáíóúýÝÁÍÓÚČĆĐŠŽčćđšž]{${MAX},}`, 'gu');
 
+// Allowlist: monotonic repeating placeholders ("ACxxxxx...") used in legal
+// templates as visual fillers. Not real words; the catalog has them on purpose.
+function isPlaceholder(word) {
+  if (/^[A-Z]{2}x{10,}$/.test(word)) return true;
+  if (/^x{10,}$/i.test(word)) return true;
+  return false;
+}
+
 function flatten(obj, prefix = '') {
   const out = {};
   for (const k in obj) {
@@ -82,7 +90,7 @@ for (const f of fs.readdirSync(dir).sort()) {
   for (const k in flat) {
     const v = flat[k];
     if (typeof v !== 'string') continue;
-    const matches = [...v.matchAll(wordRx)].map((m) => m[0]);
+    const matches = [...v.matchAll(wordRx)].map((m) => m[0]).filter((w) => !isPlaceholder(w));
     if (matches.length === 0) continue;
     flagged.push({ shard: f.replace('.json', ''), file: f, key: k, value: v, words: matches });
   }

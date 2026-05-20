@@ -3,16 +3,16 @@
     "title": "Datenschutz- & Berechtigungsaktionen",
     "items": {
       "privacySettings": {
-        "title": "Datenschutzeinstellungen",
+        "title": "Datenschutz-Einstellungen",
         "description": "Datenschutz- und Freigabeeinstellungen konfigurieren"
       },
       "manageAccess": {
         "title": "Zugriff verwalten",
-        "description": "Steuern, wer deine Gesundheitserinnerungen sehen darf"
+        "description": "Steuern, wer deine Gesundheits-Erinnerungen sehen darf"
       },
       "securitySettings": {
-        "title": "Sicherheitseinstellungen",
-        "description": "Authentifizierungs- und Sicherheitseinstellungen aktualisieren"
+        "title": "Sicherheits-Einstellungen",
+        "description": "Authentifizierungs- und Sicherheits-Einstellungen aktualisieren"
       },
       "apiKeysAccess": {
         "title": "API-Schlüssel & Zugriff",
@@ -27,7 +27,7 @@
         "description": "Zugriffsverlauf und Sicherheits-Audit-Trail einsehen"
       },
       "permissionSettings": {
-        "title": "Berechtigungseinstellungen",
+        "title": "Berechtigungs-Einstellungen",
         "description": "Granulare Berechtigungen für verschiedene Funktionen feinabstimmen"
       },
       "exportData": {
