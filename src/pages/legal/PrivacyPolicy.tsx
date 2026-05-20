@@ -47,7 +47,7 @@ const PrivacyPolicy = () => {
             {t('screens.legal.privacyPolicyForMaxinaMobileApplication')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text6thApril2026')}
+            <strong>{t('screens.legal.effectiveDate')}</strong>{' '}{t('screens.legal.text6thApril2026')}
           </p>
 
           <p className="text-foreground/90 leading-relaxed">{t('screens.legal.thankYouForChoosingUseMaxina')}
@@ -235,7 +235,7 @@ const PrivacyPolicy = () => {
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.legal.lastUpdated')}</strong>{t('screens.legal.text6thApril2026')}
+              <strong>{t('screens.legal.lastUpdated')}</strong>{' '}{t('screens.legal.text6thApril2026')}
             </p>
             <p className="text-sm text-muted-foreground mt-4">{t('screens.legal.byUsingMaxinaMobileApplicationYou')}
             </p>
