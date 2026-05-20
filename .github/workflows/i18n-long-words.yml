@@ -1,0 +1,71 @@
+name: i18n long-word splitter
+
+# Splits long compound words in the catalog by inserting hyphens at natural
+# boundaries. German is the primary target ("Benachrichtigungseinstellungen"
+# → "Benachrichtigungs-Einstellungen") but the rule applies to every locale.
+#
+# Triggers:
+#   - workflow_dispatch (manual)
+#
+# Output: catalog updates + docs/i18n-long-words-<locale>.md report,
+# committed back to the dispatching branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      locale:
+        description: 'Target locale (de, sr, ar, es, ru, zh, fr, pt, pl)'
+        required: true
+        default: 'de'
+      max_word_length:
+        description: 'Words longer than this get split (default 22)'
+        required: false
+        default: '22'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i18n-long-words-${{ github.event.inputs.locale }}
+  cancel-in-progress: false
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run splitter
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+        run: |
+          node scripts/i18n-long-words.mjs --locale=${{ inputs.locale }} --max-word-length=${{ inputs.max_word_length }}
+
+      - name: Commit + push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/i18n/ docs/
+          if git diff --cached --quiet; then
+            echo "No long-word splits applied."
+            exit 0
+          fi
+          git commit -m "chore(i18n): split long compound words via Gemini for ${{ inputs.locale }}"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin ${{ github.ref_name }} || true
+            if git push origin HEAD:${{ github.ref_name }}; then
+              echo "push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed — backing off"
+            sleep $((5 * i))
+          done
+          echo "push failed after 5 attempts"
+          exit 1

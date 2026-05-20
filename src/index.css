@@ -1165,3 +1165,22 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   background: linear-gradient(180deg, hsl(201 90% 74%) 0%, hsl(201 75% 65%) 100%);
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+   Long-word safety net.
+   German compound words (e.g. "Datenschutz-Einstellungen") and
+   user-supplied content (URLs, long event titles) can overflow narrow
+   mobile layouts. The catalog uses hyphens at compound boundaries — this
+   CSS gives the browser permission to break on those hyphens AND on
+   syllable boundaries when no hyphen exists. Requires <html lang>
+   to be set (LanguageContext sets it). Apply to text-bearing primitives.
+   ───────────────────────────────────────────────────────────────────── */
+.text-wrap-safe,
+h1, h2, h3, h4, h5, h6,
+.card-title, .card-description,
+[data-hyphens="auto"] {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+

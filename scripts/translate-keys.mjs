@@ -268,6 +268,7 @@ Rules:
 - Keep emojis intact.
 - For brand names (Vitana, MAXINA, Lovable, Exafy), do not translate.
 - Match length and tone to short UI labels — these are toast notifications, button labels, error messages.
+- **Compound-word rule**: never produce a single word longer than 22 characters. For ${TARGET_LANG_NAME} compounds that would exceed that, insert a hyphen at the natural compound boundary. Example (German): "Benachrichtigungseinstellungen" → "Benachrichtigungs-Einstellungen". Example (German): "Datenschutzerklärung" → "Datenschutz-Erklärung". Prefer hyphenated splits over paraphrasing.
 - Do not add any text outside the JSON object.
 
 Strings:
