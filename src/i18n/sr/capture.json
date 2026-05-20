@@ -5,7 +5,7 @@
     "recording": "Snimanje",
     "tapToRecord": "Dodirni da započneš snimanje",
     "tapToDescribe": "Dodirni mikrofon da opišeš problem",
-    "liveTranscription": "Prenos uživo",
+    "liveTranscription": "Transkripcija uživo",
     "yourVoiceEntry": "Tvoj glasovni unos",
     "yourFeedback": "Tvoja povratna informacija",
     "startSpeaking": "Počni da govoriš...",
@@ -41,6 +41,6 @@
     "sendFailed": "Slanje neuspešno",
     "sendFailedDesc": "Nije moguće poslati tvoju povratnu informaciju. Pokušaj ponovo.",
     "recognitionError": "Greška u prepoznavanju",
-    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušajte ponovo."
+    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo."
   }
 }

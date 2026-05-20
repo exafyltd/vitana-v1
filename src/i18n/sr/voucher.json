@@ -2,7 +2,7 @@
   "voucher": {
     "modal": {
       "title": "Pokloni Maxina Vaučer",
-      "subtitle": "Poklonite dobrobit i povezanost sa zajednicom",
+      "subtitle": "Pokloni dobrobit i povezanost sa zajednicom",
       "buyVoucher": "Kupi vaučer",
       "openingCheckout": "Otvaranje sigurnog checkout-a..."
     },
@@ -19,7 +19,7 @@
     },
     "success": {
       "title": "Vaučer kupljen!",
-      "ready": "Vaš {tier} vaučer je spreman",
+      "ready": "Tvoj {tier} vaučer je spreman",
       "download": "Preuzmi vaučer",
       "sendEmail": "Pošalji primaocu e-poštom",
       "viewOrders": "Pogledaj u porudžbinama",
@@ -36,7 +36,7 @@
       "send": "Pošalji vaučer"
     },
     "preview": {
-      "title": "Vaš vaučer",
+      "title": "Tvoj vaučer",
       "giftVoucher": "Poklon vaučer",
       "validUntil": "Važi do {date}",
       "voucherCode": "Kod vaučera",

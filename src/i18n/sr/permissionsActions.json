@@ -1,10 +1,10 @@
 {
   "permissionsActions": {
-    "title": "Radnje privatnosti i dozvola",
+    "title": "Postavke privatnosti i dozvola",
     "items": {
       "privacySettings": {
         "title": "Podešavanja privatnosti",
-        "description": "Konfigurišite privatnost podataka i podešavanja deljenja"
+        "description": "Konfiguriši privatnost podataka i podešavanja deljenja"
       },
       "manageAccess": {
         "title": "Upravljaj pristupom",

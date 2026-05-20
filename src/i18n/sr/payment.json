@@ -10,14 +10,14 @@
     "exchangeSuccess": "Razmena i slanje uspešni! ✨",
     "exchangeSuccessDesc": "Konvertovano i poslato {amount}",
     "insufficientBalance": "Nedovoljno sredstava",
-    "insufficientBalanceDesc": "Nemate dovoljno {currency} za ovu razmenu",
+    "insufficientBalanceDesc": "Nemaš dovoljno {currency} za ovu razmenu",
     "transactionFailed": "Transakcija neuspešna",
     "paymentFailed": "Plaćanje neuspešno",
-    "paymentFailedDesc": "Obrada plaćanja nije uspela. Pokušajte ponovo.",
+    "paymentFailedDesc": "Obrada plaćanja nije uspela. Pokušaj ponovo.",
     "balanceRefreshed": "Stanje osveženo",
     "balanceRefreshedDesc": "Stanje novčanika je ažurirano",
     "refreshFailed": "Osvežavanje neuspešno",
-    "refreshFailedDesc": "Osvežavanje stanja nije uspelo. Pokušajte ponovo.",
+    "refreshFailedDesc": "Osvežavanje stanja nije uspelo. Pokušaj ponovo.",
     "error": "Greška"
   }
 }

@@ -29,7 +29,7 @@
     "popup": {
       "title": "Autopilot akcije",
       "selectedOf": "{selected} od {total} izabrano",
-      "readyToExecute": "Spremni za izvršenje {count} akcija koje je pripremio tvoj AI asistent.",
+      "readyToExecute": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
       "executingTitle": "Izvršavanje akcija...",
       "executingDesc": "Sačekaj dok AI obrađuje tvoje zahteve",
       "complete": "{percent}% završeno",
@@ -39,7 +39,7 @@
       "seeAllInAI": "Pogledaj sve u AI inteligenciji →",
       "moreActions": "+{count} još akcija",
       "toastExecutedTitle": "Akcije izvršene",
-      "toastExecutedDesc": "{success}/{total} akcija uspešno završeno",
+      "toastExecutedDesc": "{success}/{total} akcija uspešno završene",
       "toastFailedTitle": "Izvršenje neuspešno",
       "toastFailedDesc": "Nešto je pošlo po zlu. Pokušaj ponovo."
     },
@@ -91,7 +91,7 @@
     },
     "actions": {
       "action1Title": "Pridruži se Longevity Plesnoj Grupi večeras?",
-      "action1Reason": "Savršen spoj za tvoje ciljeve kretanja + društveni wellness vibracije",
+      "action1Reason": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
       "action2Title": "AI probojni uvid upravo objavljen",
       "action2Reason": "Tvoj digitalni blizanac je otkrio nešto fascinantno iz tvojih obrazaca",
       "action3Title": "Hidratacioni niz od 5 dana — Legenda te čeka",

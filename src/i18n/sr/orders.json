@@ -2,8 +2,8 @@
   "orders": {
     "myOrders": "Moje porudžbine",
     "title": "Porudžbine",
-    "description": "Vaša istorija porudžbina i aktivne pretplate",
-    "trackDescription": "Pratite svoje porudžbine proizvoda i karte za događaje",
+    "description": "Tvoja istorija porudžbina i aktivne pretplate",
+    "trackDescription": "Prati svoje porudžbine proizvoda i karte za događaje",
     "searchPlaceholder": "Pretraži porudžbine...",
     "tabs": {
       "active": "Aktivno",
@@ -20,23 +20,23 @@
       "services": "Usluge",
       "refunds": "Povraćaji"
     },
-    "previewNotice": "Ovo su probne porudžbine. Vaše stvarne porudžbine će se pojaviti ovde.",
+    "previewNotice": "Ovo su probne porudžbine. Tvoje stvarne porudžbine će se pojaviti ovde.",
     "sampleData": "Probni podaci",
     "emptyActive": {
       "title": "Nema aktivnih porudžbina",
-      "description": "Nemate aktivnih porudžbina ili predstojećih događaja."
+      "description": "Nemaš aktivnih porudžbina ili predstojećih događaja."
     },
     "emptyHistory": {
       "title": "Nema istorije porudžbina",
-      "description": "Vaše završene porudžbine i prošli događaji će se pojaviti ovde."
+      "description": "Tvoje završene porudžbine i prošli događaji će se pojaviti ovde."
     },
     "noOrders": "Još uvek nema porudžbina",
-    "noOrdersDesc": "Vaše porudžbine će se pojaviti ovde nakon što obavite kupovinu.",
+    "noOrdersDesc": "Tvoje porudžbine će se pojaviti ovde nakon što obaviš kupovinu.",
     "browseProducts": "Pregledaj proizvode",
     "findEvents": "Pronađi događaje",
     "startShopping": "Započni kupovinu",
     "noFilter": "Nema {filter}",
-    "noFilterDesc": "Nema {filter} u vašoj istoriji.",
+    "noFilterDesc": "Nema {filter} u tvojoj istoriji.",
     "orderDate": "Datum porudžbine",
     "orderNumber": "Broj porudžbine",
     "viewDetails": "Prikaži detalje",

@@ -1,9 +1,9 @@
 {
   "tasks": {
     "noOpenTasks": "Nema otvorenih zadataka",
-    "confirmCancelTask": "Da li ste sigurni da želite da otkažete ovaj zadatak?",
+    "confirmCancelTask": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
     "postponeComingSoon": "Funkcija odlaganja uskoro stiže",
-    "addNotePrompt": "Dodajte belešku ovom zadatku:",
+    "addNotePrompt": "Dodaj belešku ovom zadatku:",
     "noteAdded": "Beleška dodata: {note}",
     "navigateTo": "Idi na: {url}",
     "openVtid": "Otvori VTID: {vtid}",
