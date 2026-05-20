@@ -51,7 +51,7 @@
     "toast": {
       "linkCopied": "Enlace copiado",
       "linkCopiedDesc": "Enlace de música copiado al portapapeles",
-      "filtersCleared": "Filtros limpiados",
+      "filtersCleared": "Filtros borrados",
       "filtersClearedDesc": "Mostrando todos los cortos",
       "podcastDeleted": "Podcast eliminado",
       "podcastDeletedDesc": "Tu podcast se ha eliminado correctamente.",
@@ -108,7 +108,7 @@
       "hostGuest": "Anfitrión / Invitado",
       "hostGuestPlaceholder": "Nombre del anfitrión, Nombre del invitado",
       "language": "Idioma",
-      "languagePlaceholder": "Ej., Español",
+      "languagePlaceholder": "Ej., Inglés",
       "topic": "Tema / Categoría",
       "topicPlaceholder": "Ej., Bienestar, Fitness",
       "tags": "Etiquetas",

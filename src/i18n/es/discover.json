@@ -1,7 +1,7 @@
 {
   "discover": {
     "title": "Descubre tu Mercado de Longevidad",
-    "mobileTitle": "Descubrir",
+    "mobileTitle": "Descubre",
     "mobileDescription": "Explora experiencias, personas y bienestar",
     "description": "Encuentra médicos, servicios de bienestar y grupos comunitarios perfectamente adaptados a tu viaje de envejecimiento saludable.",
     "searchPlaceholder": "¿Qué estás buscando? (ej., clases de yoga, médico de longevidad, reuniones)",
@@ -11,7 +11,7 @@
     "wellnessServicesDesc": "Descubre yoga, masajes, baile, terapia y servicios de recuperación",
     "communityGroups": "Grupos Comunitarios",
     "communityGroupsDesc": "Únete a reuniones, grupos y conéctate con personas afines",
-    "explore": "Explorar",
+    "explore": "Explora",
     "aiPicksForYou": "Selecciones de IA para ti",
     "recommendedForYou": "Recomendado para ti",
     "moreToExplore": "Más para explorar",
@@ -21,7 +21,7 @@
     "all": "Todo",
     "shareAndEarn": "Comparte y Gana",
     "shareAndEarnDesc": "Recomienda productos, gana comisiones",
-    "start": "Comenzar",
+    "start": "Comienza",
     "view": "Ver",
     "matchPerfect": "Match Perfecto",
     "matchGreat": "Gran Match",
@@ -42,7 +42,7 @@
       "bookAppointment": "Reservar Cita",
       "quickCheckout": "Compra Rápida",
       "trackOrders": "Seguir Pedidos",
-      "reorderPrevious": "Reordenar Anterior",
+      "reorderPrevious": "Reordena lo anterior",
       "managePayment": "Gestionar Pago",
       "findServicesNearMe": "Buscar Servicios Cerca de Mí",
       "viewSavedItems": "Ver Artículos Guardados"
