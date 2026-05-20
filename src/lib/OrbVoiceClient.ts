@@ -227,6 +227,31 @@ export class OrbVoiceClient {
         this.wakeBrief = data.meta.wake_brief;
       }
 
+      // VTID-03107: voice quota snapshot from session start. If the gateway
+      // started the session in `standard` tier (quota exhausted with degrade
+      // behavior), fire the same window event OrbDegradeBanner / OrbTierBadge
+      // listen for. They already know how to render the once-per-day banner
+      // and persist the tier flag.
+      try {
+        const vq = (data.meta as Record<string, unknown> | undefined)?.voice_quota as
+          | { tier?: string; reason?: string; paywall_action?: string; deferred_for_vulnerability?: boolean }
+          | undefined;
+        if (vq && vq.tier === 'standard' && !vq.deferred_for_vulnerability) {
+          window.dispatchEvent(
+            new CustomEvent('vitana:orb-tier-downgraded', {
+              detail: {
+                new_tier: 'standard',
+                reason: vq.reason || (vq.paywall_action === 'degrade' ? 'daily_quota' : 'plan_exhausted'),
+                feature: 'voice_live_minutes',
+              },
+            })
+          );
+          console.log('[VTID-03107] Session started in Standard tier — dispatched tier-downgrade event');
+        }
+      } catch (err) {
+        console.warn('[VTID-03107] Failed to evaluate voice_quota meta:', err);
+      }
+
       // VTID-02919: flush the pending wake_clicked event captured at
       // the user-gesture moment. The POST happens after session-start
       // returns (which is when we have a sessionId), but the `at`
