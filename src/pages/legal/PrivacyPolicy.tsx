@@ -124,6 +124,11 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.provideMaintainService')}</strong> {t('screens.legal.weUseYourDataEnableCore')}</li>
+            <li><strong>{t('screens.legal.improveApp')}</strong> {t('screens.legal.improveAppDescription')}</li>
+            <li><strong>{t('screens.legal.communicateWithYou')}</strong> {t('screens.legal.communicateWithYouDescription')}</li>
+            <li><strong>{t('screens.legal.personalizeUserExperience')}</strong> {t('screens.legal.personalizeUserExperienceDescription')}</li>
+            <li><strong>{t('screens.legal.provideAiFeatures')}</strong> {t('screens.legal.provideAiFeaturesDescription')}</li>
+            <li><strong>{t('screens.legal.complyLegalObligations')}</strong> {t('screens.legal.complyLegalObligationsDescription')}</li>
           </ul>
 
           {/* Section 5 */}
@@ -156,7 +161,13 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.durationYourRelationshipWithUsE')}</li>
+            <li>{t('screens.legal.legalRetentionObligations')}</li>
+            <li>{t('screens.legal.securityFraudPreventionReasons')}</li>
+            <li>{t('screens.legal.legalClaimsDefense')}</li>
           </ul>
+          <p className="text-foreground/90 leading-relaxed mt-4">
+            {t('screens.legal.retentionAnonymizeDelete')}
+          </p>
 
           {/* Section 8 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
