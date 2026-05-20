@@ -273,10 +273,10 @@
     "buttons.generating": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect verb form for an ongoing process. 'Generišem' means 'I am generating'.",
+      "issue": "Incorrect person/tense. 'Generišem' means 'I am generating,' but the English 'Generating...' implies an impersonal, ongoing process.",
       "suggested": "Generisanje...",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:44:32.080Z"
+  "generatedAt": "2026-05-20T07:01:47.273Z"
 }

@@ -33,7 +33,7 @@
     "historyManagement.exportHistoryDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Missing 'data' in translation; 'aktivnosti' means 'activities', not 'activity data'.",
+      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
       "suggested": "Preuzmi podatke o svojim aktivnostima (CSV/JSON)",
       "phase": "llm"
     },
@@ -55,8 +55,8 @@
     "historyManagement.advancedSearchDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'date range' translated as 'date' (datumu), losing the 'range' aspect.",
-      "suggested": "Filtriraj po opsegu datuma, kategoriji, ključnim rečima",
+      "issue": "'date range' is translated as 'date' ('datumu'), losing the 'range' aspect.",
+      "suggested": "Filtriraj po rasponu datuma, kategoriji, ključnim rečima",
       "phase": "llm"
     },
     "historyManagement.bulkActions": {
@@ -117,29 +117,23 @@
     "historyManagement.deleteAllHistoryDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Missing 'data' in translation; 'aktivnosti' means 'activities', not 'activity data'.",
+      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
       "suggested": "Trajno ukloni sve sačuvane podatke o aktivnostima",
       "phase": "llm"
     },
     "historyManagement.exporting": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "First-person singular verb ('I am exporting') is inappropriate for a UI status message.",
-      "suggested": "Izvoz u toku...",
       "phase": "llm"
     },
     "historyManagement.clearing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "First-person singular verb ('I am clearing') is inappropriate for a UI status message.",
-      "suggested": "Brisanje u toku...",
       "phase": "llm"
     },
     "historyManagement.deleting": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "First-person singular verb ('I am deleting') is inappropriate for a UI status message.",
-      "suggested": "Brisanje u toku...",
       "phase": "llm"
     },
     "historyManagement.exportComplete": {
@@ -198,10 +192,8 @@
       "phase": "llm"
     },
     "historyManagement.deleteFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'your' for direct address, less personal for a friendly app.",
-      "suggested": "Došlo je do greške prilikom brisanja tvoje istorije.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "historyManagement.confirmClearOld": {
@@ -210,10 +202,8 @@
       "phase": "llm"
     },
     "historyManagement.confirmDeleteAll": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'History' translated as 'data' instead of 'history'.",
-      "suggested": "⚠️ UPOZORENJE: Ovo će trajno obrisati SVU tvoju istoriju. Ova radnja se ne može poništiti. Jesi li apsolutno siguran/na?",
       "phase": "llm"
     },
     "historyManagement.danger": {
@@ -222,5 +212,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:52:40.989Z"
+  "generatedAt": "2026-05-20T07:04:03.934Z"
 }

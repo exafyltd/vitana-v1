@@ -118,25 +118,22 @@
       "phase": "llm"
     },
     "toasts.success.loggedIn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific (masculine). A gender-neutral noun phrase is preferred for UI status messages.",
-      "suggested": "Uspešna prijava",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.success.loggedInDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific (masculine). While 'Dobrodošao' is du-form, 'Dobrodošli' is the more common and inclusive idiom for a general welcome, even if technically Vi-form.",
-      "suggested": "Dobrodošli nazad!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.success.loggedOut": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific (masculine). A gender-neutral noun phrase is preferred for UI status messages.",
-      "suggested": "Uspešna odjava",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.success.loggedOutDesc": {
       "verdict": "OK",
@@ -144,11 +141,10 @@
       "phase": "llm"
     },
     "toasts.success.subscribed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific (masculine). A gender-neutral noun phrase is preferred for UI status messages.",
-      "suggested": "Uspešna pretplata",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.success.subscribedDesc": {
       "verdict": "OK",
@@ -156,11 +152,10 @@
       "phase": "llm"
     },
     "toasts.success.unsubscribed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific (masculine). A gender-neutral noun phrase is preferred for UI status messages.",
-      "suggested": "Uspešna odjava",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.success.unsubscribedDesc": {
       "verdict": "OK",
@@ -253,11 +248,10 @@
       "phase": "llm"
     },
     "toasts.success.bulkEnabledDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Izaberite', 'vaše') instead of informal 'ti' form.",
-      "suggested": "Izaberi stavke iz tvoje vremenske linije za grupne radnje.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.generic": {
       "verdict": "OK",
@@ -265,11 +259,10 @@
       "phase": "llm"
     },
     "toasts.error.genericDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Molimo', 'pokušajte') instead of informal 'ti' form.",
-      "suggested": "Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.network": {
       "verdict": "OK",
@@ -277,39 +270,34 @@
       "phase": "llm"
     },
     "toasts.error.networkDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Molimo', 'proverite') instead of informal 'ti' form.",
-      "suggested": "Proveri internet vezu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.notAuthenticated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Niste') instead of informal 'ti' form.",
-      "suggested": "Nisi prijavljen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.notAuthenticatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Molimo', 'prijavite se', 'nastavite') instead of informal 'ti' form.",
-      "suggested": "Prijavi se da nastaviš.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.notAuthorized": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Niste') instead of informal 'ti' form.",
-      "suggested": "Nisi autorizovan.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.notAuthorizedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Nemate') instead of informal 'ti' form.",
-      "suggested": "Nemaš dozvolu za ovu radnju.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.saveFailed": {
       "verdict": "OK",
@@ -317,11 +305,10 @@
       "phase": "llm"
     },
     "toasts.error.saveFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Vaše') instead of informal 'ti' form.",
-      "suggested": "Tvoje izmene nisu mogle biti sačuvane.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.loadFailed": {
       "verdict": "OK",
@@ -359,11 +346,10 @@
       "phase": "llm"
     },
     "toasts.error.sendFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('Vaša') instead of informal 'ti' form.",
-      "suggested": "Tvoja poruka nije mogla biti poslata.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.connectionFailed": {
       "verdict": "OK",
@@ -381,11 +367,10 @@
       "phase": "llm"
     },
     "toasts.error.validationFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: uses formal 'proverite' instead of informal 'proveri'.",
-      "suggested": "Molimo proveri svoje unose.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.sessionExpired": {
       "verdict": "OK",
@@ -393,11 +378,10 @@
       "phase": "llm"
     },
     "toasts.error.sessionExpiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: uses formal 'prijavite se' instead of informal 'prijavi se'.",
-      "suggested": "Molimo prijavi se ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.serverError": {
       "verdict": "OK",
@@ -405,11 +389,10 @@
       "phase": "llm"
     },
     "toasts.error.serverErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: uses formal 'pokušajte' instead of informal 'pokušaj'.",
-      "suggested": "Molimo pokušaj ponovo kasnije.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.error.notFound": {
       "verdict": "OK",
@@ -447,11 +430,10 @@
       "phase": "llm"
     },
     "toasts.info.processingDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: uses formal 'sačekajte' instead of informal 'sačekaj'.",
-      "suggested": "Molimo sačekaj trenutak.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.info.updating": {
       "verdict": "OK",
@@ -489,11 +471,10 @@
       "phase": "llm"
     },
     "toasts.warning.unsavedChangesDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: mixes formal 'Imate' with informal 'Želiš li'. Should be consistently informal.",
-      "suggested": "Imaš nesačuvane izmene. Želiš li da nastaviš?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.warning.limitReached": {
       "verdict": "OK",
@@ -541,11 +522,10 @@
       "phase": "llm"
     },
     "toasts.common.notLogged": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal/plural 'vi' instead of informal singular 'ti'.",
-      "suggested": "Nisi prijavljen/a",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.common.pleaseLogCreateGroup": {
       "verdict": "OK",
@@ -858,11 +838,10 @@
       "phase": "llm"
     },
     "toasts.common.preparingYourDataExport": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Subject mismatch: English is impersonal/system-driven, Serbian uses first-person singular 'I'.",
-      "suggested": "Priprema se izvoz podataka...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.common.activitySavedMemory": {
       "verdict": "OK",
@@ -940,11 +919,10 @@
       "phase": "llm"
     },
     "toasts.admin.pleaseEnterYourGeminiApiKey": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: uses formal/polite 'vi' form ('unesite') instead of informal 'du' form.",
-      "suggested": "Molimo te, unesi svoj Gemini API ključ",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.apiKeyValid": {
       "verdict": "OK",
@@ -952,11 +930,10 @@
       "phase": "llm"
     },
     "toasts.admin.yourGeminiApiKeyWorkingCorrectly": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: uses formal/polite 'vi' form ('Vaš') instead of informal 'du' form.",
-      "suggested": "Tvoj Gemini API ključ ispravno radi",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.invalidApiKey": {
       "verdict": "OK",
@@ -979,11 +956,10 @@
       "phase": "llm"
     },
     "toasts.admin.invalidHeaders": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatical agreement: adjective 'Nevažeći' (masculine singular) does not agree with noun 'zaglavlja' (neuter plural).",
-      "suggested": "Nevažeća zaglavlja",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.headersMustValidJson": {
       "verdict": "OK",
@@ -1016,11 +992,10 @@
       "phase": "llm"
     },
     "toasts.admin.pleaseProvideBothNameValue": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: uses formal 'navedite' instead of informal 'navedi' for du-form.",
-      "suggested": "Molimo te, navedi i ime i vrednost",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.credentialAdded": {
       "verdict": "OK",
@@ -1403,11 +1378,10 @@
       "phase": "llm"
     },
     "toasts.admin.pleaseSignCreateAutomations": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb form ('kreirao' - masculine) for an unknown user. Should be gender-neutral.",
-      "suggested": "Prijavi se da kreiraš automatizacije",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.failedSaveAutomationRule": {
       "verdict": "OK",
@@ -1440,18 +1414,16 @@
       "phase": "llm"
     },
     "toasts.admin.failedResolveReport": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing, slightly passive. 'Failed to X' is often better translated with an active verb construction.",
-      "suggested": "Nije uspelo rešiti izveštaj",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.approveAllFailed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning wrong. 'Odobri sve neuspešno' translates to 'Approve all unsuccessfully', not 'The action of approving all failed'.",
-      "suggested": "Nije uspelo odobriti sve",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.toggleFailed": {
       "verdict": "OK",
@@ -1509,11 +1481,10 @@
       "phase": "llm"
     },
     "toasts.admin.stayinlineOverridesSaved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning slightly off and awkward phrasing. 'Prevazilaženje zadržavanja' means 'overcoming retention'. 'Overrides' as a noun (plural) is better translated as 'premošćavanja', and 'stay-inline' needs a more specific translation like 'za zadržavanje u redu' or 'za prikaz u redu'.",
-      "suggested": "Premošćavanja za zadržavanje u redu su sačuvana",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.systemDocUpdatedAppliesAcrossAll": {
       "verdict": "OK",
@@ -1591,16 +1562,15 @@
       "phase": "llm"
     },
     "toasts.admin.pleaseEnterValidEmailAddress2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent. 'Unesite' is the formal 'vi' imperative. For a du-form (informal) app, 'unesi' should be used.",
-      "suggested": "Molimo unesi ispravnu email adresu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "phase": "llm-error"
     },
     "toasts.admin.selectAtLeastOneRole": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'ti' form.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Izaberi bar jednu ulogu.",
       "phase": "llm"
     },
@@ -1696,9 +1666,9 @@
     },
     "toasts.audio.failedToggleCamera": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The translation for 'toggle' only includes 'on' ('uključivanje') and misses 'off'.",
-      "suggested": "Uključivanje/isključivanje kamere nije uspelo",
+      "confidence": 0.9,
+      "issue": "The translation is specific to 'turning on' (uključivanje) and misses the 'toggle' nuance (on/off or switch state).",
+      "suggested": "Prebacivanje kamere nije uspelo.",
       "phase": "llm"
     },
     "toasts.audio.screenSharingStopped": {
@@ -1909,8 +1879,8 @@
     "toasts.community.yourEventCreatedButCouldnT": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency (vi-form instead of du-form). 'Osvežite' is vi-form, 'Osveži' is du-form.",
-      "suggested": "Osveži stranicu.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
+      "suggested": "Tvoj događaj je kreiran, ali nije mogao da se prikaže. Osveži stranicu.",
       "phase": "llm"
     },
     "toasts.community.roomEnded": {
@@ -1936,7 +1906,7 @@
     "toasts.community.pleaseSignJoinLiveRooms": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency (vi-form instead of du-form). 'Prijavite se' and 'da biste se pridružili' are vi-form.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Prijavi se da se pridružiš živim sobama.",
       "phase": "llm"
     },
@@ -2043,8 +2013,8 @@
     "toasts.community.thisExampleRoomCreateYourOwn": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency (vi-form instead of du-form). 'Napravite' and 'da biste krenuli' are vi-form.",
-      "suggested": "Ovo je primer sobe. Napravi svoju i kreni uživo!",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
+      "suggested": "Ovo je primer sobe. Napravi svoju da kreneš uživo!",
       "phase": "llm"
     },
     "toasts.crossover.bookingStarted": {
@@ -2068,10 +2038,8 @@
       "phase": "llm"
     },
     "toasts.crossover.joined": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "While 'Pridružen/a' is grammatically correct for a person, for an impersonal UI status like 'Joined', the neuter form 'Pridruženo' is more common and idiomatic in Serbian, avoiding explicit gender.",
-      "suggested": "✓ Pridruženo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.crossover.chatStarted": {
@@ -2157,8 +2125,8 @@
     "toasts.dev.reconnected": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gender mismatch. 'Reconnected' likely refers to the 'connection' (veza), which is feminine in Serbian. Therefore, the past participle should also be feminine.",
-      "suggested": "✅ Ponovo povezana",
+      "issue": "Missing feminine form for the past participle.",
+      "suggested": "✅ Ponovo povezan/a",
       "phase": "llm"
     },
     "toasts.dev.liveEventStreamRestored": {
@@ -2329,8 +2297,8 @@
     "toasts.diary.notAuthenticated": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Uses formal/plural 'Vi' form instead of informal 'ti' (du-form).",
-      "suggested": "Nisi autentifikovan",
+      "issue": "Formal register (Vi-form) and missing feminine form.",
+      "suggested": "Nisi autentifikovan/a",
       "phase": "llm"
     },
     "toasts.diary.pleaseLogSaveDiaryEntries": {
@@ -2344,10 +2312,8 @@
       "phase": "llm"
     },
     "toasts.diary.failedSaveDiaryEntry": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Translates 'diary' instead of 'diary entry'. More idiomatic phrasing for 'Failed to X'.",
-      "suggested": "Čuvanje dnevničkog unosa nije uspelo",
       "phase": "llm"
     },
     "toasts.diary.success": {
@@ -2361,10 +2327,8 @@
       "phase": "llm"
     },
     "toasts.diary.failedDeleteDiaryEntry": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Translates 'diary' instead of 'diary entry'. More idiomatic phrasing for 'Failed to X'.",
-      "suggested": "Brisanje dnevničkog unosa nije uspelo",
       "phase": "llm"
     },
     "toasts.diary.entryDeleted": {
@@ -2515,7 +2479,7 @@
     "toasts.discovery.theyLlNotifiedYourInterest": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Ambiguous passive voice. 'Obavestiće se' can mean 'it will be notified' or 'they will notify themselves', which is less direct than 'they will be notified'.",
+      "issue": "The Serbian 'Obavestiće se' is impersonal/passive reflexive, implying 'it will inform itself' or 'it will be informed'. The English 'They'll be notified' implies an active notification by someone/something else.",
       "suggested": "Biće obavešteni o tvom interesovanju.",
       "phase": "llm"
     },
@@ -2756,8 +2720,8 @@
     },
     "toasts.intents.ourSupportTeamWillReviewFollow": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'pratiti' is ambiguous for 'follow up'; 'javiti ti se' is more appropriate for informal context.",
+      "confidence": 0.9,
+      "issue": "The translation 'pratiti' (to follow/monitor) does not fully capture the nuance of 'follow up' (to take further action, to get back to someone).",
       "suggested": "Naš tim podrške će pregledati i javiti ti se.",
       "phase": "llm"
     },
@@ -2804,7 +2768,7 @@
     "toasts.intents.ifTheyReInterestedTooWe": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Used formal/plural 'vas' instead of informal singular 'te' for 'you'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Ako su i oni zainteresovani, povezaćemo te.",
       "phase": "llm"
     },
@@ -2826,7 +2790,7 @@
     "toasts.intents.addAtLeastOneVitanaid": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal imperative used instead of informal (du-form).",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Dodaj bar jedan @vitana-id",
       "phase": "llm"
     },
@@ -2863,8 +2827,8 @@
     "toasts.intents.heicheifFormatNotSupportedByBrowsers": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal imperative used instead of informal (du-form).",
-      "suggested": "HEIC/HEIF format nije podržan u pretraživačima. Molimo te, konvertuj u JPG ili PNG.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
+      "suggested": "HEIC/HEIF format nije podržan u pretraživačima. Molimo konvertuj u JPG ili PNG.",
       "phase": "llm"
     },
     "toasts.intents.coverPhotoUploaded": {
@@ -2880,7 +2844,7 @@
     "toasts.intents.youCanReplaceItAnyTime": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal verb conjugation used instead of informal (du-form).",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Možeš ga zameniti bilo kada.",
       "phase": "llm"
     },
@@ -2892,7 +2856,7 @@
     "toasts.intents.uploadOneTapGenerateForMe": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal imperatives used instead of informal (du-form).",
+      "issue": "Inconsistent register: formal verbs ('Otpremite', 'tapnite') with an informal command ('Generiši').",
       "suggested": "Otpremi jednu, ili tapni ✨ Generiši za mene.",
       "phase": "llm"
     },
@@ -3232,10 +3196,8 @@
       "phase": "llm"
     },
     "toasts.messages.calendarInviteSent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More natural phrasing for 'Calendar Invite Sent'. 'Poziv iz kalendara' sounds like it came from the calendar, not for it.",
-      "suggested": "Pozivnica za kalendar poslata",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.messages.processingCalendarEvent": {
@@ -3259,10 +3221,8 @@
       "phase": "llm"
     },
     "toasts.messages.inviteSent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More natural phrasing for 'Invite Sent'. 'Pozivnica' is more specific for 'invitation' than 'poziv'.",
-      "suggested": "Pozivnica poslata",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.messages.signAddEventYourCalendar": {
@@ -3308,7 +3268,7 @@
     "toasts.messages.failedUpdateMessagePleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: 'Pokušajte ponovo' is formal (Vi-form), should be informal (du-form).",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Ažuriranje poruke nije uspelo. Pokušaj ponovo.",
       "phase": "llm"
     },
@@ -3325,7 +3285,7 @@
     "toasts.messages.failedDeleteMessagePleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: 'Pokušajte ponovo' is formal (Vi-form), should be informal (du-form).",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Brisanje poruke nije uspelo. Pokušaj ponovo.",
       "phase": "llm"
     },
@@ -3727,8 +3687,8 @@
     "toasts.profile.pleaseEnterYourLinkedinProfileUrl": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Molimo unesite' and 'vašeg' instead of informal 'Unesi' and 'svog'.",
-      "suggested": "Unesi URL svog LinkedIn profila",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
+      "suggested": "Molimo unesi URL svog LinkedIn profila.",
       "phase": "llm"
     },
     "toasts.profile.linkedinDataImported": {
@@ -3739,8 +3699,8 @@
     "toasts.profile.yourProfileHasEnrichedWithLinkedin": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Vaš' instead of informal 'Tvoj'.",
-      "suggested": "Tvoj profil je obogaćen LinkedIn podacima",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
+      "suggested": "Tvoj profil je obogaćen LinkedIn podacima.",
       "phase": "llm"
     },
     "toasts.profile.importFailed": {
@@ -3801,8 +3761,8 @@
     "toasts.profile.heicheifFormatNotSupportedByBrowsers": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal imperative 'konvertujte' used instead of informal 'konvertuj'.",
-      "suggested": "HEIC/HEIF format nije podržan u pregledačima. Molimo te, konvertuj u JPG ili PNG.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form). 'Pregledačima' is a good alternative to 'pretraživačima'.",
+      "suggested": "HEIC/HEIF format nije podržan u pregledačima. Molimo konvertuj u JPG ili PNG.",
       "phase": "llm"
     },
     "toasts.profile.avatarUploaded": {
@@ -3813,7 +3773,7 @@
     "toasts.profile.repositionImageIfNeeded": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal imperative 'Pomerite' used instead of informal 'Pomeri'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Pomeri sliku ako je potrebno.",
       "phase": "llm"
     },
@@ -3860,21 +3820,21 @@
     "toasts.profile.pleaseSignSendMessages": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal imperative 'Prijavite se' and 'da biste slali' used instead of informal 'Prijavi se' and 'da šalješ'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Prijavi se da šalješ poruke.",
       "phase": "llm"
     },
     "toasts.profile.canTMessageYourself": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal 'Ne možete' used instead of informal 'Ne možeš'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Ne možeš sebi da pišeš.",
       "phase": "llm"
     },
     "toasts.profile.youCannotSendMessagesYourOwn": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal 'Ne možete' used instead of informal 'Ne možeš'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Ne možeš slati poruke svom profilu.",
       "phase": "llm"
     },
@@ -3896,7 +3856,7 @@
     "toasts.profile.failedSendMessagePleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistency: formal imperative 'Pokušajte' used instead of informal 'Pokušaj'.",
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Slanje poruke nije uspelo. Pokušaj ponovo.",
       "phase": "llm"
     },
@@ -3912,8 +3872,8 @@
     },
     "toasts.profile.shareItAnywhereYouLike": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
       "suggested": "Podeli ga gde god želiš.",
       "phase": "llm"
     },
@@ -3924,8 +3884,8 @@
     },
     "toasts.profile.pleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Pokušaj ponovo.",
       "phase": "llm"
     },
@@ -3966,9 +3926,9 @@
     },
     "toasts.profile.categoryRequired": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form'). 'Molimo' is often used formally; for informal, 'Molimo te' or just dropping 'Molimo' is better.",
-      "suggested": "Molimo te, prvo izaberi kategoriju.",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te prvo izaberi kategoriju.",
       "phase": "llm"
     },
     "toasts.reminders.notificationsArenTSupportedThisBrowser": {
@@ -3978,37 +3938,37 @@
     },
     "toasts.reminders.remindersEnabledYouLlGetNotified": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Podsetnici su omogućeni — dobićeš obaveštenje čak i kada je aplikacija zatvorena.",
       "phase": "llm"
     },
     "toasts.reminders.notificationsBlockedYouCanReenableThem": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Obaveštenja su blokirana. Možeš ih ponovo omogućiti u podešavanjima pregledača.",
       "phase": "llm"
     },
     "toasts.reminders.couldnTEnableNotificationsTryAgain": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Nije moguće omogućiti obaveštenja. Pokušaj ponovo za trenutak.",
       "phase": "llm"
     },
     "toasts.reminders.pleaseEnterWhatRemindYouAbout": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Register inconsistent (formal instead of informal 'du-form') and slightly awkward phrasing. 'Na šta da vas podsetimo' means 'what we should remind you about', which is less direct than 'what to remind you about'.",
-      "suggested": "Molimo te, unesi o čemu da te podsetimo.",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te unesi na šta da te podsetimo.",
       "phase": "llm"
     },
     "toasts.reminders.pleasePickTime": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
-      "suggested": "Molimo te, izaberi vreme.",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te izaberi vreme.",
       "phase": "llm"
     },
     "toasts.reminders.invalidTime": {
@@ -4033,8 +3993,8 @@
     },
     "toasts.reseller.activatingYourResellerProfile": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Aktiviranje tvog prodajnog profila...",
       "phase": "llm"
     },
@@ -4045,15 +4005,15 @@
     },
     "toasts.reseller.failedCopyPleaseSelectCopyManually": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
-      "suggested": "Kopiranje nije uspelo. Molimo te, izaberi i kopiraj ručno.",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Kopiranje nije uspelo. Molim te izaberi i kopiraj ručno.",
       "phase": "llm"
     },
     "toasts.reseller.linkCopiedPasteItYourInstagram": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent (formal instead of informal 'du-form').",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Link kopiran! Nalepi ga u svoj Instagram bio ili story.",
       "phase": "llm"
     },
@@ -4090,7 +4050,7 @@
     "toasts.settings.yourNotificationPreferencesHaveSaved": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Vaša' instead of informal 'Tvoja'.",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Tvoja podešavanja obaveštenja su sačuvana.",
       "phase": "llm"
     },
@@ -4107,7 +4067,7 @@
     "toasts.settings.yourQuietHoursHaveSaved": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Vaši' instead of informal 'Tvoji'.",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Tvoji tihi sati su sačuvani.",
       "phase": "llm"
     },
@@ -4144,14 +4104,14 @@
     "toasts.settings.yourNotificationPreferencesHaveSaved2": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Vaša' instead of informal 'Tvoja'.",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Tvoja podešavanja obaveštenja su sačuvana",
       "phase": "llm"
     },
     "toasts.settings.yourQuietHoursHaveUpdated": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Vaši' instead of informal 'Tvoji'.",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Tvoji tihi sati su ažurirani",
       "phase": "llm"
     },
@@ -4193,8 +4153,8 @@
     "toasts.sharing.notAuthenticated": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Niste' instead of informal 'Nisi'. Also, 'autentifikovani' is plural/formal, should be singular informal.",
-      "suggested": "Nisi autentifikovan",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Nisi autentifikovan.",
       "phase": "llm"
     },
     "toasts.sharing.pleaseLogBlastPosts": {
@@ -4365,22 +4325,22 @@
     "toasts.sharing.pleaseFillSenderNameEmail": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Uses formal 'vi' form ('popunite') instead of informal 'ti' form ('popuni'). 'Molimo' can also be omitted for a more direct, friendly tone.",
-      "suggested": "Popuni ime pošiljaoca i email",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te popuni ime pošiljaoca i email.",
       "phase": "llm"
     },
     "toasts.sharing.pleaseFillAllTwilioCredentials": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Uses formal 'vi' form ('popunite') instead of informal 'ti' form ('popuni'). 'Molimo' can also be omitted for a more direct, friendly tone.",
-      "suggested": "Popuni sve Twilio akreditive",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te popuni sve Twilio akreditive.",
       "phase": "llm"
     },
     "toasts.sharing.pleaseFillMetaApiCredentials": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Uses formal 'vi' form ('popunite') instead of informal 'ti' form ('popuni'). 'Molimo' can also be omitted for a more direct, friendly tone.",
-      "suggested": "Popuni Meta API akreditive",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Molim te popuni Meta API akreditive.",
       "phase": "llm"
     },
     "toasts.sharing.directSharingNotSupportedThisDevice": {
@@ -4401,21 +4361,21 @@
     "toasts.sharing.linkSharedDownloadImageIncludeIt": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
-      "suggested": "Link podeljen! Preuzmi sliku da je uključiš.",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
+      "suggested": "Link podeljen! Preuzmi sliku da bi je uključio.",
       "phase": "llm"
     },
     "toasts.sharing.sharingFailedTryDownloadingInstead": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Deljenje nije uspelo. Pokušaj sa preuzimanjem.",
       "phase": "llm"
     },
     "toasts.sharing.linkCopiedPasteItYourInstagram": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Link kopiran! Nalepi ga u svoj Instagram post.",
       "phase": "llm"
     },
@@ -4452,7 +4412,7 @@
     "toasts.sharing.viberNotDetectedPleaseCopyLink": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form and 'Molimo') instead of informal ('Ti' form and 'Molim te').",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Viber nije detektovan. Molim te kopiraj link ručno.",
       "phase": "llm"
     },
@@ -4469,7 +4429,7 @@
     "toasts.sharing.messageCopiedPasteItIntoViber": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Poruka kopirana – nalepi je u Viber",
       "phase": "llm"
     },
@@ -4486,7 +4446,7 @@
     "toasts.sharing.yourGlobalPrivacyControlsHaveSaved": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal possessive ('Vaše') instead of informal ('Tvoje').",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Tvoje globalne kontrole privatnosti su sačuvane.",
       "phase": "llm"
     },
@@ -4513,14 +4473,14 @@
     "toasts.sharing.linkCopiedShareYoutube": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Link kopiran! Podeli na YouTube",
       "phase": "llm"
     },
     "toasts.sharing.linkCopiedShareTiktok": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Link kopiran! Podeli na TikTok",
       "phase": "llm"
     },
@@ -4532,21 +4492,21 @@
     "toasts.sharing.pleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form and 'Molimo') instead of informal ('Ti' form and 'Molim te').",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Molim te pokušaj ponovo.",
       "phase": "llm"
     },
     "toasts.sharing.selectDistributionChannels": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form) instead of informal ('Ti' form).",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Izaberi kanale distribucije",
       "phase": "llm"
     },
     "toasts.sharing.pleaseSelectAtLeastOneChannel3": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form and 'Molimo') instead of informal ('Ti' form and 'Molim te').",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Molim te izaberi bar jedan kanal za distribuciju.",
       "phase": "llm"
     },
@@ -4563,7 +4523,7 @@
     "toasts.sharing.failedShareContentPleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Formal register ('Vi' form and 'Molimo') instead of informal ('Ti' form and 'Molim te').",
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
       "suggested": "Deljenje sadržaja nije uspelo. Molim te pokušaj ponovo.",
       "phase": "llm"
     },
@@ -4648,10 +4608,8 @@
       "phase": "llm"
     },
     "toasts.wallet.pleaseEnterValidAmountExchange": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal imperative instead of informal 'du-form').",
-      "suggested": "Unesi važeći iznos za razmenu",
       "phase": "llm"
     },
     "toasts.wallet.exchangeCompleted": {
@@ -4665,10 +4623,8 @@
       "phase": "llm"
     },
     "toasts.wallet.pleaseTryAgainContactSupport": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal imperative instead of informal 'du-form').",
-      "suggested": "Pokušaj ponovo ili kontaktiraj podršku",
       "phase": "llm"
     },
     "toasts.wallet.actionFailed": {
@@ -4677,10 +4633,8 @@
       "phase": "llm"
     },
     "toasts.wallet.pleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal imperative instead of informal 'du-form').",
-      "suggested": "Pokušaj ponovo",
       "phase": "llm"
     },
     "toasts.wallet.creditsPurchased": {
@@ -4691,7 +4645,7 @@
     "toasts.wallet.added100CreditsYourWallet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal possessive pronoun 'vaš' instead of informal 'tvoj').",
+      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
       "suggested": "Dodato 100 CREDITS u tvoj novčanik",
       "phase": "llm"
     },
@@ -4703,7 +4657,7 @@
     "toasts.wallet.added50VtnaTokensYourWallet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal possessive pronoun 'vaš' instead of informal 'tvoj').",
+      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
       "suggested": "Dodato 50 VTNA tokena u tvoj novčanik",
       "phase": "llm"
     },
@@ -4715,7 +4669,7 @@
     "toasts.wallet.added25VtnaRewardsYourWallet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal possessive pronoun 'vaš' instead of informal 'tvoj').",
+      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
       "suggested": "Dodato 25 VTNA nagrada u tvoj novčanik",
       "phase": "llm"
     },
@@ -4897,7 +4851,7 @@
     "toasts.hooks.youMustLoggedActivateResellerMode": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Vi' form instead of informal 'ti' form.",
+      "issue": "Register inconsistency: formal 'vi' forms ('Morate', 'prijavljeni', 'da biste aktivirali') should be informal 'ti' forms.",
       "suggested": "Moraš biti prijavljen da bi aktivirao režim preprodavca.",
       "phase": "llm"
     },
@@ -4909,21 +4863,21 @@
     "toasts.hooks.yourResellerDashboardNowAvailableMy": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Vaša' instead of informal 'Tvoja'.",
+      "issue": "Register inconsistency: 'Vaša' (formal) should be 'Tvoja' (informal).",
       "suggested": "Tvoja kontrolna tabla za preprodavce je sada dostupna u Mom biznisu.",
       "phase": "llm"
     },
     "toasts.hooks.welcomeReseller": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal/plural 'Dobrodošli' instead of informal singular 'Dobrodošao/la'.",
+      "issue": "Register inconsistency: 'Dobrodošli' (formal/plural) should be 'Dobrodošao' (informal/singular, masculine default).",
       "suggested": "Dobrodošao, preprodavče! 🎉",
       "phase": "llm"
     },
     "toasts.hooks.youCanNowPromoteEventsEarn": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'možete' and 'Pogledajte' instead of informal 'možeš' and 'Pogledaj'.",
+      "issue": "Register inconsistency: formal 'vi' forms ('možete', 'Pogledajte') should be informal 'ti' forms.",
       "suggested": "Sada možeš promovisati događaje i zarađivati provizije. Pogledaj svoju Prodaj i zaradi kontrolnu tablu.",
       "phase": "llm"
     },
@@ -4945,7 +4899,7 @@
     "toasts.hooks.activityItemHasRemovedFromYour": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'vaše' instead of informal 'tvoje'.",
+      "issue": "Register inconsistency: 'vaše' (formal) should be 'tvoje' (informal).",
       "suggested": "Stavka aktivnosti je uklonjena iz tvoje istorije.",
       "phase": "llm"
     },
@@ -4982,8 +4936,8 @@
     "toasts.hooks.yourChangesHaveSavedAutomatically": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Vaše' instead of informal 'Tvoje'.",
-      "suggested": "Tvoje izmene su automatski sačuvane.",
+      "issue": "Register inconsistency: 'Vaše' (formal) should be 'Tvoje' (informal).",
+      "suggested": "Tvoje izmene su automatski sačuvane",
       "phase": "llm"
     },
     "toasts.hooks.autosaveFailed": {
@@ -4994,7 +4948,7 @@
     "toasts.hooks.yourChangesCouldnTSavedPlease": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Vaše' and 'Pokušajte' instead of informal 'Tvoje' and 'Pokušaj'.",
+      "issue": "Register inconsistency: formal 'vi' forms ('Vaše', 'Pokušajte') should be informal 'ti' forms.",
       "suggested": "Tvoje izmene nisu mogle biti sačuvane. Pokušaj ponovo.",
       "phase": "llm"
     },
@@ -5021,7 +4975,7 @@
     "toasts.hooks.pleaseSignBookmarkItems": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'Prijavite se' and 'da biste' instead of informal 'Prijavi se' and 'da bi'.",
+      "issue": "Register inconsistency: formal 'vi' forms ('Prijavite se', 'da biste obeležili') should be informal 'ti' forms.",
       "suggested": "Prijavi se da bi obeležio stavke.",
       "phase": "llm"
     },
@@ -5033,7 +4987,7 @@
     "toasts.hooks.thisItemAlreadyYourBookmarks": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'vašim' instead of informal 'tvojim'.",
+      "issue": "Register inconsistency: 'vašim' (formal) should be 'tvojim' (informal).",
       "suggested": "Ova stavka je već u tvojim obeleživačima.",
       "phase": "llm"
     },
@@ -5125,7 +5079,7 @@
     "toasts.hooks.responseRecordedButFailedUpdateYour": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' used instead of informal 'ti').",
+      "issue": "Register inconsistency: 'Možete' (formal) should be 'Možeš' (informal).",
       "suggested": "Odgovor zabeležen, ali ažuriranje kalendara nije uspelo. Možeš ga dodati ručno.",
       "phase": "llm"
     },
@@ -5182,8 +5136,8 @@
     "toasts.hooks.pleaseSignAddItemsCart": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' used instead of informal 'ti').",
-      "suggested": "Prijavi se da dodaš stavke u korpu",
+      "issue": "Register inconsistency: formal 'vi' forms ('Prijavite se', 'da biste dodali') should be informal 'ti' forms.",
+      "suggested": "Prijavi se da bi dodao stavke u korpu.",
       "phase": "llm"
     },
     "toasts.hooks.addedCart": {
@@ -5207,10 +5161,8 @@
       "phase": "llm"
     },
     "toasts.hooks.failedRemoveFromCart": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing; 'Nije uspelo X' is more common and natural for 'Failed to X' in UI.",
-      "suggested": "Nije uspelo uklanjanje iz korpe",
       "phase": "llm"
     },
     "toasts.hooks.cartCleared": {
@@ -5473,7 +5425,7 @@
     "toasts.hooks.generatingRecommendations": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The current translation 'Generišem preporuke' means 'I am generating recommendations' (first-person singular). For a system message indicating a process, an impersonal or passive form is more appropriate.",
+      "issue": "Grammatical subject mismatch: 'Generišem' means 'I am generating', but the context implies a neutral status or passive voice.",
       "suggested": "Generisanje preporuka",
       "phase": "llm"
     },
@@ -5633,10 +5585,8 @@
       "phase": "llm"
     },
     "toasts.hooks.yourAiGuidanceHasUpdatedAlign": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses informal 'ti' form ('Tvoje', 'tvojim') while most other entries use the polite 'vi' form ('vaš', 'vaše', 'Prijavite se'). For consistency, 'vi' form should be used.",
-      "suggested": "Vaše AI vođenje je ažurirano da se uskladi sa vašim novim ciljem.",
       "phase": "llm"
     },
     "toasts.hooks.failedUpdate": {
@@ -5650,10 +5600,8 @@
       "phase": "llm"
     },
     "toasts.hooks.yourSubgoalHasAddedSuccessfully": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses informal 'ti' form ('Tvoj') while most other entries use the polite 'vi' form ('vaš', 'vaše', 'Prijavite se'). For consistency, 'vi' form should be used.",
-      "suggested": "Vaš podcilj je uspešno dodat.",
       "phase": "llm"
     },
     "toasts.hooks.failedAddSubgoal": {
@@ -5884,14 +5832,14 @@
     "toasts.hooks.pleaseGrantAiDataSharingConsent": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Molimo odobri deljenje podataka sa AI-jem u Podešavanja > Privatnost kako bi mogao/mogla da koristiš ovu funkciju.",
+      "issue": "Register inconsistency: formal 'vi' forms ('odobrite', 'da biste koristili') should be informal 'ti' forms.",
+      "suggested": "Molimo te da odobriš deljenje podataka sa AI-jem u Podešavanja > Privatnost da bi koristio ovu funkciju.",
       "phase": "llm"
     },
     "toasts.hooks.pleaseWait": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
+      "issue": "Register inconsistency: 'Sačekajte' (formal) should be 'Sačekaj' (informal).",
       "suggested": "Sačekaj",
       "phase": "llm"
     },
@@ -5903,7 +5851,7 @@
     "toasts.hooks.pleaseWaitFewSecondsTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
+      "issue": "Register inconsistency: formal 'vi' forms ('Sačekajte', 'pokušajte') should be informal 'ti' forms.",
       "suggested": "Sačekaj nekoliko sekundi i pokušaj ponovo.",
       "phase": "llm"
     },
@@ -5915,7 +5863,7 @@
     "toasts.hooks.pleaseAddCreditsLovableAiWorkspace": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
+      "issue": "Register inconsistency: 'Dodajte' (formal) should be 'Dodaj' (informal).",
       "suggested": "Dodaj kredite u Lovable AI radni prostor.",
       "phase": "llm"
     },
@@ -5927,7 +5875,7 @@
     "toasts.hooks.logForPersonalizedTipsShowingGeneric": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form for imperative instead of informal 'du' form).",
+      "issue": "Register inconsistency: 'Prijavite se' (formal) should be 'Prijavi se' (informal).",
       "suggested": "Prijavi se za personalizovane savete. Prikazujemo opšte smernice.",
       "phase": "llm"
     },
@@ -5939,7 +5887,7 @@
     "toasts.hooks.aiServiceNotConfiguredPleaseContact": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
+      "issue": "Register inconsistency: 'Kontaktirajte' (formal) should be 'Kontaktiraj' (informal).",
       "suggested": "AI servis nije konfigurisan. Kontaktiraj podršku.",
       "phase": "llm"
     },
@@ -5961,8 +5909,8 @@
     "toasts.hooks.cannotSharePrivateProfile": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Ne možeš deliti privatni profil",
+      "issue": "Register inconsistency: 'Ne možete' (formal) should be 'Ne možeš' (informal).",
+      "suggested": "Ne možeš deliti privatni profil.",
       "phase": "llm"
     },
     "toasts.hooks.profileMustPublicShare": {
@@ -5988,7 +5936,7 @@
     "toasts.hooks.pleaseTryAgain": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'vi' imperative instead of informal 'du'.",
+      "issue": "Register inconsistency: 'Pokušajte' (formal) should be 'Pokušaj' (informal).",
       "suggested": "Pokušaj ponovo",
       "phase": "llm"
     },
@@ -5998,24 +5946,18 @@
       "phase": "llm"
     },
     "toasts.hooks.pasteItYourInstagramStoryPost": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'vi' imperative instead of informal 'du'.",
-      "suggested": "Nalepi ga u svoju Instagram priču ili objavu",
       "phase": "llm"
     },
     "toasts.hooks.pasteItYourTiktokBioVideo": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'vi' imperative instead of informal 'du'.",
-      "suggested": "Nalepi ga u svoj TikTok bio ili opis videa",
       "phase": "llm"
     },
     "toasts.hooks.pasteItYourYoutubeVideoDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'vi' imperative instead of informal 'du'.",
-      "suggested": "Nalepi ga u opis YouTube videa ili objavu u zajednici",
       "phase": "llm"
     },
     "toasts.hooks.shareFailed": {
@@ -6024,10 +5966,8 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseTryAnotherSharingMethod": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'vi' imperative instead of informal 'du'.",
-      "suggested": "Pokušaj drugi način deljenja",
       "phase": "llm"
     },
     "toasts.hooks.failedRequestPayout": {
@@ -6172,8 +6112,8 @@
     },
     "toasts.hooks.yourCameraContextNowAnalyzed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'camera context'. 'Kamerin kontekst' is not idiomatic.",
+      "confidence": 1,
+      "issue": "Awkward phrasing for 'camera context'. 'Kamerin kontekst' is grammatically possible but unnatural. More idiomatic to use 'kontekst vaše kamere'.",
       "suggested": "Kontekst vaše kamere se sada analizira",
       "phase": "llm"
     },
@@ -6393,5 +6333,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:39:54.283Z"
+  "generatedAt": "2026-05-20T07:33:31.091Z"
 }

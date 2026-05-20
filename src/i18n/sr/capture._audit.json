@@ -27,8 +27,8 @@
     },
     "capture.liveTranscription": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning incorrect. 'Prenos uživo' means 'Live Stream', not 'Live Transcription'.",
+      "confidence": 0.9,
+      "issue": "Meaning inaccurate. 'Prenos uživo' means 'Live Broadcast/Stream', not 'Live Transcription'.",
       "suggested": "Transkripcija uživo",
       "phase": "llm"
     },
@@ -209,11 +209,11 @@
     },
     "capture.recognitionErrorDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: 'Pokušajte' is formal/plural, should be informal 'Pokušaj'.",
+      "confidence": 0.9,
+      "issue": "Register inconsistency. 'Pokušajte' is formal singular/informal plural; 'Pokušaj' is informal singular (du-form).",
       "suggested": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:46:01.253Z"
+  "generatedAt": "2026-05-20T07:02:00.535Z"
 }

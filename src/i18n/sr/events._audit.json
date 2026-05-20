@@ -41,10 +41,8 @@
       "phase": "llm"
     },
     "events.checkBack": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Uses 'new' instead of 'upcoming', which is less precise and inconsistent with other 'upcoming' translations.",
-      "suggested": "Vrati se uskoro za predstojeće događaje u zajednici!",
       "phase": "llm"
     },
     "events.emptyStates.noEventsToday": {
@@ -103,5 +101,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:50:47.724Z"
+  "generatedAt": "2026-05-20T07:03:42.957Z"
 }

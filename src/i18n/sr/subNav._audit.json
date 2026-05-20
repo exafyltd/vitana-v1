@@ -177,8 +177,8 @@
     },
     "subNav.diary": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Redundant phrasing; 'Dnevnik' alone is more idiomatic for 'Diary' in this context.",
+      "confidence": 1,
+      "issue": "Redundant and clunky phrasing. 'Dnevni dnevnik' literally means 'Daily daily'.",
       "suggested": "Dnevnik",
       "phase": "llm"
     },
@@ -213,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:27:21.290Z"
+  "generatedAt": "2026-05-20T07:29:40.901Z"
 }

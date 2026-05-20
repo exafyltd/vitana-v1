@@ -48,8 +48,8 @@
     "socialImport.urlRequiredDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'vi' form ('unesite', 'vašeg') instead of informal 'du' form ('unesi', 'svog'/'tvog').",
-      "suggested": "Molimo unesi URL svog {platform} profila",
+      "issue": "Incorrect register for possessive pronoun. 'vašeg' is formal, should be informal 'tvog'.",
+      "suggested": "Molimo unesite URL tvog {platform} profila",
       "phase": "llm"
     },
     "socialImport.importSuccess": {
@@ -108,10 +108,8 @@
       "phase": "llm"
     },
     "socialImport.platformHelp.tiktok": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Tense mismatch: English uses future tense ('We'll extract'), while Serbian uses present tense ('Izvlačimo'). Future tense would be more accurate for a promise of action.",
-      "suggested": "Izvući ćemo teme sadržaja i kreativnu ličnost iz tvog bio-a.",
       "phase": "llm"
     },
     "socialImport.platformHelp.youtube": {
@@ -120,10 +118,8 @@
       "phase": "llm"
     },
     "socialImport.platformHelp.facebook": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Tense mismatch: English uses future tense ('We'll extract'), while Serbian uses present tense ('Izvlačimo'). Future tense would be more accurate for a promise of action.",
-      "suggested": "Izvući ćemo tvoja interesovanja i učešće u zajednici iz tvog bio-a.",
       "phase": "llm"
     },
     "socialImport.platformHelp.x": {
@@ -132,5 +128,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T21:26:53.988Z"
+  "generatedAt": "2026-05-20T07:29:37.992Z"
 }

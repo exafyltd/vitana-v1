@@ -1,10 +1,10 @@
 {
   "inbox": {
     "title": "Inbox",
-    "subtitle": "Ostanite povezani sa svojom zajednicom!",
-    "description": "Vaši razgovori, ažuriranja i obaveštenja",
+    "subtitle": "Ostani povezan/a sa svojom zajednicom!",
+    "description": "Tvoji razgovori, ažuriranja i obaveštenja",
     "desktopTitle": "Poruke",
-    "desktopDescription": "Povežite se sa svojom zajednicom i mrežom",
+    "desktopDescription": "Poveži se sa svojom zajednicom i mrežom",
     "tabs": {
       "all": "Sve",
       "groups": "Grupe",
@@ -36,7 +36,7 @@
     },
     "newConversation": {
       "title": "Započni novi razgovor",
-      "titleGroup": "Kreiraj grupni ćaskanje",
+      "titleGroup": "Kreiraj grupno ćaskanje",
       "groupName": "Ime grupe",
       "groupNamePlaceholder": "Unesi ime grupe...",
       "members": "Članovi",
@@ -61,15 +61,15 @@
       "addMembers": "Dodaj članove",
       "searchPlaceholder": "Pretraži korisnike...",
       "groupNameRequired": "Ime grupe je obavezno",
-      "groupNameRequiredDesc": "Molimo unesite ime za vašu grupu.",
+      "groupNameRequiredDesc": "Molimo unesi ime za tvoju grupu.",
       "addMembersRequired": "Dodaj članove",
-      "addMembersRequiredDesc": "Molimo dodajte bar jednog člana u grupu.",
+      "addMembersRequiredDesc": "Molimo dodaj bar jednog člana u grupu.",
       "groupExists": "Grupa već postoji",
       "groupExistsDesc": "Grupa sa ovim članovima je nedavno napravljena.",
       "created": "Grupa napravljena",
       "createdDesc": "\"{name}\" je uspešno napravljena.",
       "failed": "Neuspešno pravljenje grupe",
-      "failedDesc": "Molimo pokušajte ponovo."
+      "failedDesc": "Molimo pokušaj ponovo."
     },
     "toast": {
       "success": "Uspeh",
@@ -80,16 +80,16 @@
       "searchFailed": "Pretraga neuspešna",
       "accessDenied": "Pristup odbijen",
       "communityOnly": "Samo korisnici zajednice mogu kreirati globalne razgovore",
-      "pleaseLogin": "Molimo prijavite se da biste započeli razgovore",
+      "pleaseLogin": "Molimo prijavi se da započneš razgovore.",
       "groupRecipientsRequired": "Ime grupe i primaoci su obavezni",
-      "singleRecipientRequired": "Izaberite tačno jednog primaoca za direktnu poruku",
+      "singleRecipientRequired": "Izaberi tačno jednog primaoca za direktnu poruku",
       "groupCreated": "Grupa \"{name}\" uspešno napravljena!",
       "groupFailed": "Neuspešno kreiranje grupe"
     },
     "createGroupAction": "Kreiraj novu grupu",
     "newConversationAction": "Novi razgovor",
     "noGroups": "Još nema grupa",
-    "noGroupsDesc": "Grupe vam pomažu da sarađujete sa više ljudi odjednom.",
+    "noGroupsDesc": "Grupe ti pomažu da sarađuješ sa više ljudi odjednom.",
     "createFirstGroup": "Kreiraj prvu grupu",
     "loading": "Učitavanje poruka...",
     "searchConversations": "Pretraži razgovore...",
@@ -98,7 +98,7 @@
     "noMessagesDesc": "Započni razgovor da bi krenuo/la.",
     "startConversation": "Započni razgovor",
     "emptyState": {
-      "title": "Tvoje prijemi sanduče je za sada tiho",
+      "title": "Tvoje prijemno sanduče je za sada tiho.",
       "globalDescription": "Započni razgovor ili se pridruži zajednici da bi se povezao/la sa drugima.",
       "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
       "startConversation": "Započni razgovor",

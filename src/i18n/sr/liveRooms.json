@@ -1,6 +1,6 @@
 {
   "liveRooms": {
-    "title": "Žive sobe",
+    "title": "Sobe uživo",
     "description": "Pridruži se audio i video diskusijama uživo",
     "tabs": {
       "live": "Uživo sada",
@@ -10,7 +10,7 @@
     },
     "goLive": "Kreni uživo",
     "joinRoom": "Pridruži se sobi",
-    "noRooms": "Trenutno nema živih soba",
+    "noRooms": "Trenutno nema soba uživo",
     "beFirst": "Budi prvi koji kreće uživo",
     "demoRoom": "Demo soba",
     "demoRoomDesc": "Ovo je primer sobe. Napravi svoju da bi krenuo/la uživo!",

@@ -61,10 +61,8 @@
       "phase": "llm"
     },
     "connectedApps.status.comingSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Uskoro\" means \"Soon\", not \"Coming Soon\". \"Coming Soon\" implies an action.",
-      "suggested": "Uskoro stiže",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "connectedApps.status.soon": {
@@ -183,5 +181,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:46:44.698Z"
+  "generatedAt": "2026-05-20T07:02:06.879Z"
 }

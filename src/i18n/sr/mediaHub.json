@@ -2,7 +2,7 @@
   "mediaHub": {
     "title": "Medijski centar",
     "description": "Muzika, podkasti, kratki snimci i još mnogo toga",
-    "discoverContent": "Otkrijte i delite inspirativni wellness sadržaj sa svojom zajednicom.",
+    "discoverContent": "Otkrij i deli inspirativni wellness sadržaj sa svojom zajednicom.",
     "tabs": {
       "music": "Muzika",
       "podcasts": "Podkasti",
@@ -77,7 +77,7 @@
       "confirm": "Obriši"
     },
     "noMusic": "Muzika još nije otpremljena",
-    "noMusicDesc": "Budite prvi koji će podeliti muziku sa zajednicom!",
+    "noMusicDesc": "Budi prvi koji će podeliti muziku sa zajednicom!",
     "noPodcasts": "Još nema podkasta",
     "noPodcastsDesc": "Podkasti će se uskoro pojaviti ovde.",
     "noShorts": "Još nema kratkih snimaka",

@@ -2,7 +2,7 @@
   "calendar": {
     "smartCalendar": "Pametni kalendar",
     "myCalendar": "Moj kalendar",
-    "bookedActivities": "Vaše rezervisane aktivnosti u VITANA",
+    "bookedActivities": "Tvoje rezervisane aktivnosti u VITANA",
     "addEvent": "Dodaj događaj",
     "synced": "Sinhronizovano",
     "syncing": "Sinhronizacija",
@@ -11,7 +11,7 @@
     "month": "Mesec",
     "agenda": "Agenda",
     "nothingScheduled": "Ništa nije zakazano",
-    "tryQuickAdd": "Probaj Brzi dodaj ili pusti Autopilot da isplanira tvoj dan",
+    "tryQuickAdd": "Probaj Brzo dodavanje ili pusti Autopilot da isplanira tvoj dan",
     "clickSlotHint": "Klikni na bilo koji termin da kreiraš događaj • Prevlači da promeniš raspored",
     "noEventsOnDate": "Nema događaja na ovaj datum",
     "lastSynced": "Poslednja sinhronizacija",
@@ -74,7 +74,7 @@
       "suggestionUndone": "Predlog poništen",
       "changesReverted": "Promene su vraćene",
       "suggestionSnoozed": "Predlog odložen",
-      "reminderLaterToday": "Podsetnik postavljen za danas kasnije",
+      "reminderLaterToday": "Podsetnik postavljen za kasnije danas",
       "reminderTomorrow": "Podsetnik postavljen za sutra",
       "recommendFocus": "Preporuči blok fokusa",
       "focusBlockDesc": "Imaš slobodan prozor od 90 minuta. Savršeno za duboki rad."

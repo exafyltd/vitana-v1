@@ -51,7 +51,7 @@
       "totalActive": "Ukupno aktivnih",
       "upcomingSessions": "Predstojeće sesije",
       "thisWeek": "Ove nedelje",
-      "topPerformer": "Najbolji izvođač",
+      "topPerformer": "Najuspešniji",
       "noDataYet": "Još nema podataka",
       "createServiceToStart": "Kreiraj uslugu da bi počeo/la.",
       "bookings": "rezervacije",
@@ -88,7 +88,7 @@
     },
     "transfer": {
       "title": "Prenesi u novčanik",
-      "description": "Prenesi svoje pending provizije preprodavaca u svoj VITANA novčanik.",
+      "description": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
       "pending": "Na čekanju",
       "wallet": "Novčanik",
       "instantCredit": "Ovo će odmah uplatiti tvoju zaradu na stanje novčanika.",
@@ -109,7 +109,7 @@
       "cancel": "Otkaži"
     },
     "missionOpportunities": {
-      "title": "Misione prilike",
+      "title": "Prilike za misije",
       "subtitle": "Autopilotom preporučeni putevi koji unapređuju ekonomiju dugovečnosti",
       "loading": "Učitavam prilike...",
       "error": "Nije moguće učitati prilike",

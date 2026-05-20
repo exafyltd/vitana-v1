@@ -3,8 +3,8 @@
     "onboarding.welcome": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The Serbian 'Dobrodošli' is plural or formal singular. For an informal, du-form app addressing a single user, it should be singular informal.",
-      "suggested": "Dobrodošao/la u VITANA",
+      "issue": "Register mismatch: 'Dobrodošli' is plural/formal (vi-form), but the app requires informal singular (du-form).",
+      "suggested": "Dobrodošao u VITANA",
       "phase": "llm"
     },
     "onboarding.subtitle": {
@@ -28,10 +28,8 @@
       "phase": "llm"
     },
     "onboarding.setGoalsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The repetition of 'ciljeve' makes the phrase slightly awkward. A more natural and concise phrasing is possible.",
-      "suggested": "Definiši svoje zdravstvene i dugovečne ciljeve",
       "phase": "llm"
     },
     "onboarding.joinCommunity": {
@@ -120,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:57:11.205Z"
+  "generatedAt": "2026-05-20T07:05:13.427Z"
 }

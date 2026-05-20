@@ -9,7 +9,7 @@
     "importProfile": "Uvezi profil",
     "importing": "Uvozim...",
     "urlRequired": "URL je obavezan",
-    "urlRequiredDesc": "Molimo unesite URL vašeg {platform} profila",
+    "urlRequiredDesc": "Molimo unesite URL tvog {platform} profila",
     "importSuccess": "Uvoz uspešan",
     "importSuccessDesc": "Tvoj {platform} profil je uvezen i obogaćen AI uvidima.",
     "importFailed": "Uvoz neuspešan",

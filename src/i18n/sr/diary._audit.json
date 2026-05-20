@@ -3,7 +3,7 @@
     "diary.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Redundant phrasing. 'Dnevnik' already implies daily.",
+      "issue": "Redundant phrasing; 'Dnevni dnevnik' literally means 'Daily daily'.",
       "suggested": "Dnevnik",
       "phase": "llm"
     },
@@ -48,5 +48,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:48:10.722Z"
+  "generatedAt": "2026-05-20T07:02:26.036Z"
 }

@@ -97,7 +97,7 @@
       "errorCreating": "Greška pri kreiranju događaja",
       "errorCreatingDesc": "Došlo je do problema pri kreiranju vašeg događaja. Molimo pokušajte ponovo.",
       "generatingImage": "Generišem AI sliku...",
-      "generatingImageDesc": "Kreiram prilagođenu sliku za vaš događaj.",
+      "generatingImageDesc": "Kreiranje prilagođene slike za vaš događaj.",
       "imageGenerated": "Slika generisana!",
       "imageGeneratedDesc": "AI-generisana slika dodata vašem događaju.",
       "rateLimitReached": "Dostignuto ograničenje",

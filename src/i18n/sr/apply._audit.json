@@ -241,66 +241,48 @@
       "phase": "llm"
     },
     "apply.errorRequired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Molimo popuni sva obavezna polja.",
       "phase": "llm"
     },
     "apply.errorInvalidEmail": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Molimo unesi ispravnu email adresu.",
       "phase": "llm"
     },
     "apply.errorInvalidInstagram": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Molimo unesi ispravan Instagram nalog.",
       "phase": "llm"
     },
     "apply.errorAndroidGoogleRequired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Molimo dodaj email povezan sa tvojim Google Play nalogom.",
       "phase": "llm"
     },
     "apply.errorAlreadyApplied": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Izgleda da si se već prijavio — javićemo ti se uskoro.",
       "phase": "llm"
     },
     "apply.errorGeneric": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Nešto je pošlo po zlu. Molimo pokušaj ponovo za trenutak.",
       "phase": "llm"
     },
     "apply.successTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Na listi si.",
       "phase": "llm"
     },
     "apply.successBody": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Pregledaćemo tvoju prijavu i poslati sledeće korake na {email} uskoro.",
       "phase": "llm"
     },
     "apply.successHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Prati svoje pristigle poruke i WhatsApp.",
       "phase": "llm"
     },
     "apply.footerPrivacy": {
@@ -319,10 +301,8 @@
       "phase": "llm"
     },
     "apply.aboutEyebrow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Čemu se pridružuješ",
       "phase": "llm"
     },
     "apply.aboutTitle": {
@@ -336,10 +316,8 @@
       "phase": "llm"
     },
     "apply.aboutVitanalandDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "AI-pokretan ekosistem osmišljen da unapredi tvoje zdravlje, kvalitet života i ekonomsku nezavisnost.",
       "phase": "llm"
     },
     "apply.aboutVitanaTag": {
@@ -348,10 +326,8 @@
       "phase": "llm"
     },
     "apply.aboutVitanaDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Tvoj AI vodič i saputnik na putu dugovečnosti — Vitana radi za tebe 24/7, planira, organizuje, podseća i obavlja zadatke umesto tebe, tako da je put napred uvek jasan.",
       "phase": "llm"
     },
     "apply.aboutMaxinaTag": {
@@ -380,10 +356,8 @@
       "phase": "llm"
     },
     "apply.benefitsTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent: uses formal/plural 'vi' form ('dobijate') instead of informal singular 'ti' form ('dobijaš').",
-      "suggested": "Šta dobijaš",
       "phase": "llm"
     },
     "apply.benefitTicket": {
@@ -392,10 +366,8 @@
       "phase": "llm"
     },
     "apply.benefitEvents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing ('Prvotalasni') and grammatical inaccuracy with 'svim 12'. 'Prvotalasni' is a literal calque and not idiomatic. 'Svim' (dative plural) does not correctly combine with '12 letnjih događaja' in this structure.",
-      "suggested": "Pristup u prvom talasu za svih 12 letnjih događaja na Majorki",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "apply.benefitVitana": {
@@ -409,5 +381,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:41:35.975Z"
+  "generatedAt": "2026-05-20T07:00:36.313Z"
 }

@@ -16,8 +16,8 @@
     "joinThisEvent": "Pridruži se ovom događaju",
     "selectTickets": "Izaberi karte",
     "buyTicketsTotal": "Kupi karte – {total}",
-    "processing": "Obrađujem...",
-    "joining": "Pridružujem se...",
+    "processing": "Obrađuje se...",
+    "joining": "Povezivanje...",
     "getTickets": "Uzmi karte",
     "promoteEvent": "Promoviši događaj"
   }

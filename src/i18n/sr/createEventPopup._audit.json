@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "createEventPopup.descriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Opiši svoj događaj, šta posetioci mogu da očekuju...",
       "phase": "llm"
     },
     "createEventPopup.detailedDescription": {
@@ -38,17 +36,13 @@
       "phase": "llm"
     },
     "createEventPopup.detailedDescriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Opiši agendu, program, šta je uključeno, poklone, sponzore...",
       "phase": "llm"
     },
     "createEventPopup.detailedDescriptionHint": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Ovo će biti prikazano u detaljima događaja. Koristi za agendu, program, uključene stvari itd.",
+      "verdict": "OK",
+      "confidence": 0.95,
       "phase": "llm"
     },
     "createEventPopup.eventImage": {
@@ -57,10 +51,8 @@
       "phase": "llm"
     },
     "createEventPopup.clickToUpload": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Klikni da otpremiš sliku događaja",
       "phase": "llm"
     },
     "createEventPopup.imageFormats": {
@@ -79,10 +71,8 @@
       "phase": "llm"
     },
     "createEventPopup.selectCategory": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Izaberi kategoriju",
       "phase": "llm"
     },
     "createEventPopup.duration": {
@@ -91,10 +81,8 @@
       "phase": "llm"
     },
     "createEventPopup.selectDuration": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Izaberi trajanje",
       "phase": "llm"
     },
     "createEventPopup.customDurationPlaceholder": {
@@ -108,10 +96,8 @@
       "phase": "llm"
     },
     "createEventPopup.selectEndTime": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Izaberi vreme završetka",
       "phase": "llm"
     },
     "createEventPopup.customTime": {
@@ -150,10 +136,8 @@
       "phase": "llm"
     },
     "createEventPopup.selectTime": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses 'vi' form instead of 'ti' for informal singular address, as per 'du-form' instruction.",
-      "suggested": "Izaberi vreme",
       "phase": "llm"
     },
     "createEventPopup.location": {
@@ -187,10 +171,8 @@
       "phase": "llm"
     },
     "createEventPopup.enableTicketSalesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect verb form for du-form imperative. 'Prodajte' is plural/polite, 'Prodaj' is informal singular.",
-      "suggested": "Prodaj karte putem Stripe naplate",
       "phase": "llm"
     },
     "createEventPopup.generalAdmission": {
@@ -334,10 +316,8 @@
       "phase": "llm"
     },
     "createEventPopup.categories.social": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Društveno\" is an adjective, not a noun, making the phrase awkward. \"Druženje\" (socializing) is more appropriate here.",
-      "suggested": "🤝 Druženje & Umrežavanje",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "createEventPopup.categories.volunteer": {
@@ -421,10 +401,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidFileTypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation misses the word \"file\". \"Slika\" means \"image\", but the English specifies \"image file\".",
-      "suggested": "Molimo izaberite datoteku slike (JPEG, PNG, WebP)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "createEventPopup.toasts.fileTooLarge": {
@@ -473,10 +451,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorCreatingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('vašeg', 'molimo', 'pokušajte') instead of informal ('tvog', 'molim te', 'pokušaj').",
-      "suggested": "Došlo je do problema pri kreiranju tvog događaja. Molim te pokušaj ponovo.",
       "phase": "llm"
     },
     "createEventPopup.toasts.generatingImage": {
@@ -487,8 +463,8 @@
     "createEventPopup.toasts.generatingImageDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register is formal ('vaš') instead of informal ('tvoj').",
-      "suggested": "Kreiram prilagođenu sliku za tvoj događaj.",
+      "issue": "Incorrect subject/voice. 'Kreiram' means 'I am creating', but this is a system message indicating an ongoing process. Should be impersonal or passive.",
+      "suggested": "Kreiranje prilagođene slike za vaš događaj.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenerated": {
@@ -497,10 +473,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGeneratedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('vašem') instead of informal ('tvom').",
-      "suggested": "AI-generisana slika dodata tvom događaju.",
       "phase": "llm"
     },
     "createEventPopup.toasts.rateLimitReached": {
@@ -509,10 +483,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.rateLimitDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('molimo', 'pokušajte') instead of informal ('molim te', 'pokušaj').",
-      "suggested": "Previše zahteva za generisanje slike. Molim te pokušaj ponovo za trenutak.",
       "phase": "llm"
     },
     "createEventPopup.toasts.creditsRequired": {
@@ -521,10 +493,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.creditsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('molimo', 'dodajte') instead of informal ('molim te', 'dodaj'). The verb 'nastavili' is also formal plural or polite singular, should be informal singular 'nastavio'.",
-      "suggested": "Krediti za AI generisanje slika su potrošeni. Molim te dodaj kredite da bi nastavio.",
       "phase": "llm"
     },
     "createEventPopup.toasts.permissionDenied": {
@@ -533,10 +503,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.permissionDeniedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('nemate', 'generišete') instead of informal ('nemaš', 'generišeš').",
-      "suggested": "Nemaš dozvolu da generišeš slike za ovaj događaj.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenFailed": {
@@ -545,10 +513,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('Vaš') instead of informal ('Tvoj').",
-      "suggested": "Nije moguće generisati AI sliku. Tvoj događaj je uspešno kreiran bez nje.",
       "phase": "llm"
     },
     "createEventPopup.toasts.communityEventCreated": {
@@ -557,10 +523,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.communityEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('Vaš', 'vaš') instead of informal ('Tvoj', 'tvoj').",
-      "suggested": "Tvoj događaj je sada vidljiv zajednici i dodat u tvoj kalendar.",
       "phase": "llm"
     },
     "createEventPopup.toasts.personalEventCreated": {
@@ -569,10 +533,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.personalEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('vaš') instead of informal ('tvoj').",
-      "suggested": "Događaj je dodat u tvoj kalendar.",
       "phase": "llm"
     },
     "createEventPopup.toasts.error": {
@@ -581,12 +543,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register is formal ('Molimo', 'pokušajte') instead of informal ('Molim te', 'pokušaj').",
-      "suggested": "Kreiranje događaja nije uspelo. Molim te pokušaj ponovo.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:47:52.848Z"
+  "generatedAt": "2026-05-20T07:02:22.864Z"
 }

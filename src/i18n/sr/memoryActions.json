@@ -1,13 +1,13 @@
 {
   "memoryActions": {
-    "title": "Radnje pamćenja",
+    "title": "Akcije za pamćenje",
     "items": {
       "recordVoiceDiary": {
         "title": "Snimi glasovni dnevnik",
         "description": "Zabeleži misli i refleksije glasom"
       },
       "addMemoryNote": {
-        "title": "Dodaj belešku pamćenja",
+        "title": "Dodaj belešku o pamćenju",
         "description": "Zapiši važne zdravstvene trenutke"
       },
       "viewTimeline": {
