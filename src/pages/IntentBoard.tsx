@@ -17,17 +17,17 @@ import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentComposer } from "@/components/intents/IntentComposer";
 import { notifyError, t } from '@/lib/i18n-toast';
 
-const KIND_FILTERS: { value: IntentKind | "all" | "dance"; label: string }[] = [
-  { value: "all", label: "All (compass-aware)" },
+const KIND_FILTERS: { value: IntentKind | "all" | "dance"; labelKey: string }[] = [
+  { value: "all", labelKey: "screens.intents.kindFilter_all" },
   // VTID-DANCE-D9: meta-tab filtering on category prefix dance.*
-  { value: "dance", label: "💃 Dance" },
-  { value: "learning_seek", label: "Want to learn" },
-  { value: "mentor_seek", label: "Offering to teach" },
-  { value: "commercial_buy", label: "Buy / hire" },
-  { value: "commercial_sell", label: "Sell / offer" },
-  { value: "activity_seek", label: "Activity partners" },
-  { value: "social_seek", label: "Coffee chats" },
-  { value: "mutual_aid", label: "Lend / borrow" },
+  { value: "dance", labelKey: "screens.intents.kindFilter_dance" },
+  { value: "learning_seek", labelKey: "screens.intents.kindFilter_learningSeek" },
+  { value: "mentor_seek", labelKey: "screens.intents.kindFilter_mentorSeek" },
+  { value: "commercial_buy", labelKey: "screens.intents.kindFilter_commercialBuy" },
+  { value: "commercial_sell", labelKey: "screens.intents.kindFilter_commercialSell" },
+  { value: "activity_seek", labelKey: "screens.intents.kindFilter_activitySeek" },
+  { value: "social_seek", labelKey: "screens.intents.kindFilter_socialSeek" },
+  { value: "mutual_aid", labelKey: "screens.intents.kindFilter_mutualAid" },
 ];
 
 const DANCE_VARIETY_CHIPS = [
@@ -105,7 +105,7 @@ export default function IntentBoard() {
                 : "bg-background hover:bg-muted border-border"
             }`}
           >
-            {f.label}
+            {t(f.labelKey)}
           </button>
         ))}
       </div>

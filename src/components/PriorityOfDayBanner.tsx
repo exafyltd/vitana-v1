@@ -3,6 +3,7 @@ import { useDailyPriority } from '@/hooks/useDailyPriority';
 import { useProactivePriority } from '@/hooks/useProactivePriority';
 import { useProfile } from '@/context/ProfileProvider';
 import { ArrowRight } from 'lucide-react';
+import { t } from '@/lib/i18n-toast';
 
 interface PriorityOfDayBannerProps {
   vitanaBreakdown?: any;
@@ -17,7 +18,7 @@ export function PriorityOfDayBanner({ vitanaBreakdown }: PriorityOfDayBannerProp
   // pause or endpoint unavailable).
   const { priority: proactivePriority } = useProactivePriority();
 
-  const firstName = profile?.displayName?.split(' ')[0] || 'there';
+  const firstName = profile?.displayName?.split(' ')[0] || t('screens.home.thereFallbackName');
 
   const effective = proactivePriority
     ? {
@@ -66,7 +67,7 @@ export function PriorityOfDayBanner({ vitanaBreakdown }: PriorityOfDayBannerProp
         <div className="flex-1 text-left">
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              {effective.isProactive ? 'For you, right now' : 'Priority of the Day::'}
+              {effective.isProactive ? t('screens.home.forYouRightNow') : t('screens.home.priorityOfTheDay')}
             </span>
             <span className="text-base font-bold text-foreground">
               {effective.isProactive

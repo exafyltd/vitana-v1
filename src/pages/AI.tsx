@@ -77,8 +77,8 @@ export default function AI() {
                 icon={CheckCircle}
                 category="ai"
                 title={t('screens.ai.todaySPriorityActions')}
-                subtitle="AI-curated tasks for maximum wellness impact"
-                buttonText="View All Tasks"
+                subtitle={t('screens.ai.subtitle_priorityActions')}
+                buttonText={t('screens.ai.button_viewAllTasks')}
                 onButtonClick={() => handleActionClick('view-all')}
                 content={
                   <div className="space-y-2">
@@ -104,8 +104,8 @@ export default function AI() {
                 icon={Zap}
                 category="autopilot"
                 title={t('screens.ai.autopilotStatus')}
-                subtitle="AI is actively managing your wellness"
-                buttonText="View Autopilot Log"
+                subtitle={t('screens.ai.subtitle_autopilotStatus')}
+                buttonText={t('screens.ai.button_viewAutopilotLog')}
                 onButtonClick={() => handleActionClick('autopilot-log')}
                 content={
                   <div className="space-y-2">
@@ -136,7 +136,7 @@ export default function AI() {
                   description: highlight.body,
                   type: "insight" as const,
                   priority: "medium" as const,
-                  action: "See Details"
+                  action: t('screens.ai.actionLabel_seeDetails')
                 }))}
                 variant="card"
                 maxItems={3}
