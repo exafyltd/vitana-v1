@@ -21,12 +21,10 @@
       "phase": "llm"
     },
     "profileStats.following": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic for a UI label indicating 'people you are following'. 'Siguiendo' is a present participle, not a noun for the group of people.",
-      "suggested": "Seguidos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:51:28.649Z"
+  "generatedAt": "2026-05-20T07:03:21.767Z"
 }

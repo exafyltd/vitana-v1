@@ -28,7 +28,7 @@
     "businessHub.tabs.insights": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Información is too general; Insights implies deeper understanding or actionable intelligence.",
+      "issue": "Translation is too generic, misses the nuance of 'deeper understanding' or 'valuable observations' implied by 'Insights'.",
       "suggested": "Perspectivas",
       "phase": "llm"
     },
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:37:32.966Z"
+  "generatedAt": "2026-05-20T07:00:46.296Z"
 }

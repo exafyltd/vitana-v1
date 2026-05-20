@@ -3,8 +3,8 @@
     "authPage.welcomeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Missing closing exclamation mark and not gender-neutral. 'Bienvenido' is masculine singular.",
-      "suggested": "¡Bienvenido/a a VITANA!",
+      "issue": "English is gender-neutral, but Spanish translation uses masculine singular. For a friendly app, a gender-neutral welcome is more appropriate.",
+      "suggested": "¡Te damos la bienvenida a VITANA!",
       "phase": "llm"
     },
     "authPage.subtitle": {
@@ -78,5 +78,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:35:02.557Z"
+  "generatedAt": "2026-05-20T07:00:25.448Z"
 }
