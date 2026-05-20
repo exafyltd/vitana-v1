@@ -34,13 +34,13 @@
     "campaigns": "Kampagnen",
     "distribution": "Verteilung",
     "dataConsent": "Daten & Zustimmung",
-    "timeline": "Zeitachse",
+    "timeline": "Verlauf",
     "diary": "Tagebuch",
     "recall": "Abrufen & Suchen",
     "permissions": "Berechtigungen",
-    "preferences": "Präferenzen",
+    "preferences": "Einstellungen",
     "privacy": "Datenschutz",
-    "connectedApps": "Verbundene Apps",
+    "connectedApps": "Verbundene Apps & Integrationen",
     "support": "Support"
   }
 }

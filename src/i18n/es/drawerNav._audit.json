@@ -58,8 +58,8 @@
     "drawerNav.diary": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Redundant translation; 'Diario' alone means 'Diary' and implies daily.",
-      "suggested": "Diario",
+      "issue": "Redundant and awkward phrasing; 'Diario Diario' literally means 'Daily Daily' or 'Diary Diary'.",
+      "suggested": "Diario personal",
       "phase": "llm"
     },
     "drawerNav.connectors": {
@@ -83,5 +83,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:42:14.717Z"
+  "generatedAt": "2026-05-20T07:01:30.330Z"
 }

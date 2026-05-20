@@ -58,7 +58,7 @@
     "calendarPopup.syncExternal": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translation is grammatically correct but sounds slightly unnatural/incomplete for a UI label. 'Sincronizar con externos' or 'Sincronizar con fuentes externas' would be more idiomatic for an action.",
+      "issue": "Grammatically awkward; 'externo' is an adjective without a noun to modify. It sounds incomplete.",
       "suggested": "Sincronizar con externos",
       "phase": "llm"
     },
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:38:56.032Z"
+  "generatedAt": "2026-05-20T07:01:01.562Z"
 }

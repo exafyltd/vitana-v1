@@ -53,9 +53,9 @@
       "generatePlan": "Generar plan",
       "generating": "Generando..."
     },
-    "noSupplements": "Sin Suplementos Aún",
+    "noSupplements": "Aún no hay suplementos",
     "noSupplementsDesc": "Registra tus vitaminas, minerales y suplementos diarios. Añade tu primer suplemento para empezar.",
-    "noReports": "Sin Informes de Salud Aún",
+    "noReports": "Aún no hay informes de salud",
     "noReportsDesc": "Sube tus análisis de sangre, resultados de laboratorio e informes médicos para desbloquear información personalizada de salud.",
     "medical": "Médico",
     "supplements": "Suplementos",

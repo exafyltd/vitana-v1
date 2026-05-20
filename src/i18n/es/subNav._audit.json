@@ -178,15 +178,13 @@
     "subNav.diary": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Redundant and awkward phrasing ('Daily daily').",
-      "suggested": "Mi diario",
+      "issue": "Redundant and awkward phrasing. 'Diario diario' literally means 'Diary daily' or 'Daily daily'.",
+      "suggested": "Tu diario",
       "phase": "llm"
     },
     "subNav.recall": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Recordar' primarily means 'to remember'; 'Recuperar' is more precise for data retrieval in this context.",
-      "suggested": "Recuperar y buscar",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "subNav.permissions": {
@@ -215,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:00:59.361Z"
+  "generatedAt": "2026-05-20T07:08:36.760Z"
 }

@@ -76,7 +76,7 @@
       "error": "Error",
       "conversationStarted": "¡Conversación iniciada!",
       "authRequired": "Autenticación requerida",
-      "noTenantContext": "No hay contexto de inquilino disponible",
+      "noTenantContext": "No se pudo cargar tu información.",
       "searchFailed": "Error en la búsqueda",
       "accessDenied": "Acceso denegado",
       "communityOnly": "Solo los usuarios de la comunidad pueden crear conversaciones globales",

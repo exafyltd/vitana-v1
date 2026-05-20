@@ -1,14 +1,14 @@
 {
   "permissionsActions": {
-    "title": "Datenschutz- & Berechtigungs-Aktionen",
+    "title": "Datenschutz- & Berechtigungsaktionen",
     "items": {
       "privacySettings": {
         "title": "Datenschutzeinstellungen",
-        "description": "Datenschutz und Freigabe-Einstellungen konfigurieren"
+        "description": "Datenschutz- und Freigabeeinstellungen konfigurieren"
       },
       "manageAccess": {
         "title": "Zugriff verwalten",
-        "description": "Steuern, wer deine Gesundheits-Erinnerungen sehen darf"
+        "description": "Steuern, wer deine Gesundheitserinnerungen sehen darf"
       },
       "securitySettings": {
         "title": "Sicherheitseinstellungen",

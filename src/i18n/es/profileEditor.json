@@ -1,6 +1,6 @@
 {
   "profileEditor": {
-    "editAbout": "Editar Acerca de",
+    "editAbout": "Editar tu información",
     "aboutTitle": "Acerca de",
     "aboutDescription": "Comparte más sobre ti. Puedes controlar quién ve cada campo.",
     "bio": "Biografía",
@@ -59,7 +59,7 @@
       "handlePlaceholder": "tuusuario",
       "handleDescription": "Tu usuario se usará en tu URL de perfil público: /u/@{handle}",
       "personalityDescriptor": "Descriptor de personalidad",
-      "personalityDescriptorPlaceholder": "Ej.: El Movimiento Consciente, El Guerrero Zen",
+      "personalityDescriptorPlaceholder": "Ej.: El Caminante Consciente, El Guerrero Zen",
       "personalityDescriptorDescription": "Una frase corta que caracteriza tu estilo de bienestar",
       "upload": "Subir",
       "uploading": "Subiendo...",

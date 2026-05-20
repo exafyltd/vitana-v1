@@ -41,8 +41,8 @@
     "liveStream": "Live & Stream",
     "tenantManagement": "Mandantenverwaltung",
     "systemAdmin": "Systemadministration",
-    "clinicalOps": "Klinische Ops",
-    "monitoring": "Überwachung",
+    "clinicalOps": "Klinische Operationen",
+    "monitoring": "Monitoring",
     "logout": "Abmelden"
   }
 }

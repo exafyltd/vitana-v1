@@ -35,7 +35,7 @@
       "last7Days": "Últimos 7 Días",
       "last30Days": "Últimos 30 Días",
       "last90Days": "Últimos 90 Días",
-      "allTime": "Todo el tiempo",
+      "allTime": "Histórico",
       "details": "Detalles",
       "earningsActivity": "Actividad de Ganancias",
       "noEarningsStartSelling": "Aún sin ganancias. Empieza a vender para ver actividad aquí."
@@ -51,7 +51,7 @@
       "totalActive": "Total activos",
       "upcomingSessions": "Próximas sesiones",
       "thisWeek": "Esta semana",
-      "topPerformer": "Mejor rendimiento",
+      "topPerformer": "El mejor",
       "noDataYet": "Aún sin datos",
       "createServiceToStart": "Crea un servicio para empezar.",
       "bookings": "reservas",

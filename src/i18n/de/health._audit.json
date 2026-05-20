@@ -1,0 +1,423 @@
+{
+  "verdicts": {
+    "health.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.topPercentile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.missionAlignment.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.missionAlignment.economyAxes.find_match": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "health.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
+      "suggested": "Dein persönliches Gesundheits-Dashboard",
+      "phase": "llm"
+    },
+    "health.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overviewDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihr') and missing part of the English meaning ('and wellness overview').",
+      "suggested": "Dein umfassendes Gesundheits-Dashboard und Wellness-Übersicht",
+      "phase": "llm"
+    },
+    "health.servicesHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHubDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkersDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihre') and missing verb ('view').",
+      "suggested": "Deine neuesten Testergebnisse und Biomarker ansehen",
+      "phase": "llm"
+    },
+    "health.healthTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTrackerDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.educationDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incomplete translation; missing 'access' and 'wellness' for resources.",
+      "suggested": "Gesundheitsthemen lernen und auf Wellness-Ressourcen zugreifen",
+      "phase": "llm"
+    },
+    "health.priorityFocus": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Meaning slightly off; 'Priorität heute' means 'priority today', not 'priority focus area'.",
+      "suggested": "Dein Fokusbereich",
+      "phase": "llm"
+    },
+    "health.priorityFocusExplanation": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Ihre') and 'Gesundheit' is less precise than 'Gesundheitsspanne' for 'healthspan'.",
+      "suggested": "Dieser Bereich hat derzeit den größten Einfluss auf deine langfristige Gesundheitsspanne.",
+      "phase": "llm"
+    },
+    "health.autopilotGuidance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.autopilotSuggests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.takeAction": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Aktion ausführen' is a bit formal/literal; 'Handeln' is more natural for a UI button.",
+      "suggested": "Handeln",
+      "phase": "llm"
+    },
+    "health.uploadBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.orderBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.viewPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthSnapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.improving": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Verbessernd' is a participle; as a status, 'Verbessert sich' is more appropriate.",
+      "suggested": "Verbessert sich",
+      "phase": "llm"
+    },
+    "health.trend.declining": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Abnehmend' is a participle; as a status, 'Verschlechtert sich' is more appropriate.",
+      "suggested": "Verschlechtert sich",
+      "phase": "llm"
+    },
+    "health.trend.stable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.uploadBloodTestResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.startFitnessChallenge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Generiere deinen personalisierten Schlafplan mit KI-optimierten Zielen, abgestimmt auf deinen Biorhythmus, Erholungsbedürfnisse und tägliche Leistung.",
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Generiere deinen personalisierten Trainingsplan mit KI-optimierten Übungen, abgestimmt auf dein Fitnesslevel, Ziele und Erholungsbedürfnisse.",
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Generiere deinen personalisierten Ernährungsplan mit leckeren, ausgewogenen Rezepten, abgestimmt auf deine Ziele und Ernährungsvorlieben.",
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Generiere deinen personalisierten Hydratationsplan mit KI-optimierten Tageszielen, abgestimmt auf dein Aktivitätslevel, Umgebung und Erholungsbedürfnisse.",
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Generiere deinen personalisierten Mental-Wellness-Plan, um Stress, Fokus und emotionales Gleichgewicht mit KI-Unterstützung zu verfolgen.",
+      "phase": "llm"
+    },
+    "health.emptyStates.generatePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplementsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du' and misses 'to get started' nuance.",
+      "suggested": "Verfolge deine täglichen Vitamine, Mineralien und Nahrungsergänzungsmittel. Füge dein erstes Supplement hinzu, um zu starten.",
+      "phase": "llm"
+    },
+    "health.noReports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReportsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Uses formal 'Sie' instead of informal 'du'.",
+      "suggested": "Lade deine Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
+      "phase": "llm"
+    },
+    "health.medical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.unknownProvider": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.addSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadFirstReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noRecs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.summaryServedCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillarHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.noPillar": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation is grammatically correct but sounds stiff and less natural for 'aligned'.",
+      "suggested": "Nicht auf die Säulen ausgerichtet",
+      "phase": "llm"
+    },
+    "health.missionAlignment.noEconomy": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation is grammatically correct but sounds stiff and less natural for 'aligned'.",
+      "suggested": "Nicht auf die Wirtschaft ausgerichtet",
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.income_generation": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Einkommen' means 'income' (the result), not the 'generation' process. The nuance is lost.",
+      "suggested": "Einkommensgenerierung",
+      "phase": "llm"
+    },
+    "health.missionAlignment.economyAxes.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.missionAlignment.contractLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:12:50.017Z"
+}

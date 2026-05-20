@@ -1,20 +1,20 @@
 {
   "confirm": {
-    "delete": "Sind Sie sicher, dass Sie dies löschen möchten?",
+    "delete": "Bist du sicher, dass du dies löschen möchtest?",
     "deleteDesc": "Diese Aktion kann nicht rückgängig gemacht werden.",
-    "cancel": "Sind Sie sicher, dass Sie abbrechen möchten?",
-    "cancelDesc": "Ihre Änderungen gehen verloren.",
-    "unsavedChanges": "Sie haben ungespeicherte Änderungen",
-    "unsavedChangesDesc": "Möchten Sie wirklich verlassen? Ihre Änderungen gehen verloren.",
-    "leave": "Möchten Sie diese Seite wirklich verlassen?",
+    "cancel": "Bist du sicher, dass du abbrechen möchtest?",
+    "cancelDesc": "Deine Änderungen gehen verloren.",
+    "unsavedChanges": "Du hast ungespeicherte Änderungen",
+    "unsavedChangesDesc": "Möchtest du wirklich verlassen? Deine Änderungen gehen verloren.",
+    "leave": "Möchtest du diese Seite wirklich verlassen?",
     "leaveDesc": "Ungespeicherte Änderungen gehen verloren.",
-    "logout": "Möchten Sie sich wirklich abmelden?",
-    "logoutDesc": "Sie müssen sich erneut anmelden.",
-    "remove": "Möchten Sie dieses Element wirklich entfernen?",
+    "logout": "Möchtest du dich wirklich abmelden?",
+    "logoutDesc": "Du musst dich erneut anmelden.",
+    "remove": "Möchtest du dieses Element wirklich entfernen?",
     "removeDesc": "Das Element wird aus der Liste entfernt.",
-    "disconnect": "Möchten Sie diese Verbindung wirklich trennen?",
-    "disconnectDesc": "Sie können sich später erneut verbinden.",
-    "proceed": "Möchten Sie fortfahren?",
+    "disconnect": "Möchtest du diese Verbindung wirklich trennen?",
+    "disconnectDesc": "Du kannst dich später erneut verbinden.",
+    "proceed": "Möchtest du fortfahren?",
     "proceedDesc": "Diese Aktion wird ausgeführt."
   }
 }

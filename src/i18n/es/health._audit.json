@@ -211,10 +211,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'plan mental' is less natural than 'plan de bienestar mental' in a wellness context, especially given the next entry.",
-      "suggested": "Aún no hay plan de bienestar mental",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlanDesc": {
@@ -235,7 +233,7 @@
     "health.noSupplements": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Sin X Aún' is less natural than 'Aún no hay X' or 'Todavía no hay X'.",
+      "issue": "Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.",
       "suggested": "Aún no hay suplementos",
       "phase": "llm"
     },
@@ -247,7 +245,7 @@
     "health.noReports": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Sin X Aún' is less natural than 'Aún no hay X' or 'Todavía no hay X'.",
+      "issue": "Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.",
       "suggested": "Aún no hay informes de salud",
       "phase": "llm"
     },
@@ -387,5 +385,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:44:41.350Z"
+  "generatedAt": "2026-05-20T07:01:39.473Z"
 }

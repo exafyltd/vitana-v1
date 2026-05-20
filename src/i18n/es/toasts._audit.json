@@ -431,10 +431,8 @@
       "phase": "llm"
     },
     "toasts.error.notFound": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic and gender-neutral phrasing for general 'Not found' in UI.",
-      "suggested": "No se encontró",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.error.notFoundDesc": {
@@ -908,10 +906,8 @@
       "phase": "llm"
     },
     "toasts.admin.companionOverridesSavedVoiceCacheRefreshes": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Anulaciones de compañero' is a very literal translation of 'companion overrides' but might not be the most natural or clear phrasing in Spanish for settings/preferences. 'Ajustes' or 'Configuración' are more common.",
-      "suggested": "Ajustes de compañero guardados — la caché de voz se actualiza en 30s.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.admin.manualTriggerSuccessful": {
@@ -1295,10 +1291,8 @@
       "phase": "llm"
     },
     "toasts.admin.rateLimitReached": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Límite de tasa' is a direct translation but 'límite de solicitudes' or 'límite de peticiones' is more idiomatic for 'rate limit' in a tech context.",
-      "suggested": "Límite de solicitudes alcanzado",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.admin.tooManyRequestsPleaseWaitMoment": {
@@ -1358,9 +1352,9 @@
     },
     "toasts.admin.automationPrefilledFromDiscoveredPattern": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Prellenada' is understandable but a bit clunky. 'Precargada' or 'autocompletada' are more common and natural for 'pre-filled' in a UI context.",
-      "suggested": "Automatización precargada desde el patrón descubierto",
+      "confidence": 0.9,
+      "issue": "The term 'prellenada' is understandable but sounds a bit clunky and less natural than other options for 'pre-filled'.",
+      "suggested": "Automatización rellenada automáticamente a partir del patrón descubierto",
       "phase": "llm"
     },
     "toasts.admin.failedLoadPatternData": {
@@ -1451,7 +1445,7 @@
     "toasts.admin.toggleFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for a UI message. 'X falló' is less common than 'Error al X' or 'Fallo al X'.",
+      "issue": "Literal translation 'Alternar falló' is not idiomatic for a UI message. It should be 'Error al alternar' or 'No se pudo alternar'.",
       "suggested": "Error al alternar",
       "phase": "llm"
     },
@@ -1468,7 +1462,7 @@
     "toasts.admin.saveFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for a UI message. 'X falló' is less common than 'Error al X' or 'Fallo al X'.",
+      "issue": "Literal translation 'Guardado falló' is not idiomatic for a UI message. It should be 'Error al guardar' or 'No se pudo guardar'.",
       "suggested": "Error al guardar",
       "phase": "llm"
     },
@@ -1485,15 +1479,15 @@
     "toasts.admin.reclassifyFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for a UI message. 'X falló' is less common than 'Error al X' or 'Fallo al X'.",
+      "issue": "Literal translation 'Reclasificar falló' is not idiomatic for a UI message. It should be 'Error al reclasificar' or 'No se pudo reclasificar'.",
       "suggested": "Error al reclasificar",
       "phase": "llm"
     },
     "toasts.admin.generateSpecFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for a UI message. 'X falló' is less common than 'Error al X' or 'Fallo al X'.",
-      "suggested": "Error al generar especificación",
+      "issue": "Literal translation 'Generar especificación falló' is not idiomatic for a UI message. It should be 'Error al generar la especificación' or 'No se pudo generar la especificación'.",
+      "suggested": "Error al generar la especificación",
       "phase": "llm"
     },
     "toasts.admin.activateFailed": {
@@ -1523,8 +1517,8 @@
     },
     "toasts.admin.baselineDocUpdatedAppliesAllNonoptedout": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'que no optaron por no participar' is grammatically correct but verbose and slightly clunky due to the double negative. A more concise and natural phrasing for 'non-opted-out' is preferred.",
+      "confidence": 0.8,
+      "issue": "The phrase 'que no optaron por no participar' is grammatically correct but verbose and clunky due to the double negative. A more concise and natural phrasing is preferred.",
       "suggested": "Documento base actualizado: aplica a todos los inquilinos que no se dieron de baja",
       "phase": "llm"
     },
@@ -1709,10 +1703,8 @@
       "phase": "llm"
     },
     "toasts.audio.failedToggleScreenSharing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'activar' is less precise than 'alternar' for 'toggle'.",
-      "suggested": "Error al alternar compartir pantalla",
       "phase": "llm"
     },
     "toasts.auth.confirmationEmailSentPleaseCheckYour": {
@@ -1811,10 +1803,8 @@
       "phase": "llm"
     },
     "toasts.community.previewNewThumbnailBelow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "English is an imperative verb, Spanish is a noun phrase. Needs to be an informal imperative verb.",
-      "suggested": "Previsualiza la nueva miniatura abajo.",
       "phase": "llm"
     },
     "toasts.community.captureFailed": {
@@ -2058,9 +2048,8 @@
       "phase": "llm"
     },
     "toasts.crossover.joined": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender ambiguity. 'Unido' is masculine. If the user is female, it should be 'Unida'. Without user gender context, it's a common default but can be less inclusive for a friendly app.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.crossover.chatStarted": {
@@ -2379,10 +2368,8 @@
       "phase": "llm"
     },
     "toasts.diary.yourPhotoDiaryEntryHasSaved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly clunky phrasing for 'photo diary entry'. 'Diario fotográfico' or 'diario de fotos' is more natural.",
-      "suggested": "Tu entrada de diario fotográfico se ha guardado correctamente.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.diary.uploadFailed": {
@@ -2773,8 +2760,8 @@
     "toasts.intents.ifTheyReInterestedTooWe": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch (formal 'usted' verb with informal 'tú' pronoun) and gender assumption. 'Si también está interesado' uses formal 'está' and masculine 'interesado', while 'te conectaremos' uses informal 'te'.",
-      "suggested": "Si también le interesa, te conectaremos.",
+      "issue": "The English 'they're' is plural, but the Spanish 'está interesado' is singular and masculine, creating a number and gender mismatch. A plural and/or gender-neutral option is needed.",
+      "suggested": "Si también les interesa, te conectaremos.",
       "phase": "llm"
     },
     "toasts.intents.couldNotRecordInterest": {
@@ -4370,7 +4357,7 @@
     "toasts.sharing.shareOpened": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Compartir abierto' is not idiomatic for 'Share opened' (referring to a UI element or function).",
+      "issue": "Literal translation 'Compartir abierto' is not idiomatic. It implies 'To share opened' rather than 'Share (interface) opened' or 'Sharing activated'.",
       "suggested": "Compartir activado",
       "phase": "llm"
     },
@@ -4675,10 +4662,10 @@
       "phase": "llm"
     },
     "toasts.wallet.tokensStakedSuccessfully": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Anglicism 'stakados' is not standard Spanish; a more natural phrasing using the loanword 'staking' as a noun is preferred.",
-      "suggested": "¡Staking de tokens exitoso!",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "The term 'Stakados' is an Anglicism. While understood in specific tech/crypto communities, its appropriateness for a general 'wellness/longevity mobile app' is questionable without more context on the app's features.",
+      "suggested": "✅ ¡Tokens Apostados Exitosamente!",
       "phase": "llm"
     },
     "toasts.wallet.stakingFailed": {
@@ -5233,9 +5220,9 @@
     },
     "toasts.hooks.blastingNow": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Misinterpretation of 'blasting'; 'explotando' means exploding, which is incorrect for the likely energetic/starting context. Needs a more appropriate phrase for 'starting with energy' or 'in progress'.",
-      "suggested": "¡En marcha!",
+      "confidence": 0.9,
+      "issue": "The translation '¡Explotando ahora!' (Exploding now!) is a literal and likely incorrect interpretation of 'Blasting now!' in a UI context. The intended meaning is probably 'sending/broadcasting' or 'playing loudly'.",
+      "suggested": "¡Enviando ahora!",
       "phase": "llm"
     },
     "toasts.hooks.invitesSent": {
@@ -5269,10 +5256,8 @@
       "phase": "llm"
     },
     "toasts.hooks.youVeSuccessfullyLeftThisEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Exitosamente' is grammatically correct but less idiomatic than 'con éxito' for 'successfully' in this context. 'Con éxito' sounds more natural.",
-      "suggested": "Has salido de este evento con éxito",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.joinedEvent": {
@@ -5616,10 +5601,8 @@
       "phase": "llm"
     },
     "toasts.hooks.rateLimitReached": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "While 'límite de tasa' is technically correct, 'límite de solicitudes' is more common and user-friendly for a general audience in a mobile app context.",
-      "suggested": "Límite de solicitudes alcanzado",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.tooManyRequestsPleaseWaitMoment": {
@@ -5684,8 +5667,8 @@
     },
     "toasts.hooks.dismissFailed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing. 'Descartar fallido' sounds like 'to dismiss a failed thing' rather than 'the dismissal failed'.",
+      "confidence": 1,
+      "issue": "Literal translation 'Descartar fallido' is not idiomatic for a UI message. It should be 'Error al descartar' or 'No se pudo descartar'.",
       "suggested": "Error al descartar",
       "phase": "llm"
     },
@@ -5705,10 +5688,8 @@
       "phase": "llm"
     },
     "toasts.hooks.rateLimitReached2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Límite de velocidad' is ambiguous; it often refers to speed limits. 'Rate limit' in a tech context usually refers to requests.",
-      "suggested": "Límite de solicitudes alcanzado",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.pleaseWaitFewSecondsTryAgain": {
@@ -5813,8 +5794,8 @@
     },
     "toasts.hooks.shareFailed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing. 'Compartir fallido' sounds like 'to share a failed thing' or 'a failed share' as a noun, not 'the sharing action failed'.",
+      "confidence": 1,
+      "issue": "Literal translation 'Compartir fallido' is not idiomatic for a UI message. It should be 'Error al compartir' or 'No se pudo compartir'.",
       "suggested": "Error al compartir",
       "phase": "llm"
     },
@@ -6184,5 +6165,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T19:11:01.647Z"
+  "generatedAt": "2026-05-20T07:08:59.340Z"
 }

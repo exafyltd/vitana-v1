@@ -42,9 +42,9 @@
     },
     "milestones.titlePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific phrasing ('Graduado' is masculine) for an example. A more neutral or event-focused phrasing is better.",
-      "suggested": "p. ej., Graduación de la universidad",
+      "confidence": 0.9,
+      "issue": "The example is gender-specific ('Graduado' is masculine) and slightly formal for a friendly app. Using the infinitive is more neutral and common for general examples.",
+      "suggested": "p. ej., Graduarse de la universidad",
       "phase": "llm"
     },
     "milestones.descPlaceholder": {
@@ -68,5 +68,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:48:22.731Z"
+  "generatedAt": "2026-05-20T07:02:33.845Z"
 }

@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "profileGroups.discoverCta": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive used where imperative is more common for a call to action in a friendly app.",
-      "suggested": "Descubre grupos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileGroups.viewAllCta": {
@@ -28,5 +26,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-19T17:51:13.672Z"
+  "generatedAt": "2026-05-20T07:03:11.328Z"
 }

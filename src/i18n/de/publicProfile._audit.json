@@ -1,0 +1,49 @@
+{
+  "verdicts": {
+    "publicProfile.viewFull": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.sendMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.milestones": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Meaning changed; 'Magic Moments' does not convey 'Milestones'.",
+      "suggested": "Lebensmeilensteine",
+      "phase": "llm"
+    },
+    "publicProfile.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for a label; 'Ich folge' means 'I follow' rather than 'people I am following'.",
+      "suggested": "Folge ich",
+      "phase": "llm"
+    },
+    "publicProfile.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:19:46.560Z"
+}
