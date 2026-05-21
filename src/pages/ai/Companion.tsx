@@ -54,10 +54,10 @@ export default function Companion() {
   const companionData = {
     vitanaIndex: 742,
     suggestions: [
-      "Take a 5-minute breathing break",
-      "Drink a glass of water",
-      "Check your posture",
-      "Plan tomorrow's workout"
+      t('screens.ai.companionSugg_breathing'),
+      t('screens.ai.companionSugg_water'),
+      t('screens.ai.companionSugg_posture'),
+      t('screens.ai.companionSugg_workout'),
     ]
   };
 

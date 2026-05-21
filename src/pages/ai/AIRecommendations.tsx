@@ -54,36 +54,36 @@ export default function AIRecommendations() {
   const healthRecommendations = recommendations.healthTodos.map((item, index) => ({
     id: `health-${index}`,
     title: item.title,
-    description: `ETA: ${item.etaMins} minutes`,
+    description: t('screens.ai.recoDesc_eta', { mins: String(item.etaMins) }),
     priority: item.priority as "low" | "medium" | "high",
     category: "health",
-    action: "Complete Task"
+    action: t('screens.ai.actionLabel_completeTask')
   }));
 
   const lifestyleSuggestions = recommendations.content.slice(0, 3).map((item, index) => ({
     id: `lifestyle-${index}`,
     title: item.title,
-    description: `${item.type} content - ${item.duration}`,
+    description: t('screens.ai.recoDesc_contentDuration', { type: item.type, duration: item.duration }),
     priority: "medium" as const,
     category: "lifestyle",
-    action: "Watch Now"
+    action: t('screens.ai.actionLabel_watchNow')
   }));
 
   const personalizationInsights = [
     {
       id: "insight-1",
-      title: "Sleep Pattern Optimization",
-      description: "Your optimal bedtime is 10:30 PM based on energy patterns",
+      title: t('screens.ai.recoTitle_sleepPattern'),
+      description: t('screens.ai.recoDesc_sleepPattern'),
       priority: "high" as const,
       category: "insight",
-      action: "Apply Insight"
+      action: t('screens.ai.actionLabel_applyInsight')
     },
     {
       id: "insight-2",
-      title: "Nutrition Timing",
-      description: "Post-workout nutrition window analysis shows 20% improvement potential",
+      title: t('screens.ai.recoTitle_nutritionTiming'),
+      description: t('screens.ai.recoDesc_nutritionTiming'),
       priority: "medium" as const,
-      category: "insight", 
+      category: "insight",
       action: t('screens.ai.actionLabel_learnMore')
     }
   ];

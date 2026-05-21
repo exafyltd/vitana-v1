@@ -77,7 +77,7 @@ export default function Insights() {
               <StandardCard
                 title={t('screens.ai.patternRecognition')}
                 subtitle={t('screens.ai.subtitle_aiInsights')}
-                content="Your energy levels peak at 10 AM and 3 PM consistently. Consider scheduling important tasks during these windows for optimal performance."
+                content={t('screens.ai.insightContent_energyPeak')}
                 variant="default"
                 onClick={() => handleInsightClick("C-006")}
               />
@@ -88,7 +88,7 @@ export default function Insights() {
               <StandardCard
                 title={t('screens.ai.behavioralTrends')}
                 subtitle={t('screens.ai.subtitle_weeklyTrends')}
-                content="Your hydration improves 40% on weekdays vs weekends. Weekend reminder system could help maintain consistency."
+                content={t('screens.ai.insightContent_hydrationWeekly')}
                 variant="default"
                 onClick={() => handleInsightClick("C-007")}
               />
@@ -99,7 +99,7 @@ export default function Insights() {
               <StandardCard
                 title={t('screens.ai.correlationAnalysis')}
                 subtitle={t('screens.ai.subtitle_correlations')}
-                content="Sleep quality directly correlates with next-day mood (85% accuracy). Earlier bedtime might improve overall wellness."
+                content={t('screens.ai.insightContent_sleepMood')}
                 variant="default"
                 onClick={() => handleInsightClick("C-008")}
               />
@@ -110,7 +110,7 @@ export default function Insights() {
               <StandardCard
                 title={t('screens.ai.predictionModels')}
                 subtitle={t('screens.ai.subtitle_aiForecasts')}
-                content="Based on current trends, you're 78% likely to reach your monthly fitness goal. Increase by 2 sessions to guarantee success."
+                content={t('screens.ai.insightContent_fitnessGoal')}
                 variant="default"
                 onClick={() => handleInsightClick("C-009")}
               />
@@ -126,7 +126,7 @@ export default function Insights() {
               <SmartSuggestions
                 suggestions={lifestylePatterns.map(pattern => ({
                   title: pattern,
-                  description: "Detected improvement pattern",
+                  description: t('screens.ai.insightDesc_detectedImprovement'),
                   type: "insight" as const,
                   priority: "medium" as const,
                   action: t('screens.ai.actionLabel_seeDetails')
@@ -142,17 +142,17 @@ export default function Insights() {
                 suggestions={[
                   {
                     title: `Vitana Index: ${indexMovement.vitanaIndex} (+${indexMovement.delta})`,
-                    description: "Significant improvement this week",
+                    description: t('screens.ai.insightDesc_weeklyImprovement'),
                     type: "insight" as const,
                     priority: "high" as const,
                     action: t('screens.ai.actionLabel_viewBreakdown')
                   },
                   {
-                    title: `Sleep Quality: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
-                    description: "Best improvement driver",
+                    title: `${t('screens.health.pillar_sleep_title')}: ${indexMovement.pillars.sleep.score} (+${indexMovement.pillars.sleep.delta})`,
+                    description: t('screens.ai.insightDesc_bestImprovementDriver'),
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Optimize"
+                    action: t('screens.ai.actionLabel_optimize')
                   }
                 ]}
                 variant="card"
@@ -165,18 +165,18 @@ export default function Insights() {
               <SmartSuggestions
                 suggestions={[
                   {
-                    title: `${socialEngagement.newFollowers} new followers this week`,
-                    description: "Growing community connection",
+                    title: t('screens.ai.insightTitle_newFollowers', { n: String(socialEngagement.newFollowers) }),
+                    description: t('screens.ai.insightDesc_growingConnection'),
                     type: "insight" as const,
                     priority: "low" as const,
-                    action: "Connect"
+                    action: t('screens.ai.actionLabel_connect')
                   },
                   {
-                    title: `Joined ${socialEngagement.groupsJoined} new wellness groups`,
-                    description: "Expanding support network",
+                    title: t('screens.ai.insightTitle_newGroups', { n: String(socialEngagement.groupsJoined) }),
+                    description: t('screens.ai.insightDesc_expandingNetwork'),
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Explore Groups"
+                    action: t('screens.ai.actionLabel_exploreGroups')
                   }
                 ]}
                 variant="card"
@@ -189,7 +189,7 @@ export default function Insights() {
               <SmartSuggestions
                 suggestions={correlations.map(correlation => ({
                   title: correlation,
-                  description: "AI-discovered behavioral pattern",
+                  description: t('screens.ai.insightDesc_aiDiscoveredPattern'),
                   type: "insight" as const,
                   priority: "high" as const,
                   action: t('screens.ai.actionLabel_learnMore')
