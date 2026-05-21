@@ -156,10 +156,10 @@ export default function AIRecommendations() {
                 title={t('screens.ai.wellnessServices')}
                 offers={[{
                   id: "wellness-001",
-                  title: "Comprehensive Wellness Assessment", 
+                  title: t('screens.ai.offerTitle_wellnessAssessment'),
                   provider: "VITANA Partners",
                   price: 199,
-                  description: "Personalized nutrition and fitness plan",
+                  description: t('screens.ai.offerDesc_wellnessAssessment'),
                   category: "wellness",
                   type: "service" as const
                 }]}
@@ -175,13 +175,17 @@ export default function AIRecommendations() {
               <LabTestCard
                 labTest={{
                   id: "lab-001",
-                  name: "Comprehensive Health Panel",
-                  description: "Complete biomarker analysis",
+                  name: t('screens.ai.labName_healthPanel'),
+                  description: t('screens.ai.labDesc_healthPanel'),
                   category: "blood_markers",
-                  biomarkers: ["Cholesterol", "Glucose", "Vitamins"],
+                  biomarkers: [
+                    t('screens.ai.biomarker_cholesterol'),
+                    t('screens.ai.biomarker_glucose'),
+                    t('screens.ai.biomarker_vitamins'),
+                  ],
                   price: 89,
                   turnaround_days: 2,
-                  sample_type: "Blood",
+                  sample_type: t('screens.ai.sampleType_blood'),
                   provider_name: "LabCorp"
                 }}
                 onOrder={() => handleLabTest("C-014")}
