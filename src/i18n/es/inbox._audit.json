@@ -306,10 +306,8 @@
       "phase": "llm"
     },
     "inbox.toast.noTenantContext": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "The term 'inquilino' (renter/lodger) is technically correct for 'tenant' in a multi-tenant system, but it's highly confusing and inappropriate for a user-facing message in a wellness app. The message itself is too technical for an end-user.",
-      "suggested": "No se pudo cargar tu información.",
       "phase": "llm"
     },
     "inbox.toast.searchFailed": {
@@ -433,5 +431,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:53.356Z"
+  "generatedAt": "2026-05-21T07:06:10.401Z"
 }

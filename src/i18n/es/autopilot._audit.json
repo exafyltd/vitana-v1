@@ -58,8 +58,8 @@
     "autopilot.suggestions.archetypeDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation \"Movedor\" for \"Mover\" is awkward and doesn't accurately convey the sense of an active person in this context. Additionally, \"El Movedor\" assumes a male gender for a profile name that should ideally be gender-neutral.",
-      "suggested": "Tus actividades de bienestar sugieren que podrías ser \"El/La Consciente en Movimiento\" - ¿quieres actualizar?",
+      "issue": "Awkward phrasing for the persona title. 'Consciente en Movimiento' is too literal and doesn't sound like a natural title for a person.",
+      "suggested": "Tus actividades de bienestar sugieren que podrías ser \"El/La Mente en Movimiento\" - ¿quieres actualizar?",
       "phase": "llm"
     },
     "autopilot.suggestions.updateArchetype": {
@@ -199,8 +199,8 @@
     },
     "autopilot.priorities.high": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "The translation \"Alta\" is feminine. Without context, it's impossible to determine the correct gender (Alto/Alta) for the adjective \"High\" as it depends on the noun it modifies.",
+      "confidence": 0.6,
+      "issue": "Missing context to determine the correct gender for 'High'. 'Alta' is feminine, but 'Alto' (masculine) might be needed depending on the noun it modifies (e.g., 'nivel alto', 'intensidad alta').",
       "phase": "llm"
     },
     "autopilot.priorities.medium": {
@@ -459,5 +459,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:36.134Z"
+  "generatedAt": "2026-05-21T07:05:15.996Z"
 }

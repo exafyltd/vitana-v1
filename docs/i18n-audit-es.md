@@ -1,13 +1,13 @@
 # i18n Audit — Spanish (es)
 
-Generated: 2026-05-20T07:00:19.163Z via **gemini**
+Generated: 2026-05-21T07:05:00.569Z via **gemini**
 
 ## Summary
 
-- **OK:** 12384
-- **EDIT_SUGGESTED:** 122
-- **LOW_CONFIDENCE:** 14
-- **Pass rate:** 98.9%
+- **OK:** 12506
+- **EDIT_SUGGESTED:** 150
+- **LOW_CONFIDENCE:** 5
+- **Pass rate:** 98.8%
 - **Threshold:** 10% flagged max
 
 ## Per-shard breakdown
@@ -21,14 +21,14 @@ Generated: 2026-05-20T07:00:19.163Z via **gemini**
 | archives.json | 1 | 0 | 0 | 1 |
 | audio.json | 3 | 0 | 0 | 3 |
 | auth.json | 4 | 0 | 0 | 4 |
-| authPage.json | 14 | 1 | 0 | 15 |
+| authPage.json | 15 | 0 | 0 | 15 |
 | autopilot.json | 89 | 1 | 1 | 91 |
-| business.json | 104 | 2 | 0 | 106 |
-| businessHub.json | 16 | 1 | 0 | 17 |
+| business.json | 105 | 1 | 0 | 106 |
+| businessHub.json | 17 | 0 | 0 | 17 |
 | buttons.json | 55 | 0 | 0 | 55 |
-| calendar.json | 113 | 2 | 0 | 115 |
-| calendarPopup.json | 16 | 1 | 0 | 17 |
-| campaigns.json | 13 | 1 | 0 | 14 |
+| calendar.json | 114 | 1 | 0 | 115 |
+| calendarPopup.json | 17 | 0 | 0 | 17 |
+| campaigns.json | 14 | 0 | 0 | 14 |
 | capture.json | 42 | 0 | 0 | 42 |
 | challenges.json | 1 | 0 | 0 | 1 |
 | common.json | 34 | 0 | 0 | 34 |
@@ -39,11 +39,11 @@ Generated: 2026-05-20T07:00:19.163Z via **gemini**
 | createSelection.json | 6 | 0 | 0 | 6 |
 | currencies.json | 3 | 0 | 0 | 3 |
 | densityOptions.json | 3 | 0 | 0 | 3 |
-| diary.json | 8 | 1 | 0 | 9 |
+| diary.json | 9 | 0 | 0 | 9 |
 | diaryActions.json | 17 | 0 | 0 | 17 |
 | discount.json | 27 | 0 | 0 | 27 |
-| discover.json | 56 | 4 | 0 | 60 |
-| drawerNav.json | 15 | 1 | 0 | 16 |
+| discover.json | 60 | 0 | 0 | 60 |
+| drawerNav.json | 16 | 0 | 0 | 16 |
 | editProfile.json | 13 | 0 | 0 | 13 |
 | empty.json | 23 | 0 | 0 | 23 |
 | errors.json | 14 | 0 | 0 | 14 |
@@ -57,118 +57,98 @@ Generated: 2026-05-20T07:00:19.163Z via **gemini**
 | groupFeed.json | 11 | 0 | 0 | 11 |
 | groupMembership.json | 6 | 0 | 0 | 6 |
 | groups.json | 1 | 0 | 0 | 1 |
-| health.json | 74 | 2 | 0 | 76 |
+| health.json | 76 | 0 | 0 | 76 |
 | historyManagement.json | 41 | 0 | 0 | 41 |
 | home.json | 8 | 0 | 0 | 8 |
-| inbox.json | 85 | 1 | 0 | 86 |
-| intro.json | 6 | 0 | 1 | 7 |
-| lifeCompass.json | 30 | 1 | 0 | 31 |
+| inbox.json | 86 | 0 | 0 | 86 |
+| intro.json | 7 | 0 | 0 | 7 |
+| lifeCompass.json | 31 | 0 | 0 | 31 |
 | liveRooms.json | 106 | 0 | 0 | 106 |
 | loading.json | 7 | 0 | 0 | 7 |
 | logout.json | 3 | 0 | 0 | 3 |
-| mediaHub.json | 114 | 2 | 0 | 116 |
-| memoryActions.json | 12 | 1 | 0 | 13 |
+| mediaHub.json | 116 | 0 | 0 | 116 |
+| memoryActions.json | 13 | 0 | 0 | 13 |
 | menu.json | 9 | 0 | 0 | 9 |
 | milestones.json | 12 | 1 | 0 | 13 |
 | mobileNav.json | 4 | 0 | 0 | 4 |
 | navigation.json | 19 | 0 | 0 | 19 |
 | newsCard.json | 29 | 0 | 0 | 29 |
-| onboarding.json | 22 | 1 | 0 | 23 |
+| onboarding.json | 23 | 0 | 0 | 23 |
 | orders.json | 65 | 0 | 0 | 65 |
 | packages.json | 14 | 0 | 0 | 14 |
 | payment.json | 19 | 0 | 0 | 19 |
-| permissionsActions.json | 16 | 1 | 0 | 17 |
-| portals.json | 23 | 5 | 0 | 28 |
+| permissionsActions.json | 17 | 0 | 0 | 17 |
+| portals.json | 28 | 0 | 0 | 28 |
 | privacy.json | 2 | 0 | 0 | 2 |
 | profile.json | 9 | 0 | 0 | 9 |
-| profileEditor.json | 86 | 2 | 0 | 88 |
+| profileEditor.json | 88 | 0 | 0 | 88 |
 | profileGroups.json | 5 | 0 | 0 | 5 |
 | profileMedia.json | 5 | 0 | 0 | 5 |
 | profilePosts.json | 9 | 0 | 0 | 9 |
 | profileStats.json | 5 | 0 | 0 | 5 |
-| profileTabs.json | 8 | 1 | 0 | 9 |
+| profileTabs.json | 9 | 0 | 0 | 9 |
 | publicProfile.json | 8 | 0 | 0 | 8 |
 | qrShare.json | 6 | 0 | 0 | 6 |
 | recallActions.json | 17 | 0 | 0 | 17 |
-| screens.json | 8777 | 72 | 11 | 8860 |
+| screens.json | 8852 | 145 | 4 | 8978 |
 | services.json | 20 | 0 | 0 | 20 |
-| settings.json | 27 | 2 | 0 | 29 |
+| settings.json | 29 | 0 | 0 | 29 |
 | share.json | 8 | 0 | 0 | 8 |
-| sidebar.json | 43 | 1 | 0 | 44 |
+| sidebar.json | 44 | 0 | 0 | 44 |
 | socialImport.json | 25 | 0 | 0 | 25 |
 | states.json | 20 | 0 | 0 | 20 |
-| subNav.json | 41 | 1 | 0 | 42 |
+| subNav.json | 42 | 0 | 0 | 42 |
 | support.json | 34 | 0 | 0 | 34 |
 | tableHeaders.json | 11 | 0 | 0 | 11 |
 | tasks.json | 15 | 0 | 0 | 15 |
 | timeline.json | 1 | 0 | 0 | 1 |
 | timelineActions.json | 17 | 0 | 0 | 17 |
-| toasts.json | 1216 | 11 | 1 | 1228 |
+| toasts.json | 1227 | 1 | 0 | 1228 |
 | validation.json | 25 | 0 | 0 | 25 |
 | vitanaIndex.json | 21 | 0 | 0 | 21 |
-| voucher.json | 47 | 1 | 0 | 48 |
+| voucher.json | 48 | 0 | 0 | 48 |
 | wallet.json | 19 | 0 | 0 | 19 |
-| walletActions.json | 6 | 1 | 0 | 7 |
+| walletActions.json | 7 | 0 | 0 | 7 |
 | wellnessServices.json | 1 | 0 | 0 | 1 |
 | whyThisMatch.json | 12 | 0 | 0 | 12 |
 
 ## Sample of flagged keys
 
-- `authPage.json:authPage.welcomeTitle` — **EDIT_SUGGESTED** (0.90) — English is gender-neutral, but Spanish translation uses masculine singular. For a friendly app, a gender-neutral welcome is more appropriate.
-  - suggested: `¡Te damos la bienvenida a VITANA!`
-- `autopilot.json:autopilot.suggestions.archetypeDesc` — **EDIT_SUGGESTED** (0.90) — The translation "Movedor" for "Mover" is awkward and doesn't accurately convey the sense of an active person in this context. Additionally, "El Movedor" assumes a male gender for a profile name that should ideally be gender-neutral.
-  - suggested: `Tus actividades de bienestar sugieren que podrías ser "El/La Consciente en Movimiento" - ¿quieres actualizar?`
-- `autopilot.json:autopilot.priorities.high` — **LOW_CONFIDENCE** (0.50) — The translation "Alta" is feminine. Without context, it's impossible to determine the correct gender (Alto/Alta) for the adjective "High" as it depends on the noun it modifies.
-- `business.json:business.history.allTime` — **EDIT_SUGGESTED** (0.90) — Meaning incorrect for UI context. 'Todo el tiempo' means 'always' or 'continuously,' not 'cumulative' or 'historical.'
-  - suggested: `Histórico`
-- `business.json:business.kpi.topPerformer` — **EDIT_SUGGESTED** (0.90) — 'Mejor rendimiento' means 'best performance,' not 'top performer' (the person/entity).
-  - suggested: `El mejor`
-- `businessHub.json:businessHub.tabs.insights` — **EDIT_SUGGESTED** (0.90) — Translation is too generic, misses the nuance of 'deeper understanding' or 'valuable observations' implied by 'Insights'.
-  - suggested: `Perspectivas`
-- `calendar.json:calendar.tryQuickAdd` — **EDIT_SUGGESTED** (0.90) — 'Agregado Rápido' is a literal but awkward translation for a feature name; 'Añadir Rápido' is more natural and idiomatic for 'Quick Add'.
-  - suggested: `Prueba Añadir Rápido o deja que Autopilot planifique tu día`
-- `calendar.json:calendar.journey.tasksCompleted` — **EDIT_SUGGESTED** (0.90) — 'listo' is singular and means 'ready' or 'finished' (singular). 'Done' implies 'completed' and needs to match the number of completed items (plural if {completed} > 1). 'Completados' is more accurate and grammatically correct for a count.
-  - suggested: `{completed}/{total} completados`
-- `calendarPopup.json:calendarPopup.syncExternal` — **EDIT_SUGGESTED** (0.90) — Grammatically awkward; 'externo' is an adjective without a noun to modify. It sounds incomplete.
-  - suggested: `Sincronizar con externos`
-- `campaigns.json:campaigns.delete.dontAskAgain` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form, missing pronoun, and 'para' is less idiomatic than 'por' in this context.
-  - suggested: `No me preguntes de nuevo por campañas en borrador`
-- `diary.json:diary.title` — **EDIT_SUGGESTED** (1.00) — Redundant and awkward phrasing. 'Diario' means both 'daily' and 'diary'.
-  - suggested: `Diario`
-- `discover.json:discover.mobileTitle` — **EDIT_SUGGESTED** (0.90) — Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.
-  - suggested: `Descubre`
-- `discover.json:discover.explore` — **EDIT_SUGGESTED** (0.90) — Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.
-  - suggested: `Explora`
-- `discover.json:discover.start` — **EDIT_SUGGESTED** (0.90) — Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.
-  - suggested: `Comienza`
-- `discover.json:discover.quickActions.reorderPrevious` — **EDIT_SUGGESTED** (0.85) — Grammatically awkward and incomplete. 'Anterior' (previous) is an adjective without a noun. Also, infinitive used instead of imperative for a likely action/button.
-  - suggested: `Reordena lo anterior`
-- `drawerNav.json:drawerNav.diary` — **EDIT_SUGGESTED** (1.00) — Redundant and awkward phrasing; 'Diario Diario' literally means 'Daily Daily' or 'Diary Diary'.
-  - suggested: `Diario personal`
-- `health.json:health.noSupplements` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.
-  - suggested: `Aún no hay suplementos`
-- `health.json:health.noReports` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.
-  - suggested: `Aún no hay informes de salud`
-- `inbox.json:inbox.toast.noTenantContext` — **EDIT_SUGGESTED** (0.90) — The term 'inquilino' (renter/lodger) is technically correct for 'tenant' in a multi-tenant system, but it's highly confusing and inappropriate for a user-facing message in a wellness app. The message itself is too technical for an end-user.
-  - suggested: `No se pudo cargar tu información.`
-- `intro.json:intro.experience` — **LOW_CONFIDENCE** (0.50) — Ambiguous English source. 'Experience' can be a noun or an imperative verb. Spanish 'Experiencia' is only a noun. If the English was intended as an imperative verb (e.g., 'Experience our app'), the translation is inaccurate and should be 'Experimenta'.
-- `lifeCompass.json:lifeCompass.goals.longevity.description` — **EDIT_SUGGESTED** (0.90) — 'healthspan' is not accurately translated as 'salud'; it loses the specific nuance of healthy years of life. 'Salud' is too general.
-  - suggested: `Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland`
-- `mediaHub.json:mediaHub.toast.filtersCleared` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing; 'limpiados' is too literal. 'Borrados' or 'restablecidos' are more idiomatic for filters.
-  - suggested: `Filtros borrados`
-- `mediaHub.json:mediaHub.upload.languagePlaceholder` — **EDIT_SUGGESTED** (1.00) — The example language was translated instead of the word itself, changing the meaning.
-  - suggested: `Ej., Inglés`
-- `memoryActions.json:memoryActions.items.photoMemory.title` — **EDIT_SUGGESTED** (0.90) — Literal translation, 'Recuerdo Fotográfico' is more idiomatic and natural for 'Photo Memory' in Spanish.
-  - suggested: `Recuerdo Fotográfico`
-- `milestones.json:milestones.titlePlaceholder` — **EDIT_SUGGESTED** (0.90) — The example is gender-specific ('Graduado' is masculine) and slightly formal for a friendly app. Using the infinitive is more neutral and common for general examples.
-  - suggested: `p. ej., Graduarse de la universidad`
-- `onboarding.json:onboarding.welcome` — **EDIT_SUGGESTED** (1.00) — Gender-specific translation for a gender-neutral English phrase; not inclusive for a friendly app.
-  - suggested: `¡Te damos la bienvenida a VITANA!`
-- `permissionsActions.json:permissionsActions.items.auditLogs.description` — **EDIT_SUGGESTED** (0.90) — 'Rastro de auditoría' is less common than 'registro de auditoría' for 'audit trail' in a technical context.
-  - suggested: `Revisa el historial de acceso y el registro de auditoría de seguridad`
-- `portals.json:portals.maxina.welcomeBack` — **EDIT_SUGGESTED** (0.90) — Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.
-  - suggested: `¡Qué bueno verte de nuevo en Maxina!`
-- `portals.json:portals.maxina.emailConfirmed` — **EDIT_SUGGESTED** (0.90) — Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.
-  - suggested: `¡Correo confirmado! ¡Te damos la bienvenida a Maxina!`
-- `portals.json:portals.alkalma.welcomeBack` — **EDIT_SUGGESTED** (0.90) — Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.
-  - suggested: `¡Qué bueno verte de nuevo en AlKalma!`
+- `autopilot.json:autopilot.suggestions.archetypeDesc` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing for the persona title. 'Consciente en Movimiento' is too literal and doesn't sound like a natural title for a person.
+  - suggested: `Tus actividades de bienestar sugieren que podrías ser "El/La Mente en Movimiento" - ¿quieres actualizar?`
+- `autopilot.json:autopilot.priorities.high` — **LOW_CONFIDENCE** (0.60) — Missing context to determine the correct gender for 'High'. 'Alta' is feminine, but 'Alto' (masculine) might be needed depending on the noun it modifies (e.g., 'nivel alto', 'intensidad alta').
+- `business.json:business.history.allTime` — **EDIT_SUGGESTED** (0.90) — Translation is too literal and doesn't convey the common UI meaning of 'All time' (e.g., 'since the beginning' or 'total'). 'Histórico' implies historical significance, not just duration.
+  - suggested: `Desde siempre`
+- `calendar.json:calendar.tryQuickAdd` — **EDIT_SUGGESTED** (0.90) — The phrase 'Añadir Rápido' is an infinitive verb + adjective, which is awkward for a feature name. 'Añadido Rápido' or 'Adición Rápida' would be more natural as a noun phrase for a feature.
+  - suggested: `Prueba el Añadido Rápido o deja que Autopilot planifique tu día`
+- `milestones.json:milestones.titlePlaceholder` — **EDIT_SUGGESTED** (0.90) — English uses past participle ('Graduated'), implying a completed state or achievement. Spanish uses the infinitive ('Graduarse'), implying the act of graduating. This changes the nuance.
+  - suggested: `p. ej., Graduado/a de la universidad`
+- `screens.json:screens.admin.saveForwardTriggers` — **EDIT_SUGGESTED** (0.90) — The phrase 'disparadores hacia adelante' is a bit clunky and less idiomatic than 'activadores de avance' or 'disparadores de avance'.
+  - suggested: `Guardar activadores de avance`
+- `screens.json:screens.admin.lengthToolValue1AvailableServerurl` — **EDIT_SUGGESTED** (0.90) — The Spanish uses 'herramientas' (plural) but 'disponible' (singular), which is a grammatical mismatch. 'disponible' should be plural to match 'herramientas'.
+  - suggested: `{length} herramientas {value1} disponibles en {serverUrl}`
+- `screens.json:screens.business.noTopPerformerYet` — **EDIT_SUGGESTED** (0.90) — 'Mejor rendimiento' means 'best performance', not 'best performer'. For a person/entity, 'un mejor' or 'un mejor desempeño' is more appropriate.
+  - suggested: `Aún no hay un mejor`
+- `screens.json:screens.calendar.todaySIndexPulseCompletingYour` — **LOW_CONFIDENCE** (0.60) — The English phrase '{totalCount}pillar-tagged event' is ambiguous, leading to a slightly clunky or potentially misinterpretive Spanish translation 'evento etiquetado como pilar {totalCount}'. Clarification on the English structure would help.
+- `screens.json:screens.profile.tenantValue0` — **LOW_CONFIDENCE** (0.50) — The term 'Inquilino' (tenant) might be too literal or specific (implying property rental) for a general wellness app context, depending on how 'Tenant' is used technically. Without more context, it's hard to confirm if a more abstract term is needed or if this is a technical term that fits.
+- `screens.json:screens.legal.text5DiscoverShop` — **EDIT_SUGGESTED** (1.00) — The number in the translation is incorrect (5 instead of 4).
+  - suggested: `4. Descubre la Tienda`
+- `screens.json:screens.patient.upcoming` — **LOW_CONFIDENCE** (0.60) — The translation 'Próximas' is feminine plural. Without context, it's unclear if the noun it refers to is indeed feminine plural (e.g., 'actividades'). If it refers to masculine plural (e.g., 'eventos'), it should be 'Próximos'.
+- `screens.json:screens.patient.completed` — **LOW_CONFIDENCE** (0.60) — The translation 'Completada' is feminine singular. Without context, it's unclear if the noun it refers to is indeed feminine singular. If it refers to a plural noun, it should be 'Completadas'. If it refers to a masculine noun, it should be 'Completado' or 'Completados'.
+- `screens.json:screens.assistant.voiceProviderHint_googleSpeech` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.assistant.voiceProviderHint_geminiChirp` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.assistant.voiceProviderHint_noVoicesAvailable` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.assistant.voiceProviderHint_browserVoices` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.auth.sendResetLink` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_commercialBuy` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_commercialSell` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_activitySeek` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_activity` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_partnerSeek` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_socialSeek` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_mutualAid` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_learningSeek` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksKind_mentorSeek` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksFilter_all` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksDance_everything` — **EDIT_SUGGESTED** (1.00) — target is not a string
+- `screens.json:screens.community.openAsksDance_only` — **EDIT_SUGGESTED** (1.00) — target is not a string

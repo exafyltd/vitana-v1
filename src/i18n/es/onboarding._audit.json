@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "onboarding.welcome": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific translation for a gender-neutral English phrase; not inclusive for a friendly app.",
-      "suggested": "¡Te damos la bienvenida a VITANA!",
       "phase": "llm"
     },
     "onboarding.subtitle": {
@@ -118,5 +116,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:38.924Z"
+  "generatedAt": "2026-05-21T07:06:35.306Z"
 }
