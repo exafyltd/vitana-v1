@@ -526,19 +526,36 @@ const MessageInput: React.FC<MessageInputProps> = ({
             className="h-8 w-8 shrink-0"
           />
 
-          {/* Attachment menu */}
-          <AttachmentMenu
-            onFileAttach={() => fileInputRef.current?.click()}
-            onSendMessage={async (content, messageType, contentData) => {
-              await onSendMessage(content, messageType, contentData);
-            }}
-            onCalendarInvite={sendCalendarInvite}
-            recipient={effectiveRecipient}
-            recipientIdHint={effectiveRecipientId || recipientId}
-            threadId={threadId}
-            disabled={disabled || isUploading}
-            conversationType={conversationType}
-          />
+          {/* Attachment trigger. For group chats (chat_groups, VTID-03089)
+              skip the DM-only Send Funds / Request Payment / Calendar drawer
+              and open the native file picker directly — same behavior as
+              the rest of the mobile app's chat composers. */}
+          {conversationType === 'group' ? (
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              disabled={disabled || isUploading}
+              onClick={() => fileInputRef.current?.click()}
+              className="w-8 h-8 p-0 rounded-full hover:bg-muted shrink-0"
+              aria-label={t('screens.messages.attach')}
+            >
+              <Paperclip className="w-4 h-4" />
+            </Button>
+          ) : (
+            <AttachmentMenu
+              onFileAttach={() => fileInputRef.current?.click()}
+              onSendMessage={async (content, messageType, contentData) => {
+                await onSendMessage(content, messageType, contentData);
+              }}
+              onCalendarInvite={sendCalendarInvite}
+              recipient={effectiveRecipient}
+              recipientIdHint={effectiveRecipientId || recipientId}
+              threadId={threadId}
+              disabled={disabled || isUploading}
+              conversationType={conversationType}
+            />
+          )}
 
           {/* Hidden file input */}
           <input
