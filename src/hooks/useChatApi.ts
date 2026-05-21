@@ -189,13 +189,22 @@ export async function fetchGroupMessages(
   return json.data || [];
 }
 
+export interface SendGroupMessageOptions {
+  messageType?: string;
+  contentData?: Record<string, unknown> | null;
+}
+
 export async function sendGroupMessage(
   groupId: string,
   content: string,
+  opts?: SendGroupMessageOptions,
 ): Promise<ChatGroupMessage> {
+  const body: Record<string, unknown> = { content };
+  if (opts?.messageType && opts.messageType !== "text") body.message_type = opts.messageType;
+  if (opts?.contentData) body.content_data = opts.contentData;
   const json = await gatewayGroupFetch(`/${groupId}/send`, {
     method: "POST",
-    body: JSON.stringify({ content }),
+    body: JSON.stringify(body),
   });
   return json.data;
 }
