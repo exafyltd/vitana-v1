@@ -88,16 +88,6 @@ export default function Messages() {
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
 
-  // VTID-03089: if any thread-selection code path picks a chat_group entry,
-  // intercept and route to the standalone /inbox/g/<id> view. Reset the
-  // selection so the inline ConversationView doesn't try to load it.
-  useEffect(() => {
-    if (selectedThreadId && isChatGroupThreadId(selectedThreadId)) {
-      const gid = chatGroupIdFromThreadId(selectedThreadId);
-      setSelectedThreadId(null);
-      navigate(`/inbox/g/${gid}`);
-    }
-  }, [selectedThreadId, navigate]);
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
@@ -210,8 +200,12 @@ export default function Messages() {
   // Only auto-select on desktop - on mobile, users should see the list first and tap to open
   useEffect(() => {
     if (displayThreads.length > 0 && !selectedThreadId && !isMobile) {
-      // Get the most recent conversation from the sorted and deduplicated list
+      // VTID-03089: chat_group threads have their own /inbox/g/<id> page,
+      // so they must not be picked up by the inline auto-selector — that
+      // would re-trigger the standalone-route navigation and trap the user
+      // in a "Loading group…" loop.
       const sortedThreads = [...displayThreads]
+        .filter(t => !isChatGroupThreadId(t.id))
         .sort((a, b) => {
           const ap = pinnedThreads.has(a.id) ? 1 : 0;
           const bp = pinnedThreads.has(b.id) ? 1 : 0;
@@ -272,6 +266,23 @@ export default function Messages() {
     }));
   }, []);
 
+  // VTID-03089: chat_group threads open at their standalone /inbox/g/<id>
+  // view instead of inline ConversationView. This must be branched at click
+  // time — a post-hoc selectedThreadId interceptor created a back-button
+  // loop with the desktop auto-select effect (FIRST 100 → auto-selected →
+  // re-navigated → "Loading group…" loop).
+  const handleThreadOpen = useCallback((thread: { id: string; unread_count?: number }) => {
+    if (isChatGroupThreadId(thread.id)) {
+      navigate(`/inbox/g/${chatGroupIdFromThreadId(thread.id)}`);
+      return;
+    }
+    setSelectedThreadId(thread.id);
+    setSelectedRecipientId(null);
+    if ((thread.unread_count || 0) > 0) {
+      handleConversationOpened(thread.id);
+    }
+  }, [navigate, handleConversationOpened]);
+
   // Search dropdown items for inbox search
   const searchDropdownItems = React.useMemo(() => {
     if (!inboxSearchQuery.trim()) return [];
@@ -295,13 +306,9 @@ export default function Messages() {
   }, [displayThreads, inboxSearchQuery, user?.id]);
 
   const handleSearchItemClick = useCallback((threadId: string) => {
-    setSelectedThreadId(threadId);
-    setSelectedRecipientId(null);
     const thread = displayThreads.find(t => t.id === threadId);
-    if (thread && thread.unread_count > 0) {
-      handleConversationOpened(threadId);
-    }
-  }, [displayThreads, handleConversationOpened]);
+    handleThreadOpen({ id: threadId, unread_count: thread?.unread_count });
+  }, [displayThreads, handleThreadOpen]);
 
   // Move the just-sent conversation to the top instantly via React Query cache
   const handleMessageSent = useCallback((threadId: string, newMessage: any, ctx: 'global' | 'tenant') => {
@@ -497,11 +504,7 @@ export default function Messages() {
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                       onClick={() => {
                         console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
+                        handleThreadOpen(thread);
                       }}
                     >
                       <div className="flex items-start space-x-3">
@@ -636,13 +639,7 @@ export default function Messages() {
                           ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                      onClick={() => {
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
-                      }}
+                      onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
                         <GroupAvatarStack 
@@ -758,13 +755,7 @@ export default function Messages() {
                           ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                      onClick={() => {
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
-                      }}
+                      onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
                         <div className="relative">
@@ -1010,13 +1001,7 @@ export default function Messages() {
             isGroup={thread.type === 'group'}
             participantUserId={getOtherParticipant(thread, user?.id)?.user_id}
             context={messageContext}
-            onClick={() => {
-              setSelectedThreadId(thread.id);
-              setSelectedRecipientId(null);
-              if ((thread.unread_count || 0) > 0) {
-                handleConversationOpened(thread.id);
-              }
-            }}
+            onClick={() => handleThreadOpen(thread)}
           />
         ))}
       </div>

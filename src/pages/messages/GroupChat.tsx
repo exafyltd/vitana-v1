@@ -3,14 +3,20 @@
  *
  * Standalone view at /inbox/g/:groupId for the chat_groups system. Reached
  * via push notification deep-link from the gateway (notification url
- * `/inbox/g/<groupId>`). Integration with the unified /inbox list is a
- * follow-up.
+ * `/inbox/g/<groupId>`) and from the unified inbox list (Messages.tsx
+ * routes chat_group: thread ids here).
+ *
+ * Composes the same primitives DMs use — MessageInput (emoji, attach,
+ * voice) and MessageBubble (reactions, signed-url refresh, voice player) —
+ * so feature parity is structural, not duplicated.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
-import { isVitanaBot, VITANA_BOT_AVATAR_URL, VITANA_BOT_DISPLAY_NAME } from "@/lib/vitanaBotIdentity";
+import { useTranslation } from "@/hooks/useTranslation";
+import MessageInput from "@/components/messages/MessageInput";
+import MessageBubble from "@/components/messages/MessageBubble";
 import {
   fetchGroup,
   fetchGroupMessages,
@@ -28,19 +34,42 @@ interface GroupWithMembers extends ChatGroup {
   member_count: number;
 }
 
+// Shape MessageBubble consumes. The gateway stores attachment/voice
+// payload in chat_messages.metadata; the bubble reads message.content_data.
+interface BubbleMessage {
+  id: string;
+  sender_id: string;
+  content: string;
+  content_data: Record<string, unknown> | null;
+  message_type: string;
+  created_at: string;
+  thread_id: string;
+}
+
+function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage {
+  return {
+    id: msg.id,
+    sender_id: msg.sender_id,
+    content: msg.content,
+    content_data: (msg.metadata as Record<string, unknown>) || null,
+    message_type: msg.message_type || "text",
+    created_at: msg.created_at,
+    thread_id: groupId,
+  };
+}
+
 export default function GroupChat() {
   const { groupId } = useParams<{ groupId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { translate } = useTranslation();
   const userId = user?.id;
 
   const [group, setGroup] = useState<GroupWithMembers | null>(null);
   const [messages, setMessages] = useState<ChatGroupMessage[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const composerRef = useRef<HTMLTextAreaElement>(null);
   const streamEndRef = useRef<HTMLDivElement>(null);
 
   const memberById = useMemo(() => {
@@ -59,8 +88,8 @@ export default function GroupChat() {
       setGroup(g);
       setMessages(msgs.slice().reverse());
       setLoadError(null);
-    } catch (err: any) {
-      setLoadError(err?.message || "Failed to load group");
+    } catch (err) {
+      setLoadError(err instanceof Error ? err.message : "Failed to load group");
     } finally {
       setIsLoading(false);
     }
@@ -85,34 +114,51 @@ export default function GroupChat() {
     streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length]);
 
-  const handleSend = async () => {
-    const content = draft.trim();
-    if (!content || !groupId || isSending) return;
+  // MessageInput.onSendMessage matches the DM signature so all of its
+  // code paths (text, attachment, voice) plug into the chat_groups endpoint
+  // unchanged. The gateway accepts message_type + content_data and stores
+  // them in chat_messages.metadata.
+  const handleSend = useCallback(async (
+    content: string,
+    messageType?: string,
+    contentData?: Record<string, unknown> | null,
+  ) => {
+    if (!groupId || isSending) return;
+    const tempId = `temp-${Date.now()}`;
+    const optimistic: ChatGroupMessage = {
+      id: tempId,
+      tenant_id: "",
+      sender_id: userId || "",
+      group_id: groupId,
+      content,
+      created_at: new Date().toISOString(),
+      message_type: messageType || "text",
+      metadata: contentData || undefined,
+    };
+    setMessages(prev => [...prev, optimistic]);
     setIsSending(true);
-    setDraft("");
     try {
-      const newMsg = await sendGroupMessage(groupId, content);
-      setMessages(prev => [...prev, newMsg]);
-      composerRef.current?.focus();
-    } catch (err: any) {
-      setLoadError(err?.message || "Failed to send");
-      setDraft(content);
+      const saved = await sendGroupMessage(groupId, content, {
+        messageType,
+        contentData: contentData || null,
+      });
+      setMessages(prev => prev.map(m => (m.id === tempId ? saved : m)));
+    } catch (err) {
+      setMessages(prev => prev.filter(m => m.id !== tempId));
+      setLoadError(err instanceof Error ? err.message : "Failed to send");
     } finally {
       setIsSending(false);
     }
-  };
+  }, [groupId, isSending, userId]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+  const goBack = useCallback(() => {
+    navigate("/inbox", { replace: true });
+  }, [navigate]);
 
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="text-sm text-gray-500">Loading group…</div>
+        <div className="text-sm text-gray-500">{translate("inbox.group.loading")}</div>
       </div>
     );
   }
@@ -121,12 +167,12 @@ export default function GroupChat() {
     return (
       <div className="flex h-screen items-center justify-center p-6">
         <div className="text-center">
-          <div className="mb-2 font-medium">Couldn't open group</div>
+          <div className="mb-2 font-medium">{translate("inbox.group.cantOpen")}</div>
           <div className="mb-4 text-sm text-red-600">{loadError}</div>
           <button
             className="rounded bg-gray-100 px-4 py-2 text-sm"
-            onClick={() => navigate("/inbox")}
-          >Back to Inbox</button>
+            onClick={goBack}
+          >{translate("inbox.group.backToInbox")}</button>
         </div>
       </div>
     );
@@ -134,19 +180,23 @@ export default function GroupChat() {
 
   if (!group) return null;
 
+  const memberLabel = group.member_count === 1
+    ? translate("inbox.group.memberOne")
+    : translate("inbox.group.memberOther");
+
   return (
     <div className="flex h-screen flex-col bg-white">
       <header className="sticky top-0 z-10 flex items-center gap-3 border-b bg-white px-4 py-3">
         <button
-          aria-label="Back"
+          aria-label={translate("inbox.group.back")}
           className="rounded p-2 hover:bg-gray-100"
-          onClick={() => navigate("/inbox")}
+          onClick={goBack}
         >←</button>
         <div className="flex-1">
           <div className="font-semibold leading-tight">{group.name}</div>
           <div className="text-xs text-gray-500">
-            {group.member_count} {group.member_count === 1 ? "member" : "members"}
-            {group.is_system ? " · official group" : ""}
+            {group.member_count} {memberLabel}
+            {group.is_system ? ` · ${translate("inbox.group.officialBadge")}` : ""}
           </div>
         </div>
       </header>
@@ -154,93 +204,46 @@ export default function GroupChat() {
       <main className="flex-1 overflow-y-auto px-4 py-4">
         {messages.length === 0 ? (
           <div className="mt-10 text-center text-sm text-gray-500">
-            No messages yet.
+            {translate("inbox.group.empty")}
           </div>
         ) : (
-          <ul className="space-y-3">
-            {messages.map(msg => (
-              <GroupMessageRow
-                key={msg.id}
-                message={msg}
-                isMine={msg.sender_id === userId}
-                sender={memberById.get(msg.sender_id)}
-              />
-            ))}
-          </ul>
+          <div className="space-y-2">
+            {messages.map(msg => {
+              const isOwn = msg.sender_id === userId;
+              const sender = memberById.get(msg.sender_id);
+              return (
+                <MessageBubble
+                  key={msg.id}
+                  message={{
+                    ...toBubbleMessage(msg, group.id),
+                    sender: sender
+                      ? {
+                          user_id: sender.user_id,
+                          display_name: sender.display_name,
+                          avatar_url: sender.avatar_url,
+                        }
+                      : null,
+                  }}
+                  isOwnMessage={isOwn}
+                  showAvatar={!isOwn}
+                />
+              );
+            })}
+          </div>
         )}
         <div ref={streamEndRef} />
       </main>
 
-      <footer className="sticky bottom-0 border-t bg-white px-3 py-2">
-        <div className="flex items-end gap-2">
-          <textarea
-            ref={composerRef}
-            value={draft}
-            onChange={e => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            placeholder="Message — type @vitana to ask Vitana"
-            className="flex-1 resize-none rounded-2xl border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-            style={{ maxHeight: 120 }}
-          />
-          <button
-            onClick={handleSend}
-            disabled={!draft.trim() || isSending}
-            className="rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-          >{isSending ? "…" : "Send"}</button>
-        </div>
+      <footer className="sticky bottom-0 border-t bg-white px-2 py-2">
+        <MessageInput
+          threadId={group.id}
+          activeThread={{ id: group.id, type: "group" }}
+          conversationType="group"
+          onSendMessage={handleSend}
+          isSending={isSending}
+          placeholder={translate("inbox.group.composerPlaceholder")}
+        />
       </footer>
     </div>
-  );
-}
-
-function GroupMessageRow({
-  message,
-  isMine,
-  sender,
-}: {
-  message: ChatGroupMessage;
-  isMine: boolean;
-  sender: ChatGroupMember | undefined;
-}) {
-  const senderIsBot = isVitanaBot(message.sender_id);
-  const senderName = senderIsBot
-    ? VITANA_BOT_DISPLAY_NAME
-    : sender?.display_name || "Member";
-  const avatarUrl = senderIsBot
-    ? VITANA_BOT_AVATAR_URL
-    : sender?.avatar_url || null;
-
-  return (
-    <li className={`flex items-end gap-2 ${isMine ? "flex-row-reverse" : ""}`}>
-      {!isMine && (
-        <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-200">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt={senderName} className="h-8 w-8 object-cover" />
-          ) : (
-            <div className="flex h-8 w-8 items-center justify-center text-xs font-medium text-gray-600">
-              {senderName.slice(0, 1)}
-            </div>
-          )}
-        </div>
-      )}
-      <div className={`max-w-[80%] ${isMine ? "items-end" : ""}`}>
-        {!isMine && (
-          <div className="mb-0.5 px-1 text-xs text-gray-500">
-            {senderName}{senderIsBot ? " · bot" : ""}
-          </div>
-        )}
-        <div
-          className={
-            `whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm ` +
-            (isMine
-              ? "bg-blue-600 text-white rounded-br-sm"
-              : senderIsBot
-                ? "bg-purple-50 text-purple-950 rounded-bl-sm border border-purple-100"
-                : "bg-gray-100 text-gray-900 rounded-bl-sm")
-          }
-        >{message.content}</div>
-      </div>
-    </li>
   );
 }

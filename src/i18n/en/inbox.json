@@ -103,6 +103,17 @@
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
       "discoverPeople": "Discover people"
+    },
+    "group": {
+      "loading": "Loading group…",
+      "cantOpen": "Couldn't open group",
+      "backToInbox": "Back to Inbox",
+      "back": "Back",
+      "memberOne": "member",
+      "memberOther": "members",
+      "officialBadge": "official group",
+      "empty": "No messages yet.",
+      "composerPlaceholder": "Message — type @vitana to ask Vitana"
     }
   }
 }
