@@ -17,7 +17,7 @@
       },
       "control": {
         "title": "Du entscheidest, was Sell and Earn für dich tut.",
-        "body": "Drei Schalter in deinen Verbindungseinstellungen geben dir volle Kontrolle."
+        "body": "Drei Schalter unter Verbinden geben dir volle Kontrolle."
       }
     },
     "plans": {
@@ -122,7 +122,7 @@
       "youEarned": "Vitana hat dich verdienen lassen (Sell and Earn)",
       "net": "Netto",
       "withdraw": "Auszahlen",
-      "empty": ""
+      "empty": "Noch keine Einkünfte"
     },
     "founding": {
       "bannerTitle": "🏆 Sei eine der ersten {max}",
