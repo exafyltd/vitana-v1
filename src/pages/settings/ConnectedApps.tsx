@@ -1,7 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
+import { StandardCard } from "@/components/templates/StandardCard";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -43,7 +43,6 @@ import {
   Music2,
   Youtube,
 } from "lucide-react";
-import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { ConnectAppPopup } from "@/components/ConnectAppPopup";
 import { XIcon } from "@/components/icons/XIcon";
@@ -1702,13 +1701,28 @@ function ConnectedApps() {
   return (
     <AppLayout>
       <SEO title={t('screens.settings.connectedAppsSettings')} description="Manage your connected apps and integrations" canonical={window.location.href} />
-      <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
             title={t('screens.settings.connectedApps2')}
             description="Seamless integration, maximum benefit - manage your connected apps and integrations"
           />
+
+          <div className="grid grid-cols-12 gap-4 mb-4">
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title={t('screens.settings.connectedApps')}
+                subtitle="Integrations"
+                icon={Link}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-purple-600">3</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.activeConnections')}</div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
 
           <SessionExpiredBanner error={socialConnectionsError} />
 

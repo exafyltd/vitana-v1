@@ -43,6 +43,8 @@
     "systemAdmin": "Sistemski Admin",
     "clinicalOps": "Kliničke Operacije",
     "monitoring": "Praćenje",
-    "logout": "Odjavi se"
+    "logout": "Odjavi se",
+    "connectors": "Konektori",
+    "support": "Podrška"
   }
 }

@@ -5,7 +5,7 @@
  * then redirects the browser to Google's consent screen. After consent Google
  * sends the code back to the gateway callback, which stores tokens in
  * social_connections and redirects the browser to
- * /settings/connected-apps?connected=google.
+ * /connectors?connected=google.
  *
  * The Google consent covers Gmail, Google Calendar and Google Contacts
  * (People API). YouTube and YouTube Music go through a dedicated youtube
