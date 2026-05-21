@@ -269,8 +269,8 @@ const Reminders: React.FC = () => {
         </h1>
         <p className="text-sm text-muted-foreground">
           {filteredView
-            ? `Showing ${filteredView.title.toLowerCase()} reminders.`
-            : "What Vitana is scheduling for you. Talk to the ORB to add naturally."}
+            ? t('screens.reminders.showingFilteredView', { kind: filteredView.title.toLowerCase() })
+            : t('screens.reminders.subtitleDefault')}
         </p>
       </div>
 
