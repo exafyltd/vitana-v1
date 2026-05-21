@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-20T16:26:17.685Z",
+  "generated_at": "2026-05-21T11:30:08.384Z",
   "source": "src/App.tsx",
-  "count": 352,
+  "count": 354,
   "routes": [
     {
       "path": "*",
@@ -893,6 +893,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/connectors",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/creator/onboarded",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -1463,7 +1468,7 @@
     },
     {
       "path": "/settings/connected-apps",
-      "requires_auth": true,
+      "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
@@ -1488,12 +1493,12 @@
     },
     {
       "path": "/settings/social",
-      "requires_auth": true,
+      "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
       "path": "/settings/support",
-      "requires_auth": true,
+      "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
@@ -1578,6 +1583,11 @@
       "path": "/staff/tools",
       "requires_auth": true,
       "requires_role": "staff",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/support",
+      "requires_auth": true,
       "file": "src/App.tsx"
     },
     {

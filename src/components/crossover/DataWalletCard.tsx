@@ -70,7 +70,7 @@ function DataWalletCardBase({
       buttonText="View Reports"
       onButtonClick={() => navigate('/health/my-health-tracker')}
       secondaryButtonText="Share Data"
-      onSecondaryButtonClick={() => navigate('/settings/connected-apps')}
+      onSecondaryButtonClick={() => navigate('/connectors')}
       className={className}
     />
   );

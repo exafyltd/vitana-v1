@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -140,7 +140,6 @@ const Health = lazy(() => import("./pages/Health"));
 const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
 const Messages = lazy(() => import("./pages/Messages"));
-const Settings = lazy(() => import("./pages/Settings"));
 const MobileSettings = lazy(() => import("./pages/MobileSettings"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
@@ -229,7 +228,6 @@ const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
 const TenantRole = lazy(() => import("./pages/settings/TenantRole"));
-const SocialConnect = lazy(() => import("./pages/settings/SocialConnect"));
 
 // Wallet sub-pages
 const Balance = lazy(() => import("./pages/wallet/Balance"));
@@ -539,7 +537,14 @@ const AppHooksInitializer = () => {
 // Mobile/Desktop settings router
 function SettingsRouter() {
   const isMobile = useIsMobile();
-  return isMobile ? <MobileSettings /> : <Settings />;
+  return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+// Redirect helper that preserves the original query string (used by OAuth
+// callbacks like /settings/connected-apps?connected=google → /connectors?connected=google).
+function RedirectPreservingSearch({ to }: { to: string }) {
+  const { search } = useLocation();
+  return <Navigate to={`${to}${search}`} replace />;
 }
 
 const App = () => {
@@ -1080,11 +1085,19 @@ const App = () => {
               <Limitations />
             </AuthGuard>
           } />
-          <Route path="/settings/connected-apps" element={
+          <Route path="/connectors" element={
             <AuthGuard>
               <ConnectedApps />
             </AuthGuard>
           } />
+          <Route path="/support" element={
+            <AuthGuard>
+              <Support />
+            </AuthGuard>
+          } />
+          <Route path="/settings/connected-apps" element={<RedirectPreservingSearch to="/connectors" />} />
+          <Route path="/settings/social" element={<RedirectPreservingSearch to="/connectors" />} />
+          <Route path="/settings/support" element={<Navigate to="/support" replace />} />
           <Route path="/settings/tenant-role" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
@@ -1095,16 +1108,6 @@ const App = () => {
           <Route path="/settings/billing" element={
             <AuthGuard>
               <Billing />
-            </AuthGuard>
-          } />
-          <Route path="/settings/support" element={
-            <AuthGuard>
-              <Support />
-            </AuthGuard>
-          } />
-          <Route path="/settings/social" element={
-            <AuthGuard>
-              <SocialConnect />
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />

@@ -7,6 +7,7 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StandardCard } from "@/components/templates/StandardCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { settingsNavigation } from "@/config/navigation";
@@ -87,6 +88,23 @@ export default function Billing() {
             title={t('screens.settings.manageYourInvestmentWellness')}
             description="Manage your subscription and billing information"
           />
+
+          <div className="grid grid-cols-12 gap-4 mb-4">
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title={t('screens.settings.billingStatus')}
+                subtitle="Subscription"
+                icon={CreditCard}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-orange-600">{t('screens.settings.active')}</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.untilDec2024')}</div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+
         <UtilityActionButton>
           <ExpandableSearchButton 
             placeholder={t('screens.settings.searchBilling')} 

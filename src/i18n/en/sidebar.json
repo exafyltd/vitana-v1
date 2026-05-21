@@ -43,6 +43,8 @@
     "systemAdmin": "System Admin",
     "clinicalOps": "Clinical Ops",
     "monitoring": "Monitoring",
-    "logout": "Logout"
+    "logout": "Logout",
+    "connectors": "Connectors",
+    "support": "Support"
   }
 }
