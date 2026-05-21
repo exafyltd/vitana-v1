@@ -8,15 +8,13 @@
     "discount.welcomeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Vaš') and adjective agreement ('dobrodošli' should be 'dobrodošao' for 'poklon').",
-      "suggested": "Tvoj dobrodošao poklon",
+      "issue": "Awkward phrasing; 'dobrodošao poklon' sounds like the gift itself is welcome, not a gift of welcome.",
+      "suggested": "Tvoj poklon dobrodošlice",
       "phase": "llm"
     },
     "discount.welcomeMessage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal imperative 'Iskoristite').",
-      "suggested": "Iskoristi ovaj kod za 10% popusta na prvi događaj",
       "phase": "llm"
     },
     "discount.validFor": {
@@ -70,17 +68,13 @@
       "phase": "llm"
     },
     "discount.contactOrganizer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal imperative 'Kontaktirajte').",
-      "suggested": "Kontaktiraj organizatora događaja za informacije o ulaznicama.",
       "phase": "llm"
     },
     "discount.contactOrganizerPrice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal imperative 'Kontaktirajte').",
-      "suggested": "Ovaj događaj košta ${price}. Kontaktiraj organizatora za dostupnost ulaznica.",
       "phase": "llm"
     },
     "discount.soldOut": {
@@ -105,9 +99,9 @@
     },
     "discount.ticketsSelected": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatical agreement error: 'karta' (feminine) requires a feminine participle, not neuter 'izabrano'. A more idiomatic plural form is also suggested.",
-      "suggested": "{count} karata izabrano",
+      "confidence": 0.9,
+      "issue": "Grammatical agreement for pluralization is incorrect for counts 1-4. 'Izabrano' (neuter singular) is only correct for counts 5 and above when referring to 'karata' (genitive plural of feminine noun).",
+      "suggested": "Izabrano: {count} karata",
       "phase": "llm"
     },
     "discount.useAccountEmail": {
@@ -123,8 +117,8 @@
     "discount.guestDetails": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (formal imperative 'Unesite').",
-      "suggested": "Unesi svoje podatke da biste dobili kartu. Nije potreban nalog.",
+      "issue": "Inconsistent register: 'Unesi' (informal singular 'ti') is followed by 'da biste dobili' (formal plural 'vi').",
+      "suggested": "Unesi svoje podatke za dobijanje karte. Nije potreban nalog.",
       "phase": "llm"
     },
     "discount.fullName": {
@@ -133,10 +127,8 @@
       "phase": "llm"
     },
     "discount.ticketEmailNote": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Vaša') and incorrect participle agreement ('poslati' is masculine plural, should be feminine plural 'poslate' for 'karta i potvrda').",
-      "suggested": "Tvoja karta i potvrda će biti poslate na ovu email adresu.",
       "phase": "llm"
     },
     "discount.left": {
@@ -150,5 +142,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:40.360Z"
+  "generatedAt": "2026-05-21T07:06:29.287Z"
 }
