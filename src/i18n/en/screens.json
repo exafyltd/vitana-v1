@@ -3917,6 +3917,10 @@
       "lengthCharacters": "{length}characters"
     },
     "discover": {
+      "marketplaceView_open": "Open marketplace",
+      "marketplaceView_mine": "My listings",
+      "marketplaceEmpty_body": "Be the first to post. Anything community-worth — supplies, services, used gear.",
+      "marketplaceEmpty_cta": "Post a listing",
       "quickBookActions": "Quick Book Actions",
       "orderActions": "Order Actions",
       "quickShopActions": "Quick Shop Actions",
