@@ -36,10 +36,8 @@
       "phase": "llm"
     },
     "gallery.dropzone": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing 'to select' context; German is too terse.",
-      "suggested": "Ziehen & ablegen oder zum Auswählen klicken",
       "phase": "llm"
     },
     "gallery.publicLabel": {
@@ -68,5 +66,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:40.120Z"
+  "generatedAt": "2026-05-21T07:09:01.884Z"
 }

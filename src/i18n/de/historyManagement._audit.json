@@ -136,10 +136,8 @@
       "phase": "llm"
     },
     "historyManagement.exportCompleteDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
-      "suggested": "Dein Verlauf wurde erfolgreich exportiert.",
       "phase": "llm"
     },
     "historyManagement.exportFailed": {
@@ -148,10 +146,8 @@
       "phase": "llm"
     },
     "historyManagement.exportFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihres' instead of informal 'deines').",
-      "suggested": "Beim Exportieren deines Verlaufs ist ein Fehler aufgetreten.",
       "phase": "llm"
     },
     "historyManagement.historyCleared": {
@@ -180,10 +176,8 @@
       "phase": "llm"
     },
     "historyManagement.allHistoryDeletedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Dein gesamter Verlauf wurde dauerhaft entfernt.",
       "phase": "llm"
     },
     "historyManagement.deleteFailed": {
@@ -192,24 +186,18 @@
       "phase": "llm"
     },
     "historyManagement.deleteFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Beim Löschen deines Verlaufs ist ein Fehler aufgetreten.",
       "phase": "llm"
     },
     "historyManagement.confirmClearOld": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bist du sicher, dass du den Verlauf älter als 90 Tage löschen möchtest?",
       "phase": "llm"
     },
     "historyManagement.confirmDeleteAll": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "⚠️ WARNUNG: Dies wird deinen GESAMTEN Verlauf dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Bist du absolut sicher?",
       "phase": "llm"
     },
     "historyManagement.danger": {
@@ -218,5 +206,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:13:13.534Z"
+  "generatedAt": "2026-05-21T07:09:34.929Z"
 }
