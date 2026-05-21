@@ -34,11 +34,15 @@ interface GroupWithMembers extends ChatGroup {
   member_count: number;
 }
 
-// Shape MessageBubble consumes. The gateway stores attachment/voice
-// payload in chat_messages.metadata; the bubble reads message.content_data.
+// Shape MessageBubble consumes. The gateway stores the text in
+// chat_messages.content; MessageBubble reads `message.body` in most
+// render branches (text, link preview, default), so we alias content
+// to body. Attachment/voice payload lives in chat_messages.metadata;
+// the bubble reads it as message.content_data.
 interface BubbleMessage {
   id: string;
   sender_id: string;
+  body: string;
   content: string;
   content_data: Record<string, unknown> | null;
   message_type: string;
@@ -50,6 +54,7 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
   return {
     id: msg.id,
     sender_id: msg.sender_id,
+    body: msg.content,
     content: msg.content,
     content_data: (msg.metadata as Record<string, unknown>) || null,
     message_type: msg.message_type || "text",
