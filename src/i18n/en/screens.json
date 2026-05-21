@@ -6059,6 +6059,8 @@
       "health": "Health"
     },
     "reminders": {
+      "subtitleDefault": "What Vitana is scheduling for you. Talk to the ORB to add naturally.",
+      "showingFilteredView": "Showing {kind} reminders.",
       "reminder": "Reminder",
       "loading": "Loading…",
       "scheduledByYou": "Scheduled by you",

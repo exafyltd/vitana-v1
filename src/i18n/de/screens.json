@@ -6059,6 +6059,8 @@
       "health": "Gesundheit"
     },
     "reminders": {
+      "subtitleDefault": "Was Vitana für dich plant. Sprich mit dem ORB, um etwas auf natürliche Weise hinzuzufügen.",
+      "showingFilteredView": "Zeige {kind} Erinnerungen.",
       "reminder": "Erinnerung",
       "loading": "Laden…",
       "scheduledByYou": "Von dir geplant",
