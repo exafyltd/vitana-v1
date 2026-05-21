@@ -228,19 +228,19 @@ export default function Companion() {
               <SmartSuggestions
                 suggestions={[
                   {
-                    title: "This Week's Journey",
-                    description: "You've made remarkable progress in hydration and sleep quality. Your dedication to the morning meditation routine has created a positive cascade effect across all wellness pillars.",
+                    title: t('screens.ai.storyTitle_thisWeeksJourney'),
+                    description: t('screens.ai.storyDesc_thisWeeksJourney'),
                     type: "insight" as const,
                     priority: "high" as const,
                     action: t('screens.ai.actionLabel_readFullStory'),
                     onAction: () => handleMemoryClick('weekly_story')
                   },
                   {
-                    title: "Pattern Discovery",
-                    description: "AI noticed that your evening walks correlate with 18% better sleep quality. This insight emerged from analyzing 3 weeks of your wellness data.",
+                    title: t('screens.ai.storyTitle_patternDiscovery'),
+                    description: t('screens.ai.storyDesc_patternDiscovery'),
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Explore Pattern",
+                    action: t('screens.ai.actionLabel_explorePattern'),
                     onAction: () => handleMemoryClick('sleep_pattern')
                   }
                 ]}
