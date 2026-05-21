@@ -113,114 +113,114 @@ export default function WellnessServices() {
   const categories = [
     {
       id: 1,
-      name: "Longevity Medicine",
-      description: "Advanced medical assessments and interventions for healthy aging",
+      name: t('screens.discover.wsCategory_longevity_name'),
+      description: t('screens.discover.wsCategory_longevity_desc'),
       icon: Stethoscope,
       color: "bg-domain-health-accent",
       count: 234,
       featured: [
-        "Health Assessments",
-        "IV Therapy",
-        "Hormone Optimization",
-        "Biomarker Analysis"
+        t('screens.discover.wsFeatured_healthAssessments'),
+        t('screens.discover.wsFeatured_ivTherapy'),
+        t('screens.discover.wsFeatured_hormoneOptimization'),
+        t('screens.discover.wsFeatured_biomarkerAnalysis')
       ]
     },
     {
       id: 2,
-      name: "Fitness & Movement",
-      description: "Exercise programs designed for longevity and vitality",
+      name: t('screens.discover.wsCategory_fitness_name'),
+      description: t('screens.discover.wsCategory_fitness_desc'),
       icon: Dumbbell,
       color: "bg-pill-exercise-accent",
       count: 156,
       featured: [
-        "Functional Fitness",
-        "Mobility Training",
-        "Strength Building",
-        "Flexibility Programs"
+        t('screens.discover.wsFeatured_functionalFitness'),
+        t('screens.discover.wsFeatured_mobilityTraining'),
+        t('screens.discover.wsFeatured_strengthBuilding'),
+        t('screens.discover.wsFeatured_flexibilityPrograms')
       ]
     },
     {
       id: 3,
-      name: "Mental Wellness",
-      description: "Mindfulness, therapy, and cognitive health services",
+      name: t('screens.discover.wsCategory_mental_name'),
+      description: t('screens.discover.wsCategory_mental_desc'),
       icon: Brain,
       color: "bg-pill-mental-accent",
       count: 189,
       featured: [
-        "Meditation",
-        "Stress Management",
-        "Cognitive Training",
-        "Therapy Sessions"
+        t('screens.discover.wsFeatured_meditation'),
+        t('screens.discover.wsFeatured_stressManagement'),
+        t('screens.discover.wsFeatured_cognitiveTraining'),
+        t('screens.discover.wsFeatured_therapySessions')
       ]
     },
     {
       id: 4,
-      name: "Recovery & Therapy",
-      description: "Healing modalities and recovery treatments",
+      name: t('screens.discover.wsCategory_recovery_name'),
+      description: t('screens.discover.wsCategory_recovery_desc'),
       icon: Sparkles,
       color: "bg-sys-vitana-accent",
       count: 123,
       featured: [
-        "Massage Therapy",
-        "Cold Plunge",
-        "Infrared Sauna",
-        "Red Light Therapy"
+        t('screens.discover.wsFeatured_massageTherapy'),
+        t('screens.discover.wsFeatured_coldPlunge'),
+        t('screens.discover.wsFeatured_infraredSauna'),
+        t('screens.discover.wsFeatured_redLightTherapy')
       ]
     },
     {
       id: 5,
-      name: "Nutrition & Supplements",
-      description: "Personalized nutrition plans and premium supplements",
+      name: t('screens.discover.wsCategory_nutrition_name'),
+      description: t('screens.discover.wsCategory_nutrition_desc'),
       icon: Leaf,
       color: "bg-pill-nutrition-accent",
       count: 267,
       featured: [
-        "Meal Planning",
-        "Nutritional Counseling",
-        "Supplement Plans",
-        "Dietary Analysis"
+        t('screens.discover.wsFeatured_mealPlanning'),
+        t('screens.discover.wsFeatured_nutritionalCounseling'),
+        t('screens.discover.wsFeatured_supplementPlans'),
+        t('screens.discover.wsFeatured_dietaryAnalysis')
       ]
     },
     {
       id: 6,
-      name: "Sleep Optimization",
-      description: "Services and products to improve sleep quality",
+      name: t('screens.discover.wsCategory_sleep_name'),
+      description: t('screens.discover.wsCategory_sleep_desc'),
       icon: Coffee,
       color: "bg-pill-sleep-accent",
       count: 89,
       featured: [
-        "Sleep Studies",
-        "Sleep Coaching",
-        "Circadian Rhythm",
-        "Sleep Environment"
+        t('screens.discover.wsFeatured_sleepStudies'),
+        t('screens.discover.wsFeatured_sleepCoaching'),
+        t('screens.discover.wsFeatured_circadianRhythm'),
+        t('screens.discover.wsFeatured_sleepEnvironment')
       ]
     },
     {
       id: 7,
-      name: "Biohacking",
-      description: "Advanced technologies and optimization protocols",
+      name: t('screens.discover.wsCategory_biohacking_name'),
+      description: t('screens.discover.wsCategory_biohacking_desc'),
       icon: Zap,
       color: "bg-sys-ai-accent",
       count: 145,
       featured: [
-        "Wearable Tech",
-        "Performance Testing",
-        "Optimization Plans",
-        "Tracking Systems"
+        t('screens.discover.wsFeatured_wearableTech'),
+        t('screens.discover.wsFeatured_performanceTesting'),
+        t('screens.discover.wsFeatured_optimizationPlans'),
+        t('screens.discover.wsFeatured_trackingSystems')
       ]
     },
     {
       id: 8,
-      name: "Wellness Hospitality",
-      description: "Retreats, spas, and immersive wellness experiences",
+      name: t('screens.discover.wsCategory_hospitality_name'),
+      description: t('screens.discover.wsCategory_hospitality_desc'),
       icon: Heart,
       color: "bg-domain-community-accent",
       count: 67,
       featured: [
-        "Wellness Retreats",
-        "Spa Experiences",
-        "Destination Wellness",
-        "Immersive Programs"
+        t('screens.discover.wsFeatured_wellnessRetreats'),
+        t('screens.discover.wsFeatured_spaExperiences'),
+        t('screens.discover.wsFeatured_destinationWellness'),
+        t('screens.discover.wsFeatured_immersivePrograms')
       ]
     }
   ];
