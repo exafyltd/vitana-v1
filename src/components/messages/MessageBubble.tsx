@@ -140,6 +140,24 @@ const VoiceMessagePlayer: React.FC<{ url?: string; duration?: number; isOwnMessa
   );
 };
 
+// Older clients synthesized a placeholder body like "Shared filename.jpg"
+// (single attachment) or "Shared 3 files" (multiple) so the chat_messages
+// row had non-empty content. The composer no longer does this, but already-
+// sent messages still carry it — suppress so the bubble doesn't show the
+// filename twice (once as a caption, once on the image overlay/file chip).
+function isLegacySharedPlaceholder(body: string | undefined, contentData: any): boolean {
+  if (!body) return false;
+  const trimmed = body.trim();
+  if (!trimmed.startsWith('Shared ')) return false;
+  const attachments = Array.isArray(contentData?.attachments) ? contentData.attachments : [];
+  if (attachments.length === 0) return false;
+  if (attachments.length === 1) {
+    const filename = attachments[0]?.filename || attachments[0]?.name;
+    return !!filename && trimmed === `Shared ${filename}`;
+  }
+  return trimmed === `Shared ${attachments.length} files`;
+}
+
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
   isOwnMessage,
@@ -644,10 +662,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <ExternalLink className="w-3 h-3" />
             </Button>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 rounded-b-lg">
-            <p className="text-white text-xs font-medium truncate">{attachment.filename}</p>
-            <p className="text-white/80 text-xs">{formatFileSize(attachment.size)}</p>
-          </div>
         </div>
       );
     } else {
@@ -842,7 +856,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         }
         return (
           <div className="space-y-3">
-            {message.body && renderLinkedText(message.body)}
+            {message.body && !isLegacySharedPlaceholder(message.body, message.content_data) &&
+              renderLinkedText(message.body)}
 
             {/* New attachment format with proper rendering */}
             {message.content_data?.attachments && (
