@@ -47,16 +47,16 @@ export class GlobalErrorBoundary extends Component<Props, State> {
     console.error("[GlobalErrorBoundary]", error);
     console.error("[ErrorInfo]", errorInfo);
 
-    // Auto-reload once for chunk errors (stale cache after deploy)
-    if (isChunkLoadError(error)) {
-      const lastReload = sessionStorage.getItem(RELOAD_KEY);
-      const now = Date.now();
-      // Only auto-reload if we haven't reloaded in the last 10 seconds
-      if (!lastReload || now - Number(lastReload) > 10_000) {
-        sessionStorage.setItem(RELOAD_KEY, String(now));
-        window.location.reload();
-        return;
-      }
+    // Auto-reload once for ANY crash. Stale chunks after a deploy can cause
+    // both recognizable chunk-load errors AND runtime TypeError/ReferenceError
+    // when old code references changed exports. A single reload fetches the
+    // latest index.html and resolves both cases.
+    const lastReload = sessionStorage.getItem(RELOAD_KEY);
+    const now = Date.now();
+    if (!lastReload || now - Number(lastReload) > 10_000) {
+      sessionStorage.setItem(RELOAD_KEY, String(now));
+      window.location.reload();
+      return;
     }
   }
 
