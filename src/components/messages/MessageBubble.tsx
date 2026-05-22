@@ -614,7 +614,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [isOwnMessage]);
 
   const renderAttachment = (attachment: any, index: number) => {
-    const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
+    // Mime can be empty on Android pickers; fall back to filename extension
+    // so already-sent screenshots stored as type:'file' still render inline
+    // (previous send-side detection missed empty-mime PNGs from SAF).
+    const filename: string = attachment.filename || attachment.name || '';
+    const looksLikeImageName = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i.test(filename);
+    const isImage = attachment.type === 'image'
+      || isImageType(attachment.mime || '')
+      || looksLikeImageName;
     const imageLoadFailed = failedImages.has(index);
     const displayUrl = (attachment.path && resolvedUrls.get(attachment.path)) || attachment.url;
 
