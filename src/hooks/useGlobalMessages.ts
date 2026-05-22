@@ -944,56 +944,50 @@ export function useGlobalMessages(
               : { user_id: user.id, display_name: "Me" },
           };
         } else {
-          // Direct threads: handle attachments/voice vs plain text differently
-          const hasRichContent = (effectiveType === "attachment" || effectiveType === "voice") && _contentData?.attachments?.length;
+          // Direct threads: route everything (text + attachments + voice) through
+          // the gateway. The gateway uses service_role to insert into chat_messages,
+          // which bypasses the buggy self-referential chat_group_members RLS
+          // policy that otherwise fires on .insert().select() via the
+          // users_read_group_messages SELECT policy on chat_messages.
+          const isRich = effectiveType !== "text" && _contentData?.attachments?.length;
+          const gatewayOptions = isRich
+            ? { messageType: effectiveType, contentData: { attachments: _contentData.attachments } }
+            : undefined;
 
-          if (hasRichContent) {
-            // Rich content DMs (attachments, voice): insert directly into chat_messages with full metadata
-            const tenantId = (user as any).app_metadata?.active_tenant_id || 'default';
+          let created: ChatMessage;
+          try {
+            created = await sendChatMessage(threadId, body, gatewayOptions);
+          } catch (gatewayErr) {
+            console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
+            const tenantId = (user as any).app_metadata?.active_tenant_id;
+            if (!tenantId) throw gatewayErr;
+            const insertRow: Record<string, any> = {
+              tenant_id: tenantId,
+              sender_id: user.id,
+              receiver_id: threadId,
+              content: body,
+            };
+            if (isRich) {
+              insertRow.message_type = effectiveType;
+              insertRow.metadata = { attachments: _contentData.attachments };
+            }
             const { data: inserted, error: insertErr } = await supabase
               .from("chat_messages")
-              .insert({
-                tenant_id: tenantId,
-                sender_id: user.id,
-                receiver_id: threadId,
-                content: body,
-                message_type: effectiveType,
-                metadata: { attachments: _contentData.attachments } as any,
-              })
+              .insert(insertRow)
               .select()
               .single();
-            if (insertErr || !inserted) throw insertErr || new Error("Rich content DM insert failed");
+            if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
+            created = inserted as unknown as ChatMessage;
+          }
 
-            const profileMap = await enrichProfiles([user.id]);
-            realMsg = toGlobalMessage(inserted as unknown as ChatMessage, threadId, profileMap);
-            // Ensure content_data is set from metadata
-            realMsg.content_data = (inserted as any).metadata || _contentData;
+          const profileMap = await enrichProfiles([created.sender_id]);
+          realMsg = toGlobalMessage(created, threadId, profileMap);
+          if (isRich) {
+            // toGlobalMessage maps metadata→content_data, but be explicit
+            // so the local optimistic→real swap preserves the attachment payload
+            // even if the gateway response shape changes.
+            realMsg.content_data = (created as any).metadata || { attachments: _contentData.attachments };
             realMsg.message_type = effectiveType;
-          } else {
-            // Plain text DMs: gateway first, fallback to chat_messages
-            let created: ChatMessage;
-            try {
-              created = await sendChatMessage(threadId, body);
-            } catch (gatewayErr) {
-              console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
-              const tenantId = (user as any).app_metadata?.active_tenant_id;
-              if (!tenantId) throw gatewayErr;
-              const { data: inserted, error: insertErr } = await supabase
-                .from("chat_messages")
-                .insert({
-                  tenant_id: tenantId,
-                  sender_id: user.id,
-                  receiver_id: threadId,
-                  content: body,
-                })
-                .select()
-                .single();
-              if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
-              created = inserted as unknown as ChatMessage;
-            }
-
-            const profileMap = await enrichProfiles([created.sender_id]);
-            realMsg = toGlobalMessage(created, threadId, profileMap);
           }
         }
 
