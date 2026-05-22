@@ -93,11 +93,15 @@ export async function fetchConversation(
 /** Send a direct message. Returns the created message. */
 export async function sendChatMessage(
   receiverId: string,
-  content: string
+  content: string,
+  options?: { messageType?: string; contentData?: any }
 ): Promise<ChatMessage> {
+  const body: Record<string, unknown> = { receiver_id: receiverId, content };
+  if (options?.messageType) body.message_type = options.messageType;
+  if (options?.contentData !== undefined) body.content_data = options.contentData;
   const json = await gatewayFetch("/send", {
     method: "POST",
-    body: JSON.stringify({ receiver_id: receiverId, content }),
+    body: JSON.stringify(body),
   });
   return json.data;
 }
