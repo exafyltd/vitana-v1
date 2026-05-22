@@ -281,8 +281,22 @@ const MessageInput: React.FC<MessageInputProps> = ({
         );
 
         console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
-        const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
-        const isPreviewImage = previewableImages.has(attachmentResult.type);
+        // Detect images for inline preview. Mime check covers desktops and
+        // most Android pickers; the extension fallback handles cases where
+        // the OS file picker delivers an empty mime (Samsung's SAF on
+        // screenshots, some iOS variants) so a `.png` screenshot still
+        // renders as an image instead of a "download" file chip.
+        const previewableImageMimes = new Set([
+          'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+          'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
+          'image/bmp', 'image/tiff', 'image/avif',
+        ]);
+        const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
+        const mime = (attachmentResult.type || '').toLowerCase();
+        const isPreviewImage =
+          previewableImageMimes.has(mime)
+          || mime.startsWith('image/')
+          || previewableExts.test(attachmentResult.name || '');
         const attachmentData: AttachmentData = {
           type: isPreviewImage ? 'image' : 'file',
           url: attachmentResult.url,
