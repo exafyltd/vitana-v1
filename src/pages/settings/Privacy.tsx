@@ -7,7 +7,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon, Brain } from "lucide-react";
+import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon, Brain, Bell } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { settingsNavigation } from "@/config/navigation";
@@ -30,10 +30,80 @@ function Privacy() {
       <SubNavigation items={settingsNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <StandardHeader 
+          <StandardHeader
             title={t('screens.settings.privacySettings2')}
             description="Your data, your control - manage privacy settings and data sharing preferences"
           />
+
+          <div className="grid grid-cols-12 gap-4 mb-4">
+            <div className="col-span-12 md:col-span-6">
+              <StandardCard
+                title={t('screens.settings.settingsOverview')}
+                subtitle="Your Account Status"
+                icon={SettingsIcon}
+                content={
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold text-green-600">{t('screens.settings.protected')}</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.privacyStatus')}</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold text-blue-600">{t('screens.settings.premium')}</div>
+                        <div className="text-xs text-muted-foreground">{t('screens.settings.subscription')}</div>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>{t('screens.settings.notificationsActive')}</span>
+                        <span className="text-blue-600">{t('screens.settings.text5Types')}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{t('screens.settings.connectedApps')}</span>
+                        <span className="text-green-600">{t('screens.settings.text3Apps')}</span>
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title={t('screens.settings.activeSettings')}
+                subtitle="Configured"
+                icon={Bell}
+                content={
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-blue-600">12</div>
+                    <div className="text-xs text-muted-foreground">{t('screens.settings.settingsConfigured')}</div>
+                  </div>
+                }
+              />
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <StandardCard
+                title={t('screens.settings.recentSettingsActivity')}
+                subtitle="Latest Changes"
+                icon={History}
+                content={
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span>{t('screens.settings.privacySettingsUpdated2DaysAgo')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>{t('screens.settings.connectedNewFitnessApp1Week')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span>{t('screens.settings.notificationPreferencesSaved')}</span>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
 
           <UtilityActionButton>
             <ExpandableSearchButton placeholder={t('screens.settings.searchPrivacyControlsDataSettingsSecurity')} />

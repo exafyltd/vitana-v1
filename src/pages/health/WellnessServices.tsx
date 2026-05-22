@@ -20,174 +20,34 @@ import { t } from '@/lib/i18n-toast';
 
 const servicesData = {
   preventiveCare: [
-    {
-      id: "CT-301",
-      title: "Annual Physical Exam",
-      description: "Comprehensive health checkup and screening",
-      icon: Stethoscope,
-      color: "from-emerald-500/20 to-green-500/20",
-      vitanaImpact: "+25 points"
-    },
-    {
-      id: "CT-302", 
-      title: "Cancer Screening Package",
-      description: "Early detection screenings for various cancers",
-      icon: Microscope,
-      color: "from-blue-500/20 to-cyan-500/20",
-      vitanaImpact: "+30 points"
-    },
-    {
-      id: "CT-303",
-      title: "Cardiovascular Assessment", 
-      description: "Heart health evaluation and risk assessment",
-      icon: Heart,
-      color: "from-red-500/20 to-pink-500/20",
-      vitanaImpact: "+35 points"
-    },
-    {
-      id: "CT-304",
-      title: "Metabolic Health Panel",
-      description: "Diabetes, cholesterol, and metabolic markers",
-      icon: TestTube2,
-      color: "from-purple-500/20 to-violet-500/20",
-      vitanaImpact: "+30 points"
-    }
+    { id: "CT-301", titleKey: "screens.health.svc_annualPhysical_title", descKey: "screens.health.svc_annualPhysical_desc", icon: Stethoscope, color: "from-emerald-500/20 to-green-500/20", vitanaImpact: "+25 points" },
+    { id: "CT-302", titleKey: "screens.health.svc_cancerScreening_title", descKey: "screens.health.svc_cancerScreening_desc", icon: Microscope, color: "from-blue-500/20 to-cyan-500/20", vitanaImpact: "+30 points" },
+    { id: "CT-303", titleKey: "screens.health.svc_cardio_title", descKey: "screens.health.svc_cardio_desc", icon: Heart, color: "from-red-500/20 to-pink-500/20", vitanaImpact: "+35 points" },
+    { id: "CT-304", titleKey: "screens.health.svc_metabolic_title", descKey: "screens.health.svc_metabolic_desc", icon: TestTube2, color: "from-purple-500/20 to-violet-500/20", vitanaImpact: "+30 points" }
   ],
   medicalServices: [
-    {
-      id: "CT-305",
-      title: "Specialist Consultation",
-      description: "Connect with medical specialists",
-      icon: UserCheck,
-      color: "from-blue-500/20 to-indigo-500/20",
-      vitanaImpact: "+20 points"
-    },
-    {
-      id: "CT-306", 
-      title: "Telemedicine",
-      description: "Virtual consultations with healthcare providers",
-      icon: Phone,
-      color: "from-green-500/20 to-emerald-500/20",
-      vitanaImpact: "+15 points"
-    },
-    {
-      id: "CT-307",
-      title: "Lab Tests & Diagnostics",
-      description: "Comprehensive laboratory testing services",
-      icon: TestTube,
-      color: "from-purple-500/20 to-violet-500/20",
-      vitanaImpact: "+25 points"
-    },
-    {
-      id: "CT-308",
-      title: "Prescription Management",
-      description: "Medication reviews and management",
-      icon: Package,
-      color: "from-orange-500/20 to-amber-500/20",
-      vitanaImpact: "+20 points"
-    }
+    { id: "CT-305", titleKey: "screens.health.svc_specialist_title", descKey: "screens.health.svc_specialist_desc", icon: UserCheck, color: "from-blue-500/20 to-indigo-500/20", vitanaImpact: "+20 points" },
+    { id: "CT-306", titleKey: "screens.health.svc_telemedicine_title", descKey: "screens.health.svc_telemedicine_desc", icon: Phone, color: "from-green-500/20 to-emerald-500/20", vitanaImpact: "+15 points" },
+    { id: "CT-307", titleKey: "screens.health.svc_labTests_title", descKey: "screens.health.svc_labTests_desc", icon: TestTube, color: "from-purple-500/20 to-violet-500/20", vitanaImpact: "+25 points" },
+    { id: "CT-308", titleKey: "screens.health.svc_prescription_title", descKey: "screens.health.svc_prescription_desc", icon: Package, color: "from-orange-500/20 to-amber-500/20", vitanaImpact: "+20 points" }
   ],
   wellnessPrograms: [
-    {
-      id: "CT-309",
-      title: "Nutrition Coaching",
-      description: "Personalized nutrition education and meal planning",
-      icon: Apple,
-      color: "from-orange-500/20 to-amber-500/20",
-      vitanaImpact: "+20 points"
-    },
-    {
-      id: "CT-310",
-      title: "Fitness Training",
-      description: "Personal training and exercise program design",
-      icon: Dumbbell,
-      color: "from-blue-500/20 to-indigo-500/20",
-      vitanaImpact: "+30 points"
-    },
-    {
-      id: "CT-311",
-      title: "Mental Wellness Coach",
-      description: "Stress management and mental health support",
-      icon: Brain,
-      color: "from-purple-500/20 to-pink-500/20",
-      vitanaImpact: "+25 points"
-    },
-    {
-      id: "CT-312",
-      title: "30-Day Wellness Challenge",
-      description: "Community-based health improvement program",
-      icon: Target,
-      color: "from-cyan-500/20 to-blue-500/20",
-      suggestion: "3 people from your Longevity group joined this",
-      vitanaImpact: "+40 points"
-    }
+    { id: "CT-309", titleKey: "screens.health.svc_nutritionCoaching_title", descKey: "screens.health.svc_nutritionCoaching_desc", icon: Apple, color: "from-orange-500/20 to-amber-500/20", vitanaImpact: "+20 points" },
+    { id: "CT-310", titleKey: "screens.health.svc_fitnessTraining_title", descKey: "screens.health.svc_fitnessTraining_desc", icon: Dumbbell, color: "from-blue-500/20 to-indigo-500/20", vitanaImpact: "+30 points" },
+    { id: "CT-311", titleKey: "screens.health.svc_mentalCoach_title", descKey: "screens.health.svc_mentalCoach_desc", icon: Brain, color: "from-purple-500/20 to-pink-500/20", vitanaImpact: "+25 points" },
+    { id: "CT-312", titleKey: "screens.health.svc_wellnessChallenge_title", descKey: "screens.health.svc_wellnessChallenge_desc", icon: Target, color: "from-cyan-500/20 to-blue-500/20", suggestionKey: "screens.health.svc_wellnessChallenge_suggestion", vitanaImpact: "+40 points" }
   ],
   insuranceSupport: [
-    {
-      id: "CT-313",
-      title: "Claims Processing",
-      description: "Help with insurance claims and documentation",
-      icon: FileText,
-      color: "from-blue-500/20 to-cyan-500/20",
-      vitanaImpact: "+10 points"
-    },
-    {
-      id: "CT-314",
-      title: "Coverage Verification",
-      description: "Verify insurance coverage for services",
-      icon: Shield,
-      color: "from-green-500/20 to-emerald-500/20",
-      vitanaImpact: "+5 points"
-    },
-    {
-      id: "CT-315",
-      title: "Pre-Authorization",
-      description: "Assistance with medical pre-authorizations",
-      icon: Briefcase,
-      color: "from-purple-500/20 to-violet-500/20",
-      vitanaImpact: "+15 points"
-    },
-    {
-      id: "CT-316",
-      title: "Payment Plans",
-      description: "Flexible payment options for medical services",
-      icon: CreditCard,
-      color: "from-orange-500/20 to-amber-500/20",
-      vitanaImpact: "+5 points"
-    }
+    { id: "CT-313", titleKey: "screens.health.svc_claimsProcessing_title", descKey: "screens.health.svc_claimsProcessing_desc", icon: FileText, color: "from-blue-500/20 to-cyan-500/20", vitanaImpact: "+10 points" },
+    { id: "CT-314", titleKey: "screens.health.svc_coverageVerification_title", descKey: "screens.health.svc_coverageVerification_desc", icon: Shield, color: "from-green-500/20 to-emerald-500/20", vitanaImpact: "+5 points" },
+    { id: "CT-315", titleKey: "screens.health.svc_preAuth_title", descKey: "screens.health.svc_preAuth_desc", icon: Briefcase, color: "from-purple-500/20 to-violet-500/20", vitanaImpact: "+15 points" },
+    { id: "CT-316", titleKey: "screens.health.svc_paymentPlans_title", descKey: "screens.health.svc_paymentPlans_desc", icon: CreditCard, color: "from-orange-500/20 to-amber-500/20", vitanaImpact: "+5 points" }
   ],
   myServices: [
-    {
-      id: "CT-317",
-      title: "My Appointments",
-      description: "View and manage your upcoming appointments",
-      icon: Calendar,
-      color: "from-green-500/20 to-emerald-500/20",
-      count: "3 upcoming"
-    },
-    {
-      id: "CT-318",
-      title: "Service History",
-      description: "Review your past services and treatments",
-      icon: Clock,
-      color: "from-blue-500/20 to-cyan-500/20",
-      count: "12 completed"
-    },
-    {
-      id: "CT-319",
-      title: "My Providers",
-      description: "Manage your healthcare provider network",
-      icon: Users,
-      color: "from-purple-500/20 to-violet-500/20",
-      count: "5 providers"
-    },
-    {
-      id: "CT-320",
-      title: "Health Records",
-      description: "Access your complete health records",
-      icon: BookOpen,
-      color: "from-orange-500/20 to-amber-500/20"
-    }
+    { id: "CT-317", titleKey: "screens.health.svc_appointments_title", descKey: "screens.health.svc_appointments_desc", icon: Calendar, color: "from-green-500/20 to-emerald-500/20", countKey: "screens.health.svc_appointments_count" },
+    { id: "CT-318", titleKey: "screens.health.svc_serviceHistory_title", descKey: "screens.health.svc_serviceHistory_desc", icon: Clock, color: "from-blue-500/20 to-cyan-500/20", countKey: "screens.health.svc_serviceHistory_count" },
+    { id: "CT-319", titleKey: "screens.health.svc_myProviders_title", descKey: "screens.health.svc_myProviders_desc", icon: Users, color: "from-purple-500/20 to-violet-500/20", countKey: "screens.health.svc_myProviders_count" },
+    { id: "CT-320", titleKey: "screens.health.svc_healthRecords_title", descKey: "screens.health.svc_healthRecords_desc", icon: BookOpen, color: "from-orange-500/20 to-amber-500/20" }
   ]
 };
 
@@ -218,9 +78,9 @@ export default function WellnessServices() {
               </div>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <CardTitle className="text-lg">{service.title}</CardTitle>
+                  <CardTitle className="text-lg">{t(service.titleKey)}</CardTitle>
                   <CardDescription className="text-sm mt-1">
-                    {service.description}
+                    {t(service.descKey)}
                   </CardDescription>
                 </div>
                 {service.vitanaImpact && (
@@ -228,15 +88,15 @@ export default function WellnessServices() {
                     {service.vitanaImpact}
                   </Badge>
                 )}
-                {service.count && (
+                {service.countKey && (
                   <Badge variant="outline" className="ml-2 text-xs">
-                    {service.count}
+                    {t(service.countKey)}
                   </Badge>
                 )}
               </div>
-              {service.suggestion && (
+              {service.suggestionKey && (
                 <div className="mt-3 p-2 bg-blue-50 rounded-lg">
-                  <p className="text-xs text-blue-700">{service.suggestion}</p>
+                  <p className="text-xs text-blue-700">{t(service.suggestionKey)}</p>
                 </div>
               )}
               <div className="flex gap-2 pt-3">

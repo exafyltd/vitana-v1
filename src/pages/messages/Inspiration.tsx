@@ -17,35 +17,35 @@ import { t } from '@/lib/i18n-toast';
 
 const inspirationTemplates = [
   {
-    category: "Morning Motivation",
+    categoryKey: "screens.messages.inspirationCategory_morningMotivation",
     templates: [
-      { text: "Good morning! Ready to crush your wellness goals today? 💪", icon: "☀️" },
-      { text: "New day, new opportunities to prioritize your health! 🌟", icon: "🌅" },
-      { text: "Starting the day with gratitude and positive energy! ✨", icon: "🙏" }
+      { textKey: "screens.messages.inspirationTpl_morning1", icon: "☀️" },
+      { textKey: "screens.messages.inspirationTpl_morning2", icon: "🌅" },
+      { textKey: "screens.messages.inspirationTpl_morning3", icon: "🙏" }
     ]
   },
   {
-    category: "Goal Support",
+    categoryKey: "screens.messages.inspirationCategory_goalSupport",
     templates: [
-      { text: "You've got this! Every small step counts toward your bigger goals 🎯", icon: "🎯" },
-      { text: "Believing in your journey and celebrating your progress! 🌈", icon: "📈" },
-      { text: "Your commitment to wellness inspires everyone around you! 💫", icon: "⭐" }
+      { textKey: "screens.messages.inspirationTpl_goal1", icon: "🎯" },
+      { textKey: "screens.messages.inspirationTpl_goal2", icon: "📈" },
+      { textKey: "screens.messages.inspirationTpl_goal3", icon: "⭐" }
     ]
   },
   {
-    category: "Health Check-ins",
+    categoryKey: "screens.messages.inspirationCategory_healthCheckins",
     templates: [
-      { text: "How are you feeling today? Remember, it's okay to have ups and downs 💙", icon: "💙" },
-      { text: "Checking in on your wellness journey - you're doing amazing! 🌸", icon: "🌸" },
-      { text: "Hope you're taking time for self-care today. You deserve it! 🌿", icon: "🌿" }
+      { textKey: "screens.messages.inspirationTpl_checkin1", icon: "💙" },
+      { textKey: "screens.messages.inspirationTpl_checkin2", icon: "🌸" },
+      { textKey: "screens.messages.inspirationTpl_checkin3", icon: "🌿" }
     ]
   },
   {
-    category: "Celebrations",
+    categoryKey: "screens.messages.inspirationCategory_celebrations",
     templates: [
-      { text: "Celebrating your wellness wins, big and small! 🎉", icon: "🎉" },
-      { text: "So proud of your dedication to your health goals! 👏", icon: "👏" },
-      { text: "Your progress is inspiring - keep up the fantastic work! 🌟", icon: "🌟" }
+      { textKey: "screens.messages.inspirationTpl_celebrate1", icon: "🎉" },
+      { textKey: "screens.messages.inspirationTpl_celebrate2", icon: "👏" },
+      { textKey: "screens.messages.inspirationTpl_celebrate3", icon: "🌟" }
     ]
   }
 ];
@@ -105,21 +105,23 @@ export default function Inspiration() {
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Lightbulb className="w-5 h-5 text-yellow-500" />
-                        {category.category}
+                        {t(category.categoryKey)}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                      {category.templates.map((template, templateIdx) => (
+                      {category.templates.map((template, templateIdx) => {
+                        const text = t(template.textKey);
+                        return (
                         <div key={templateIdx} className="border rounded-lg p-4 flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1">
                             <span className="text-xl">{template.icon}</span>
-                            <p className="text-sm">{template.text}</p>
+                            <p className="text-sm">{text}</p>
                           </div>
                           <div className="flex gap-2">
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => navigator.clipboard.writeText(template.text)}
+                              onClick={() => navigator.clipboard.writeText(text)}
                             >
                               <Copy className="w-3 h-3 mr-1" />
                               {t('screens.messages.copy')}
@@ -127,14 +129,15 @@ export default function Inspiration() {
                             <Button
                               variant="default"
                               size="sm"
-                              onClick={() => console.log(`Forwarding: ${template.text}`)}
+                              onClick={() => console.log(`Forwarding: ${text}`)}
                             >
                               <Send className="w-3 h-3 mr-1" />
                               {t('screens.messages.send')}
                             </Button>
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
                     </CardContent>
                   </Card>
                 ))}

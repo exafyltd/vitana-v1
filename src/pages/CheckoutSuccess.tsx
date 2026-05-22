@@ -94,7 +94,7 @@ export default function CheckoutSuccess() {
               <p className="text-sm text-muted-foreground mb-4">
                 {t('screens.checkoutsuccess.ifYouHaveAnyQuestionsAbout')}
               </p>
-              <Button variant="outline" onClick={() => navigate('/settings/support')}>
+              <Button variant="outline" onClick={() => navigate('/support')}>
                 {t('screens.checkoutsuccess.contactSupport')}
               </Button>
             </CardContent>

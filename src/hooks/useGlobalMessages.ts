@@ -33,8 +33,30 @@ const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
 const GC_TIME = 30 * 60 * 1000;     // 30 minutes — cache kept in memory after unmount
 
 // ── SCROLL FIX: In-memory profile cache (prevents redundant Supabase queries) ──
-const profileCache = new Map<string, { display_name: string; avatar_url: string | null; cachedAt: number }>();
+// `_missing` flags peers that have no row in global_community_profiles or
+// profiles — used to suppress phantom "Unknown User" inbox entries.
+const profileCache = new Map<string, { display_name: string; avatar_url: string | null; cachedAt: number; _missing?: boolean }>();
 const PROFILE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+type ProfileEntry = { display_name: string; avatar_url: string | null; _missing?: boolean };
+
+/**
+ * Strip phantom "Unknown User" entries that slipped into a thread list — for
+ * example because they were persisted to localStorage before the
+ * source-level filter was in place. Only filters direct threads; group
+ * threads are kept regardless of label.
+ */
+function stripUnknownUserThreads<T extends { type?: string; participants?: { user_id: string; display_name?: string }[] }>(
+  threads: T[],
+  currentUserId: string | undefined,
+): T[] {
+  return threads.filter((t) => {
+    if (t.type !== "direct") return true;
+    const peer = t.participants?.find((p) => p.user_id !== currentUserId);
+    if (!peer) return true;
+    return peer.display_name !== "Unknown User";
+  });
+}
 
 // ── SCROLL FIX: Debounced localStorage writes (prevents main-thread blocking) ──
 const pendingPersist = new Map<string, NodeJS.Timeout>();
@@ -176,19 +198,23 @@ function toGlobalMessage(
 /** Fetch profiles from Supabase for a set of user IDs (with in-memory cache) */
 async function enrichProfiles(
   userIds: string[]
-): Promise<Record<string, { display_name: string; avatar_url: string | null }>> {
+): Promise<Record<string, ProfileEntry>> {
   const ids = Array.from(new Set(userIds)).filter(Boolean);
   if (ids.length === 0) return {};
 
   // SCROLL FIX: Check in-memory cache first — avoid Supabase queries for known profiles
   const now = Date.now();
-  const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
+  const map: Record<string, ProfileEntry> = {};
   const uncachedIds: string[] = [];
 
   for (const uid of ids) {
     const cached = profileCache.get(uid);
     if (cached && now - cached.cachedAt < PROFILE_CACHE_TTL) {
-      map[uid] = { display_name: cached.display_name, avatar_url: cached.avatar_url };
+      map[uid] = {
+        display_name: cached.display_name,
+        avatar_url: cached.avatar_url,
+        _missing: cached._missing,
+      };
     } else {
       uncachedIds.push(uid);
     }
@@ -221,16 +247,35 @@ async function enrichProfiles(
     }
     const gp = globalProfiles?.find((p) => p.user_id === uid);
     const mp = mainProfiles?.find((p) => p.user_id === uid);
-    const profile = {
+    const hasRealProfile = !!(gp || mp);
+    const profile: ProfileEntry = {
       display_name:
         gp?.display_name || mp?.display_name || mp?.full_name || "Unknown User",
       avatar_url: gp?.avatar_url || mp?.avatar_url || null,
+      _missing: !hasRealProfile,
     };
     map[uid] = profile;
-    // Store in cache
+    // Store in cache (including _missing so subsequent fetches stay consistent)
     profileCache.set(uid, { ...profile, cachedAt: now });
   });
   return map;
+}
+
+/**
+ * Decide whether a direct-thread peer is a real user we should surface in the
+ * inbox. Peers with no row in either profile table create phantom
+ * "Unknown User" entries that confuse users — drop them. The Vitana bot is
+ * always considered real because its identity is synthetic by design.
+ */
+function isRealPeer(
+  peerId: string | undefined | null,
+  profileMap: Record<string, ProfileEntry>
+): boolean {
+  if (!peerId) return false;
+  if (isVitanaBot(peerId)) return true;
+  const profile = profileMap[peerId];
+  if (!profile) return false;
+  return !profile._missing;
 }
 
 // ── Legacy Supabase fallback ─────────────────────────────────────────
@@ -314,6 +359,12 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
 
         const threadIdentifier = isGroup ? t.id : otherParticipant?.user_id;
         if (!threadIdentifier) return null; // skip direct threads with no peer
+
+        // Skip legacy direct threads whose peer has no real profile in
+        // either table — these render as phantom "Unknown User" entries.
+        if (!isGroup && !isRealPeer(otherParticipant?.user_id, profileMap)) {
+          return null;
+        }
 
         const enrichedParticipants = threadParticipants.map((p: any) => ({
           user_id: p.user_id,
@@ -444,7 +495,12 @@ async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Reco
     const peerIds = Array.from(seen.keys());
     const profileMap = await enrichProfiles([userId, ...peerIds]);
 
-    return Array.from(seen.entries()).map(([peerId, lastMsg]) => {
+    return Array.from(seen.entries()).flatMap(([peerId, lastMsg]) => {
+      // Skip peers with no profile in either table — these surface as
+      // phantom "Unknown User" inbox entries when a chat_message row points
+      // at a deleted or never-provisioned user.
+      if (!isRealPeer(peerId, profileMap)) return [];
+
       const peer = profileMap[peerId] || { display_name: "Unknown User", avatar_url: null };
       const me = profileMap[userId] || { display_name: "Me", avatar_url: null };
 
@@ -559,7 +615,11 @@ export function useGlobalMessages(
 
         const profileMap = await enrichProfiles(Array.from(allUserIds));
 
-        gatewayThreads = conversations.map((conv) => {
+        gatewayThreads = conversations.flatMap((conv) => {
+          // Skip phantom peers with no profile in either table — otherwise
+          // they surface in the inbox as a non-clickable "Unknown User".
+          if (!isRealPeer(conv.peer_id, profileMap)) return [];
+
           const peer = profileMap[conv.peer_id] || {
             display_name: "Unknown User",
             avatar_url: null,
@@ -623,13 +683,13 @@ export function useGlobalMessages(
         const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
         if (prev && prev.length > 0) {
           console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");
-          return prev;
+          return stripUnknownUserThreads(prev, user.id);
         }
         // Also try localStorage cache as last resort
         const cached = getCachedThreads(user.id);
         if (cached && cached.length > 0) {
           console.warn("[chat] All sources empty after gateway failure — restoring from localStorage");
-          return cached as GlobalMessageThread[];
+          return stripUnknownUserThreads(cached as GlobalMessageThread[], user.id);
         }
       }
 
@@ -666,8 +726,14 @@ export function useGlobalMessages(
     enabled: !!user && isGlobalContext,
     staleTime: STALE_TIME, // Use cached threads on re-navigation; realtime subscriptions handle live updates
     gcTime: GC_TIME,
-    // Show last-known threads from localStorage instantly while refetching
-    placeholderData: (prev) => prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined),
+    // Show last-known threads from localStorage instantly while refetching.
+    // Strip any phantom "Unknown User" entries that may have been persisted
+    // before the source-level filter was in place.
+    placeholderData: (prev) => {
+      const fallback = prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined);
+      if (!fallback) return undefined;
+      return stripUnknownUserThreads(fallback as GlobalMessageThread[], user?.id);
+    },
   });
 
   // Write-back: persist threads to localStorage (DEBOUNCED to prevent scroll blocking)

@@ -103,6 +103,17 @@
       "tenantDescription": "Verbinde dich mit Kollegen und Teammitgliedern in deinem professionellen Netzwerk.",
       "startConversation": "Unterhaltung starten",
       "discoverPeople": "Personen entdecken"
+    },
+    "group": {
+      "loading": "Gruppe wird geladen…",
+      "cantOpen": "Gruppe konnte nicht geöffnet werden",
+      "backToInbox": "Zurück zum Postfach",
+      "back": "Zurück",
+      "memberOne": "Mitglied",
+      "memberOther": "Mitglieder",
+      "officialBadge": "offizielle Gruppe",
+      "empty": "Noch keine Nachrichten.",
+      "composerPlaceholder": "Nachricht — tippe @vitana, um Vitana zu fragen"
     }
   }
 }

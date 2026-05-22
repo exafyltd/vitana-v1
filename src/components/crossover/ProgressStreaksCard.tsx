@@ -22,9 +22,9 @@ function ProgressStreaksCardBase({
   const navigate = useNavigate();
 
   const defaultStreaks: StreakData[] = [
-    { type: "Hydration", count: 5, emoji: "💧" },
-    { type: "Exercise", count: 3, emoji: "🏃" },
-    { type: "Sleep", count: 7, emoji: "😴" }
+    { type: t('screens.health.pillar_hydration_title'), count: 5, emoji: "💧" },
+    { type: t('screens.health.pillar_exercise_title'), count: 3, emoji: "🏃" },
+    { type: t('screens.health.pillar_sleep_title'), count: 7, emoji: "😴" }
   ];
 
   const streakList = streaks || defaultStreaks;
@@ -46,7 +46,9 @@ function ProgressStreaksCardBase({
       </div>
       
       <div className="text-xs text-muted-foreground">
-        {streakList.length > 1 ? `+${streakList.length - 1} other streaks` : "Keep it up!"}
+        {streakList.length > 1
+          ? t('screens.ai.otherStreaks', { n: String(streakList.length - 1) })
+          : t('screens.ai.keepItUp')}
       </div>
     </div>
   );
@@ -56,9 +58,9 @@ function ProgressStreaksCardBase({
       icon={TrendingUp}
       category="vitana"
       title={t('screens.crossover.progressTracking')}
-      subtitle="Monitor your wellness streaks and achievement momentum"
+      subtitle={t('screens.ai.subtitle_progressTracking')}
       content={content}
-      buttonText="See Progress"
+      buttonText={t('screens.ai.actionLabel_seeProgress')}
       onButtonClick={() => navigate('/health/my-health-tracker')}
       className={className}
     />
