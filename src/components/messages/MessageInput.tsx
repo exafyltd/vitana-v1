@@ -176,15 +176,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
         contentData = {
           attachments: attachments
         };
-        
-        // Include text with attachments if provided
-        if (text) {
-          messageContent = text;
-        } else {
-          messageContent = attachments.length === 1 
-            ? `Shared ${attachments[0].filename}` 
-            : `Shared ${attachments.length} files`;
-        }
+
+        // If the user didn't type anything, leave the body empty — the
+        // attachment IS the message. The gateway accepts empty content when
+        // message_type='attachment' and at least one attachment is provided,
+        // and MessageBubble renders the media without a redundant "Shared X"
+        // caption.
+        messageContent = text;
       }
 
       await onSendMessage(messageContent, messageType, contentData, undefined, replyingTo?.id);
