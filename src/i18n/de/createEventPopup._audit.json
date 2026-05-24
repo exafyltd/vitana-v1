@@ -27,9 +27,9 @@
     },
     "createEventPopup.descriptionPlaceholder": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Beschreibe dein Event, was Teilnehmer erwartet...",
+      "confidence": 0.9,
+      "issue": "Slight nuance loss: 'can expect' is better conveyed with 'erwarten können' rather than 'erwartet' (what awaits).",
+      "suggested": "Beschreibe dein Event, was Teilnehmer erwarten können...",
       "phase": "llm"
     },
     "createEventPopup.detailedDescription": {
@@ -38,17 +38,13 @@
       "phase": "llm"
     },
     "createEventPopup.detailedDescriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Beschreibe die Agenda, das Programm, was enthalten ist, Gewinnspiele, Sponsoren...",
       "phase": "llm"
     },
     "createEventPopup.detailedDescriptionHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Wird in den Event-Details angezeigt. Nutze es für Agenda, Programmdetails, Inklusivleistungen usw.",
       "phase": "llm"
     },
     "createEventPopup.eventImage": {
@@ -202,10 +198,8 @@
       "phase": "llm"
     },
     "createEventPopup.displayPriceHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form) for imperative.",
-      "suggested": "Nur zur Anzeige. Aktiviere den Ticketverkauf oben für integrierte Zahlungen.",
       "phase": "llm"
     },
     "createEventPopup.resellerOptions": {
@@ -219,10 +213,8 @@
       "phase": "llm"
     },
     "createEventPopup.allowResellersDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form) for imperative.",
-      "suggested": "Lass Reseller Tickets für dieses Event bewerben und verkaufen",
       "phase": "llm"
     },
     "createEventPopup.resaleVisibility": {
@@ -411,10 +403,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidFileTypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte wähle eine Bilddatei (JPEG, PNG, WebP)",
       "phase": "llm"
     },
     "createEventPopup.toasts.fileTooLarge": {
@@ -433,10 +423,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.missingFieldsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte gib Eventtitel, Datum und Uhrzeit an.",
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidDate": {
@@ -445,10 +433,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidDateDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Du kannst kein Event in der Vergangenheit erstellen. Bitte wähle ein zukünftiges Datum und eine Uhrzeit.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageUploadFailed": {
@@ -467,10 +453,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorCreatingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Beim Erstellen deines Events ist ein Problem aufgetreten. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "createEventPopup.toasts.generatingImage": {
@@ -479,10 +463,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.generatingImageDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Ein individuelles Bild für dein Event wird erstellt.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenerated": {
@@ -491,10 +473,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGeneratedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-generiertes Bild wurde deinem Event hinzugefügt.",
       "phase": "llm"
     },
     "createEventPopup.toasts.rateLimitReached": {
@@ -503,10 +483,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.rateLimitDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form). 'in einem Moment' is a bit literal.",
-      "suggested": "Zu viele Bildgenerierungsanfragen. Bitte versuche es gleich noch einmal.",
       "phase": "llm"
     },
     "createEventPopup.toasts.creditsRequired": {
@@ -515,10 +493,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.creditsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-Bildgenerierungs-Credits aufgebraucht. Bitte lade Credits auf.",
       "phase": "llm"
     },
     "createEventPopup.toasts.permissionDenied": {
@@ -527,10 +503,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.permissionDeniedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Du hast keine Berechtigung, Bilder für dieses Event zu generieren.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenFailed": {
@@ -539,10 +513,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-Bild konnte nicht generiert werden. Dein Event wurde trotzdem erfolgreich erstellt.",
       "phase": "llm"
     },
     "createEventPopup.toasts.communityEventCreated": {
@@ -551,10 +523,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.communityEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Dein Event ist jetzt für die Community sichtbar und wurde deinem Kalender hinzugefügt.",
       "phase": "llm"
     },
     "createEventPopup.toasts.personalEventCreated": {
@@ -563,10 +533,8 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.personalEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Das Event wurde deinem Kalender hinzugefügt.",
       "phase": "llm"
     },
     "createEventPopup.toasts.error": {
@@ -575,12 +543,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Event konnte nicht erstellt werden. Bitte versuche es erneut.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:29.780Z"
+  "generatedAt": "2026-05-24T06:51:44.199Z"
 }

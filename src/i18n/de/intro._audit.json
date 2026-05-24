@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "intro.tagline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'guided' part of the translation.",
-      "suggested": "Deine geführte Langlebigkeitsreise",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "intro.playWelcome": {
@@ -38,5 +36,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:14:00.374Z"
+  "generatedAt": "2026-05-24T06:53:27.514Z"
 }
