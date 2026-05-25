@@ -73,7 +73,11 @@
       "beFirst": "Sei der Erste, der kommentiert",
       "signIn": "Melde dich an, um zu kommentieren",
       "send": "Kommentar senden",
-      "member": "Community-Mitglied"
+      "member": "Community-Mitglied",
+      "reply": "Antworten",
+      "replyingTo": "Antwort an {name}",
+      "cancelReply": "Antwort abbrechen",
+      "like": "Kommentar liken"
     },
     "deletePodcast": {
       "title": "Podcast löschen",
