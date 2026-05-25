@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "profileEditor.editAbout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'About' as a noun is awkward; 'Acerca de' is usually a prepositional phrase. 'Editar tu información' or 'Editar tu perfil' would be more natural for a profile section.",
-      "suggested": "Editar tu información",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.aboutTitle": {
@@ -263,10 +261,8 @@
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptorPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Movimiento' means 'movement', not 'mover' (person). 'The Mindful Mover' likely refers to a person, similar to 'The Zen Warrior'.",
-      "suggested": "Ej.: El Caminante Consciente, El Guerrero Zen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptorDescription": {
@@ -445,5 +441,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:09.444Z"
+  "generatedAt": "2026-05-25T08:03:22.301Z"
 }

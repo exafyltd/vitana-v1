@@ -221,10 +221,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.filtersCleared": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'limpiados' is too literal. 'Borrados' or 'restablecidos' are more idiomatic for filters.",
-      "suggested": "Filtros borrados",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.toast.filtersClearedDesc": {
@@ -473,10 +471,8 @@
       "phase": "llm"
     },
     "mediaHub.upload.languagePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The example language was translated instead of the word itself, changing the meaning.",
-      "suggested": "Ej., Inglés",
       "phase": "llm"
     },
     "mediaHub.upload.topic": {
@@ -585,5 +581,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:20.814Z"
+  "generatedAt": "2026-05-25T08:03:04.961Z"
 }
