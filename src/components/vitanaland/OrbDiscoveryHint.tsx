@@ -25,13 +25,32 @@ function showOrb(): void {
   }
 }
 
-type Coords = { left: number; bottom: number };
+type Coords = { left: number; bottom: number; fabHeight: number };
+
+// The hint plays a recurring cycle so it keeps drawing attention to the Orb
+// without ever permanently covering the page content beneath it (e.g. the
+// footer links on the sign-up page): it rises above the Orb, holds briefly so
+// it can be read, then slides down and shrinks "into" the Orb and disappears
+// for a beat before repeating.
+type Phase = "enter" | "hold" | "exit" | "gap";
+const PHASE_MS: Record<Phase, number> = {
+  enter: 450,
+  hold: 2400,
+  exit: 700,
+  gap: 5000,
+};
+const NEXT_PHASE: Record<Phase, Phase> = {
+  enter: "hold",
+  hold: "exit",
+  exit: "gap",
+  gap: "enter",
+};
 
 /**
  * Discoverability hint for the Vitana Orb on the MAXINA intro / sign-up landing
- * pages. New visitors don't realize the floating Orb is a button, so we anchor
- * a labeled pill above it ("Tap here to talk to Vitana") that points at the Orb
- * and pulses gently. Tapping it opens the Orb.
+ * pages. New visitors don't realize the floating Orb is a button, so a labeled
+ * pill ("Tap here to talk to Vitana") rises above it and then animates down and
+ * into the Orb, drawing the eye to it. Tapping the pill opens the Orb.
  *
  * Anchored off the live FAB's bounding rect (its position is CSS-driven and
  * differs desktop vs. mobile). Hidden while the Orb overlay is open — the widget
@@ -41,10 +60,13 @@ export default function OrbDiscoveryHint() {
   const { translate } = useTranslation();
   const prefersReducedMotion = useReducedMotion();
   const [coords, setCoords] = useState<Coords | null>(null);
-  const [visible, setVisible] = useState(false);
-  // Dismissed once the user opens the Orb from the pill, so it doesn't flicker
-  // back in the moment the overlay closes again on the same page visit.
+  // FAB is present in the DOM and the Orb overlay is closed.
+  const [available, setAvailable] = useState(false);
+  const [phase, setPhase] = useState<Phase>("enter");
+  // Dismissed once the user opens the Orb from the pill, so it doesn't reappear
+  // for the rest of this page visit.
   const dismissedRef = useRef(false);
+  const wasAvailableRef = useRef(false);
 
   useEffect(() => {
     let fab: HTMLElement | null = null;
@@ -53,7 +75,7 @@ export default function OrbDiscoveryHint() {
 
     const sync = () => {
       if (dismissedRef.current) {
-        setVisible(false);
+        setAvailable(false);
         return;
       }
       if (!fab || !document.body.contains(fab)) {
@@ -61,7 +83,7 @@ export default function OrbDiscoveryHint() {
         if (fab) attachObservers(fab);
       }
       if (!fab) {
-        setVisible(false);
+        setAvailable(false);
         return;
       }
       const rect = fab.getBoundingClientRect();
@@ -70,14 +92,15 @@ export default function OrbDiscoveryHint() {
         rect.width === 0 ||
         rect.height === 0;
       if (isOpenOrHidden) {
-        setVisible(false);
+        setAvailable(false);
         return;
       }
       setCoords({
         left: rect.left + rect.width / 2,
         bottom: window.innerHeight - rect.top + 12,
+        fabHeight: rect.height,
       });
-      setVisible(true);
+      setAvailable(true);
     };
 
     const attachObservers = (el: HTMLElement) => {
@@ -110,15 +133,48 @@ export default function OrbDiscoveryHint() {
     };
   }, []);
 
+  // Restart the cycle from the top whenever the Orb becomes available again
+  // (page load, or the overlay closing), so it doesn't resume mid-animation.
+  useEffect(() => {
+    if (available && !wasAvailableRef.current) setPhase("enter");
+    wasAvailableRef.current = available;
+  }, [available]);
+
+  // Drive the enter → hold → exit → gap cycle.
+  useEffect(() => {
+    if (!available || dismissedRef.current) return;
+    const timer = window.setTimeout(() => {
+      setPhase((p) => NEXT_PHASE[p]);
+    }, PHASE_MS[phase]);
+    return () => window.clearTimeout(timer);
+  }, [phase, available]);
+
   const handleClick = () => {
     dismissedRef.current = true;
-    setVisible(false);
+    setAvailable(false);
     showOrb();
   };
 
-  if (!visible || !coords) return null;
+  // During the "gap" phase the pill is fully gone so it never blocks taps on
+  // the content beneath the Orb.
+  if (!available || dismissedRef.current || phase === "gap" || !coords) {
+    return null;
+  }
 
   const label = translate("orbHint.tapToTalk", "Tap here to talk to Vitana");
+  const isExit = phase === "exit";
+  // Travel far enough that the shrinking pill visually lands on the Orb's center.
+  const slideY = coords.fabHeight / 2 + 30;
+
+  const animate = prefersReducedMotion
+    ? { opacity: isExit ? 0 : 1, y: 0, scale: 1 }
+    : isExit
+      ? { opacity: 0, y: slideY, scale: 0.25 }
+      : { opacity: 1, y: 0, scale: 1 };
+
+  const transition = isExit
+    ? { duration: prefersReducedMotion ? 0.3 : 0.7, ease: "easeIn" }
+    : { duration: prefersReducedMotion ? 0.2 : 0.45, ease: "easeOut" };
 
   return (
     <div
@@ -129,28 +185,19 @@ export default function OrbDiscoveryHint() {
         transform: "translateX(-50%)",
         pointerEvents: "none",
       }}
-      aria-hidden={false}
     >
       <motion.button
         type="button"
         onClick={handleClick}
-        initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-        animate={
+        initial={
           prefersReducedMotion
-            ? { opacity: 1 }
-            : { opacity: 1, y: 0, scale: [1, 1.04, 1] }
+            ? { opacity: 0 }
+            : { opacity: 0, y: 6, scale: 0.96 }
         }
-        transition={
-          prefersReducedMotion
-            ? { duration: 0.2 }
-            : {
-                opacity: { duration: 0.35 },
-                y: { duration: 0.35 },
-                scale: { duration: 1.8, repeat: Infinity, ease: "easeInOut" },
-              }
-        }
+        animate={animate}
+        transition={transition}
         className="relative whitespace-nowrap rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/30 ring-1 ring-white/20"
-        style={{ pointerEvents: "auto" }}
+        style={{ pointerEvents: isExit ? "none" : "auto" }}
       >
         {label}
         {/* Speech-bubble pointer aimed down at the Orb */}
