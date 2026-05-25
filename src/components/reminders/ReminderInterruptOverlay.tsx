@@ -209,6 +209,14 @@ export const ReminderInterruptOverlay: React.FC = () => {
       // overlay's buttons inherit that and become unclickable. z-[9999] keeps
       // it above the calendar dialog (z-50).
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 pointer-events-auto"
+      // Stop pointerdown from bubbling to document, where an underlying Radix
+      // dialog's DismissableLayer listens (bubble phase) for "outside"
+      // interactions. Without this, tapping a button here is seen as an
+      // outside-click and auto-closes the Calendar popup behind us — so after
+      // Mark done/Snooze/Dismiss the user lost the Calendar → Reminders tab.
+      // Bubble phase only: a capture-phase handler would intercept the event
+      // before it reaches our own buttons and re-break their clicks.
+      onPointerDown={(e) => e.stopPropagation()}
     >
       <div className="w-full max-w-md rounded-2xl bg-background p-6 shadow-2xl border-2 border-primary">
         <div className="flex items-center gap-3 mb-3">
