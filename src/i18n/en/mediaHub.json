@@ -73,7 +73,11 @@
       "beFirst": "Be the first to comment",
       "signIn": "Sign in to comment",
       "send": "Send comment",
-      "member": "Community Member"
+      "member": "Community Member",
+      "reply": "Reply",
+      "replyingTo": "Replying to {name}",
+      "cancelReply": "Cancel reply",
+      "like": "Like comment"
     },
     "deletePodcast": {
       "title": "Delete Podcast",
