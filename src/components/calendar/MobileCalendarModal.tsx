@@ -35,20 +35,28 @@ interface MobileCalendarModalProps {
   onOpenChange: (open: boolean) => void;
   /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
   calendarHook?: CalendarHookData;
+  /** Tab to show when the modal opens (e.g. 'reminders' from a reminder push deep-link). */
+  initialTab?: 'agenda' | 'month' | 'reminders';
 }
 
-export function MobileCalendarModal({ open, onOpenChange, calendarHook }: MobileCalendarModalProps) {
+export function MobileCalendarModal({ open, onOpenChange, calendarHook, initialTab }: MobileCalendarModalProps) {
   const { translate, isGerman } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const ownHook = useCalendarEvents();
   const { events, loading, addEvent, fetchEvents } = calendarHook ?? ownHook;
 
-  const [activeTab, setActiveTab] = useState<'agenda' | 'month' | 'reminders'>('agenda');
+  const [activeTab, setActiveTab] = useState<'agenda' | 'month' | 'reminders'>(initialTab ?? 'agenda');
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [showFullAgenda, setShowFullAgenda] = useState(false);
+
+  // When the modal (re)opens with a requested tab, honour it — covers the
+  // case where the component stays mounted between opens.
+  React.useEffect(() => {
+    if (open && initialTab) setActiveTab(initialTab);
+  }, [open, initialTab]);
 
   const journeyProgress = useJourneyProgress(events);
 
