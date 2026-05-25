@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { Heart, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw, Trash2, Edit } from 'lucide-react';
+import { Heart, MessageCircle, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw, Trash2, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { KebabMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu-kebab';
+import { ShortCommentsSheet } from './ShortCommentsSheet';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { t } from '@/lib/i18n-toast';
@@ -21,6 +22,7 @@ interface MobileShortSlideProps {
     thumbnail_url?: string;
     thumbnailImage?: string;
     likes: number;
+    commentsCount?: number;
     tags?: string[];
     isLive?: boolean;
     user_id?: string;
@@ -63,6 +65,7 @@ export function MobileShortSlide({
   });
   const [showPlayIcon, setShowPlayIcon] = useState(false);
   const [showHeartAnimation, setShowHeartAnimation] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const lastTapRef = useRef<number>(0);
 
   const clearStallTimer = useCallback(() => {
@@ -429,6 +432,24 @@ export function MobileShortSlide({
           </span>
         </button>
 
+        {/* Comments */}
+        {video.id && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowComments(true);
+            }}
+            className="flex flex-col items-center gap-1"
+          >
+            <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
+              <MessageCircle className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-white text-xs font-medium drop-shadow-lg">
+              {video.commentsCount ?? 0}
+            </span>
+          </button>
+        )}
+
         {/* Share */}
         <button
           onClick={(e) => {
@@ -500,6 +521,16 @@ export function MobileShortSlide({
           <Heart className="h-24 w-24 text-red-500 fill-red-500 animate-ping" />
         </div>
       )}
+
+      {/* Comments sheet */}
+      <div onClick={(e) => e.stopPropagation()}>
+        <ShortCommentsSheet
+          open={showComments}
+          onOpenChange={setShowComments}
+          videoId={video.id}
+          videoTitle={video.title}
+        />
+      </div>
 
       <style>{`
         @keyframes fade-out {

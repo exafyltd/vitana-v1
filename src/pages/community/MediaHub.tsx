@@ -425,6 +425,7 @@ export default function MediaHub() {
       duration: short.duration_sec ? `${Math.floor(short.duration_sec / 60)}:${(short.duration_sec % 60).toString().padStart(2, '0')}` : '0:00',
       views: short.views_count.toString(),
       likes: short.likes_count,
+      commentsCount: short.comments_count ?? 0,
       thumbnailImage: short.thumbnail_url || fallbackShorts[0].thumbnailImage,
       src_url: short.src_url,
       thumbnail_url: short.thumbnail_url,
@@ -439,7 +440,8 @@ export default function MediaHub() {
       user_id: video.user_id,
       title: video.title,
       src_url: video.src_url,
-      thumbnail_url: video.thumbnail_url || video.thumbnailImage
+      thumbnail_url: video.thumbnail_url || video.thumbnailImage,
+      commentsCount: video.commentsCount ?? 0
     });
     setSelectedVideoIndex(index);
     setIsVideoPlayerOpen(true);
@@ -492,7 +494,8 @@ export default function MediaHub() {
           user_id: nextVideo.user_id,
           title: nextVideo.title,
           src_url: nextVideo.src_url,
-          thumbnail_url: nextVideo.thumbnail_url || nextVideo.thumbnailImage
+          thumbnail_url: nextVideo.thumbnail_url || nextVideo.thumbnailImage,
+          commentsCount: nextVideo.commentsCount ?? 0
         });
         setSelectedVideoIndex(nextIndex);
       }
@@ -509,7 +512,8 @@ export default function MediaHub() {
           user_id: prevVideo.user_id,
           title: prevVideo.title,
           src_url: prevVideo.src_url,
-          thumbnail_url: prevVideo.thumbnail_url || prevVideo.thumbnailImage
+          thumbnail_url: prevVideo.thumbnail_url || prevVideo.thumbnailImage,
+          commentsCount: prevVideo.commentsCount ?? 0
         });
         setSelectedVideoIndex(prevIndex);
       }

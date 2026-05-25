@@ -15,6 +15,7 @@ interface VideoShort {
   thumbnail_url?: string;
   thumbnailImage?: string;
   likes: number;
+  commentsCount?: number;
   tags?: string[];
   isLive?: boolean;
   user_id?: string;
