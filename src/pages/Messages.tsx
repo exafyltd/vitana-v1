@@ -760,7 +760,14 @@ export default function Messages() {
                       <div className="flex items-start space-x-3">
                         <div className="relative">
                           <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                            <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
+                            {/* loading=lazy + decoding=async: defers HTTP fetch + image decode
+                                for off-viewport threads in long inboxes; native browser support,
+                                no behavior change for visible avatars (~125% viewport threshold). */}
+                            <AvatarImage
+                              src={getConversationDisplayAvatar(thread, user?.id)}
+                              loading="lazy"
+                              decoding="async"
+                            />
                             <AvatarFallback>
                               {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
                             </AvatarFallback>
