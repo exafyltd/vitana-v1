@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 // viewport_only='mobile' entries (e.g. /daily-diary).
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
+import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -221,6 +222,11 @@ export function useOrbVoiceWidget() {
         const navOpts = {
           showFab: true,
           onNavigationRequest: handleNavigationRequest,
+          // Suppress the Soundscape background music for the lifetime of an Orb
+          // voice session — the widget plays TTS via its own AudioContext, which
+          // the Soundscape manager's media listeners can't see otherwise.
+          onSessionStart: () => setOrbWidgetSessionActive(true),
+          onSessionEnd: () => setOrbWidgetSessionActive(false),
           initialContext: {
             current_route: location.pathname,
             current_route_entered_at: currentRouteEnteredAtRef.current,
@@ -300,6 +306,8 @@ export function useOrbVoiceWidget() {
     const navOpts = {
       showFab: true,
       onNavigationRequest: handleNavigationRequest,
+      onSessionStart: () => setOrbWidgetSessionActive(true),
+      onSessionEnd: () => setOrbWidgetSessionActive(false),
       initialContext: {
         current_route: location.pathname,
         current_route_entered_at: currentRouteEnteredAtRef.current,
