@@ -62,7 +62,18 @@
       "uploadSuccess": "Success!",
       "uploadSuccessDesc": "Your {type} is now live in the community.",
       "deleteError": "Error",
-      "deleteErrorDesc": "Failed to delete. Please try again."
+      "deleteErrorDesc": "Failed to delete. Please try again.",
+      "commentError": "Error",
+      "commentErrorDesc": "Failed to post comment. Please try again."
+    },
+    "comments": {
+      "title": "Comments",
+      "placeholder": "Write a comment...",
+      "empty": "No comments yet",
+      "beFirst": "Be the first to comment",
+      "signIn": "Sign in to comment",
+      "send": "Send comment",
+      "member": "Community Member"
     },
     "deletePodcast": {
       "title": "Delete Podcast",

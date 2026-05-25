@@ -19,6 +19,7 @@ export interface Short {
   views_count: number;
   likes_count: number;
   shares_count: number;
+  comments_count: number;
   status: string;
   created_at: string;
   updated_at: string;

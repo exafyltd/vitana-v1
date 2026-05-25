@@ -62,7 +62,18 @@
       "uploadSuccess": "Erfolg!",
       "uploadSuccessDesc": "Dein {type} ist jetzt in der Community live.",
       "deleteError": "Fehler",
-      "deleteErrorDesc": "Löschen fehlgeschlagen. Bitte versuche es erneut."
+      "deleteErrorDesc": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
+      "commentError": "Fehler",
+      "commentErrorDesc": "Kommentar konnte nicht gepostet werden. Bitte versuche es erneut."
+    },
+    "comments": {
+      "title": "Kommentare",
+      "placeholder": "Schreibe einen Kommentar...",
+      "empty": "Noch keine Kommentare",
+      "beFirst": "Sei der Erste, der kommentiert",
+      "signIn": "Melde dich an, um zu kommentieren",
+      "send": "Kommentar senden",
+      "member": "Community-Mitglied"
     },
     "deletePodcast": {
       "title": "Podcast löschen",
