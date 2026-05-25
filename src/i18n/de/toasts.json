@@ -843,7 +843,11 @@
       "invalidTime": "Ungültige Zeit",
       "reminderCreated": "Erinnerung erstellt",
       "reminderDeleted": "Erinnerung gelöscht",
-      "markedDone": "Als erledigt markiert"
+      "markedDone": "Als erledigt markiert",
+      "failedToCreate": "Erinnerung konnte nicht erstellt werden",
+      "failedToDelete": "Erinnerung konnte nicht gelöscht werden",
+      "failedToMarkDone": "Konnte nicht als erledigt markiert werden",
+      "remindersDeleted": "{count} Erinnerungen gelöscht"
     },
     "reseller": {
       "activatingYourResellerProfile": "Dein Reseller-Profil wird aktiviert...",

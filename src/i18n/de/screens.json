@@ -6100,7 +6100,15 @@
       "recent": "Kürzlich",
       "takeMagnesium": "Magnesium nehmen",
       "timeTakeYourMagnesiumPills": "Zeit für deine Magnesiumtabletten",
-      "theyWillRemovedFromYourList": "Sie werden von deiner Liste entfernt. Das lässt sich nicht einfach rückgängig machen."
+      "theyWillRemovedFromYourList": "Sie werden von deiner Liste entfernt. Das lässt sich nicht einfach rückgängig machen.",
+      "filterUpcoming": "Anstehend",
+      "filterCompleted": "Erledigt",
+      "filterMissed": "Verpasst",
+      "noUpcoming": "Keine anstehenden Erinnerungen.",
+      "noCompleted": "Noch keine erledigten Erinnerungen.",
+      "noMissed": "Keine verpassten Erinnerungen — du bist auf dem Laufenden.",
+      "creating": "Wird erstellt…",
+      "createReminder": "Erinnerung erstellen"
     },
     "reseller": {
       "noEventsYourInventory": "Keine Ereignisse in deinem Inventar",

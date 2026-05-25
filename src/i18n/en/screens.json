@@ -6100,7 +6100,15 @@
       "recent": "Recent",
       "takeMagnesium": "Take magnesium",
       "timeTakeYourMagnesiumPills": "Time to take your magnesium pills",
-      "theyWillRemovedFromYourList": "They will be removed from your list. This can't be easily undone."
+      "theyWillRemovedFromYourList": "They will be removed from your list. This can't be easily undone.",
+      "filterUpcoming": "Upcoming",
+      "filterCompleted": "Completed",
+      "filterMissed": "Missed",
+      "noUpcoming": "No upcoming reminders.",
+      "noCompleted": "No completed reminders yet.",
+      "noMissed": "No missed reminders — you're all caught up.",
+      "creating": "Creating…",
+      "createReminder": "Create reminder"
     },
     "reseller": {
       "noEventsYourInventory": "No events in your inventory",
