@@ -573,16 +573,22 @@ export function useGlobalMessages(
       // Track whether gateway actually succeeded vs timed out/failed
       let gatewayFailed = false;
 
-      // Fetch actual unread counts upfront
-      const directUnreadMap = await fetchDirectUnreadCounts(user.id);
-      console.log("[chat:debug] unreadMap keys:", Object.keys(directUnreadMap).length);
-
-      // Fetch from both gateway and legacy in parallel
-      // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
+      // Gateway, legacy threads, and unread counts all in parallel.
+      // Previously fetchDirectUnreadCounts was awaited serially before the
+      // gateway+legacy parallel — adding ~150-300ms to every inbox cold-load
+      // on mobile because that Supabase round-trip blocked the network calls
+      // that produce the actual thread list. directUnreadMap is only consumed
+      // when we BUILD threads (line below), so it just needs to resolve before
+      // that — racing alongside the others is safe.
+      //
+      // Gateway timeout is 3s (was 8s): Cloud Run cold-starts typically settle
+      // in ~1.5-2.5s; if we're still waiting past 3s the user is on a degraded
+      // network or the service is unhealthy, and fetchDirectFromChatMessages
+      // can produce a complete inbox without the gateway anyway.
       const gatewayWithTimeout = Promise.race([
         fetchConversations(),
         new Promise<ChatConversation[]>((_, reject) =>
-          setTimeout(() => reject(new Error('Gateway timeout (8s)')), 8000)
+          setTimeout(() => reject(new Error('Gateway timeout (3s)')), 3000)
         ),
       ]).catch((err) => {
         console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
@@ -590,14 +596,16 @@ export function useGlobalMessages(
         return [] as ChatConversation[];
       });
 
-      const [conversations, legacyThreads] = await Promise.all([
+      const [conversations, legacyThreads, directUnreadMap] = await Promise.all([
         gatewayWithTimeout,
         fetchLegacyThreads(user.id),
+        fetchDirectUnreadCounts(user.id),
       ]);
 
       console.log("[chat:debug] sources:", {
         gateway: conversations?.length ?? 0,
         legacy: legacyThreads?.length ?? 0,
+        unread: Object.keys(directUnreadMap).length,
         gatewayFailed,
       });
 
