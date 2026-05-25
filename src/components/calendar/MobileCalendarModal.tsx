@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from 'date-fns';
 import { de as deLocale } from "date-fns/locale/de";
-import { Calendar, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Plus, ChevronLeft, ChevronRight, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   ResponsiveDialog,
@@ -20,6 +20,7 @@ import { AutopilotTaskGroup } from "./AutopilotTaskGroup";
 import { JourneyProgressStrip } from "./JourneyProgressStrip";
 import { OnboardingPlanCard } from "./OnboardingPlanCard";
 import { useJourneyProgress, bundleOnboardingPlan } from "@/hooks/useJourneyProgress";
+import RemindersPanel from "@/components/reminders/RemindersPanel";
 
 import { formatDate } from '@/lib/locale-format';
 interface CalendarHookData {
@@ -43,7 +44,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
   const ownHook = useCalendarEvents();
   const { events, loading, addEvent, fetchEvents } = calendarHook ?? ownHook;
 
-  const [activeTab, setActiveTab] = useState<'agenda' | 'month'>('agenda');
+  const [activeTab, setActiveTab] = useState<'agenda' | 'month' | 'reminders'>('agenda');
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
@@ -240,41 +241,52 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
             </div>
 
             <div className={showQuickAdd ? 'hidden' : ''}>
-            {/* Date + Today's Focus */}
-            <div className="mb-2">
-              <p className="text-sm font-semibold">{formatDate(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
-              <p className="text-xs text-muted-foreground mb-3">{translate('calendar.timeGroups.today', 'Today')}</p>
-            </div>
+            {/* Date + Today's Focus — event views only */}
+            {activeTab !== 'reminders' && (
+              <>
+                <div className="mb-2">
+                  <p className="text-sm font-semibold">{formatDate(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{translate('calendar.timeGroups.today', 'Today')}</p>
+                </div>
 
-            <TodayFocusStrip
-              todayEvents={groupedEvents.today}
-              onEventClick={handleEventClick}
-            />
+                <TodayFocusStrip
+                  todayEvents={groupedEvents.today}
+                  onEventClick={handleEventClick}
+                />
 
-            {/* Journey Progress */}
-            {journeyProgress && (
-              <JourneyProgressStrip
-                progress={journeyProgress}
-                milestoneEvents={milestoneEvents}
-              />
+                {/* Journey Progress */}
+                {journeyProgress && (
+                  <JourneyProgressStrip
+                    progress={journeyProgress}
+                    milestoneEvents={milestoneEvents}
+                  />
+                )}
+              </>
             )}
 
-            {/* Agenda / Month toggle */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                {activeTab === 'agenda'
-                  ? translate('calendar.agenda', 'Agenda')
-                  : translate('calendar.month', 'Month')}
-              </h3>
-              <Button
-                variant={activeTab === 'month' ? 'default' : 'ghost'}
-                size="sm"
-                className="h-7 w-7 p-0"
-                onClick={() => setActiveTab(activeTab === 'month' ? 'agenda' : 'month')}
-                aria-label={translate('calendar.month', 'Month')}
-              >
-                <Calendar className="w-4 h-4" />
-              </Button>
+            {/* Agenda / Month / Reminders segmented control */}
+            <div className="mb-4 grid grid-cols-3 gap-1 rounded-xl bg-muted/60 p-1">
+              {([
+                { key: 'agenda', icon: <Calendar className="w-3.5 h-3.5" />, label: translate('calendar.agenda', 'Agenda') },
+                { key: 'month', icon: <Calendar className="w-3.5 h-3.5" />, label: translate('calendar.month', 'Month') },
+                { key: 'reminders', icon: <Bell className="w-3.5 h-3.5" />, label: translate('calendar.reminders', 'Reminders') },
+              ] as const).map(({ key, icon, label }) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setActiveTab(key)}
+                  className={cn(
+                    "flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-medium transition-colors",
+                    activeTab === key
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  aria-pressed={activeTab === key}
+                >
+                  {icon}
+                  {label}
+                </button>
+              ))}
             </div>
 
             {/* Agenda View */}
@@ -399,11 +411,16 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                 )}
               </>
             )}
+
+            {/* Reminders View */}
+            {activeTab === 'reminders' && (
+              <RemindersPanel embedded />
+            )}
             </div>
           </div>
 
-          {/* FAB - Add Event */}
-          {!showQuickAdd && (
+          {/* FAB - Add Event (event views only; Reminders has its own Add) */}
+          {!showQuickAdd && activeTab !== 'reminders' && (
             <button
               onClick={() => setShowQuickAdd(true)}
               className="absolute bottom-4 right-4 z-10 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center active:scale-95 transition-all"
