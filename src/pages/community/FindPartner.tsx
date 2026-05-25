@@ -22,6 +22,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import SEO from '@/components/SEO';
 import StandardHeader from '@/components/StandardHeader';
 import AppLayout from '@/components/AppLayout';
@@ -34,7 +35,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import { Button } from '@/components/ui/button';
-import { Loader2, MapPin, Users, Heart, Plus } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
@@ -91,28 +93,23 @@ function initialsFor(name: string | null): string {
   );
 }
 
+// Per-view stale time. 5 min: matches/board/posts revalidate in background on
+// re-mount but render cached data instantly. Tuned long enough that prefetch
+// fired on /home or /comm survives a typical navigation pause.
+const FIND_PARTNER_STALE_TIME = 5 * 60 * 1000;
+const MEMBER_COUNT_STALE_TIME = 10 * 60 * 1000;
+
 export default function FindPartner() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { session } = useAuth();
+  const { user, session } = useAuth();
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialView = (searchParams.get('view') as View) || 'matches';
   const [view, setView] = useState<View>(initialView);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
-
-  // Members tab gate
-  const [memberCount, setMemberCount] = useState<number | null>(null);
-  const showMembersTab = memberCount === null || memberCount <= MEMBERS_TAB_THRESHOLD;
-
-  // Sub-view data
-  const [matches, setMatches] = useState<FindPartnerMatch[]>([]);
-  const [boardIntents, setBoardIntents] = useState<UserIntent[]>([]);
-  const [myPosts, setMyPosts] = useState<UserIntent[]>([]);
-  const [members, setMembers] = useState<MemberRow[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // Keep ?view= in URL synced.
   useEffect(() => {
@@ -124,50 +121,82 @@ export default function FindPartner() {
     }
   }, [view, searchParams, setSearchParams]);
 
-  // Fetch member count once on mount (gates Members tab).
-  useEffect(() => {
-    getCommunityMemberCount()
-      .then(setMemberCount)
-      .catch(() => setMemberCount(null));
-  }, []);
+  // Members tab gate — long-lived count (10min) used purely to decide tab visibility.
+  const memberCountQuery = useQuery({
+    queryKey: ['community-member-count'],
+    queryFn: getCommunityMemberCount,
+    staleTime: MEMBER_COUNT_STALE_TIME,
+  });
+  const memberCount = memberCountQuery.data ?? null;
+  const showMembersTab = memberCount === null || memberCount <= MEMBERS_TAB_THRESHOLD;
 
-  // Per-view fetch.
-  const refresh = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      if (view === 'matches') {
-        setMatches(await getFindPartnerMatches());
-      } else if (view === 'board') {
-        const resp = await getIntentBoard({
-          surface: 'find_a_partner',
-          categories: ['dance.*', 'fitness.*'],
-          limit: 50,
-        });
-        setBoardIntents(resp.intents ?? []);
-      } else if (view === 'posts') {
-        const all = await listMyIntents({ status: 'open' });
-        setMyPosts(all);
-      } else if (view === 'members') {
-        if (!session?.access_token) {
-          setMembers([]);
-        } else {
-          const params = new URLSearchParams({ limit: '50', sort: 'newest' });
-          const res = await fetch(`${GATEWAY_URL}/community/members?${params.toString()}`, {
-            headers: { Authorization: `Bearer ${session.access_token}` },
-          });
-          const data = await res.json();
-          setMembers(Array.isArray(data?.members) ? data.members : []);
-        }
-      }
-    } catch (e: any) {
-      setError(e?.message ?? 'Could not load.');
-    } finally {
-      setLoading(false);
-    }
-  }, [view, session]);
+  // Per-view queries. `enabled: view === X` gates the network call, but cache
+  // populated by prefetchForPath (prefetch-registry) survives regardless of
+  // which view the user lands on — switching tabs reads from cache instantly.
+  const matchesQuery = useQuery({
+    queryKey: ['find-partner-matches', user?.id ?? 'anon'],
+    queryFn: () => getFindPartnerMatches(),
+    enabled: view === 'matches' && !!user,
+    staleTime: FIND_PARTNER_STALE_TIME,
+  });
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  const boardQuery = useQuery({
+    queryKey: ['intent-board', 'find_a_partner'],
+    queryFn: () =>
+      getIntentBoard({
+        surface: 'find_a_partner',
+        categories: ['dance.*', 'fitness.*'],
+        limit: 50,
+      }),
+    enabled: view === 'board' && !!user,
+    staleTime: FIND_PARTNER_STALE_TIME,
+  });
+
+  const myPostsQuery = useQuery({
+    queryKey: ['my-intents', 'open', user?.id ?? 'anon'],
+    queryFn: () => listMyIntents({ status: 'open' }),
+    enabled: view === 'posts' && !!user,
+    staleTime: FIND_PARTNER_STALE_TIME,
+  });
+
+  const membersQuery = useQuery({
+    queryKey: ['community-members', user?.id ?? 'anon'],
+    queryFn: async (): Promise<MemberRow[]> => {
+      if (!session?.access_token) return [];
+      const params = new URLSearchParams({ limit: '50', sort: 'newest' });
+      const res = await fetch(`${GATEWAY_URL}/community/members?${params.toString()}`, {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const data = await res.json();
+      return Array.isArray(data?.members) ? (data.members as MemberRow[]) : [];
+    },
+    enabled: view === 'members' && !!user && showMembersTab && !!session?.access_token,
+    staleTime: FIND_PARTNER_STALE_TIME,
+  });
+
+  const matches = matchesQuery.data ?? [];
+  const boardIntents = boardQuery.data?.intents ?? [];
+  const myPosts = myPostsQuery.data ?? [];
+  const members = membersQuery.data ?? [];
+
+  // Per-view loading + error derived from the active query. Inactive queries
+  // sit at isPending=true / isFetching=false (which v5 surfaces as isLoading=false),
+  // so this only reflects the view the user is currently looking at.
+  const activeQuery =
+    view === 'matches' ? matchesQuery :
+    view === 'board' ? boardQuery :
+    view === 'posts' ? myPostsQuery :
+    membersQuery;
+  const loading = activeQuery.isLoading;
+  const error = activeQuery.error ? ((activeQuery.error as Error).message ?? 'Could not load.') : null;
+
+  // Composer / match-action refresh: invalidate the three mutable views.
+  // Members + member-count are unaffected by intent CRUD.
+  const refresh = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['find-partner-matches', user?.id ?? 'anon'] });
+    queryClient.invalidateQueries({ queryKey: ['intent-board', 'find_a_partner'] });
+    queryClient.invalidateQueries({ queryKey: ['my-intents', 'open', user?.id ?? 'anon'] });
+  }, [queryClient, user?.id]);
 
   // Active sub-view metadata for the pill label + sheet header.
   const active = viewMeta(view);
@@ -228,9 +257,7 @@ export default function FindPartner() {
 
         <div className="mt-4">
           {loading && (
-            <div className="flex justify-center py-10 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin" />
-            </div>
+            <FindPartnerLoadingSkeleton view={view} isMobile={isMobile} />
           )}
 
           {error && !loading && (
@@ -258,7 +285,7 @@ export default function FindPartner() {
                     vertical={m.vertical}
                     sourceCategory={m.source_category}
                     perspective="outgoing"
-                    onAction={() => void refresh()}
+                    onAction={refresh}
                   />
                 ))}
               </div>
@@ -273,7 +300,7 @@ export default function FindPartner() {
                   vertical={m.vertical}
                   sourceCategory={m.source_category}
                   perspective="outgoing"
-                  onAction={() => void refresh()}
+                  onAction={refresh}
                 />
               ))
             )
@@ -420,7 +447,7 @@ export default function FindPartner() {
       <IntentComposer
         open={composerOpen}
         onOpenChange={setComposerOpen}
-        onPosted={() => { setComposerOpen(false); void refresh(); }}
+        onPosted={() => { setComposerOpen(false); refresh(); }}
       />
     </>
   );
@@ -440,6 +467,51 @@ function renderDesktopGrid<T>(
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {items.map((it, idx) => (
         <div key={idx}>{renderItem(it)}</div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Skeleton placeholder matching the four sub-views. Replaces the previous
+ * full-screen spinner so cold-load Find-a-Match feels paint-instant instead
+ * of blank-then-pop. Card heights are approximate — they're hidden the
+ * instant the real data lands.
+ */
+function FindPartnerLoadingSkeleton({ view, isMobile }: { view: View; isMobile: boolean }) {
+  const count = isMobile ? 3 : 6;
+  const gridClass = isMobile
+    ? 'space-y-5 pb-32 max-w-md mx-auto'
+    : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+
+  if (view === 'members') {
+    return (
+      <div className="space-y-2">
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border">
+            <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-3 w-1/3" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // matches / board / posts — card-shaped skeletons
+  const cardHeight = view === 'posts' ? 'h-36' : 'h-64';
+  return (
+    <div className={gridClass}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="rounded-2xl border border-border overflow-hidden">
+          <Skeleton className={`w-full ${cardHeight}`} />
+          <div className="p-4 space-y-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+          </div>
+        </div>
       ))}
     </div>
   );

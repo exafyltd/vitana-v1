@@ -6,14 +6,15 @@ import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
+import { getFindPartnerMatches, getIntentBoard } from '@/lib/intentApi';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
  * Routes must match actual app routes (/comm not /community)
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
-  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox'],
-  '/comm': ['/home', '/discover', '/inbox'],
+  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox', '/comm/find-partner'],
+  '/comm': ['/home', '/discover', '/inbox', '/comm/find-partner'],
   '/discover': ['/home', '/comm', '/calendar'],
   '/health': ['/home', '/calendar'],
   '/business': ['/home', '/wallet'],
@@ -123,6 +124,32 @@ export async function prefetchForPath(
       queryFn: fetchCommunityEventsQueryFn,
       staleTime,
     });
+  }
+
+  // Find a Match — prefetch matches + board in parallel so the screen paints
+  // from cache when the user navigates here from /home or /comm. Reuses the
+  // exact same query functions FindPartner.tsx itself binds to (single source
+  // of truth via intentApi). The query keys MUST match what FindPartner uses,
+  // otherwise the screen will refetch and the prefetch is wasted.
+  if (path === '/comm/find-partner') {
+    const partnerStale = 5 * 60 * 1000;
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: ['find-partner-matches', userId],
+        queryFn: () => getFindPartnerMatches(),
+        staleTime: partnerStale,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: ['intent-board', 'find_a_partner'],
+        queryFn: () =>
+          getIntentBoard({
+            surface: 'find_a_partner',
+            categories: ['dance.*', 'fitness.*'],
+            limit: 50,
+          }),
+        staleTime: partnerStale,
+      }),
+    ]);
   }
 
   // Inbox prefetch intentionally removed: prefetchInboxThreads used a thinner
