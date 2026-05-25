@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
@@ -538,6 +538,186 @@ async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Reco
   }
 }
 
+// ── Threads queryFn (exported for prefetching) ───────────────────────
+//
+// Lifted byte-identical from the in-hook queryFn so the prefetch path
+// (prefetch-registry.ts → /inbox adjacency from /home and /comm) runs the
+// SAME fallback chain as the hook. This is the explicit guard against the
+// historical "thinner fetch path" regression — see AuthProvider.tsx and
+// prefetch-registry.ts for the original comment trail.
+//
+// Caller responsibilities:
+//   - Pass a non-empty userId (the hook's `enabled` flag guarantees this;
+//     the prefetcher checks `!!user?.id` before calling).
+//   - Pass the same `queryKey` shape that the hook uses, so the "keep
+//     previous cached threads" guard reads the right cache entry.
+export async function buildGlobalThreadsQueryFn(
+  userId: string,
+  queryClient: QueryClient,
+  queryKey: readonly unknown[]
+): Promise<GlobalMessageThread[]> {
+  // Track whether gateway actually succeeded vs timed out/failed
+  let gatewayFailed = false;
+
+  // Gateway, legacy threads, and unread counts all in parallel.
+  // Previously fetchDirectUnreadCounts was awaited serially before the
+  // gateway+legacy parallel — adding ~150-300ms to every inbox cold-load
+  // on mobile because that Supabase round-trip blocked the network calls
+  // that produce the actual thread list. directUnreadMap is only consumed
+  // when we BUILD threads (line below), so it just needs to resolve before
+  // that — racing alongside the others is safe.
+  //
+  // Gateway timeout is 3s (was 8s): Cloud Run cold-starts typically settle
+  // in ~1.5-2.5s; if we're still waiting past 3s the user is on a degraded
+  // network or the service is unhealthy, and fetchDirectFromChatMessages
+  // can produce a complete inbox without the gateway anyway.
+  const gatewayWithTimeout = Promise.race([
+    fetchConversations(),
+    new Promise<ChatConversation[]>((_, reject) =>
+      setTimeout(() => reject(new Error('Gateway timeout (3s)')), 3000)
+    ),
+  ]).catch((err) => {
+    console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
+    gatewayFailed = true;
+    return [] as ChatConversation[];
+  });
+
+  const [conversations, legacyThreads, directUnreadMap] = await Promise.all([
+    gatewayWithTimeout,
+    fetchLegacyThreads(userId),
+    fetchDirectUnreadCounts(userId),
+  ]);
+
+  console.log("[chat:debug] sources:", {
+    gateway: conversations?.length ?? 0,
+    legacy: legacyThreads?.length ?? 0,
+    unread: Object.keys(directUnreadMap).length,
+    gatewayFailed,
+  });
+
+  // Build gateway threads
+  let gatewayThreads: GlobalMessageThread[] = [];
+  if (conversations && conversations.length > 0) {
+    const allUserIds = new Set<string>([userId]);
+    conversations.forEach((c) => {
+      allUserIds.add(c.peer_id);
+      if (c.last_message) {
+        allUserIds.add(c.last_message.sender_id);
+        allUserIds.add(c.last_message.receiver_id);
+      }
+    });
+
+    const profileMap = await enrichProfiles(Array.from(allUserIds));
+
+    gatewayThreads = conversations.flatMap((conv) => {
+      // Skip phantom peers with no profile in either table — otherwise
+      // they surface in the inbox as a non-clickable "Unknown User".
+      if (!isRealPeer(conv.peer_id, profileMap)) return [];
+
+      const peer = profileMap[conv.peer_id] || {
+        display_name: "Unknown User",
+        avatar_url: null,
+      };
+      const me = profileMap[userId] || {
+        display_name: "Me",
+        avatar_url: null,
+      };
+
+      const lastMsg = conv.last_message;
+      const unreadCount = directUnreadMap[conv.peer_id] || 0;
+
+      return {
+        id: conv.peer_id,
+        name: undefined,
+        type: "direct" as const,
+        created_by: userId,
+        created_at: lastMsg?.created_at || new Date().toISOString(),
+        updated_at: lastMsg?.created_at || new Date().toISOString(),
+        participants: [
+          {
+            user_id: userId,
+            display_name: me.display_name,
+            avatar_url: me.avatar_url,
+            role: "member",
+          },
+          {
+            user_id: conv.peer_id,
+            display_name: peer.display_name,
+            avatar_url: peer.avatar_url,
+            role: "member",
+          },
+        ],
+        last_message: lastMsg
+          ? toGlobalMessage(lastMsg, conv.peer_id, profileMap)
+          : undefined,
+        unread_count: unreadCount,
+      } satisfies GlobalMessageThread;
+    });
+  }
+
+  // Always fetch from chat_messages as a fallback — merge logic deduplicates
+  const directThreads = await fetchDirectFromChatMessages(userId, directUnreadMap);
+  console.log("[chat:debug] directThreads:", directThreads.length, "gatewayThreads:", gatewayThreads.length);
+
+  // Merge: keep the freshest version of each thread across all sources
+  const threadMap = new Map<string, GlobalMessageThread>();
+  for (const t of [...legacyThreads, ...directThreads, ...gatewayThreads]) {
+    const existing = threadMap.get(t.id);
+    if (!existing || new Date(t.updated_at) > new Date(existing.updated_at)) {
+      threadMap.set(t.id, t);
+    }
+  }
+  const merged = Array.from(threadMap.values()).sort(
+    (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+  );
+
+  // Guard: if ALL sources returned empty but we had previous data, keep previous data.
+  // This prevents a gateway timeout or empty 200 from wiping a populated inbox.
+  if (merged.length === 0) {
+    const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
+    if (prev && prev.length > 0) {
+      console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");
+      return stripUnknownUserThreads(prev, userId);
+    }
+    // Also try localStorage cache as last resort
+    const cached = getCachedThreads(userId);
+    if (cached && cached.length > 0) {
+      console.warn("[chat] All sources empty after gateway failure — restoring from localStorage");
+      return stripUnknownUserThreads(cached as GlobalMessageThread[], userId);
+    }
+  }
+
+  // Auto-seed Vitana thread if not present
+  const hasVitana = merged.some((t) => t.id === VITANA_BOT_USER_ID);
+  if (!hasVitana) {
+    merged.push({
+      id: VITANA_BOT_USER_ID,
+      name: "Vitana",
+      type: "direct",
+      created_by: VITANA_BOT_USER_ID,
+      created_at: new Date().toISOString(),
+      updated_at: "2000-01-01T00:00:00.000Z", // sort to bottom until real messages exist
+      participants: [
+        { user_id: userId, display_name: "Me", avatar_url: null, role: "member" },
+        { user_id: VITANA_BOT_USER_ID, display_name: "Vitana", avatar_url: null, role: "member" },
+      ],
+      last_message: {
+        id: "vitana-welcome",
+        thread_id: VITANA_BOT_USER_ID,
+        sender_id: VITANA_BOT_USER_ID,
+        body: "Hi! I'm Vitana. Send me a message to get started.",
+        message_type: "text",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        sender: { user_id: VITANA_BOT_USER_ID, display_name: "Vitana" },
+      },
+      unread_count: 0,
+    });
+  }
+
+  return merged;
+}
+
 // ── Hook ─────────────────────────────────────────────────────────────
 
 export function useGlobalMessages(
@@ -569,167 +749,7 @@ export function useGlobalMessages(
         console.warn("[chat:debug] queryFn skipped — user:", !!user, "isGlobalContext:", isGlobalContext);
         return [];
       }
-
-      // Track whether gateway actually succeeded vs timed out/failed
-      let gatewayFailed = false;
-
-      // Gateway, legacy threads, and unread counts all in parallel.
-      // Previously fetchDirectUnreadCounts was awaited serially before the
-      // gateway+legacy parallel — adding ~150-300ms to every inbox cold-load
-      // on mobile because that Supabase round-trip blocked the network calls
-      // that produce the actual thread list. directUnreadMap is only consumed
-      // when we BUILD threads (line below), so it just needs to resolve before
-      // that — racing alongside the others is safe.
-      //
-      // Gateway timeout is 3s (was 8s): Cloud Run cold-starts typically settle
-      // in ~1.5-2.5s; if we're still waiting past 3s the user is on a degraded
-      // network or the service is unhealthy, and fetchDirectFromChatMessages
-      // can produce a complete inbox without the gateway anyway.
-      const gatewayWithTimeout = Promise.race([
-        fetchConversations(),
-        new Promise<ChatConversation[]>((_, reject) =>
-          setTimeout(() => reject(new Error('Gateway timeout (3s)')), 3000)
-        ),
-      ]).catch((err) => {
-        console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
-        gatewayFailed = true;
-        return [] as ChatConversation[];
-      });
-
-      const [conversations, legacyThreads, directUnreadMap] = await Promise.all([
-        gatewayWithTimeout,
-        fetchLegacyThreads(user.id),
-        fetchDirectUnreadCounts(user.id),
-      ]);
-
-      console.log("[chat:debug] sources:", {
-        gateway: conversations?.length ?? 0,
-        legacy: legacyThreads?.length ?? 0,
-        unread: Object.keys(directUnreadMap).length,
-        gatewayFailed,
-      });
-
-      // Build gateway threads
-      let gatewayThreads: GlobalMessageThread[] = [];
-      if (conversations && conversations.length > 0) {
-        const allUserIds = new Set<string>([user.id]);
-        conversations.forEach((c) => {
-          allUserIds.add(c.peer_id);
-          if (c.last_message) {
-            allUserIds.add(c.last_message.sender_id);
-            allUserIds.add(c.last_message.receiver_id);
-          }
-        });
-
-        const profileMap = await enrichProfiles(Array.from(allUserIds));
-
-        gatewayThreads = conversations.flatMap((conv) => {
-          // Skip phantom peers with no profile in either table — otherwise
-          // they surface in the inbox as a non-clickable "Unknown User".
-          if (!isRealPeer(conv.peer_id, profileMap)) return [];
-
-          const peer = profileMap[conv.peer_id] || {
-            display_name: "Unknown User",
-            avatar_url: null,
-          };
-          const me = profileMap[user.id] || {
-            display_name: "Me",
-            avatar_url: null,
-          };
-
-          const lastMsg = conv.last_message;
-          const unreadCount = directUnreadMap[conv.peer_id] || 0;
-
-          return {
-            id: conv.peer_id,
-            name: undefined,
-            type: "direct" as const,
-            created_by: user.id,
-            created_at: lastMsg?.created_at || new Date().toISOString(),
-            updated_at: lastMsg?.created_at || new Date().toISOString(),
-            participants: [
-              {
-                user_id: user.id,
-                display_name: me.display_name,
-                avatar_url: me.avatar_url,
-                role: "member",
-              },
-              {
-                user_id: conv.peer_id,
-                display_name: peer.display_name,
-                avatar_url: peer.avatar_url,
-                role: "member",
-              },
-            ],
-            last_message: lastMsg
-              ? toGlobalMessage(lastMsg, conv.peer_id, profileMap)
-              : undefined,
-            unread_count: unreadCount,
-          } satisfies GlobalMessageThread;
-        });
-      }
-
-      // Always fetch from chat_messages as a fallback — merge logic deduplicates
-      const directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
-      console.log("[chat:debug] directThreads:", directThreads.length, "gatewayThreads:", gatewayThreads.length);
-
-      // Merge: keep the freshest version of each thread across all sources
-      const threadMap = new Map<string, GlobalMessageThread>();
-      for (const t of [...legacyThreads, ...directThreads, ...gatewayThreads]) {
-        const existing = threadMap.get(t.id);
-        if (!existing || new Date(t.updated_at) > new Date(existing.updated_at)) {
-          threadMap.set(t.id, t);
-        }
-      }
-      const merged = Array.from(threadMap.values()).sort(
-        (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-      );
-
-      // Guard: if ALL sources returned empty but we had previous data, keep previous data.
-      // This prevents a gateway timeout or empty 200 from wiping a populated inbox.
-      if (merged.length === 0) {
-        const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
-        if (prev && prev.length > 0) {
-          console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");
-          return stripUnknownUserThreads(prev, user.id);
-        }
-        // Also try localStorage cache as last resort
-        const cached = getCachedThreads(user.id);
-        if (cached && cached.length > 0) {
-          console.warn("[chat] All sources empty after gateway failure — restoring from localStorage");
-          return stripUnknownUserThreads(cached as GlobalMessageThread[], user.id);
-        }
-      }
-
-      // Auto-seed Vitana thread if not present
-      const hasVitana = merged.some((t) => t.id === VITANA_BOT_USER_ID);
-      if (!hasVitana) {
-        merged.push({
-          id: VITANA_BOT_USER_ID,
-          name: "Vitana",
-          type: "direct",
-          created_by: VITANA_BOT_USER_ID,
-          created_at: new Date().toISOString(),
-          updated_at: "2000-01-01T00:00:00.000Z", // sort to bottom until real messages exist
-          participants: [
-            { user_id: user.id, display_name: "Me", avatar_url: null, role: "member" },
-            { user_id: VITANA_BOT_USER_ID, display_name: "Vitana", avatar_url: null, role: "member" },
-          ],
-          last_message: {
-            id: "vitana-welcome",
-            thread_id: VITANA_BOT_USER_ID,
-            sender_id: VITANA_BOT_USER_ID,
-            body: "Hi! I'm Vitana. Send me a message to get started.",
-            message_type: "text",
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            sender: { user_id: VITANA_BOT_USER_ID, display_name: "Vitana" },
-          },
-          unread_count: 0,
-        });
-      }
-
-      return merged;
+      return buildGlobalThreadsQueryFn(user.id, queryClient, queryKey);
     },
     enabled: !!user && isGlobalContext,
     staleTime: STALE_TIME, // Use cached threads on re-navigation; realtime subscriptions handle live updates

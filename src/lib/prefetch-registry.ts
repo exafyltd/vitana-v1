@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
 import { getFindPartnerMatches, getIntentBoard } from '@/lib/intentApi';
+import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -152,10 +153,25 @@ export async function prefetchForPath(
     ]);
   }
 
-  // Inbox prefetch intentionally removed: prefetchInboxThreads used a thinner
-  // fetch path than useGlobalMessages (no fetchDirectFromChatMessages fallback),
-  // so on gateway cold-start it cached a [Vitana-bot-only] result that the hook
-  // then read as "fresh" and refused to refetch, leaving the inbox empty until
-  // a manual page refresh. The hook handles fetching on mount; chatPersistCache
-  // provides instant paint on subsequent visits.
+  // Inbox prefetch — restored after Phase 2 extraction of buildGlobalThreadsQueryFn.
+  //
+  // The historical regression (prefetchInboxThreads in src/lib/prefetchInboxThreads.ts)
+  // used a hand-rolled, thinner fetch path that lacked the fetchDirectFromChatMessages
+  // direct-DM fallback. On gateway cold-start it cached a [Vitana-bot-only] result that
+  // the hook then read as "fresh" and refused to refetch, leaving the inbox empty until
+  // manual refresh.
+  //
+  // The fix is structural: we call the SAME factory (buildGlobalThreadsQueryFn) the hook
+  // itself uses, so prefetch and live fetch can never drift. The queryKey shape must
+  // also match exactly (['global-threads', userId]) so the hook reads our prefetched
+  // result on mount instead of refetching.
+  if (path === '/inbox' && userId) {
+    await queryClient.prefetchQuery({
+      queryKey: ['global-threads', userId],
+      queryFn: ({ queryKey: qk }) => buildGlobalThreadsQueryFn(userId, queryClient, qk),
+      // 10min matches the hook's per-query staleTime; the hook treats the
+      // prefetched data as fresh until then, paint-instant from cache.
+      staleTime: 10 * 60 * 1000,
+    });
+  }
 }
