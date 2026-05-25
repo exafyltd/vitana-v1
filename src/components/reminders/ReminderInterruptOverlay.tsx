@@ -16,7 +16,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useReminderStream, ReminderFirePayload } from "@/hooks/useReminderStream";
-import { ackReminder, completeReminder, snoozeReminder, deleteReminder } from "@/lib/reminders-api";
+import { ackReminder, completeReminder, snoozeReminder, deleteReminder, getReminderById } from "@/lib/reminders-api";
 import { Button } from "@/components/ui/button";
 import { Bell, Check, Clock, X } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
@@ -115,6 +115,53 @@ export const ReminderInterruptOverlay: React.FC = () => {
     }, 60_000);
     return () => window.clearTimeout(t);
   }, [latestFire, clear]);
+
+  // Deep-link path: a mobile push click lands on /reminders?fire=<id>. There's
+  // no SSE event (the app was closed), so fetch the reminder by id and show the
+  // same Mark-done / Snooze / Dismiss modal. No chime/voice — that audio is
+  // only pre-rendered for the SSE stream, and the lock-screen push already
+  // notified the user. Strip the param afterwards so a refresh doesn't re-open.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fireId = params.get("fire");
+    if (!fireId) return;
+    if (playedFor.current === fireId) return;
+    playedFor.current = fireId;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await getReminderById(fireId);
+        if (cancelled || !r) return;
+        setActive({
+          type: "reminder.fire",
+          reminder_id: r.id,
+          action_text: r.action_text,
+          spoken_message: r.spoken_message,
+          description: r.description,
+          chime_pcm_b64: "",
+          chime_mime: "",
+          voice_audio_b64: null,
+          voice_mime: "",
+          voice_lang: r.tts_lang,
+          fired_at: r.fired_at ?? new Date().toISOString(),
+          next_fire_at: r.next_fire_at,
+        });
+      } catch (err) {
+        console.warn("[reminder-overlay] deep-link fetch failed", err);
+      } finally {
+        // Remove ?fire= from the URL without a navigation/reload.
+        params.delete("fire");
+        const qs = params.toString();
+        const newUrl = window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash;
+        window.history.replaceState({}, "", newUrl);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (!active) return null;
 

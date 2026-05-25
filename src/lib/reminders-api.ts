@@ -72,6 +72,15 @@ export async function getMissedReminders(): Promise<ReminderRow[]> {
   return (j?.data || []) as ReminderRow[];
 }
 
+/** Fetch a single reminder by id (used by the push-click deep-link overlay). */
+export async function getReminderById(id: string): Promise<ReminderRow | null> {
+  const r = await communityFetch(`/api/v1/reminders/${encodeURIComponent(id)}`);
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`getReminderById ${r.status}`);
+  const j = await r.json();
+  return (j?.data || null) as ReminderRow | null;
+}
+
 export async function createReminder(input: CreateReminderInput): Promise<ReminderRow> {
   const body = {
     user_tz: userTz(),
