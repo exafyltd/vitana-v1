@@ -99,6 +99,8 @@ interface EnhancedCalendarPopupProps {
   onOpenChange: (open: boolean) => void;
   initialDate?: Date | null;
   initialView?: 'today' | 'week' | 'month';
+  /** Mobile-only: tab to show when opening (e.g. 'reminders' from a push deep-link). */
+  initialMobileTab?: 'agenda' | 'month' | 'reminders';
   /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
   calendarHook?: ReturnType<typeof import('@/hooks/useCalendarEvents').useCalendarEvents>;
 }
@@ -145,6 +147,7 @@ export function EnhancedCalendarPopup({
   onOpenChange,
   initialDate,
   initialView = 'today',
+  initialMobileTab,
   calendarHook,
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
@@ -388,6 +391,7 @@ export function EnhancedCalendarPopup({
         open={open}
         onOpenChange={onOpenChange}
         calendarHook={{ events, loading, addEvent, fetchEvents }}
+        initialTab={initialMobileTab}
       />
     );
   }

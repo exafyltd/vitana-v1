@@ -25,10 +25,16 @@ export function UniversalCalendarButton({
   showText = true
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [requestedMobileTab, setRequestedMobileTab] = useState<'agenda' | 'month' | 'reminders' | undefined>(undefined);
 
-  // Listen for global calendar:open events (dispatched by ORB voice navigation)
+  // Listen for global calendar:open events (dispatched by ORB voice navigation
+  // and by the reminder push deep-link, which requests the 'reminders' tab).
   useEffect(() => {
-    const handleOpen = () => setCalendarOpen(true);
+    const handleOpen = (e: Event) => {
+      const tab = (e as CustomEvent<{ tab?: 'agenda' | 'month' | 'reminders' }>).detail?.tab;
+      setRequestedMobileTab(tab);
+      setCalendarOpen(true);
+    };
     window.addEventListener('calendar:open', handleOpen);
     return () => window.removeEventListener('calendar:open', handleOpen);
   }, []);
@@ -81,6 +87,7 @@ export function UniversalCalendarButton({
         open={calendarOpen}
         onOpenChange={setCalendarOpen}
         calendarHook={calendarHook}
+        initialMobileTab={requestedMobileTab}
       />
     </>
   );
