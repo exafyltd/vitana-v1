@@ -203,7 +203,12 @@ export const ReminderInterruptOverlay: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label={t('screens.reminders.reminder')}
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
+      // pointer-events-auto: when this overlay is layered over an open Radix
+      // dialog (e.g. the Calendar popup from a reminder push deep-link), Radix
+      // sets `pointer-events: none` on <body>. Without an explicit override the
+      // overlay's buttons inherit that and become unclickable. z-[9999] keeps
+      // it above the calendar dialog (z-50).
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4 pointer-events-auto"
     >
       <div className="w-full max-w-md rounded-2xl bg-background p-6 shadow-2xl border-2 border-primary">
         <div className="flex items-center gap-3 mb-3">
